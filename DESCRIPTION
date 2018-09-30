@@ -15,5 +15,8 @@ Depends:
 Encoding: UTF-8
 LazyData: true
 Suggests: 
-    covr
+    covr,
+    testthat
 RoxygenNote: 6.1.0
+Imports: 
+    glue (>= 1.3.0)
