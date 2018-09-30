@@ -38,3 +38,12 @@ null_transformer <- function(text, envir) {
 
   out
 }
+
+
+# Construct discrete distribution table -----------------------------------
+compute_distr_tbl <- function(x) {
+  x_tbl <- table(round(x, digits = 8))
+  x_prob <- as.numeric(x_tbl) / length(x)
+
+  data.frame(x = as.numeric(names(x_tbl)), prob = x_prob)
+}
