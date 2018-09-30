@@ -1,0 +1,19 @@
+Package: pdqr
+Title: Create Custom Distribution Functions
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Evgeni",
+           family = "Chasnovski",
+           role = c("aut", "cre"),
+           email = "evgeni.chasnovski@gmail.com")
+Description: Create distribution functions (p*(), d*(), q*(),
+    r*()) based on the numerical sample. Also convert existing
+    distribution functions to another type.
+License: MIT + file LICENSE
+Depends: 
+    R (>= 3.1)
+Encoding: UTF-8
+LazyData: true
+Suggests: 
+    covr
+RoxygenNote: 6.1.0
