@@ -42,6 +42,13 @@ test_that("d_fun rounds input in case of `type` = 'raw'", {
   expect_equal(d_raw(near_1), c(0, 0.1))
 })
 
+test_that("d_fun output integrates to 1 in case `type` = 'smooth'", {
+  d_smooth <- d_fun(x_smooth, type = "smooth")
+  integral <- stats::integrate(d_smooth, -3, 3)
+  output_range <- integral[["value"]] + c(-1, 1) * integral[["abs.error"]]
+  expect_true((output_range[1] <= 1) && (1 <= output_range[2]))
+})
+
 test_that("d_fun asserts", {
   expect_error(d_fun("a"), "x.*numeric")
   expect_error(d_fun(x_raw, type = 1), "type.*string")

@@ -55,3 +55,10 @@ test_that("compute_distr_tbl does rounding", {
   output <- data.frame(x = 1, prob = 1)
   expect_equal(compute_distr_tbl(input), output)
 })
+
+
+# trapez_integral ---------------------------------------------------------
+test_that("trapez_integral works", {
+  expect_equal(trapez_integral(1:2, 1:2), 1.5)
+  expect_equal(trapez_integral(cumsum(1:10), c(1:5, 5:1)), 174)
+})

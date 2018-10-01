@@ -47,3 +47,10 @@ compute_distr_tbl <- function(x) {
 
   data.frame(x = as.numeric(names(x_tbl)), prob = x_prob)
 }
+
+
+# Integral of density linear interpolation --------------------------------
+trapez_integral <- function(x, y) {
+  # `x` is assumed to be sorted increasingly (as after the `density()` call)
+  sum(diff(x) * (utils::head(y, -1) + utils::tail(y, -1))) / 2
+}
