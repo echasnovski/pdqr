@@ -2,27 +2,16 @@ context("test-d_fun")
 
 
 # Input data --------------------------------------------------------------
-x_raw <- c(4, 1, 2, 6, 8, 6, 7, 3, 2, 3, 2, 6, 7, 8, 1, 9, 2, 9, 5, 7)
-x_raw_distr_tbl <- data.frame(
-  x = as.numeric(1:9), prob = c(0.1, 0.2, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.1)
-)
-x_raw_domain_in <- c(1, 9)
-
-x_smooth <- c(
-   1.47, 0.11, 0.04,  0.37, -0.43, 0.17, -0.18, 0.85, -0.05, 0.17,
-  -1.27, 1.04, 1.06, -1.87, -1.71, -0.3, -0.26, 0.62,  1.42, 0.36
-)
-x_smooth_domain_in <- c(-2.91865392160928, 2.51865392160928)
+d_raw <- d_fun(x_raw, type = "raw")
+d_smooth <- d_fun(x_smooth, type = "smooth")
 
 
 # d_fun -------------------------------------------------------------------
 test_that("d_fun works", {
-  d_raw <- d_fun(x_raw, type = "raw")
   expect_distr_fun(d_raw, "d_fun", "raw")
   expect_equal(meta(d_raw, "domain_in"), x_raw_domain_in)
   expect_equal(d_raw(1:10), c(x_raw_distr_tbl[["prob"]], 0))
 
-  d_smooth <- d_fun(x_smooth, type = "smooth")
   expect_distr_fun(d_smooth, "d_fun", "smooth")
   expect_equal(
     round(meta(d_smooth, "domain_in"), 2), round(x_smooth_domain_in, 2)
@@ -37,16 +26,19 @@ test_that("d_fun works", {
 })
 
 test_that("d_fun rounds input in case of `type` = 'raw'", {
-  d_raw <- d_fun(x_raw, type = "raw")
   near_1 <- 1 + 10^c(-6, -9)
   expect_equal(d_raw(near_1), c(0, 0.1))
 })
 
 test_that("d_fun output integrates to 1 in case `type` = 'smooth'", {
-  d_smooth <- d_fun(x_smooth, type = "smooth")
   integral <- stats::integrate(d_smooth, -3, 3)
   output_range <- integral[["value"]] + c(-1, 1) * integral[["abs.error"]]
   expect_true((output_range[1] <= 1) && (1 <= output_range[2]))
+})
+
+test_that("d_fun equals 0 on edges of input domain in case `type` = 'smooth'", {
+  domain_in <- meta(d_smooth, "domain_in")
+  expect_equal(d_smooth(domain_in), c(0, 0))
 })
 
 test_that("d_fun asserts", {
@@ -57,7 +49,6 @@ test_that("d_fun asserts", {
 })
 
 test_that("d_fun handles meta data", {
-  d_raw <- d_fun(x_raw, type = "raw")
   expect_equal(
     meta(d_raw),
     list(distr_tbl = x_raw_distr_tbl, domain_in = x_raw_domain_in, type = "raw")
@@ -79,9 +70,9 @@ test_that("d_fun handles meta data", {
 })
 
 test_that("d_fun uses `...` as arguments for `density()`", {
-  d_smooth <- d_fun(x_smooth, type = "smooth", kernel = "cosine")
+  d_smooth_cosine <- d_fun(x_smooth, type = "smooth", kernel = "cosine")
   expect_equal(
-    round(d_smooth(seq(from = -1, to = 1, by = 0.1)), 2),
+    round(d_smooth_cosine(seq(from = -1, to = 1, by = 0.1)), 2),
     c(
       0.09, 0.11, 0.13, 0.17, 0.22, 0.28, 0.34, 0.39, 0.44, 0.48, 0.5,
        0.5, 0.49, 0.47, 0.44,  0.4, 0.37, 0.34, 0.32,  0.3, 0.28
@@ -100,15 +91,14 @@ test_that("d_fun uses `...` as arguments for `density()`", {
 
 # print.d_fun -------------------------------------------------------------
 test_that("print.d_fun works", {
-  d_raw <- d_fun(x_raw, type = "raw")
   expect_output(
     print(d_raw),
     "Density function.*raw.*[mM]eta.*distr_tbl, domain_in, type.*function"
   )
 
-  d_smooth <- d_fun(x_smooth, type = "smooth", extra = "a")
+  d_smooth_extra <- d_fun(x_smooth, type = "smooth", extra = "a")
   expect_output(
-    print(d_smooth),
+    print(d_smooth_extra),
     "Density function.*smooth.*[mM]eta.*domain_in, extra, type.*function"
   )
 })

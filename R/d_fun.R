@@ -32,20 +32,17 @@ d_fun_raw <- function(x) {
 }
 
 d_fun_smooth <- function(x, ...) {
-  x_dens <- stats::density(x, ...)
-
-  # Normalize to have total integral equal to 1 (as perfect as it can)
-  dens <- x_dens[["y"]] / trapez_integral(x_dens[["x"]], x_dens[["y"]])
+  dens <- density_ext(x, ...)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
   res <- stats::approxfun(
-    x = x_dens[["x"]], y = dens, method = "linear",
+    x = dens[["x"]], y = dens[["y"]], method = "linear",
     yleft = 0, yright = 0, rule = 2
   )
 
-  add_meta(res, domain_in = range(x_dens[["x"]]))
+  add_meta(res, domain_in = range(dens[["x"]]))
 }
 
 print.d_fun <- function(x, ...) {
