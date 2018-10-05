@@ -18,9 +18,14 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_sample, extra,
 
 distr_print <- function(fun_name, x, ...) {
   meta_names <- glue::glue_collapse(names(meta(x)), sep = ", ")
+  type_mod <- switch(
+    meta(x, "type"),
+    raw = "raw",
+    smooth = "smoothed"
+  )
 
   cat(glue_null(
-    '{fun_name} based on {meta(x, "type")} input\n',
+    '{fun_name} based on {type_mod} input\n',
     'Meta data has following elements: {meta_names}'
   ))
   cat("\n")

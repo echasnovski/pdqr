@@ -99,6 +99,6 @@ test_that("print.d_fun works", {
   d_smooth_extra <- d_fun(x_smooth, type = "smooth", extra = "a")
   expect_output(
     print(d_smooth_extra),
-    "Density function.*smooth.*[mM]eta.*domain_in, extra, type.*function"
+    "Density function.*smoothed.*[mM]eta.*domain_in, extra, type.*function"
   )
 })
