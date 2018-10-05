@@ -27,15 +27,6 @@ add_meta_cond <- function(x, cond, ...) {
   }
 }
 
-add_common_meta <- function(obj, sample, type = "smooth", attach_sample = FALSE,
-                            extra = NULL) {
-  res <- add_meta_cond(obj, attach_sample, sample = sample)
-  res <- add_meta_cond(res, !is.null(extra), extra = extra)
-  res <- add_meta(res, type = type)
-
-  res
-}
-
 name_sort <- function(x) {
   raw_names <- rlang::names2(x)
   raw_names[raw_names == ""] <- NA

@@ -1,18 +1,10 @@
 d_fun <- function(x, type = "smooth", attach_sample = FALSE, extra = NULL,
                   ...) {
-  assert_common_args(x, type, attach_sample)
-
-  fun <- switch(
-    type,
-    raw = d_fun_raw(x),
-    smooth = d_fun_smooth(x, ...)
+  distr_impl(
+    fun_class = "d_fun",
+    impl_funs = list(raw = d_fun_raw, smooth = d_fun_smooth),
+    x = x, type = type, attach_sample = attach_sample, extra = extra, ...
   )
-
-  res <- add_common_meta(
-    fun, sample = x, type = type, attach_sample = attach_sample, extra = extra
-  )
-
-  structure(res, class = c("d_fun", "function"))
 }
 
 d_fun_raw <- function(x) {
@@ -46,14 +38,5 @@ d_fun_smooth <- function(x, ...) {
 }
 
 print.d_fun <- function(x, ...) {
-  meta_names <- glue::glue_collapse(names(meta(x)), sep = ", ")
-
-  cat(glue_null(
-    'Density function based on {meta(x, "type")} input\n',
-    'Meta data has following elements: {meta_names}'
-  ))
-  cat("\n")
-  attributes(x) <- NULL
-
-  print(x, ...)
+  distr_print("Density function", x, ...)
 }

@@ -44,49 +44,6 @@ test_that("add_meta_cond works", {
 })
 
 
-# add_common_meta ---------------------------------------------------------
-test_that("add_common_meta works", {
-  input <- x
-  input_sample <- 1:10
-
-  output_1 <- structure(x, meta = list(type = "smooth"))
-  expect_equal(
-    add_common_meta(input, sample = input_sample, type = "smooth"),
-    output_1
-  )
-
-  output_2 <- structure(
-    x, meta = list(sample = input_sample, type = "raw")
-  )
-  expect_equal(
-    add_common_meta(
-      input, sample = input_sample, type = "raw", attach_sample = TRUE
-    ),
-    output_2
-  )
-
-  output_3 <- structure(
-    x, meta = list(sample = input_sample, type = "smooth")
-  )
-  expect_equal(
-    add_common_meta(
-      input, sample = input_sample, type = "smooth", attach_sample = TRUE
-    ),
-    output_3
-  )
-
-  output_4 <- structure(
-    x, meta = list(extra = list(a = -1), type = "smooth")
-  )
-  expect_equal(
-    add_common_meta(
-      input, sample = input_sample, type = "smooth", extra = list(a = -1)
-    ),
-    output_4
-  )
-})
-
-
 # name_sort ---------------------------------------------------------------
 test_that("name_sort works", {
   input <- list(c = "a", a = 1, b = list(1), TRUE, z = 0L)

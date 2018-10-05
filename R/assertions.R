@@ -51,21 +51,3 @@ parse_type <- function(f_name) {
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
 }
-
-
-# Targeted assertions -----------------------------------------------------
-assert_common_args <- function(x, type, attach_sample) {
-  assert_type(x, is.numeric)
-
-  assert_type(type, rlang::is_string)
-  if (!(type %in% c("raw", "smooth"))) {
-    stop_glue('`type` should be one of "raw" or "smooth", not {type}.')
-  }
-
-  assert_type(
-    attach_sample, function(x) {identical(x, TRUE) || identical(x, FALSE)},
-    "`TRUE` or `FALSE`"
-  )
-
-  x
-}
