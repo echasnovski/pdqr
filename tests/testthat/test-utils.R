@@ -6,6 +6,15 @@ x <- 1
 null <- NULL
 
 
+# is_near -----------------------------------------------------------------
+test_that("is_near works", {
+  expect_equal(
+    is_near(1, 1 + 0.001 * 0:20, tol = 0.01),
+    c(rep(TRUE, 10), rep(FALSE, 11))
+  )
+})
+
+
 # stop_glue ---------------------------------------------------------------
 test_that("stop_glue works", {
   expect_error(stop_glue("x = {x}", ", null = {null}"), "x = 1, null = NULL")
