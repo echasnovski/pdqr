@@ -41,6 +41,12 @@ test_that("d_fun equals 0 on edges of input domain in case `type` = 'smooth'", {
   expect_equal(d_smooth(domain_in), c(0, 0))
 })
 
+test_that("d_fun output works with extreme values", {
+  extreme_vec <- c(-1, 1) * 10000
+  expect_equal(d_raw(extreme_vec), c(0, 0))
+  expect_equal(d_smooth(extreme_vec), c(0, 0))
+})
+
 test_that("d_fun asserts", {
   expect_error(d_fun("a"), "x.*numeric")
   expect_error(d_fun(x_raw, type = 1), "type.*string")
