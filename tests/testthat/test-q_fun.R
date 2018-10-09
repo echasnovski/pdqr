@@ -3,6 +3,11 @@ context("test-q_fun")
 # Input data --------------------------------------------------------------
 q_raw <- q_fun(x_raw, type = "raw")
 q_smooth <- q_fun(x_smooth, type = "smooth")
+
+x_smooth_vec <- sample(
+  seq(x_smooth_domain_in[1], x_smooth_domain_in[2], length.out = 1000)
+)
+x_raw_vec <- sample(unique(x_raw))
 p_vec <- sample(0:1000 / 1000)
 
 
@@ -40,8 +45,14 @@ test_that("q_fun behaves like inverse of ecdf() in case of `type` = 'raw'", {
   expect_equal(q_raw(p_vec), inv_ecdf)
 })
 
-test_that("q_fun output is inverse of p_fun in case of `type` = 'smooth'", {
+test_that("q_fun output is inverse of p_fun output", {
+  p_raw <- p_fun(x_raw, type = "raw")
   p_smooth <- p_fun(x_smooth, type = "smooth")
+
+  expect_equal(x_raw_vec, q_raw(p_raw(x_raw_vec)))
+  # There is not test `p_vec == p_raw(q_raw(p_vec))` because it shouldn't be
+  # true in "raw" case. This is tested in "behaves like inverse of ecdf()" test.
+  expect_equal(x_smooth_vec, q_smooth(p_smooth(x_smooth_vec)))
   expect_equal(p_vec, p_smooth(q_smooth(p_vec)))
 })
 

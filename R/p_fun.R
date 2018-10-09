@@ -56,7 +56,8 @@ p_fun_smooth <- function(x, ...) {
     out_between <- p_grid[q_ind_bet] +
       0.5 * slope_vec[q_ind_bet] * (q_bet * q_bet - x_bet * x_bet) +
       inter_vec[q_ind_bet] * (q_bet - x_bet)
-    out[is_q_between] <- out_between
+    # Extra cutoffs to respect floating point precision (~10^(-15))
+    out[is_q_between] <- pmin(pmax(out_between, 0), 1)
 
     out
   }
