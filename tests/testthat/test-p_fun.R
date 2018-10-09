@@ -67,7 +67,7 @@ test_that("p_fun asserts", {
   expect_error(p_fun("a"), "x.*numeric")
   expect_error(p_fun(x_raw, type = 1), "type.*string")
   expect_error(p_fun(x_raw, type = "a"), "type.*raw.*smooth")
-  expect_error(p_fun(x_raw, attach_sample = NULL), "attach_sample.*TRUE.*FALSE")
+  expect_error(p_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
 test_that("p_fun handles meta data", {
@@ -76,14 +76,14 @@ test_that("p_fun handles meta data", {
     list(distr_tbl = x_raw_distr_tbl, domain_in = x_raw_domain_in, type = "raw")
   )
 
-  p_smooth_1 <- p_fun(x_smooth, type = "smooth", attach_sample = TRUE)
-  expect_named(meta(p_smooth_1), c("domain_in", "sample", "type"))
+  p_smooth_1 <- p_fun(x_smooth, type = "smooth", attach_x = TRUE)
+  expect_named(meta(p_smooth_1), c("domain_in", "type", "x"))
   expect_equal(
     round(meta(p_smooth_1, "domain_in"), 2), round(x_smooth_domain_in, 2)
   )
   expect_equal(
-    meta(p_smooth_1)[c("sample", "type")],
-    list(sample = x_smooth, type = "smooth")
+    meta(p_smooth_1)[c("x", "type")],
+    list(x = x_smooth, type = "smooth")
   )
 
   p_smooth_2 <- p_fun(x_smooth, type = "smooth", extra = list(a = TRUE))

@@ -1,7 +1,7 @@
 # Common functionality for `*_fun()` --------------------------------------
-distr_impl <- function(fun_class, impl_funs, x, type, attach_sample, extra,
+distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
                        ...) {
-  assert_common_args(x, type, attach_sample)
+  assert_common_args(x, type, attach_x)
 
   fun <- switch(
     type,
@@ -10,7 +10,7 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_sample, extra,
   )
 
   res <- add_common_meta(
-    fun, sample = x, type = type, attach_sample = attach_sample, extra = extra
+    fun, x = x, type = type, attach_x = attach_x, extra = extra
   )
 
   structure(res, class = c(fun_class, "function"))
@@ -34,7 +34,7 @@ distr_print <- function(fun_name, x, ...) {
   print(x, ...)
 }
 
-assert_common_args <- function(x, type, attach_sample) {
+assert_common_args <- function(x, type, attach_x) {
   assert_type(x, is.numeric)
 
   assert_type(type, rlang::is_string)
@@ -43,16 +43,16 @@ assert_common_args <- function(x, type, attach_sample) {
   }
 
   assert_type(
-    attach_sample, function(x) {identical(x, TRUE) || identical(x, FALSE)},
+    attach_x, function(x) {identical(x, TRUE) || identical(x, FALSE)},
     "`TRUE` or `FALSE`"
   )
 
   x
 }
 
-add_common_meta <- function(obj, sample, type = "smooth", attach_sample = FALSE,
+add_common_meta <- function(obj, x, type = "smooth", attach_x = FALSE,
                             extra = NULL) {
-  res <- add_meta_cond(obj, attach_sample, sample = sample)
+  res <- add_meta_cond(obj, attach_x, x = x)
   res <- add_meta_cond(res, !is.null(extra), extra = extra)
   res <- add_meta(res, type = type)
 

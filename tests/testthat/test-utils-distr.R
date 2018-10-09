@@ -33,37 +33,37 @@ test_that("assert_common_args works", {
   expect_error(assert_common_args("a", "raw", TRUE), "x.*numeric")
   expect_error(assert_common_args(1:2, 1, TRUE), "type.*string")
   expect_error(assert_common_args(1:2, "a", TRUE), "type.*raw.*smooth")
-  expect_error(assert_common_args(1:2, "raw", NA), "attach_sample.*TRUE.*FALSE")
+  expect_error(assert_common_args(1:2, "raw", NA), "attach_x.*TRUE.*FALSE")
 })
 
 
 # add_common_meta ---------------------------------------------------------
 test_that("add_common_meta works", {
   input <- "a"
-  input_sample <- 1:10
+  input_x <- 1:10
 
   output_1 <- structure(input, meta = list(type = "smooth"))
   expect_equal(
-    add_common_meta(input, sample = input_sample, type = "smooth"),
+    add_common_meta(input, x = input_x, type = "smooth"),
     output_1
   )
 
   output_2 <- structure(
-    input, meta = list(sample = input_sample, type = "raw")
+    input, meta = list(type = "raw", x = input_x)
   )
   expect_equal(
     add_common_meta(
-      input, sample = input_sample, type = "raw", attach_sample = TRUE
+      input, x = input_x, type = "raw", attach_x = TRUE
     ),
     output_2
   )
 
   output_3 <- structure(
-    input, meta = list(sample = input_sample, type = "smooth")
+    input, meta = list(type = "smooth", x = input_x)
   )
   expect_equal(
     add_common_meta(
-      input, sample = input_sample, type = "smooth", attach_sample = TRUE
+      input, x = input_x, type = "smooth", attach_x = TRUE
     ),
     output_3
   )
@@ -73,7 +73,7 @@ test_that("add_common_meta works", {
   )
   expect_equal(
     add_common_meta(
-      input, sample = input_sample, type = "smooth", extra = list(a = -1)
+      input, x = input_x, type = "smooth", extra = list(a = -1)
     ),
     output_4
   )

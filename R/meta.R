@@ -1,35 +1,35 @@
-meta <- function(x, elem = NULL) {
+meta <- function(obj, elem = NULL) {
   if (is.null(elem)) {
-    attr(x, "meta", exact = TRUE)
+    attr(obj, "meta", exact = TRUE)
   } else {
-    attr(x, "meta", exact = TRUE)[[elem]]
+    attr(obj, "meta", exact = TRUE)[[elem]]
   }
 }
 
-add_meta <- function(x, ...) {
+add_meta <- function(obj, ...) {
   dots <- rlang::list2(...)
-  cur_meta <- meta(x)
+  cur_meta <- meta(obj)
 
   if (is.null(cur_meta)) {
-    attr(x, "meta") <- name_sort(dots)
+    attr(obj, "meta") <- name_sort(dots)
   } else {
-    attr(x, "meta") <- name_sort(c(cur_meta, dots))
+    attr(obj, "meta") <- name_sort(c(cur_meta, dots))
   }
 
-  x
+  obj
 }
 
-add_meta_cond <- function(x, cond, ...) {
+add_meta_cond <- function(obj, cond, ...) {
   if (isTRUE(cond)) {
-    add_meta(x, ...)
+    add_meta(obj, ...)
   } else {
-    x
+    obj
   }
 }
 
-name_sort <- function(x) {
-  raw_names <- rlang::names2(x)
+name_sort <- function(obj) {
+  raw_names <- rlang::names2(obj)
   raw_names[raw_names == ""] <- NA
 
-  x[order(raw_names, na.last = TRUE)]
+  obj[order(raw_names, na.last = TRUE)]
 }

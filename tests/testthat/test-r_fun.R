@@ -26,7 +26,7 @@ test_that("r_fun asserts", {
   expect_error(r_fun("a"), "x.*numeric")
   expect_error(r_fun(x_raw, type = 1), "type.*string")
   expect_error(r_fun(x_raw, type = "a"), "type.*raw.*smooth")
-  expect_error(r_fun(x_raw, attach_sample = NULL), "attach_sample.*TRUE.*FALSE")
+  expect_error(r_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
 test_that("r_fun handles meta data", {
@@ -37,14 +37,14 @@ test_that("r_fun handles meta data", {
     )
   )
 
-  r_smooth_1 <- r_fun(x_smooth, type = "smooth", attach_sample = TRUE)
-  expect_named(meta(r_smooth_1), c("domain_out", "sample", "type"))
+  r_smooth_1 <- r_fun(x_smooth, type = "smooth", attach_x = TRUE)
+  expect_named(meta(r_smooth_1), c("domain_out", "type", "x"))
   expect_equal(
     round(meta(r_smooth_1, "domain_out"), 2), round(x_smooth_domain_in, 2)
   )
   expect_equal(
-    meta(r_smooth_1)[c("sample", "type")],
-    list(sample = x_smooth, type = "smooth")
+    meta(r_smooth_1)[c("x", "type")],
+    list(x = x_smooth, type = "smooth")
   )
 
   r_smooth_2 <- r_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
