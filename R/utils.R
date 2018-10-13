@@ -3,6 +3,10 @@ is_near <- function (x, y, tol = .Machine$double.eps^0.5) {
   abs(x - y) < tol
 }
 
+is_string <- function(x) {
+  is.character(x) && (length(x) == 1)
+}
+
 
 # Notifications -----------------------------------------------------------
 stop_glue <- function(..., .sep = "", .envir = parent.frame(),

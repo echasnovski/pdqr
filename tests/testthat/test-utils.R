@@ -15,6 +15,14 @@ test_that("is_near works", {
 })
 
 
+# is_string ---------------------------------------------------------------
+test_that("is_string works", {
+  expect_true(is_string("a"))
+  expect_false(is_string(c("a", "b")))
+  expect_false(is_string(1))
+})
+
+
 # stop_glue ---------------------------------------------------------------
 test_that("stop_glue works", {
   expect_error(stop_glue("x = {x}", ", null = {null}"), "x = 1, null = NULL")

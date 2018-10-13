@@ -37,7 +37,7 @@ distr_print <- function(fun_name, x, ...) {
 assert_common_args <- function(x, type, attach_x) {
   assert_type(x, is.numeric)
 
-  assert_type(type, rlang::is_string)
+  assert_type(type, is_string)
   if (!(type %in% c("raw", "smooth"))) {
     stop_glue('`type` should be one of "raw" or "smooth", not {type}.')
   }

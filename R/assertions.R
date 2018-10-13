@@ -16,15 +16,19 @@
 #' x <- 1
 #' assert_type(x, is.numeric)
 #' assert_type(x, is.logical)
-#' assert_type(x, rlang::is_string, "character of length 1")
+#' assert_type(
+#'   x,
+#'   function(x) {is.character(x) && (length(x) == 1)},
+#'   "character of length 1"
+#' )
 #' }
 #'
 #' @keywords internal
 #' @noRd
 assert_type <- function(x, predicate, type = NULL) {
-  x_name <- deparse(rlang::enexpr(x))
+  x_name <- deparse(substitute(x))
   if (is.null(type)) {
-    predicate_name <- deparse(rlang::enexpr(predicate))
+    predicate_name <- deparse(substitute(predicate))
     type <- parse_type(predicate_name)
   }
 

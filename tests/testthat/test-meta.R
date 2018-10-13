@@ -49,4 +49,7 @@ test_that("name_sort works", {
   input <- list(c = "a", a = 1, b = list(1), TRUE, z = 0L)
   output <- input[c(2, 3, 1, 5, 4)]
   expect_equal(name_sort(input), output)
+
+  input_no_name <- list(3, 1, 2)
+  expect_equal(name_sort(input_no_name), input_no_name)
 })

@@ -7,7 +7,7 @@ meta <- function(obj, elem = NULL) {
 }
 
 add_meta <- function(obj, ...) {
-  dots <- rlang::list2(...)
+  dots <- list(...)
   cur_meta <- meta(obj)
 
   if (is.null(cur_meta)) {
@@ -28,7 +28,10 @@ add_meta_cond <- function(obj, cond, ...) {
 }
 
 name_sort <- function(obj) {
-  raw_names <- rlang::names2(obj)
+  raw_names <- names(obj)
+  if (is.null(raw_names)) {
+    raw_names <- rep(NA, length(obj))
+  }
   raw_names[raw_names == ""] <- NA
 
   obj[order(raw_names, na.last = TRUE)]
