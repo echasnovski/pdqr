@@ -63,9 +63,19 @@ add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
 
 
 # Construct discrete distribution table -----------------------------------
-compute_distr_tbl <- function(x) {
-  x_tbl <- table(round(x, digits = 8))
-  x_prob <- as.numeric(x_tbl) / length(x)
+# For export (don't forget to mention roundings)
+distr_tbl <- function(x) {
+  x_meta <- meta(x, "x")
+  if (!is.null(x_meta)) {
+    smpl <- x_meta
+  } else if (is.numeric(x)) {
+    smpl <- x
+  } else {
+    stop_collapse('Input should have meta data "x" or be numeric.')
+  }
+
+  x_tbl <- table(round(smpl, digits = 8))
+  x_prob <- as.numeric(x_tbl) / length(smpl)
 
   data.frame(x = as.numeric(names(x_tbl)), prob = x_prob)
 }

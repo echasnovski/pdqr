@@ -8,8 +8,8 @@ q_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL,
 }
 
 q_fun_raw <- function(x) {
-  distr_tbl <- compute_distr_tbl(x)
-  distr_cum_prob_small <- cumsum(distr_tbl[["prob"]])
+  distr <- distr_tbl(x)
+  distr_cum_prob_small <- cumsum(distr[["prob"]])
   domain_out <- range(x)
 
   # For efficient memory management
@@ -22,13 +22,13 @@ q_fun_raw <- function(x) {
     p_prob <- round(p[is_prob], digits = 8)
     p_ind <- findInterval(p_prob, distr_cum_prob_small, left.open = TRUE) + 1
 
-    out[is_prob] <- distr_tbl[["x"]][p_ind]
+    out[is_prob] <- distr[["x"]][p_ind]
     out[!is_prob] <- NaN
 
     out
   }
 
-  add_meta(res, distr_tbl = distr_tbl, domain_out = domain_out)
+  add_meta(res, domain_out = domain_out)
 }
 
 q_fun_smooth <- function(x, ...) {

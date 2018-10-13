@@ -33,7 +33,7 @@ test_that("r_fun handles meta data", {
   expect_equal(
     meta(r_raw),
     list(
-      distr_tbl = x_raw_distr_tbl, domain_out = x_raw_domain_in, type = "raw",
+      domain_out = x_raw_domain_in, type = "raw",
       x = x_raw
     )
   )
@@ -68,7 +68,7 @@ test_that("print.r_fun works", {
     print(r_raw),
     paste0(
       "Random generation function.*raw.*",
-      "[mM]eta.*distr_tbl, domain_out, type.*function"
+      "[mM]eta.*domain_out, type.*function"
     )
   )
 

@@ -77,7 +77,7 @@ test_that("q_fun handles meta data", {
   expect_equal(
     meta(q_raw),
     list(
-      distr_tbl = x_raw_distr_tbl, domain_out = x_raw_domain_in, type = "raw",
+      domain_out = x_raw_domain_in, type = "raw",
       x = x_raw
     )
   )
@@ -126,7 +126,7 @@ test_that("q_fun uses `...` as arguments for `density()`", {
 test_that("print.q_fun works", {
   expect_output(
     print(q_raw),
-    "Quantile function.*raw.*[mM]eta.*distr_tbl, domain_out, type.*function"
+    "Quantile function.*raw.*[mM]eta.*domain_out, type.*function"
   )
 
   q_smooth_extra <- q_fun(x_smooth, type = "smooth", extra = "a")

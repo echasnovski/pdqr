@@ -58,7 +58,7 @@ test_that("d_fun handles meta data", {
   expect_equal(
     meta(d_raw),
     list(
-      distr_tbl = x_raw_distr_tbl, domain_in = x_raw_domain_in, type = "raw",
+      domain_in = x_raw_domain_in, type = "raw",
       x = x_raw
     )
   )
@@ -102,7 +102,7 @@ test_that("d_fun uses `...` as arguments for `density()`", {
 test_that("print.d_fun works", {
   expect_output(
     print(d_raw),
-    "Density function.*raw.*[mM]eta.*distr_tbl, domain_in, type.*function"
+    "Density function.*raw.*[mM]eta.*domain_in, type.*function"
   )
 
   d_smooth_extra <- d_fun(x_smooth, type = "smooth", extra = "a")

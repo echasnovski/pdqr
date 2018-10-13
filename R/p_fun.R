@@ -7,20 +7,20 @@ p_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL, ...) {
 }
 
 p_fun_raw <- function(x) {
-  distr_tbl <- compute_distr_tbl(x)
-  distr_cum_prob <- c(0, cumsum(distr_tbl[["prob"]]))
+  distr <- distr_tbl(x)
+  distr_cum_prob <- c(0, cumsum(distr[["prob"]]))
   domain_in <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
   res <- function(q) {
-    q_ind <- findInterval(round(q, digits = 8), distr_tbl[["x"]]) + 1
+    q_ind <- findInterval(round(q, digits = 8), distr[["x"]]) + 1
 
     distr_cum_prob[q_ind]
   }
 
-  add_meta(res, distr_tbl = distr_tbl, domain_in = domain_in)
+  add_meta(res, domain_in = domain_in)
 }
 
 p_fun_smooth <- function(x, ...) {

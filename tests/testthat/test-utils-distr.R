@@ -80,20 +80,24 @@ test_that("add_common_meta works", {
 })
 
 
-# compute_distr_tbl -------------------------------------------------------
-test_that("compute_distr_tbl works", {
-  input <- c(rep(-1, 4), 1, rep(1.1, 3), 2, 1000)
-  output <- data.frame(
-    x = c(-1, 1, 1.1, 2, 1000),
-    prob = c(0.4, 0.1, 0.3, 0.1, 0.1)
-  )
-  expect_equal(compute_distr_tbl(input), output)
+# distr_tbl ---------------------------------------------------------------
+test_that("distr_tbl works on object with 'x' meta data", {
+  input <- structure(x_smooth[1], meta = list(x = x_raw))
+  expect_equal(distr_tbl(input), x_raw_distr_tbl)
 })
 
-test_that("compute_distr_tbl does rounding", {
+test_that("distr_tbl works on numeric vector", {
+  expect_equal(distr_tbl(x_raw), x_raw_distr_tbl)
+})
+
+test_that("distr_tbl throws errors", {
+  expect_error(distr_tbl("a"), "meta.*numeric")
+})
+
+test_that("distr_tbl does rounding", {
   input <- 1 + 10^(-(9:12))
   output <- data.frame(x = 1, prob = 1)
-  expect_equal(compute_distr_tbl(input), output)
+  expect_equal(distr_tbl(input), output)
 })
 
 

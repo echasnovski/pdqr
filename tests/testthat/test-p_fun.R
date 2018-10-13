@@ -74,7 +74,7 @@ test_that("p_fun handles meta data", {
   expect_equal(
     meta(p_raw),
     list(
-      distr_tbl = x_raw_distr_tbl, domain_in = x_raw_domain_in, type = "raw",
+      domain_in = x_raw_domain_in, type = "raw",
       x = x_raw
     )
   )
@@ -121,7 +121,7 @@ test_that("print.p_fun works", {
     print(p_raw),
     paste0(
       "Cumulative distribution function.*raw.*",
-      "[mM]eta.*distr_tbl, domain_in, type.*function"
+      "[mM]eta.*domain_in, type.*function"
     )
   )
 

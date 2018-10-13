@@ -18,11 +18,7 @@ r_fun_raw <- function(x) {
     q_raw(rand_q_vec)
   }
 
-  add_meta(
-    res,
-    distr_tbl = meta(q_raw, "distr_tbl"),
-    domain_out = meta(q_raw, "domain_out")
-  )
+  add_meta(res, domain_out = meta(q_raw, "domain_out"))
 }
 
 r_fun_smooth <- function(x, ...) {

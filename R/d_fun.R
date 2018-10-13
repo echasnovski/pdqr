@@ -7,19 +7,19 @@ d_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL, ...) {
 }
 
 d_fun_raw <- function(x) {
-  distr_tbl <- compute_distr_tbl(x)
+  distr <- distr_tbl(x)
   domain_in <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
   res <- function(x) {
-    x_ind <- match(round(x, digits = 8), distr_tbl[["x"]], nomatch = NA)
+    x_ind <- match(round(x, digits = 8), distr[["x"]], nomatch = NA)
 
-    ifelse(is.na(x_ind), 0, distr_tbl[["prob"]][x_ind])
+    ifelse(is.na(x_ind), 0, distr[["prob"]][x_ind])
   }
 
-  add_meta(res, distr_tbl = distr_tbl, domain_in = domain_in)
+  add_meta(res, domain_in = domain_in)
 }
 
 d_fun_smooth <- function(x, ...) {
