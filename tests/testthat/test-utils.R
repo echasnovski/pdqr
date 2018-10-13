@@ -23,35 +23,46 @@ test_that("is_string works", {
 })
 
 
-# stop_glue ---------------------------------------------------------------
-test_that("stop_glue works", {
-  expect_error(stop_glue("x = {x}", ", null = {null}"), "x = 1, null = NULL")
+# stop_collapse -----------------------------------------------------------
+test_that("stop_collapse works", {
+  expect_error(
+    stop_collapse("x = ", x, ", null = ", null),
+    "x = 1, null = NULL"
+  )
 })
 
 
-# warning_glue ------------------------------------------------------------
-test_that("warning_glue works", {
+# warning_collapse --------------------------------------------------------
+test_that("warning_collapse works", {
   expect_warning(
-    warning_glue("x = {x}", ", null = {null}"), "x = 1, null = NULL"
+    warning_collapse("x = ", x, ", null = ", null),
+    "x = 1, null = NULL"
   )
 })
 
 
-# message_glue ------------------------------------------------------------
-test_that("message_glue works", {
+# message_collapse --------------------------------------------------------
+test_that("message_collapse works", {
   expect_message(
-    message_glue("x = {x}", ", null = {null}"), "x = 1, null = NULL"
+    message_collapse("x = ", x, ", null = ", null),
+    "x = 1, null = NULL"
   )
 })
 
 
-# glue_null ---------------------------------------------------------------
-test_that("glue_null works", {
+# collapse_nullable -------------------------------------------------------
+test_that("collapse_nullable works", {
   expect_equal(
-    glue_null("x = {x}", ", null = {null}"), "x = 1, null = NULL"
+    collapse_nullable("x = ", x, ", null = ", null),
+    "x = 1, null = NULL"
   )
+
+  expect_error(collapse_nullable(1:2, c("a", "b")), "length 1")
 })
 
-
-# null_transformer --------------------------------------------------------
-# Tested in `glue_null()`
+# capture_null ------------------------------------------------------------
+test_that("capture_null works", {
+  expect_equal(capture_null(NULL), "NULL")
+  expect_equal(capture_null(1), 1)
+  expect_equal(capture_null("a"), "a")
+})

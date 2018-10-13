@@ -9,42 +9,34 @@ is_string <- function(x) {
 
 
 # Notifications -----------------------------------------------------------
-stop_glue <- function(..., .sep = "", .envir = parent.frame(),
-                      call. = FALSE, .domain = NULL) {
-  stop(
-    glue_null(..., .sep = .sep, .envir = .envir),
-    call. = call., domain = .domain
-  )
+stop_collapse <- function(...) {
+  stop(collapse_nullable(...), call. = FALSE)
 }
 
-warning_glue <- function(..., .sep = "", .envir = parent.frame(),
-                         call. = FALSE, .domain = NULL) {
-  warning(
-    glue_null(..., .sep = .sep, .envir = .envir),
-    call. = call., domain = .domain
-  )
+warning_collapse <- function(...) {
+  warning(collapse_nullable(...), call. = FALSE)
 }
 
-message_glue <- function(..., .sep = "", .envir = parent.frame(),
-                         .domain = NULL, .appendLF = TRUE) {
-  message(
-    glue_null(..., .sep = .sep, .envir = .envir),
-    domain = .domain, appendLF = .appendLF
-  )
+message_collapse <- function(...) {
+  message(collapse_nullable(...))
 }
 
-glue_null <- function(..., .sep = "", .envir = parent.frame()) {
-  glue::glue(
-    ..., .sep = .sep, .envir = .envir, .transformer = null_transformer
-  )
-}
+# This allows to print 'NULL' in for code which evaluates in `NULL`
+collapse_nullable <- function(...) {
+  dots <- lapply(list(...), capture_null)
 
-# This allows to print 'NULL' in `glue()` for code which evaluates in `NULL`
-null_transformer <- function(text, envir) {
-  out <- eval(parse(text = text, keep.source = FALSE), envir)
-  if (is.null(out)) {
-    return("NULL")
+  dot_length <- vapply(dots, length, numeric(1))
+  if (any(dot_length > 1)) {
+    stop("All arguments must be length 1.", call. = FALSE)
   }
 
-  out
+  do.call(paste0, dots)
+}
+
+capture_null <- function(x) {
+  if (is.null(x)) {
+    "NULL"
+  } else {
+    x
+  }
 }

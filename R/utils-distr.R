@@ -17,16 +17,16 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
 }
 
 distr_print <- function(fun_name, x, ...) {
-  meta_names <- glue::glue_collapse(names(meta(x)), sep = ", ")
+  meta_names <- paste0(names(meta(x)), collapse = ", ")
   type_mod <- switch(
     meta(x, "type"),
     raw = "raw",
     smooth = "smoothed"
   )
 
-  cat(glue_null(
-    '{fun_name} based on {type_mod} input\n',
-    'Meta data has following elements: {meta_names}'
+  cat(collapse_nullable(
+    fun_name, " based on ", type_mod, " input\n",
+    "Meta data has following elements: ", meta_names
   ))
   cat("\n")
   attributes(x) <- NULL
@@ -39,7 +39,9 @@ assert_common_args <- function(x, type, attach_x) {
 
   assert_type(type, is_string)
   if (!(type %in% c("raw", "smooth"))) {
-    stop_glue('`type` should be one of "raw" or "smooth", not {type}.')
+    stop_collapse(
+      '`type` should be one of "raw" or "smooth", not ', type, "."
+    )
   }
 
   assert_type(

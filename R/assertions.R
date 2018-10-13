@@ -34,7 +34,9 @@ assert_type <- function(x, predicate, type = NULL) {
 
   if (!isTRUE(predicate(x))) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
-    stop_glue("`{x_name}` must be '{type}', not '{get_type(x)}'.")
+    stop_collapse(
+      "`", x_name, "` must be '", type, "', not '", get_type(x), "'."
+    )
   }
 
   x
