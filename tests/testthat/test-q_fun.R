@@ -77,7 +77,8 @@ test_that("q_fun handles meta data", {
   expect_equal(
     meta(q_raw),
     list(
-      distr_tbl = x_raw_distr_tbl, domain_out = x_raw_domain_in, type = "raw"
+      distr_tbl = x_raw_distr_tbl, domain_out = x_raw_domain_in, type = "raw",
+      x = x_raw
     )
   )
 
@@ -92,7 +93,7 @@ test_that("q_fun handles meta data", {
   )
 
   q_smooth_2 <- q_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(q_smooth_2), c("domain_out", "extra", "type"))
+  expect_named(meta(q_smooth_2), c("domain_out", "extra", "type", "x"))
   expect_equal(meta(q_smooth_2, "extra"), list(a = TRUE))
 })
 

@@ -42,7 +42,7 @@ test_that("add_common_meta works", {
   input <- "a"
   input_x <- 1:10
 
-  output_1 <- structure(input, meta = list(type = "smooth"))
+  output_1 <- structure(input, meta = list(type = "smooth", x = input_x))
   expect_equal(
     add_common_meta(input, x = input_x, type = "smooth"),
     output_1
@@ -69,7 +69,7 @@ test_that("add_common_meta works", {
   )
 
   output_4 <- structure(
-    input, meta = list(extra = list(a = -1), type = "smooth")
+    input, meta = list(extra = list(a = -1), type = "smooth", x = input_x)
   )
   expect_equal(
     add_common_meta(

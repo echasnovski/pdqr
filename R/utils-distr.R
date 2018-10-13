@@ -50,7 +50,7 @@ assert_common_args <- function(x, type, attach_x) {
   x
 }
 
-add_common_meta <- function(obj, x, type = "smooth", attach_x = FALSE,
+add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
                             extra = NULL) {
   res <- add_meta_cond(obj, attach_x, x = x)
   res <- add_meta_cond(res, !is.null(extra), extra = extra)

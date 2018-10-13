@@ -1,4 +1,4 @@
-d_fun <- function(x, type = "smooth", attach_x = FALSE, extra = NULL, ...) {
+d_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL, ...) {
   distr_impl(
     fun_class = "d_fun",
     impl_funs = list(raw = d_fun_raw, smooth = d_fun_smooth),

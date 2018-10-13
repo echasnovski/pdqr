@@ -1,4 +1,4 @@
-q_fun <- function(x, type = "smooth", attach_x = FALSE, extra = NULL,
+q_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL,
                   ...) {
   distr_impl(
     fun_class = "q_fun",
