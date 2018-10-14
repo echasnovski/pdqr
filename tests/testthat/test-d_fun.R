@@ -54,7 +54,7 @@ test_that("d_fun asserts", {
   expect_error(d_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
-test_that("d_fun handles meta data", {
+test_that("d_fun handles metadata", {
   expect_equal(
     meta(d_raw),
     list(

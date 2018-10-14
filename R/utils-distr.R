@@ -26,7 +26,7 @@ distr_print <- function(fun_name, x, ...) {
 
   cat(collapse_nullable(
     fun_name, " based on ", type_mod, " input\n",
-    "Meta data has following elements: ", meta_names
+    "Metadata has following elements: ", meta_names
   ))
   cat("\n")
   attributes(x) <- NULL
@@ -71,7 +71,7 @@ distr_tbl <- function(x) {
   } else if (is.numeric(x)) {
     smpl <- x
   } else {
-    stop_collapse('Input should have meta data "x" or be numeric.')
+    stop_collapse('Input should have metadata "x" or be numeric.')
   }
 
   x_tbl <- table(round(smpl, digits = 8))

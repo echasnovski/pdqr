@@ -81,7 +81,7 @@ test_that("add_common_meta works", {
 
 
 # distr_tbl ---------------------------------------------------------------
-test_that("distr_tbl works on object with 'x' meta data", {
+test_that("distr_tbl works on object with 'x' metadata", {
   input <- structure(x_smooth[1], meta = list(x = x_raw))
   expect_equal(distr_tbl(input), x_raw_distr_tbl)
 })

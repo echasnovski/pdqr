@@ -70,7 +70,7 @@ test_that("p_fun asserts", {
   expect_error(p_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
-test_that("p_fun handles meta data", {
+test_that("p_fun handles metadata", {
   expect_equal(
     meta(p_raw),
     list(

@@ -29,7 +29,7 @@ test_that("r_fun asserts", {
   expect_error(r_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
-test_that("r_fun handles meta data", {
+test_that("r_fun handles metadata", {
   expect_equal(
     meta(r_raw),
     list(
