@@ -44,6 +44,15 @@ test_that("add_meta_cond works", {
 })
 
 
+# copy_meta ---------------------------------------------------------------
+test_that("copy_meta works", {
+  expect_equal(
+    copy_meta(x, obj),
+    structure(x, meta = list(m = 3))
+  )
+})
+
+
 # name_sort ---------------------------------------------------------------
 test_that("name_sort works", {
   input <- list(c = "a", a = 1, b = list(1), TRUE, z = 0L)

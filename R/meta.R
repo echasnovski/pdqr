@@ -27,6 +27,12 @@ add_meta_cond <- function(obj, cond, ...) {
   }
 }
 
+copy_meta <- function(to, from) {
+  attr(to, "meta") <- attr(from, "meta")
+
+  to
+}
+
 name_sort <- function(obj) {
   raw_names <- names(obj)
   if (is.null(raw_names)) {
