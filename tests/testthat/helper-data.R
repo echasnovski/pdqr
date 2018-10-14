@@ -13,6 +13,8 @@ x_smooth_domain_in <- c(-2.91875392160928, 2.51875392160928)
 
 
 # Input test vectors ------------------------------------------------------
+set.seed(13579)
+
 x_smooth_vec <- sample(
   seq(x_smooth_domain_in[1], x_smooth_domain_in[2], length.out = 1000)
 )
