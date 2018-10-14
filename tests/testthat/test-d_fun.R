@@ -1,11 +1,6 @@
 context("test-d_fun")
 
 
-# Input data --------------------------------------------------------------
-d_raw <- d_fun(x_raw, type = "raw")
-d_smooth <- d_fun(x_smooth, type = "smooth")
-
-
 # d_fun -------------------------------------------------------------------
 test_that("d_fun works", {
   expect_distr_fun(d_raw, "d_fun", "raw")

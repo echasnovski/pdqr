@@ -1,9 +1,5 @@
 context("test-r_fun")
 
-# Input data --------------------------------------------------------------
-r_raw <- r_fun(x_raw, type = "raw")
-r_smooth <- r_fun(x_smooth, type = "smooth")
-
 
 # r_fun -------------------------------------------------------------------
 test_that("r_fun works", {

@@ -1,9 +1,5 @@
 context("test-p_fun")
 
-# Input data --------------------------------------------------------------
-p_raw <- p_fun(x_raw, type = "raw")
-p_smooth <- p_fun(x_smooth, type = "smooth")
-
 
 # p_fun -------------------------------------------------------------------
 test_that("p_fun works", {
@@ -36,7 +32,6 @@ test_that("p_fun behaves like ecdf() in case of `type` = 'raw'", {
 })
 
 test_that("p_fun output is integration of d_fun in case of `type` = 'smooth'", {
-  d_smooth <- d_fun(x_smooth, type = "smooth")
   d_domain <- meta(d_smooth, "domain_in")
   x_smooth_grid <- seq(from = d_domain[1] - 1, to = d_domain[2] + 1, by = 0.01)
 
