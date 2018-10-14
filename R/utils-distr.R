@@ -37,12 +37,7 @@ distr_print <- function(fun_name, x, ...) {
 assert_common_args <- function(x, type, attach_x) {
   assert_type(x, is.numeric)
 
-  assert_type(type, is_string)
-  if (!(type %in% c("raw", "smooth"))) {
-    stop_collapse(
-      '`type` should be one of "raw" or "smooth", not ', type, "."
-    )
-  }
+  assert_distr_type(type)
 
   assert_type(
     attach_x, function(x) {identical(x, TRUE) || identical(x, FALSE)},
@@ -50,6 +45,17 @@ assert_common_args <- function(x, type, attach_x) {
   )
 
   x
+}
+
+assert_distr_type <- function(type) {
+  assert_type(type, is_string)
+  if (!(type %in% c("raw", "smooth"))) {
+    stop_collapse(
+      '`type` should be one of "raw" or "smooth", not ', type, "."
+    )
+  }
+
+  type
 }
 
 add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
