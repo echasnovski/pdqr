@@ -23,6 +23,17 @@ test_that("is_string works", {
 })
 
 
+# inverse -----------------------------------------------------------------
+test_that("inverse works", {
+  square <- function(x) {x^2}
+  inv_square <- inverse(square, c(0.5, 10))
+  x_vec <- sample(seq(0.5, 10, by = 0.01))
+
+  max_error <- max(abs(inv_square(x_vec) - sqrt(x_vec)))
+  expect_true(max_error <= 10^(-4))
+})
+
+
 # stop_collapse -----------------------------------------------------------
 test_that("stop_collapse works", {
   expect_error(

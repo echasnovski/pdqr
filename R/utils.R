@@ -7,6 +7,18 @@ is_string <- function(x) {
   is.character(x) && (length(x) == 1)
 }
 
+inverse <- function(f, interval, ...) {
+  function(t) {
+    vapply(
+      t,
+      function(u) {
+        uniroot(function(z) {f(z) - u}, interval, ...)[["root"]]
+      },
+      numeric(1)
+    )
+  }
+}
+
 
 # Notifications -----------------------------------------------------------
 stop_collapse <- function(...) {
