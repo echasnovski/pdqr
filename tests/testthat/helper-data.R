@@ -12,6 +12,24 @@ x_smooth <- c(
 x_smooth_domain_in <- c(-2.91875392160928, 2.51875392160928)
 
 
+# Input test vectors ------------------------------------------------------
+x_smooth_vec <- sample(
+  seq(x_smooth_domain_in[1], x_smooth_domain_in[2], length.out = 1000)
+)
+x_smooth_vec_ext <- sample(
+  seq(
+    x_smooth_domain_in[1] - 0.1, x_smooth_domain_in[2] + 0.1, length.out = 1000
+  )
+)
+
+x_raw_vec <- sample(unique(x_raw))
+x_raw_vec_ext <- sample(
+  seq(x_raw_domain_in[1] - 0.1, x_raw_domain_in[2] + 0.1, length.out = 1000)
+)
+
+p_vec <- sample(0:1000 / 1000)
+
+
 # Constructed distribution functions --------------------------------------
 p_raw <- p_fun(x_raw, "raw")
 p_raw_withx <- p_fun(x_raw, "raw", attach_x = TRUE)

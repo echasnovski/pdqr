@@ -1,12 +1,5 @@
 context("test-q_fun")
 
-# Input data --------------------------------------------------------------
-x_smooth_vec <- sample(
-  seq(x_smooth_domain_in[1], x_smooth_domain_in[2], length.out = 1000)
-)
-x_raw_vec <- sample(unique(x_raw))
-p_vec <- sample(0:1000 / 1000)
-
 
 # q_fun -------------------------------------------------------------------
 test_that("q_fun works", {
