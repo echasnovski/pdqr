@@ -12,7 +12,7 @@ inverse <- function(f, interval, ...) {
     vapply(
       t,
       function(u) {
-        uniroot(function(z) {f(z) - u}, interval, ...)[["root"]]
+        stats::uniroot(function(z) {f(z) - u}, interval, ...)[["root"]]
       },
       numeric(1)
     )

@@ -110,7 +110,7 @@ integrate_right <- function(f, at, from) {
   partial_integrals <- vapply(
     seq_along(at),
     function(i) {
-      integrate(f, at_grid[i], at_grid[i + 1])[["value"]]
+      stats::integrate(f, at_grid[i], at_grid[i + 1])[["value"]]
     },
     numeric(1)
   )
