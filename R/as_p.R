@@ -48,8 +48,8 @@ as_p_impl.q_fun <- function(f, ...) {
   add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))
 }
 
-as_p_impl.r_fun <- function(f, n = 10000, ...) {
-  as_distr_impl_r(p_fun, f, n, ...)
+as_p_impl.r_fun <- function(f, n_sample = 10000, ...) {
+  as_distr_impl_r(p_fun, f, n_sample, ...)
 }
 
 p_from_d_raw <- function(f, ...) {

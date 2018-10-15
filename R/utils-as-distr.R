@@ -29,11 +29,11 @@ as_distr_impl_def <- function(fun_class, f, type, extra, ...) {
   structure(res, class = c(fun_class, "function"))
 }
 
-as_distr_impl_r <- function(distr_fun, f, n, ...) {
-  assert_type(n, is.numeric)
+as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
+  assert_type(n_sample, is.numeric)
 
   distr_fun(
-    x = f(n),
+    x = f(n_sample),
     type = meta(f, "type"),
     # As `x` isn't attached to `f`, as it is checked in `as_*()` functions
     attach_x = FALSE,
