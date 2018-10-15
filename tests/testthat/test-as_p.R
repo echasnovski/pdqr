@@ -101,7 +101,7 @@ test_that("as_p asserts extra arguments of methods", {
   expect_error(as_p(my_p, "smooth", c(1, 0)), "domain_in.*bigger")
 
   # Converting from `r_fun`
-  expect_error(as_p(r_smooth_nox, n = "a"), "n.*numeric")
+  expect_error(as_p(r_smooth_nox, n_sample = "a"), "n_sample.*numeric")
 })
 
 
