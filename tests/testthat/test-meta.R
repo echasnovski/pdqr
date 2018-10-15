@@ -53,6 +53,15 @@ test_that("copy_meta works", {
 })
 
 
+# has_meta ----------------------------------------------------------------
+test_that("has_meta works", {
+  expect_false(has_meta(x))
+  expect_true(has_meta(obj))
+  expect_true(has_meta(obj, "m"))
+  expect_false(has_meta(obj, "z"))
+})
+
+
 # name_sort ---------------------------------------------------------------
 test_that("name_sort works", {
   input <- list(c = "a", a = 1, b = list(1), TRUE, z = 0L)

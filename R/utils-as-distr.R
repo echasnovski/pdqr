@@ -1,24 +1,3 @@
-as_impl <- function(distr_fun, distr_class, impl_fun, f, ...) {
-  if (class(f)[1] == distr_class) {
-    return(f)
-  }
-
-  x_meta <- meta(f, "x")
-  type_meta <- meta(f, "type")
-
-  if (!(is.null(x_meta) || is.null(type_meta))) {
-    distr_fun(
-      x = x_meta,
-      type = type_meta,
-      attach_x = TRUE,
-      extra = meta(f, "extra"),
-      ...
-    )
-  } else {
-    impl_fun(f, ...)
-  }
-}
-
 as_distr_impl_def <- function(fun_class, f, type, extra, ...) {
   assert_type(f, is.function)
   assert_distr_type(type)

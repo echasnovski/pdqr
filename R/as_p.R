@@ -1,18 +1,26 @@
 as_p <- function(f, ...) {
-  as_impl(p_fun, "p_fun", as_p_impl, f, ...)
+  if (class(f)[1] == "p_fun") {
+    return(f)
+  } else if (has_meta(f, "x") && has_meta(f, "type")) {
+    return(p_fun(
+      x = meta(f, "x"),
+      type = meta(f, "type"),
+      attach_x = TRUE,
+      extra = meta(f, "extra"),
+      ...
+    ))
+  }
+
+  UseMethod("as_p")
 }
 
-as_p_impl <- function(f, ...) {
-  UseMethod("as_p_impl")
-}
-
-as_p_impl.default <- function(f, type, domain_in, extra = NULL, ...) {
+as_p.default <- function(f, type, domain_in, extra = NULL, ...) {
   assert_domain(domain_in, "domain_in")
 
   as_distr_impl_def("p_fun", f, type, extra, domain_in = domain_in)
 }
 
-as_p_impl.d_fun <- function(f, ...) {
+as_p.d_fun <- function(f, ...) {
   res <- switch(
     meta(f, "type"),
     raw = p_from_d_raw(f),
@@ -24,7 +32,7 @@ as_p_impl.d_fun <- function(f, ...) {
   copy_meta(res, f)
 }
 
-as_p_impl.q_fun <- function(f, ...) {
+as_p.q_fun <- function(f, ...) {
   domain_out <- meta(f, "domain_out")
   f_inv <- inverse(f, interval = c(0, 1), tol = sqrt(.Machine$double.eps))
 
@@ -48,7 +56,7 @@ as_p_impl.q_fun <- function(f, ...) {
   add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))
 }
 
-as_p_impl.r_fun <- function(f, n_sample = 10000, ...) {
+as_p.r_fun <- function(f, n_sample = 10000, ...) {
   as_distr_impl_r(p_fun, f, n_sample, ...)
 }
 

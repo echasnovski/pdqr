@@ -33,6 +33,10 @@ copy_meta <- function(to, from) {
   to
 }
 
+has_meta <- function(obj, elem = NULL) {
+  !is.null(meta(obj, elem))
+}
+
 name_sort <- function(obj) {
   raw_names <- names(obj)
   if (is.null(raw_names)) {

@@ -1,10 +1,6 @@
 context("test-utils-as-distr")
 
 
-# as_impl -----------------------------------------------------------------
-# Tested in tests for `as_*()`
-
-
 # as_distr_impl_def -------------------------------------------------------
 # Tested in tests for construction of `*_fun` from user-defined function
 
