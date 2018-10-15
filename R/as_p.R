@@ -26,7 +26,7 @@ as_p_impl.d_fun <- function(f, ...) {
 
 as_p_impl.q_fun <- function(f, ...) {
   domain_out <- meta(f, "domain_out")
-  f_inv <- inverse(f, interval = c(0, 1), extendInt = "upX")
+  f_inv <- inverse(f, interval = c(0, 1), tol = sqrt(.Machine$double.eps))
 
   fun <- function(q) {
     out <- numeric(length(q))

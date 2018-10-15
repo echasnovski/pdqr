@@ -42,7 +42,7 @@ test_that('as_p works with "d_fun"', {
   )
   expect_equal_distr(
     as_p(d_smooth_nox), p_smooth_nox,
-    grid = x_smooth_vec_ext, domain = "domain_in", thres = 10^(-3)
+    grid = x_smooth_vec_ext, domain = "domain_in"
   )
 })
 
@@ -55,7 +55,7 @@ test_that('as_p works with "q_fun"', {
   # `type = "raw"` at the points of future discontinuity in p_fun.
   expect_equal_distr(
     as_p(q_raw_nox), p_raw_nox,
-    grid = x_raw_vec_ext, domain = "domain_in", thres = 10^(-3)
+    grid = x_raw_vec_ext, domain = "domain_in", thres = 10^(-6)
   )
   expect_equal_distr(
     as_p(q_smooth_withx), p_smooth_withx,
@@ -63,7 +63,7 @@ test_that('as_p works with "q_fun"', {
   )
   expect_equal_distr(
     as_p(q_smooth_nox), p_smooth_nox,
-    grid = x_smooth_vec_ext, domain = "domain_in", thres = 10^(-3)
+    grid = x_smooth_vec_ext, domain = "domain_in", thres = 10^(-6)
   )
 })
 
