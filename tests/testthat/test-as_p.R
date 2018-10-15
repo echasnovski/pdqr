@@ -53,9 +53,10 @@ test_that('as_p works with "q_fun"', {
   )
   # In case of no "x" in meta data precision is quite bad in case
   # `type = "raw"` at the points of future discontinuity in p_fun.
+  # That is why `grid = x_raw_vec_seq` and not usual `grid = x_smooth_vec_ext`
   expect_equal_distr(
     as_p(q_raw_nox), p_raw_nox,
-    grid = x_raw_vec_ext, domain = "domain_in", thres = 10^(-6)
+    grid = x_raw_vec_seq, domain = "domain_in", thres = 10^(-6)
   )
   expect_equal_distr(
     as_p(q_smooth_withx), p_smooth_withx,

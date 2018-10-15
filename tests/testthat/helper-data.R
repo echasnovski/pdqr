@@ -25,9 +25,12 @@ x_smooth_vec_ext <- sample(
 )
 
 x_raw_vec <- sample(unique(x_raw))
-x_raw_vec_ext <- sample(
+x_raw_vec_seq <- sample(
   seq(x_raw_domain_in[1] - 0.1, x_raw_domain_in[2] + 0.1, length.out = 1000)
 )
+# Adding `x_raw_vec` is needed as behavior in actual values of `x_raw` is
+# often important.
+x_raw_vec_ext <- c(x_raw_vec_seq, x_raw_vec)
 
 p_vec <- sample(0:1000 / 1000)
 
