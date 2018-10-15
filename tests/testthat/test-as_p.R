@@ -1,21 +1,17 @@
 context("test-as_p")
 
 
+# Input data --------------------------------------------------------------
+my_p <- function(q) {
+  stats::pbeta(q, shape1 = 1, shape2 = 2)
+}
+
+
 # as_p --------------------------------------------------------------------
 test_that("as_p works with user-defined function", {
-  my_p <- function(q) {
-    stats::pbeta(q, shape1 = 1, shape2 = 2)
-  }
   expect_distr_fun(
     as_p(my_p, type = "smooth", domain_in = c(0, 1)), "p_fun", "smooth"
   )
-
-  expect_error(as_p(1, "smooth", c(0, 1)), "f.*function")
-  expect_error(as_p(my_p, 1, c(0, 1)), "type.*string")
-  expect_error(as_p(my_p, "a", c(0, 1)), "type.*raw.*smooth")
-  expect_error(as_p(my_p, "smooth", "a"), "domain_in.*numeric")
-  expect_error(as_p(my_p, "smooth", 1), "domain_in.*length 2")
-  expect_error(as_p(my_p, "smooth", c(1, 0)), "domain_in.*bigger")
 })
 
 test_that('as_p returns self in case of "p_fun"', {
@@ -90,6 +86,19 @@ test_that('as_p works with "r_fun"', {
     # Domain shouldn't be the same as random sampling is done
     grid = x_smooth_vec_ext, domain = NULL, thres = 0.01
   )
+})
+
+test_that("as_p asserts extra arguments of methods", {
+  # Default method
+  expect_error(as_p(1, "smooth", c(0, 1)), "f.*function")
+  expect_error(as_p(my_p, 1, c(0, 1)), "type.*string")
+  expect_error(as_p(my_p, "a", c(0, 1)), "type.*raw.*smooth")
+  expect_error(as_p(my_p, "smooth", "a"), "domain_in.*numeric")
+  expect_error(as_p(my_p, "smooth", 1), "domain_in.*length 2")
+  expect_error(as_p(my_p, "smooth", c(1, 0)), "domain_in.*bigger")
+
+  # Converting from `r_fun`
+  expect_error(as_p(r_smooth_nox, n = "a"), "n.*numeric")
 })
 
 
