@@ -17,9 +17,20 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
 }
 
 distr_print <- function(fun_name, x, ...) {
+  x_type <- meta(x, "type")
+  if (is.null(x_type) || !(x_type %in% c("raw", "smooth"))) {
+    cat(collapse_nullable(
+      'Input should have "type" metadata equal to "raw" or "smooth", not ',
+      x_type, "\n"
+    ))
+    attributes(x) <- NULL
+
+    return(print(x, ...))
+  }
+
   meta_names <- paste0(names(meta(x)), collapse = ", ")
   type_mod <- switch(
-    meta(x, "type"),
+    x_type,
     raw = "raw",
     smooth = "smoothed"
   )
