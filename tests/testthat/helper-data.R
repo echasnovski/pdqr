@@ -15,6 +15,14 @@ x_smooth_domain_in <- c(-2.91875392160928, 2.51875392160928)
 # Input test vectors ------------------------------------------------------
 set.seed(13579)
 
+x_raw_vec <- sample(unique(x_raw))
+x_raw_vec_seq <- sample(
+  seq(x_raw_domain_in[1] - 0.1, x_raw_domain_in[2] + 0.1, length.out = 1000)
+)
+# Adding `x_raw_vec` is needed as behavior in actual values of `x_raw` is
+# often important.
+x_raw_vec_ext <- c(x_raw_vec_seq, x_raw_vec)
+
 x_smooth_vec <- sample(
   seq(x_smooth_domain_in[1], x_smooth_domain_in[2], length.out = 1000)
 )
@@ -24,13 +32,14 @@ x_smooth_vec_ext <- sample(
   )
 )
 
-x_raw_vec <- sample(unique(x_raw))
-x_raw_vec_seq <- sample(
-  seq(x_raw_domain_in[1] - 0.1, x_raw_domain_in[2] + 0.1, length.out = 1000)
-)
-# Adding `x_raw_vec` is needed as behavior in actual values of `x_raw` is
-# often important.
-x_raw_vec_ext <- c(x_raw_vec_seq, x_raw_vec)
+x_custom <- c(runif(998), 0, 1)
+# Range [0.05, 0.95] instead of [0, 1] will be useful when testing conversion
+# from `r_fun` class. This is because custom functions have finite
+# input domain [0, 1] and `type = "smooth"`. Current behaviour is to extend
+# output range little bit (consequence of using `density()`), so result on the
+# edge of true domain may differ a lot.
+x_custom_trunc <- runif(1000, 0.05, 0.95)
+x_custom_inner <- setdiff(x_custom, c(0, 1))
 
 p_vec <- sample(0:1000 / 1000)
 
@@ -44,6 +53,12 @@ p_smooth <- p_fun(x_smooth, "smooth")
 p_smooth_withx <- p_fun(x_smooth, "smooth", attach_x = TRUE)
 p_smooth_nox <- p_fun(x_smooth, "smooth", attach_x = FALSE)
 
+user_p <- function(q) {pbeta(q, 1, 2)}
+p_custom <- structure(
+  user_p, class = c("p_fun", "function"),
+  meta = list(domain_in = c(0, 1), type = "smooth")
+)
+
 d_raw <- d_fun(x_raw, "raw")
 d_raw_withx <- d_fun(x_raw, "raw", attach_x = TRUE)
 d_raw_nox <- d_fun(x_raw, "raw", attach_x = FALSE)
@@ -51,6 +66,12 @@ d_raw_nox <- d_fun(x_raw, "raw", attach_x = FALSE)
 d_smooth <- d_fun(x_smooth, "smooth")
 d_smooth_withx <- d_fun(x_smooth, "smooth", attach_x = TRUE)
 d_smooth_nox <- d_fun(x_smooth, "smooth", attach_x = FALSE)
+
+user_d <- function(x) {dbeta(x, 1, 2)}
+d_custom <- structure(
+  user_d, class = c("d_fun", "function"),
+  meta = list(domain_in = c(0, 1), type = "smooth")
+)
 
 q_raw <- q_fun(x_raw, "raw")
 q_raw_withx <- q_fun(x_raw, "raw", attach_x = TRUE)
@@ -60,6 +81,12 @@ q_smooth <- q_fun(x_smooth, "smooth")
 q_smooth_withx <- q_fun(x_smooth, "smooth", attach_x = TRUE)
 q_smooth_nox <- q_fun(x_smooth, "smooth", attach_x = FALSE)
 
+user_q <- function(p) {qbeta(p, 1, 2)}
+q_custom <- structure(
+  user_q, class = c("q_fun", "function"),
+  meta = list(domain_out = c(0, 1), type = "smooth")
+)
+
 r_raw <- r_fun(x_raw, "raw")
 r_raw_withx <- r_fun(x_raw, "raw", attach_x = TRUE)
 r_raw_nox <- r_fun(x_raw, "raw", attach_x = FALSE)
@@ -67,3 +94,9 @@ r_raw_nox <- r_fun(x_raw, "raw", attach_x = FALSE)
 r_smooth <- r_fun(x_smooth, "smooth")
 r_smooth_withx <- r_fun(x_smooth, "smooth", attach_x = TRUE)
 r_smooth_nox <- r_fun(x_smooth, "smooth", attach_x = FALSE)
+
+user_r <- function(n) {rbeta(n, 1, 2)}
+r_custom <- structure(
+  user_r, class = c("r_fun", "function"),
+  meta = list(domain_out = c(0, 1), type = "smooth")
+)

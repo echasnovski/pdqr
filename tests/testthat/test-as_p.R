@@ -3,16 +3,10 @@ context("test-as_p")
 set.seed(1111)
 
 
-# Input data --------------------------------------------------------------
-my_p <- function(q) {
-  stats::pbeta(q, shape1 = 1, shape2 = 2)
-}
-
-
 # as_p --------------------------------------------------------------------
 test_that("as_p works with user-defined function", {
   expect_distr_fun(
-    as_p(my_p, type = "smooth", domain_in = c(0, 1)), "p_fun", "smooth"
+    as_p(user_p, type = "smooth", domain_in = c(0, 1)), "p_fun", "smooth"
   )
 })
 
@@ -21,6 +15,7 @@ test_that('as_p returns self in case of "p_fun"', {
   expect_identical(as_p(p_raw_nox), p_raw_nox)
   expect_identical(as_p(p_smooth_withx), p_smooth_withx)
   expect_identical(as_p(p_smooth_nox), p_smooth_nox)
+  expect_identical(as_p(p_custom), p_custom)
 })
 
 test_that('as_p works with "d_fun"', {
@@ -46,6 +41,10 @@ test_that('as_p works with "d_fun"', {
     as_p(d_smooth_nox), p_smooth_nox,
     grid = x_smooth_vec_ext, domain = "domain_in"
   )
+  expect_equal_distr(
+    as_p(d_custom), p_custom,
+    grid = x_custom, domain = "domain_in"
+  )
 })
 
 test_that('as_p works with "q_fun"', {
@@ -68,6 +67,10 @@ test_that('as_p works with "q_fun"', {
     as_p(q_smooth_nox), p_smooth_nox,
     grid = x_smooth_vec_ext, domain = "domain_in", thres = 10^(-6)
   )
+  expect_equal_distr(
+    as_p(q_custom), p_custom,
+    grid = x_custom, domain = "domain_in"
+  )
 })
 
 test_that('as_p works with "r_fun"', {
@@ -89,16 +92,23 @@ test_that('as_p works with "r_fun"', {
     # Domain shouldn't be the same as random sampling is done
     grid = x_smooth_vec_ext, domain = NULL, thres = 0.01
   )
+  expect_equal_distr(
+    as_p(r_custom), p_custom,
+    # Domain shouldn't be the same as random sampling is done
+    # Using truncated version because of "extending" property on the domain
+    # edges in case `type = "smooth"`.
+    grid = x_custom_trunc, domain = NULL, thres = 0.01
+  )
 })
 
 test_that("as_p asserts extra arguments of methods", {
   # Default method
   expect_error(as_p(1, "smooth", c(0, 1)), "f.*function")
-  expect_error(as_p(my_p, 1, c(0, 1)), "type.*string")
-  expect_error(as_p(my_p, "a", c(0, 1)), "type.*raw.*smooth")
-  expect_error(as_p(my_p, "smooth", "a"), "domain_in.*numeric")
-  expect_error(as_p(my_p, "smooth", 1), "domain_in.*length 2")
-  expect_error(as_p(my_p, "smooth", c(1, 0)), "domain_in.*bigger")
+  expect_error(as_p(user_p, 1, c(0, 1)), "type.*string")
+  expect_error(as_p(user_p, "a", c(0, 1)), "type.*raw.*smooth")
+  expect_error(as_p(user_p, "smooth", "a"), "domain_in.*numeric")
+  expect_error(as_p(user_p, "smooth", 1), "domain_in.*length 2")
+  expect_error(as_p(user_p, "smooth", c(1, 0)), "domain_in.*bigger")
 
   # Converting from `r_fun`
   expect_error(as_p(r_smooth_nox, n_sample = "a"), "n_sample.*numeric")

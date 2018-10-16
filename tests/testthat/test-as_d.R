@@ -3,16 +3,10 @@ context("test-as_d")
 set.seed(2222)
 
 
-# Input data --------------------------------------------------------------
-my_d <- function(q) {
-  stats::dbeta(q, shape1 = 1, shape2 = 2)
-}
-
-
 # as_d --------------------------------------------------------------------
 test_that("as_d works with user-defined function", {
   expect_distr_fun(
-    as_d(my_d, type = "smooth", domain_in = c(0, 1)), "d_fun", "smooth"
+    as_d(user_d, type = "smooth", domain_in = c(0, 1)), "d_fun", "smooth"
   )
 })
 
@@ -33,6 +27,15 @@ test_that('as_d works with "p_fun"', {
     as_d(p_smooth_nox), d_smooth_nox,
     grid = x_smooth_vec_ext, domain = "domain_in", thres = 10^(-3)
   )
+  expect_equal_distr(
+    as_d(p_custom), d_custom,
+    # Behavior on domain edges (here - in point 0) doesn't match the true
+    # density because it is not continuous. In this package "d_fun" functions
+    # are ("forcibly" on edges) are constructed as continuous.
+    # Run `as_d(p_custom)(0 - 0.000001 * (5:1))`.
+    # That is why edges are removed.
+    grid = x_custom_inner, domain = "domain_in"
+  )
 })
 
 test_that('as_d returns self in case of "d_fun"', {
@@ -40,6 +43,7 @@ test_that('as_d returns self in case of "d_fun"', {
   expect_identical(as_d(d_raw_nox), d_raw_nox)
   expect_identical(as_d(d_smooth_withx), d_smooth_withx)
   expect_identical(as_d(d_smooth_nox), d_smooth_nox)
+  expect_identical(as_d(d_custom), d_custom)
 })
 
 test_that('as_d works with "q_fun"', {
@@ -58,6 +62,11 @@ test_that('as_d works with "q_fun"', {
   expect_equal_distr(
     as_d(q_smooth_nox), d_smooth_nox,
     grid = x_smooth_vec_ext, domain = "domain_in", thres = 10^(-3)
+  )
+  expect_equal_distr(
+    # The reason edges are removed is described in test for "p_fun".
+    as_d(q_custom), d_custom,
+    grid = x_custom_inner, domain = "domain_in", thres = 10^(-3)
   )
 })
 
@@ -82,16 +91,29 @@ test_that('as_d works with "r_fun"', {
       # precision than building CDF
     grid = x_smooth_vec_ext, domain = NULL, thres = 0.05
   )
+  expect_equal_distr(
+    as_d(r_custom), d_custom,
+    # Domain shouldn't be the same as random sampling is done
+    # Using truncated version because of "extending" property on the domain
+    # edges in case `type = "smooth"`. Both this and discontinuous nature of
+    # custom distribution (with big jump at 0) give bad precision.
+    grid = x_custom_trunc, domain = NULL, thres = 0.15
+  )
+  # Illustration of big impact of discontinuity:
+  # x <- sort(x_custom)
+  # plot(x, d_custom(x), type = "l")
+  # lines(x, as_d(r_custom)(x), col = "red")
+  # lines(x, as_d(r_custom, n_sample = 50000)(x), col = "blue")
 })
 
 test_that("as_d asserts extra arguments of methods", {
   # Default method
   expect_error(as_d(1, "smooth", c(0, 1)), "f.*function")
-  expect_error(as_d(my_d, 1, c(0, 1)), "type.*string")
-  expect_error(as_d(my_d, "a", c(0, 1)), "type.*raw.*smooth")
-  expect_error(as_d(my_d, "smooth", "a"), "domain_in.*numeric")
-  expect_error(as_d(my_d, "smooth", 1), "domain_in.*length 2")
-  expect_error(as_d(my_d, "smooth", c(1, 0)), "domain_in.*bigger")
+  expect_error(as_d(user_d, 1, c(0, 1)), "type.*string")
+  expect_error(as_d(user_d, "a", c(0, 1)), "type.*raw.*smooth")
+  expect_error(as_d(user_d, "smooth", "a"), "domain_in.*numeric")
+  expect_error(as_d(user_d, "smooth", 1), "domain_in.*length 2")
+  expect_error(as_d(user_d, "smooth", c(1, 0)), "domain_in.*bigger")
 
   # Converting from `r_fun`
   expect_error(as_d(r_smooth_nox, n_sample = "a"), "n_sample.*numeric")
