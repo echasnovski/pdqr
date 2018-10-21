@@ -1,6 +1,10 @@
 context("test-utils-as-distr")
 
 
+# distr_from_meta ---------------------------------------------------------
+# Tested in tests for `as_*()` (about working with present "x" in metadata)
+
+
 # as_distr_impl_def -------------------------------------------------------
 # Tested in tests for construction of `*_fun` from user-defined function
 

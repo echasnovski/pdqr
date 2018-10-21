@@ -2,13 +2,7 @@ as_d <- function(f, ...) {
   if (class(f)[1] == "d_fun") {
     return(f)
   } else if (has_meta(f, "x") && has_meta(f, "type")) {
-    return(d_fun(
-      x = meta(f, "x"),
-      type = meta(f, "type"),
-      attach_x = TRUE,
-      extra = meta(f, "extra"),
-      ...
-    ))
+    return(distr_from_meta(f, d_fun, ...))
   }
 
   UseMethod("as_d")

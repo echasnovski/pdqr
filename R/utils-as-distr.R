@@ -1,3 +1,13 @@
+distr_from_meta <- function(f, new_f, ...) {
+  new_f(
+    x = meta(f, "x"),
+    type = meta(f, "type"),
+    attach_x = TRUE,
+    extra = meta(f, "extra"),
+    ...
+  )
+}
+
 as_distr_impl_def <- function(fun_class, f, type, extra, ...) {
   assert_type(f, is.function)
   assert_distr_type(type)
