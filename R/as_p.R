@@ -21,7 +21,7 @@ as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
     smooth = p_from_d_smooth(f),
     stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
   )
-  res <- structure(res, class = c("p_fun", "function"))
+  class(res) <- c("p_fun", "function")
 
   copy_meta(res, f)
 }
@@ -30,7 +30,7 @@ as_p.q_fun <- function(f, ...) {
   domain_out <- meta(f, "domain_out")
   f_inv <- inverse(f, interval = c(0, 1), tol = sqrt(.Machine$double.eps))
 
-  fun <- function(q) {
+  res <- function(q) {
     out <- numeric(length(q))
 
     is_small_q <- q <= domain_out[1]
@@ -43,8 +43,8 @@ as_p.q_fun <- function(f, ...) {
 
     out
   }
+  class(res) <- c("p_fun", "function")
 
-  res <- structure(fun, class = c("p_fun", "function"))
   res <- add_meta(res, type = meta(f, "type"), domain_in = domain_out)
 
   add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))

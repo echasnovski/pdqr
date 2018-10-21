@@ -23,7 +23,7 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
 
   warn_converion_from_p_raw(f, isTRUE(warn_precision))
 
-  fun <- function(p) {
+  res <- function(p) {
     out <- numeric(length(p))
 
     is_more_0 <- p >= 0
@@ -37,8 +37,8 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
 
     out
   }
+  class(res) <- c("q_fun", "function")
 
-  res <- structure(fun, class = c("q_fun", "function"))
   res <- add_meta(res, type = meta(f, "type"), domain_out = domain_in)
 
   add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))
