@@ -3,6 +3,7 @@ x_raw <- c(4, 1, 2, 6, 8, 6, 7, 3, 2, 3, 2, 6, 7, 8, 1, 9, 2, 9, 5, 7)
 x_raw_distr_tbl <- data.frame(
   x = as.numeric(1:9), prob = c(0.1, 0.2, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.1)
 )
+x_raw_cumprobs <- cumsum(x_raw_distr_tbl[["prob"]])
 x_raw_domain_in <- c(1, 9)
 
 x_smooth <- c(
@@ -42,6 +43,13 @@ x_custom_trunc <- runif(1000, 0.05, 0.95)
 x_custom_inner <- setdiff(x_custom, c(0, 1))
 
 p_vec <- sample(0:1000 / 1000)
+p_vec_trunc <- p_vec[(p_vec >= 0.05) & (p_vec <= 0.95)]
+# "Wholed" vectors of probabilities is needed for estimation tests of `as_q`,
+# as behavior around actual raw values is not precise.
+p_vec_wholed <- setdiff(p_vec, c(0, x_raw_cumprobs))
+p_vec_bigwholed <- Filter(function(p) {
+  all(abs(p - x_raw_cumprobs) >= 0.01)
+}, p_vec)
 
 
 # Constructed distribution functions --------------------------------------
