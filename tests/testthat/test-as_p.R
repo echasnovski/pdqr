@@ -52,7 +52,7 @@ test_that('as_p works with "q_fun"', {
     as_p(q_raw_withx), p_raw_withx,
     grid = x_raw_vec_ext, domain = "domain_in"
   )
-  # In case of no "x" in meta data precision is quite bad in case
+  # In case of no "x" in metadata precision is quite bad in case
   # `type = "raw"` at the points of future discontinuity in p_fun.
   # That is why `grid = x_raw_vec_seq` and not usual `grid = x_smooth_vec_ext`
   expect_equal_distr(

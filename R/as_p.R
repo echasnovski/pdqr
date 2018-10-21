@@ -57,7 +57,7 @@ as_p.r_fun <- function(f, n_sample = 10000, ...) {
 p_from_d_raw <- function(f, ...) {
   warning_collapse(
     'Converting from density function in case `type` = "raw" and no "x" in ',
-    'meta data is not precise. Consider attaching `x` to input.'
+    'metadata is not precise. Consider attaching `x` to input.'
   )
 
   support <- detect_raw_support(f)
