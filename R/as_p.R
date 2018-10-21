@@ -14,10 +14,10 @@ as_p.default <- function(f, type, domain_in, extra = NULL, ...) {
   as_distr_impl_def("p_fun", f, type, extra, domain_in = domain_in)
 }
 
-as_p.d_fun <- function(f, ...) {
+as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
   res <- switch(
     meta(f, "type"),
-    raw = p_from_d_raw(f),
+    raw = p_from_d_raw(f, isTRUE(warn_precision)),
     smooth = p_from_d_smooth(f),
     stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
   )
@@ -54,11 +54,13 @@ as_p.r_fun <- function(f, n_sample = 10000, ...) {
   as_distr_impl_r(p_fun, f, n_sample, ...)
 }
 
-p_from_d_raw <- function(f, ...) {
-  warning_collapse(
-    'Converting from density function in case `type` = "raw" and no "x" in ',
-    'metadata is not precise. Consider attaching `x` to input.'
-  )
+p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
+  if (warn_precision) {
+    warning_collapse(
+      'Converting from density function in case `type` = "raw" and no "x" in ',
+      'metadata is not precise. Consider attaching `x` to input.'
+    )
+  }
 
   support <- detect_raw_support(f)
   supp_prob <- f(support)
