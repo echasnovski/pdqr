@@ -44,10 +44,10 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
   add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))
 }
 
-as_q.d_fun <- function(f, ...) {
+as_q.d_fun <- function(f, warn_precision = TRUE, ...) {
   # This conversion usually is very slow due to task nature: to compute "q_fun"
   # from "d_fun" one *needs* to compute "p_fun".
-  as_q(as_p(f, warn_precision = TRUE, ...), warn_precision = FALSE)
+  as_q(as_p(f, warn_precision = warn_precision, ...), warn_precision = FALSE)
 }
 
 as_q.r_fun <- function(f, n_sample = 10000, ...) {

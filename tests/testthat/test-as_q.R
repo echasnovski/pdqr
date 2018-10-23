@@ -48,6 +48,7 @@ test_that('as_q works with "d_fun"', {
     grid = p_vec, domain = "domain_out"
   )
 
+  expect_silent(as_q(d_raw_nox, warn_precision = FALSE))
   expect_warning(
     q_from_d_raw_nox <- as_q(d_raw_nox),
     "from.*density.*raw.*not.*precise"
