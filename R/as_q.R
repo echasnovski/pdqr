@@ -41,7 +41,7 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
 
   res <- add_meta(res, type = meta(f, "type"), domain_out = domain_in)
 
-  add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))
+  add_meta_cond(res, !is.null(meta(f, "extra")), meta(f, "extra"))
 }
 
 as_q.d_fun <- function(f, warn_precision = TRUE, ...) {

@@ -47,7 +47,7 @@ as_p.q_fun <- function(f, ...) {
 
   res <- add_meta(res, type = meta(f, "type"), domain_in = domain_out)
 
-  add_meta_cond(res, is.null(meta(f, "extra")), meta(f, "extra"))
+  add_meta_cond(res, !is.null(meta(f, "extra")), meta(f, "extra"))
 }
 
 as_p.r_fun <- function(f, n_sample = 10000, ...) {

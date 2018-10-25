@@ -9,6 +9,8 @@ expect_equal_distr <- function(f_1, f_2, grid, domain,
                                thres = sqrt(.Machine$double.eps)) {
   expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))
   expect_equal(class(f_1), class(f_2))
+
+  expect_equal(length(meta(f_1)), length(meta(f_2)))
   expect_equal(meta(f_1, "type"), meta(f_2, "type"))
   expect_equal(meta(f_1, "extra"), meta(f_2, "extra"))
   if (!is.null(domain)) {
