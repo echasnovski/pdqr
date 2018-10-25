@@ -21,7 +21,7 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
   ext_domain_in <- domain_in + 10^(-6) * c(-1, 1)
   f_inv <- inverse(f, interval = ext_domain_in, tol = sqrt(.Machine$double.eps))
 
-  warn_converion_from_p_raw(f, isTRUE(warn_precision))
+  warn_conversion_from_p_raw(f, isTRUE(warn_precision), "quantile function")
 
   res <- function(p) {
     out <- numeric(length(p))
@@ -52,16 +52,4 @@ as_q.d_fun <- function(f, warn_precision = TRUE, ...) {
 
 as_q.r_fun <- function(f, n_sample = 10000, ...) {
   as_distr_impl_r(q_fun, f, n_sample, ...)
-}
-
-warn_converion_from_p_raw <- function(f, warn_precision) {
-  if (warn_precision && (meta(f, "type") == "raw")) {
-    warning_collapse(
-      'Converting from cumulative distribution function into quantile ',
-      'function in case `type` = "raw" and no "x" in meta data is not precise ',
-      'aroung actual raw values. Consider attaching `x` to input.'
-    )
-  }
-
-  TRUE
 }

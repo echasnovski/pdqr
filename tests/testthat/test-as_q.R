@@ -159,7 +159,3 @@ test_that("as_q asserts extra arguments of methods", {
 
 # as_q.r_fun --------------------------------------------------------------
 # Tested in `as_q()`
-
-
-# warn_converion_from_p_raw -----------------------------------------------
-# Tested in `as_q()`

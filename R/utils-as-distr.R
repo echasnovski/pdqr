@@ -47,3 +47,16 @@ assert_domain <- function(domain, domain_name) {
 
   domain
 }
+
+warn_conversion_from_p_raw <- function(f, warn_precision, fun_name) {
+  if (isTRUE(warn_precision) && (class(f)[1] == "p_fun") &&
+      (meta(f, "type") == "raw")) {
+    warning_collapse(
+      'Converting from cumulative distribution function into ',
+      fun_name, ' in case `type` = "raw" and no "x" in metadata is not ',
+      'precise around actual raw values. Consider attaching `x` to input.'
+    )
+  }
+
+  TRUE
+}

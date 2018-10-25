@@ -22,3 +22,7 @@ test_that("assert_domain works", {
   expect_error(assert_domain(1, "bbb"), "bbb.*numeric")
   expect_error(assert_domain(c(2, 1), "bbb"), "[fF]irst.*not bigger")
 })
+
+
+# warn_conversion_from_p_raw ----------------------------------------------
+# Tested in `as_q()`
