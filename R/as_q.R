@@ -30,7 +30,7 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
     is_less_1 <- p <= 1
     is_inside <- (p > 0) & (p < 1)
 
-    out[is_inside] <- f_inv(p[is_inside])
+    out[is_inside] <- round(f_inv(p[is_inside]), digits = 8)
     out[is_near(p, 0) & is_more_0] <- domain_in[1]
     out[is_near(p, 1) & is_less_1] <- domain_in[2]
     out[!(is_more_0 & is_less_1)] <- NaN
