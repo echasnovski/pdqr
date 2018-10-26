@@ -25,4 +25,4 @@ test_that("assert_domain works", {
 
 
 # warn_conversion_from_p_raw ----------------------------------------------
-# Tested in `as_q()`
+# Tested in `as_q()` and `as_r()`
