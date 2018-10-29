@@ -19,6 +19,7 @@ Imports:
     stats
 Suggests: 
     covr,
+    grDevices,
     testthat,
     vdiffr
 Encoding: UTF-8
