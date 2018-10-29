@@ -8,7 +8,7 @@ plot.p_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   )
 
   # Stretch domain to guarantee 0 and 1 on edges
-  plot_impl_pdq(x, meta(x, "domain_in") + 10^(-6) * c(-1, 1), n_grid, dots)
+  plot_impl_pdq(x, stretch_range(meta(x, "domain_in")), n_grid, dots)
 }
 
 plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
@@ -87,9 +87,7 @@ warn_plotting_raw_d_fun <- function(f) {
 # lines() -----------------------------------------------------------------
 lines.p_fun <- function(x, n_grid = 1001, ...) {
   # Stretch domain to guarantee 0 and 1 on edges
-  lines_impl_pdq(
-    x, meta(x, "domain_in") + 10^(-6) * c(-1, 1), n_grid, list(...)
-  )
+  lines_impl_pdq(x, stretch_range(meta(x, "domain_in")), n_grid, list(...))
 }
 
 lines.d_fun <- function(x, n_grid = 1001, ...) {

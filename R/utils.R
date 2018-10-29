@@ -19,6 +19,10 @@ inverse <- function(f, interval, ...) {
   }
 }
 
+stretch_range <- function(x, ext = 10^(-6)) {
+  x + ext * c(-1, 1)
+}
+
 
 # Notifications -----------------------------------------------------------
 stop_collapse <- function(...) {

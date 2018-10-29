@@ -34,6 +34,14 @@ test_that("inverse works", {
 })
 
 
+# stretch_range -----------------------------------------------------------
+test_that("stretch_range works", {
+  expect_equal(stretch_range(c(0, 1)), c(-10^(-6), 1 + 10^(-6)))
+  expect_equal(stretch_range(c(0, 1), 1), c(-1, 2))
+  expect_equal(stretch_range(c(0, 1), c(1, 2)), c(-1, 3))
+})
+
+
 # stop_collapse -----------------------------------------------------------
 test_that("stop_collapse works", {
   expect_error(

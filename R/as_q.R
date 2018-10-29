@@ -18,7 +18,7 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
   domain_in <- meta(f, "domain_in")
   # Stretch input domain a little bit to ensure opposite signs of `f()` values
   # at end points for correct use of `uniroot()` during `inverse()` output.
-  ext_domain_in <- domain_in + 10^(-6) * c(-1, 1)
+  ext_domain_in <- stretch_range(domain_in)
   f_inv <- inverse(f, interval = ext_domain_in, tol = sqrt(.Machine$double.eps))
 
   warn_conversion_from_p_raw(f, isTRUE(warn_precision), "quantile function")
