@@ -11,4 +11,4 @@ r:
 - devel
 
 after_success:
-  - Rscript -e 'covr::codecov()'
+  - echo 'covr::codecov()' | R --vanilla
