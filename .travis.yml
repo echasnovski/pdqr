@@ -10,5 +10,7 @@ r:
 - release
 - devel
 
+r_github_packages: lionel-/vdiffr
+
 after_success:
   - echo 'covr::codecov()' | R --vanilla
