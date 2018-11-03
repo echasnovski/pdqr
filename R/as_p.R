@@ -21,7 +21,7 @@ as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
     smooth = p_from_d_smooth(f),
     stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
   )
-  class(res) <- c("p_fun", "function")
+  res <- add_class(res, "p_fun")
 
   copy_meta(res, f)
 }
@@ -43,7 +43,7 @@ as_p.q_fun <- function(f, ...) {
 
     out
   }
-  class(res) <- c("p_fun", "function")
+  res <- add_class(res, "p_fun")
 
   res <- add_meta(res, type = meta(f, "type"), domain_in = domain_out)
 

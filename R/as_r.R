@@ -37,7 +37,7 @@ as_r_impl <- function(q_f) {
 
     q_f(rand_q_vec)
   }
-  class(res) <- c("r_fun", "function")
+  res <- add_class(res, "r_fun")
 
   copy_meta(res, q_f)
 }

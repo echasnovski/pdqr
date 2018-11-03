@@ -37,7 +37,7 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
 
     out
   }
-  class(res) <- c("q_fun", "function")
+  res <- add_class(res, "q_fun")
 
   res <- add_meta(res, type = meta(f, "type"), domain_out = domain_in)
 

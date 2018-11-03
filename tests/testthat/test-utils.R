@@ -42,6 +42,14 @@ test_that("stretch_range works", {
 })
 
 
+# add_class ---------------------------------------------------------------
+test_that("add_class works", {
+  input <- structure(1, class = c("a", "b"))
+  expect_equal(add_class(input, "c"), structure(1, class = c("c", "a", "b")))
+  expect_equal(add_class(input, "a"), input)
+})
+
+
 # stop_collapse -----------------------------------------------------------
 test_that("stop_collapse works", {
   expect_error(

@@ -26,7 +26,7 @@ as_d.p_fun <- function(f, ...) {
   res <- function(x) {
     (f(x + small_h) - f(x - small_h)) / (2 * big_h)
   }
-  class(res) <- c("d_fun", "function")
+  res <- add_class(res, "d_fun")
 
   copy_meta(res, f)
 }

@@ -23,6 +23,14 @@ stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
 }
 
+add_class <- function(x, cl) {
+  if (class(x)[1] != cl) {
+    class(x) <- c(cl, class(x))
+  }
+
+  x
+}
+
 
 # Notifications -----------------------------------------------------------
 stop_collapse <- function(...) {
