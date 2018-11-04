@@ -8,6 +8,9 @@ test_that("as_p works with user-defined function", {
   expect_distr_fun(
     as_p(user_p, type = "smooth", domain_in = c(0, 1)), "p_fun", "smooth"
   )
+  expect_error(as_p(user_p), "p_fun.*supply.*type.*domain_in")
+  expect_error(as_p(user_p, type = "smooth"), "p_fun.*supply.*domain_in")
+  expect_error(as_p(user_p, domain_in = c(0, 1)), "p_fun.*supply.*type")
 })
 
 test_that('as_p returns self in case of "p_fun"', {

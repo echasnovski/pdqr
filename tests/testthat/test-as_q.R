@@ -8,6 +8,9 @@ test_that("as_q works with user-defined function", {
   expect_distr_fun(
     as_q(user_q, type = "smooth", domain_out = c(0, 1)), "q_fun", "smooth"
   )
+  expect_error(as_q(user_q), "q_fun.*supply.*type.*domain_out")
+  expect_error(as_q(user_q, type = "smooth"), "q_fun.*supply.*domain_out")
+  expect_error(as_q(user_q, domain_out = c(0, 1)), "q_fun.*supply.*type")
 })
 
 test_that('as_q works with "p_fun"', {

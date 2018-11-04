@@ -18,6 +18,20 @@ as_distr_impl_def <- function(fun_class, f, type, extra, ...) {
   structure(res, class = c(fun_class, "function"))
 }
 
+assert_missing_args <- function(f_name, ...) {
+  dots <- list(...)
+  missing_args <- names(Filter(isTRUE, dots))
+
+  if (length(missing_args) > 0) {
+    stop_collapse(
+      'To define "', f_name, '" supply the following arguments: ',
+      paste0('`', missing_args, '`', collapse = ", "), '.'
+    )
+  }
+
+  TRUE
+}
+
 as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
   assert_type(n_sample, is.numeric)
 

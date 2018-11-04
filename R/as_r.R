@@ -9,6 +9,9 @@ as_r <- function(f, ...) {
 }
 
 as_r.default <- function(f, type, domain_out, extra = NULL, ...) {
+  assert_missing_args(
+    "r_fun", type = missing(type), domain_out = missing(domain_out)
+  )
   assert_domain(domain_out, "domain_out")
 
   as_distr_impl_def("r_fun", f, type, extra, domain_out = domain_out)

@@ -9,6 +9,10 @@ context("test-utils-as-distr")
 # Tested in tests for construction of `*_fun` from user-defined function
 
 
+# assert_missing_args -----------------------------------------------------
+# Tested in tests for construction of `*_fun` from user-defined function
+
+
 # as_distr_impl_r ---------------------------------------------------------
 # Tested in tests for conversion to `*_fun` from `r_fun`
 
