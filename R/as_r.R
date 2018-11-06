@@ -1,5 +1,5 @@
 as_r <- function(f, ...) {
-  if (class(f)[1] == "r_fun") {
+  if (inherits(f, "r_fun")) {
     return(f)
   } else if (has_meta(f, "x") && has_meta(f, "type")) {
     return(distr_from_meta(f, r_fun, ...))

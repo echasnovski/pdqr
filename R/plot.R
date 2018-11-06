@@ -74,7 +74,7 @@ dedupl_list <- function(l) {
 }
 
 warn_plotting_raw_d_fun <- function(f) {
-  if ((class(f)[1] == "d_fun") && (meta(f, "type") == "raw")) {
+  if (inherits(f, "d_fun") && (meta(f, "type") == "raw")) {
     warning_collapse(
       'Plotting density function with `type` = "raw" can miss actual points.'
     )

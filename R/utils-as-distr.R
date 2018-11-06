@@ -63,7 +63,7 @@ assert_domain <- function(domain, domain_name) {
 }
 
 warn_conversion_from_p_raw <- function(f, warn_precision, fun_name) {
-  if (isTRUE(warn_precision) && (class(f)[1] == "p_fun") &&
+  if (isTRUE(warn_precision) && inherits(f, "p_fun") &&
       (meta(f, "type") == "raw")) {
     warning_collapse(
       'Converting from cumulative distribution function into ',
