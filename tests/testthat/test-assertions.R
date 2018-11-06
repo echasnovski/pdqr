@@ -35,3 +35,15 @@ test_that("parse_type works", {
   expect_equal(parse_type("is_number"), "number")
   expect_equal(parse_type("is_is1_logical"), "is1_logical")
 })
+
+
+# assert_pdqr_ftype -------------------------------------------------------
+test_that("assert_pdqr_ftype works", {
+  expect_error(assert_pdqr_ftype(1), "p_fun.*d_fun.*q_fun.*r_fun")
+  expect_error(assert_pdqr_ftype(user_p), "p_fun.*d_fun.*q_fun.*r_fun")
+
+  expect_silent(assert_pdqr_ftype(p_raw))
+  expect_silent(assert_pdqr_ftype(d_raw))
+  expect_silent(assert_pdqr_ftype(q_raw))
+  expect_silent(assert_pdqr_ftype(r_raw))
+})

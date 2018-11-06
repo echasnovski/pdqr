@@ -57,3 +57,17 @@ parse_type <- function(f_name) {
     regexec("is[_\\.]([[:alnum:]_\\.]+)$", f_name)
   )[[1]][2]
 }
+
+
+# Assert pdqr function type -----------------------------------------------
+assert_pdqr_ftype <- function(x) {
+  x_name <- deparse(substitute(x))
+  if (!inherits(x, c("p_fun", "d_fun", "q_fun", "r_fun"))) {
+    stop_collapse(
+      '`', x_name, '` must inherit from one of classes: ',
+      '"p_fun", "d_fun", "q_fun", "r_fun"'
+    )
+  }
+
+  x
+}

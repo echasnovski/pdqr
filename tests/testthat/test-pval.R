@@ -71,6 +71,8 @@ test_that("pdqr_pval excepts not only objects of class 'p_fun'", {
 })
 
 test_that("pdqr_pval throws errors", {
+  expect_error(pdqr_pval(user_p, 1), "f.*p_fun.*d_fun.*q_fun.*r_fun")
+
   expect_error(pdqr_pval(p_raw, "a"), "obs.*numeric")
   expect_error(pdqr_pval(p_raw, 1, direction = 1), "direction.*string")
   expect_error(
