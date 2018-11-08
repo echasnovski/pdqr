@@ -55,6 +55,7 @@ test_that("q_fun returns `NaN` for out of range probabilities", {
 
 test_that("q_fun asserts", {
   expect_error(q_fun("a"), "x.*numeric")
+  expect_error(q_fun(numeric(0)), "x.*empty")
   expect_error(q_fun(x_raw, type = 1), "type.*string")
   expect_error(q_fun(x_raw, type = "a"), "type.*raw.*smooth")
   expect_error(q_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")

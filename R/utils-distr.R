@@ -47,6 +47,9 @@ distr_print <- function(fun_name, x, ...) {
 
 assert_common_args <- function(x, type, attach_x) {
   assert_type(x, is.numeric)
+  if (length(x) == 0) {
+    stop_collapse("`x` shouldn't be empty.")
+  }
 
   assert_distr_type(type)
 

@@ -60,6 +60,7 @@ test_that("p_fun output works with extreme values", {
 
 test_that("p_fun asserts", {
   expect_error(p_fun("a"), "x.*numeric")
+  expect_error(p_fun(numeric(0)), "x.*empty")
   expect_error(p_fun(x_raw, type = 1), "type.*string")
   expect_error(p_fun(x_raw, type = "a"), "type.*raw.*smooth")
   expect_error(p_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")

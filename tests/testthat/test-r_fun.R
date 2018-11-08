@@ -20,6 +20,7 @@ test_that("r_fun works", {
 
 test_that("r_fun asserts", {
   expect_error(r_fun("a"), "x.*numeric")
+  expect_error(r_fun(numeric(0)), "x.*empty")
   expect_error(r_fun(x_raw, type = 1), "type.*string")
   expect_error(r_fun(x_raw, type = "a"), "type.*raw.*smooth")
   expect_error(r_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")

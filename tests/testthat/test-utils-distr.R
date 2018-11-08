@@ -40,6 +40,7 @@ test_that("assert_common_args works", {
   expect_silent(assert_common_args(1:2, "smooth", TRUE))
 
   expect_error(assert_common_args("a", "raw", TRUE), "x.*numeric")
+  expect_error(assert_common_args(numeric(0), "raw", TRUE), "x.*empty")
   expect_error(assert_common_args(1:2, 1, TRUE), "type.*string")
   expect_error(assert_common_args(1:2, "a", TRUE), "type.*raw.*smooth")
   expect_error(assert_common_args(1:2, "raw", NA), "attach_x.*TRUE.*FALSE")
