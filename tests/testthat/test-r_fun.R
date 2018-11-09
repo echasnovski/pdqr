@@ -19,6 +19,10 @@ test_that("r_fun works", {
 })
 
 test_that("r_fun asserts", {
+  expect_warning(r_fun(c(1, 0, NA)), "x.*NA.*removed")
+  expect_warning(r_fun(c(1, 0, NaN)), "x.*NaN.*removed")
+  expect_warning(r_fun(c(1, 0, Inf)), "x.*infinite.*removed")
+
   expect_error(r_fun("a"), "x.*numeric")
   expect_error(r_fun(numeric(0)), "x.*empty")
   expect_error(r_fun(x_raw, type = 1), "type.*string")

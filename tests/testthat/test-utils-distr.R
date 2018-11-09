@@ -34,6 +34,23 @@ test_that("distr_print works with bad input", {
 })
 
 
+# filter_numbers ----------------------------------------------------------
+test_that("filter_numbers works", {
+  expect_equal(
+    expect_warning(filter_numbers(c(1, 0, NA, NA_real_)), "x.*NA.*removed"),
+    c(1, 0)
+  )
+  expect_equal(
+    expect_warning(filter_numbers(c(1, NaN, 0)), "x.*NaN.*removed"),
+    c(1, 0)
+  )
+  expect_equal(
+    expect_warning(filter_numbers(c(Inf, 0, -Inf, 1)), "x.*infinite.*removed"),
+    c(0, 1)
+  )
+})
+
+
 # assert_common_args ------------------------------------------------------
 test_that("assert_common_args works", {
   expect_silent(assert_common_args(1:2, "raw", TRUE))

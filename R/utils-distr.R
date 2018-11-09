@@ -1,6 +1,7 @@
 # Common functionality for `*_fun()` --------------------------------------
 distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
                        ...) {
+  x <- filter_numbers(x)
   assert_common_args(x, type, attach_x)
 
   fun <- switch(
@@ -43,6 +44,27 @@ distr_print <- function(fun_name, x, ...) {
   attributes(x) <- NULL
 
   print(x, ...)
+}
+
+filter_numbers <- function(x) {
+  x_is_nan <- is.nan(x)
+  if (any(x_is_nan)) {
+    warning_collapse("`x` has `NaN`s, which are removed.")
+  }
+  x <- x[!x_is_nan]
+
+  x_is_na <- is.na(x)
+  if (any(x_is_na)) {
+    warning_collapse("`x` has `NA`s, which are removed.")
+  }
+  x <- x[!x_is_na]
+
+  x_is_inf <- is.infinite(x)
+  if (any(x_is_inf)) {
+    warning_collapse("`x` has infinite values, which are removed.")
+  }
+
+  x[!x_is_inf]
 }
 
 assert_common_args <- function(x, type, attach_x) {

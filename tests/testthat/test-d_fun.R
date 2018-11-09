@@ -43,6 +43,10 @@ test_that("d_fun output works with extreme values", {
 })
 
 test_that("d_fun asserts", {
+  expect_warning(d_fun(c(1, 0, NA)), "x.*NA.*removed")
+  expect_warning(d_fun(c(1, 0, NaN)), "x.*NaN.*removed")
+  expect_warning(d_fun(c(1, 0, Inf)), "x.*infinite.*removed")
+
   expect_error(d_fun("a"), "x.*numeric")
   expect_error(d_fun(numeric(0)), "x.*empty")
   expect_error(d_fun(x_raw, type = 1), "type.*string")
