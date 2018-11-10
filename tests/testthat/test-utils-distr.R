@@ -25,7 +25,7 @@ expect_density_ext_works <- function(input, ...) {
 # Main functionality is tested in `print.*_fun()` functions
 test_that("distr_print works with bad input", {
   bad_input <- structure(
-    runif, class = c("r_fun", "function"), meta = list(domain_out = c(0, 1))
+    runif, class = c("r_fun", "function"), meta = list(support = c(0, 1))
   )
   expect_output(
     distr_print("Random generation function", bad_input),

@@ -8,13 +8,13 @@ as_d <- function(f, ...) {
   UseMethod("as_d")
 }
 
-as_d.default <- function(f, type, domain_in, extra = NULL, ...) {
+as_d.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
-    "d_fun", type = missing(type), domain_in = missing(domain_in)
+    "d_fun", type = missing(type), support = missing(support)
   )
-  assert_domain(domain_in, "domain_in")
+  assert_support(support)
 
-  as_distr_impl_def("d_fun", f, type, extra, domain_in = domain_in)
+  as_distr_impl_def("d_fun", f, type, support, extra)
 }
 
 as_d.p_fun <- function(f, ...) {

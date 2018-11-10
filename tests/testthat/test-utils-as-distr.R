@@ -17,14 +17,14 @@ context("test-utils-as-distr")
 # Tested in tests for conversion to `*_fun` from `r_fun`
 
 
-# assert_domain -----------------------------------------------------------
-test_that("assert_domain works", {
-  expect_silent(assert_domain(c(0, 1), "dom"))
-  expect_silent(assert_domain(c(1, 1), "dom"))
+# assert_support ----------------------------------------------------------
+test_that("assert_support works", {
+  expect_silent(assert_support(c(0, 1)))
+  expect_silent(assert_support(c(1, 1)))
 
-  expect_error(assert_domain("a", "bbb"), "bbb.*length.*2")
-  expect_error(assert_domain(1, "bbb"), "bbb.*numeric")
-  expect_error(assert_domain(c(2, 1), "bbb"), "[fF]irst.*not bigger")
+  expect_error(assert_support("a"), "support.*numeric")
+  expect_error(assert_support(1), "support.*length 2")
+  expect_error(assert_support(c(2, 1)), "[fF]irst.*not bigger")
 })
 
 

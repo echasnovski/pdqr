@@ -4,12 +4,12 @@ context("test-p_fun")
 # p_fun -------------------------------------------------------------------
 test_that("p_fun works", {
   expect_distr_fun(p_raw, "p_fun", "raw")
-  expect_equal(meta(p_raw, "domain_in"), x_raw_domain_in)
+  expect_equal(meta(p_raw, "support"), x_raw_support)
   expect_equal(p_raw(1:10), c(cumsum(x_raw_distr_tbl[["prob"]]), 1))
 
   expect_distr_fun(p_smooth, "p_fun", "smooth")
   expect_equal(
-    round(meta(p_smooth, "domain_in"), 2), round(x_smooth_domain_in, 2)
+    round(meta(p_smooth, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     round(p_smooth(seq(from = -1, to = 1, by = 0.1)), 3),
@@ -32,8 +32,8 @@ test_that("p_fun behaves like ecdf() in case of `type` = 'raw'", {
 })
 
 test_that("p_fun output is integration of d_fun in case of `type` = 'smooth'", {
-  d_domain <- meta(d_smooth, "domain_in")
-  x_smooth_grid <- seq(from = d_domain[1] - 1, to = d_domain[2] + 1, by = 0.01)
+  d_support <- meta(d_smooth, "support")
+  x_smooth_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
 
   p_smooth_int <- vapply(
     x_smooth_grid,
@@ -74,15 +74,15 @@ test_that("p_fun handles metadata", {
   expect_equal(
     meta(p_raw),
     list(
-      domain_in = x_raw_domain_in, type = "raw",
+      support = x_raw_support, type = "raw",
       x = x_raw
     )
   )
 
   p_smooth_1 <- p_fun(x_smooth, type = "smooth", attach_x = TRUE)
-  expect_named(meta(p_smooth_1), c("domain_in", "type", "x"))
+  expect_named(meta(p_smooth_1), c("support", "type", "x"))
   expect_equal(
-    round(meta(p_smooth_1, "domain_in"), 2), round(x_smooth_domain_in, 2)
+    round(meta(p_smooth_1, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     meta(p_smooth_1)[c("x", "type")],
@@ -90,7 +90,7 @@ test_that("p_fun handles metadata", {
   )
 
   p_smooth_2 <- p_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(p_smooth_2), c("domain_in", "extra", "type", "x"))
+  expect_named(meta(p_smooth_2), c("extra", "support", "type", "x"))
   expect_equal(meta(p_smooth_2, "extra"), list(a = TRUE))
 })
 
@@ -121,7 +121,7 @@ test_that("print.p_fun works", {
     print(p_raw),
     paste0(
       "Cumulative distribution function.*raw.*",
-      "[mM]eta.*domain_in, type.*function"
+      "[mM]eta.*support, type.*function"
     )
   )
 
@@ -130,7 +130,7 @@ test_that("print.p_fun works", {
     print(p_smooth_extra),
     paste0(
       "Cumulative distribution function.*smoothed.*",
-      "[mM]eta.*domain_in, extra, type.*function"
+      "[mM]eta.*extra, support, type.*function"
     )
   )
 })

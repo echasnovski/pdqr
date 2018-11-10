@@ -7,8 +7,8 @@ plot.p_fun <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "x", ylab = "Cumulative probability"
   )
 
-  # Stretch domain to guarantee 0 and 1 on edges
-  plot_impl_pdq(x, stretch_range(meta(x, "domain_in")), n_grid, dots)
+  # Stretch support to guarantee 0 and 1 on edges
+  plot_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, dots)
 }
 
 plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
@@ -22,7 +22,7 @@ plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "x", ylab = "Density"
   )
 
-  plot_impl_pdq(x, meta(x, "domain_in"), n_grid, dots)
+  plot_impl_pdq(x, meta(x, "support"), n_grid, dots)
 }
 
 plot.q_fun <- function(x, y = NULL, n_grid = 1001, ...) {
@@ -86,14 +86,14 @@ warn_plotting_raw_d_fun <- function(f) {
 
 # lines() -----------------------------------------------------------------
 lines.p_fun <- function(x, n_grid = 1001, ...) {
-  # Stretch domain to guarantee 0 and 1 on edges
-  lines_impl_pdq(x, stretch_range(meta(x, "domain_in")), n_grid, list(...))
+  # Stretch support to guarantee 0 and 1 on edges
+  lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
 }
 
 lines.d_fun <- function(x, n_grid = 1001, ...) {
   warn_plotting_raw_d_fun(x)
 
-  lines_impl_pdq(x, meta(x, "domain_in"), n_grid, list(...))
+  lines_impl_pdq(x, meta(x, "support"), n_grid, list(...))
 }
 
 lines.q_fun <- function(x, n_grid = 1001, ...) {

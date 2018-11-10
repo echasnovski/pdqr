@@ -4,12 +4,12 @@ context("test-d_fun")
 # d_fun -------------------------------------------------------------------
 test_that("d_fun works", {
   expect_distr_fun(d_raw, "d_fun", "raw")
-  expect_equal(meta(d_raw, "domain_in"), x_raw_domain_in)
+  expect_equal(meta(d_raw, "support"), x_raw_support)
   expect_equal(d_raw(1:10), c(x_raw_distr_tbl[["prob"]], 0))
 
   expect_distr_fun(d_smooth, "d_fun", "smooth")
   expect_equal(
-    round(meta(d_smooth, "domain_in"), 2), round(x_smooth_domain_in, 2)
+    round(meta(d_smooth, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     round(d_smooth(seq(from = -1, to = 1, by = 0.1)), 2),
@@ -31,9 +31,9 @@ test_that("d_fun output integrates to 1 in case `type` = 'smooth'", {
   expect_true((output_range[1] <= 1) && (1 <= output_range[2]))
 })
 
-test_that("d_fun equals 0 on edges of input domain in case `type` = 'smooth'", {
-  domain_in <- meta(d_smooth, "domain_in")
-  expect_equal(d_smooth(domain_in), c(0, 0))
+test_that("d_fun equals 0 on edges of support in case `type` = 'smooth'", {
+  support <- meta(d_smooth, "support")
+  expect_equal(d_smooth(support), c(0, 0))
 })
 
 test_that("d_fun output works with extreme values", {
@@ -58,15 +58,15 @@ test_that("d_fun handles metadata", {
   expect_equal(
     meta(d_raw),
     list(
-      domain_in = x_raw_domain_in, type = "raw",
+      support = x_raw_support, type = "raw",
       x = x_raw
     )
   )
 
   d_smooth_1 <- d_fun(x_smooth, type = "smooth", attach_x = TRUE)
-  expect_named(meta(d_smooth_1), c("domain_in", "type", "x"))
+  expect_named(meta(d_smooth_1), c("support", "type", "x"))
   expect_equal(
-    round(meta(d_smooth_1, "domain_in"), 2), round(x_smooth_domain_in, 2)
+    round(meta(d_smooth_1, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     meta(d_smooth_1)[c("x", "type")],
@@ -74,7 +74,7 @@ test_that("d_fun handles metadata", {
   )
 
   d_smooth_2 <- d_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(d_smooth_2), c("domain_in", "extra", "type", "x"))
+  expect_named(meta(d_smooth_2), c("extra", "support", "type", "x"))
   expect_equal(meta(d_smooth_2, "extra"), list(a = TRUE))
 })
 
@@ -102,12 +102,12 @@ test_that("d_fun uses `...` as arguments for `density()`", {
 test_that("print.d_fun works", {
   expect_output(
     print(d_raw),
-    "Density function.*raw.*[mM]eta.*domain_in, type.*function"
+    "Density function.*raw.*[mM]eta.*support, type.*function"
   )
 
   d_smooth_extra <- d_fun(x_smooth, type = "smooth", extra = "a")
   expect_output(
     print(d_smooth_extra),
-    "Density function.*smoothed.*[mM]eta.*domain_in, extra, type.*function"
+    "Density function.*smoothed.*[mM]eta.*extra, support, type.*function"
   )
 })

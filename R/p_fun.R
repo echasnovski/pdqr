@@ -9,7 +9,7 @@ p_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL, ...) {
 p_fun_raw <- function(x) {
   distr <- distr_tbl(x)
   distr_cum_prob <- c(0, cumsum(distr[["prob"]]))
-  domain_in <- range(x)
+  support <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
@@ -20,7 +20,7 @@ p_fun_raw <- function(x) {
     distr_cum_prob[q_ind]
   }
 
-  add_meta(res, domain_in = domain_in)
+  add_meta(res, support = support)
 }
 
 p_fun_smooth <- function(x, ...) {
@@ -61,7 +61,7 @@ p_fun_smooth <- function(x, ...) {
     out
   }
 
-  add_meta(res, domain_in = range(dens[["x"]]))
+  add_meta(res, support = range(dens[["x"]]))
 }
 
 print.p_fun <- function(x, ...) {

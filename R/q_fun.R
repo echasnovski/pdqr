@@ -10,7 +10,7 @@ q_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL,
 q_fun_raw <- function(x) {
   distr <- distr_tbl(x)
   distr_cum_prob_small <- cumsum(distr[["prob"]])
-  domain_out <- range(x)
+  support <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
@@ -28,7 +28,7 @@ q_fun_raw <- function(x) {
     out
   }
 
-  add_meta(res, domain_out = domain_out)
+  add_meta(res, support = support)
 }
 
 q_fun_smooth <- function(x, ...) {
@@ -40,7 +40,7 @@ q_fun_smooth <- function(x, ...) {
   x_dens <- dens[["x"]]
   y_dens <- dens[["y"]]
   n <- length(x_dens)
-  domain_out <- range(x_dens)
+  support <- range(x_dens)
 
   p_grid <- trapez_part_integral(x_dens, y_dens)[-n]
   slope_vec <- diff(y_dens) / diff(x_dens)
@@ -62,14 +62,14 @@ q_fun_smooth <- function(x, ...) {
       intercept = inter_vec[p_ind]
     )
 
-    out[is_near(p, 0) & (p >= 0)] <- domain_out[1]
-    out[is_near(p, 1) & (p <= 1)] <- domain_out[2]
+    out[is_near(p, 0) & (p >= 0)] <- support[1]
+    out[is_near(p, 1) & (p <= 1)] <- support[2]
     out[(p < 0) | (p > 1)] <- NaN
 
     out
   }
 
-  add_meta(res, domain_out = domain_out)
+  add_meta(res, support = support)
 }
 
 find_quant <- function(p, cdf_start, x_start, slope, intercept) {

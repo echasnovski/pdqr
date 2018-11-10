@@ -4,17 +4,17 @@ context("test-r_fun")
 # r_fun -------------------------------------------------------------------
 test_that("r_fun works", {
   expect_distr_fun(r_raw, "r_fun", "raw")
-  expect_equal(meta(r_raw, "domain_out"), x_raw_domain_in)
+  expect_equal(meta(r_raw, "support"), x_raw_support)
   expect_true(all(r_raw(100) %in% x_raw_distr_tbl[["x"]]))
 
   expect_distr_fun(r_smooth, "r_fun", "smooth")
   expect_equal(
-    round(meta(r_smooth, "domain_out"), 2), round(x_smooth_domain_in, 2)
+    round(meta(r_smooth, "support"), 2), round(x_smooth_support, 2)
   )
   r_smooth_out <- r_smooth(100)
   expect_true(all(
-    (r_smooth_out >= x_smooth_domain_in[1]) &
-      (r_smooth_out <= x_smooth_domain_in[2])
+    (r_smooth_out >= x_smooth_support[1]) &
+      (r_smooth_out <= x_smooth_support[2])
   ))
 })
 
@@ -34,15 +34,15 @@ test_that("r_fun handles metadata", {
   expect_equal(
     meta(r_raw),
     list(
-      domain_out = x_raw_domain_in, type = "raw",
+      support = x_raw_support, type = "raw",
       x = x_raw
     )
   )
 
   r_smooth_1 <- r_fun(x_smooth, type = "smooth", attach_x = TRUE)
-  expect_named(meta(r_smooth_1), c("domain_out", "type", "x"))
+  expect_named(meta(r_smooth_1), c("support", "type", "x"))
   expect_equal(
-    round(meta(r_smooth_1, "domain_out"), 2), round(x_smooth_domain_in, 2)
+    round(meta(r_smooth_1, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     meta(r_smooth_1)[c("x", "type")],
@@ -50,7 +50,7 @@ test_that("r_fun handles metadata", {
   )
 
   r_smooth_2 <- r_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(r_smooth_2), c("domain_out", "extra", "type", "x"))
+  expect_named(meta(r_smooth_2), c("extra", "support", "type", "x"))
   expect_equal(meta(r_smooth_2, "extra"), list(a = TRUE))
 })
 
@@ -69,7 +69,7 @@ test_that("print.r_fun works", {
     print(r_raw),
     paste0(
       "Random generation function.*raw.*",
-      "[mM]eta.*domain_out, type.*function"
+      "[mM]eta.*support, type.*function"
     )
   )
 
@@ -78,7 +78,7 @@ test_that("print.r_fun works", {
     print(r_smooth_extra),
     paste0(
       "Random generation function.*smoothed.*",
-      "[mM]eta.*domain_out, extra, type.*function"
+      "[mM]eta.*extra, support, type.*function"
     )
   )
 })

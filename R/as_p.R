@@ -8,13 +8,13 @@ as_p <- function(f, ...) {
   UseMethod("as_p")
 }
 
-as_p.default <- function(f, type, domain_in, extra = NULL, ...) {
+as_p.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
-    "p_fun", type = missing(type), domain_in = missing(domain_in)
+    "p_fun", type = missing(type), support = missing(support)
   )
-  assert_domain(domain_in, "domain_in")
+  assert_support(support)
 
-  as_distr_impl_def("p_fun", f, type, extra, domain_in = domain_in)
+  as_distr_impl_def("p_fun", f, type, support, extra)
 }
 
 as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
@@ -30,25 +30,25 @@ as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
 }
 
 as_p.q_fun <- function(f, ...) {
-  domain_out <- meta(f, "domain_out")
+  support <- meta(f, "support")
   f_inv <- inverse(f, interval = c(0, 1), tol = sqrt(.Machine$double.eps))
 
   res <- function(q) {
     out <- numeric(length(q))
 
-    is_small_q <- q <= domain_out[1]
-    is_big_q <- q >= domain_out[2]
-    is_in_domain <- !(is_small_q | is_big_q)
+    is_small_q <- q <= support[1]
+    is_big_q <- q >= support[2]
+    is_in_support <- !(is_small_q | is_big_q)
 
     out[is_small_q] <- 0
     out[is_big_q] <- 1
-    out[is_in_domain] <- f_inv(q[is_in_domain])
+    out[is_in_support] <- f_inv(q[is_in_support])
 
     out
   }
   res <- add_class(res, "p_fun")
 
-  res <- add_meta(res, type = meta(f, "type"), domain_in = domain_out)
+  res <- add_meta(res, type = meta(f, "type"), support = support)
 
   add_meta_cond(res, !is.null(meta(f, "extra")), meta(f, "extra"))
 }
@@ -65,7 +65,7 @@ p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
     )
   }
 
-  support <- detect_raw_support(f)
+  support <- detect_support_raw(f)
   supp_prob <- f(support)
   supp_cumprob <- c(0, cumsum(supp_prob) / sum(supp_prob))
 
@@ -76,30 +76,30 @@ p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
   }
 }
 
-detect_raw_support <- function(f, n = 10000) {
-  domain <- meta(f, "domain_in")
+detect_support_raw <- function(f, n = 10000) {
+  support <- meta(f, "support")
   # Detection is done with trying values with step which is multiple of 10^(-5)
   # This should increase probability of finding actual support
-  step <- ceiling(10^5 * diff(domain) / n) * 10^(-5)
-  x_grid <- seq(domain[1], domain[2], by = step)
+  step <- ceiling(10^5 * diff(support) / n) * 10^(-5)
+  x_grid <- seq(support[1], support[2], by = step)
 
   x_grid[!is_near(f(x_grid), 0)]
 }
 
 p_from_d_smooth <- function(f) {
-  domain <- meta(f, "domain_in")
+  support <- meta(f, "support")
 
   function(q) {
     out <- numeric(length(q))
 
-    is_q_small <- q <= domain[1]
+    is_q_small <- q <= support[1]
     out[is_q_small] <- 0
-    is_q_large <- q >= domain[2]
+    is_q_large <- q >= support[2]
     out[is_q_large] <- 1
 
 
     is_q_between <- !(is_q_small | is_q_large)
-    out_between <- integrate_right(f, q[is_q_between], domain[1])
+    out_between <- integrate_right(f, q[is_q_between], support[1])
     # Extra cutoffs to respect floating point precision (~10^(-15))
     out[is_q_between] <- pmin(pmax(out_between, 0), 1)
 

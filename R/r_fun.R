@@ -18,7 +18,7 @@ r_fun_raw <- function(x) {
     q_raw(rand_q_vec)
   }
 
-  add_meta(res, domain_out = meta(q_raw, "domain_out"))
+  add_meta(res, support = meta(q_raw, "support"))
 }
 
 r_fun_smooth <- function(x, ...) {
@@ -33,7 +33,7 @@ r_fun_smooth <- function(x, ...) {
     q_smooth(rand_q_vec)
   }
 
-  add_meta(res, domain_out = meta(q_smooth, "domain_out"))
+  add_meta(res, support = meta(q_smooth, "support"))
 }
 
 print.r_fun <- function(x, ...) {

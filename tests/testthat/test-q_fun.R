@@ -4,14 +4,14 @@ context("test-q_fun")
 # q_fun -------------------------------------------------------------------
 test_that("q_fun works", {
   expect_distr_fun(q_raw, "q_fun", "raw")
-  expect_equal(meta(q_raw, "domain_out"), x_raw_domain_in)
+  expect_equal(meta(q_raw, "support"), x_raw_support)
   expect_equal(
     q_raw(cumsum(x_raw_distr_tbl[["prob"]])), x_raw_distr_tbl[["x"]]
   )
 
   expect_distr_fun(q_smooth, "q_fun", "smooth")
   expect_equal(
-    round(meta(q_smooth, "domain_out"), 2), round(x_smooth_domain_in, 2)
+    round(meta(q_smooth, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     round(q_smooth(0:20/20), 3),
@@ -44,8 +44,8 @@ test_that("q_fun output is inverse of p_fun output", {
 })
 
 test_that("q_fun output works with extreme values", {
-  expect_equal(q_raw(c(0, 1)), x_raw_domain_in)
-  expect_equal(q_smooth(c(0, 1)), x_smooth_domain_in)
+  expect_equal(q_raw(c(0, 1)), x_raw_support)
+  expect_equal(q_smooth(c(0, 1)), x_smooth_support)
 })
 
 test_that("q_fun returns `NaN` for out of range probabilities", {
@@ -69,15 +69,15 @@ test_that("q_fun handles metadata", {
   expect_equal(
     meta(q_raw),
     list(
-      domain_out = x_raw_domain_in, type = "raw",
+      support = x_raw_support, type = "raw",
       x = x_raw
     )
   )
 
   q_smooth_1 <- q_fun(x_smooth, type = "smooth", attach_x = TRUE)
-  expect_named(meta(q_smooth_1), c("domain_out", "type", "x"))
+  expect_named(meta(q_smooth_1), c("support", "type", "x"))
   expect_equal(
-    round(meta(q_smooth_1, "domain_out"), 2), round(x_smooth_domain_in, 2)
+    round(meta(q_smooth_1, "support"), 2), round(x_smooth_support, 2)
   )
   expect_equal(
     meta(q_smooth_1)[c("x", "type")],
@@ -85,7 +85,7 @@ test_that("q_fun handles metadata", {
   )
 
   q_smooth_2 <- q_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(q_smooth_2), c("domain_out", "extra", "type", "x"))
+  expect_named(meta(q_smooth_2), c("extra", "support", "type", "x"))
   expect_equal(meta(q_smooth_2, "extra"), list(a = TRUE))
 })
 
@@ -118,12 +118,12 @@ test_that("q_fun uses `...` as arguments for `density()`", {
 test_that("print.q_fun works", {
   expect_output(
     print(q_raw),
-    "Quantile function.*raw.*[mM]eta.*domain_out, type.*function"
+    "Quantile function.*raw.*[mM]eta.*support, type.*function"
   )
 
   q_smooth_extra <- q_fun(x_smooth, type = "smooth", extra = "a")
   expect_output(
     print(q_smooth_extra),
-    "Quantile function.*smoothed.*[mM]eta.*domain_out, extra, type.*function"
+    "Quantile function.*smoothed.*[mM]eta.*extra, support, type.*function"
   )
 })

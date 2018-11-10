@@ -8,11 +8,11 @@ distr_from_meta <- function(f, new_f, ...) {
   )
 }
 
-as_distr_impl_def <- function(fun_class, f, type, extra, ...) {
+as_distr_impl_def <- function(fun_class, f, type, support, extra) {
   assert_type(f, is.function)
   assert_distr_type(type)
 
-  res <- add_meta(f, type = type, ...)
+  res <- add_meta(f, type = type, support = support)
   res <- add_meta_cond(res, !is.null(extra), extra = extra)
 
   structure(res, class = c(fun_class, "function"))
@@ -45,21 +45,21 @@ as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
   )
 }
 
-assert_domain <- function(domain, domain_name) {
-  if (!(is.numeric(domain) && (length(domain) == 2))) {
+assert_support <- function(support) {
+  if (!(is.numeric(support) && (length(support) == 2))) {
     stop_collapse(
-      "`", domain_name, "` should be 'numeric with length 2', not '",
-      get_type(domain), "'."
+      "`support` should be 'numeric with length 2', not '",
+      get_type(support), "'."
     )
   }
 
-  if (domain[1] > domain[2]) {
+  if (support[1] > support[2]) {
     stop_collapse(
-      "First value in `", domain_name, "` should be not bigger than second one."
+      "First value in `support` should be not bigger than second one."
     )
   }
 
-  domain
+  support
 }
 
 warn_conversion_from_p_raw <- function(f, warn_precision, fun_name) {

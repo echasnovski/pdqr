@@ -8,21 +8,21 @@ as_q <- function(f, ...) {
   UseMethod("as_q")
 }
 
-as_q.default <- function(f, type, domain_out, extra = NULL, ...) {
+as_q.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
-    "q_fun", type = missing(type), domain_out = missing(domain_out)
+    "q_fun", type = missing(type), support = missing(support)
   )
-  assert_domain(domain_out, "domain_out")
+  assert_support(support)
 
-  as_distr_impl_def("q_fun", f, type, extra, domain_out = domain_out)
+  as_distr_impl_def("q_fun", f, type, support, extra)
 }
 
 as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
-  domain_in <- meta(f, "domain_in")
-  # Stretch input domain a little bit to ensure opposite signs of `f()` values
-  # at end points for correct use of `uniroot()` during `inverse()` output.
-  ext_domain_in <- stretch_range(domain_in)
-  f_inv <- inverse(f, interval = ext_domain_in, tol = sqrt(.Machine$double.eps))
+  support <- meta(f, "support")
+  # Stretch support a little bit to ensure opposite signs of `f()` values at end
+  # points for correct use of `uniroot()` during `inverse()` output.
+  ext_support <- stretch_range(support)
+  f_inv <- inverse(f, interval = ext_support, tol = sqrt(.Machine$double.eps))
 
   warn_conversion_from_p_raw(f, isTRUE(warn_precision), "quantile function")
 
@@ -34,15 +34,15 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
     is_inside <- (p > 0) & (p < 1)
 
     out[is_inside] <- round(f_inv(p[is_inside]), digits = 8)
-    out[is_near(p, 0) & is_more_0] <- domain_in[1]
-    out[is_near(p, 1) & is_less_1] <- domain_in[2]
+    out[is_near(p, 0) & is_more_0] <- support[1]
+    out[is_near(p, 1) & is_less_1] <- support[2]
     out[!(is_more_0 & is_less_1)] <- NaN
 
     out
   }
   res <- add_class(res, "q_fun")
 
-  res <- add_meta(res, type = meta(f, "type"), domain_out = domain_in)
+  res <- add_meta(res, type = meta(f, "type"), support = support)
 
   add_meta_cond(res, !is.null(meta(f, "extra")), meta(f, "extra"))
 }

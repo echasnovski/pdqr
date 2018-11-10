@@ -20,11 +20,11 @@ expect_equal_r_funs <- function(f_1, f_2, n_sample = 1000,
 # as_r --------------------------------------------------------------------
 test_that("as_r works with user-defined function", {
   expect_distr_fun(
-    as_r(user_r, type = "smooth", domain_out = c(0, 1)), "r_fun", "smooth"
+    as_r(user_r, type = "smooth", support = c(0, 1)), "r_fun", "smooth"
   )
-  expect_error(as_r(user_r), "r_fun.*supply.*type.*domain_out")
-  expect_error(as_r(user_r, type = "smooth"), "r_fun.*supply.*domain_out")
-  expect_error(as_r(user_r, domain_out = c(0, 1)), "r_fun.*supply.*type")
+  expect_error(as_r(user_r), "r_fun.*supply.*type.*support")
+  expect_error(as_r(user_r, type = "smooth"), "r_fun.*supply.*support")
+  expect_error(as_r(user_r, support = c(0, 1)), "r_fun.*supply.*type")
 })
 
 test_that('as_r works with "p_fun"', {
@@ -113,9 +113,9 @@ test_that("as_r asserts extra arguments of methods", {
   expect_error(as_r(1, "smooth", c(0, 1)), "f.*function")
   expect_error(as_r(user_r, 1, c(0, 1)), "type.*string")
   expect_error(as_r(user_r, "a", c(0, 1)), "type.*raw.*smooth")
-  expect_error(as_r(user_r, "smooth", "a"), "domain_out.*numeric")
-  expect_error(as_r(user_r, "smooth", 1), "domain_out.*length 2")
-  expect_error(as_r(user_r, "smooth", c(1, 0)), "domain_out.*bigger")
+  expect_error(as_r(user_r, "smooth", "a"), "support.*numeric")
+  expect_error(as_r(user_r, "smooth", 1), "support.*length 2")
+  expect_error(as_r(user_r, "smooth", c(1, 0)), "support.*bigger")
 })
 
 

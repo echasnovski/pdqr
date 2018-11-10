@@ -8,7 +8,7 @@ d_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL, ...) {
 
 d_fun_raw <- function(x) {
   distr <- distr_tbl(x)
-  domain_in <- range(x)
+  support <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
@@ -19,7 +19,7 @@ d_fun_raw <- function(x) {
     ifelse(is.na(x_ind), 0, distr[["prob"]][x_ind])
   }
 
-  add_meta(res, domain_in = domain_in)
+  add_meta(res, support = support)
 }
 
 d_fun_smooth <- function(x, ...) {
@@ -33,7 +33,7 @@ d_fun_smooth <- function(x, ...) {
     yleft = 0, yright = 0, rule = 2
   )
 
-  add_meta(res, domain_in = range(dens[["x"]]))
+  add_meta(res, support = range(dens[["x"]]))
 }
 
 print.d_fun <- function(x, ...) {
