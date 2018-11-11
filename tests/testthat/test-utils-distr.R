@@ -17,6 +17,19 @@ expect_density_ext_works <- function(input, ...) {
 }
 
 
+# add_pdqr_class ----------------------------------------------------------
+test_that("add_pdqr_class works", {
+  expect_equal(
+    add_pdqr_class(structure(1, class = "a"), "b"),
+    structure(1, class = c("b", "pdqr_fun", "a"))
+  )
+  expect_equal(
+    add_pdqr_class(structure(1, class = c("pdqr_fun", "a")), "b"),
+    structure(1, class = c("b", "pdqr_fun", "a"))
+  )
+})
+
+
 # distr_impl --------------------------------------------------------------
 # Tested in `*_fun()` functions
 
@@ -25,7 +38,8 @@ expect_density_ext_works <- function(input, ...) {
 # Main functionality is tested in `print.*_fun()` functions
 test_that("distr_print works with bad input", {
   bad_input <- structure(
-    runif, class = c("r_fun", "function"), meta = list(support = c(0, 1))
+    runif, class = c("r_fun", "pdqr_fun", "function"),
+    meta = list(support = c(0, 1))
   )
   expect_output(
     distr_print("Random generation function", bad_input),

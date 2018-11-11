@@ -63,7 +63,7 @@ p_smooth_nox <- p_fun(x_smooth, "smooth", attach_x = FALSE)
 
 user_p <- function(q) {pbeta(q, 1, 2)}
 p_custom <- structure(
-  user_p, class = c("p_fun", "function"),
+  user_p, class = c("p_fun", "pdqr_fun", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )
 
@@ -77,7 +77,7 @@ d_smooth_nox <- d_fun(x_smooth, "smooth", attach_x = FALSE)
 
 user_d <- function(x) {dbeta(x, 1, 2)}
 d_custom <- structure(
-  user_d, class = c("d_fun", "function"),
+  user_d, class = c("d_fun", "pdqr_fun", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )
 
@@ -91,7 +91,7 @@ q_smooth_nox <- q_fun(x_smooth, "smooth", attach_x = FALSE)
 
 user_q <- function(p) {qbeta(p, 1, 2)}
 q_custom <- structure(
-  user_q, class = c("q_fun", "function"),
+  user_q, class = c("q_fun", "pdqr_fun", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )
 
@@ -105,6 +105,6 @@ r_smooth_nox <- r_fun(x_smooth, "smooth", attach_x = FALSE)
 
 user_r <- function(n) {rbeta(n, 1, 2)}
 r_custom <- structure(
-  user_r, class = c("r_fun", "function"),
+  user_r, class = c("r_fun", "pdqr_fun", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )

@@ -24,8 +24,13 @@ stretch_range <- function(x, ext = 10^(-6)) {
 }
 
 add_class <- function(x, cl) {
-  if (class(x)[1] != cl) {
-    class(x) <- c(cl, class(x))
+  x_cl <- class(x)
+  n_cl <- length(cl)
+
+  if (x_cl[1] != cl[n_cl]) {
+    class(x) <- c(cl, x_cl)
+  } else {
+    class(x) <- c(cl[-n_cl], x_cl)
   }
 
   x

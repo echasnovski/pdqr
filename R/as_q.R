@@ -40,11 +40,9 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
 
     out
   }
-  res <- add_class(res, "q_fun")
+  res <- add_pdqr_class(res, "q_fun")
 
-  res <- add_meta(res, type = meta(f, "type"), support = support)
-
-  add_meta_cond(res, !is.null(meta(f, "extra")), meta(f, "extra"))
+  copy_meta(res, f)
 }
 
 as_q.d_fun <- function(f, warn_precision = TRUE, ...) {

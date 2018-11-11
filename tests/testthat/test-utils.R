@@ -47,6 +47,13 @@ test_that("add_class works", {
   input <- structure(1, class = c("a", "b"))
   expect_equal(add_class(input, "c"), structure(1, class = c("c", "a", "b")))
   expect_equal(add_class(input, "a"), input)
+  expect_equal(
+    add_class(input, c("c", "a")), structure(1, class = c("c", "a", "b"))
+  )
+  expect_equal(
+    add_class(input, c("c", "a", "b")),
+    structure(1, class = c("c", "a", "b", "a", "b"))
+  )
 })
 
 
@@ -86,6 +93,7 @@ test_that("collapse_nullable works", {
 
   expect_error(collapse_nullable(1:2, c("a", "b")), "length 1")
 })
+
 
 # capture_null ------------------------------------------------------------
 test_that("capture_null works", {

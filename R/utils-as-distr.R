@@ -15,7 +15,7 @@ as_distr_impl_def <- function(fun_class, f, type, support, extra) {
   res <- add_meta(f, type = type, support = support)
   res <- add_meta_cond(res, !is.null(extra), extra = extra)
 
-  structure(res, class = c(fun_class, "function"))
+  add_pdqr_class(res, fun_class)
 }
 
 assert_missing_args <- function(f_name, ...) {

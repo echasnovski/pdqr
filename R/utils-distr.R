@@ -14,7 +14,11 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
     fun, x = x, type = type, attach_x = attach_x, extra = extra
   )
 
-  structure(res, class = c(fun_class, "function"))
+  add_pdqr_class(res, fun_class)
+}
+
+add_pdqr_class <- function(f, subclass) {
+  add_class(f, c(subclass, "pdqr_fun"))
 }
 
 distr_print <- function(fun_name, x, ...) {

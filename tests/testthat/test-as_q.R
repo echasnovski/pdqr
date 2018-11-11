@@ -134,6 +134,12 @@ test_that('as_q works with "r_fun"', {
   )
 })
 
+test_that('as_q works with "pdqr_fun" (not adding duplicated class)', {
+  input <- structure(qbeta, class = c("pdqr_fun", "function"))
+  output <- as_q(input, type = "smooth", support = c(0, 1))
+  expect_equal(class(output), c("q_fun", "pdqr_fun", "function"))
+})
+
 test_that("as_q asserts extra arguments of methods", {
   # Default method
   expect_error(as_q(1, "smooth", c(0, 1)), "f.*function")

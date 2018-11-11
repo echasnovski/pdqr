@@ -109,6 +109,12 @@ test_that('as_d works with "r_fun"', {
   # lines(x, as_d(r_custom, n_sample = 50000)(x), col = "blue")
 })
 
+test_that('as_d works with "pdqr_fun" (not adding duplicated class)', {
+  input <- structure(dbeta, class = c("pdqr_fun", "function"))
+  output <- as_d(input, type = "smooth", support = c(0, 1))
+  expect_equal(class(output), c("d_fun", "pdqr_fun", "function"))
+})
+
 test_that("as_d asserts extra arguments of methods", {
   # Default method
   expect_error(as_d(1, "smooth", c(0, 1)), "f.*function")
