@@ -13,7 +13,7 @@ add_meta <- function(obj, ...) {
   if (is.null(cur_meta)) {
     attr(obj, "meta") <- name_sort(dots)
   } else {
-    attr(obj, "meta") <- name_sort(c(cur_meta, dots))
+    attr(obj, "meta") <- dedupl_list(name_sort(c(dots, cur_meta)))
   }
 
   obj

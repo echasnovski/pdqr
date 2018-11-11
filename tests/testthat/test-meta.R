@@ -31,6 +31,13 @@ test_that("add_meta orders elements alphabetically by name", {
   expect_equal(add_meta(input, 8, n = 6, e = 7), output)
 })
 
+test_that("add_meta rewrites metadata", {
+  input <- obj
+  output <- obj
+  attr(output, "meta") <- list(m = 13, n = 0)
+  expect_equal(add_meta(input, m = 13, n = 0), output)
+})
+
 
 # add_meta_cond -----------------------------------------------------------
 test_that("add_meta_cond works", {

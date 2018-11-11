@@ -238,19 +238,6 @@ test_that("plot.r_fun respects `n_sample` argument", {
 # Tested in `plot()` methods
 
 
-# dedupl_list -------------------------------------------------------------
-test_that("dedupl_list works", {
-  input_1 <- list(1, 2)
-  expect_equal(dedupl_list(input_1), input_1)
-
-  input_2 <- list(1, 2, c = 3)
-  expect_equal(dedupl_list(input_2), input_2)
-
-  input_3 <- list(a = 1, 2, c = 3, a = 4)
-  expect_equal(dedupl_list(input_3), input_3[-4])
-})
-
-
 # lines.p_fun -------------------------------------------------------------
 # Tested in `plot()` methods
 

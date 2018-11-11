@@ -36,6 +36,16 @@ add_class <- function(x, cl) {
   x
 }
 
+dedupl_list <- function(l) {
+  l_names <- names(l)
+
+  if (is.null(l_names)) {
+    l
+  } else {
+    l[!duplicated(l_names) | (l_names == "")]
+  }
+}
+
 
 # Notifications -----------------------------------------------------------
 stop_collapse <- function(...) {

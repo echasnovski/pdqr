@@ -57,6 +57,19 @@ test_that("add_class works", {
 })
 
 
+# dedupl_list -------------------------------------------------------------
+test_that("dedupl_list works", {
+  input_1 <- list(1, 2)
+  expect_equal(dedupl_list(input_1), input_1)
+
+  input_2 <- list(1, 2, c = 3)
+  expect_equal(dedupl_list(input_2), input_2)
+
+  input_3 <- list(a = 1, 2, c = 3, a = 4)
+  expect_equal(dedupl_list(input_3), input_3[-4])
+})
+
+
 # stop_collapse -----------------------------------------------------------
 test_that("stop_collapse works", {
   expect_error(

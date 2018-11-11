@@ -63,16 +63,6 @@ make_plot_dots <- function(...) {
   dedupl_list(list(...))
 }
 
-dedupl_list <- function(l) {
-  l_names <- names(l)
-
-  if (is.null(l_names)) {
-    l
-  } else {
-    l[!duplicated(l_names) | (l_names == "")]
-  }
-}
-
 warn_plotting_raw_d_fun <- function(f) {
   if (inherits(f, "d_fun") && (meta(f, "type") == "raw")) {
     warning_collapse(
