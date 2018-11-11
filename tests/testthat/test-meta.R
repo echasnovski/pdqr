@@ -51,6 +51,15 @@ test_that("add_meta_cond works", {
 })
 
 
+# remove_meta -------------------------------------------------------------
+test_that("remove_meta works", {
+  expect_equal(
+    remove_meta(structure(1, meta = list(m = 1), new = "a")),
+    structure(1, new = "a")
+  )
+})
+
+
 # copy_meta ---------------------------------------------------------------
 test_that("copy_meta works", {
   expect_equal(

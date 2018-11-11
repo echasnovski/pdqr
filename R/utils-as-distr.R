@@ -12,7 +12,7 @@ as_distr_impl_def <- function(fun_class, f, type, support, extra) {
   assert_type(f, is.function)
   assert_distr_type(type)
 
-  res <- add_meta(f, type = type, support = support)
+  res <- add_meta(remove_meta(f), type = type, support = support)
   res <- add_meta_cond(res, !is.null(extra), extra = extra)
 
   add_pdqr_class(res, fun_class)

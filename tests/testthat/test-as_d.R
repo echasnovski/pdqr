@@ -13,6 +13,13 @@ test_that("as_d works with user-defined function", {
   expect_error(as_d(user_d, support = c(0, 1)), "d_fun.*supply.*type")
 })
 
+test_that("as_d rewrites metadata on user-defined function", {
+  input <- structure(user_d, meta = list(type = "raw", new = 1), old = 2)
+  output <- as_d(input, type = "smooth", support = c(0, 1))
+  expect_true("old" %in% names(attributes(output)))
+  expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
+})
+
 test_that('as_d works with "p_fun"', {
   expect_equal_distr(
     as_d(p_raw_withx), d_raw_withx,

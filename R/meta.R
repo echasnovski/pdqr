@@ -27,6 +27,12 @@ add_meta_cond <- function(obj, cond, ...) {
   }
 }
 
+remove_meta <- function(obj) {
+  attr(obj, "meta") <- NULL
+
+  obj
+}
+
 copy_meta <- function(to, from) {
   attr(to, "meta") <- attr(from, "meta")
 
