@@ -37,5 +37,5 @@ d_fun_smooth <- function(x, ...) {
 }
 
 print.d_fun <- function(x, ...) {
-  distr_print("Density function", x, ...)
+  pdqr_print(x, "Density")
 }

@@ -100,14 +100,5 @@ test_that("d_fun uses `...` as arguments for `density()`", {
 
 # print.d_fun -------------------------------------------------------------
 test_that("print.d_fun works", {
-  expect_output(
-    print(d_raw),
-    "Density function.*raw.*[mM]eta.*support, type.*function"
-  )
-
-  d_smooth_extra <- d_fun(x_smooth, type = "smooth", extra = "a")
-  expect_output(
-    print(d_smooth_extra),
-    "Density function.*smoothed.*[mM]eta.*extra, support, type.*function"
-  )
+  expect_pdqr_print(d_fun, "Density")
 })

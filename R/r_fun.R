@@ -37,5 +37,5 @@ r_fun_smooth <- function(x, ...) {
 }
 
 print.r_fun <- function(x, ...) {
-  distr_print("Random generation function", x, ...)
+  pdqr_print(x, "Random generation")
 }

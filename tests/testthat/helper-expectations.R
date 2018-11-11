@@ -24,3 +24,37 @@ expect_equal_distr <- function(f_1, f_2, grid,
     expect_equal(meta(f_1, "support"), meta(f_2, "support"))
   }
 }
+
+expect_pdqr_print <- function(f, f_name) {
+  supp_regex <- "Support: \\[[-0-9\\.]+, [-0-9\\.]+\\]"
+
+  f_raw <- f(x_raw, type = "raw", attach_x = TRUE)
+  raw_sample_regex <- paste0(
+    'Sample \\("x"\\) is attached \\(', length(x_raw), " elements\\)"
+  )
+  expect_output(
+    print(f_raw),
+    regex_scatter(
+      f_name, "raw type", supp_regex, raw_sample_regex,
+      "Extra", "is not attached"
+    )
+  )
+
+  f_smooth <- f(x_smooth, type = "smooth", attach_x = FALSE, extra = list(1, 2))
+  smooth_sample_regex <- 'Sample \\("x"\\) is not attached'
+  expect_output(
+    print(f_smooth),
+    regex_scatter(
+      f_name, "smooth type", supp_regex, smooth_sample_regex,
+      "Extra", "is attached \\(2 elements\\)"
+    )
+  )
+
+  f_single <- f(1, type = "raw")
+  single_sample_regex <- 'Sample \\("x"\\) is attached \\(1 element\\)'
+  expect_output(print(f_single), single_sample_regex)
+}
+
+regex_scatter <- function(...) {
+  paste0(c(...), collapse = ".*")
+}

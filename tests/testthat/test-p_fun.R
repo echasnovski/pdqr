@@ -117,20 +117,5 @@ test_that("p_fun uses `...` as arguments for `density()`", {
 
 # print.p_fun -------------------------------------------------------------
 test_that("print.p_fun works", {
-  expect_output(
-    print(p_raw),
-    paste0(
-      "Cumulative distribution function.*raw.*",
-      "[mM]eta.*support, type.*function"
-    )
-  )
-
-  p_smooth_extra <- p_fun(x_smooth, type = "smooth", extra = "a")
-  expect_output(
-    print(p_smooth_extra),
-    paste0(
-      "Cumulative distribution function.*smoothed.*",
-      "[mM]eta.*extra, support, type.*function"
-    )
-  )
+  expect_pdqr_print(p_fun, "Cumulative distribution")
 })

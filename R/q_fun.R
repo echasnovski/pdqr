@@ -99,5 +99,5 @@ find_quant <- function(p, cdf_start, x_start, slope, intercept) {
 }
 
 print.q_fun <- function(x, ...) {
-  distr_print("Quantile function", x, ...)
+  pdqr_print(x, "Quantile")
 }

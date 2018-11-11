@@ -21,35 +21,6 @@ add_pdqr_class <- function(f, subclass) {
   add_class(f, c(subclass, "pdqr_fun"))
 }
 
-distr_print <- function(fun_name, x, ...) {
-  x_type <- meta(x, "type")
-  if (is.null(x_type) || !(x_type %in% c("raw", "smooth"))) {
-    cat(collapse_nullable(
-      'Input should have "type" metadata equal to "raw" or "smooth", not ',
-      x_type, "\n"
-    ))
-    attributes(x) <- NULL
-
-    return(print(x, ...))
-  }
-
-  meta_names <- paste0(names(meta(x)), collapse = ", ")
-  type_mod <- switch(
-    x_type,
-    raw = "raw",
-    smooth = "smoothed"
-  )
-
-  cat(collapse_nullable(
-    fun_name, " based on ", type_mod, " input\n",
-    "Metadata has following elements: ", meta_names
-  ))
-  cat("\n")
-  attributes(x) <- NULL
-
-  print(x, ...)
-}
-
 filter_numbers <- function(x) {
   x_is_nan <- is.nan(x)
   if (any(x_is_nan)) {
@@ -105,6 +76,11 @@ add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
   res <- add_meta(res, type = type)
 
   res
+}
+
+is_support <- function(supp) {
+  is.numeric(supp) && (length(supp) == 2) &&
+    (supp[1] <= supp[2])
 }
 
 

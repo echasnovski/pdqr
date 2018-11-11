@@ -65,20 +65,5 @@ test_that("r_fun handles metadata", {
 
 # print.r_fun -------------------------------------------------------------
 test_that("print.r_fun works", {
-  expect_output(
-    print(r_raw),
-    paste0(
-      "Random generation function.*raw.*",
-      "[mM]eta.*support, type.*function"
-    )
-  )
-
-  r_smooth_extra <- r_fun(x_smooth, type = "smooth", extra = "a")
-  expect_output(
-    print(r_smooth_extra),
-    paste0(
-      "Random generation function.*smoothed.*",
-      "[mM]eta.*extra, support, type.*function"
-    )
-  )
+  expect_pdqr_print(r_fun, "Random generation")
 })

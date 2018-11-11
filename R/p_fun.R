@@ -65,5 +65,5 @@ p_fun_smooth <- function(x, ...) {
 }
 
 print.p_fun <- function(x, ...) {
-  distr_print("Cumulative distribution function", x, ...)
+  pdqr_print(x, "Cumulative distribution")
 }

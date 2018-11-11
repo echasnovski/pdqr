@@ -116,14 +116,5 @@ test_that("q_fun uses `...` as arguments for `density()`", {
 
 # print.q_fun -------------------------------------------------------------
 test_that("print.q_fun works", {
-  expect_output(
-    print(q_raw),
-    "Quantile function.*raw.*[mM]eta.*support, type.*function"
-  )
-
-  q_smooth_extra <- q_fun(x_smooth, type = "smooth", extra = "a")
-  expect_output(
-    print(q_smooth_extra),
-    "Quantile function.*smoothed.*[mM]eta.*extra, support, type.*function"
-  )
+  expect_pdqr_print(q_fun, "Quantile")
 })

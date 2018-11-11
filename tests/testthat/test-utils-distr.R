@@ -34,20 +34,6 @@ test_that("add_pdqr_class works", {
 # Tested in `*_fun()` functions
 
 
-# distr_print -------------------------------------------------------------
-# Main functionality is tested in `print.*_fun()` functions
-test_that("distr_print works with bad input", {
-  bad_input <- structure(
-    runif, class = c("r_fun", "pdqr_fun", "function"),
-    meta = list(support = c(0, 1))
-  )
-  expect_output(
-    distr_print("Random generation function", bad_input),
-    'type.*raw.*smooth.*not NULL'
-  )
-})
-
-
 # filter_numbers ----------------------------------------------------------
 test_that("filter_numbers works", {
   expect_equal(
@@ -129,6 +115,16 @@ test_that("add_common_meta works", {
     ),
     output_4
   )
+})
+
+
+# is_support --------------------------------------------------------------
+test_that("is_support works", {
+  expect_true(is_support(c(-1, 1)))
+
+  expect_false(is_support("a"))
+  expect_false(is_support(1))
+  expect_false(is_support(c(1, -1)))
 })
 
 
