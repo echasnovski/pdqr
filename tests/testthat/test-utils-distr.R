@@ -10,7 +10,7 @@ expect_density_ext_works <- function(input, ...) {
 
   # Expect extension tails have small width
   expect_true(
-    (diff(out_x[1:2]) < 10^(-3)) && (diff(out_x[n - 1:0]) < 10^(-3))
+    (diff(out_x[1:2]) < 10^(-5)) && (diff(out_x[n - 1:0]) < 10^(-5))
   )
   # Expect density start from and end in 0 (for continuity)
   expect_equal(out_y[c(1, n)], c(0, 0))

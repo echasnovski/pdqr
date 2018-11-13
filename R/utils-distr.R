@@ -111,12 +111,12 @@ density_ext <- function(x, ...) {
 
   x_dens <- dens[["x"]]
   n <- length(x_dens)
-  max_offset <- 10^(-4)
+  max_offset <- 10^(-6)
   if (n == 1) {
     offset <- rep(max_offset, 2)
   } else {
-    x_width_first <- diff(utils::head(x_dens, 2))
-    x_width_last <- diff(utils::tail(x_dens, 2))
+    x_width_first <- x_dens[2] - x_dens[1]
+    x_width_last <- x_dens[n] - x_dens[n - 1]
     offset <- pmin(max_offset, c(x_width_first, x_width_last))
   }
 
