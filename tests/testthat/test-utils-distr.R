@@ -128,6 +128,14 @@ test_that("is_support works", {
 })
 
 
+# is_pdqr_fun -------------------------------------------------------------
+test_that("is_pdqr_fun works", {
+  expect_true(is_pdqr_fun(p_raw))
+  expect_false(is_pdqr_fun(user_p))
+  expect_false(is_pdqr_fun("a"))
+})
+
+
 # distr_tbl ---------------------------------------------------------------
 test_that("distr_tbl works on object with 'x' metadata", {
   input <- structure(x_smooth[1], meta = list(x = x_raw))

@@ -83,6 +83,10 @@ is_support <- function(supp) {
     (supp[1] <= supp[2])
 }
 
+is_pdqr_fun <- function(obj) {
+  is.function(obj) && inherits(obj, "pdqr_fun")
+}
+
 
 # Construct discrete distribution table -----------------------------------
 # For export (don't forget to mention roundings)
