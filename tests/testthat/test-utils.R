@@ -23,6 +23,15 @@ test_that("is_string works", {
 })
 
 
+# is_single_number --------------------------------------------------------
+test_that("is_single_number works", {
+  expect_true(is_single_number(1))
+  expect_true(is_single_number(0L))
+  expect_false(is_single_number(1:2))
+  expect_false(is_single_number("a"))
+})
+
+
 # inverse -----------------------------------------------------------------
 test_that("inverse works", {
   square <- function(x) {x^2}

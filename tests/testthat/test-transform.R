@@ -48,6 +48,7 @@ test_that("pdqr_transform throws errors", {
     pdqr_transform(sq, p_custom, .pdqr_args = "a"), "\\.pdqr_args.*list"
   )
   expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
+  expect_error(pdqr_transform(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
 })
 
 

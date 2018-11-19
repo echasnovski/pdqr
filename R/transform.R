@@ -38,8 +38,10 @@ pdqr_transform <- function(trans, ..., .n_sample = 10000,
 
 assert_trans_dots <- function(dots_list) {
   lapply(dots_list, function(cur_dot) {
-    if (!(is_pdqr_fun(cur_dot) || is.numeric(cur_dot))) {
-      stop_collapse('`...` should contain only "pdqr" functions and numbers.')
+    if (!(is_pdqr_fun(cur_dot) || is_single_number(cur_dot))) {
+      stop_collapse(
+        '`...` should contain only "pdqr" functions and single numbers.'
+      )
     }
   })
 

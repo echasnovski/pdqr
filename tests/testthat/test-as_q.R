@@ -157,7 +157,8 @@ test_that("as_q asserts extra arguments of methods", {
   expect_error(as_q(user_q, "smooth", c(1, 0)), "support.*bigger")
 
   # Converting from `r_fun`
-  expect_error(as_q(r_smooth_nox, n_sample = "a"), "n_sample.*numeric")
+  expect_error(as_q(r_smooth_nox, n_sample = "a"), "n_sample.*single_number")
+  expect_error(as_q(r_smooth_nox, n_sample = 10:11), "n_sample.*single_number")
 })
 
 

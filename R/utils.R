@@ -7,6 +7,10 @@ is_string <- function(x) {
   is.character(x) && (length(x) == 1)
 }
 
+is_single_number <- function(x) {
+  is.numeric(x) && (length(x) == 1)
+}
+
 inverse <- function(f, interval, ...) {
   function(t) {
     vapply(
