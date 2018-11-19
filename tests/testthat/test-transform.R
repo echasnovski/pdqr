@@ -44,11 +44,25 @@ test_that("pdqr_transform works", {
 })
 
 test_that("pdqr_transform throws errors", {
+  expect_error(pdqr_transform(1, p_custom), "trans.*function")
+  expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
+  expect_error(pdqr_transform(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
+  expect_error(
+    pdqr_transform(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single_number"
+  )
+  expect_error(
+    pdqr_transform(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single_number"
+  )
+  expect_error(
+    pdqr_transform(sq, p_custom, .pdqr_type = 1), "\\.pdqr_type.*string"
+  )
+  expect_error(
+    pdqr_transform(sq, p_custom, .pdqr_type = c("a", "b")),
+    "\\.pdqr_type.*string"
+  )
   expect_error(
     pdqr_transform(sq, p_custom, .pdqr_args = "a"), "\\.pdqr_args.*list"
   )
-  expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
-  expect_error(pdqr_transform(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
 })
 
 

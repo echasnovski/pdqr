@@ -136,6 +136,17 @@ test_that("is_pdqr_fun works", {
 })
 
 
+# is_pdqr_type ------------------------------------------------------------
+test_that("is_pdqr_type works", {
+  expect_true(is_pdqr_type("p_fun"))
+  expect_true(is_pdqr_type("d_fun"))
+  expect_true(is_pdqr_type("q_fun"))
+  expect_true(is_pdqr_type("r_fun"))
+
+  expect_false(is_pdqr_type("p"))
+})
+
+
 # distr_tbl ---------------------------------------------------------------
 test_that("distr_tbl works on object with 'x' metadata", {
   input <- structure(x_smooth[1], meta = list(x = x_raw))

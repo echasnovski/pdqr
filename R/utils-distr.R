@@ -87,6 +87,10 @@ is_pdqr_fun <- function(obj) {
   is.function(obj) && inherits(obj, "pdqr_fun")
 }
 
+is_pdqr_type <- function(chr) {
+  chr %in% paste0(c("p", "d", "q", "r"), "_fun")
+}
+
 
 # Construct discrete distribution table -----------------------------------
 # For export (don't forget to mention roundings)

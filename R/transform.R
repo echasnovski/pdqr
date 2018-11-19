@@ -1,9 +1,11 @@
 pdqr_transform <- function(trans, ..., .n_sample = 10000,
                            .pdqr_type = NULL, .pdqr_args = list()) {
-  assert_type(.pdqr_args, is.list)
-
+  assert_type(trans, is.function)
   dots <- list(...)
   assert_trans_dots(dots)
+  assert_type(.n_sample, is_single_number)
+  assert_type(.pdqr_type, is_string, allow_null = TRUE)
+  assert_type(.pdqr_args, is.list)
 
   # Convert to random generation functions.
     # If `dots` entry isn't "pdqr" function than it is a numeric.
