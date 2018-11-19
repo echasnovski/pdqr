@@ -10,6 +10,8 @@
 #'   original name of supplied `predicate`: all alphanumeric with '_' and '.'
 #'   characters (until the name end) after the first appearance of either `is.`
 #'   or `is_`. In case of a doubt supply `type` explicitly.
+#' @param allow_null If `TRUE` then error isn't thrown if `x` is `NULL`, no
+#'   matter what `predicate(x)` returns.
 #'
 #' @examples
 #' \dontrun{
@@ -25,14 +27,16 @@
 #'
 #' @keywords internal
 #' @noRd
-assert_type <- function(x, predicate, type = NULL) {
+assert_type <- function(x, predicate, type = NULL, allow_null = FALSE) {
   x_name <- deparse(substitute(x))
   if (is.null(type)) {
     predicate_name <- deparse(substitute(predicate))
     type <- parse_type(predicate_name)
   }
 
-  if (!isTRUE(predicate(x))) {
+  is_pred_true <- (allow_null && is.null(x)) || isTRUE(predicate(x))
+
+  if (!is_pred_true) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
     stop_collapse(
       "`", x_name, "` must be '", type, "', not '", get_type(x), "'."

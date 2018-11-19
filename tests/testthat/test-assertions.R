@@ -20,6 +20,11 @@ test_that("assert_type works", {
   )
 })
 
+test_that("assert_type allows `NULL`", {
+  input <- NULL
+  expect_silent(assert_type(input, is.numeric, allow_null = TRUE))
+})
+
 
 # get_type ----------------------------------------------------------------
 test_that("get_type works", {
