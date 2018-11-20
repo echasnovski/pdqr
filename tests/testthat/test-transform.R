@@ -53,10 +53,10 @@ test_that("pdqr_transform throws errors", {
   expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
   expect_error(pdqr_transform(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
   expect_error(
-    pdqr_transform(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single_number"
+    pdqr_transform(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single number"
   )
   expect_error(
-    pdqr_transform(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single_number"
+    pdqr_transform(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single number"
   )
   expect_error(
     pdqr_transform(sq, p_custom, .pdqr_type = 1), "\\.pdqr_type.*string"

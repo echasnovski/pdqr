@@ -33,7 +33,7 @@ assert_missing_args <- function(f_name, ...) {
 }
 
 as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
-  assert_type(n_sample, is_single_number)
+  assert_type(n_sample, is_single_number, type = "single number")
 
   distr_fun(
     x = f(n_sample),
