@@ -43,6 +43,11 @@ test_that("pdqr_transform works", {
   )
 })
 
+test_that("pdqr_transform doesn't attach `x` by default", {
+  output <- pdqr_transform(sq, q_raw_withx)
+  expect_false(has_meta(output, "x"))
+})
+
 test_that("pdqr_transform throws errors", {
   expect_error(pdqr_transform(1, p_custom), "trans.*function")
   expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")

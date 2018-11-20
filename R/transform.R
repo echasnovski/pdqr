@@ -1,5 +1,6 @@
 pdqr_transform <- function(trans, ..., .n_sample = 10000,
-                           .pdqr_type = NULL, .pdqr_args = list()) {
+                           .pdqr_type = NULL,
+                           .pdqr_args = list(attach_x = FALSE)) {
   assert_type(trans, is.function)
   dots <- list(...)
   assert_trans_dots(dots)
