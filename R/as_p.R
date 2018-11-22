@@ -29,9 +29,11 @@ as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
   copy_meta(res, f)
 }
 
-as_p.q_fun <- function(f, ...) {
+as_p.q_fun <- function(f, n_grid = 10001, ...) {
   support <- meta(f, "support")
-  f_inv <- inverse(f, interval = c(0, 1), tol = sqrt(.Machine$double.eps))
+  f_inv <- inversing(
+    f, interval = c(0, 1), f_type = meta(f, "type"), n_grid = n_grid
+  )
 
   res <- function(q) {
     out <- numeric(length(q))

@@ -76,11 +76,11 @@ test_that('as_p works with "q_fun"', {
   )
   expect_equal_distr(
     as_p(q_smooth_nox), p_smooth_nox,
-    grid = x_smooth_vec_ext, thres = 10^(-6)
+    grid = x_smooth_vec_ext, thres = 10^(-5)
   )
   expect_equal_distr(
     as_p(q_custom), p_custom,
-    grid = x_custom
+    grid = x_custom, thres = 10^(-4)
   )
 })
 
@@ -116,6 +116,13 @@ test_that('as_p works with "pdqr_fun" (not adding duplicated class)', {
   input <- structure(pbeta, class = c("pdqr_fun", "function"))
   output <- as_p(input, type = "smooth", support = c(0, 1))
   expect_equal(class(output), c("p_fun", "pdqr_fun", "function"))
+})
+
+test_that("as_p respects `n_grid` argument", {
+  expect_different_distr(
+    as_p(q_smooth_nox), as_p(q_smooth_nox, n_grid = 101),
+    grid = x_smooth_vec
+  )
 })
 
 test_that("as_p asserts extra arguments of methods", {

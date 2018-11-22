@@ -16,6 +16,15 @@ expect_equal_r_funs <- function(f_1, f_2, n_sample = 1000,
   expect_equal(meta(f_1), meta(f_2))
 }
 
+expect_different_r_funs <- function(f_1, f_2, n_sample = 1000,
+                                    mean_thres = 0.1, sd_thres = 0.05) {
+  smpl_1 <- f_1(n_sample)
+  smpl_2 <- f_2(n_sample)
+
+  expect_true(abs(mean(smpl_1) - mean(smpl_2)) >= mean_thres)
+  expect_true(abs(sd(smpl_1) - sd(smpl_2)) >= sd_thres)
+}
+
 
 # as_r --------------------------------------------------------------------
 test_that("as_r works with user-defined function", {
@@ -119,6 +128,15 @@ test_that('as_r works with "pdqr_fun" (not adding duplicated class)', {
   input <- structure(rbeta, class = c("pdqr_fun", "function"))
   output <- as_r(input, type = "smooth", support = c(0, 1))
   expect_equal(class(output), c("r_fun", "pdqr_fun", "function"))
+})
+
+test_that("as_r respects `n_grid` argument", {
+  expect_different_r_funs(
+    as_r(p_smooth_nox), as_r(p_smooth_nox, n_grid = 3)
+  )
+  expect_different_r_funs(
+    as_r(d_smooth_nox), as_r(d_smooth_nox, n_grid = 3)
+  )
 })
 
 test_that("as_r asserts extra arguments of methods", {

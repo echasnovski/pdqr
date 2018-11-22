@@ -11,16 +11,37 @@ is_single_number <- function(x) {
   is.numeric(x) && (length(x) == 1)
 }
 
-inverse <- function(f, interval, ...) {
-  function(t) {
-    vapply(
-      t,
-      function(u) {
-        stats::uniroot(function(z) {f(z) - u}, interval, ...)[["root"]]
-      },
-      numeric(1)
+inversing <- function(f, interval, f_type, n_grid = 10001) {
+  x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
+  y_grid <- f(x_grid)
+
+  # Removing duplicates is needed for correct inversion of "raw" ECDF
+  y_isnt_dupl <- !duplicated.default(y_grid, fromLast = TRUE)
+  x_grid <- x_grid[y_isnt_dupl]
+  y_grid <- y_grid[y_isnt_dupl]
+
+  if (length(x_grid) == 1) {
+    only_val <- x_grid[1]
+
+    res <- function(v) {rep(only_val, length(v))}
+  } else {
+    approx_method <- approx_method_from_type(f_type)
+
+    res <- stats::approxfun(
+      x = y_grid, y = x_grid, method = approx_method, rule = 2
     )
   }
+
+  # For efficient memory management
+  rm(list = c("x_grid", "y_grid", "y_isnt_dupl", "f"), envir = environment())
+
+  res
+}
+
+approx_method_from_type <- function(chr) {
+  switch(
+    chr, raw = "constant", smooth = "linear", stop_collapse("Invalid type.")
+  )
 }
 
 stretch_range <- function(x, ext = 10^(-6)) {

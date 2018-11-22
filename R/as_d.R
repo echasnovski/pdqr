@@ -34,8 +34,8 @@ as_d.p_fun <- function(f, ...) {
   copy_meta(res, f)
 }
 
-as_d.q_fun <- function(f, ...) {
-  as_d(as_p(f, ...))
+as_d.q_fun <- function(f, n_grid = 10001, ...) {
+  as_d(as_p(f, n_grid = n_grid, ...))
 }
 
 as_d.r_fun <- function(f, n_sample = 10000, ...) {

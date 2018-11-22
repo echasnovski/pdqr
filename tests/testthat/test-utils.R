@@ -32,14 +32,30 @@ test_that("is_single_number works", {
 })
 
 
-# inverse -----------------------------------------------------------------
-test_that("inverse works", {
+# inversing ---------------------------------------------------------------
+test_that("inversing works", {
   square <- function(x) {x^2}
-  inv_square <- inverse(square, c(0.5, 10))
+  inv_square <- inversing(square, c(0.5, 10), f_type = "smooth")
   x_vec <- sample(seq(0.5, 10, by = 0.01))
 
   max_error <- max(abs(inv_square(x_vec) - sqrt(x_vec)))
   expect_true(max_error <= 10^(-4))
+})
+
+test_that("inversing works with constant", {
+  const_inv <- inversing(
+    function(x) {rep(10, length(x))}, c(0, 20), f_type = "smooth"
+  )
+  expect_equal(const_inv(c(0, 10, 20)), rep(20, 3))
+})
+
+
+# approx_method_from_type -------------------------------------------------
+test_that("approx_method_from_type works", {
+  expect_equal(approx_method_from_type("raw"), "constant")
+  expect_equal(approx_method_from_type("smooth"), "linear")
+
+  expect_error(approx_method_from_type("a"), "Invalid")
 })
 
 

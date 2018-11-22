@@ -25,6 +25,11 @@ expect_equal_distr <- function(f_1, f_2, grid,
   }
 }
 
+expect_different_distr <- function(f_1, f_2, grid,
+                                   thres = sqrt(.Machine$double.eps)) {
+  expect_true(max(abs(f_1(grid) - f_2(grid)), na.rm = TRUE) >= thres)
+}
+
 expect_pdqr_print <- function(f, f_name) {
   supp_regex <- "Support: \\[[-0-9\\.]+, [-0-9\\.]+\\]"
 

@@ -76,7 +76,7 @@ test_that('as_d works with "q_fun"', {
   expect_equal_distr(
     # The reason edges are removed is described in test for "p_fun".
     as_d(q_custom), d_custom,
-    grid = x_custom_inner, thres = 10^(-3)
+    grid = x_custom_inner, thres = 10^(-2)
   )
 })
 
@@ -120,6 +120,13 @@ test_that('as_d works with "pdqr_fun" (not adding duplicated class)', {
   input <- structure(dbeta, class = c("pdqr_fun", "function"))
   output <- as_d(input, type = "smooth", support = c(0, 1))
   expect_equal(class(output), c("d_fun", "pdqr_fun", "function"))
+})
+
+test_that("as_d respects `n_grid` argument", {
+  expect_different_distr(
+    as_d(q_smooth_nox), as_d(q_smooth_nox, n_grid = 101),
+    grid = x_smooth_vec
+  )
 })
 
 test_that("as_d asserts extra arguments of methods", {

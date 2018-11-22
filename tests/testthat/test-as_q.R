@@ -36,7 +36,7 @@ test_that('as_q works with "p_fun"', {
     q_from_p_raw_nox, q_raw_nox,
     # Converting from "p_fun" in case `type = "raw"` is not precise around
     # actual values. So they are removed.
-    grid = p_vec_wholed, thres = 10^(-6)
+    grid = p_vec_wholed, thres = 10^(-3)
   )
   expect_equal_distr(
     as_q(p_smooth_withx), q_smooth_withx,
@@ -44,11 +44,11 @@ test_that('as_q works with "p_fun"', {
   )
   expect_equal_distr(
     as_q(p_smooth_nox), q_smooth_nox,
-    grid = p_vec
+    grid = p_vec, thres = 10^(-6)
   )
   expect_equal_distr(
     as_q(p_custom), q_custom,
-    grid = p_vec
+    grid = p_vec, thres = 10^(-7)
   )
 })
 
@@ -69,7 +69,7 @@ test_that('as_q works with "d_fun"', {
     # Converting from "d_fun" in case `type = "raw"` is not precise because
     # actual values are hard to find. Even if they are found (as the case in
     # these tests) precision around them is poor. So they are removed.
-    grid = p_vec_wholed, thres = 10^(-6)
+    grid = p_vec_wholed, thres = 10^(-3)
   )
   expect_equal_distr(
     as_q(d_smooth_withx), q_smooth_withx,
@@ -85,7 +85,7 @@ test_that('as_q works with "d_fun"', {
   # This takes rather much time to run.
   expect_equal_distr(
     as_q(d_custom), q_custom,
-    grid = p_vec
+    grid = p_vec, thres = 10^(-7)
   )
 })
 
@@ -145,6 +145,17 @@ test_that('as_q works with "pdqr_fun" (not adding duplicated class)', {
   input <- structure(qbeta, class = c("pdqr_fun", "function"))
   output <- as_q(input, type = "smooth", support = c(0, 1))
   expect_equal(class(output), c("q_fun", "pdqr_fun", "function"))
+})
+
+test_that("as_q respects `n_grid` argument", {
+  expect_different_distr(
+    as_q(p_smooth_nox), as_q(p_smooth_nox, n_grid = 101),
+    grid = x_smooth_vec
+  )
+  expect_different_distr(
+    as_q(d_smooth_nox), as_q(d_smooth_nox, n_grid = 101),
+    grid = x_smooth_vec
+  )
 })
 
 test_that("as_q asserts extra arguments of methods", {

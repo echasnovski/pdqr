@@ -17,12 +17,15 @@ as_q.default <- function(f, type, support, extra = NULL, ...) {
   as_distr_impl_def("q_fun", f, type, support, extra)
 }
 
-as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
+as_q.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   support <- meta(f, "support")
   # Stretch support a little bit to ensure opposite signs of `f()` values at end
-  # points for correct use of `uniroot()` during `inverse()` output.
+  # points for correct use in `inversing()`.
   ext_support <- stretch_range(support)
-  f_inv <- inverse(f, interval = ext_support, tol = sqrt(.Machine$double.eps))
+  f_inv <- inversing(
+    f, interval = ext_support, f_type = meta(f, "type"),
+    n_grid = n_grid
+  )
 
   warn_conversion_from_p_raw(f, isTRUE(warn_precision), "quantile function")
 
@@ -45,10 +48,13 @@ as_q.p_fun <- function(f, warn_precision = TRUE, ...) {
   copy_meta(res, f)
 }
 
-as_q.d_fun <- function(f, warn_precision = TRUE, ...) {
+as_q.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   # This conversion usually is very slow due to task nature: to compute "q_fun"
   # from "d_fun" one *needs* to compute "p_fun".
-  as_q(as_p(f, warn_precision = warn_precision, ...), warn_precision = FALSE)
+  as_q(
+    as_p(f, warn_precision = warn_precision, ...),
+    n_grid = n_grid, warn_precision = FALSE
+  )
 }
 
 as_q.r_fun <- function(f, n_sample = 10000, ...) {

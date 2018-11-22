@@ -17,15 +17,15 @@ as_r.default <- function(f, type, support, extra = NULL, ...) {
   as_distr_impl_def("r_fun", f, type, support, extra)
 }
 
-as_r.p_fun <- function(f, warn_precision = TRUE, ...) {
+as_r.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   warn_conversion_from_p_raw(f, warn_precision, "random generation function")
-  q_f <- as_q(f, warn_precision = FALSE, ...)
+  q_f <- as_q(f, n_grid = n_grid, warn_precision = FALSE, ...)
 
   as_r_impl(q_f)
 }
 
-as_r.d_fun <- function(f, warn_precision = TRUE, ...) {
-  q_f <- as_q(f, warn_precision = warn_precision, ...)
+as_r.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+  q_f <- as_q(f, n_grid = n_grid, warn_precision = warn_precision, ...)
 
   as_r_impl(q_f)
 }
