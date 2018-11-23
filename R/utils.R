@@ -1,5 +1,5 @@
 # General -----------------------------------------------------------------
-is_near <- function (x, y, tol = .Machine$double.eps^0.5) {
+is_near <- function (x, y, tol = 10^(-8)) {
   abs(x - y) < tol
 }
 

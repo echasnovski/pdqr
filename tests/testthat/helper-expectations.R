@@ -11,8 +11,7 @@ is_support <- function(supp) {
     (supp[1] <= supp[2])
 }
 
-expect_equal_distr <- function(f_1, f_2, grid,
-                               thres = sqrt(.Machine$double.eps),
+expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
                                check_supp = TRUE) {
   expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))
   expect_equal(class(f_1), class(f_2))
@@ -25,8 +24,7 @@ expect_equal_distr <- function(f_1, f_2, grid,
   }
 }
 
-expect_different_distr <- function(f_1, f_2, grid,
-                                   thres = sqrt(.Machine$double.eps)) {
+expect_different_distr <- function(f_1, f_2, grid, thres = 10^(-8)) {
   expect_true(max(abs(f_1(grid) - f_2(grid)), na.rm = TRUE) >= thres)
 }
 

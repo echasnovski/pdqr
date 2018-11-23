@@ -17,17 +17,16 @@ as_d.default <- function(f, type, support, extra = NULL, ...) {
   as_distr_impl_def("d_fun", f, type, support, extra)
 }
 
-as_d.p_fun <- function(f, ...) {
-  small_h <- (.Machine$double.eps)^(1/3)
+as_d.p_fun <- function(f, h = 10^(-6), ...) {
   big_h <- switch(
     meta(f, "type"),
     raw = 0.5,
-    smooth = small_h,
+    smooth = h,
     stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
   )
 
   res <- function(x) {
-    (f(x + small_h) - f(x - small_h)) / (2 * big_h)
+    (f(x + h) - f(x - h)) / (2 * big_h)
   }
   res <- add_pdqr_class(res, "d_fun")
 
