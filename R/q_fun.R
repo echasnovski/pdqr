@@ -1,5 +1,5 @@
-q_fun <- function(x, type = "smooth", attach_x = TRUE, extra = NULL,
-                  ...) {
+q_fun <- function(x, type = "smooth", attach_x = identical(type, "raw"),
+                  extra = NULL, ...) {
   distr_impl(
     fun_class = "q_fun",
     impl_funs = list(raw = q_fun_raw, smooth = q_fun_smooth),

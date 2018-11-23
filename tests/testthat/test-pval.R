@@ -62,10 +62,10 @@ test_that("pdqr_pval adjusts multiple p-values", {
 })
 
 test_that("pdqr_pval excepts not only objects of class 'p_fun'", {
-  expect_pval(q_raw, 5, c(0.55, 0.55, 0.5, 1))
+  expect_pval(q_raw_withx, 5, c(0.55, 0.55, 0.5, 1))
 
-  expect_pval(d_smooth, 0, c(0.574, 0.574, 0.426, 0.852))
-  expect_pval(r_smooth, 0, c(0.574, 0.574, 0.426, 0.852))
+  expect_pval(d_smooth_withx, 0, c(0.574, 0.574, 0.426, 0.852))
+  expect_pval(r_smooth_withx, 0, c(0.574, 0.574, 0.426, 0.852))
 
   expect_pval(r_custom, 0.51, c(0.24, 0.24, 0.76, 0.48), digits = 1)
 })

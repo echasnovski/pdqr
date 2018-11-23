@@ -90,8 +90,13 @@ test_that("p_fun handles metadata", {
   )
 
   p_smooth_2 <- p_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(p_smooth_2), c("extra", "support", "type", "x"))
+  expect_named(meta(p_smooth_2), c("extra", "support", "type"))
   expect_equal(meta(p_smooth_2, "extra"), list(a = TRUE))
+})
+
+test_that("p_fun has correct default for `attach_x`", {
+  expect_true("x" %in% names(meta(p_raw)))
+  expect_false("x" %in% names(meta(p_smooth)))
 })
 
 test_that("p_fun uses `...` as arguments for `density()`", {

@@ -50,8 +50,13 @@ test_that("r_fun handles metadata", {
   )
 
   r_smooth_2 <- r_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(r_smooth_2), c("extra", "support", "type", "x"))
+  expect_named(meta(r_smooth_2), c("extra", "support", "type"))
   expect_equal(meta(r_smooth_2, "extra"), list(a = TRUE))
+})
+
+test_that("r_fun has correct default for `attach_x`", {
+  expect_true("x" %in% names(meta(r_raw)))
+  expect_false("x" %in% names(meta(r_smooth)))
 })
 
 
