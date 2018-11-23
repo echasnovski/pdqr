@@ -17,11 +17,11 @@ as_p.default <- function(f, type, support, extra = NULL, ...) {
   as_distr_impl_def("p_fun", f, type, support, extra)
 }
 
-as_p.d_fun <- function(f, warn_precision = TRUE, ...) {
+as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   res <- switch(
     meta(f, "type"),
     raw = p_from_d_raw(f, isTRUE(warn_precision)),
-    smooth = p_from_d_smooth(f),
+    smooth = p_from_d_smooth(f, n_grid = n_grid),
     stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
   )
   res <- add_pdqr_class(res, "p_fun")
@@ -86,43 +86,10 @@ detect_support_raw <- function(f, n = 10000) {
   x_grid[!is_near(f(x_grid), 0)]
 }
 
-p_from_d_smooth <- function(f) {
+p_from_d_smooth <- function(f, n_grid) {
   support <- meta(f, "support")
+  x_dens <- seq(from = support[1], to = support[2], length.out = n_grid)
+  y_dens <- f(x_dens)
 
-  function(q) {
-    out <- numeric(length(q))
-
-    is_q_small <- q <= support[1]
-    out[is_q_small] <- 0
-    is_q_large <- q >= support[2]
-    out[is_q_large] <- 1
-
-
-    is_q_between <- !(is_q_small | is_q_large)
-    out_between <- integrate_right(f, q[is_q_between], support[1])
-    # Extra cutoffs to respect floating point precision (~10^(-15))
-    out[is_q_between] <- pmin(pmax(out_between, 0), 1)
-
-    out
-  }
-}
-
-integrate_right <- function(f, at, from) {
-  # This "partial" approach should be faster if many `at` values are
-  # substantially bigger than `from`
-  at_order <- order(at)
-  at_sorted <- at[at_order]
-  at_grid <- c(from, at_sorted)
-
-  partial_integrals <- vapply(
-    seq_along(at),
-    function(i) {
-      stats::integrate(f, at_grid[i], at_grid[i + 1])[["value"]]
-    },
-    numeric(1)
-  )
-
-  integral_sorted <- cumsum(partial_integrals)
-
-  integral_sorted[order(at_order)]
+  p_from_d_points(x_dens, y_dens)
 }

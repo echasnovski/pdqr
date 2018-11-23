@@ -184,3 +184,7 @@ test_that("trapez_integral works", {
   expect_equal(trapez_integral(1:2, 1:2), 1.5)
   expect_equal(trapez_integral(cumsum(1:10), c(1:5, 5:1)), 174)
 })
+
+
+# p_from_d_points ---------------------------------------------------------
+# Tested in `p_fun` and `as_p`

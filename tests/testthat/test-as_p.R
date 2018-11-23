@@ -50,7 +50,7 @@ test_that('as_p works with "d_fun"', {
   )
   expect_equal_distr(
     as_p(d_smooth_nox), p_smooth_nox,
-    grid = x_smooth_vec_ext
+    grid = x_smooth_vec_ext, thres = 10^(-6)
   )
   expect_equal_distr(
     as_p(d_custom), p_custom,
@@ -120,6 +120,10 @@ test_that('as_p works with "pdqr_fun" (not adding duplicated class)', {
 
 test_that("as_p respects `n_grid` argument", {
   expect_different_distr(
+    as_p(d_smooth_nox), as_p(d_smooth_nox, n_grid = 101),
+    grid = x_smooth_vec
+  )
+  expect_different_distr(
     as_p(q_smooth_nox), as_p(q_smooth_nox, n_grid = 101),
     grid = x_smooth_vec
   )
@@ -166,11 +170,3 @@ test_that("as_p asserts extra arguments of methods", {
 
 # p_from_d_smooth ---------------------------------------------------------
 # Tested in `as_p()` tests for converting from 'd_fun' in case `type = "smooth"`
-
-# integrate_right ---------------------------------------------------------
-test_that("integrate_right works", {
-  my_f <- function(x) {x * x}
-  at <- sample(seq(0, 10, by = 0.01))
-
-  expect_equal(integrate_right(my_f, from = 0, at = at), at*at*at / 3)
-})
