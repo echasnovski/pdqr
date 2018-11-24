@@ -13,17 +13,7 @@ p_custom_ref <- structure(
   meta = list(type = "smooth", support = c(0, 1))
 )
 
-# Normal distribution multiplied by 4
-r_norm_input <- structure(
-  function(n) {rnorm(n, mean = 0, sd = 1)},
-  class = c("r_fun", "pdqr_fun", "function"),
-  meta = list(type = "smooth", support = c(-10, 10))
-)
-d_norm_ref <- structure(
-  function(x) {dnorm(x, mean = 0, sd = 2)},
-  class = c("d_fun", "pdqr_fun", "function"),
-  meta = list(type = "smooth", support = c(-20, 20))
-)
+x_norm_seq <- seq(-10, 10, by = 0.01)
 
 
 # pdqr_transform ----------------------------------------------------------
@@ -35,11 +25,21 @@ test_that("pdqr_transform works", {
     grid = x_custom_trunc, thres = 0.05, check_supp = FALSE
   )
 
+  # Normal distribution multiplied by 2
+  r_norm_input <- as_r(
+    function(n) {rnorm(n, mean = 0, sd = 1)},
+    type = "smooth", support = c(-10, 10)
+  )
+  d_norm_ref <- as_d(
+    function(x) {dnorm(x, mean = 0, sd = 2)},
+    type = "smooth", support = c(-20, 20)
+  )
+
   output_norm <- pdqr_transform(`*`, r_norm_input, 2, .pdqr_type = "d_fun")
   expect_distr_fun(output_norm, "d_fun", "smooth")
   expect_equal_distr(
     output_norm, d_norm_ref,
-    grid = seq(-10, 10, by = 0.01), thres = 0.01, check_supp = FALSE
+    grid = x_norm_seq, thres = 0.01, check_supp = FALSE
   )
 })
 
@@ -100,4 +100,42 @@ test_that("get_pdqr_type works", {
     get_pdqr_type(structure("a", class = c("p_fun", "d_fun"))), "p_fun"
   )
   expect_equal(get_pdqr_type(structure("a", class = "bbb")), NA_character_)
+})
+
+
+# Math.pdqr_fun -----------------------------------------------------------
+test_that("Math.pdqr_fun works", {
+  d_lnorm <- as_d(dlnorm, type = "smooth", support = c(0, 100))
+  d_norm_ref <- as_d(dnorm, type = "smooth", support = c(-10, 10))
+  d_norm_out <- log(d_lnorm)
+
+  expect_distr_fun(d_norm_out, "d_fun", "smooth")
+  expect_equal_distr(
+    d_norm_out, d_norm_ref,
+    grid = x_norm_seq, thres = 0.05, check_supp = FALSE
+  )
+})
+
+
+# Ops.pdqr_fun ------------------------------------------------------------
+test_that("Ops.pdqr_fun works", {
+  p_unif <- as_p(punif, "smooth", c(0, 1))
+  p_norm_ref <- as_p(pnorm, "smooth", c(-10, 10))
+  # Approximation of standard normal as centered sum of 12 uniform
+  p_norm_out <- p_unif + p_unif + p_unif + p_unif + p_unif + p_unif +
+    p_unif + p_unif + p_unif + p_unif + p_unif + p_unif - 6
+
+  expect_distr_fun(p_norm_out, "p_fun", "smooth")
+  expect_equal_distr(
+    p_norm_out, p_norm_ref,
+    grid = x_norm_seq, thres = 0.05, check_supp = FALSE
+  )
+})
+
+test_that("Ops.pdqr_fun warns about not numeric type", {
+  expect_warning(p_raw >= p_smooth, ">=.*logical.*[Cc]onvert")
+})
+
+test_that("Ops.pdqr_fun works with for generics with one argument", {
+  expect_warning(!p_raw, "!.*logical.*[Cc]onvert")
 })

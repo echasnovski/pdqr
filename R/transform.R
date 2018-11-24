@@ -1,3 +1,4 @@
+# Main transformation function --------------------------------------------
 pdqr_transform <- function(trans, ..., .n_sample = 10000,
                            .pdqr_type = NULL,
                            .pdqr_args = list(attach_x = FALSE)) {
@@ -71,4 +72,39 @@ get_pdqr_type <- function(f) {
   f_type <- pdqr_types[match(class(f), pdqr_types)]
 
   f_type[!is.na(f_type)][1]
+}
+
+
+# Group generics ----------------------------------------------------------
+Math.pdqr_fun <- function(x, ...) {
+  n_sample <- getOption("pdqr.transform.n_sample")
+
+  gen_fun <- function(y) {
+    get(.Generic)(y, ...)
+  }
+
+  pdqr_transform(gen_fun, x, .n_sample = n_sample)
+}
+
+Ops.pdqr_fun <- function(e1, e2) {
+  n_sample <- getOption("pdqr.transform.n_sample")
+
+  gen_fun <- function(...) {
+    res <- get(.Generic)(...)
+    if (!is.numeric(res)) {
+      warning_collapse(
+        "Output of `", .Generic, "` is '", get_type(res), "'. ",
+        "Converting to 'numeric'."
+      )
+      res <- as.numeric(res)
+    }
+
+    res
+  }
+
+  if (missing(e2)) {
+    pdqr_transform(gen_fun, e1, .n_sample = n_sample)
+  } else {
+    pdqr_transform(gen_fun, e1, e2, .n_sample = n_sample)
+  }
 }
