@@ -48,10 +48,17 @@ test_that("pdqr_transform doesn't attach `x` by default", {
   expect_false(has_meta(output, "x"))
 })
 
+test_that("pdqr_transform correctly restores 'pdqr' type", {
+  expect_is(pdqr_transform(`+`, 1, p_raw), "p_fun")
+  expect_is(pdqr_transform(`+`, d_raw, p_raw), "d_fun")
+  expect_is(pdqr_transform(`+`, d_raw, p_raw, .pdqr_type = "r_fun"), "r_fun")
+})
+
 test_that("pdqr_transform throws errors", {
   expect_error(pdqr_transform(1, p_custom), "trans.*function")
   expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
   expect_error(pdqr_transform(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
+  expect_error(pdqr_transform(`+`, 1, 2), "`...`.*should.*at least one.*pdqr")
   expect_error(
     pdqr_transform(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single number"
   )
@@ -73,6 +80,13 @@ test_that("pdqr_transform throws errors", {
 
 # assert_trans_dots -------------------------------------------------------
 # Tested in `pdqr_transform()`
+
+
+# find_ref_f --------------------------------------------------------------
+test_that("find_ref_f works", {
+  expect_equal(find_ref_f(list(1, p_raw, 2)), p_raw)
+  expect_null(find_ref_f(list(1, 2)))
+})
 
 
 # impute_pdqr_fun ---------------------------------------------------------

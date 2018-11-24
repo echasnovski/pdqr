@@ -25,7 +25,7 @@ pdqr_transform <- function(trans, ..., .n_sample = 10000,
   smpl <- do.call(trans, smpl_list)
 
   # Produce output pdqr function
-  ref_f <- dots[[1]]
+  ref_f <- find_ref_f(dots)
   pdqr_fun <- impute_pdqr_fun(.pdqr_type, ref_f)
   pdqr_call_args <- dedupl_list(c(
     list(x = smpl),
@@ -41,15 +41,26 @@ pdqr_transform <- function(trans, ..., .n_sample = 10000,
 }
 
 assert_trans_dots <- function(dots_list) {
-  lapply(dots_list, function(cur_dot) {
-    if (!(is_pdqr_fun(cur_dot) || is_single_number(cur_dot))) {
-      stop_collapse(
-        '`...` should contain only "pdqr" functions and single numbers.'
-      )
-    }
-  })
+  pdqr_check <- vapply(dots_list, is_pdqr_fun, logical(1))
+  num_check <- vapply(dots_list, is_single_number, logical(1))
+
+  if (!all(pdqr_check | num_check)) {
+    stop_collapse(
+      '`...` should contain only "pdqr" functions and single numbers.'
+    )
+  }
+
+  if (!any(pdqr_check)) {
+    stop_collapse("`...` should have at least one", '"pdqr" function.')
+  }
 
   dots_list
+}
+
+find_ref_f <- function(obj_list) {
+  is_obj_pdqr <- vapply(obj_list, is_pdqr_fun, logical(1))
+
+  obj_list[[which(is_obj_pdqr)[1]]]
 }
 
 impute_pdqr_fun <- function(pdqr_type, ref) {
