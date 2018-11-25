@@ -35,7 +35,7 @@ test_that("pdqr_transform works", {
     type = "smooth", support = c(-20, 20)
   )
 
-  output_norm <- pdqr_transform(`*`, r_norm_input, 2, .pdqr_type = "d_fun")
+  output_norm <- pdqr_transform(`*`, r_norm_input, 2, .pdqr_class = "d_fun")
   expect_distr_fun(output_norm, "d_fun", "smooth")
   expect_equal_distr(
     output_norm, d_norm_ref,
@@ -51,7 +51,7 @@ test_that("pdqr_transform doesn't attach `x` by default", {
 test_that("pdqr_transform correctly restores 'pdqr' type", {
   expect_is(pdqr_transform(`+`, 1, p_raw), "p_fun")
   expect_is(pdqr_transform(`+`, d_raw, p_raw), "d_fun")
-  expect_is(pdqr_transform(`+`, d_raw, p_raw, .pdqr_type = "r_fun"), "r_fun")
+  expect_is(pdqr_transform(`+`, d_raw, p_raw, .pdqr_class = "r_fun"), "r_fun")
 })
 
 test_that("pdqr_transform throws errors", {
@@ -66,11 +66,11 @@ test_that("pdqr_transform throws errors", {
     pdqr_transform(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single number"
   )
   expect_error(
-    pdqr_transform(sq, p_custom, .pdqr_type = 1), "\\.pdqr_type.*string"
+    pdqr_transform(sq, p_custom, .pdqr_class = 1), "\\.pdqr_class.*string"
   )
   expect_error(
-    pdqr_transform(sq, p_custom, .pdqr_type = c("a", "b")),
-    "\\.pdqr_type.*string"
+    pdqr_transform(sq, p_custom, .pdqr_class = c("a", "b")),
+    "\\.pdqr_class.*string"
   )
   expect_error(
     pdqr_transform(sq, p_custom, .pdqr_args = "a"), "\\.pdqr_args.*list"
@@ -102,18 +102,18 @@ test_that("impute_pdqr_fun works", {
 test_that("impute_pdqr_fun throws errors", {
   expect_error(
     impute_pdqr_fun("a", r_raw),
-    'pdqr_type.*one of.*"p_fun", "d_fun", "q_fun", "r_fun"'
+    'pdqr_class.*one of.*"p_fun", "d_fun", "q_fun", "r_fun"'
   )
 })
 
 
-# get_pdqr_type -----------------------------------------------------------
-test_that("get_pdqr_type works", {
-  expect_equal(get_pdqr_type(structure("a", class = "p_fun")), "p_fun")
+# get_pdqr_class ----------------------------------------------------------
+test_that("get_pdqr_class works", {
+  expect_equal(get_pdqr_class(structure("a", class = "p_fun")), "p_fun")
   expect_equal(
-    get_pdqr_type(structure("a", class = c("p_fun", "d_fun"))), "p_fun"
+    get_pdqr_class(structure("a", class = c("p_fun", "d_fun"))), "p_fun"
   )
-  expect_equal(get_pdqr_type(structure("a", class = "bbb")), NA_character_)
+  expect_equal(get_pdqr_class(structure("a", class = "bbb")), NA_character_)
 })
 
 

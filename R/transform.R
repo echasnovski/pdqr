@@ -1,12 +1,12 @@
 # Main transformation function --------------------------------------------
 pdqr_transform <- function(trans, ..., .n_sample = 10000,
-                           .pdqr_type = NULL,
+                           .pdqr_class = NULL,
                            .pdqr_args = list(attach_x = FALSE)) {
   assert_type(trans, is.function)
   dots <- list(...)
   assert_trans_dots(dots)
   assert_type(.n_sample, is_single_number, type = "single number")
-  assert_type(.pdqr_type, is_string, allow_null = TRUE)
+  assert_type(.pdqr_class, is_string, allow_null = TRUE)
   assert_type(.pdqr_args, is.list)
 
   # Convert to random generation functions.
@@ -26,7 +26,7 @@ pdqr_transform <- function(trans, ..., .n_sample = 10000,
 
   # Produce output pdqr function
   ref_f <- find_ref_f(dots)
-  pdqr_fun <- impute_pdqr_fun(.pdqr_type, ref_f)
+  pdqr_fun <- impute_pdqr_fun(.pdqr_class, ref_f)
   pdqr_call_args <- dedupl_list(c(
     list(x = smpl),
     .pdqr_args,
@@ -63,24 +63,24 @@ find_ref_f <- function(obj_list) {
   obj_list[[which(is_obj_pdqr)[1]]]
 }
 
-impute_pdqr_fun <- function(pdqr_type, ref) {
-  if (is.null(pdqr_type)) {
-    pdqr_type <- get_pdqr_type(ref)
-  } else if (!(pdqr_type %in% c("p_fun", "d_fun", "q_fun", "r_fun" ))) {
+impute_pdqr_fun <- function(pdqr_class, ref) {
+  if (is.null(pdqr_class)) {
+    pdqr_class <- get_pdqr_class(ref)
+  } else if (!is_pdqr_class(pdqr_class)) {
     stop_collapse(
-      '`.pdqr_type` should be one of "p_fun", "d_fun", "q_fun", "r_fun".'
+      '`.pdqr_class` should be one of "p_fun", "d_fun", "q_fun", "r_fun".'
     )
   }
 
   switch(
-    pdqr_type,
+    pdqr_class,
     p_fun = p_fun, d_fun = d_fun, q_fun = q_fun, r_fun = r_fun
   )
 }
 
-get_pdqr_type <- function(f) {
-  pdqr_types <- paste0(c("p", "d", "q", "r"), "_fun")
-  f_type <- pdqr_types[match(class(f), pdqr_types)]
+get_pdqr_class <- function(f) {
+  pdqr_classes <- paste0(c("p", "d", "q", "r"), "_fun")
+  f_type <- pdqr_classes[match(class(f), pdqr_classes)]
 
   f_type[!is.na(f_type)][1]
 }

@@ -136,14 +136,11 @@ test_that("is_pdqr_fun works", {
 })
 
 
-# is_pdqr_type ------------------------------------------------------------
-test_that("is_pdqr_type works", {
-  expect_true(is_pdqr_type("p_fun"))
-  expect_true(is_pdqr_type("d_fun"))
-  expect_true(is_pdqr_type("q_fun"))
-  expect_true(is_pdqr_type("r_fun"))
+# is_pdqr_class -----------------------------------------------------------
+test_that("is_pdqr_class works", {
+  expect_true(all(is_pdqr_class(c("p_fun", "d_fun", "q_fun", "r_fun"))))
 
-  expect_false(is_pdqr_type("p"))
+  expect_false(is_pdqr_class("p"))
 })
 
 

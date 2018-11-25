@@ -87,7 +87,7 @@ is_pdqr_fun <- function(obj) {
   is.function(obj) && inherits(obj, "pdqr_fun")
 }
 
-is_pdqr_type <- function(chr) {
+is_pdqr_class <- function(chr) {
   chr %in% paste0(c("p", "d", "q", "r"), "_fun")
 }
 
