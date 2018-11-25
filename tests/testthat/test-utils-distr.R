@@ -128,27 +128,6 @@ test_that("is_pdqr_class works", {
 })
 
 
-# distr_tbl ---------------------------------------------------------------
-test_that("distr_tbl works on object with 'x' metadata", {
-  input <- structure(x_smooth[1], meta = list(x = x_raw))
-  expect_equal(distr_tbl(input), x_raw_distr_tbl)
-})
-
-test_that("distr_tbl works on numeric vector", {
-  expect_equal(distr_tbl(x_raw), x_raw_distr_tbl)
-})
-
-test_that("distr_tbl throws errors", {
-  expect_error(distr_tbl("a"), "meta.*numeric")
-})
-
-test_that("distr_tbl does rounding", {
-  input <- 1 + 10^(-(9:12))
-  output <- data.frame(x = 1, prob = 1)
-  expect_equal(distr_tbl(input), output)
-})
-
-
 # density_piecelin --------------------------------------------------------
 # Tested in `*_fun()`
 

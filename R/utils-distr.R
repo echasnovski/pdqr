@@ -92,25 +92,6 @@ is_pdqr_class <- function(chr) {
 }
 
 
-# Construct discrete distribution table -----------------------------------
-# For export (don't forget to mention roundings)
-distr_tbl <- function(x) {
-  x_meta <- meta(x, "x")
-  if (!is.null(x_meta)) {
-    smpl <- x_meta
-  } else if (is.numeric(x)) {
-    smpl <- x
-  } else {
-    stop_collapse('Input should have metadata "x" or be numeric.')
-  }
-
-  x_tbl <- table(round(smpl, digits = 8))
-  x_prob <- as.numeric(x_tbl) / length(smpl)
-
-  data.frame(x = as.numeric(names(x_tbl)), prob = x_prob)
-}
-
-
 # Piecewise linear density ------------------------------------------------
 # Wrapper for `density()` assuming that output points will be the base for
 # piecewise linear density function.
