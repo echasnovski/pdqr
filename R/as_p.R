@@ -38,8 +38,8 @@ as_p.q_fun <- function(f, n_grid = 10001, ...) {
   res <- function(q) {
     out <- numeric(length(q))
 
-    is_small_q <- q <= support[1]
-    is_big_q <- q >= support[2]
+    is_small_q <- q < support[1]
+    is_big_q <- q > support[2]
     is_in_support <- !(is_small_q | is_big_q)
 
     out[is_small_q] <- 0
