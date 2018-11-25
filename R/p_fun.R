@@ -25,7 +25,7 @@ p_fun_raw <- function(x) {
 }
 
 p_fun_smooth <- function(x, ...) {
-  dens <- density_ext(x, ...)
+  dens <- density_piecelin(x, ...)
   support <- range(dens[["x"]])
 
   res <- p_from_d_points(dens[["x"]], dens[["y"]])

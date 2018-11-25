@@ -111,29 +111,17 @@ distr_tbl <- function(x) {
 }
 
 
-# Extended density --------------------------------------------------------
-# Ensures continuous linear interpolation by adding first and last points
-# with value 0.
-density_ext <- function(x, ...) {
+# Piecewise linear density ------------------------------------------------
+# Wrapper for `density()` assuming that output points will be the base for
+# piecewise linear density function.
+density_piecelin <- function(x, ...) {
   dens <- stats::density(x, ...)
-
   x_dens <- dens[["x"]]
-  n <- length(x_dens)
-  max_offset <- 10^(-6)
-  if (n == 1) {
-    offset <- rep(max_offset, 2)
-  } else {
-    x_width_first <- x_dens[2] - x_dens[1]
-    x_width_last <- x_dens[n] - x_dens[n - 1]
-    offset <- pmin(max_offset, c(x_width_first, x_width_last))
-  }
+  y_dens <- dens[["y"]]
 
-  new_x <- c(x_dens[1] - offset[1], x_dens, x_dens[n] + offset[2])
-  new_y <- c(0, dens[["y"]], 0)
+  tot_integral <- trapez_integral(x_dens, y_dens)
 
-  new_integral <- trapez_integral(new_x, new_y)
-
-  list(x = new_x, y = new_y / new_integral)
+  list(x = x_dens, y = y_dens / tot_integral)
 }
 
 trapez_integral <- function(x, y) {

@@ -1,22 +1,6 @@
 context("test-utils-distr")
 
 
-# Custom expectations -----------------------------------------------------
-expect_density_ext_works <- function(input, ...) {
-  output <- density_ext(input, ...)
-  out_x <- output[["x"]]
-  out_y <- output[["y"]]
-  n <- length(out_x)
-
-  # Expect extension tails have small width
-  expect_true(
-    (diff(out_x[1:2]) < 10^(-5)) && (diff(out_x[n - 1:0]) < 10^(-5))
-  )
-  # Expect density start from and end in 0 (for continuity)
-  expect_equal(out_y[c(1, n)], c(0, 0))
-}
-
-
 # add_pdqr_class ----------------------------------------------------------
 test_that("add_pdqr_class works", {
   expect_equal(
@@ -165,15 +149,8 @@ test_that("distr_tbl does rounding", {
 })
 
 
-# density_ext -------------------------------------------------------------
-test_that("density_ext works", {
-  expect_density_ext_works(x_smooth)
-  expect_density_ext_works(x_smooth / 10000)
-})
-
-test_that("density_ext works on edge case n = 1", {
-  expect_density_ext_works(x_smooth, n = 1)
-})
+# density_piecelin --------------------------------------------------------
+# Tested in `*_fun()`
 
 
 # trapez_integral ---------------------------------------------------------

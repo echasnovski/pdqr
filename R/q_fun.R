@@ -32,7 +32,7 @@ q_fun_raw <- function(x) {
 }
 
 q_fun_smooth <- function(x, ...) {
-  dens <- density_ext(x, ...)
+  dens <- density_piecelin(x, ...)
 
   # For efficient memory management
   rm(list = "x", envir = environment())

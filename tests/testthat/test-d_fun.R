@@ -31,11 +31,6 @@ test_that("d_fun output integrates to 1 in case `type` = 'smooth'", {
   expect_true((output_range[1] <= 1) && (1 <= output_range[2]))
 })
 
-test_that("d_fun equals 0 on edges of support in case `type` = 'smooth'", {
-  support <- meta(d_smooth, "support")
-  expect_equal(d_smooth(support), c(0, 0))
-})
-
 test_that("d_fun output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
   expect_equal(d_raw(extreme_vec), c(0, 0))
