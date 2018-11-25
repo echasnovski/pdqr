@@ -18,16 +18,22 @@ as_d.default <- function(f, type, support, extra = NULL, ...) {
 }
 
 as_d.p_fun <- function(f, h = 10^(-6), ...) {
-  big_h <- switch(
-    meta(f, "type"),
-    raw = 0.5,
-    smooth = h,
-    stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
-  )
+  support <- meta(f, "support")
+  type <- meta(f, "type")
 
-  res <- function(x) {
-    (f(x + h) - f(x - h)) / (2 * big_h)
+  if (type == "raw") {
+    res <- function(x) {f(x + h) - f(x - h)}
+  } else if (type == "smooth") {
+    res <- function(x) {
+      left_point <- pmax(x - h, support[1])
+      right_point <- pmin(x + h, support[2])
+      point_len <- right_point - left_point
+      (f(right_point) - f(left_point)) / point_len
+    }
+  } else {
+    stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
   }
+
   res <- add_pdqr_class(res, "d_fun")
 
   copy_meta(res, f)

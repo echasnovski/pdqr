@@ -48,6 +48,20 @@ test_that('as_d works with "p_fun"', {
   )
 })
 
+test_that('as_d for "p_fun" uses left and right derivative on support endges', {
+  p_beta_1 <- as_p(function(q) {pbeta(q, 1, 2)}, "smooth", c(0, 1))
+  expect_equal(as_d(p_beta_1, h = 10^(-6))(0), 2, tolerance = 10^(-6))
+
+  p_beta_2 <- as_p(function(q) {pbeta(q, 2, 1)}, "smooth", c(0, 1))
+  expect_equal(as_d(p_beta_2, h = 10^(-6))(1), 2, tolerance = 10^(-6))
+})
+
+test_that('as_d for "p_fun" throws error if "type" metadata is incorrect', {
+  corrupt_p <- p_smooth
+  attr(corrupt_p, "meta")[["type"]] <- "a"
+  expect_error(as_d(corrupt_p), "type.*raw.*or.*smooth")
+})
+
 test_that('as_d returns self in case of "d_fun"', {
   expect_identical(as_d(d_raw_withx), d_raw_withx)
   expect_identical(as_d(d_raw_nox), d_raw_nox)
@@ -125,6 +139,13 @@ test_that('as_d works with "pdqr_fun" (not adding duplicated class)', {
 test_that("as_d respects `n_grid` argument", {
   expect_different_distr(
     as_d(q_smooth_nox), as_d(q_smooth_nox, n_grid = 101),
+    grid = x_smooth_vec
+  )
+})
+
+test_that("as_d respects `h` argument", {
+  expect_different_distr(
+    as_d(p_smooth_nox), as_d(p_smooth_nox, h = 0.1),
     grid = x_smooth_vec
   )
 })
