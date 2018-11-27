@@ -8,7 +8,7 @@ d_fun <- function(x, type = "smooth", attach_x = identical(type, "raw"),
 }
 
 d_fun_raw <- function(x) {
-  distr <- distr_tbl(x)
+  distr <- vec_distr_tbl(x)
   support <- range(x)
 
   # For efficient memory management

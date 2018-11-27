@@ -8,7 +8,7 @@ p_fun <- function(x, type = "smooth", attach_x = identical(type, "raw"),
 }
 
 p_fun_raw <- function(x) {
-  distr <- distr_tbl(x)
+  distr <- vec_distr_tbl(x)
   distr_cum_prob <- c(0, cumsum(distr[["prob"]]))
   support <- range(x)
 

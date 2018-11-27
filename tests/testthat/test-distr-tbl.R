@@ -2,20 +2,14 @@ context("test-distr-tbl")
 
 
 # distr_tbl ---------------------------------------------------------------
-test_that("distr_tbl works with numeric input", {
-  input <- c(10, 8, rep(2, 5), 4, 6, 5)
-  output_ref <- data.frame(x = c(2, 4, 5, 6, 8, 10), prob = c(0.5, rep(0.1, 5)))
-  expect_equal(distr_tbl(input), output_ref)
-})
-
-test_that("distr_tbl removes `NA` in numeric input", {
-  input <- c(1, 1, 2, 2, NA)
-  output_ref <- data.frame(x = c(1, 2), prob = c(0.5, 0.5))
-  expect_equal(distr_tbl(input), output_ref)
-})
-
 test_that("distr_tbl works with 'x' in metadata", {
   expect_equal(distr_tbl(p_raw_withx), x_raw_distr_tbl)
+})
+
+test_that("distr_tbl removes `NA` from 'x' metadata", {
+  input <- structure(1, meta = list(x = c(1, 1, 2, 2, NA)))
+  output_ref <- data.frame(x = c(1, 2), prob = c(0.5, 0.5))
+  expect_equal(distr_tbl(input), output_ref)
 })
 
 test_that("distr_tbl works with 'pdqr' function", {
@@ -28,7 +22,7 @@ test_that("distr_tbl works with 'pdqr' function", {
 })
 
 test_that("distr_tbl throws errors", {
-  expect_error(distr_tbl("a"), "x.*metadata.*numeric.*pdqr.*function")
+  expect_error(distr_tbl("a"), "x.*metadata.*pdqr.*function")
 
   corrupt_r <- r_smooth_nox
   attr(corrupt_r, "meta")[["x"]] <- "a"
@@ -41,7 +35,12 @@ test_that("distr_tbl throws errors", {
 
 
 # vec_distr_tbl -----------------------------------------------------------
-# Tested in `distr_tbl()`
+# Main functionality is tested in `distr_tbl()`
+test_that("vec_distr_tbl removes `NA`s", {
+  input <- c(1, 1, 2, 2, NA)
+  output_ref <- data.frame(x = c(1, 2), prob = c(0.5, 0.5))
+  expect_equal(vec_distr_tbl(input), output_ref)
+})
 
 
 # p_fun_distr_tbl ---------------------------------------------------------
