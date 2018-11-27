@@ -26,6 +26,8 @@ distr_tbl <- function(obj, n_discrete = 10001, ...) {
 }
 
 vec_distr_tbl <- function(x, vals = sort(unique(x))) {
+  x <- x[!is.na(x)]
+
   x_val_id <- match(x, vals)
   prob <- tabulate(x_val_id) / length(x)
 

@@ -8,6 +8,12 @@ test_that("distr_tbl works with numeric input", {
   expect_equal(distr_tbl(input), output_ref)
 })
 
+test_that("distr_tbl removes `NA` in numeric input", {
+  input <- c(1, 1, 2, 2, NA)
+  output_ref <- data.frame(x = c(1, 2), prob = c(0.5, 0.5))
+  expect_equal(distr_tbl(input), output_ref)
+})
+
 test_that("distr_tbl works with 'x' in metadata", {
   expect_equal(distr_tbl(p_raw_withx), x_raw_distr_tbl)
 })
