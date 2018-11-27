@@ -1,8 +1,11 @@
 # Common functionality for `*_fun()` --------------------------------------
 distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
                        ...) {
-  x <- filter_numbers(x)
   assert_common_args(x, type, attach_x)
+  x <- filter_numbers(x)
+  if (length(x) == 0) {
+    stop_collapse("`x` shouldn't be empty.")
+  }
 
   fun <- switch(
     type,
@@ -44,9 +47,6 @@ filter_numbers <- function(x) {
 
 assert_common_args <- function(x, type, attach_x) {
   assert_type(x, is.numeric)
-  if (length(x) == 0) {
-    stop_collapse("`x` shouldn't be empty.")
-  }
 
   assert_distr_type(type)
 
