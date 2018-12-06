@@ -47,13 +47,8 @@ filter_numbers <- function(x) {
 
 assert_common_args <- function(x, type, attach_x) {
   assert_type(x, is.numeric)
-
   assert_distr_type(type)
-
-  assert_type(
-    attach_x, function(x) {identical(x, TRUE) || identical(x, FALSE)},
-    "`TRUE` or `FALSE`"
-  )
+  assert_type(attach_x, is_truefalse, "`TRUE` or `FALSE`")
 
   x
 }

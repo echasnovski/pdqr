@@ -32,6 +32,16 @@ test_that("is_single_number works", {
 })
 
 
+# is_truefalse ------------------------------------------------------------
+test_that("is_truefalse worksq", {
+  expect_true(is_truefalse(TRUE))
+  expect_true(is_truefalse(FALSE))
+  expect_false(is_truefalse(NA))
+  expect_false(is_truefalse(c(TRUE, TRUE)))
+  expect_false(is_truefalse(1))
+})
+
+
 # inversing ---------------------------------------------------------------
 test_that("inversing works", {
   square <- function(x) {x^2}

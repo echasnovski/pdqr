@@ -11,6 +11,10 @@ is_single_number <- function(x) {
   is.numeric(x) && (length(x) == 1)
 }
 
+is_truefalse <- function(x) {
+  identical(x, TRUE) || identical(x, FALSE)
+}
+
 inversing <- function(f, interval, f_type, n_grid = 10001) {
   x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
   y_grid <- f(x_grid)
