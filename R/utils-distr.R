@@ -75,7 +75,7 @@ add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
 
 is_support <- function(supp) {
   is.numeric(supp) && (length(supp) == 2) &&
-    (supp[1] <= supp[2])
+    (supp[1] <= supp[2]) && all(is.finite(supp))
 }
 
 is_pdqr_fun <- function(obj) {

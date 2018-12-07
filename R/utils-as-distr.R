@@ -59,6 +59,10 @@ assert_support <- function(support) {
     )
   }
 
+  if (any(is.infinite(support))) {
+    stop_collapse("`support` should have only finite elements.")
+  }
+
   support
 }
 

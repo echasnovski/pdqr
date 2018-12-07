@@ -6,11 +6,6 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_true(is_support(meta(input, "support")))
 }
 
-is_support <- function(supp) {
-  is.numeric(supp) && (length(supp) == 2) &&
-    (supp[1] <= supp[2])
-}
-
 expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
                                check_supp = TRUE) {
   expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))

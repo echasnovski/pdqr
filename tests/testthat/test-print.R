@@ -4,10 +4,14 @@ context("test-print")
 # pdqr_print --------------------------------------------------------------
 # Main functionality is tested in `*_fun()` functions
 test_that("pdqr_print works with bad input", {
-  input <- structure(1, meta = list(type = "a"))
-
+  input_1 <- structure(1, meta = list(type = "a"))
   expect_output(
-    pdqr_print(input, "Temp"), "unknown type.*Support: not correct"
+    pdqr_print(input_1, "Temp"), "unknown type.*Support: not correct"
+  )
+
+  input_2 <- structure(1, meta = list(type = "raw", support = c(1, Inf)))
+  expect_output(
+    pdqr_print(input_2, "Temp"), "Support: not correct"
   )
 })
 

@@ -108,6 +108,9 @@ test_that("is_support works", {
   expect_false(is_support("a"))
   expect_false(is_support(1))
   expect_false(is_support(c(1, -1)))
+  expect_false(is_support(c(-Inf, 1)))
+  expect_false(is_support(c(-1, Inf)))
+  expect_false(is_support(c(-Inf, Inf)))
 })
 
 
