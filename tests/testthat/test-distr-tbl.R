@@ -32,7 +32,7 @@ test_that("distr_tbl throws errors", {
 
   corrupt_d <- d_smooth_nox
   attr(corrupt_d, "meta")[["support"]] <- c(2, 1)
-  expect_error(distr_tbl(corrupt_d), "proper.*support")
+  expect_error(distr_tbl(corrupt_d), "x.*metadata.*pdqr.*function")
 })
 
 

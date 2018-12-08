@@ -117,8 +117,23 @@ test_that("is_support works", {
 # is_pdqr_fun -------------------------------------------------------------
 test_that("is_pdqr_fun works", {
   expect_true(is_pdqr_fun(p_raw))
-  expect_false(is_pdqr_fun(user_p))
   expect_false(is_pdqr_fun("a"))
+  expect_false(is_pdqr_fun(user_p))
+  expect_false(
+    is_pdqr_fun(structure(user_p, class = "pdqr_fun", meta = list(type = "a")))
+  )
+  expect_false(
+    is_pdqr_fun(
+      structure(
+        user_p, class = "pdqr_fun", meta = list(type = "raw", support = c(2, 1))
+      )
+    )
+  )
+
+  f_with_corrupt_x <- p_raw_withx
+  attr(f_with_corrupt_x, "meta")[["x"]] <- "a"
+  expect_false(is_pdqr_fun(f_with_corrupt_x))
+  expect_true(is_pdqr_fun(f_with_corrupt_x, check_x = FALSE))
 })
 
 

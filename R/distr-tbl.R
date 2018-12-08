@@ -1,6 +1,6 @@
 # To use `distr_tbl` given a sample, call `*_fun()` with `attach_x = TRUE`.
 distr_tbl <- function(f, n_discrete = 10001, ...) {
-  if (!(has_meta_x(f) || is_pdqr_fun(f))) {
+  if (!(has_meta_x(f) || is_pdqr_fun(f, check_x = FALSE))) {
     stop_collapse('`f` should have "x" metadata or be "pdqr" function.')
   }
 
@@ -25,9 +25,6 @@ vec_distr_tbl <- function(x, vals = sort(unique(x))) {
 
 p_fun_distr_tbl <- function(p_f, n_discrete = n_discrete) {
   support <- meta(p_f, "support")
-  if (!is_support(support)) {
-    stop_collapse('`f` should have proper "support" metadata.')
-  }
 
   x_discrete <- seq(from = support[1], to = support[2], length.out = n_discrete)
   p_vec <- p_f(c(support[1] - 10^(-6), x_discrete))

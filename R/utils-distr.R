@@ -78,8 +78,16 @@ is_support <- function(supp) {
     (supp[1] <= supp[2]) && all(is.finite(supp))
 }
 
-is_pdqr_fun <- function(obj) {
-  is.function(obj) && inherits(obj, "pdqr_fun")
+is_pdqr_fun <- function(obj, check_x = TRUE) {
+  if (check_x) {
+    # If "x" is present in metadata it should be numeric
+    check_x_res <- !xor(has_meta(obj, "x"), is.numeric(meta(obj, "x")))
+  } else {
+    check_x_res <- TRUE
+  }
+
+  is.function(obj) && inherits(obj, "pdqr_fun") &&
+    has_meta_type(obj) && has_meta_support(obj) && check_x_res
 }
 
 is_pdqr_class <- function(chr) {
