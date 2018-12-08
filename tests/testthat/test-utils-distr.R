@@ -130,6 +130,30 @@ test_that("is_pdqr_class works", {
 })
 
 
+# has_meta_type -----------------------------------------------------------
+test_that("has_meta_type works", {
+  expect_true(has_meta_type(p_raw))
+  expect_false(has_meta_type(1))
+  expect_false(has_meta_type(structure(1, meta = list(type = "a"))))
+})
+
+
+# has_meta_support --------------------------------------------------------
+test_that("has_meta_support works", {
+  expect_true(has_meta_support(p_raw))
+  expect_false(has_meta_support(1))
+  expect_false(has_meta_support(structure(1, meta = list(support = c(2, 1)))))
+})
+
+
+# has_meta_x --------------------------------------------------------------
+test_that("has_meta_x works", {
+  expect_true(has_meta_x(p_raw_withx))
+  expect_false(has_meta_x(p_raw_nox))
+  expect_false(has_meta_x(structure(1, meta = list(x = "a"))))
+})
+
+
 # density_piecelin --------------------------------------------------------
 # Tested in `*_fun()`
 

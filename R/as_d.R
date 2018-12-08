@@ -1,7 +1,7 @@
 as_d <- function(f, ...) {
   if (inherits(f, "d_fun")) {
     return(f)
-  } else if (has_meta(f, "x") && has_meta(f, "type")) {
+  } else if (has_meta_x(f) && has_meta_type(f)) {
     return(distr_from_meta(f, d_fun, ...))
   }
 

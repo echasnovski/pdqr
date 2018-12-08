@@ -32,7 +32,7 @@ pdqr_transform <- function(trans, ..., .n_sample = 10000,
     .pdqr_args,
     list(
       type = meta(ref_f, "type"),
-      attach_x = has_meta(ref_f, "x"),
+      attach_x = has_meta_x(ref_f),
       extra = meta(ref_f, "extra")
     )
   ))

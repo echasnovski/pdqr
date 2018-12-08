@@ -12,6 +12,12 @@ test_that("distr_tbl removes `NA` from 'x' metadata", {
   expect_equal(distr_tbl(input), output_ref)
 })
 
+test_that("distr_tbl ignores corrupt 'x' metadata", {
+  corrupt_p <- p_raw_nox
+  attr(corrupt_p, "meta")[["x"]] <- "a"
+  expect_equal(distr_tbl(corrupt_p), x_raw_distr_tbl)
+})
+
 test_that("distr_tbl works with 'pdqr' function", {
   expect_equal(distr_tbl(p_raw_nox), x_raw_distr_tbl)
   expect_equal(distr_tbl(q_raw_nox), x_raw_distr_tbl)
@@ -23,10 +29,6 @@ test_that("distr_tbl works with 'pdqr' function", {
 
 test_that("distr_tbl throws errors", {
   expect_error(distr_tbl("a"), "x.*metadata.*pdqr.*function")
-
-  corrupt_r <- r_smooth_nox
-  attr(corrupt_r, "meta")[["x"]] <- "a"
-  expect_error(distr_tbl(corrupt_r), "x.*metadata.*numeric")
 
   corrupt_d <- d_smooth_nox
   attr(corrupt_d, "meta")[["support"]] <- c(2, 1)

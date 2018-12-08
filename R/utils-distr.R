@@ -86,6 +86,18 @@ is_pdqr_class <- function(chr) {
   chr %in% paste0(c("p", "d", "q", "r"), "_fun")
 }
 
+has_meta_type <- function(f) {
+  has_meta(f, "type") && (meta(f, "type") %in% c("raw", "smooth"))
+}
+
+has_meta_support <- function(f) {
+  has_meta(f, "support") && is_support(meta(f, "support"))
+}
+
+has_meta_x <- function(f) {
+  has_meta(f, "x") && is.numeric(meta(f, "x"))
+}
+
 
 # Piecewise linear density ------------------------------------------------
 # Wrapper for `density()` assuming that output points will be the base for

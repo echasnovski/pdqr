@@ -1,23 +1,17 @@
 # To use `distr_tbl` given a sample, call `*_fun()` with `attach_x = TRUE`.
 distr_tbl <- function(f, n_discrete = 10001, ...) {
-  if (!(has_meta(f, "x") || is_pdqr_fun(f))) {
+  if (!(has_meta_x(f) || is_pdqr_fun(f))) {
     stop_collapse('`f` should have "x" metadata or be "pdqr" function.')
   }
 
-  if (has_meta(f, "x")) {
-    x_meta <- meta(f, "x")
-    if (!is.numeric(x_meta)) {
-      stop_collapse(
-        '"x" metadata should be ', "'numeric', not '", get_type(x_meta), "'."
-      )
-    }
-    return(vec_distr_tbl(x_meta))
+  if (has_meta_x(f)) {
+    vec_distr_tbl(meta(f, "x"))
+  } else {
+    # Discretize "pdqr" function
+    p_f <- as_p(f, ...)
+
+    p_fun_distr_tbl(p_f, n_discrete = n_discrete)
   }
-
-  # Discretize "pdqr" function
-  p_f <- as_p(f, ...)
-
-  p_fun_distr_tbl(p_f, n_discrete = n_discrete)
 }
 
 vec_distr_tbl <- function(x, vals = sort(unique(x))) {
