@@ -63,15 +63,36 @@ parse_type <- function(f_name) {
 }
 
 
-# Assert pdqr function type -----------------------------------------------
-assert_pdqr_ftype <- function(x) {
-  x_name <- deparse(substitute(x))
-  if (!inherits(x, c("p_fun", "d_fun", "q_fun", "r_fun"))) {
+# Assertion for "pdqr" function -------------------------------------------
+assert_pdqr_fun <- function(f) {
+  f_name <- paste0("`", deparse(substitute(f)), "`")
+
+  if (!is.function(f)) {
+    stop_collapse(f_name, " should be function.")
+  }
+  if (!inherits(f, "pdqr_fun")) {
+    stop_collapse(f_name, ' should inherit from "pdqr_fun".')
+  }
+  if (!inherits(f, c("p_fun", "d_fun", "q_fun", "r_fun"))) {
     stop_collapse(
-      '`', x_name, '` must inherit from one of classes: ',
-      '"p_fun", "d_fun", "q_fun", "r_fun"'
+      f_name, ' should inherit from one of classes: ',
+      '"p_fun", "d_fun", "q_fun", "r_fun".'
     )
   }
+  if (!has_meta_type(f)) {
+    stop_collapse(
+      f_name, ' should have proper "type" metadata ("raw" or "smooth").'
+    )
+  }
+  if (!has_meta_support(f)) {
+    stop_collapse(
+      f_name, ' should have proper "support" metadata (numeric vector ',
+      'of length 2 with non-decreasing finite elements).'
+    )
+  }
+  if (has_meta(f, "x") && !is.numeric(meta(f, "x"))) {
+    stop_collapse('"x" metadata in ', f_name, ' should be numeric.')
+  }
 
-  x
+  f
 }

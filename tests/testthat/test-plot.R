@@ -62,6 +62,13 @@ test_that("plot.p_fun and lines.p_fun respect `n_grid` argument", {
   )
 })
 
+test_that("plot.p_fun throws error with corrupt input", {
+  expect_error(
+    plot(structure(user_p, class = c("p_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
+
 
 # plot.d_fun --------------------------------------------------------------
 test_that("plot.d_fun works", {
@@ -131,6 +138,13 @@ test_that("plot.d_fun and lines.d_fun respect `n_grid` argument", {
   )
 })
 
+test_that("plot.d_fun throws error with corrupt input", {
+  expect_error(
+    plot(structure(user_d, class = c("d_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
+
 
 # plot.q_fun --------------------------------------------------------------
 test_that("plot.q_fun works", {
@@ -185,6 +199,13 @@ test_that("plot.q_fun and lines.q_fun respect `n_grid` argument", {
   )
 })
 
+test_that("plot.q_fun throws error with corrupt input", {
+  expect_error(
+    plot(structure(user_q, class = c("q_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
+
 
 # plot.r_fun --------------------------------------------------------------
 test_that("plot.r_fun works", {
@@ -229,6 +250,13 @@ test_that("plot.r_fun respects `n_sample` argument", {
   )
 })
 
+test_that("plot.r_fun throws error with corrupt input", {
+  expect_error(
+    plot(structure(user_r, class = c("r_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
+
 
 # plot_impl_pdq -----------------------------------------------------------
 # Tested in `plot()` methods
@@ -239,16 +267,33 @@ test_that("plot.r_fun respects `n_sample` argument", {
 
 
 # lines.p_fun -------------------------------------------------------------
-# Tested in `plot()` methods
+# Main functionality is tested in `plot()` methods
+test_that("lines.p_fun throws error with corrupt input", {
+  expect_error(
+    lines(structure(user_p, class = c("p_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
 
 
 # lines.d_fun -------------------------------------------------------------
-# Tested in `plot()` methods
+# Main functionality is tested in `plot()` methods
+test_that("lines.d_fun throws error with corrupt input", {
+  expect_error(
+    lines(structure(user_d, class = c("d_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
 
 
 # lines.q_fun -------------------------------------------------------------
-# Tested in `plot()` methods
-
+# Main functionality is tested in `plot()` methods
+test_that("lines.q_fun throws error with corrupt input", {
+  expect_error(
+    lines(structure(user_q, class = c("q_fun", "pdqr_fun"))),
+    "x.*proper.*type"
+  )
+})
 
 # lines_impl_pdq ----------------------------------------------------------
 # Tested in `plot()` methods

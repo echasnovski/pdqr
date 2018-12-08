@@ -1,6 +1,8 @@
 # plot() ------------------------------------------------------------------
 plot.p_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
+  assert_pdqr_fun(x)
+
   dots <- make_plot_dots(
     ...,
     type = "l", main = paste0("Cumulative distribution function ", x_name),
@@ -13,6 +15,7 @@ plot.p_fun <- function(x, y = NULL, n_grid = 1001, ...) {
 
 plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
+  assert_pdqr_fun(x)
 
   warn_plotting_raw_d_fun(x)
 
@@ -27,6 +30,8 @@ plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
 
 plot.q_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
+  assert_pdqr_fun(x)
+
   dots <- make_plot_dots(
     ...,
     type = "l", main = paste0("Quantile function ", x_name),
@@ -38,6 +43,7 @@ plot.q_fun <- function(x, y = NULL, n_grid = 1001, ...) {
 
 plot.r_fun <- function(x, y = NULL, n_sample = 1001, ...) {
   x_name <- deparse(substitute(x))
+  assert_pdqr_fun(x)
 
   smpl <- x(n_sample)
   hist_args <- make_plot_dots(
@@ -76,17 +82,23 @@ warn_plotting_raw_d_fun <- function(f) {
 
 # lines() -----------------------------------------------------------------
 lines.p_fun <- function(x, n_grid = 1001, ...) {
+  assert_pdqr_fun(x)
+
   # Stretch support to guarantee 0 and 1 on edges
   lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
 }
 
 lines.d_fun <- function(x, n_grid = 1001, ...) {
+  assert_pdqr_fun(x)
+
   warn_plotting_raw_d_fun(x)
 
   lines_impl_pdq(x, meta(x, "support"), n_grid, list(...))
 }
 
 lines.q_fun <- function(x, n_grid = 1001, ...) {
+  assert_pdqr_fun(x)
+
   lines_impl_pdq(x, c(0, 1), n_grid, list(...))
 }
 

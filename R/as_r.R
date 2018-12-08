@@ -18,6 +18,8 @@ as_r.default <- function(f, type, support, extra = NULL, ...) {
 }
 
 as_r.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+  assert_pdqr_fun(f)
+
   warn_conversion_from_p_raw(f, warn_precision, "random generation function")
   q_f <- as_q(f, n_grid = n_grid, warn_precision = FALSE, ...)
 
@@ -31,6 +33,8 @@ as_r.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
 }
 
 as_r.q_fun <- function(f, ...) {
+  assert_pdqr_fun(f)
+
   as_r_impl(f)
 }
 

@@ -18,6 +18,8 @@ as_q.default <- function(f, type, support, extra = NULL, ...) {
 }
 
 as_q.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+  assert_pdqr_fun(f)
+
   support <- meta(f, "support")
   # Stretch support a little bit to ensure opposite signs of `f()` values at end
   # points for correct use in `inversing()`.
@@ -58,5 +60,7 @@ as_q.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
 }
 
 as_q.r_fun <- function(f, n_sample = 10000, ...) {
+  assert_pdqr_fun(f)
+
   as_distr_impl_r(q_fun, f, n_sample, ...)
 }

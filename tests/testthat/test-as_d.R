@@ -150,6 +150,21 @@ test_that("as_d respects `h` argument", {
   )
 })
 
+test_that("as_d methods throw error with corrupt input", {
+  expect_error(
+    as_d(structure(user_p, class = c("p_fun", "pdqr_fun"))),
+    "f.*proper.*type"
+  )
+  expect_error(
+    as_d(structure(user_q, class = c("q_fun", "pdqr_fun"))),
+    "f.*proper.*type"
+  )
+  expect_error(
+    as_d(structure(user_r, class = c("r_fun", "pdqr_fun"))),
+    "f.*proper.*type"
+  )
+})
+
 test_that("as_d asserts extra arguments of methods", {
   # Default method
   expect_error(as_d(1, "smooth", c(0, 1)), "f.*function")

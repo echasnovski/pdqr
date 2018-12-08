@@ -42,13 +42,38 @@ test_that("parse_type works", {
 })
 
 
-# assert_pdqr_ftype -------------------------------------------------------
-test_that("assert_pdqr_ftype works", {
-  expect_error(assert_pdqr_ftype(1), "p_fun.*d_fun.*q_fun.*r_fun")
-  expect_error(assert_pdqr_ftype(user_p), "p_fun.*d_fun.*q_fun.*r_fun")
+# assert_pdqr_fun ---------------------------------------------------------
+test_that("assert_pdqr_fun works", {
+  input <- 1
+  expect_error(assert_pdqr_fun(input), "`input`.*function")
+  expect_error(assert_pdqr_fun(user_p), "inherit.*pdqr_fun")
+  expect_error(
+    assert_pdqr_fun(structure(user_p, class = "pdqr_fun")),
+    "inherit.*p_fun.*d_fun.*q_fun.*r_fun"
+  )
 
-  expect_silent(assert_pdqr_ftype(p_raw))
-  expect_silent(assert_pdqr_ftype(d_raw))
-  expect_silent(assert_pdqr_ftype(q_raw))
-  expect_silent(assert_pdqr_ftype(r_raw))
+  f_with_class <- structure(user_p, class = c("p_fun", "pdqr_fun"))
+  expect_error(assert_pdqr_fun(f_with_class), "proper.*type")
+  expect_error(
+    assert_pdqr_fun(structure(f_with_class, type = "a")),
+    "proper.*type"
+  )
+
+  expect_error(
+    assert_pdqr_fun(structure(f_with_class, meta = list(type = "smooth"))),
+    "proper.*support"
+  )
+  f_with_corrupt_support <- structure(
+    f_with_class, meta = list(type = "smooth", support = c(2, 1))
+  )
+  expect_error(assert_pdqr_fun(f_with_corrupt_support), "proper.*support")
+
+  f_with_corrupt_x <- p_raw_withx
+  attr(f_with_corrupt_x, "meta")[["x"]] <- "a"
+  expect_error(assert_pdqr_fun(f_with_corrupt_x), "x.*metadata.*numeric")
+
+  expect_silent(assert_pdqr_fun(p_raw_withx))
+  expect_silent(assert_pdqr_fun(d_raw_withx))
+  expect_silent(assert_pdqr_fun(q_raw_withx))
+  expect_silent(assert_pdqr_fun(r_raw_withx))
 })

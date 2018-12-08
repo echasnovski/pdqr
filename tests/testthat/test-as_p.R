@@ -129,6 +129,21 @@ test_that("as_p respects `n_grid` argument", {
   )
 })
 
+test_that("as_p methods throw error with corrupt input", {
+  expect_error(
+    as_p(structure(user_d, class = c("d_fun", "pdqr_fun"))),
+    "f.*proper.*type"
+  )
+  expect_error(
+    as_p(structure(user_q, class = c("q_fun", "pdqr_fun"))),
+    "f.*proper.*type"
+  )
+  expect_error(
+    as_p(structure(user_r, class = c("r_fun", "pdqr_fun"))),
+    "f.*proper.*type"
+  )
+})
+
 test_that("as_p asserts extra arguments of methods", {
   # Default method
   expect_error(as_p(1, "smooth", c(0, 1)), "f.*function")

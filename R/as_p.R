@@ -18,6 +18,8 @@ as_p.default <- function(f, type, support, extra = NULL, ...) {
 }
 
 as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+  assert_pdqr_fun(f)
+
   res <- switch(
     meta(f, "type"),
     raw = p_from_d_raw(f, isTRUE(warn_precision)),
@@ -30,6 +32,8 @@ as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
 }
 
 as_p.q_fun <- function(f, n_grid = 10001, ...) {
+  assert_pdqr_fun(f)
+
   support <- meta(f, "support")
   f_inv <- inversing(
     f, interval = c(0, 1), f_type = meta(f, "type"), n_grid = n_grid
@@ -54,6 +58,8 @@ as_p.q_fun <- function(f, n_grid = 10001, ...) {
 }
 
 as_p.r_fun <- function(f, n_sample = 10000, ...) {
+  assert_pdqr_fun(f)
+
   as_distr_impl_r(p_fun, f, n_sample, ...)
 }
 
