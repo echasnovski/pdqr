@@ -44,9 +44,10 @@ as_p.q_fun <- function(f, n_grid = 10001, ...) {
     is_big_q <- q > support[2]
     is_in_support <- !(is_small_q | is_big_q)
 
+    # Extra cutoffs to respect precision errors
+    out[is_in_support] <- pmin(pmax(f_inv(q[is_in_support]), 0), 1)
     out[is_small_q] <- 0
     out[is_big_q] <- 1
-    out[is_in_support] <- f_inv(q[is_in_support])
 
     out
   }
