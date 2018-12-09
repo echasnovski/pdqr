@@ -101,6 +101,7 @@ test_that("assert_support works", {
 
   expect_error(assert_support("a"), "numeric")
   expect_error(assert_support(1), "length 2")
+  expect_error(assert_support(c(1, NA)), "missing value")
   expect_error(assert_support(c(2, 1)), "[fF]irst.*not bigger")
   expect_error(assert_support(c(-Inf, 1)), "finite")
   expect_error(assert_support(c(1, Inf)), "finite")

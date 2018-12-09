@@ -137,13 +137,14 @@ assert_support <- function(support) {
       get_type(support), "'."
     )
   }
-
+  if (anyNA(support)) {
+    stop_collapse(support_name, " should not have missing values.")
+  }
   if (support[1] > support[2]) {
     stop_collapse(
       "First value in ", support_name, " should be not bigger than second one."
     )
   }
-
   if (any(is.infinite(support))) {
     stop_collapse(support_name, " should have only finite elements.")
   }
