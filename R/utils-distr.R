@@ -53,17 +53,6 @@ assert_common_args <- function(x, type, attach_x) {
   x
 }
 
-assert_distr_type <- function(type) {
-  assert_type(type, is_string)
-  if (!(type %in% c("raw", "smooth"))) {
-    stop_collapse(
-      '`type` should be one of "raw" or "smooth", not ', type, "."
-    )
-  }
-
-  type
-}
-
 add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
                             extra = NULL) {
   res <- add_meta_cond(obj, attach_x, x = x)

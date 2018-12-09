@@ -42,6 +42,10 @@ test_that("parse_type works", {
 })
 
 
+# assert_missing_args -----------------------------------------------------
+# Tested in tests for construction of `*_fun` from user-defined function
+
+
 # assert_pdqr_fun ---------------------------------------------------------
 test_that("assert_pdqr_fun works", {
   input <- 1
@@ -76,4 +80,29 @@ test_that("assert_pdqr_fun works", {
   expect_silent(assert_pdqr_fun(d_raw_withx))
   expect_silent(assert_pdqr_fun(q_raw_withx))
   expect_silent(assert_pdqr_fun(r_raw_withx))
+})
+
+
+# assert_distr_type -------------------------------------------------------
+test_that("assert_distr_type works", {
+  expect_silent(assert_distr_type("raw"))
+  expect_silent(assert_distr_type("smooth"))
+
+  expect_error(assert_distr_type(1), "string")
+  expect_error(assert_distr_type(c("raw", "smooth")), "string")
+  expect_error(assert_distr_type("a"), "raw.*smooth")
+})
+
+
+# assert_support ----------------------------------------------------------
+test_that("assert_support works", {
+  expect_silent(assert_support(c(0, 1)))
+  expect_silent(assert_support(c(1, 1)))
+
+  expect_error(assert_support("a"), "numeric")
+  expect_error(assert_support(1), "length 2")
+  expect_error(assert_support(c(2, 1)), "[fF]irst.*not bigger")
+  expect_error(assert_support(c(-Inf, 1)), "finite")
+  expect_error(assert_support(c(1, Inf)), "finite")
+  expect_error(assert_support(c(-Inf, Inf)), "finite")
 })

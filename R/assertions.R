@@ -63,7 +63,23 @@ parse_type <- function(f_name) {
 }
 
 
-# Assertion for "pdqr" function -------------------------------------------
+# Assert missing arguments in "*_fun" definitions -------------------------
+assert_missing_args <- function(f_name, ...) {
+  dots <- list(...)
+  missing_args <- names(Filter(isTRUE, dots))
+
+  if (length(missing_args) > 0) {
+    stop_collapse(
+      'To define "', f_name, '" supply the following arguments: ',
+      paste0('`', missing_args, '`', collapse = ", "), '.'
+    )
+  }
+
+  TRUE
+}
+
+
+# Assertions for "pdqr" functions -----------------------------------------
 assert_pdqr_fun <- function(f) {
   f_name <- paste0("`", deparse(substitute(f)), "`")
 
@@ -95,4 +111,42 @@ assert_pdqr_fun <- function(f) {
   }
 
   f
+}
+
+assert_distr_type <- function(type) {
+  type_name <- paste0("`", deparse(substitute(type)), "`")
+
+  if (!is_string(type)) {
+    stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
+  }
+  if (!(type %in% c("raw", "smooth"))) {
+    stop_collapse(
+      type_name, ' should be one of "raw" or "smooth", not "', type, '".'
+    )
+  }
+
+  type
+}
+
+assert_support <- function(support) {
+  support_name <- paste0("`", deparse(substitute(support)), "`")
+
+  if (!(is.numeric(support) && (length(support) == 2))) {
+    stop_collapse(
+      support_name, " should be 'numeric with length 2', not '",
+      get_type(support), "'."
+    )
+  }
+
+  if (support[1] > support[2]) {
+    stop_collapse(
+      "First value in ", support_name, " should be not bigger than second one."
+    )
+  }
+
+  if (any(is.infinite(support))) {
+    stop_collapse(support_name, " should have only finite elements.")
+  }
+
+  support
 }

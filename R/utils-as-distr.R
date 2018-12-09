@@ -18,20 +18,6 @@ as_distr_impl_def <- function(fun_class, f, type, support, extra) {
   add_pdqr_class(res, fun_class)
 }
 
-assert_missing_args <- function(f_name, ...) {
-  dots <- list(...)
-  missing_args <- names(Filter(isTRUE, dots))
-
-  if (length(missing_args) > 0) {
-    stop_collapse(
-      'To define "', f_name, '" supply the following arguments: ',
-      paste0('`', missing_args, '`', collapse = ", "), '.'
-    )
-  }
-
-  TRUE
-}
-
 as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
   assert_type(n_sample, is_single_number, type = "single number")
 
@@ -43,27 +29,6 @@ as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
     extra = meta(f, "extra"),
     ...
   )
-}
-
-assert_support <- function(support) {
-  if (!(is.numeric(support) && (length(support) == 2))) {
-    stop_collapse(
-      "`support` should be 'numeric with length 2', not '",
-      get_type(support), "'."
-    )
-  }
-
-  if (support[1] > support[2]) {
-    stop_collapse(
-      "First value in `support` should be not bigger than second one."
-    )
-  }
-
-  if (any(is.infinite(support))) {
-    stop_collapse("`support` should have only finite elements.")
-  }
-
-  support
 }
 
 warn_conversion_from_p_raw <- function(f, warn_precision, fun_name) {

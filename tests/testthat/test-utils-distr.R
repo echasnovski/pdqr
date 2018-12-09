@@ -47,17 +47,6 @@ test_that("assert_common_args works", {
 })
 
 
-# assert_distr_type -------------------------------------------------------
-test_that("assert_distr_type works", {
-  expect_silent(assert_distr_type("raw"))
-  expect_silent(assert_distr_type("smooth"))
-
-  expect_error(assert_distr_type(1), "type.*string")
-  expect_error(assert_distr_type(c("raw", "smooth")), "type.*string")
-  expect_error(assert_distr_type("a"), "type.*raw.*smooth")
-})
-
-
 # add_common_meta ---------------------------------------------------------
 test_that("add_common_meta works", {
   input <- "a"
