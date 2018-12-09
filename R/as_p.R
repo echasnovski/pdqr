@@ -23,8 +23,7 @@ as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   res <- switch(
     meta(f, "type"),
     raw = p_from_d_raw(f, isTRUE(warn_precision)),
-    smooth = p_from_d_smooth(f, n_grid = n_grid),
-    stop_collapse('`f` should have "type" metadata equal to "raw" or "smooth".')
+    smooth = p_from_d_smooth(f, n_grid = n_grid)
   )
   res <- add_pdqr_class(res, "p_fun")
 
