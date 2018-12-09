@@ -8,12 +8,15 @@ distr_from_meta <- function(f, new_f, ...) {
   )
 }
 
-as_distr_impl_def <- function(fun_class, f, type, support, extra) {
+as_distr_impl_def <- function(fun_class, f, type, support, extra,
+                              adjust_to_support) {
   assert_type(f, is.function)
   assert_distr_type(type)
   assert_support(support)
 
-  res <- add_meta(remove_meta(f), type = type, support = support)
+  f_adj <- adjust_to_support(f, type, support)
+
+  res <- add_meta(remove_meta(f_adj), type = type, support = support)
   res <- add_meta_cond(res, !is.null(extra), extra = extra)
 
   add_pdqr_class(res, fun_class)
@@ -43,4 +46,13 @@ warn_conversion_from_p_raw <- function(f, warn_precision, fun_name) {
   }
 
   TRUE
+}
+
+detect_support_raw <- function(f, support, n = 10000) {
+  # Detection is done with trying values with step which is multiple of 10^(-5)
+  # This should increase probability of finding actual support
+  step <- ceiling(10^5 * diff(support) / n) * 10^(-5)
+  x_grid <- seq(support[1], support[2], by = step)
+
+  x_grid[!is_near(f(x_grid), 0)]
 }

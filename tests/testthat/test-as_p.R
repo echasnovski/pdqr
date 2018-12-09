@@ -20,6 +20,66 @@ test_that("as_p rewrites metadata on user-defined function", {
   expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
 })
 
+test_that("as_p adjusts user-defined function to be probability distribution", {
+  input_raw <- p_raw
+  attributes(input_raw) <- NULL
+  output_raw <- as_p(input_raw, type = "raw", support = c(2, 6))
+  # Output equals to `p_fun()` applied to sample on restricted support
+  output_raw_ref <- p_fun(
+    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
+  )
+  expect_equal_distr(output_raw, output_raw_ref, x_raw_vec_seq)
+  # Output equals 0 and 1 outside of support
+  expect_equal(output_raw(c(1, 7)), c(0, 1))
+
+  output_smooth <- as_p(user_p, type = "smooth", support = c(0.3, 0.7))
+  # Output stretches from 0 to 1 on support
+  expect_equal(output_smooth(c(0.3, 0.7)), c(0, 1))
+  # Output equals 0 and 1 outside of support
+  expect_equal(output_smooth(c(0.25, 0.75)), c(0, 1))
+})
+
+test_that("as_p adjusts the same way as other `as_*()` functions", {
+  new_p_raw <- p_raw
+  attributes(new_p_raw) <- NULL
+  new_p_raw <- as_p(new_p_raw, type = "raw", support = c(2, 6))
+  new_d_raw <- d_raw
+  attributes(new_d_raw) <- NULL
+  expect_warning(new_d_raw <- as_d(new_d_raw, type = "raw", support = c(2, 6)))
+  new_q_raw <- q_raw
+  attributes(new_q_raw) <- NULL
+  new_q_raw <- as_q(new_q_raw, type = "raw", support = c(2, 6))
+
+  expect_equal_distr(expect_warning(as_p(new_d_raw)), new_p_raw, 2:6)
+  # Too much converting should be done for computing `as_p(new_q_raw)` which
+  # results into relatively high numerical errors. `new_q_raw` is correct
+  # "q_fun" function but instead of raw support `c(2, 3, 4, 5, 6)` it has very
+  # close one to it (run `table(new_q_raw(0:10/10))` to see this). To verify
+  # that conversion is good enough, check plots of `as_p(new_q_raw))` and
+  # `new_p_raw`.
+
+  user_p_smooth <- as_p(user_p, type = "smooth", support = c(0.3, 0.7))
+  user_d_smooth <- as_d(user_d, type = "smooth", support = c(0.3, 0.7))
+  user_q_smooth <- as_q(user_q, type = "smooth", support = c(0.3, 0.7))
+
+  expect_equal_distr(as_p(user_d_smooth), user_p_smooth, x_custom)
+  expect_equal_distr(
+    as_p(user_q_smooth), user_p_smooth,
+    grid = x_custom, thres = 10^(-7)
+  )
+})
+
+test_that("as_p.default throws errors", {
+  expect_error(
+    as_p(function(x) {rep(0, length.out = length(x))}, "raw", c(0, 1)),
+    "probability.*zero"
+  )
+  expect_error(
+    as_p(function(x) {rep(0, length.out = length(x))}, "smooth", c(0, 1)),
+    "probability.*zero"
+  )
+})
+
 test_that('as_p returns self in case of "p_fun"', {
   expect_identical(as_p(p_raw_withx), p_raw_withx)
   expect_identical(as_p(p_raw_nox), p_raw_nox)
@@ -113,7 +173,9 @@ test_that('as_p works with "r_fun"', {
 })
 
 test_that('as_p works with "pdqr_fun" (not adding duplicated class)', {
-  input <- structure(pbeta, class = c("pdqr_fun", "function"))
+  input <- structure(
+    function(x) {pbeta(x, 1, 2)}, class = c("pdqr_fun", "function")
+  )
   output <- as_p(input, type = "smooth", support = c(0, 1))
   expect_equal(class(output), c("p_fun", "pdqr_fun", "function"))
 })
@@ -179,9 +241,9 @@ test_that("as_p asserts extra arguments of methods", {
 # Tested in `as_p()` tests for converting from 'd_fun' in case `type = "raw"`
 
 
-# detect_support_raw ------------------------------------------------------
-# Tested in `as_p()` tests for converting from 'd_fun' in case `type = "raw"`
-
-
 # p_from_d_smooth ---------------------------------------------------------
 # Tested in `as_p()` tests for converting from 'd_fun' in case `type = "smooth"`
+
+
+# adjust_to_support_p -----------------------------------------------------
+# Tested in `as_p()`

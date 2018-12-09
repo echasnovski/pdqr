@@ -13,7 +13,7 @@ as_d.default <- function(f, type, support, extra = NULL, ...) {
     "d_fun", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("d_fun", f, type, support, extra)
+  as_distr_impl_def("d_fun", f, type, support, extra, adjust_to_support_d)
 }
 
 as_d.p_fun <- function(f, h = 10^(-6), ...) {
@@ -46,4 +46,51 @@ as_d.r_fun <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
   as_distr_impl_r(d_fun, f, n_sample, ...)
+}
+
+adjust_to_support_d <- function(f, type, support) {
+  switch(
+    type,
+    raw = adjust_to_support_d_raw(f, support),
+    smooth = adjust_to_support_d_smooth(f, support)
+  )
+}
+
+adjust_to_support_d_raw <- function(f, support) {
+  supp <- detect_support_raw(f, support)
+  supp_prob <- f(supp)
+  tot_prob <- sum(supp_prob)
+
+  if (is_near(tot_prob, 0)) {
+    stop_collapse(
+      'There were no detected values with positive probability. Consider ',
+      'creating "p_fun" function.'
+    )
+  }
+
+  warning_collapse(
+    'Creating density function in case `type` = "raw" is not precise as ',
+    'there can be undetected values with positive probability. Consider ',
+    'creating "p_fun" function.'
+  )
+
+  copy_attrs(adjust_d_impl(f, support, tot_prob), f)
+}
+
+adjust_to_support_d_smooth <- function(f, support) {
+  tot_prob <- stats::integrate(f, support[1], support[2])$value
+  assert_tot_prob(tot_prob)
+
+  copy_attrs(adjust_d_impl(f, support, tot_prob), f)
+}
+
+adjust_d_impl <- function(f, support, tot_prob) {
+  function(x) {
+    res <- numeric(length(x))
+    is_inside <- (x >= support[1]) & (x <= support[2])
+
+    res[is_inside] <- f(x[is_inside]) / tot_prob
+
+    res
+  }
 }

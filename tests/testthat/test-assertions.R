@@ -107,3 +107,10 @@ test_that("assert_support works", {
   expect_error(assert_support(c(1, Inf)), "finite")
   expect_error(assert_support(c(-Inf, Inf)), "finite")
 })
+
+
+# assert_tot_prob ---------------------------------------------------------
+test_that("assert_tot_prob works", {
+  expect_error(assert_tot_prob(0), "probability.*zero")
+  expect_silent(assert_tot_prob(0.1))
+})

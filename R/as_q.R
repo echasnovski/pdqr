@@ -13,7 +13,7 @@ as_q.default <- function(f, type, support, extra = NULL, ...) {
     "q_fun", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("q_fun", f, type, support, extra)
+  as_distr_impl_def("q_fun", f, type, support, extra, adjust_to_support_q)
 }
 
 as_q.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
@@ -63,4 +63,26 @@ as_q.r_fun <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
   as_distr_impl_r(q_fun, f, n_sample, ...)
+}
+
+adjust_to_support_q <- function(f, type, support) {
+  f_inv <- inversing(f, interval = c(0, 1), f_type = type)
+  p_f <- function(q) {
+    out <- numeric(length(q))
+
+    is_small_q <- q < f(0)
+    is_big_q <- q > f(1)
+    is_in_support <- !(is_small_q | is_big_q)
+
+    out[is_small_q] <- 0
+    out[is_big_q] <- 1
+    out[is_in_support] <- f_inv(q[is_in_support])
+
+    out
+
+  }
+
+  new_p <- as_p(p_f, type = type, support = support)
+
+  copy_attrs(as_q(new_p, warn_precision = FALSE), f)
 }

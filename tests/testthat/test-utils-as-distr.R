@@ -15,3 +15,9 @@ context("test-utils-as-distr")
 
 # warn_conversion_from_p_raw ----------------------------------------------
 # Tested in `as_q()` and `as_r()`
+
+
+# detect_support_raw ------------------------------------------------------
+# Tested in several places in case `type` = "raw":
+# - `as_p()` tests for converting from 'd_fun'.
+# - `as_d()` default method.

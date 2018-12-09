@@ -13,7 +13,7 @@ as_p.default <- function(f, type, support, extra = NULL, ...) {
     "p_fun", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("p_fun", f, type, support, extra)
+  as_distr_impl_def("p_fun", f, type, support, extra, adjust_to_support_p)
 }
 
 as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
@@ -70,7 +70,7 @@ p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
     )
   }
 
-  support <- detect_support_raw(f)
+  support <- detect_support_raw(f, meta(f, "support"))
   supp_prob <- f(support)
   supp_cumprob <- c(0, cumsum(supp_prob) / sum(supp_prob))
 
@@ -81,20 +81,38 @@ p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
   }
 }
 
-detect_support_raw <- function(f, n = 10000) {
-  support <- meta(f, "support")
-  # Detection is done with trying values with step which is multiple of 10^(-5)
-  # This should increase probability of finding actual support
-  step <- ceiling(10^5 * diff(support) / n) * 10^(-5)
-  x_grid <- seq(support[1], support[2], by = step)
-
-  x_grid[!is_near(f(x_grid), 0)]
-}
-
 p_from_d_smooth <- function(f, n_grid) {
   support <- meta(f, "support")
   x_dens <- seq(from = support[1], to = support[2], length.out = n_grid)
   y_dens <- f(x_dens)
 
   p_from_d_points(x_dens, y_dens)
+}
+
+adjust_to_support_p <- function(f, type, support, h = 10^(-6)) {
+  # Computation of CDF minimum value differs for "raw" and "smooth" types
+  # because CDF is `P(x <= a)` and there can be substantial jump right on the
+  # left edge of support.
+  min_p <- switch(
+    type,
+    raw = f(support[1] - h),
+    smooth = f(support[1])
+  )
+
+  tot_prob <- f(support[2]) - min_p
+  assert_tot_prob(tot_prob)
+
+  res <- function(q) {
+    out <- numeric(length(q))
+    is_lower <- q < support[1]
+    is_higher <- q >= support[2]
+    is_inside <- !(is_lower | is_higher)
+
+    out[is_inside] <- (f(q[is_inside]) - min_p) / tot_prob
+    out[is_higher] <- 1
+
+    out
+  }
+
+  copy_attrs(res, f)
 }

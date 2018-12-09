@@ -13,7 +13,7 @@ as_r.default <- function(f, type, support, extra = NULL, ...) {
     "r_fun", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("r_fun", f, type, support, extra)
+  as_distr_impl_def("r_fun", f, type, support, extra, adjust_to_support_r)
 }
 
 as_r.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
@@ -46,4 +46,8 @@ as_r_impl <- function(q_f) {
   res <- add_pdqr_class(res, "r_fun")
 
   copy_meta(res, q_f)
+}
+
+adjust_to_support_r <- function(f, type, support) {
+  f
 }

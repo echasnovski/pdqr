@@ -65,6 +65,12 @@ add_class <- function(x, cl) {
   x
 }
 
+copy_attrs <- function(to, from) {
+  attributes(to) <- attributes(from)
+
+  to
+}
+
 dedupl_list <- function(l) {
   l_names <- names(l)
 

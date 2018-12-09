@@ -151,3 +151,11 @@ assert_support <- function(support) {
 
   support
 }
+
+assert_tot_prob <- function(tot_prob) {
+  if (is_near(tot_prob, 0)) {
+    stop_collapse("Total probability on supplied `support` is zero.")
+  }
+
+  tot_prob
+}

@@ -125,7 +125,9 @@ test_that('as_r returns self in case of "r_fun"', {
 })
 
 test_that('as_r works with "pdqr_fun" (not adding duplicated class)', {
-  input <- structure(rbeta, class = c("pdqr_fun", "function"))
+  input <- structure(
+    function(x) {rbeta(x, 1, 2)}, class = c("pdqr_fun", "function")
+  )
   output <- as_r(input, type = "smooth", support = c(0, 1))
   expect_equal(class(output), c("r_fun", "pdqr_fun", "function"))
 })
@@ -182,4 +184,8 @@ test_that("as_r asserts extra arguments of methods", {
 
 
 # as_r_impl ---------------------------------------------------------------
+# Tested in `as_r()`
+
+
+# adjust_to_support_r -----------------------------------------------------
 # Tested in `as_r()`

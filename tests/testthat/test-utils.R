@@ -92,6 +92,14 @@ test_that("add_class works", {
 })
 
 
+# copy_attrs --------------------------------------------------------------
+test_that("copy_attrs works", {
+  input <- structure(1, a = 2)
+  output <- copy_attrs(input, structure("a", b = 3))
+  expect_equal(attributes(output), list(b = 3))
+})
+
+
 # dedupl_list -------------------------------------------------------------
 test_that("dedupl_list works", {
   input_1 <- list(1, 2)
