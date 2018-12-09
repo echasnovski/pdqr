@@ -12,7 +12,6 @@ as_q.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
     "q_fun", type = missing(type), support = missing(support)
   )
-  assert_support(support)
 
   as_distr_impl_def("q_fun", f, type, support, extra)
 }
