@@ -4,7 +4,7 @@ set.seed(4444)
 
 
 # Custom expectations -----------------------------------------------------
-expect_equal_r_funs <- function(f_1, f_2, n_sample = 1000,
+expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
                                 mean_thres = 0.1, sd_thres = 0.05) {
   smpl_1 <- f_1(n_sample)
   smpl_2 <- f_2(n_sample)
