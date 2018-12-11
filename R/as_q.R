@@ -33,15 +33,11 @@ as_q.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   res <- function(p) {
     out <- numeric(length(p))
 
-    is_more_0 <- p >= 0
-    is_less_1 <- p <= 1
-    is_inside <- (p > 0) & (p < 1)
+    is_inside <- (p >= 0) & (p <= 1)
 
-    # Extra cutoffs to respect precision errors
+    # Extra cutoffs to respect precision errors and support boundaries
     out[is_inside] <- pmin(pmax(f_inv(p[is_inside]), support[1]), support[2])
-    out[is_near(p, 0) & is_more_0] <- support[1]
-    out[is_near(p, 1) & is_less_1] <- support[2]
-    out[!(is_more_0 & is_less_1)] <- NaN
+    out[!is_inside] <- NaN
 
     out
   }
