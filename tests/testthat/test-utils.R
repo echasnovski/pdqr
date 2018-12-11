@@ -52,11 +52,18 @@ test_that("inversing works", {
   expect_true(max_error <= 10^(-4))
 })
 
-test_that("inversing works with constant", {
+test_that("inversing works with constant correctly in case `type` is 'raw'", {
   const_inv <- inversing(
-    function(x) {rep(10, length(x))}, c(0, 20), f_type = "smooth"
+    function(x) {rep(10, length(x))}, c(0, 20), f_type = "raw"
   )
   expect_equal(const_inv(c(0, 10, 20)), rep(20, 3))
+})
+
+test_that("inversing removes infinite values", {
+  f_inv <- inversing(
+    function(x) {1 / x}, c(0, 1), f_type = "smooth"
+  )
+  expect_true(is.finite(f_inv(10^7)))
 })
 
 

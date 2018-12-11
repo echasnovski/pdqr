@@ -19,10 +19,12 @@ inversing <- function(f, interval, f_type, n_grid = 10001) {
   x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
   y_grid <- f(x_grid)
 
-  # Removing duplicates is needed for correct inversion of "raw" ECDF
-  y_isnt_dupl <- !duplicated.default(y_grid, fromLast = TRUE)
-  x_grid <- x_grid[y_isnt_dupl]
-  y_grid <- y_grid[y_isnt_dupl]
+  # Removing duplicates from end is needed for correct inversion of "raw" ECDF
+  # Removing all non-finite elements is needed for correct interpolation
+  is_good_y <- !duplicated.default(y_grid, fromLast = f_type == "raw") &
+    is.finite(y_grid)
+  x_grid <- x_grid[is_good_y]
+  y_grid <- y_grid[is_good_y]
 
   if (length(x_grid) == 1) {
     only_val <- x_grid[1]
@@ -37,7 +39,7 @@ inversing <- function(f, interval, f_type, n_grid = 10001) {
   }
 
   # For efficient memory management
-  rm(list = c("x_grid", "y_grid", "y_isnt_dupl", "f"), envir = environment())
+  rm(list = c("x_grid", "y_grid", "is_good_y", "f"), envir = environment())
 
   res
 }
