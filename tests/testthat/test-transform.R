@@ -153,3 +153,16 @@ test_that("Ops.pdqr_fun warns about not numeric type", {
 test_that("Ops.pdqr_fun works with for generics with one argument", {
   expect_warning(!p_raw, "!.*logical.*[Cc]onvert")
 })
+
+
+# Summary.pdqr_fun --------------------------------------------------------
+test_that("Summary.pdqr_fun works", {
+  expect_distr_fun(min(p_raw), "p_fun", "raw")
+  expect_distr_fun(max(p_raw, p_raw), "p_fun", "raw")
+  expect_distr_fun(sum(q_custom, q_smooth_nox, q_smooth_nox), "q_fun", "smooth")
+  expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r_fun", "smooth")
+})
+
+test_that("Summary.pdqr_fun throws error on `range()`", {
+  expect_error(range(p_raw, p_raw), "range.*two.*numbers")
+})

@@ -119,3 +119,24 @@ Ops.pdqr_fun <- function(e1, e2) {
     pdqr_transform(gen_fun, e1, e2, .n_sample = n_sample)
   }
 }
+
+Summary.pdqr_fun <- function(..., na.rm = FALSE) {
+  n_sample <- getOption("pdqr.transform.n_sample")
+
+  if (.Generic == "range") {
+    stop_collapse(
+      "`range()` can't be applied to ", '"pdqr" functions as it returns two ',
+      "numbers. Use `min()` and `max()`."
+    )
+  }
+
+  gen_fun <- function(...) {
+    g <- get(.Generic)
+    f <- function(...) {g(..., na.rm = na.rm)}
+
+    # `Map()` is needed to "vectorize" `Summary` generics
+    unlist(Map(f, ...))
+  }
+
+  pdqr_transform(gen_fun, ..., .n_sample = n_sample)
+}
