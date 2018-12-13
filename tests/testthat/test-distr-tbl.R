@@ -22,9 +22,11 @@ test_that("distr_tbl works with 'pdqr' function", {
   expect_equal(distr_tbl(p_raw_nox), x_raw_distr_tbl)
   expect_equal(distr_tbl(q_raw_nox), x_raw_distr_tbl)
 
+  output_smooth_distr_tbl <- distr_tbl(p_smooth_nox, n_discrete = 1000)
   # Output has 999 rows instead of 1000 because the first discrete element has
   # probability zero.
-  expect_equal(nrow(distr_tbl(p_smooth_nox, n_discrete = 1000)), 999)
+  expect_equal(nrow(output_smooth_distr_tbl), 999)
+  expect_true(sum(output_smooth_distr_tbl[["prob"]]) == 1)
 })
 
 test_that("distr_tbl throws errors", {

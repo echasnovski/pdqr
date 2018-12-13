@@ -32,6 +32,8 @@ p_fun_distr_tbl <- function(p_f, n_discrete = n_discrete) {
   prob <- prob / sum(prob)
 
   prob_isnt_zero <- !is_near(prob, 0)
+  new_prob <- prob[prob_isnt_zero]
+  new_prob <- new_prob / sum(new_prob)
 
-  data.frame(x = x_discrete[prob_isnt_zero], prob = prob[prob_isnt_zero])
+  data.frame(x = x_discrete[prob_isnt_zero], prob = new_prob)
 }
