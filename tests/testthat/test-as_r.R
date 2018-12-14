@@ -44,8 +44,8 @@ test_that("as_r rewrites metadata on user-defined function", {
 })
 
 test_that("as_r adjusts user-defined function to be probability distribution", {
-  # Adjusted function equals `r_fun()` applied to sample on restricted support
-  output_raw_ref <- r_fun(
+  # Adjusted function equals `new_r()` applied to sample on restricted support
+  output_raw_ref <- new_r(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
   )
   expect_equal_r_funs(adj_r_raw, output_raw_ref)

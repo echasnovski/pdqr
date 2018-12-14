@@ -21,8 +21,8 @@ test_that("as_d rewrites metadata on user-defined function", {
 })
 
 test_that("as_d adjusts user-defined function to be probability distribution", {
-  # Adjusted function equals `d_fun()` applied to sample on restricted support
-  output_raw_ref <- d_fun(
+  # Adjusted function equals `new_d()` applied to sample on restricted support
+  output_raw_ref <- new_d(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
   )
   expect_equal_distr(adj_d_raw, output_raw_ref, x_raw_vec_seq)

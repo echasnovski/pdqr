@@ -93,12 +93,12 @@ test_that("find_ref_f works", {
 
 # impute_pdqr_fun ---------------------------------------------------------
 test_that("impute_pdqr_fun works", {
-  expect_equal(impute_pdqr_fun("p_fun", NULL), p_fun)
-  expect_equal(impute_pdqr_fun("d_fun", NULL), d_fun)
-  expect_equal(impute_pdqr_fun("q_fun", NULL), q_fun)
-  expect_equal(impute_pdqr_fun("r_fun", NULL), r_fun)
+  expect_equal(impute_pdqr_fun("p_fun", NULL), new_p)
+  expect_equal(impute_pdqr_fun("d_fun", NULL), new_d)
+  expect_equal(impute_pdqr_fun("q_fun", NULL), new_q)
+  expect_equal(impute_pdqr_fun("r_fun", NULL), new_r)
 
-  expect_equal(impute_pdqr_fun(NULL, p_raw), p_fun)
+  expect_equal(impute_pdqr_fun(NULL, p_raw), new_p)
 })
 
 test_that("impute_pdqr_fun throws errors", {

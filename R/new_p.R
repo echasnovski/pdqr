@@ -1,13 +1,13 @@
-p_fun <- function(x, type = "smooth", attach_x = identical(type, "raw"),
+new_p <- function(x, type = "smooth", attach_x = identical(type, "raw"),
                   extra = NULL, ...) {
   distr_impl(
     fun_class = "p_fun",
-    impl_funs = list(raw = p_fun_raw, smooth = p_fun_smooth),
+    impl_funs = list(raw = new_p_raw, smooth = new_p_smooth),
     x = x, type = type, attach_x = attach_x, extra = extra, ...
   )
 }
 
-p_fun_raw <- function(x) {
+new_p_raw <- function(x) {
   distr <- vec_distr_tbl(x)
   distr_cum_prob <- c(0, cumsum(distr[["prob"]]))
   support <- range(x)
@@ -24,7 +24,7 @@ p_fun_raw <- function(x) {
   add_meta(res, support = support)
 }
 
-p_fun_smooth <- function(x, ...) {
+new_p_smooth <- function(x, ...) {
   dens <- density_piecelin(x, ...)
   support <- range(dens[["x"]])
 

@@ -1,14 +1,14 @@
-r_fun <- function(x, type = "smooth", attach_x = identical(type, "raw"),
+new_r <- function(x, type = "smooth", attach_x = identical(type, "raw"),
                   extra = NULL, ...) {
   distr_impl(
     fun_class = "r_fun",
-    impl_funs = list(raw = r_fun_raw, smooth = r_fun_smooth),
+    impl_funs = list(raw = new_r_raw, smooth = new_r_smooth),
     x = x, type = type, attach_x = attach_x, extra = extra, ...
   )
 }
 
-r_fun_raw <- function(x) {
-  q_raw <- q_fun(x, type = "raw", attach_x = FALSE)
+new_r_raw <- function(x) {
+  q_raw <- new_q(x, type = "raw", attach_x = FALSE)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
@@ -22,8 +22,8 @@ r_fun_raw <- function(x) {
   add_meta(res, support = meta(q_raw, "support"))
 }
 
-r_fun_smooth <- function(x, ...) {
-  q_smooth <- q_fun(x, type = "smooth", attach_x = FALSE, ...)
+new_r_smooth <- function(x, ...) {
+  q_smooth <- new_q(x, type = "smooth", attach_x = FALSE, ...)
 
   # For efficient memory management
   rm(list = "x", envir = environment())

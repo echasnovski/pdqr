@@ -1,8 +1,8 @@
 context("test-new_q")
 
 
-# q_fun -------------------------------------------------------------------
-test_that("q_fun works", {
+# new_q -------------------------------------------------------------------
+test_that("new_q works", {
   expect_distr_fun(q_raw, "q_fun", "raw")
   expect_equal(meta(q_raw, "support"), x_raw_support)
   expect_equal(
@@ -23,19 +23,19 @@ test_that("q_fun works", {
   )
 })
 
-test_that("q_fun rounds input in case of `type` = 'raw'", {
+test_that("new_q rounds input in case of `type` = 'raw'", {
   near_1 <- 0.1 + 10^c(-6, -9)
   expect_equal(q_raw(near_1), c(2, 1))
 })
 
-test_that("q_fun behaves like inverse of ecdf() in case of `type` = 'raw'", {
+test_that("new_q behaves like inverse of ecdf() in case of `type` = 'raw'", {
   inv_ecdf <- quantile(x_raw, probs = p_vec, type = 1)
   names(inv_ecdf) <- NULL
 
   expect_equal(q_raw(p_vec), inv_ecdf)
 })
 
-test_that("q_fun output is inverse of p_fun output", {
+test_that("new_q output is inverse of p_fun output", {
   expect_equal(x_raw_vec, q_raw(p_raw(x_raw_vec)))
   # There is not test `p_vec == p_raw(q_raw(p_vec))` because it shouldn't be
   # true in "raw" case. This is tested in "behaves like inverse of ecdf()" test.
@@ -43,29 +43,29 @@ test_that("q_fun output is inverse of p_fun output", {
   expect_equal(p_vec, p_smooth(q_smooth(p_vec)))
 })
 
-test_that("q_fun output works with extreme values", {
+test_that("new_q output works with extreme values", {
   expect_equal(q_raw(c(0, 1)), x_raw_support)
   expect_equal(q_smooth(c(0, 1)), x_smooth_support)
 })
 
-test_that("q_fun returns `NaN` for out of range probabilities", {
+test_that("new_q returns `NaN` for out of range probabilities", {
   expect_true(all(is.nan(q_raw(c(-1, 2)))))
   expect_true(all(is.nan(q_smooth(c(-1, 2)))))
 })
 
-test_that("q_fun asserts", {
-  expect_warning(q_fun(c(1, 0, NA)), "x.*NA.*removed")
-  expect_warning(q_fun(c(1, 0, NaN)), "x.*NaN.*removed")
-  expect_warning(q_fun(c(1, 0, Inf)), "x.*infinite.*removed")
+test_that("new_q asserts", {
+  expect_warning(new_q(c(1, 0, NA)), "x.*NA.*removed")
+  expect_warning(new_q(c(1, 0, NaN)), "x.*NaN.*removed")
+  expect_warning(new_q(c(1, 0, Inf)), "x.*infinite.*removed")
 
-  expect_error(q_fun("a"), "x.*numeric")
-  expect_error(q_fun(numeric(0)), "x.*empty")
-  expect_error(q_fun(x_raw, type = 1), "type.*string")
-  expect_error(q_fun(x_raw, type = "a"), "type.*raw.*smooth")
-  expect_error(q_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
+  expect_error(new_q("a"), "x.*numeric")
+  expect_error(new_q(numeric(0)), "x.*empty")
+  expect_error(new_q(x_raw, type = 1), "type.*string")
+  expect_error(new_q(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_q(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
-test_that("q_fun handles metadata", {
+test_that("new_q handles metadata", {
   expect_equal(
     meta(q_raw),
     list(
@@ -74,7 +74,7 @@ test_that("q_fun handles metadata", {
     )
   )
 
-  q_smooth_1 <- q_fun(x_smooth, type = "smooth", attach_x = TRUE)
+  q_smooth_1 <- new_q(x_smooth, type = "smooth", attach_x = TRUE)
   expect_named(meta(q_smooth_1), c("support", "type", "x"))
   expect_equal(
     round(meta(q_smooth_1, "support"), 2), round(x_smooth_support, 2)
@@ -84,18 +84,18 @@ test_that("q_fun handles metadata", {
     list(x = x_smooth, type = "smooth")
   )
 
-  q_smooth_2 <- q_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
+  q_smooth_2 <- new_q(x_smooth, type = "smooth", extra = list(a = TRUE))
   expect_named(meta(q_smooth_2), c("extra", "support", "type"))
   expect_equal(meta(q_smooth_2, "extra"), list(a = TRUE))
 })
 
-test_that("q_fun has correct default for `attach_x`", {
+test_that("new_q has correct default for `attach_x`", {
   expect_true("x" %in% names(meta(q_raw)))
   expect_false("x" %in% names(meta(q_smooth)))
 })
 
-test_that("q_fun uses `...` as arguments for `density()`", {
-  q_smooth_cosine <- q_fun(x_smooth, type = "smooth", kernel = "cosine")
+test_that("new_q uses `...` as arguments for `density()`", {
+  q_smooth_cosine <- new_q(x_smooth, type = "smooth", kernel = "cosine")
   expect_equal(
     round(q_smooth_cosine(0:20/20), 3),
     c(
@@ -107,19 +107,19 @@ test_that("q_fun uses `...` as arguments for `density()`", {
 })
 
 
-# q_fun_raw ---------------------------------------------------------------
-# Tested in `q_fun()`
+# new_q_raw ---------------------------------------------------------------
+# Tested in `new_q()`
 
 
-# q_fun_smooth ------------------------------------------------------------
-# Tested in `q_fun()`
+# new_q_smooth ------------------------------------------------------------
+# Tested in `new_q()`
 
 
 # find_quant --------------------------------------------------------------
-# Tested in `q_fun()`
+# Tested in `new_q()`
 
 
 # print.q_fun -------------------------------------------------------------
 test_that("print.q_fun works", {
-  expect_pdqr_print(q_fun, "Quantile")
+  expect_pdqr_print(new_q, "Quantile")
 })

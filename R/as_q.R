@@ -2,7 +2,7 @@ as_q <- function(f, ...) {
   if (inherits(f, "q_fun")) {
     return(f)
   } else if (has_meta_x(f) && has_meta_type(f)) {
-    return(distr_from_meta(f, q_fun, ...))
+    return(distr_from_meta(f, new_q, ...))
   }
 
   UseMethod("as_q")
@@ -58,7 +58,7 @@ as_q.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
 as_q.r_fun <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
-  as_distr_impl_r(q_fun, f, n_sample, ...)
+  as_distr_impl_r(new_q, f, n_sample, ...)
 }
 
 adjust_to_support_q <- function(f, type, support) {

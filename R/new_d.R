@@ -1,13 +1,13 @@
-d_fun <- function(x, type = "smooth", attach_x = identical(type, "raw"),
+new_d <- function(x, type = "smooth", attach_x = identical(type, "raw"),
                   extra = NULL, ...) {
   distr_impl(
     fun_class = "d_fun",
-    impl_funs = list(raw = d_fun_raw, smooth = d_fun_smooth),
+    impl_funs = list(raw = new_d_raw, smooth = new_d_smooth),
     x = x, type = type, attach_x = attach_x, extra = extra, ...
   )
 }
 
-d_fun_raw <- function(x) {
+new_d_raw <- function(x) {
   distr <- vec_distr_tbl(x)
   support <- range(x)
 
@@ -23,7 +23,7 @@ d_fun_raw <- function(x) {
   add_meta(res, support = support)
 }
 
-d_fun_smooth <- function(x, ...) {
+new_d_smooth <- function(x, ...) {
   dens <- density_piecelin(x, ...)
 
   # For efficient memory management

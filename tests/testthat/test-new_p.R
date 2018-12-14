@@ -1,8 +1,8 @@
 context("test-new_p")
 
 
-# p_fun -------------------------------------------------------------------
-test_that("p_fun works", {
+# new_p -------------------------------------------------------------------
+test_that("new_p works", {
   expect_distr_fun(p_raw, "p_fun", "raw")
   expect_equal(meta(p_raw, "support"), x_raw_support)
   expect_equal(p_raw(1:10), c(cumsum(x_raw_distr_tbl[["prob"]]), 1))
@@ -21,17 +21,17 @@ test_that("p_fun works", {
   )
 })
 
-test_that("p_fun rounds input in case of `type` = 'raw'", {
+test_that("new_p rounds input in case of `type` = 'raw'", {
   near_1 <- 1 - 10^c(-6, -9)
   expect_equal(p_raw(near_1), c(0, 0.1))
 })
 
-test_that("p_fun behaves like ecdf() in case of `type` = 'raw'", {
+test_that("new_p behaves like ecdf() in case of `type` = 'raw'", {
   x_raw_grid <- seq(from = min(x_raw) - 1, to = max(x_raw) + 1, by = 0.01)
   expect_equal(p_raw(x_raw_grid), ecdf(x_raw)(x_raw_grid))
 })
 
-test_that("p_fun output is integration of d_fun in case of `type` = 'smooth'", {
+test_that("new_p output is integration of new_d in case of `type` = 'smooth'", {
   d_support <- meta(d_smooth, "support")
   x_smooth_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
 
@@ -52,25 +52,25 @@ test_that("p_fun output is integration of d_fun in case of `type` = 'smooth'", {
   )
 })
 
-test_that("p_fun output works with extreme values", {
+test_that("new_p output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
   expect_equal(p_raw(extreme_vec), c(0, 1))
   expect_equal(p_smooth(extreme_vec), c(0, 1))
 })
 
-test_that("p_fun asserts", {
-  expect_warning(p_fun(c(1, 0, NA)), "x.*NA.*removed")
-  expect_warning(p_fun(c(1, 0, NaN)), "x.*NaN.*removed")
-  expect_warning(p_fun(c(1, 0, Inf)), "x.*infinite.*removed")
+test_that("new_p asserts", {
+  expect_warning(new_p(c(1, 0, NA)), "x.*NA.*removed")
+  expect_warning(new_p(c(1, 0, NaN)), "x.*NaN.*removed")
+  expect_warning(new_p(c(1, 0, Inf)), "x.*infinite.*removed")
 
-  expect_error(p_fun("a"), "x.*numeric")
-  expect_error(p_fun(numeric(0)), "x.*empty")
-  expect_error(p_fun(x_raw, type = 1), "type.*string")
-  expect_error(p_fun(x_raw, type = "a"), "type.*raw.*smooth")
-  expect_error(p_fun(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
+  expect_error(new_p("a"), "x.*numeric")
+  expect_error(new_p(numeric(0)), "x.*empty")
+  expect_error(new_p(x_raw, type = 1), "type.*string")
+  expect_error(new_p(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_p(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
-test_that("p_fun handles metadata", {
+test_that("new_p handles metadata", {
   expect_equal(
     meta(p_raw),
     list(
@@ -79,7 +79,7 @@ test_that("p_fun handles metadata", {
     )
   )
 
-  p_smooth_1 <- p_fun(x_smooth, type = "smooth", attach_x = TRUE)
+  p_smooth_1 <- new_p(x_smooth, type = "smooth", attach_x = TRUE)
   expect_named(meta(p_smooth_1), c("support", "type", "x"))
   expect_equal(
     round(meta(p_smooth_1, "support"), 2), round(x_smooth_support, 2)
@@ -89,18 +89,18 @@ test_that("p_fun handles metadata", {
     list(x = x_smooth, type = "smooth")
   )
 
-  p_smooth_2 <- p_fun(x_smooth, type = "smooth", extra = list(a = TRUE))
+  p_smooth_2 <- new_p(x_smooth, type = "smooth", extra = list(a = TRUE))
   expect_named(meta(p_smooth_2), c("extra", "support", "type"))
   expect_equal(meta(p_smooth_2, "extra"), list(a = TRUE))
 })
 
-test_that("p_fun has correct default for `attach_x`", {
+test_that("new_p has correct default for `attach_x`", {
   expect_true("x" %in% names(meta(p_raw)))
   expect_false("x" %in% names(meta(p_smooth)))
 })
 
-test_that("p_fun uses `...` as arguments for `density()`", {
-  p_smooth_cosine <- p_fun(x_smooth, type = "smooth", kernel = "cosine")
+test_that("new_p uses `...` as arguments for `density()`", {
+  p_smooth_cosine <- new_p(x_smooth, type = "smooth", kernel = "cosine")
   expect_equal(
     round(p_smooth_cosine(seq(from = -1, to = 1, by = 0.1)), 3),
     c(
@@ -112,15 +112,15 @@ test_that("p_fun uses `...` as arguments for `density()`", {
 })
 
 
-# p_fun_raw ---------------------------------------------------------------
-# Tested in `p_fun()`
+# new_p_raw ---------------------------------------------------------------
+# Tested in `new_p()`
 
 
-# p_fun_smooth ------------------------------------------------------------
-# Tested in `p_fun()`
+# new_p_smooth ------------------------------------------------------------
+# Tested in `new_p()`
 
 
 # print.p_fun -------------------------------------------------------------
 test_that("print.p_fun works", {
-  expect_pdqr_print(p_fun, "Cumulative distribution")
+  expect_pdqr_print(new_p, "Cumulative distribution")
 })

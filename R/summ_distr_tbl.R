@@ -1,4 +1,4 @@
-# To use `distr_tbl` given a sample, call `*_fun()` with `attach_x = TRUE`.
+# To use `distr_tbl` given a sample, call `new_*()` with `attach_x = TRUE`.
 distr_tbl <- function(f, n_discrete = 10001, ...) {
   if (!(has_meta_x(f) || is_pdqr_fun(f, check_x = FALSE))) {
     stop_collapse('`f` should have "x" metadata or be "pdqr" function.')

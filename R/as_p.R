@@ -2,7 +2,7 @@ as_p <- function(f, ...) {
   if (inherits(f, "p_fun")) {
     return(f)
   } else if (has_meta_x(f) && has_meta_type(f)) {
-    return(distr_from_meta(f, p_fun, ...))
+    return(distr_from_meta(f, new_p, ...))
   }
 
   UseMethod("as_p")
@@ -59,7 +59,7 @@ as_p.q_fun <- function(f, n_grid = 10001, ...) {
 as_p.r_fun <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
-  as_distr_impl_r(p_fun, f, n_sample, ...)
+  as_distr_impl_r(new_p, f, n_sample, ...)
 }
 
 p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
