@@ -1,4 +1,4 @@
-context("test-utils-distr")
+context("test-utils-new")
 
 
 # add_pdqr_class ----------------------------------------------------------

@@ -1,4 +1,4 @@
-context("test-utils-as-distr")
+context("test-utils-as")
 
 
 # distr_from_meta ---------------------------------------------------------

@@ -1,4 +1,4 @@
-context("test-distr-tbl")
+context("test-summ_distr_tbl")
 
 
 # distr_tbl ---------------------------------------------------------------

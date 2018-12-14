@@ -1,4 +1,4 @@
-context("test-pval")
+context("test-summ_pval")
 
 set.seed(6666)
 
