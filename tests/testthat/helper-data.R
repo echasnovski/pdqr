@@ -53,13 +53,31 @@ p_vec_bigwholed <- Filter(function(p) {
 
 
 # Constructed distribution functions --------------------------------------
+# Used in `as_*()` tests for adjusting to support
+construct_adj_raw <- function(raw_fun, as_fun, ...) {
+  res <- raw_fun
+  attributes(res) <- NULL
+
+  as_fun(res, type = "raw", support = c(2, 6), ...)
+}
+
+construct_adj_smooth <- function(smooth_fun, as_fun, ...) {
+  res <- smooth_fun
+  attributes(res) <- NULL
+
+  as_fun(res, type = "smooth", support = c(0, 1), ...)
+}
+
+# p-functions
 p_raw <- p_fun(x_raw, "raw")
 p_raw_withx <- p_fun(x_raw, "raw", attach_x = TRUE)
 p_raw_nox <- p_fun(x_raw, "raw", attach_x = FALSE)
+adj_p_raw <- construct_adj_raw(p_raw, as_p)
 
 p_smooth <- p_fun(x_smooth, "smooth")
 p_smooth_withx <- p_fun(x_smooth, "smooth", attach_x = TRUE)
 p_smooth_nox <- p_fun(x_smooth, "smooth", attach_x = FALSE)
+adj_p_smooth <- construct_adj_smooth(p_smooth, as_p)
 
 user_p <- function(q) {pbeta(q, 1, 2)}
 p_custom <- structure(
@@ -67,13 +85,16 @@ p_custom <- structure(
   meta = list(support = c(0, 1), type = "smooth")
 )
 
+# d-functions
 d_raw <- d_fun(x_raw, "raw")
 d_raw_withx <- d_fun(x_raw, "raw", attach_x = TRUE)
 d_raw_nox <- d_fun(x_raw, "raw", attach_x = FALSE)
+adj_d_raw <- expect_warning(construct_adj_raw(d_raw, as_d))
 
 d_smooth <- d_fun(x_smooth, "smooth")
 d_smooth_withx <- d_fun(x_smooth, "smooth", attach_x = TRUE)
 d_smooth_nox <- d_fun(x_smooth, "smooth", attach_x = FALSE)
+adj_d_smooth <- construct_adj_smooth(d_smooth, as_d)
 
 user_d <- function(x) {dbeta(x, 1, 2)}
 d_custom <- structure(
@@ -81,13 +102,16 @@ d_custom <- structure(
   meta = list(support = c(0, 1), type = "smooth")
 )
 
+# q-functions
 q_raw <- q_fun(x_raw, "raw")
 q_raw_withx <- q_fun(x_raw, "raw", attach_x = TRUE)
 q_raw_nox <- q_fun(x_raw, "raw", attach_x = FALSE)
+adj_q_raw <- construct_adj_raw(q_raw, as_q)
 
 q_smooth <- q_fun(x_smooth, "smooth")
 q_smooth_withx <- q_fun(x_smooth, "smooth", attach_x = TRUE)
 q_smooth_nox <- q_fun(x_smooth, "smooth", attach_x = FALSE)
+adj_q_smooth <- construct_adj_smooth(q_smooth, as_q)
 
 user_q <- function(p) {qbeta(p, 1, 2)}
 q_custom <- structure(
@@ -95,13 +119,16 @@ q_custom <- structure(
   meta = list(support = c(0, 1), type = "smooth")
 )
 
+# r-functions
 r_raw <- r_fun(x_raw, "raw")
 r_raw_withx <- r_fun(x_raw, "raw", attach_x = TRUE)
 r_raw_nox <- r_fun(x_raw, "raw", attach_x = FALSE)
+adj_r_raw <- construct_adj_raw(r_raw, as_r, warn_not_adjusted = FALSE)
 
 r_smooth <- r_fun(x_smooth, "smooth")
 r_smooth_withx <- r_fun(x_smooth, "smooth", attach_x = TRUE)
 r_smooth_nox <- r_fun(x_smooth, "smooth", attach_x = FALSE)
+adj_r_smooth <- construct_adj_smooth(r_smooth, as_r, warn_not_adjusted = FALSE)
 
 user_r <- function(n) {rbeta(n, 1, 2)}
 r_custom <- structure(

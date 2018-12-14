@@ -21,55 +21,37 @@ test_that("as_d rewrites metadata on user-defined function", {
 })
 
 test_that("as_d adjusts user-defined function to be probability distribution", {
-  input_raw <- d_raw
-  attributes(input_raw) <- NULL
-  expect_warning(
-    output_raw <- as_d(input_raw, type = "raw", support = c(2, 6)),
-    "not precise"
-  )
-  # Output equals to `d_fun()` applied to sample on restricted support
+  # Adjusted function equals `d_fun()` applied to sample on restricted support
   output_raw_ref <- d_fun(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
   )
-  expect_equal_distr(output_raw, output_raw_ref, x_raw_vec_seq)
-  # Output equals 0 outside of support
-  expect_equal(output_raw(c(1, 7)), c(0, 0))
+  expect_equal_distr(adj_d_raw, output_raw_ref, x_raw_vec_seq)
+  # Adjusted function equals 0 outside of support
+  expect_equal(adj_d_raw(c(1, 7)), c(0, 0))
 
-  output_smooth <- as_d(user_d, type = "smooth", support = c(0.3, 0.7))
-  out_integral <- stats::integrate(output_smooth, 0.3, 0.7)
-  # Output integrates to 1 on support
+  out_integral <- stats::integrate(adj_d_smooth, 0, 1)
+  # Adjusted function integrates to 1 on support
   expect_true(abs(out_integral[["value"]] - 1) <= out_integral[["abs.error"]])
-  # Output equals 0 outside of support
-  expect_equal(output_smooth(c(0.25, 0.75)), c(0, 0))
+  # Adjusted function equals 0 outside of support
+  expect_equal(adj_d_smooth(c(-0.25, 1.25)), c(0, 0))
 })
 
 test_that("as_d adjusts the same way as other `as_*()` functions", {
-  new_p_raw <- p_raw
-  attributes(new_p_raw) <- NULL
-  new_p_raw <- as_p(new_p_raw, type = "raw", support = c(2, 6))
-  new_d_raw <- d_raw
-  attributes(new_d_raw) <- NULL
-  expect_warning(new_d_raw <- as_d(new_d_raw, type = "raw", support = c(2, 6)))
-  new_q_raw <- q_raw
-  attributes(new_q_raw) <- NULL
-  new_q_raw <- as_q(new_q_raw, type = "raw", support = c(2, 6))
-
-  expect_equal_distr(as_d(new_p_raw), new_d_raw, 2:6)
-  # Too much converting should be done for computing `as_d(new_q_raw)` which
-  # results into relatively high numerical errors. `new_q_raw` is correct
+  expect_equal_distr(as_d(adj_p_raw), adj_d_raw, 2:6)
+  # Too much converting should be done for computing `as_d(adj_q_raw)` which
+  # results into relatively high numerical errors. `adj_q_raw` is correct
   # "q_fun" function but instead of raw support `c(2, 3, 4, 5, 6)` it has very
-  # close one to it (run `table(new_q_raw(0:10/10))` to see this).
+  # close one to it (run `table(adj_q_raw(0:10/10))` to see this).
 
-  user_p_smooth <- as_p(user_p, type = "smooth", support = c(0.3, 0.7))
-  user_d_smooth <- as_d(user_d, type = "smooth", support = c(0.3, 0.7))
-  user_q_smooth <- as_q(user_q, type = "smooth", support = c(0.3, 0.7))
-
-  expect_equal_distr(as_d(user_p_smooth), user_d_smooth, x_custom)
+  expect_equal_distr(
+    as_d(adj_p_smooth), adj_d_smooth,
+    grid = x_smooth_vec, thres = 10^(-4)
+  )
   # Due to accumulated numerical errors this can give inaccurate results
   # near support edges
   expect_equal_distr(
-    as_d(user_q_smooth), user_d_smooth,
-    grid = seq(0.31, 0.69, by = 0.001), thres = 2 * 10^(-3)
+    as_d(adj_q_smooth), adj_d_smooth,
+    grid = x_smooth_vec, thres = 10^(-4)
   )
 })
 

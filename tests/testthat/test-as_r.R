@@ -44,55 +44,25 @@ test_that("as_r rewrites metadata on user-defined function", {
 })
 
 test_that("as_r adjusts user-defined function to be probability distribution", {
-  input_raw <- r_raw
-  attributes(input_raw) <- NULL
-  output_raw <- as_r(
-    input_raw, type = "raw", support = c(2, 6), warn_not_adjusted = FALSE
-  )
-  # Output equals to `r_fun()` applied to sample on restricted support
+  # Adjusted function equals `r_fun()` applied to sample on restricted support
   output_raw_ref <- r_fun(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
   )
-  expect_equal_r_funs(output_raw, output_raw_ref)
+  expect_equal_r_funs(adj_r_raw, output_raw_ref)
 
-  output_smooth <- as_r(
-    user_r, type = "smooth", support = c(0.3, 0.7), warn_not_adjusted = FALSE
-  )
-  # Output produces only data inside support
-  output_smooth_smpl <- output_smooth(1000)
-  expect_true(all((output_smooth_smpl >= 0.3) & (output_smooth_smpl <= 0.7)))
+  # Adjusted function produces only data inside support
+  output_smooth_smpl <- adj_r_smooth(1000)
+  expect_true(all((output_smooth_smpl >= 0) & (output_smooth_smpl <= 1)))
 })
 
 test_that("as_r adjusts the same way as other `as_*()` functions", {
-  new_p_raw <- p_raw
-  attributes(new_p_raw) <- NULL
-  new_p_raw <- as_p(new_p_raw, type = "raw", support = c(2, 6))
-  new_d_raw <- d_raw
-  attributes(new_d_raw) <- NULL
-  expect_warning(new_d_raw <- as_d(new_d_raw, type = "raw", support = c(2, 6)))
-  new_q_raw <- q_raw
-  attributes(new_q_raw) <- NULL
-  new_q_raw <- as_q(new_q_raw, type = "raw", support = c(2, 6))
-  new_r_raw <- r_raw
-  attributes(new_r_raw) <- NULL
-  new_r_raw <- as_r(
-    new_r_raw, type = "raw", support = c(2, 6), warn_not_adjusted = FALSE
-  )
+  expect_equal_r_funs(expect_warning(as_r(adj_p_raw)), adj_r_raw)
+  expect_equal_r_funs(expect_warning(as_r(adj_d_raw)), adj_r_raw)
+  expect_equal_r_funs(as_r(adj_q_raw), adj_r_raw)
 
-  expect_equal_r_funs(expect_warning(as_r(new_d_raw)), new_r_raw)
-  expect_equal_r_funs(expect_warning(as_r(new_p_raw)), new_r_raw)
-  expect_equal_r_funs(as_r(new_q_raw), new_r_raw)
-
-  user_p_smooth <- as_p(user_p, type = "smooth", support = c(0.3, 0.7))
-  user_d_smooth <- as_d(user_d, type = "smooth", support = c(0.3, 0.7))
-  user_q_smooth <- as_q(user_q, type = "smooth", support = c(0.3, 0.7))
-  user_r_smooth <- as_r(
-    user_r, type = "smooth", support = c(0.3, 0.7), warn_not_adjusted = FALSE
-  )
-
-  expect_equal_r_funs(as_r(user_p_smooth), user_r_smooth)
-  expect_equal_r_funs(as_r(user_d_smooth), user_r_smooth)
-  expect_equal_r_funs(as_r(user_q_smooth), user_r_smooth)
+  expect_equal_r_funs(as_r(adj_p_smooth), adj_r_smooth)
+  expect_equal_r_funs(as_r(adj_d_smooth), adj_r_smooth)
+  expect_equal_r_funs(as_r(adj_q_smooth), adj_r_smooth)
 })
 
 test_that("as_r.default throws errors and warnings", {
