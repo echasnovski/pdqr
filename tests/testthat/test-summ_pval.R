@@ -10,21 +10,21 @@ expect_equal_r <- function(x, y, digits = 3) {
 
 expect_pval <- function(f, obs, out, digits = 3) {
   # `out` should be for directions: default, "right", "left", "both"
-  expect_equal_r(pdqr_pval(f, obs), out[1], digits)
-  expect_equal_r(pdqr_pval(f, obs, direction = "right"), out[2], digits)
-  expect_equal_r(pdqr_pval(f, obs, direction = "left"), out[3], digits)
-  expect_equal_r(pdqr_pval(f, obs, direction = "both"), out[4], digits)
+  expect_equal_r(summ_pval(f, obs), out[1], digits)
+  expect_equal_r(summ_pval(f, obs, direction = "right"), out[2], digits)
+  expect_equal_r(summ_pval(f, obs, direction = "left"), out[3], digits)
+  expect_equal_r(summ_pval(f, obs, direction = "both"), out[4], digits)
 }
 
 expect_adjust <- function(p_f, obs, adjust, digits = 3) {
-  output <- pdqr_pval(p_f, obs, adjust = adjust)
+  output <- summ_pval(p_f, obs, adjust = adjust)
 
   expect_equal_r(output, stats::p.adjust(output, method = adjust), digits)
 }
 
 
-# pdqr_pval ---------------------------------------------------------------
-test_that("pdqr_pval works", {
+# summ_pval ---------------------------------------------------------------
+test_that("summ_pval works", {
   expect_pval(p_raw, 0.9,   c(1,    1,    0,   0))
   expect_pval(p_raw, 1,     c(1,    1,    0.1, 0.2))
   expect_pval(p_raw, 5,     c(0.55, 0.55, 0.5, 1))
@@ -41,14 +41,14 @@ test_that("pdqr_pval works", {
   expect_pval(p_custom, 1,    c(0,    0,    1,    0))
 })
 
-test_that("pdqr_pval works with vector observations", {
+test_that("summ_pval works with vector observations", {
   expect_equal(
-    pdqr_pval(p_raw, c(0.9, 1, 5, 9.001), adjust = "none"),
+    summ_pval(p_raw, c(0.9, 1, 5, 9.001), adjust = "none"),
     c(1, 1, 0.55, 0)
   )
 })
 
-test_that("pdqr_pval adjusts multiple p-values", {
+test_that("summ_pval adjusts multiple p-values", {
   obs_vec <- seq(0, 0.1, by = 0.01)
 
   expect_adjust(p_smooth, obs_vec, "holm")
@@ -61,7 +61,7 @@ test_that("pdqr_pval adjusts multiple p-values", {
   expect_adjust(p_smooth, obs_vec, "none")
 })
 
-test_that("pdqr_pval excepts not only objects of class 'p_fun'", {
+test_that("summ_pval excepts not only objects of class 'p_fun'", {
   expect_pval(q_raw_withx, 5, c(0.55, 0.55, 0.5, 1))
 
   expect_pval(d_smooth_withx, 0, c(0.574, 0.574, 0.426, 0.852))
@@ -70,40 +70,40 @@ test_that("pdqr_pval excepts not only objects of class 'p_fun'", {
   expect_pval(r_custom, 0.51, c(0.24, 0.24, 0.76, 0.48), digits = 1)
 })
 
-test_that("pdqr_pval throws errors", {
-  expect_error(pdqr_pval(user_p, 1), "f.*pdqr_fun")
+test_that("summ_pval throws errors", {
+  expect_error(summ_pval(user_p, 1), "f.*pdqr_fun")
   expect_error(
-    pdqr_pval(structure(user_d, class = c("d_fun", "pdqr_fun")), 1),
+    summ_pval(structure(user_d, class = c("d_fun", "pdqr_fun")), 1),
     "f.*proper.*type"
   )
 
-  expect_error(pdqr_pval(p_raw, "a"), "obs.*numeric")
-  expect_error(pdqr_pval(p_raw, 1, direction = 1), "direction.*string")
+  expect_error(summ_pval(p_raw, "a"), "obs.*numeric")
+  expect_error(summ_pval(p_raw, 1, direction = 1), "direction.*string")
   expect_error(
-    pdqr_pval(p_raw, 1, direction = "a"),
+    summ_pval(p_raw, 1, direction = "a"),
     'direction.*"left".*"right".*"both".*not "a"'
   )
-  expect_error(pdqr_pval(p_raw, 1, adjust = 1), "adjust.*string")
+  expect_error(summ_pval(p_raw, 1, adjust = 1), "adjust.*string")
 
   adjust_error <- paste0(c("adjust", stats::p.adjust.methods), collapse = ".*")
   expect_error(
-    pdqr_pval(p_raw, 1, adjust = "b"),
+    summ_pval(p_raw, 1, adjust = "b"),
     paste0(adjust_error, '.*not "b"')
   )
 })
 
 
 # left_pval ---------------------------------------------------------------
-# Tested in `pdqr_pval()`
+# Tested in `summ_pval()`
 
 
 # right_pval --------------------------------------------------------------
-# Tested in `pdqr_pval()`
+# Tested in `summ_pval()`
 
 
 # both_pval ---------------------------------------------------------------
-# Tested in `pdqr_pval()`
+# Tested in `summ_pval()`
 
 
 # assert_adjust -----------------------------------------------------------
-# Tested in `pdqr_pval()`
+# Tested in `summ_pval()`

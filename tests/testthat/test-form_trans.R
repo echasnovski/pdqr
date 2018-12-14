@@ -18,9 +18,9 @@ p_custom_ref <- structure(
 x_norm_seq <- seq(-10, 10, by = 0.01)
 
 
-# pdqr_transform ----------------------------------------------------------
-test_that("pdqr_transform works", {
-  output_custom <- pdqr_transform(sq, p_custom)
+# form_trans --------------------------------------------------------------
+test_that("form_trans works", {
+  output_custom <- form_trans(sq, p_custom)
   expect_distr_fun(output_custom, "p_fun", "smooth")
   expect_equal_distr(
     output_custom, p_custom_ref,
@@ -37,7 +37,7 @@ test_that("pdqr_transform works", {
     type = "smooth", support = c(-20, 20)
   )
 
-  output_norm <- pdqr_transform(`*`, r_norm_input, 2, .pdqr_class = "d_fun")
+  output_norm <- form_trans(`*`, r_norm_input, 2, .pdqr_class = "d_fun")
   expect_distr_fun(output_norm, "d_fun", "smooth")
   expect_equal_distr(
     output_norm, d_norm_ref,
@@ -45,43 +45,41 @@ test_that("pdqr_transform works", {
   )
 })
 
-test_that("pdqr_transform doesn't attach `x` by default", {
-  output <- pdqr_transform(sq, q_raw_withx)
+test_that("form_trans doesn't attach `x` by default", {
+  output <- form_trans(sq, q_raw_withx)
   expect_false(has_meta(output, "x"))
 })
 
-test_that("pdqr_transform correctly restores 'pdqr' type", {
-  expect_is(pdqr_transform(`+`, 1, p_raw), "p_fun")
-  expect_is(pdqr_transform(`+`, d_raw, p_raw), "d_fun")
-  expect_is(pdqr_transform(`+`, d_raw, p_raw, .pdqr_class = "r_fun"), "r_fun")
+test_that("form_trans correctly restores 'pdqr' type", {
+  expect_is(form_trans(`+`, 1, p_raw), "p_fun")
+  expect_is(form_trans(`+`, d_raw, p_raw), "d_fun")
+  expect_is(form_trans(`+`, d_raw, p_raw, .pdqr_class = "r_fun"), "r_fun")
 })
 
-test_that("pdqr_transform throws errors", {
-  expect_error(pdqr_transform(1, p_custom), "trans.*function")
-  expect_error(pdqr_transform(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
-  expect_error(pdqr_transform(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
-  expect_error(pdqr_transform(`+`, 1, 2), "`...`.*should.*at least one.*pdqr")
+test_that("form_trans throws errors", {
+  expect_error(form_trans(1, p_custom), "trans.*function")
+  expect_error(form_trans(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
+  expect_error(form_trans(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
+  expect_error(form_trans(`+`, 1, 2), "`...`.*should.*at least one.*pdqr")
   expect_error(
-    pdqr_transform(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single number"
+    form_trans(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single number"
   )
   expect_error(
-    pdqr_transform(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single number"
+    form_trans(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single number"
   )
   expect_error(
-    pdqr_transform(sq, p_custom, .pdqr_class = 1), "\\.pdqr_class.*string"
+    form_trans(sq, p_custom, .pdqr_class = 1), "\\.pdqr_class.*string"
   )
   expect_error(
-    pdqr_transform(sq, p_custom, .pdqr_class = c("a", "b")),
+    form_trans(sq, p_custom, .pdqr_class = c("a", "b")),
     "\\.pdqr_class.*string"
   )
-  expect_error(
-    pdqr_transform(sq, p_custom, .pdqr_args = "a"), "\\.pdqr_args.*list"
-  )
+  expect_error(form_trans(sq, p_custom, .pdqr_args = "a"), "\\.pdqr_args.*list")
 })
 
 
 # assert_trans_dots -------------------------------------------------------
-# Tested in `pdqr_transform()`
+# Tested in `form_trans()`
 
 
 # find_ref_f --------------------------------------------------------------

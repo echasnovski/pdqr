@@ -8,7 +8,7 @@ new_q <- function(x, type = "smooth", attach_x = identical(type, "raw"),
 }
 
 new_q_raw <- function(x) {
-  distr <- vec_distr_tbl(x)
+  distr <- vec_summ_distr_tbl(x)
   distr_cum_prob_small <- cumsum(distr[["prob"]])
   support <- range(x)
 

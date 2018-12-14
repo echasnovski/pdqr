@@ -8,7 +8,7 @@ new_d <- function(x, type = "smooth", attach_x = identical(type, "raw"),
 }
 
 new_d_raw <- function(x) {
-  distr <- vec_distr_tbl(x)
+  distr <- vec_summ_distr_tbl(x)
   support <- range(x)
 
   # For efficient memory management

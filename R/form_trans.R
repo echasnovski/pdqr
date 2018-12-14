@@ -1,7 +1,6 @@
 # Main transformation function --------------------------------------------
-pdqr_transform <- function(trans, ..., .n_sample = 10000,
-                           .pdqr_class = NULL,
-                           .pdqr_args = list(attach_x = FALSE)) {
+form_trans <- function(trans, ..., .n_sample = 10000, .pdqr_class = NULL,
+                       .pdqr_args = list(attach_x = FALSE)) {
   assert_type(trans, is.function)
   dots <- list(...)
   assert_trans_dots(dots)
@@ -94,7 +93,7 @@ Math.pdqr_fun <- function(x, ...) {
     get(.Generic)(y, ...)
   }
 
-  pdqr_transform(gen_fun, x, .n_sample = n_sample)
+  form_trans(gen_fun, x, .n_sample = n_sample)
 }
 
 Ops.pdqr_fun <- function(e1, e2) {
@@ -114,9 +113,9 @@ Ops.pdqr_fun <- function(e1, e2) {
   }
 
   if (missing(e2)) {
-    pdqr_transform(gen_fun, e1, .n_sample = n_sample)
+    form_trans(gen_fun, e1, .n_sample = n_sample)
   } else {
-    pdqr_transform(gen_fun, e1, e2, .n_sample = n_sample)
+    form_trans(gen_fun, e1, e2, .n_sample = n_sample)
   }
 }
 
@@ -138,5 +137,5 @@ Summary.pdqr_fun <- function(..., na.rm = FALSE) {
     unlist(Map(f, ...))
   }
 
-  pdqr_transform(gen_fun, ..., .n_sample = n_sample)
+  form_trans(gen_fun, ..., .n_sample = n_sample)
 }

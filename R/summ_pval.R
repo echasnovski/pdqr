@@ -1,4 +1,4 @@
-pdqr_pval <- function(f, obs, direction = "right", adjust = "holm") {
+summ_pval <- function(f, obs, direction = "right", adjust = "holm") {
   assert_pdqr_fun(f)
   assert_type(obs, is.numeric)
   assert_type(direction, is_string)
