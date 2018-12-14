@@ -1,5 +1,7 @@
 context("test-transform")
 
+set.seed(7777)
+
 
 # Reference data ----------------------------------------------------------
 sq <- function(x) {x * x}
@@ -39,7 +41,7 @@ test_that("pdqr_transform works", {
   expect_distr_fun(output_norm, "d_fun", "smooth")
   expect_equal_distr(
     output_norm, d_norm_ref,
-    grid = x_norm_seq, thres = 0.01, check_supp = FALSE
+    grid = x_norm_seq, thres = 0.02, check_supp = FALSE
   )
 })
 
