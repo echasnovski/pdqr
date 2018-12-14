@@ -29,11 +29,11 @@ expect_different_r_funs <- function(f_1, f_2, n_sample = 10000,
 # as_r --------------------------------------------------------------------
 test_that("as_r works with user-defined function", {
   expect_distr_fun(
-    as_r(user_r, type = "smooth", support = c(0, 1)), "r_fun", "smooth"
+    as_r(user_r, type = "smooth", support = c(0, 1)), "r", "smooth"
   )
-  expect_error(as_r(user_r), "r_fun.*supply.*type.*support")
-  expect_error(as_r(user_r, type = "smooth"), "r_fun.*supply.*support")
-  expect_error(as_r(user_r, support = c(0, 1)), "r_fun.*supply.*type")
+  expect_error(as_r(user_r), "r-function.*supply.*type.*support")
+  expect_error(as_r(user_r, type = "smooth"), "r-function.*supply.*support")
+  expect_error(as_r(user_r, support = c(0, 1)), "r-function.*supply.*type")
 })
 
 test_that("as_r rewrites metadata on user-defined function", {
@@ -78,7 +78,7 @@ test_that("as_r.default throws errors and warnings", {
   expect_warning(new_user_r_smooth_2(100), "there.*are.*outside.*support")
 })
 
-test_that('as_r works with "p_fun"', {
+test_that('as_r works with "p"', {
   expect_equal_r_funs(as_r(p_raw_withx), r_raw_withx)
 
   expect_silent(as_r(p_raw_nox, warn_precision = FALSE))
@@ -100,7 +100,7 @@ test_that('as_r works with "p_fun"', {
   )
 })
 
-test_that('as_r works with "d_fun"', {
+test_that('as_r works with "d"', {
   # With "raw" type and low number of unique values errors might be quite big
   expect_equal_r_funs(
     as_r(d_raw_withx), r_raw_withx,
@@ -131,7 +131,7 @@ test_that('as_r works with "d_fun"', {
   )
 })
 
-test_that('as_r works with "q_fun"', {
+test_that('as_r works with "q"', {
   expect_equal_r_funs(
     as_r(q_raw_withx), r_raw_withx,
     sd_thres = 0.1
@@ -151,7 +151,7 @@ test_that('as_r works with "q_fun"', {
   )
 })
 
-test_that('as_r returns self in case of "r_fun"', {
+test_that('as_r returns self in case of "r"', {
   expect_identical(as_r(r_raw_withx), r_raw_withx)
   expect_identical(as_r(r_raw_nox), r_raw_nox)
   expect_identical(as_r(r_smooth_withx), r_smooth_withx)
@@ -159,12 +159,12 @@ test_that('as_r returns self in case of "r_fun"', {
   expect_identical(as_r(r_custom), r_custom)
 })
 
-test_that('as_r works with "pdqr_fun" (not adding duplicated class)', {
+test_that('as_r works with "pdqr" (not adding duplicated class)', {
   input <- structure(
-    function(x) {rbeta(x, 1, 2)}, class = c("pdqr_fun", "function")
+    function(x) {rbeta(x, 1, 2)}, class = c("pdqr", "function")
   )
   output <- as_r(input, type = "smooth", support = c(0, 1))
-  expect_equal(class(output), c("r_fun", "pdqr_fun", "function"))
+  expect_equal(class(output), c("r", "pdqr", "function"))
 })
 
 test_that("as_r respects `n_grid` argument", {
@@ -178,16 +178,13 @@ test_that("as_r respects `n_grid` argument", {
 
 test_that("as_r methods throw error with corrupt input", {
   expect_error(
-    as_r(structure(user_p, class = c("p_fun", "pdqr_fun"))),
-    "f.*proper.*type"
+    as_r(structure(user_p, class = c("p", "pdqr"))), "f.*proper.*type"
   )
   expect_error(
-    as_r(structure(user_d, class = c("d_fun", "pdqr_fun"))),
-    "f.*proper.*type"
+    as_r(structure(user_d, class = c("d", "pdqr"))), "f.*proper.*type"
   )
   expect_error(
-    as_r(structure(user_q, class = c("q_fun", "pdqr_fun"))),
-    "f.*proper.*type"
+    as_r(structure(user_q, class = c("q", "pdqr"))), "f.*proper.*type"
   )
 })
 
@@ -215,15 +212,15 @@ test_that("as_r asserts extra arguments of methods", {
 # Tested in `as_r()`
 
 
-# as_r.p_fun --------------------------------------------------------------
+# as_r.p ------------------------------------------------------------------
 # Tested in `as_r()`
 
 
-# as_r.d_fun --------------------------------------------------------------
+# as_r.d ------------------------------------------------------------------
 # Tested in `as_r()`
 
 
-# as_r.q_fun --------------------------------------------------------------
+# as_r.q ------------------------------------------------------------------
 # Tested in `as_r()`
 
 

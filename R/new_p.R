@@ -1,7 +1,7 @@
 new_p <- function(x, type = "smooth", attach_x = identical(type, "raw"),
                   extra = NULL, ...) {
   distr_impl(
-    fun_class = "p_fun",
+    fun_class = "p",
     impl_funs = list(raw = new_p_raw, smooth = new_p_smooth),
     x = x, type = type, attach_x = attach_x, extra = extra, ...
   )
@@ -36,6 +36,6 @@ new_p_smooth <- function(x, ...) {
   add_meta(res, support = support)
 }
 
-print.p_fun <- function(x, ...) {
+print.p <- function(x, ...) {
   pdqr_print(x, "Cumulative distribution")
 }

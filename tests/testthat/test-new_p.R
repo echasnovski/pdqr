@@ -3,11 +3,11 @@ context("test-new_p")
 
 # new_p -------------------------------------------------------------------
 test_that("new_p works", {
-  expect_distr_fun(p_raw, "p_fun", "raw")
+  expect_distr_fun(p_raw, "p", "raw")
   expect_equal(meta(p_raw, "support"), x_raw_support)
   expect_equal(p_raw(1:10), c(cumsum(x_raw_distr_tbl[["prob"]]), 1))
 
-  expect_distr_fun(p_smooth, "p_fun", "smooth")
+  expect_distr_fun(p_smooth, "p", "smooth")
   expect_equal(
     round(meta(p_smooth, "support"), 2), round(x_smooth_support, 2)
   )
@@ -120,7 +120,7 @@ test_that("new_p uses `...` as arguments for `density()`", {
 # Tested in `new_p()`
 
 
-# print.p_fun -------------------------------------------------------------
-test_that("print.p_fun works", {
+# print.p -----------------------------------------------------------------
+test_that("print.p works", {
   expect_pdqr_print(new_p, "Cumulative distribution")
 })

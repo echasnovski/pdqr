@@ -61,7 +61,7 @@ test_that("summ_pval adjusts multiple p-values", {
   expect_adjust(p_smooth, obs_vec, "none")
 })
 
-test_that("summ_pval excepts not only objects of class 'p_fun'", {
+test_that("summ_pval excepts not only objects of class 'p'", {
   expect_pval(q_raw_withx, 5, c(0.55, 0.55, 0.5, 1))
 
   expect_pval(d_smooth_withx, 0, c(0.574, 0.574, 0.426, 0.852))
@@ -71,9 +71,9 @@ test_that("summ_pval excepts not only objects of class 'p_fun'", {
 })
 
 test_that("summ_pval throws errors", {
-  expect_error(summ_pval(user_p, 1), "f.*pdqr_fun")
+  expect_error(summ_pval(user_p, 1), "f.*pdqr")
   expect_error(
-    summ_pval(structure(user_d, class = c("d_fun", "pdqr_fun")), 1),
+    summ_pval(structure(user_d, class = c("d", "pdqr")), 1),
     "f.*proper.*type"
   )
 

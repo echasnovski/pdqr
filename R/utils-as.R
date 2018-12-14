@@ -36,7 +36,7 @@ as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
 }
 
 warn_conversion_from_p_raw <- function(f, warn_precision, fun_name) {
-  if (isTRUE(warn_precision) && inherits(f, "p_fun") &&
+  if (isTRUE(warn_precision) && inherits(f, "p") &&
       (meta(f, "type") == "raw")) {
     warning_collapse(
       'Converting from cumulative distribution function into ',

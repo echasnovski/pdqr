@@ -3,11 +3,11 @@ context("test-new_d")
 
 # new_d -------------------------------------------------------------------
 test_that("new_d works", {
-  expect_distr_fun(d_raw, "d_fun", "raw")
+  expect_distr_fun(d_raw, "d", "raw")
   expect_equal(meta(d_raw, "support"), x_raw_support)
   expect_equal(d_raw(1:10), c(x_raw_distr_tbl[["prob"]], 0))
 
-  expect_distr_fun(d_smooth, "d_fun", "smooth")
+  expect_distr_fun(d_smooth, "d", "smooth")
   expect_equal(
     round(meta(d_smooth, "support"), 2), round(x_smooth_support, 2)
   )
@@ -98,7 +98,7 @@ test_that("new_d uses `...` as arguments for `density()`", {
 # Tested in `new_d()`
 
 
-# print.d_fun -------------------------------------------------------------
-test_that("print.d_fun works", {
+# print.d -----------------------------------------------------------------
+test_that("print.d works", {
   expect_pdqr_print(new_d, "Density")
 })

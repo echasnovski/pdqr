@@ -63,14 +63,14 @@ parse_type <- function(f_name) {
 }
 
 
-# Assert missing arguments in "*_fun" definitions -------------------------
+# Assert missing arguments ------------------------------------------------
 assert_missing_args <- function(f_name, ...) {
   dots <- list(...)
   missing_args <- names(Filter(isTRUE, dots))
 
   if (length(missing_args) > 0) {
     stop_collapse(
-      'To define "', f_name, '" supply the following arguments: ',
+      'To define ', f_name, '-function supply the following arguments: ',
       paste0('`', missing_args, '`', collapse = ", "), '.'
     )
   }
@@ -86,13 +86,12 @@ assert_pdqr_fun <- function(f) {
   if (!is.function(f)) {
     stop_collapse(f_name, " should be function.")
   }
-  if (!inherits(f, "pdqr_fun")) {
-    stop_collapse(f_name, ' should inherit from "pdqr_fun".')
+  if (!inherits(f, "pdqr")) {
+    stop_collapse(f_name, ' should inherit from "pdqr".')
   }
-  if (!inherits(f, c("p_fun", "d_fun", "q_fun", "r_fun"))) {
+  if (!inherits(f, c("p", "d", "q", "r"))) {
     stop_collapse(
-      f_name, ' should inherit from one of classes: ',
-      '"p_fun", "d_fun", "q_fun", "r_fun".'
+      f_name, ' should inherit from one of classes: "p", "d", "q", "r".'
     )
   }
   if (!has_meta_type(f)) {

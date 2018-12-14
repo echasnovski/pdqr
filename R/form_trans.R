@@ -67,18 +67,18 @@ impute_pdqr_fun <- function(pdqr_class, ref) {
     pdqr_class <- get_pdqr_class(ref)
   } else if (!is_pdqr_class(pdqr_class)) {
     stop_collapse(
-      '`.pdqr_class` should be one of "p_fun", "d_fun", "q_fun", "r_fun".'
+      '`.pdqr_class` should be one of "p", "d", "q", "r".'
     )
   }
 
   switch(
     pdqr_class,
-    p_fun = new_p, d_fun = new_d, q_fun = new_q, r_fun = new_r
+    p = new_p, d = new_d, q = new_q, r = new_r
   )
 }
 
 get_pdqr_class <- function(f) {
-  pdqr_classes <- paste0(c("p", "d", "q", "r"), "_fun")
+  pdqr_classes <- c("p", "d", "q", "r")
   f_type <- pdqr_classes[match(class(f), pdqr_classes)]
 
   f_type[!is.na(f_type)][1]
@@ -86,7 +86,7 @@ get_pdqr_class <- function(f) {
 
 
 # Group generics ----------------------------------------------------------
-Math.pdqr_fun <- function(x, ...) {
+Math.pdqr <- function(x, ...) {
   n_sample <- getOption("pdqr.transform.n_sample")
 
   gen_fun <- function(y) {
@@ -96,7 +96,7 @@ Math.pdqr_fun <- function(x, ...) {
   form_trans(gen_fun, x, .n_sample = n_sample)
 }
 
-Ops.pdqr_fun <- function(e1, e2) {
+Ops.pdqr <- function(e1, e2) {
   n_sample <- getOption("pdqr.transform.n_sample")
 
   gen_fun <- function(...) {
@@ -119,7 +119,7 @@ Ops.pdqr_fun <- function(e1, e2) {
   }
 }
 
-Summary.pdqr_fun <- function(..., na.rm = FALSE) {
+Summary.pdqr <- function(..., na.rm = FALSE) {
   n_sample <- getOption("pdqr.transform.n_sample")
 
   if (.Generic == "range") {

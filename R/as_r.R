@@ -1,5 +1,5 @@
 as_r <- function(f, ...) {
-  if (inherits(f, "r_fun")) {
+  if (inherits(f, "r")) {
     return(f)
   } else if (has_meta_x(f) && has_meta_type(f)) {
     return(distr_from_meta(f, new_r, ...))
@@ -11,17 +11,17 @@ as_r <- function(f, ...) {
 as_r.default <- function(f, type, support, extra = NULL, adjust_max_iter = 10,
                          warn_not_adjusted = TRUE, ...) {
   assert_missing_args(
-    "r_fun", type = missing(type), support = missing(support)
+    "r", type = missing(type), support = missing(support)
   )
   assert_type(adjust_max_iter, is_single_number, "single number")
   assert_type(warn_not_adjusted, is_truefalse, "`TRUE` or `FALSE`")
 
   adjust_to_support_r <- adjusting_r_impl(adjust_max_iter, warn_not_adjusted)
 
-  as_distr_impl_def("r_fun", f, type, support, extra, adjust_to_support_r)
+  as_distr_impl_def("r", f, type, support, extra, adjust_to_support_r)
 }
 
-as_r.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+as_r.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   assert_pdqr_fun(f)
 
   warn_conversion_from_p_raw(f, warn_precision, "random generation function")
@@ -30,13 +30,13 @@ as_r.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   as_r_impl(q_f)
 }
 
-as_r.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+as_r.d <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   q_f <- as_q(f, n_grid = n_grid, warn_precision = warn_precision, ...)
 
   as_r_impl(q_f)
 }
 
-as_r.q_fun <- function(f, ...) {
+as_r.q <- function(f, ...) {
   assert_pdqr_fun(f)
 
   as_r_impl(f)
@@ -48,7 +48,7 @@ as_r_impl <- function(q_f) {
 
     q_f(rand_q_vec)
   }
-  res <- add_pdqr_class(res, "r_fun")
+  res <- add_pdqr_class(res, "r")
 
   copy_meta(res, q_f)
 }
@@ -85,7 +85,7 @@ adjust_final <- function(vec, support, warn_not_adjusted) {
   if (all(is_vec_na)) {
     stop_collapse(
       'No element was generated inside supplied support. Consider creating ',
-      '"p_fun" function.'
+      'p-function.'
     )
   }
 

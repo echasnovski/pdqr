@@ -1,7 +1,7 @@
 new_d <- function(x, type = "smooth", attach_x = identical(type, "raw"),
                   extra = NULL, ...) {
   distr_impl(
-    fun_class = "d_fun",
+    fun_class = "d",
     impl_funs = list(raw = new_d_raw, smooth = new_d_smooth),
     x = x, type = type, attach_x = attach_x, extra = extra, ...
   )
@@ -37,6 +37,6 @@ new_d_smooth <- function(x, ...) {
   add_meta(res, support = range(dens[["x"]]))
 }
 
-print.d_fun <- function(x, ...) {
+print.d <- function(x, ...) {
   pdqr_print(x, "Density")
 }

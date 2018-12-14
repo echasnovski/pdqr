@@ -5,17 +5,17 @@ context("test-utils-new")
 test_that("add_pdqr_class works", {
   expect_equal(
     add_pdqr_class(structure(1, class = "a"), "b"),
-    structure(1, class = c("b", "pdqr_fun", "a"))
+    structure(1, class = c("b", "pdqr", "a"))
   )
   expect_equal(
-    add_pdqr_class(structure(1, class = c("pdqr_fun", "a")), "b"),
-    structure(1, class = c("b", "pdqr_fun", "a"))
+    add_pdqr_class(structure(1, class = c("pdqr", "a")), "b"),
+    structure(1, class = c("b", "pdqr", "a"))
   )
 })
 
 
 # distr_impl --------------------------------------------------------------
-# Tested in `*_fun()` functions
+# Tested in `new_*()` functions
 
 
 # filter_numbers ----------------------------------------------------------
@@ -109,12 +109,12 @@ test_that("is_pdqr_fun works", {
   expect_false(is_pdqr_fun("a"))
   expect_false(is_pdqr_fun(user_p))
   expect_false(
-    is_pdqr_fun(structure(user_p, class = "pdqr_fun", meta = list(type = "a")))
+    is_pdqr_fun(structure(user_p, class = "pdqr", meta = list(type = "a")))
   )
   expect_false(
     is_pdqr_fun(
       structure(
-        user_p, class = "pdqr_fun", meta = list(type = "raw", support = c(2, 1))
+        user_p, class = "pdqr", meta = list(type = "raw", support = c(2, 1))
       )
     )
   )
@@ -128,9 +128,9 @@ test_that("is_pdqr_fun works", {
 
 # is_pdqr_class -----------------------------------------------------------
 test_that("is_pdqr_class works", {
-  expect_true(all(is_pdqr_class(c("p_fun", "d_fun", "q_fun", "r_fun"))))
+  expect_true(all(is_pdqr_class(c("p", "d", "q", "r"))))
 
-  expect_false(is_pdqr_class("p"))
+  expect_false(is_pdqr_class("p_fun"))
 })
 
 
@@ -159,7 +159,7 @@ test_that("has_meta_x works", {
 
 
 # density_piecelin --------------------------------------------------------
-# Tested in `*_fun()`
+# Tested in `new_*()`
 
 
 # trapez_integral ---------------------------------------------------------
@@ -170,4 +170,4 @@ test_that("trapez_integral works", {
 
 
 # p_from_d_points ---------------------------------------------------------
-# Tested in `p_fun` and `as_p`
+# Tested in `new_p` and `as_p`

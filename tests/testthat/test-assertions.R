@@ -43,20 +43,20 @@ test_that("parse_type works", {
 
 
 # assert_missing_args -----------------------------------------------------
-# Tested in tests for construction of `*_fun` from user-defined function
+# Tested in tests for conversion of pdqr-functions from user-defined function
 
 
 # assert_pdqr_fun ---------------------------------------------------------
 test_that("assert_pdqr_fun works", {
   input <- 1
   expect_error(assert_pdqr_fun(input), "`input`.*function")
-  expect_error(assert_pdqr_fun(user_p), "inherit.*pdqr_fun")
+  expect_error(assert_pdqr_fun(user_p), "inherit.*pdqr")
   expect_error(
-    assert_pdqr_fun(structure(user_p, class = "pdqr_fun")),
-    "inherit.*p_fun.*d_fun.*q_fun.*r_fun"
+    assert_pdqr_fun(structure(user_p, class = "pdqr")),
+    "inherit.*p.*d.*q.*r"
   )
 
-  f_with_class <- structure(user_p, class = c("p_fun", "pdqr_fun"))
+  f_with_class <- structure(user_p, class = c("p", "pdqr"))
   expect_error(assert_pdqr_fun(f_with_class), "proper.*type")
   expect_error(
     assert_pdqr_fun(structure(f_with_class, type = "a")),

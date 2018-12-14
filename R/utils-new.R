@@ -1,4 +1,4 @@
-# Common functionality for `*_fun()` --------------------------------------
+# Common functionality for `new_*()` --------------------------------------
 distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
                        ...) {
   assert_common_args(x, type, attach_x)
@@ -21,7 +21,7 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
 }
 
 add_pdqr_class <- function(f, subclass) {
-  add_class(f, c(subclass, "pdqr_fun"))
+  add_class(f, c(subclass, "pdqr"))
 }
 
 filter_numbers <- function(x) {
@@ -75,12 +75,12 @@ is_pdqr_fun <- function(obj, check_x = TRUE) {
     check_x_res <- TRUE
   }
 
-  is.function(obj) && inherits(obj, "pdqr_fun") &&
+  is.function(obj) && inherits(obj, "pdqr") &&
     has_meta_type(obj) && has_meta_support(obj) && check_x_res
 }
 
 is_pdqr_class <- function(chr) {
-  chr %in% paste0(c("p", "d", "q", "r"), "_fun")
+  chr %in% c("p", "d", "q", "r")
 }
 
 has_meta_type <- function(f) {

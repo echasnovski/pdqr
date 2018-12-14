@@ -35,9 +35,9 @@ x_smooth_vec_ext <- sample(
 
 x_custom <- c(runif(998), 0, 1)
 # Range [0.05, 0.95] instead of [0, 1] will be useful when testing conversion
-  # from `r_fun` class. This is because custom functions have finite support
-  # [0, 1] and `type = "smooth"`. Current behaviour is to extend output range a
-  # little bit (consequence of using `density()`), so result on the edge of true
+  # from "r" class. This is because custom functions have finite support [0, 1]
+  # and `type = "smooth"`. Current behaviour is to extend output range a little
+  # bit (consequence of using `density()`), so result on the edge of true
   # support may differ a lot.
 x_custom_trunc <- runif(1000, 0.05, 0.95)
 x_custom_inner <- setdiff(x_custom, c(0, 1))
@@ -81,7 +81,7 @@ adj_p_smooth <- construct_adj_smooth(p_smooth, as_p)
 
 user_p <- function(q) {pbeta(q, 1, 2)}
 p_custom <- structure(
-  user_p, class = c("p_fun", "pdqr_fun", "function"),
+  user_p, class = c("p", "pdqr", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )
 
@@ -98,7 +98,7 @@ adj_d_smooth <- construct_adj_smooth(d_smooth, as_d)
 
 user_d <- function(x) {dbeta(x, 1, 2)}
 d_custom <- structure(
-  user_d, class = c("d_fun", "pdqr_fun", "function"),
+  user_d, class = c("d", "pdqr", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )
 
@@ -115,7 +115,7 @@ adj_q_smooth <- construct_adj_smooth(q_smooth, as_q)
 
 user_q <- function(p) {qbeta(p, 1, 2)}
 q_custom <- structure(
-  user_q, class = c("q_fun", "pdqr_fun", "function"),
+  user_q, class = c("q", "pdqr", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )
 
@@ -132,6 +132,6 @@ adj_r_smooth <- construct_adj_smooth(r_smooth, as_r, warn_not_adjusted = FALSE)
 
 user_r <- function(n) {rbeta(n, 1, 2)}
 r_custom <- structure(
-  user_r, class = c("r_fun", "pdqr_fun", "function"),
+  user_r, class = c("r", "pdqr", "function"),
   meta = list(support = c(0, 1), type = "smooth")
 )

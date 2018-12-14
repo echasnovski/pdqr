@@ -9,8 +9,8 @@ set.seed(5555)
 # it `print()`s its input (resulting here with `NULL`), unless wrapped in
 # function.
 
-# plot.p_fun --------------------------------------------------------------
-test_that("plot.p_fun works", {
+# plot.p --------------------------------------------------------------
+test_that("plot.p works", {
   vdiffr::expect_doppelganger("plot-p-fun-1", recordPlot(plot(p_raw_withx)))
   vdiffr::expect_doppelganger(
     "plot-p-fun-2", recordPlot(plot(p_raw_withx, y = NA))
@@ -26,7 +26,7 @@ test_that("plot.p_fun works", {
     )
   )
 
-  # Thise are also tests for `lines.p_fun()`
+  # These are also tests for `lines.p()`
   vdiffr::expect_doppelganger(
     "plot-lines-p-fun-1", recordPlot({
       plot(p_smooth_withx)
@@ -53,7 +53,7 @@ test_that("plot.p_fun works", {
   )
 })
 
-test_that("plot.p_fun and lines.p_fun respect `n_grid` argument", {
+test_that("plot.p and lines.p respect `n_grid` argument", {
   vdiffr::expect_doppelganger(
     "plot-lines-p-fun-n-grid", recordPlot({
       plot(p_smooth_withx, n_grid = 6)
@@ -62,17 +62,16 @@ test_that("plot.p_fun and lines.p_fun respect `n_grid` argument", {
   )
 })
 
-test_that("plot.p_fun throws error with corrupt input", {
+test_that("plot.p throws error with corrupt input", {
   expect_error(
-    plot(structure(user_p, class = c("p_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    plot(structure(user_p, class = c("p", "pdqr"))), "x.*proper.*type"
   )
 })
 
 
-# plot.d_fun --------------------------------------------------------------
-test_that("plot.d_fun works", {
-  density_warning <- "[Dd]ensity.*raw.*can miss"
+# plot.d ------------------------------------------------------------------
+test_that("plot.d works", {
+  density_warning <- "d-function.*raw.*can miss"
 
   vdiffr::expect_doppelganger(
     "plot-d-fun-1", recordPlot({
@@ -102,7 +101,7 @@ test_that("plot.d_fun works", {
     )
   )
 
-  # Thise are also tests for `lines.d_fun()`
+  # These are also tests for `lines.d()`
   vdiffr::expect_doppelganger(
     "plot-lines-d-fun-1", recordPlot({
       plot(d_smooth_withx)
@@ -129,7 +128,7 @@ test_that("plot.d_fun works", {
   )
 })
 
-test_that("plot.d_fun and lines.d_fun respect `n_grid` argument", {
+test_that("plot.d and lines.d respect `n_grid` argument", {
   vdiffr::expect_doppelganger(
     "plot-lines-d-fun-n-grid", recordPlot({
       plot(d_smooth_withx, n_grid = 6)
@@ -138,16 +137,15 @@ test_that("plot.d_fun and lines.d_fun respect `n_grid` argument", {
   )
 })
 
-test_that("plot.d_fun throws error with corrupt input", {
+test_that("plot.d throws error with corrupt input", {
   expect_error(
-    plot(structure(user_d, class = c("d_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    plot(structure(user_d, class = c("d", "pdqr"))), "x.*proper.*type"
   )
 })
 
 
-# plot.q_fun --------------------------------------------------------------
-test_that("plot.q_fun works", {
+# plot.q ------------------------------------------------------------------
+test_that("plot.q works", {
   vdiffr::expect_doppelganger("plot-q-fun-1", recordPlot(plot(q_raw_withx)))
   vdiffr::expect_doppelganger(
     "plot-q-fun-2", recordPlot(plot(q_raw_withx, y = NA))
@@ -163,7 +161,7 @@ test_that("plot.q_fun works", {
     )
   )
 
-  # Thise are also tests for `lines.q_fun()`
+  # These are also tests for `lines.q()`
   vdiffr::expect_doppelganger(
     "plot-lines-q-fun-1", recordPlot({
       plot(q_smooth_withx)
@@ -190,7 +188,7 @@ test_that("plot.q_fun works", {
   )
 })
 
-test_that("plot.q_fun and lines.q_fun respect `n_grid` argument", {
+test_that("plot.q and lines.q respect `n_grid` argument", {
   vdiffr::expect_doppelganger(
     "plot-lines-q-fun-n-grid", recordPlot({
       plot(q_smooth_withx, n_grid = 6)
@@ -199,16 +197,15 @@ test_that("plot.q_fun and lines.q_fun respect `n_grid` argument", {
   )
 })
 
-test_that("plot.q_fun throws error with corrupt input", {
+test_that("plot.q throws error with corrupt input", {
   expect_error(
-    plot(structure(user_q, class = c("q_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    plot(structure(user_q, class = c("q", "pdqr"))), "x.*proper.*type"
   )
 })
 
 
-# plot.r_fun --------------------------------------------------------------
-test_that("plot.r_fun works", {
+# plot.r ------------------------------------------------------------------
+test_that("plot.r works", {
   vdiffr::expect_doppelganger(
     "plot-r-fun-raw-1", recordPlot(plot(r_raw_withx))
   )
@@ -244,16 +241,15 @@ test_that("plot.r_fun works", {
   )
 })
 
-test_that("plot.r_fun respects `n_sample` argument", {
+test_that("plot.r respects `n_sample` argument", {
   vdiffr::expect_doppelganger(
     "plot-r-fun-n-sample", recordPlot(plot(r_smooth_withx, n_sample = 10))
   )
 })
 
-test_that("plot.r_fun throws error with corrupt input", {
+test_that("plot.r throws error with corrupt input", {
   expect_error(
-    plot(structure(user_r, class = c("r_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    plot(structure(user_r, class = c("r", "pdqr"))), "x.*proper.*type"
   )
 })
 
@@ -266,32 +262,29 @@ test_that("plot.r_fun throws error with corrupt input", {
 # Tested in `plot()` methods
 
 
-# lines.p_fun -------------------------------------------------------------
+# lines.p -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
-test_that("lines.p_fun throws error with corrupt input", {
+test_that("lines.p throws error with corrupt input", {
   expect_error(
-    lines(structure(user_p, class = c("p_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    lines(structure(user_p, class = c("p", "pdqr"))), "x.*proper.*type"
   )
 })
 
 
-# lines.d_fun -------------------------------------------------------------
+# lines.d -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
-test_that("lines.d_fun throws error with corrupt input", {
+test_that("lines.d throws error with corrupt input", {
   expect_error(
-    lines(structure(user_d, class = c("d_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    lines(structure(user_d, class = c("d", "pdqr"))), "x.*proper.*type"
   )
 })
 
 
-# lines.q_fun -------------------------------------------------------------
+# lines.q -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
-test_that("lines.q_fun throws error with corrupt input", {
+test_that("lines.q throws error with corrupt input", {
   expect_error(
-    lines(structure(user_q, class = c("q_fun", "pdqr_fun"))),
-    "x.*proper.*type"
+    lines(structure(user_q, class = c("q", "pdqr"))), "x.*proper.*type"
   )
 })
 

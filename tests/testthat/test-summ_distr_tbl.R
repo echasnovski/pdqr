@@ -47,5 +47,5 @@ test_that("vec_distr_tbl removes `NA`s", {
 })
 
 
-# p_fun_summ_distr_tbl ----------------------------------------------------
+# p_summ_distr_tbl --------------------------------------------------------
 # Tested in `summ_distr_tbl()`

@@ -1,5 +1,5 @@
 as_q <- function(f, ...) {
-  if (inherits(f, "q_fun")) {
+  if (inherits(f, "q")) {
     return(f)
   } else if (has_meta_x(f) && has_meta_type(f)) {
     return(distr_from_meta(f, new_q, ...))
@@ -10,13 +10,13 @@ as_q <- function(f, ...) {
 
 as_q.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
-    "q_fun", type = missing(type), support = missing(support)
+    "q", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("q_fun", f, type, support, extra, adjust_to_support_q)
+  as_distr_impl_def("q", f, type, support, extra, adjust_to_support_q)
 }
 
-as_q.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+as_q.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   assert_pdqr_fun(f)
 
   support <- meta(f, "support")
@@ -41,21 +41,19 @@ as_q.p_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
 
     out
   }
-  res <- add_pdqr_class(res, "q_fun")
+  res <- add_pdqr_class(res, "q")
 
   copy_meta(res, f)
 }
 
-as_q.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
-  # This conversion usually is very slow due to task nature: to compute "q_fun"
-  # from "d_fun" one *needs* to compute "p_fun".
+as_q.d <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   as_q(
     as_p(f, warn_precision = warn_precision, ...),
     n_grid = n_grid, warn_precision = FALSE
   )
 }
 
-as_q.r_fun <- function(f, n_sample = 10000, ...) {
+as_q.r <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
   as_distr_impl_r(new_q, f, n_sample, ...)

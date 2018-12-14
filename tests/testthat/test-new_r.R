@@ -3,11 +3,11 @@ context("test-new_r")
 
 # new_r -------------------------------------------------------------------
 test_that("new_r works", {
-  expect_distr_fun(r_raw, "r_fun", "raw")
+  expect_distr_fun(r_raw, "r", "raw")
   expect_equal(meta(r_raw, "support"), x_raw_support)
   expect_true(all(r_raw(100) %in% x_raw_distr_tbl[["x"]]))
 
-  expect_distr_fun(r_smooth, "r_fun", "smooth")
+  expect_distr_fun(r_smooth, "r", "smooth")
   expect_equal(
     round(meta(r_smooth, "support"), 2), round(x_smooth_support, 2)
   )
@@ -68,7 +68,7 @@ test_that("new_r has correct default for `attach_x`", {
 # Tested in `new_r()`
 
 
-# print.r_fun -------------------------------------------------------------
-test_that("print.r_fun works", {
+# print.r -----------------------------------------------------------------
+test_that("print.r works", {
   expect_pdqr_print(new_r, "Random generation")
 })

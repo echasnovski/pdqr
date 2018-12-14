@@ -1,5 +1,5 @@
 # plot() ------------------------------------------------------------------
-plot.p_fun <- function(x, y = NULL, n_grid = 1001, ...) {
+plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -13,11 +13,11 @@ plot.p_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   plot_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, dots)
 }
 
-plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
+plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
-  warn_plotting_raw_d_fun(x)
+  warn_plotting_raw_d(x)
 
   dots <- make_plot_dots(
     ...,
@@ -28,7 +28,7 @@ plot.d_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   plot_impl_pdq(x, meta(x, "support"), n_grid, dots)
 }
 
-plot.q_fun <- function(x, y = NULL, n_grid = 1001, ...) {
+plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -41,7 +41,7 @@ plot.q_fun <- function(x, y = NULL, n_grid = 1001, ...) {
   plot_impl_pdq(x, c(0, 1), n_grid, dots)
 }
 
-plot.r_fun <- function(x, y = NULL, n_sample = 1001, ...) {
+plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -69,10 +69,10 @@ make_plot_dots <- function(...) {
   dedupl_list(list(...))
 }
 
-warn_plotting_raw_d_fun <- function(f) {
-  if (inherits(f, "d_fun") && (meta(f, "type") == "raw")) {
+warn_plotting_raw_d <- function(f) {
+  if (inherits(f, "d") && (meta(f, "type") == "raw")) {
     warning_collapse(
-      'Plotting density function with `type` = "raw" can miss actual points.'
+      'Plotting d-function with `type` = "raw" can miss actual points.'
     )
   }
 
@@ -81,22 +81,22 @@ warn_plotting_raw_d_fun <- function(f) {
 
 
 # lines() -----------------------------------------------------------------
-lines.p_fun <- function(x, n_grid = 1001, ...) {
+lines.p <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   # Stretch support to guarantee 0 and 1 on edges
   lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
 }
 
-lines.d_fun <- function(x, n_grid = 1001, ...) {
+lines.d <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  warn_plotting_raw_d_fun(x)
+  warn_plotting_raw_d(x)
 
   lines_impl_pdq(x, meta(x, "support"), n_grid, list(...))
 }
 
-lines.q_fun <- function(x, n_grid = 1001, ...) {
+lines.q <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   lines_impl_pdq(x, c(0, 1), n_grid, list(...))

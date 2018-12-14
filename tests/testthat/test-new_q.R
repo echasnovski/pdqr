@@ -3,13 +3,13 @@ context("test-new_q")
 
 # new_q -------------------------------------------------------------------
 test_that("new_q works", {
-  expect_distr_fun(q_raw, "q_fun", "raw")
+  expect_distr_fun(q_raw, "q", "raw")
   expect_equal(meta(q_raw, "support"), x_raw_support)
   expect_equal(
     q_raw(cumsum(x_raw_distr_tbl[["prob"]])), x_raw_distr_tbl[["x"]]
   )
 
-  expect_distr_fun(q_smooth, "q_fun", "smooth")
+  expect_distr_fun(q_smooth, "q", "smooth")
   expect_equal(
     round(meta(q_smooth, "support"), 2), round(x_smooth_support, 2)
   )
@@ -35,7 +35,7 @@ test_that("new_q behaves like inverse of ecdf() in case of `type` = 'raw'", {
   expect_equal(q_raw(p_vec), inv_ecdf)
 })
 
-test_that("new_q output is inverse of p_fun output", {
+test_that("new_q output is inverse of new_p output", {
   expect_equal(x_raw_vec, q_raw(p_raw(x_raw_vec)))
   # There is not test `p_vec == p_raw(q_raw(p_vec))` because it shouldn't be
   # true in "raw" case. This is tested in "behaves like inverse of ecdf()" test.
@@ -119,7 +119,7 @@ test_that("new_q uses `...` as arguments for `density()`", {
 # Tested in `new_q()`
 
 
-# print.q_fun -------------------------------------------------------------
-test_that("print.q_fun works", {
+# print.q -----------------------------------------------------------------
+test_that("print.q works", {
   expect_pdqr_print(new_q, "Quantile")
 })

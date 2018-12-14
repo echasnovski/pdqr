@@ -10,7 +10,7 @@ summ_distr_tbl <- function(f, n_discrete = 10001, ...) {
     # Discretize "pdqr" function
     p_f <- as_p(f, ...)
 
-    p_fun_summ_distr_tbl(p_f, n_discrete = n_discrete)
+    p_summ_distr_tbl(p_f, n_discrete = n_discrete)
   }
 }
 
@@ -23,7 +23,7 @@ vec_summ_distr_tbl <- function(x, vals = sort(unique(x))) {
   data.frame(x = vals, prob = prob)
 }
 
-p_fun_summ_distr_tbl <- function(p_f, n_discrete = n_discrete) {
+p_summ_distr_tbl <- function(p_f, n_discrete = n_discrete) {
   support <- meta(p_f, "support")
 
   x_discrete <- seq(from = support[1], to = support[2], length.out = n_discrete)

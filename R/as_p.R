@@ -1,5 +1,5 @@
 as_p <- function(f, ...) {
-  if (inherits(f, "p_fun")) {
+  if (inherits(f, "p")) {
     return(f)
   } else if (has_meta_x(f) && has_meta_type(f)) {
     return(distr_from_meta(f, new_p, ...))
@@ -10,13 +10,13 @@ as_p <- function(f, ...) {
 
 as_p.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
-    "p_fun", type = missing(type), support = missing(support)
+    "p", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("p_fun", f, type, support, extra, adjust_to_support_p)
+  as_distr_impl_def("p", f, type, support, extra, adjust_to_support_p)
 }
 
-as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+as_p.d <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   assert_pdqr_fun(f)
 
   res <- switch(
@@ -24,12 +24,12 @@ as_p.d_fun <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
     raw = p_from_d_raw(f, isTRUE(warn_precision)),
     smooth = p_from_d_smooth(f, n_grid = n_grid)
   )
-  res <- add_pdqr_class(res, "p_fun")
+  res <- add_pdqr_class(res, "p")
 
   copy_meta(res, f)
 }
 
-as_p.q_fun <- function(f, n_grid = 10001, ...) {
+as_p.q <- function(f, n_grid = 10001, ...) {
   assert_pdqr_fun(f)
 
   support <- meta(f, "support")
@@ -51,12 +51,12 @@ as_p.q_fun <- function(f, n_grid = 10001, ...) {
 
     out
   }
-  res <- add_pdqr_class(res, "p_fun")
+  res <- add_pdqr_class(res, "p")
 
   copy_meta(res, f)
 }
 
-as_p.r_fun <- function(f, n_sample = 10000, ...) {
+as_p.r <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
   as_distr_impl_r(new_p, f, n_sample, ...)

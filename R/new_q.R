@@ -1,7 +1,7 @@
 new_q <- function(x, type = "smooth", attach_x = identical(type, "raw"),
                   extra = NULL, ...) {
   distr_impl(
-    fun_class = "q_fun",
+    fun_class = "q",
     impl_funs = list(raw = new_q_raw, smooth = new_q_smooth),
     x = x, type = type, attach_x = attach_x, extra = extra, ...
   )
@@ -98,6 +98,6 @@ find_quant <- function(p, cdf_start, x_start, slope, intercept) {
   res
 }
 
-print.q_fun <- function(x, ...) {
+print.q <- function(x, ...) {
   pdqr_print(x, "Quantile")
 }

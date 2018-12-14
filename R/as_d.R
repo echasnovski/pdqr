@@ -1,5 +1,5 @@
 as_d <- function(f, ...) {
-  if (inherits(f, "d_fun")) {
+  if (inherits(f, "d")) {
     return(f)
   } else if (has_meta_x(f) && has_meta_type(f)) {
     return(distr_from_meta(f, new_d, ...))
@@ -10,13 +10,13 @@ as_d <- function(f, ...) {
 
 as_d.default <- function(f, type, support, extra = NULL, ...) {
   assert_missing_args(
-    "d_fun", type = missing(type), support = missing(support)
+    "d", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("d_fun", f, type, support, extra, adjust_to_support_d)
+  as_distr_impl_def("d", f, type, support, extra, adjust_to_support_d)
 }
 
-as_d.p_fun <- function(f, h = 10^(-6), ...) {
+as_d.p <- function(f, h = 10^(-6), ...) {
   assert_pdqr_fun(f)
 
   support <- meta(f, "support")
@@ -33,16 +33,16 @@ as_d.p_fun <- function(f, h = 10^(-6), ...) {
     }
   }
 
-  res <- add_pdqr_class(res, "d_fun")
+  res <- add_pdqr_class(res, "d")
 
   copy_meta(res, f)
 }
 
-as_d.q_fun <- function(f, n_grid = 10001, ...) {
+as_d.q <- function(f, n_grid = 10001, ...) {
   as_d(as_p(f, n_grid = n_grid, ...))
 }
 
-as_d.r_fun <- function(f, n_sample = 10000, ...) {
+as_d.r <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
   as_distr_impl_r(new_d, f, n_sample, ...)
@@ -64,14 +64,14 @@ adjust_to_support_d_raw <- function(f, support) {
   if (is_near(tot_prob, 0)) {
     stop_collapse(
       'There were no detected values with positive probability. Consider ',
-      'creating "p_fun" function.'
+      'creating p-function.'
     )
   }
 
   warning_collapse(
     'Creating density function in case `type` = "raw" is not precise as ',
     'there can be undetected values with positive probability. Consider ',
-    'creating "p_fun" function.'
+    'creating p-function.'
   )
 
   copy_attrs(adjust_d_impl(f, support, tot_prob), f)

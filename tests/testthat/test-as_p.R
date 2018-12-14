@@ -6,11 +6,11 @@ set.seed(1111)
 # as_p --------------------------------------------------------------------
 test_that("as_p works with user-defined function", {
   expect_distr_fun(
-    as_p(user_p, type = "smooth", support = c(0, 1)), "p_fun", "smooth"
+    as_p(user_p, type = "smooth", support = c(0, 1)), "p", "smooth"
   )
-  expect_error(as_p(user_p), "p_fun.*supply.*type.*support")
-  expect_error(as_p(user_p, type = "smooth"), "p_fun.*supply.*support")
-  expect_error(as_p(user_p, support = c(0, 1)), "p_fun.*supply.*type")
+  expect_error(as_p(user_p), "p-function.*supply.*type.*support")
+  expect_error(as_p(user_p, type = "smooth"), "p-function.*supply.*support")
+  expect_error(as_p(user_p, support = c(0, 1)), "p-function.*supply.*type")
 })
 
 test_that("as_p rewrites metadata on user-defined function", {
@@ -39,9 +39,9 @@ test_that("as_p adjusts the same way as other `as_*()` functions", {
   expect_equal_distr(expect_warning(as_p(adj_d_raw)), adj_p_raw, 2:6)
   # Too much converting should be done for computing `as_p(adj_q_raw)` which
   # results into relatively high numerical errors. `adj_q_raw` is correct
-  # "q_fun" function but instead of raw support `c(2, 3, 4, 5, 6)` it has very
-  # close one to it (run `table(adj_q_raw(0:10/10))` to see this). To verify
-  # that conversion is good enough, check plots of `as_p(adj_q_raw))` and
+  # q-function but instead of raw support `c(2, 3, 4, 5, 6)` it has very close
+  # one to it (run `table(adj_q_raw(0:10/10))` to see this). To verify that
+  # conversion is good enough, check plots of `as_p(adj_q_raw))` and
   # `adj_p_raw`.
 
   expect_equal_distr(
@@ -65,7 +65,7 @@ test_that("as_p.default throws errors", {
   )
 })
 
-test_that('as_p returns self in case of "p_fun"', {
+test_that('as_p returns self in case of "p"', {
   expect_identical(as_p(p_raw_withx), p_raw_withx)
   expect_identical(as_p(p_raw_nox), p_raw_nox)
   expect_identical(as_p(p_smooth_withx), p_smooth_withx)
@@ -73,7 +73,7 @@ test_that('as_p returns self in case of "p_fun"', {
   expect_identical(as_p(p_custom), p_custom)
 })
 
-test_that('as_p works with "d_fun"', {
+test_that('as_p works with "d"', {
   expect_equal_distr(
     as_p(d_raw_withx), p_raw_withx,
     grid = x_raw_vec_ext
@@ -103,13 +103,13 @@ test_that('as_p works with "d_fun"', {
   )
 })
 
-test_that('as_p works with "q_fun"', {
+test_that('as_p works with "q"', {
   expect_equal_distr(
     as_p(q_raw_withx), p_raw_withx,
     grid = x_raw_vec_ext
   )
   # In case of no "x" in metadata precision is quite bad in case
-  # `type = "raw"` at the points of future discontinuity in p_fun.
+  # `type = "raw"` at the points of future discontinuity in p-function.
   # That is why `grid = x_raw_vec_seq` and not usual `grid = x_smooth_vec_ext`
   expect_equal_distr(
     as_p(q_raw_nox), p_raw_nox,
@@ -129,7 +129,7 @@ test_that('as_p works with "q_fun"', {
   )
 })
 
-test_that('as_p works with "r_fun"', {
+test_that('as_p works with "r"', {
   expect_equal_distr(
     as_p(r_raw_withx), p_raw_withx,
     grid = x_raw_vec_ext
@@ -157,12 +157,12 @@ test_that('as_p works with "r_fun"', {
   )
 })
 
-test_that('as_p works with "pdqr_fun" (not adding duplicated class)', {
+test_that('as_p works with "pdqr" (not adding duplicated class)', {
   input <- structure(
-    function(x) {pbeta(x, 1, 2)}, class = c("pdqr_fun", "function")
+    function(x) {pbeta(x, 1, 2)}, class = c("pdqr", "function")
   )
   output <- as_p(input, type = "smooth", support = c(0, 1))
-  expect_equal(class(output), c("p_fun", "pdqr_fun", "function"))
+  expect_equal(class(output), c("p", "pdqr", "function"))
 })
 
 test_that("as_p respects `n_grid` argument", {
@@ -178,16 +178,13 @@ test_that("as_p respects `n_grid` argument", {
 
 test_that("as_p methods throw error with corrupt input", {
   expect_error(
-    as_p(structure(user_d, class = c("d_fun", "pdqr_fun"))),
-    "f.*proper.*type"
+    as_p(structure(user_d, class = c("d", "pdqr"))), "f.*proper.*type"
   )
   expect_error(
-    as_p(structure(user_q, class = c("q_fun", "pdqr_fun"))),
-    "f.*proper.*type"
+    as_p(structure(user_q, class = c("q", "pdqr"))), "f.*proper.*type"
   )
   expect_error(
-    as_p(structure(user_r, class = c("r_fun", "pdqr_fun"))),
-    "f.*proper.*type"
+    as_p(structure(user_r, class = c("r", "pdqr"))), "f.*proper.*type"
   )
 })
 
@@ -200,7 +197,7 @@ test_that("as_p asserts extra arguments of methods", {
   expect_error(as_p(user_p, "smooth", 1), "support.*length 2")
   expect_error(as_p(user_p, "smooth", c(1, 0)), "support.*bigger")
 
-  # Converting from `r_fun`
+  # Converting from r-function
   expect_error(as_p(r_smooth_nox, n_sample = "a"), "n_sample.*single number")
   expect_error(as_p(r_smooth_nox, n_sample = 10:11), "n_sample.*single number")
 })
@@ -210,24 +207,25 @@ test_that("as_p asserts extra arguments of methods", {
 # Tested in `as_p()`
 
 
-# as_p.d_fun --------------------------------------------------------------
+# as_p.d ------------------------------------------------------------------
 # Tested in `as_p()`
 
 
-# as_p.q_fun --------------------------------------------------------------
+# as_p.q ------------------------------------------------------------------
 # Tested in `as_p()`
 
 
-# as_p.r_fun --------------------------------------------------------------
+# as_p.r ------------------------------------------------------------------
 # Tested in `as_p()`
 
 
 # p_from_d_raw ------------------------------------------------------------
-# Tested in `as_p()` tests for converting from 'd_fun' in case `type = "raw"`
+# Tested in `as_p()` tests for converting from d-function in case `type = "raw"`
 
 
 # p_from_d_smooth ---------------------------------------------------------
-# Tested in `as_p()` tests for converting from 'd_fun' in case `type = "smooth"`
+# Tested in `as_p()` tests for converting from d-function in case `type =
+# "smooth"`
 
 
 # adjust_to_support_p -----------------------------------------------------
