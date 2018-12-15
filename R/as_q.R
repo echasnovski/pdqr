@@ -8,12 +8,12 @@ as_q <- function(f, ...) {
   UseMethod("as_q")
 }
 
-as_q.default <- function(f, type, support, extra = NULL, ...) {
+as_q.default <- function(f, type, support, ...) {
   assert_missing_args(
     "q", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("q", f, type, support, extra, adjust_to_support_q)
+  as_distr_impl_def("q", f, type, support, adjust_to_support_q)
 }
 
 as_q.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {

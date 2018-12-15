@@ -8,7 +8,7 @@ as_r <- function(f, ...) {
   UseMethod("as_r")
 }
 
-as_r.default <- function(f, type, support, extra = NULL, adjust_max_iter = 10,
+as_r.default <- function(f, type, support, adjust_max_iter = 10,
                          warn_not_adjusted = TRUE, ...) {
   assert_missing_args(
     "r", type = missing(type), support = missing(support)
@@ -18,7 +18,7 @@ as_r.default <- function(f, type, support, extra = NULL, adjust_max_iter = 10,
 
   adjust_to_support_r <- adjusting_r_impl(adjust_max_iter, warn_not_adjusted)
 
-  as_distr_impl_def("r", f, type, support, extra, adjust_to_support_r)
+  as_distr_impl_def("r", f, type, support, adjust_to_support_r)
 }
 
 as_r.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {

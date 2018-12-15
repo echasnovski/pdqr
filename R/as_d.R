@@ -8,12 +8,12 @@ as_d <- function(f, ...) {
   UseMethod("as_d")
 }
 
-as_d.default <- function(f, type, support, extra = NULL, ...) {
+as_d.default <- function(f, type, support, ...) {
   assert_missing_args(
     "d", type = missing(type), support = missing(support)
   )
 
-  as_distr_impl_def("d", f, type, support, extra, adjust_to_support_d)
+  as_distr_impl_def("d", f, type, support, adjust_to_support_d)
 }
 
 as_d.p <- function(f, h = 10^(-6), ...) {

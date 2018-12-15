@@ -84,9 +84,8 @@ test_that("new_q handles metadata", {
     list(x = x_smooth, type = "smooth")
   )
 
-  q_smooth_2 <- new_q(x_smooth, type = "smooth", extra = list(a = TRUE))
-  expect_named(meta(q_smooth_2), c("extra", "support", "type"))
-  expect_equal(meta(q_smooth_2, "extra"), list(a = TRUE))
+  q_smooth_2 <- new_q(x_smooth, type = "smooth")
+  expect_named(meta(q_smooth_2), c("support", "type"))
 })
 
 test_that("new_q has correct default for `attach_x`", {

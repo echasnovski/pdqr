@@ -1,6 +1,5 @@
 # Common functionality for `new_*()` --------------------------------------
-distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
-                       ...) {
+distr_impl <- function(fun_class, impl_funs, x, type, attach_x, ...) {
   assert_common_args(x, type, attach_x)
   x <- filter_numbers(x)
   if (length(x) == 0) {
@@ -13,9 +12,7 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_x, extra,
     smooth = impl_funs[["smooth"]](x, ...)
   )
 
-  res <- add_common_meta(
-    fun, x = x, type = type, attach_x = attach_x, extra = extra
-  )
+  res <- add_common_meta(fun, x = x, type = type, attach_x = attach_x)
 
   add_pdqr_class(res, fun_class)
 }
@@ -53,10 +50,8 @@ assert_common_args <- function(x, type, attach_x) {
   x
 }
 
-add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE,
-                            extra = NULL) {
+add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE) {
   res <- add_meta_cond(obj, attach_x, x = x)
-  res <- add_meta_cond(res, !is.null(extra), extra = extra)
   res <- add_meta(res, type = type)
 
   res

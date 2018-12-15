@@ -1,9 +1,8 @@
-new_d <- function(x, type = "smooth", attach_x = identical(type, "raw"),
-                  extra = NULL, ...) {
+new_d <- function(x, type = "smooth", attach_x = identical(type, "raw"), ...) {
   distr_impl(
     fun_class = "d",
     impl_funs = list(raw = new_d_raw, smooth = new_d_smooth),
-    x = x, type = type, attach_x = attach_x, extra = extra, ...
+    x = x, type = type, attach_x = attach_x, ...
   )
 }
 

@@ -13,7 +13,6 @@ expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
 
   expect_equal(length(meta(f_1)), length(meta(f_2)))
   expect_equal(meta(f_1, "type"), meta(f_2, "type"))
-  expect_equal(meta(f_1, "extra"), meta(f_2, "extra"))
   if (check_supp) {
     expect_equal(meta(f_1, "support"), meta(f_2, "support"))
   }
@@ -32,20 +31,14 @@ expect_pdqr_print <- function(f, f_name) {
   )
   expect_output(
     print(f_raw),
-    regex_scatter(
-      f_name, "raw type", supp_regex, raw_sample_regex,
-      "Extra", "is not attached"
-    )
+    regex_scatter(f_name, "raw type", supp_regex, raw_sample_regex)
   )
 
-  f_smooth <- f(x_smooth, type = "smooth", attach_x = FALSE, extra = list(1, 2))
+  f_smooth <- f(x_smooth, type = "smooth", attach_x = FALSE)
   smooth_sample_regex <- 'Sample \\("x"\\) is not attached'
   expect_output(
     print(f_smooth),
-    regex_scatter(
-      f_name, "smooth type", supp_regex, smooth_sample_regex,
-      "Extra", "is attached \\(2 elements\\)"
-    )
+    regex_scatter(f_name, "smooth type", supp_regex, smooth_sample_regex)
   )
 
   f_single <- f(1, type = "raw")

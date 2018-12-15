@@ -3,13 +3,11 @@ distr_from_meta <- function(f, new_f, ...) {
     x = meta(f, "x"),
     type = meta(f, "type"),
     attach_x = TRUE,
-    extra = meta(f, "extra"),
     ...
   )
 }
 
-as_distr_impl_def <- function(fun_class, f, type, support, extra,
-                              adjust_to_support) {
+as_distr_impl_def <- function(fun_class, f, type, support, adjust_to_support) {
   assert_type(f, is.function)
   assert_distr_type(type)
   assert_support(support)
@@ -17,7 +15,6 @@ as_distr_impl_def <- function(fun_class, f, type, support, extra,
   f_adj <- adjust_to_support(f, type, support)
 
   res <- add_meta(remove_meta(f_adj), type = type, support = support)
-  res <- add_meta_cond(res, !is.null(extra), extra = extra)
 
   add_pdqr_class(res, fun_class)
 }
@@ -30,7 +27,6 @@ as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
     type = meta(f, "type"),
     # As `x` isn't attached to `f`, as it is checked in `as_*()` functions
     attach_x = FALSE,
-    extra = meta(f, "extra"),
     ...
   )
 }

@@ -6,9 +6,6 @@ pdqr_print <- function(x, fun_name) {
   cat(appendix_num_x(x))
   cat("\n")
 
-  cat(line_attached(x, "extra", 'Extra information', extra_length))
-  cat("\n")
-
   invisible(x)
 }
 
@@ -79,14 +76,6 @@ get_meta_type <- function(x) {
     "unknown"
   } else {
     x_type
-  }
-}
-
-extra_length <- function(extra) {
-  if (is.list(extra)) {
-    len <- length(extra)
-  } else {
-    len <- 1
   }
 }
 
