@@ -37,40 +37,12 @@ test_that("filter_numbers works", {
 
 # assert_common_args ------------------------------------------------------
 test_that("assert_common_args works", {
-  expect_silent(assert_common_args(1:2, "raw", TRUE))
-  expect_silent(assert_common_args(1:2, "smooth", TRUE))
+  expect_silent(assert_common_args(1:2, "raw"))
+  expect_silent(assert_common_args(1:2, "smooth"))
 
-  expect_error(assert_common_args("a", "raw", TRUE), "x.*numeric")
-  expect_error(assert_common_args(1:2, 1, TRUE), "type.*string")
-  expect_error(assert_common_args(1:2, "a", TRUE), "type.*raw.*smooth")
-  expect_error(assert_common_args(1:2, "raw", NA), "attach_x.*TRUE.*FALSE")
-})
-
-
-# add_common_meta ---------------------------------------------------------
-test_that("add_common_meta works", {
-  input <- "a"
-  input_x <- 1:10
-
-  expect_equal(
-    add_common_meta(input, x = input_x, type = "smooth"),
-    structure(input, meta = list(type = "smooth", x = input_x))
-  )
-
-  expect_equal(
-    add_common_meta(input, x = input_x, type = "raw", attach_x = TRUE),
-    structure(input, meta = list(type = "raw", x = input_x))
-  )
-
-  expect_equal(
-    add_common_meta(input, x = input_x, type = "smooth", attach_x = TRUE),
-    structure(input, meta = list(type = "smooth", x = input_x))
-  )
-
-  expect_equal(
-    add_common_meta(input, x = input_x, type = "smooth"),
-    structure(input, meta = list(type = "smooth", x = input_x))
-  )
+  expect_error(assert_common_args("a", "raw"), "x.*numeric")
+  expect_error(assert_common_args(1:2, 1), "type.*string")
+  expect_error(assert_common_args(1:2, "a"), "type.*raw.*smooth")
 })
 
 
@@ -102,11 +74,6 @@ test_that("is_pdqr_fun works", {
       )
     )
   )
-
-  f_with_corrupt_x <- p_raw_withx
-  attr(f_with_corrupt_x, "meta")[["x"]] <- "a"
-  expect_false(is_pdqr_fun(f_with_corrupt_x))
-  expect_true(is_pdqr_fun(f_with_corrupt_x, check_x = FALSE))
 })
 
 
@@ -131,14 +98,6 @@ test_that("has_meta_support works", {
   expect_true(has_meta_support(p_raw))
   expect_false(has_meta_support(1))
   expect_false(has_meta_support(structure(1, meta = list(support = c(2, 1)))))
-})
-
-
-# has_meta_x --------------------------------------------------------------
-test_that("has_meta_x works", {
-  expect_true(has_meta_x(p_raw_withx))
-  expect_false(has_meta_x(p_raw_nox))
-  expect_false(has_meta_x(structure(1, meta = list(x = "a"))))
 })
 
 

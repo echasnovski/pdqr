@@ -25,25 +25,17 @@ expect_different_distr <- function(f_1, f_2, grid, thres = 10^(-8)) {
 expect_pdqr_print <- function(f, f_name) {
   supp_regex <- "Support: \\[[-0-9\\.]+, [-0-9\\.]+\\]"
 
-  f_raw <- f(x_raw, type = "raw", attach_x = TRUE)
-  raw_sample_regex <- paste0(
-    'Sample \\("x"\\) is attached \\(', length(x_raw), " elements\\)"
-  )
+  f_raw <- f(x_raw, type = "raw")
   expect_output(
     print(f_raw),
-    regex_scatter(f_name, "raw type", supp_regex, raw_sample_regex)
+    regex_scatter(f_name, "raw type", supp_regex)
   )
 
-  f_smooth <- f(x_smooth, type = "smooth", attach_x = FALSE)
-  smooth_sample_regex <- 'Sample \\("x"\\) is not attached'
+  f_smooth <- f(x_smooth, type = "smooth")
   expect_output(
     print(f_smooth),
-    regex_scatter(f_name, "smooth type", supp_regex, smooth_sample_regex)
+    regex_scatter(f_name, "smooth type", supp_regex)
   )
-
-  f_single <- f(1, type = "raw")
-  single_sample_regex <- 'Sample \\("x"\\) is attached \\(1 element\\)'
-  expect_output(print(f_single), single_sample_regex)
 }
 
 regex_scatter <- function(...) {

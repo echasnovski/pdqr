@@ -1,8 +1,6 @@
 as_p <- function(f, ...) {
   if (inherits(f, "p")) {
     return(f)
-  } else if (has_meta_x(f) && has_meta_type(f)) {
-    return(distr_from_meta(f, new_p, ...))
   }
 
   UseMethod("as_p")
@@ -16,12 +14,12 @@ as_p.default <- function(f, type, support, ...) {
   as_distr_impl_def("p", f, type, support, adjust_to_support_p)
 }
 
-as_p.d <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
+as_p.d <- function(f, n_grid = 10001, ...) {
   assert_pdqr_fun(f)
 
   res <- switch(
     meta(f, "type"),
-    raw = p_from_d_raw(f, isTRUE(warn_precision)),
+    raw = p_from_d_raw(f),
     smooth = p_from_d_smooth(f, n_grid = n_grid)
   )
   res <- add_pdqr_class(res, "p")
@@ -62,14 +60,7 @@ as_p.r <- function(f, n_sample = 10000, ...) {
   as_distr_impl_r(new_p, f, n_sample, ...)
 }
 
-p_from_d_raw <- function(f, warn_precision = TRUE, ...) {
-  if (warn_precision) {
-    warning_collapse(
-      'Converting from density function in case `type` = "raw" and no "x" in ',
-      'metadata is not precise. Consider attaching `x` to input.'
-    )
-  }
-
+p_from_d_raw <- function(f, ...) {
   support <- detect_support_raw(f, meta(f, "support"))
   supp_prob <- f(support)
   supp_cumprob <- c(0, cumsum(supp_prob) / sum(supp_prob))

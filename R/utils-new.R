@@ -1,6 +1,6 @@
 # Common functionality for `new_*()` --------------------------------------
-distr_impl <- function(fun_class, impl_funs, x, type, attach_x, ...) {
-  assert_common_args(x, type, attach_x)
+distr_impl <- function(fun_class, impl_funs, x, type, ...) {
+  assert_common_args(x, type)
   x <- filter_numbers(x)
   if (length(x) == 0) {
     stop_collapse("`x` shouldn't be empty.")
@@ -12,7 +12,7 @@ distr_impl <- function(fun_class, impl_funs, x, type, attach_x, ...) {
     smooth = impl_funs[["smooth"]](x, ...)
   )
 
-  res <- add_common_meta(fun, x = x, type = type, attach_x = attach_x)
+  res <- add_meta(fun, type = type)
 
   add_pdqr_class(res, fun_class)
 }
@@ -42,19 +42,11 @@ filter_numbers <- function(x) {
   x[!x_is_inf]
 }
 
-assert_common_args <- function(x, type, attach_x) {
+assert_common_args <- function(x, type) {
   assert_type(x, is.numeric)
   assert_distr_type(type)
-  assert_type(attach_x, is_truefalse, "`TRUE` or `FALSE`")
 
   x
-}
-
-add_common_meta <- function(obj, x, type = "smooth", attach_x = TRUE) {
-  res <- add_meta_cond(obj, attach_x, x = x)
-  res <- add_meta(res, type = type)
-
-  res
 }
 
 is_support <- function(supp) {
@@ -62,16 +54,9 @@ is_support <- function(supp) {
     (supp[1] <= supp[2]) && all(is.finite(supp))
 }
 
-is_pdqr_fun <- function(obj, check_x = TRUE) {
-  if (check_x) {
-    # If "x" is present in metadata it should be numeric
-    check_x_res <- !xor(has_meta(obj, "x"), is.numeric(meta(obj, "x")))
-  } else {
-    check_x_res <- TRUE
-  }
-
+is_pdqr_fun <- function(obj) {
   is.function(obj) && inherits(obj, "pdqr") &&
-    has_meta_type(obj) && has_meta_support(obj) && check_x_res
+    has_meta_type(obj) && has_meta_support(obj)
 }
 
 is_pdqr_class <- function(chr) {
@@ -84,10 +69,6 @@ has_meta_type <- function(f) {
 
 has_meta_support <- function(f) {
   has_meta(f, "support") && is_support(meta(f, "support"))
-}
-
-has_meta_x <- function(f) {
-  has_meta(f, "x") && is.numeric(meta(f, "x"))
 }
 
 

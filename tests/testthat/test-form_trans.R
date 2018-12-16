@@ -46,7 +46,7 @@ test_that("form_trans works", {
 })
 
 test_that("form_trans doesn't attach `x` by default", {
-  output <- form_trans(sq, q_raw_withx)
+  output <- form_trans(sq, q_raw)
   expect_false(has_meta(output, "x"))
 })
 
@@ -158,7 +158,7 @@ test_that("Ops.pdqr works with for generics with one argument", {
 test_that("Summary.pdqr works", {
   expect_distr_fun(min(p_raw), "p", "raw")
   expect_distr_fun(max(p_raw, p_raw), "p", "raw")
-  expect_distr_fun(sum(q_custom, q_smooth_nox, q_smooth_nox), "q", "smooth")
+  expect_distr_fun(sum(q_custom, q_smooth, q_smooth), "q", "smooth")
   expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "smooth")
 })
 

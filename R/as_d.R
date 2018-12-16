@@ -1,8 +1,6 @@
 as_d <- function(f, ...) {
   if (inherits(f, "d")) {
     return(f)
-  } else if (has_meta_x(f) && has_meta_type(f)) {
-    return(distr_from_meta(f, new_d, ...))
   }
 
   UseMethod("as_d")

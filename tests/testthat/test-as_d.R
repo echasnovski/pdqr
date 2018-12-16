@@ -23,7 +23,7 @@ test_that("as_d rewrites metadata on user-defined function", {
 test_that("as_d adjusts user-defined function to be probability distribution", {
   # Adjusted function equals `new_d()` applied to sample on restricted support
   output_raw_ref <- new_d(
-    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
+    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
   expect_equal_distr(adj_d_raw, output_raw_ref, x_raw_vec_seq)
   # Adjusted function equals 0 outside of support
@@ -68,19 +68,11 @@ test_that("as_d.default throws errors", {
 
 test_that('as_d works with "p"', {
   expect_equal_distr(
-    as_d(p_raw_withx), d_raw_withx,
-    grid = x_raw_vec_ext
-  )
-  expect_equal_distr(
-    as_d(p_raw_nox), d_raw_nox,
+    as_d(p_raw), d_raw,
     grid = x_raw_vec_ext, thres = 10^(-3)
   )
   expect_equal_distr(
-    as_d(p_smooth_withx), d_smooth_withx,
-    grid = x_smooth_vec_ext
-  )
-  expect_equal_distr(
-    as_d(p_smooth_nox), d_smooth_nox,
+    as_d(p_smooth), d_smooth,
     grid = x_smooth_vec_ext, thres = 10^(-3)
   )
   expect_equal_distr(
@@ -108,28 +100,18 @@ test_that('as_d for "p" throws error if "type" metadata is incorrect', {
 })
 
 test_that('as_d returns self in case of "d"', {
-  expect_identical(as_d(d_raw_withx), d_raw_withx)
-  expect_identical(as_d(d_raw_nox), d_raw_nox)
-  expect_identical(as_d(d_smooth_withx), d_smooth_withx)
-  expect_identical(as_d(d_smooth_nox), d_smooth_nox)
+  expect_identical(as_d(d_raw), d_raw)
+  expect_identical(as_d(d_smooth), d_smooth)
   expect_identical(as_d(d_custom), d_custom)
 })
 
 test_that('as_d works with "q"', {
   expect_equal_distr(
-    as_d(q_raw_withx), d_raw_withx,
-    grid = x_raw_vec_ext
-  )
-  expect_equal_distr(
-    as_d(q_raw_nox), d_raw_nox,
+    as_d(q_raw), d_raw,
     grid = x_raw_vec_ext, thres = 10^(-3)
   )
   expect_equal_distr(
-    as_d(q_smooth_withx), d_smooth_withx,
-    grid = x_smooth_vec_ext
-  )
-  expect_equal_distr(
-    as_d(q_smooth_nox), d_smooth_nox,
+    as_d(q_smooth), d_smooth,
     grid = x_smooth_vec_ext, thres = 10^(-3)
   )
   expect_equal_distr(
@@ -141,20 +123,12 @@ test_that('as_d works with "q"', {
 
 test_that('as_d works with "r"', {
   expect_equal_distr(
-    as_d(r_raw_withx), d_raw_withx,
-    grid = x_raw_vec_ext
-  )
-  expect_equal_distr(
-    as_d(r_raw_nox), d_raw_nox,
+    as_d(r_raw), d_raw,
     # Support shouldn't be the same as random sampling is done
     grid = c(x_raw_vec_ext, x_raw_vec), thres = 0.01, check_supp = FALSE
   )
   expect_equal_distr(
-    as_d(r_smooth_withx), d_smooth_withx,
-    grid = x_smooth_vec_ext
-  )
-  expect_equal_distr(
-    as_d(r_smooth_nox), d_smooth_nox,
+    as_d(r_smooth), d_smooth,
     # Support shouldn't be the same as random sampling is done
     # Building smooth density from random generation function has somewhat worse
       # precision than building CDF
@@ -185,14 +159,14 @@ test_that('as_d works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_d respects `n_grid` argument", {
   expect_different_distr(
-    as_d(q_smooth_nox), as_d(q_smooth_nox, n_grid = 101),
+    as_d(q_smooth), as_d(q_smooth, n_grid = 101),
     grid = x_smooth_vec
   )
 })
 
 test_that("as_d respects `h` argument", {
   expect_different_distr(
-    as_d(p_smooth_nox), as_d(p_smooth_nox, h = 0.1),
+    as_d(p_smooth), as_d(p_smooth, h = 0.1),
     grid = x_smooth_vec
   )
 })
@@ -219,8 +193,8 @@ test_that("as_d asserts extra arguments of methods", {
   expect_error(as_d(user_d, "smooth", c(1, 0)), "support.*bigger")
 
   # Converting from r-function
-  expect_error(as_d(r_smooth_nox, n_sample = "a"), "n_sample.*single number")
-  expect_error(as_d(r_smooth_nox, n_sample = 10:11), "n_sample.*single number")
+  expect_error(as_d(r_smooth, n_sample = "a"), "n_sample.*single number")
+  expect_error(as_d(r_smooth, n_sample = 10:11), "n_sample.*single number")
 })
 
 

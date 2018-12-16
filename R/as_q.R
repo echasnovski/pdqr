@@ -1,8 +1,6 @@
 as_q <- function(f, ...) {
   if (inherits(f, "q")) {
     return(f)
-  } else if (has_meta_x(f) && has_meta_type(f)) {
-    return(distr_from_meta(f, new_q, ...))
   }
 
   UseMethod("as_q")
@@ -27,8 +25,6 @@ as_q.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
     f, interval = ext_support, f_type = meta(f, "type"),
     n_grid = n_grid
   )
-
-  warn_conversion_from_p_raw(f, isTRUE(warn_precision), "quantile function")
 
   res <- function(p) {
     out <- numeric(length(p))

@@ -1,6 +1,6 @@
 # Main transformation function --------------------------------------------
 form_trans <- function(trans, ..., .n_sample = 10000, .pdqr_class = NULL,
-                       .pdqr_args = list(attach_x = FALSE)) {
+                       .pdqr_args = list()) {
   assert_type(trans, is.function)
   dots <- list(...)
   assert_trans_dots(dots)
@@ -29,10 +29,7 @@ form_trans <- function(trans, ..., .n_sample = 10000, .pdqr_class = NULL,
   pdqr_call_args <- dedupl_list(c(
     list(x = smpl),
     .pdqr_args,
-    list(
-      type = meta(ref_f, "type"),
-      attach_x = has_meta_x(ref_f)
-    )
+    list(type = meta(ref_f, "type"))
   ))
 
   do.call(pdqr_fun, pdqr_call_args)

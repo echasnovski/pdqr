@@ -1,8 +1,6 @@
 as_r <- function(f, ...) {
   if (inherits(f, "r")) {
     return(f)
-  } else if (has_meta_x(f) && has_meta_type(f)) {
-    return(distr_from_meta(f, new_r, ...))
   }
 
   UseMethod("as_r")
@@ -24,7 +22,6 @@ as_r.default <- function(f, type, support, adjust_max_iter = 10,
 as_r.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
   assert_pdqr_fun(f)
 
-  warn_conversion_from_p_raw(f, warn_precision, "random generation function")
   q_f <- as_q(f, n_grid = n_grid, warn_precision = FALSE, ...)
 
   as_r_impl(q_f)

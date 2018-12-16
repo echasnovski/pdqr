@@ -11,10 +11,6 @@ test_that("pdqr_print works with bad input", {
 
   input_2 <- structure(1, meta = list(type = "raw", support = c(1, Inf)))
   expect_output(pdqr_print(input_2, "Temp"), "Support: not proper")
-
-  input_3 <- p_raw_withx
-  attr(input_3, "meta")[["x"]] <- "a"
-  expect_output(pdqr_print(input_3, "Temp"), "but isn't numeric")
 })
 
 
@@ -24,14 +20,6 @@ test_that("pdqr_print works with bad input", {
 
 # line_support ------------------------------------------------------------
 # Tested in `new_*()` functions
-
-
-# line_attached -----------------------------------------------------------
-# Tested in `new_*()` functions
-
-
-# appendix_num_x ----------------------------------------------------------
-# Tested in `pdqr_print()`
 
 
 # bold --------------------------------------------------------------------
@@ -49,4 +37,7 @@ test_that("bold works", {
 
 
 # elements ----------------------------------------------------------------
-# Tested in `new_*()` functions
+test_that("elements works", {
+  expect_match(elements(1), "1 element")
+  expect_match(elements(2), "2 elements")
+})

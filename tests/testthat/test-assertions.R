@@ -72,14 +72,10 @@ test_that("assert_pdqr_fun works", {
   )
   expect_error(assert_pdqr_fun(f_with_corrupt_support), "proper.*support")
 
-  f_with_corrupt_x <- p_raw_withx
-  attr(f_with_corrupt_x, "meta")[["x"]] <- "a"
-  expect_error(assert_pdqr_fun(f_with_corrupt_x), "x.*metadata.*numeric")
-
-  expect_silent(assert_pdqr_fun(p_raw_withx))
-  expect_silent(assert_pdqr_fun(d_raw_withx))
-  expect_silent(assert_pdqr_fun(q_raw_withx))
-  expect_silent(assert_pdqr_fun(r_raw_withx))
+  expect_silent(assert_pdqr_fun(p_raw))
+  expect_silent(assert_pdqr_fun(d_raw))
+  expect_silent(assert_pdqr_fun(q_raw))
+  expect_silent(assert_pdqr_fun(r_raw))
 })
 
 

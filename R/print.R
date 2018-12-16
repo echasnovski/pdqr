@@ -2,10 +2,6 @@ pdqr_print <- function(x, fun_name) {
   cat(line_title(x, fun_name))
   cat(line_support(x))
 
-  cat(line_attached(x, "x", 'Sample ("x")', length))
-  cat(appendix_num_x(x))
-  cat("\n")
-
   invisible(x)
 }
 
@@ -27,27 +23,6 @@ line_support <- function(x) {
     support_print <- bold(paste0("[", x_supp_string, "]"))
 
     paste0("Support: ", support_print, "\n")
-  }
-}
-
-line_attached <- function(x, meta_name, print_name, length_fun) {
-  meta_obj <- meta(x, meta_name)
-
-  if (is.null(meta_obj)) {
-    paste0(print_name, " ", bold("is not attached"), " to metadata")
-  } else {
-    paste0(
-      print_name, " ", bold("is attached"), " ", elements(length_fun(meta_obj)),
-      " to metadata"
-    )
-  }
-}
-
-appendix_num_x <- function(x) {
-  if (has_meta(x, "x") && !is.numeric(meta(x, "x"))) {
-    bold(" but isn't numeric")
-  } else {
-    ""
   }
 }
 

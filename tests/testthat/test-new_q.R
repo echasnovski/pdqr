@@ -62,35 +62,16 @@ test_that("new_q asserts", {
   expect_error(new_q(numeric(0)), "x.*empty")
   expect_error(new_q(x_raw, type = 1), "type.*string")
   expect_error(new_q(x_raw, type = "a"), "type.*raw.*smooth")
-  expect_error(new_q(x_raw, attach_x = NULL), "attach_x.*TRUE.*FALSE")
 })
 
 test_that("new_q handles metadata", {
-  expect_equal(
-    meta(q_raw),
-    list(
-      support = x_raw_support, type = "raw",
-      x = x_raw
-    )
-  )
+  expect_equal(meta(q_raw), list(support = x_raw_support, type = "raw"))
 
-  q_smooth_1 <- new_q(x_smooth, type = "smooth", attach_x = TRUE)
-  expect_named(meta(q_smooth_1), c("support", "type", "x"))
+  expect_named(meta(q_smooth), c("support", "type"))
   expect_equal(
-    round(meta(q_smooth_1, "support"), 2), round(x_smooth_support, 2)
+    round(meta(q_smooth, "support"), 2), round(x_smooth_support, 2)
   )
-  expect_equal(
-    meta(q_smooth_1)[c("x", "type")],
-    list(x = x_smooth, type = "smooth")
-  )
-
-  q_smooth_2 <- new_q(x_smooth, type = "smooth")
-  expect_named(meta(q_smooth_2), c("support", "type"))
-})
-
-test_that("new_q has correct default for `attach_x`", {
-  expect_true("x" %in% names(meta(q_raw)))
-  expect_false("x" %in% names(meta(q_smooth)))
+  expect_equal(meta(q_smooth)["type"], list(type = "smooth"))
 })
 
 test_that("new_q uses `...` as arguments for `density()`", {

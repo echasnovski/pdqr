@@ -70,13 +70,9 @@ construct_adj_smooth <- function(smooth_fun, as_fun, ...) {
 
 # p-functions
 p_raw <- new_p(x_raw, "raw")
-p_raw_withx <- new_p(x_raw, "raw", attach_x = TRUE)
-p_raw_nox <- new_p(x_raw, "raw", attach_x = FALSE)
 adj_p_raw <- construct_adj_raw(p_raw, as_p)
 
 p_smooth <- new_p(x_smooth, "smooth")
-p_smooth_withx <- new_p(x_smooth, "smooth", attach_x = TRUE)
-p_smooth_nox <- new_p(x_smooth, "smooth", attach_x = FALSE)
 adj_p_smooth <- construct_adj_smooth(p_smooth, as_p)
 
 user_p <- function(q) {pbeta(q, 1, 2)}
@@ -87,13 +83,9 @@ p_custom <- structure(
 
 # d-functions
 d_raw <- new_d(x_raw, "raw")
-d_raw_withx <- new_d(x_raw, "raw", attach_x = TRUE)
-d_raw_nox <- new_d(x_raw, "raw", attach_x = FALSE)
 adj_d_raw <- expect_warning(construct_adj_raw(d_raw, as_d))
 
 d_smooth <- new_d(x_smooth, "smooth")
-d_smooth_withx <- new_d(x_smooth, "smooth", attach_x = TRUE)
-d_smooth_nox <- new_d(x_smooth, "smooth", attach_x = FALSE)
 adj_d_smooth <- construct_adj_smooth(d_smooth, as_d)
 
 user_d <- function(x) {dbeta(x, 1, 2)}
@@ -104,13 +96,9 @@ d_custom <- structure(
 
 # q-functions
 q_raw <- new_q(x_raw, "raw")
-q_raw_withx <- new_q(x_raw, "raw", attach_x = TRUE)
-q_raw_nox <- new_q(x_raw, "raw", attach_x = FALSE)
 adj_q_raw <- construct_adj_raw(q_raw, as_q)
 
 q_smooth <- new_q(x_smooth, "smooth")
-q_smooth_withx <- new_q(x_smooth, "smooth", attach_x = TRUE)
-q_smooth_nox <- new_q(x_smooth, "smooth", attach_x = FALSE)
 adj_q_smooth <- construct_adj_smooth(q_smooth, as_q)
 
 user_q <- function(p) {qbeta(p, 1, 2)}
@@ -121,13 +109,9 @@ q_custom <- structure(
 
 # r-functions
 r_raw <- new_r(x_raw, "raw")
-r_raw_withx <- new_r(x_raw, "raw", attach_x = TRUE)
-r_raw_nox <- new_r(x_raw, "raw", attach_x = FALSE)
 adj_r_raw <- construct_adj_raw(r_raw, as_r, warn_not_adjusted = FALSE)
 
 r_smooth <- new_r(x_smooth, "smooth")
-r_smooth_withx <- new_r(x_smooth, "smooth", attach_x = TRUE)
-r_smooth_nox <- new_r(x_smooth, "smooth", attach_x = FALSE)
 adj_r_smooth <- construct_adj_smooth(r_smooth, as_r, warn_not_adjusted = FALSE)
 
 user_r <- function(n) {rbeta(n, 1, 2)}

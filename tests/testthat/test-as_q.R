@@ -23,7 +23,7 @@ test_that("as_q rewrites metadata on user-defined function", {
 test_that("as_q adjusts user-defined function to be probability distribution", {
   # Adjusted function equals `new_q()` applied to sample on restricted support
   output_raw_ref <- new_q(
-    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
+    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
   expect_equal_distr(
     adj_q_raw, output_raw_ref,
@@ -35,8 +35,8 @@ test_that("as_q adjusts user-defined function to be probability distribution", {
 })
 
 test_that("as_q adjusts the same way as other `as_*()` functions", {
-  expect_equal_distr(expect_warning(as_q(adj_p_raw)), adj_q_raw, p_vec)
-  expect_equal_distr(expect_warning(as_q(adj_d_raw)), adj_q_raw, p_vec)
+  expect_equal_distr(as_q(adj_p_raw), adj_q_raw, p_vec)
+  expect_equal_distr(as_q(adj_d_raw), adj_q_raw, p_vec)
 
   expect_equal_distr(
     as_q(adj_d_smooth), adj_q_smooth,
@@ -57,28 +57,13 @@ test_that("as_q.default throws errors", {
 
 test_that('as_q works with "p"', {
   expect_equal_distr(
-    as_q(p_raw_withx), q_raw_withx,
-    grid = p_vec
-  )
-
-  expect_silent(as_q(p_raw_nox, warn_precision = FALSE))
-  expect_warning(
-    q_from_p_raw_nox <- as_q(p_raw_nox),
-    "from.*cumulative.*raw.*not.*precise.*value"
-  )
-
-  expect_equal_distr(
-    q_from_p_raw_nox, q_raw_nox,
+    as_q(p_raw), q_raw,
     # Converting from p-function in case `type = "raw"` is not precise around
     # actual values. So they are removed.
     grid = p_vec_wholed, thres = 10^(-3)
   )
   expect_equal_distr(
-    as_q(p_smooth_withx), q_smooth_withx,
-    grid = p_vec
-  )
-  expect_equal_distr(
-    as_q(p_smooth_nox), q_smooth_nox,
+    as_q(p_smooth), q_smooth,
     grid = p_vec, thres = 10^(-6)
   )
   expect_equal_distr(
@@ -89,30 +74,15 @@ test_that('as_q works with "p"', {
 
 test_that('as_q works with "d"', {
   expect_equal_distr(
-    as_q(d_raw_withx), q_raw_withx,
-    grid = p_vec
-  )
-
-  expect_silent(as_q(d_raw_nox, warn_precision = FALSE))
-  expect_warning(
-    q_from_d_raw_nox <- as_q(d_raw_nox),
-    "from.*density.*raw.*not.*precise"
-  )
-
-  expect_equal_distr(
-    q_from_d_raw_nox, q_raw_nox,
+    as_q(d_raw), q_raw,
     # Converting from d-function in case `type = "raw"` is not precise because
     # actual values are hard to find. Even if they are found (as the case in
     # these tests) precision around them is poor. So they are removed.
     grid = p_vec_wholed, thres = 10^(-3)
   )
-  expect_equal_distr(
-    as_q(d_smooth_withx), q_smooth_withx,
-    grid = p_vec
-  )
   # This takes rather much time to run
   expect_equal_distr(
-    as_q(d_smooth_nox), q_smooth_nox,
+    as_q(d_smooth), q_smooth,
     # Rather low precision is probably due to aggregating error from two
     # conversions: "d" -> "p" -> "q"
     grid = p_vec, thres = 10^(-3)
@@ -125,20 +95,14 @@ test_that('as_q works with "d"', {
 })
 
 test_that('as_q returns self in case of "q"', {
-  expect_identical(as_q(q_raw_withx), q_raw_withx)
-  expect_identical(as_q(q_raw_nox), q_raw_nox)
-  expect_identical(as_q(q_smooth_withx), q_smooth_withx)
-  expect_identical(as_q(q_smooth_nox), q_smooth_nox)
+  expect_identical(as_q(q_raw), q_raw)
+  expect_identical(as_q(q_smooth), q_smooth)
   expect_identical(as_q(q_custom), q_custom)
 })
 
 test_that('as_q works with "r"', {
   expect_equal_distr(
-    as_q(r_raw_withx), q_raw_withx,
-    grid = p_vec
-  )
-  expect_equal_distr(
-    as_q(r_raw_nox), q_raw_nox,
+    as_q(r_raw), q_raw,
     # Support shouldn't be the same as random sampling is done
     # Estimating distribution from random sampling is not exact around true
     # probabilities. It means that jumps in quantile functions are made only
@@ -151,16 +115,12 @@ test_that('as_q works with "r"', {
     # For illustration run this code:
     # set.seed(123)
     # p <- sort(p_vec)
-    # plot(p, as_q(r_raw_nox)(p), type = "l")
-    # lines(p, q_raw_nox(p), col = "red")
+    # plot(p, as_q(r_raw)(p), type = "l")
+    # lines(p, q_raw(p), col = "red")
     grid = p_vec_bigwholed, check_supp = FALSE
   )
   expect_equal_distr(
-    as_q(r_smooth_withx), q_smooth_withx,
-    grid = p_vec
-  )
-  expect_equal_distr(
-    as_q(r_smooth_nox), q_smooth_nox,
+    as_q(r_smooth), q_smooth,
     # Support shouldn't be the same as random sampling is done
     # Using truncated version because of "extending" property on the support
     # edges in case `type = "smooth"`. This introduces errors around the edges.
@@ -171,7 +131,7 @@ test_that('as_q works with "r"', {
     as_q(r_custom), q_custom,
     # Support shouldn't be the same as random sampling is done
     # Using truncated version as described in test for conversion from
-    # `r_smooth_nox()`.
+    # `r_smooth()`.
     grid = p_vec_trunc, thres = 0.05, check_supp = FALSE
   )
 })
@@ -186,11 +146,11 @@ test_that('as_q works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_q respects `n_grid` argument", {
   expect_different_distr(
-    as_q(p_smooth_nox), as_q(p_smooth_nox, n_grid = 101),
+    as_q(p_smooth), as_q(p_smooth, n_grid = 101),
     grid = x_smooth_vec
   )
   expect_different_distr(
-    as_q(d_smooth_nox), as_q(d_smooth_nox, n_grid = 101),
+    as_q(d_smooth), as_q(d_smooth, n_grid = 101),
     grid = x_smooth_vec
   )
 })
@@ -217,8 +177,8 @@ test_that("as_q asserts extra arguments of methods", {
   expect_error(as_q(user_q, "smooth", c(1, 0)), "support.*bigger")
 
   # Converting from r-function
-  expect_error(as_q(r_smooth_nox, n_sample = "a"), "n_sample.*single number")
-  expect_error(as_q(r_smooth_nox, n_sample = 10:11), "n_sample.*single number")
+  expect_error(as_q(r_smooth, n_sample = "a"), "n_sample.*single number")
+  expect_error(as_q(r_smooth, n_sample = 10:11), "n_sample.*single number")
 })
 
 

@@ -105,9 +105,6 @@ assert_pdqr_fun <- function(f) {
       'of length 2 with non-decreasing finite elements).'
     )
   }
-  if (has_meta(f, "x") && !is.numeric(meta(f, "x"))) {
-    stop_collapse('"x" metadata in ', f_name, ' should be numeric.')
-  }
 
   f
 }

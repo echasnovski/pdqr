@@ -46,7 +46,7 @@ test_that("as_r rewrites metadata on user-defined function", {
 test_that("as_r adjusts user-defined function to be probability distribution", {
   # Adjusted function equals `new_r()` applied to sample on restricted support
   output_raw_ref <- new_r(
-    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw", attach_x = FALSE
+    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
   expect_equal_r_funs(adj_r_raw, output_raw_ref)
 
@@ -56,8 +56,8 @@ test_that("as_r adjusts user-defined function to be probability distribution", {
 })
 
 test_that("as_r adjusts the same way as other `as_*()` functions", {
-  expect_equal_r_funs(expect_warning(as_r(adj_p_raw)), adj_r_raw)
-  expect_equal_r_funs(expect_warning(as_r(adj_d_raw)), adj_r_raw)
+  expect_equal_r_funs(as_r(adj_p_raw), adj_r_raw)
+  expect_equal_r_funs(as_r(adj_d_raw), adj_r_raw)
   expect_equal_r_funs(as_r(adj_q_raw), adj_r_raw)
 
   expect_equal_r_funs(as_r(adj_p_smooth), adj_r_smooth)
@@ -79,19 +79,9 @@ test_that("as_r.default throws errors and warnings", {
 })
 
 test_that('as_r works with "p"', {
-  expect_equal_r_funs(as_r(p_raw_withx), r_raw_withx)
-
-  expect_silent(as_r(p_raw_nox, warn_precision = FALSE))
-  expect_warning(
-    r_from_p_raw_nox <- as_r(p_raw_nox),
-    "from.*cumulative.*raw.*not.*precise.*value"
-  )
-
   # With "raw" type and low number of unique values errors might be quite big
-  expect_equal_r_funs(r_from_p_raw_nox, r_raw_nox, mean_thres = 0.2)
-
-  expect_equal_r_funs(as_r(p_smooth_withx), r_smooth_withx)
-  expect_equal_r_funs(as_r(p_smooth_nox), r_smooth_nox)
+  expect_equal_r_funs(as_r(p_raw), r_raw, mean_thres = 0.2)
+  expect_equal_r_funs(as_r(p_smooth), r_smooth)
 
   # Custom functions have smooth nature, so error should be lower
   expect_equal_r_funs(
@@ -103,26 +93,10 @@ test_that('as_r works with "p"', {
 test_that('as_r works with "d"', {
   # With "raw" type and low number of unique values errors might be quite big
   expect_equal_r_funs(
-    as_r(d_raw_withx), r_raw_withx,
-    mean_thres = 0.25, sd_thres = 0.1
-  )
-
-  expect_silent(as_r(d_raw_nox, warn_precision = FALSE))
-  expect_warning(
-    r_from_d_raw_nox <- as_r(d_raw_nox),
-    "from.*density.*raw.*not.*precise"
-  )
-
-  expect_equal_r_funs(
-    r_from_d_raw_nox, r_raw_nox,
+    as_r(d_raw), r_raw,
     mean_thres = 0.2, sd_thres = 0.1
   )
-
-  expect_equal_r_funs(
-    as_r(d_smooth_withx), r_smooth_withx,
-    sd_thres = 0.075
-  )
-  expect_equal_r_funs(as_r(d_smooth_nox), r_smooth_nox)
+  expect_equal_r_funs(as_r(d_smooth), r_smooth)
 
   # Custom functions have smooth nature, so error should be lower
   expect_equal_r_funs(
@@ -133,16 +107,11 @@ test_that('as_r works with "d"', {
 
 test_that('as_r works with "q"', {
   expect_equal_r_funs(
-    as_r(q_raw_withx), r_raw_withx,
-    sd_thres = 0.1
-  )
-  expect_equal_r_funs(
-    as_r(q_raw_nox), r_raw_nox,
+    as_r(q_raw), r_raw,
     mean_thres = 0.2, sd_thres = 0.1
   )
 
-  expect_equal_r_funs(as_r(q_smooth_withx), r_smooth_withx)
-  expect_equal_r_funs(as_r(q_smooth_nox), r_smooth_nox)
+  expect_equal_r_funs(as_r(q_smooth), r_smooth)
 
   # Custom functions have smooth nature, so error should be lower
   expect_equal_r_funs(
@@ -152,10 +121,8 @@ test_that('as_r works with "q"', {
 })
 
 test_that('as_r returns self in case of "r"', {
-  expect_identical(as_r(r_raw_withx), r_raw_withx)
-  expect_identical(as_r(r_raw_nox), r_raw_nox)
-  expect_identical(as_r(r_smooth_withx), r_smooth_withx)
-  expect_identical(as_r(r_smooth_nox), r_smooth_nox)
+  expect_identical(as_r(r_raw), r_raw)
+  expect_identical(as_r(r_smooth), r_smooth)
   expect_identical(as_r(r_custom), r_custom)
 })
 
@@ -169,10 +136,10 @@ test_that('as_r works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_r respects `n_grid` argument", {
   expect_different_r_funs(
-    as_r(p_smooth_nox), as_r(p_smooth_nox, n_grid = 3)
+    as_r(p_smooth), as_r(p_smooth, n_grid = 3)
   )
   expect_different_r_funs(
-    as_r(d_smooth_nox), as_r(d_smooth_nox, n_grid = 3)
+    as_r(d_smooth), as_r(d_smooth, n_grid = 3)
   )
 })
 
