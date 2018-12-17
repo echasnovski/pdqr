@@ -18,7 +18,9 @@ new_r_raw <- function(x) {
     q_raw(rand_q_vec)
   }
 
-  add_meta(res, support = meta(q_raw, "support"))
+  add_meta(
+    res, support = meta(q_raw, "support"), raw_tbl = meta(q_raw, "raw_tbl")
+  )
 }
 
 new_r_smooth <- function(x, ...) {

@@ -5,7 +5,7 @@ context("test-new_p")
 test_that("new_p works", {
   expect_distr_fun(p_raw, "p", "raw")
   expect_equal(meta(p_raw, "support"), x_raw_support)
-  expect_equal(p_raw(1:10), c(cumsum(x_raw_distr_tbl[["prob"]]), 1))
+  expect_equal(p_raw(1:10), c(cumsum(x_raw_raw_tbl[["prob"]]), 1))
 
   expect_distr_fun(p_smooth, "p", "smooth")
   expect_equal(
@@ -70,7 +70,10 @@ test_that("new_p asserts", {
 })
 
 test_that("new_p handles metadata", {
-  expect_equal(meta(p_raw), list(support = x_raw_support, type = "raw"))
+  expect_equal(
+    meta(p_raw),
+    list(raw_tbl = x_raw_raw_tbl, support = x_raw_support, type = "raw")
+  )
 
   expect_named(meta(p_smooth), c("support", "type"))
   expect_equal(

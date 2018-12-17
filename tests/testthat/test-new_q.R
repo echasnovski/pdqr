@@ -6,7 +6,7 @@ test_that("new_q works", {
   expect_distr_fun(q_raw, "q", "raw")
   expect_equal(meta(q_raw, "support"), x_raw_support)
   expect_equal(
-    q_raw(cumsum(x_raw_distr_tbl[["prob"]])), x_raw_distr_tbl[["x"]]
+    q_raw(cumsum(x_raw_raw_tbl[["prob"]])), x_raw_raw_tbl[["x"]]
   )
 
   expect_distr_fun(q_smooth, "q", "smooth")
@@ -65,7 +65,10 @@ test_that("new_q asserts", {
 })
 
 test_that("new_q handles metadata", {
-  expect_equal(meta(q_raw), list(support = x_raw_support, type = "raw"))
+  expect_equal(
+    meta(q_raw),
+    list(raw_tbl = x_raw_raw_tbl, support = x_raw_support, type = "raw")
+  )
 
   expect_named(meta(q_smooth), c("support", "type"))
   expect_equal(

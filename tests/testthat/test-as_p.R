@@ -25,6 +25,8 @@ test_that("as_p adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_p(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
+    # Remove "raw_tbl" metadata as it is not created in `as_p.default()`
+  attr(output_raw_ref, "meta")[["raw_tbl"]] <- NULL
   expect_equal_distr(adj_p_raw, output_raw_ref, x_raw_vec_seq)
   # Adjusted function equals 0 and 1 outside of support
   expect_equal(adj_p_raw(c(1, 7)), c(0, 1))

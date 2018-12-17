@@ -3,8 +3,8 @@ context("test-summ_distr_tbl")
 
 # summ_distr_tbl ----------------------------------------------------------
 test_that("summ_distr_tbl works", {
-  expect_equal(summ_distr_tbl(p_raw), x_raw_distr_tbl)
-  expect_equal(summ_distr_tbl(q_raw), x_raw_distr_tbl)
+  expect_equal(summ_distr_tbl(p_raw), x_raw_raw_tbl[, c("x", "prob")])
+  expect_equal(summ_distr_tbl(q_raw), x_raw_raw_tbl[, c("x", "prob")])
 
   output_smooth_distr_tbl <- summ_distr_tbl(p_smooth, n_discrete = 1000)
   # Output has 999 rows instead of 1000 because the first discrete element has
@@ -19,15 +19,6 @@ test_that("summ_distr_tbl throws errors", {
   corrupt_d <- d_smooth
   attr(corrupt_d, "meta")[["support"]] <- c(2, 1)
   expect_error(summ_distr_tbl(corrupt_d), "pdqr.*function")
-})
-
-
-# vec_summ_distr_tbl ------------------------------------------------------
-# Main functionality is tested in `summ_distr_tbl()` and `new_*()`
-test_that("vec_distr_tbl removes `NA`s", {
-  input <- c(1, 1, 2, 2, NA)
-  output_ref <- data.frame(x = c(1, 2), prob = c(0.5, 0.5))
-  expect_equal(vec_summ_distr_tbl(input), output_ref)
 })
 
 

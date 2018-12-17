@@ -14,6 +14,10 @@ test_that("add_pdqr_class works", {
 })
 
 
+# compute_raw_tbl ---------------------------------------------------------
+# Tested in `new_*()` functions
+
+
 # distr_impl --------------------------------------------------------------
 # Tested in `new_*()` functions
 

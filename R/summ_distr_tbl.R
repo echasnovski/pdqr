@@ -10,15 +10,6 @@ summ_distr_tbl <- function(f, n_discrete = 10001, ...) {
   p_summ_distr_tbl(p_f, n_discrete = n_discrete)
 }
 
-vec_summ_distr_tbl <- function(x, vals = sort(unique(x))) {
-  x <- x[!is.na(x)]
-
-  x_val_id <- match(x, vals)
-  prob <- tabulate(x_val_id) / length(x)
-
-  data.frame(x = vals, prob = prob)
-}
-
 p_summ_distr_tbl <- function(p_f, n_discrete = n_discrete) {
   support <- meta(p_f, "support")
 

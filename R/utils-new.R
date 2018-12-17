@@ -17,6 +17,16 @@ distr_impl <- function(fun_class, impl_funs, x, type, ...) {
   add_pdqr_class(res, fun_class)
 }
 
+compute_raw_tbl <- function(x, vals = sort(unique(x))) {
+  x <- x[!is.na(x)]
+
+  x_val_id <- match(x, vals)
+  val_n <- tabulate(x_val_id)
+  prob <- val_n / length(x)
+
+  data.frame(x = vals, prob = prob, n = val_n)
+}
+
 add_pdqr_class <- function(f, subclass) {
   add_class(f, c(subclass, "pdqr"))
 }

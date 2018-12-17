@@ -7,8 +7,8 @@ new_q <- function(x, type = "smooth", ...) {
 }
 
 new_q_raw <- function(x) {
-  distr <- vec_summ_distr_tbl(x)
-  distr_cum_prob_small <- cumsum(distr[["prob"]])
+  raw_tbl <- compute_raw_tbl(x)
+  distr_cum_prob_small <- cumsum(raw_tbl[["prob"]])
   support <- range(x)
 
   # For efficient memory management
@@ -21,13 +21,13 @@ new_q_raw <- function(x) {
     p_prob <- round(p[is_prob], digits = 8)
     p_ind <- findInterval(p_prob, distr_cum_prob_small, left.open = TRUE) + 1
 
-    out[is_prob] <- distr[["x"]][p_ind]
+    out[is_prob] <- raw_tbl[["x"]][p_ind]
     out[!is_prob] <- NaN
 
     out
   }
 
-  add_meta(res, support = support)
+  add_meta(res, support = support, raw_tbl = raw_tbl)
 }
 
 new_q_smooth <- function(x, ...) {

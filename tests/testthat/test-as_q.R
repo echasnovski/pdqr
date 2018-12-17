@@ -25,6 +25,8 @@ test_that("as_q adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_q(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
+    # Remove "raw_tbl" metadata as it is not created in `as_q.default()`
+  attr(output_raw_ref, "meta")[["raw_tbl"]] <- NULL
   expect_equal_distr(
     adj_q_raw, output_raw_ref,
     grid = p_vec, thres = 10^(-3)

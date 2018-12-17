@@ -7,19 +7,19 @@ new_d <- function(x, type = "smooth", ...) {
 }
 
 new_d_raw <- function(x) {
-  distr <- vec_summ_distr_tbl(x)
+  raw_tbl <- compute_raw_tbl(x)
   support <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
   res <- function(x) {
-    x_ind <- match(round(x, digits = 8), distr[["x"]], nomatch = NA)
+    x_ind <- match(round(x, digits = 8), raw_tbl[["x"]], nomatch = NA)
 
-    ifelse(is.na(x_ind), 0, distr[["prob"]][x_ind])
+    ifelse(is.na(x_ind), 0, raw_tbl[["prob"]][x_ind])
   }
 
-  add_meta(res, support = support)
+  add_meta(res, support = support, raw_tbl = raw_tbl)
 }
 
 new_d_smooth <- function(x, ...) {
