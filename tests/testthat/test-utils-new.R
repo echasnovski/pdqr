@@ -63,6 +63,22 @@ test_that("is_support works", {
 })
 
 
+# is_raw_tbl --------------------------------------------------------------
+test_that("is_raw_tbl works", {
+  expect_true(is_raw_tbl(x_raw_raw_tbl))
+  expect_true(is_raw_tbl(x_raw_raw_tbl[, c("x", "prob")]))
+  expect_true(is_raw_tbl(x_raw_raw_tbl[, c("x", "n")]))
+
+  expect_false(is_raw_tbl("a"))
+  expect_false(is_raw_tbl(data.frame(a = 1)))
+  expect_false(is_raw_tbl(data.frame(x = "a")))
+  expect_false(is_raw_tbl(data.frame(x = 1)))
+  expect_false(is_raw_tbl(data.frame(x = 1, prob = "a")))
+  expect_false(is_raw_tbl(data.frame(x = 1, prob = 0.5)))
+  expect_false(is_raw_tbl(data.frame(x = 1, n = "a")))
+})
+
+
 # is_pdqr_fun -------------------------------------------------------------
 test_that("is_pdqr_fun works", {
   expect_true(is_pdqr_fun(p_raw))

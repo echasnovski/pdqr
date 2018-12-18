@@ -105,6 +105,23 @@ test_that("assert_support works", {
 })
 
 
+# assert_raw_tbl ----------------------------------------------------------
+test_that("assert_raw_tbl works", {
+  expect_silent(assert_raw_tbl(x_raw_raw_tbl))
+  expect_silent(assert_raw_tbl(x_raw_raw_tbl[, c("x", "prob")]))
+  expect_silent(assert_raw_tbl(x_raw_raw_tbl[, c("x", "n")]))
+
+  input <- "a"
+  expect_error(assert_raw_tbl(input), "`input`.*data.*frame")
+  expect_error(assert_raw_tbl(data.frame(a = 1)), "x")
+  expect_error(assert_raw_tbl(data.frame(x = "a")), "numeric.*x")
+  expect_error(assert_raw_tbl(data.frame(x = 1)), "prob.*n")
+  expect_error(assert_raw_tbl(data.frame(x = 1, prob = "a")), "prob.*numeric")
+  expect_error(assert_raw_tbl(data.frame(x = 1, prob = 0.5)), "prob.*sum.*1")
+  expect_error(assert_raw_tbl(data.frame(x = 1, n = "a")), "n.*numeric")
+})
+
+
 # assert_tot_prob ---------------------------------------------------------
 test_that("assert_tot_prob works", {
   expect_error(assert_tot_prob(0), "probability.*zero")

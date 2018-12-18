@@ -148,6 +148,34 @@ assert_support <- function(support) {
   support
 }
 
+assert_raw_tbl <- function(x) {
+  x_name <- paste0("`", deparse(substitute(x)), "`")
+
+  if (!is.data.frame(x)) {
+    stop_collapse(x_name, " should be a data frame.")
+  }
+  if (!(("x" %in% names(x)) && is.numeric(x[["x"]]))) {
+    stop_collapse(x_name, ' should have numeric column "x".')
+  }
+  if (!any(c("prob", "n") %in% names(x))) {
+    stop_collapse(x_name, ' should have one of "prob" or "n" columns.')
+  }
+  if ("prob" %in% names(x)) {
+    if (!(is.numeric(x[["prob"]]) && is_near(sum(x[["prob"]]), 1))) {
+      stop_collapse(
+        '"prob" column in ', x_name, ' should be numeric with sum equal to 1.'
+      )
+    }
+  }
+  if ("n" %in% names(x)) {
+    if (!is.numeric(x[["n"]])) {
+      stop_collapse('"n" column in ', x_name, ' should be numeric.')
+    }
+  }
+
+  TRUE
+}
+
 assert_tot_prob <- function(tot_prob) {
   if (is_near(tot_prob, 0)) {
     stop_collapse("Total probability on supplied `support` is zero.")

@@ -64,6 +64,10 @@ is_support <- function(supp) {
     (supp[1] <= supp[2]) && all(is.finite(supp))
 }
 
+is_raw_tbl <- function(x) {
+  tryCatch(assert_raw_tbl(x), error = function(e) {FALSE})
+}
+
 is_pdqr_fun <- function(obj) {
   is.function(obj) && inherits(obj, "pdqr") &&
     has_meta_type(obj) && has_meta_support(obj)
