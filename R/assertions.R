@@ -106,7 +106,7 @@ assert_pdqr_fun <- function(f) {
     )
   }
 
-  f
+  TRUE
 }
 
 assert_distr_type <- function(type) {
@@ -121,7 +121,7 @@ assert_distr_type <- function(type) {
     )
   }
 
-  type
+  TRUE
 }
 
 assert_support <- function(support) {
@@ -145,7 +145,7 @@ assert_support <- function(support) {
     stop_collapse(support_name, " should have only finite elements.")
   }
 
-  support
+  TRUE
 }
 
 assert_raw_tbl <- function(x) {
@@ -181,5 +181,5 @@ assert_tot_prob <- function(tot_prob) {
     stop_collapse("Total probability on supplied `support` is zero.")
   }
 
-  tot_prob
+  TRUE
 }

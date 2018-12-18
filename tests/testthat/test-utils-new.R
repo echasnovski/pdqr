@@ -50,6 +50,35 @@ test_that("assert_common_args works", {
 })
 
 
+# is_pdqr_fun -------------------------------------------------------------
+test_that("is_pdqr_fun works", {
+  expect_true(is_pdqr_fun(p_raw))
+  expect_false(is_pdqr_fun("a"))
+  expect_false(is_pdqr_fun(user_p))
+  expect_false(
+    is_pdqr_fun(structure(user_p, class = "pdqr", meta = list(type = "a")))
+  )
+  expect_false(
+    is_pdqr_fun(
+      structure(
+        user_p, class = "pdqr", meta = list(type = "raw", support = c(2, 1))
+      )
+    )
+  )
+})
+
+
+# is_distr_type -----------------------------------------------------------
+test_that("is_distr_type works", {
+  expect_true(is_distr_type("raw"))
+  expect_true(is_distr_type("smooth"))
+
+  expect_false(is_distr_type(1))
+  expect_false(is_distr_type(c("raw", "smooth")))
+  expect_false(is_distr_type("a"))
+})
+
+
 # is_support --------------------------------------------------------------
 test_that("is_support works", {
   expect_true(is_support(c(-1, 1)))
@@ -76,24 +105,6 @@ test_that("is_raw_tbl works", {
   expect_false(is_raw_tbl(data.frame(x = 1, prob = "a")))
   expect_false(is_raw_tbl(data.frame(x = 1, prob = 0.5)))
   expect_false(is_raw_tbl(data.frame(x = 1, n = "a")))
-})
-
-
-# is_pdqr_fun -------------------------------------------------------------
-test_that("is_pdqr_fun works", {
-  expect_true(is_pdqr_fun(p_raw))
-  expect_false(is_pdqr_fun("a"))
-  expect_false(is_pdqr_fun(user_p))
-  expect_false(
-    is_pdqr_fun(structure(user_p, class = "pdqr", meta = list(type = "a")))
-  )
-  expect_false(
-    is_pdqr_fun(
-      structure(
-        user_p, class = "pdqr", meta = list(type = "raw", support = c(2, 1))
-      )
-    )
-  )
 })
 
 

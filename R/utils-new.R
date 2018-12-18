@@ -59,18 +59,22 @@ assert_common_args <- function(x, type) {
   x
 }
 
+
+# Predicates for pdqr-functions -------------------------------------------
+is_pdqr_fun <- function(f) {
+  tryCatch(assert_pdqr_fun(f), error = function(e) {FALSE})
+}
+
+is_distr_type <- function(type) {
+  tryCatch(assert_distr_type(type), error = function(e) {FALSE})
+}
+
 is_support <- function(supp) {
-  is.numeric(supp) && (length(supp) == 2) &&
-    (supp[1] <= supp[2]) && all(is.finite(supp))
+  tryCatch(assert_support(supp), error = function(e) {FALSE})
 }
 
 is_raw_tbl <- function(x) {
   tryCatch(assert_raw_tbl(x), error = function(e) {FALSE})
-}
-
-is_pdqr_fun <- function(obj) {
-  is.function(obj) && inherits(obj, "pdqr") &&
-    has_meta_type(obj) && has_meta_support(obj)
 }
 
 is_pdqr_class <- function(chr) {
@@ -78,7 +82,7 @@ is_pdqr_class <- function(chr) {
 }
 
 has_meta_type <- function(f) {
-  has_meta(f, "type") && (meta(f, "type") %in% c("raw", "smooth"))
+  has_meta(f, "type") && is_distr_type(meta(f, "type"))
 }
 
 has_meta_support <- function(f) {
