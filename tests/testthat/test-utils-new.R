@@ -14,7 +14,15 @@ test_that("add_pdqr_class works", {
 })
 
 
-# compute_raw_tbl ---------------------------------------------------------
+# compute_x_tbl -----------------------------------------------------------
+# Tested in `new_*()` functions
+
+
+# compute_x_tbl_raw -------------------------------------------------------
+# Tested in `new_*()` functions
+
+
+# compute_x_tbl_smooth ----------------------------------------------------
 # Tested in `new_*()` functions
 
 
@@ -92,32 +100,29 @@ test_that("is_support works", {
 })
 
 
-# is_raw_tbl --------------------------------------------------------------
-test_that("is_raw_tbl works", {
-  expect_true(is_raw_tbl(x_raw_raw_tbl))
-  expect_true(is_raw_tbl(x_raw_raw_tbl[, c("x", "prob")]))
-  expect_true(is_raw_tbl(x_raw_raw_tbl[, c("x", "n")]))
+# is_x_tbl ----------------------------------------------------------------
+test_that("is_x_tbl works with `type = 'raw'`", {
+  expect_true(is_x_tbl(x_raw_x_tbl, type = "raw"))
+  expect_true(is_x_tbl(x_raw_x_tbl[, c("x", "prob")], type = "raw"))
+  expect_true(is_x_tbl(x_raw_x_tbl[, c("x", "n")], type = "raw"))
 
-  expect_false(is_raw_tbl("a"))
-  expect_false(is_raw_tbl(data.frame(a = 1)))
-  expect_false(is_raw_tbl(data.frame(x = "a")))
-  expect_false(is_raw_tbl(data.frame(x = 1)))
-  expect_false(is_raw_tbl(data.frame(x = 1, prob = "a")))
-  expect_false(is_raw_tbl(data.frame(x = 1, prob = 0.5)))
-  expect_false(is_raw_tbl(data.frame(x = 1, n = "a")))
+  expect_false(is_x_tbl("a", type = "raw"))
+  expect_false(is_x_tbl(data.frame(a = 1), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = "a"), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = 0.5), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, n = "a"), type = "raw"))
 })
 
+test_that("is_x_tbl works with `type = 'smooth'`", {
+  expect_true(is_x_tbl(x_smooth_x_tbl, type = "smooth"))
 
-# is_smooth_tbl -----------------------------------------------------------
-test_that("is_smooth_tbl works", {
-  expect_true(is_smooth_tbl(x_smooth_smooth_tbl))
-
-  input <- "a"
-  expect_false(is_smooth_tbl(input))
-  expect_false(is_smooth_tbl(data.frame(a = 1)))
-  expect_false(is_smooth_tbl(data.frame(x = "a")))
-  expect_false(is_smooth_tbl(data.frame(x = 1)))
-  expect_false(is_smooth_tbl(data.frame(x = 1, y = "a")))
+  expect_false(is_x_tbl("a", type = "smooth"))
+  expect_false(is_x_tbl(data.frame(a = 1), type = "smooth"))
+  expect_false(is_x_tbl(data.frame(x = "a"), type = "smooth"))
+  expect_false(is_x_tbl(data.frame(x = 1), type = "smooth"))
+  expect_false(is_x_tbl(data.frame(x = 1, y = "a"), type = "smooth"))
 })
 
 

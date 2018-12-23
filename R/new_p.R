@@ -7,32 +7,32 @@ new_p <- function(x, type = "smooth", ...) {
 }
 
 new_p_raw <- function(x) {
-  raw_tbl <- compute_raw_tbl(x)
-  distr_cum_prob <- c(0, cumsum(raw_tbl[["prob"]]))
+  x_tbl <- compute_x_tbl(x, "raw")
+  distr_cum_prob <- c(0, cumsum(x_tbl[["prob"]]))
   support <- range(x)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
   res <- function(q) {
-    q_ind <- findInterval(round(q, digits = 8), raw_tbl[["x"]]) + 1
+    q_ind <- findInterval(round(q, digits = 8), x_tbl[["x"]]) + 1
 
     distr_cum_prob[q_ind]
   }
 
-  add_meta(res, support = support, raw_tbl = raw_tbl)
+  add_meta(res, support = support, x_tbl = x_tbl)
 }
 
 new_p_smooth <- function(x, ...) {
-  smooth_tbl <- density_piecelin(x, ...)
-  support <- range(smooth_tbl[["x"]])
+  x_tbl <- compute_x_tbl(x, "smooth", ...)
+  support <- range(x_tbl[["x"]])
 
   # For efficient memory management
   rm(list = c("x"), envir = environment())
 
-  res <- p_from_d_points(smooth_tbl[["x"]], smooth_tbl[["y"]])
+  res <- p_from_d_points(x_tbl[["x"]], x_tbl[["y"]])
 
-  add_meta(res, support = support, smooth_tbl = smooth_tbl)
+  add_meta(res, support = support, x_tbl = x_tbl)
 }
 
 print.p <- function(x, ...) {

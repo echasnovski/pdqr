@@ -17,7 +17,15 @@ distr_impl <- function(fun_class, impl_funs, x, type, ...) {
   add_pdqr_class(res, fun_class)
 }
 
-compute_raw_tbl <- function(x, vals = sort(unique(x))) {
+compute_x_tbl <- function(x, type, ...) {
+  switch(
+    type,
+    raw = compute_x_tbl_raw(x),
+    smooth = compute_x_tbl_smooth(x, ...)
+  )
+}
+
+compute_x_tbl_raw <- function(x, vals = sort(unique(x))) {
   x <- x[!is.na(x)]
 
   x_val_id <- match(x, vals)
@@ -25,6 +33,10 @@ compute_raw_tbl <- function(x, vals = sort(unique(x))) {
   prob <- val_n / length(x)
 
   data.frame(x = vals, prob = prob, n = val_n)
+}
+
+compute_x_tbl_smooth <- function(x, ...) {
+  density_piecelin(x, ...)
 }
 
 add_pdqr_class <- function(f, subclass) {
@@ -73,12 +85,8 @@ is_support <- function(supp) {
   tryCatch(assert_support(supp), error = function(e) {FALSE})
 }
 
-is_raw_tbl <- function(x) {
-  tryCatch(assert_raw_tbl(x), error = function(e) {FALSE})
-}
-
-is_smooth_tbl <- function(x) {
-  tryCatch(assert_smooth_tbl(x), error = function(e) {FALSE})
+is_x_tbl <- function(x, type) {
+  tryCatch(assert_x_tbl(x, type), error = function(e) {FALSE})
 }
 
 is_pdqr_class <- function(chr) {

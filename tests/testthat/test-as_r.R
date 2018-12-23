@@ -55,8 +55,8 @@ test_that("as_r adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_r(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
-  # "raw_tbl" metadata is not created in `as_r.default()`
-  expect_equal_r_funs(adj_r_raw, output_raw_ref, meta_not_check = "raw_tbl")
+  # "x_tbl" metadata is not created in `as_r.default()`
+  expect_equal_r_funs(adj_r_raw, output_raw_ref, meta_not_check = "x_tbl")
 
   # Adjusted function produces only data inside support
   output_smooth_smpl <- adj_r_smooth(1000)

@@ -25,8 +25,8 @@ test_that("form_trans works", {
   expect_equal_distr(
     output_custom, p_custom_ref,
     grid = x_custom_trunc, thres = 0.05,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
 
   # Normal distribution multiplied by 2
@@ -44,8 +44,8 @@ test_that("form_trans works", {
   expect_equal_distr(
     output_norm, d_norm_ref,
     grid = x_norm_seq, thres = 0.02,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
 })
 
@@ -130,8 +130,8 @@ test_that("Math.pdqr works", {
   expect_equal_distr(
     d_norm_out, d_norm_ref,
     grid = x_norm_seq, thres = 0.05,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
 })
 
@@ -148,8 +148,8 @@ test_that("Ops.pdqr works", {
   expect_equal_distr(
     p_norm_out, p_norm_ref,
     grid = x_norm_seq, thres = 0.05,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
 })
 

@@ -25,10 +25,10 @@ test_that("as_q adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_q(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
-  # "raw_tbl" metadata is not created in `as_q.default()`
+  # "x_tbl" metadata is not created in `as_q.default()`
   expect_equal_distr(
     adj_q_raw, output_raw_ref,
-    grid = p_vec, thres = 10^(-3), meta_not_check = "raw_tbl"
+    grid = p_vec, thres = 10^(-3), meta_not_check = "x_tbl"
   )
 
   # Adjusted function stretches from 0 to 1 on support
@@ -118,8 +118,8 @@ test_that('as_q works with "r"', {
     # plot(p, as_q(r_raw)(p), type = "l")
     # lines(p, q_raw(p), col = "red")
     grid = p_vec_bigwholed,
-    # Support and "raw_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("raw_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
   expect_equal_distr(
     as_q(r_smooth), q_smooth,
@@ -127,16 +127,16 @@ test_that('as_q works with "r"', {
     # edges in case `type = "smooth"`. This introduces errors around the edges.
     # That is why truncated version of `p_vec` is used.
     grid = p_vec_trunc, thres = 0.05,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
   expect_equal_distr(
     as_q(r_custom), q_custom,
     # Using truncated version as described in test for conversion from
     # `r_smooth()`.
     grid = p_vec_trunc, thres = 0.05,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
 })
 

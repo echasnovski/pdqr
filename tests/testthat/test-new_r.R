@@ -5,7 +5,7 @@ context("test-new_r")
 test_that("new_r works", {
   expect_distr_fun(r_raw, "r", "raw")
   expect_equal(meta(r_raw, "support"), x_raw_support)
-  expect_true(all(r_raw(100) %in% x_raw_raw_tbl[["x"]]))
+  expect_true(all(r_raw(100) %in% x_raw_x_tbl[["x"]]))
 
   expect_distr_fun(r_smooth, "r", "smooth")
   expect_equal(
@@ -32,11 +32,11 @@ test_that("new_r asserts", {
 test_that("new_r handles metadata", {
   expect_equal(
     meta(r_raw),
-    list(raw_tbl = x_raw_raw_tbl, support = x_raw_support, type = "raw")
+    list(support = x_raw_support, type = "raw", x_tbl = x_raw_x_tbl)
   )
 
-  expect_named(meta(r_smooth), c("smooth_tbl", "support", "type"))
-  expect_equal(meta(r_smooth, "smooth_tbl"), x_smooth_smooth_tbl)
+  expect_named(meta(r_smooth), c("support", "type", "x_tbl"))
+  expect_equal(meta(r_smooth, "x_tbl"), x_smooth_x_tbl)
   expect_equal(
     round(meta(r_smooth, "support"), 2), round(x_smooth_support, 2)
   )

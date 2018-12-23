@@ -105,34 +105,48 @@ test_that("assert_support works", {
 })
 
 
-# assert_raw_tbl ----------------------------------------------------------
-test_that("assert_raw_tbl works", {
-  expect_silent(assert_raw_tbl(x_raw_raw_tbl))
-  expect_silent(assert_raw_tbl(x_raw_raw_tbl[, c("x", "prob")]))
-  expect_silent(assert_raw_tbl(x_raw_raw_tbl[, c("x", "n")]))
+# assert_x_tbl ------------------------------------------------------------
+test_that("assert_x_tbl works with `type = 'raw'`", {
+  expect_silent(assert_x_tbl(x_raw_x_tbl, type = "raw"))
+  expect_silent(assert_x_tbl(x_raw_x_tbl[, c("x", "prob")], type = "raw"))
+  expect_silent(assert_x_tbl(x_raw_x_tbl[, c("x", "n")], type = "raw"))
 
   input <- "a"
-  expect_error(assert_raw_tbl(input), "`input`.*data.*frame")
-  expect_error(assert_raw_tbl(data.frame(a = 1)), "x")
-  expect_error(assert_raw_tbl(data.frame(x = "a")), "numeric.*x")
-  expect_error(assert_raw_tbl(data.frame(x = 1)), "prob.*n")
-  expect_error(assert_raw_tbl(data.frame(x = 1, prob = "a")), "prob.*numeric")
-  expect_error(assert_raw_tbl(data.frame(x = 1, prob = 0.5)), "prob.*sum.*1")
-  expect_error(assert_raw_tbl(data.frame(x = 1, n = "a")), "n.*numeric")
+  expect_error(assert_x_tbl(input, type = "raw"), "`input`.*data.*frame")
+  expect_error(assert_x_tbl(data.frame(a = 1), type = "raw"), "x")
+  expect_error(assert_x_tbl(data.frame(x = "a"), type = "raw"), "numeric.*x")
+  expect_error(assert_x_tbl(data.frame(x = 1), type = "raw"), "prob.*n")
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"), "prob.*numeric"
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, prob = 0.5), type = "raw"), "prob.*sum.*1"
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, n = "a"), type = "raw"), "n.*numeric"
+  )
+})
+
+test_that("assert_x_tbl works with `type = 'smooth'`", {
+  expect_silent(assert_x_tbl(x_smooth_x_tbl, type = "smooth"))
+
+  input <- "a"
+  expect_error(assert_x_tbl(input, type = "smooth"), "`input`.*data.*frame")
+  expect_error(assert_x_tbl(data.frame(a = 1), type = "smooth"), "x")
+  expect_error(assert_x_tbl(data.frame(x = "a"), type = "smooth"), "numeric.*x")
+  expect_error(assert_x_tbl(data.frame(x = 1), type = "smooth"), "y")
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, y = "a"), type = "smooth"), "numeric.*y"
+  )
 })
 
 
-# assert_smooth_tbl -------------------------------------------------------
-test_that("assert_smooth_tbl works", {
-  expect_silent(assert_smooth_tbl(x_smooth_smooth_tbl))
+# assert_x_tbl_raw --------------------------------------------------------
+# Tested in `assert_x_tbl()`
 
-  input <- "a"
-  expect_error(assert_smooth_tbl(input), "`input`.*data.*frame")
-  expect_error(assert_smooth_tbl(data.frame(a = 1)), "x")
-  expect_error(assert_smooth_tbl(data.frame(x = "a")), "numeric.*x")
-  expect_error(assert_smooth_tbl(data.frame(x = 1)), "y")
-  expect_error(assert_smooth_tbl(data.frame(x = 1, y = "a")), "numeric.*y")
-})
+
+# assert_x_tbl_smooth -----------------------------------------------------
+# Tested in `assert_x_tbl()`
 
 
 # assert_tot_prob ---------------------------------------------------------

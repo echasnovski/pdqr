@@ -148,9 +148,17 @@ assert_support <- function(support) {
   TRUE
 }
 
-assert_raw_tbl <- function(x) {
+assert_x_tbl <- function(x, type) {
   x_name <- paste0("`", deparse(substitute(x)), "`")
 
+  switch(
+    type,
+    raw = assert_x_tbl_raw(x, x_name),
+    smooth = assert_x_tbl_smooth(x, x_name)
+  )
+}
+
+assert_x_tbl_raw <- function(x, x_name) {
   if (!is.data.frame(x)) {
     stop_collapse(x_name, " should be a data frame.")
   }
@@ -176,9 +184,7 @@ assert_raw_tbl <- function(x) {
   TRUE
 }
 
-assert_smooth_tbl <- function(x) {
-  x_name <- paste0("`", deparse(substitute(x)), "`")
-
+assert_x_tbl_smooth <- function(x, x_name) {
   if (!is.data.frame(x)) {
     stop_collapse(x_name, " should be a data frame.")
   }

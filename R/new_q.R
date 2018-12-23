@@ -7,8 +7,8 @@ new_q <- function(x, type = "smooth", ...) {
 }
 
 new_q_raw <- function(x) {
-  raw_tbl <- compute_raw_tbl(x)
-  distr_cum_prob_small <- cumsum(raw_tbl[["prob"]])
+  x_tbl <- compute_x_tbl(x, "raw")
+  distr_cum_prob_small <- cumsum(x_tbl[["prob"]])
   support <- range(x)
 
   # For efficient memory management
@@ -21,23 +21,23 @@ new_q_raw <- function(x) {
     p_prob <- round(p[is_prob], digits = 8)
     p_ind <- findInterval(p_prob, distr_cum_prob_small, left.open = TRUE) + 1
 
-    out[is_prob] <- raw_tbl[["x"]][p_ind]
+    out[is_prob] <- x_tbl[["x"]][p_ind]
     out[!is_prob] <- NaN
 
     out
   }
 
-  add_meta(res, support = support, raw_tbl = raw_tbl)
+  add_meta(res, support = support, x_tbl = x_tbl)
 }
 
 new_q_smooth <- function(x, ...) {
-  smooth_tbl <- density_piecelin(x, ...)
+  x_tbl <- compute_x_tbl(x, "smooth", ...)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
-  x_dens <- smooth_tbl[["x"]]
-  y_dens <- smooth_tbl[["y"]]
+  x_dens <- x_tbl[["x"]]
+  y_dens <- x_tbl[["y"]]
   n <- length(x_dens)
   support <- range(x_dens)
 
@@ -68,7 +68,7 @@ new_q_smooth <- function(x, ...) {
     out
   }
 
-  add_meta(res, support = support, smooth_tbl = smooth_tbl)
+  add_meta(res, support = support, x_tbl = x_tbl)
 }
 
 find_quant <- function(p, cdf_start, x_start, slope, intercept) {

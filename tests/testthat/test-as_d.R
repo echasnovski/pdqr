@@ -25,10 +25,10 @@ test_that("as_d adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_d(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
-  # "raw_tbl" metadata is not created in `as_d.default()`
+  # "x_tbl" metadata is not created in `as_d.default()`
   expect_equal_distr(
     adj_d_raw, output_raw_ref,
-    grid = x_raw_vec_seq, meta_not_check = "raw_tbl"
+    grid = x_raw_vec_seq, meta_not_check = "x_tbl"
   )
   # Adjusted function equals 0 outside of support
   expect_equal(adj_d_raw(c(1, 7)), c(0, 0))
@@ -129,16 +129,16 @@ test_that('as_d works with "r"', {
   expect_equal_distr(
     as_d(r_raw), d_raw,
     grid = c(x_raw_vec_ext, x_raw_vec), thres = 0.01,
-    # Support and "raw_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("raw_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
   expect_equal_distr(
     as_d(r_smooth), d_smooth,
     # Building smooth density from random generation function has somewhat worse
       # precision than building CDF
     grid = x_smooth_vec_ext, thres = 0.05,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
   expect_equal_distr(
     as_d(r_custom), d_custom,
@@ -146,8 +146,8 @@ test_that('as_d works with "r"', {
     # edges in case `type = "smooth"`. Both this and discontinuous nature of
     # custom distribution (with big jump at 0) give bad precision.
     grid = x_custom_trunc, thres = 0.15,
-    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("smooth_tbl", "support")
+    # Support and "x_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("x_tbl", "support")
   )
   # Illustration of big impact of discontinuity:
   # x <- sort(x_custom)

@@ -1,11 +1,11 @@
 # Input sample data -------------------------------------------------------
 x_raw <- c(4, 1, 2, 6, 8, 6, 7, 3, 2, 3, 2, 6, 7, 8, 1, 9, 2, 9, 5, 7)
-x_raw_raw_tbl <- data.frame(
+x_raw_x_tbl <- data.frame(
   x = as.numeric(1:9),
   prob = c(0.1, 0.2, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.1),
   n    = c(  2,   4,   2,    1,    1,    3,    3  , 2,   2)
 )
-x_raw_cumprobs <- cumsum(x_raw_raw_tbl[["prob"]])
+x_raw_cumprobs <- cumsum(x_raw_x_tbl[["prob"]])
 x_raw_support <- c(1, 9)
 
 x_smooth <- c(
@@ -13,7 +13,7 @@ x_smooth <- c(
   -1.27, 1.04, 1.06, -1.87, -1.71, -0.3, -0.26, 0.62,  1.42, 0.36
 )
 x_smooth_support <- c(-2.91865392160928, 2.51865392160928)
-x_smooth_smooth_tbl <- density_piecelin(x_smooth)
+x_smooth_x_tbl <- density_piecelin(x_smooth)
 
 
 # Input test vectors ------------------------------------------------------
