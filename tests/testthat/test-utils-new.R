@@ -209,6 +209,18 @@ test_that("has_meta_support works", {
 })
 
 
+# has_meta_x_tbl ----------------------------------------------------------
+test_that("has_meta_x_tbl works", {
+  expect_true(has_meta_x_tbl(p_raw, "raw"))
+  expect_true(has_meta_x_tbl(p_smooth, "smooth"))
+
+  expect_false(has_meta_x_tbl(p_raw, "smooth"))
+  expect_false(has_meta_x_tbl(p_smooth, "raw"))
+  expect_false(has_meta_x_tbl(1, "smooth"))
+  expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "raw"))
+})
+
+
 # density_piecelin --------------------------------------------------------
 # Tested in `new_*()`
 

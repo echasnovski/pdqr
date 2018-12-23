@@ -69,7 +69,7 @@ test_that("summ_pval excepts not only objects of class 'p'", {
 
   # First two values differ because there is some randomness involved during
   # conversion from r-function to p-function inside `summ_pval()`.
-  expect_pval(r_custom, 0.51, c(0.24, 0.25, 0.76, 0.47), digits = 2)
+  expect_pval(r_custom, 0.51, c(0.24, 0.25, 0.76, 0.49), digits = 2)
 })
 
 test_that("summ_pval throws errors", {

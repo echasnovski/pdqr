@@ -45,16 +45,8 @@ test_that("as_q.default throws errors", {
 })
 
 test_that('as_q works with "p"', {
-  expect_equal_distr(
-    as_q(p_raw), q_raw,
-    # Converting from p-function in case `type = "raw"` is not precise around
-    # actual values. So they are removed.
-    grid = p_vec_wholed, thres = 10^(-3)
-  )
-  expect_equal_distr(
-    as_q(p_smooth), q_smooth,
-    grid = p_vec, thres = 10^(-6)
-  )
+  expect_equal_distr(as_q(p_raw), q_raw, grid = p_vec)
+  expect_equal_distr(as_q(p_smooth), q_smooth, grid = p_vec)
   expect_equal_distr(
     as_q(p_custom), q_custom,
     grid = p_vec, thres = 10^(-7)
@@ -62,25 +54,9 @@ test_that('as_q works with "p"', {
 })
 
 test_that('as_q works with "d"', {
-  expect_equal_distr(
-    as_q(d_raw), q_raw,
-    # Converting from d-function in case `type = "raw"` is not precise because
-    # actual values are hard to find. Even if they are found (as the case in
-    # these tests) precision around them is poor. So they are removed.
-    grid = p_vec_wholed, thres = 10^(-3)
-  )
-  # This takes rather much time to run
-  expect_equal_distr(
-    as_q(d_smooth), q_smooth,
-    # Rather low precision is probably due to aggregating error from two
-    # conversions: "d" -> "p" -> "q"
-    grid = p_vec, thres = 10^(-3)
-  )
-  # This takes rather much time to run.
-  expect_equal_distr(
-    as_q(d_custom), q_custom,
-    grid = p_vec, thres = 10^(-7)
-  )
+  expect_equal_distr(as_q(d_raw), q_raw, grid = p_vec)
+  expect_equal_distr(as_q(d_smooth), q_smooth, grid = p_vec)
+  expect_equal_distr(as_q(d_custom), q_custom, grid = p_vec, thres = 10^(-7))
 })
 
 test_that('as_q returns self in case of "q"', {
@@ -90,38 +66,13 @@ test_that('as_q returns self in case of "q"', {
 })
 
 test_that('as_q works with "r"', {
+  expect_equal_distr(as_q(r_raw), q_raw, grid = p_vec)
+  expect_equal_distr(as_q(r_smooth), q_smooth, grid = p_vec)
   expect_equal_distr(
-    as_q(r_raw), q_raw,
-    # Estimating distribution from random sampling is not exact around true
-    # probabilities. It means that jumps in quantile functions are made only
-    # near true probabilites. As jumps might have high "height", it means very
-    # high error around true probabilities (by the "jump height").
-
-    # That is why values of `p_vec` in close neighboorhood of actual cumulative
-    # probabilities are not used here.
-
-    # For illustration run this code:
-    # set.seed(123)
-    # p <- sort(p_vec)
-    # plot(p, as_q(r_raw)(p), type = "l")
-    # lines(p, q_raw(p), col = "red")
-    grid = p_vec_bigwholed,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
-  )
-  expect_equal_distr(
-    as_q(r_smooth), q_smooth,
+    as_q(r_custom), q_custom,
     # Using truncated version because of "extending" property on the support
     # edges in case `type = "smooth"`. This introduces errors around the edges.
     # That is why truncated version of `p_vec` is used.
-    grid = p_vec_trunc, thres = 0.05,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
-  )
-  expect_equal_distr(
-    as_q(r_custom), q_custom,
-    # Using truncated version as described in test for conversion from
-    # `r_smooth()`.
     grid = p_vec_trunc, thres = 0.05,
     # Support and "x_tbl" shouldn't be the same as random sampling is done
     meta_not_check = c("x_tbl", "support")
@@ -138,11 +89,11 @@ test_that('as_q works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_q respects `n_grid` argument", {
   expect_different_distr(
-    as_q(p_smooth), as_q(p_smooth, n_grid = 101),
+    as_q(p_custom), as_q(p_custom, n_grid = 2),
     grid = x_smooth_vec
   )
   expect_different_distr(
-    as_q(d_smooth), as_q(d_smooth, n_grid = 101),
+    as_q(d_custom), as_q(d_custom, n_grid = 2),
     grid = x_smooth_vec
   )
 })
@@ -167,8 +118,8 @@ test_that("as_q asserts extra arguments of methods", {
   expect_error(as_q(user_q, c(1, 0)), "support.*bigger")
 
   # Converting from r-function
-  expect_error(as_q(r_smooth, n_sample = "a"), "n_sample.*single number")
-  expect_error(as_q(r_smooth, n_sample = 10:11), "n_sample.*single number")
+  expect_error(as_q(r_custom, n_sample = "a"), "n_sample.*single number")
+  expect_error(as_q(r_custom, n_sample = 10:11), "n_sample.*single number")
 })
 
 

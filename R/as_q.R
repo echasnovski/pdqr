@@ -1,6 +1,8 @@
 as_q <- function(f, ...) {
   if (inherits(f, "q")) {
     return(f)
+  } else if (has_meta_type(f) && has_meta_x_tbl(f, meta(f, "type"))) {
+    return(new_q(x = meta(f, "x_tbl"), type = meta(f, "type")))
   }
 
   UseMethod("as_q")

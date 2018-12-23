@@ -1,6 +1,8 @@
 as_d <- function(f, ...) {
   if (inherits(f, "d")) {
     return(f)
+  } else if (has_meta_type(f) && has_meta_x_tbl(f, meta(f, "type"))) {
+    return(new_d(x = meta(f, "x_tbl"), type = meta(f, "type")))
   }
 
   UseMethod("as_d")
@@ -16,17 +18,12 @@ as_d.p <- function(f, h = 10^(-6), ...) {
   assert_pdqr_fun(f)
 
   support <- meta(f, "support")
-  type <- meta(f, "type")
 
-  if (type == "raw") {
-    res <- function(x) {f(x + h) - f(x - h)}
-  } else {
-    res <- function(x) {
-      left_point <- pmax(x - h, support[1])
-      right_point <- pmin(x + h, support[2])
-      point_len <- right_point - left_point
-      (f(right_point) - f(left_point)) / point_len
-    }
+  res <- function(x) {
+    left_point <- pmax(x - h, support[1])
+    right_point <- pmin(x + h, support[2])
+    point_len <- right_point - left_point
+    (f(right_point) - f(left_point)) / point_len
   }
 
   res <- add_pdqr_class(res, "d")

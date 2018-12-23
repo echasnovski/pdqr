@@ -62,7 +62,7 @@ test_that("as_r.default throws errors and warnings", {
 
 test_that('as_r works with "p"', {
   # With "raw" type and low number of unique values errors might be quite big
-  expect_equal_r_funs(as_r(p_raw), r_raw, mean_thres = 0.2)
+  expect_equal_r_funs(as_r(p_raw), r_raw)
   expect_equal_r_funs(as_r(p_smooth), r_smooth)
 
   # Custom functions have smooth nature, so error should be lower
@@ -73,11 +73,7 @@ test_that('as_r works with "p"', {
 })
 
 test_that('as_r works with "d"', {
-  # With "raw" type and low number of unique values errors might be quite big
-  expect_equal_r_funs(
-    as_r(d_raw), r_raw,
-    mean_thres = 0.2, sd_thres = 0.1
-  )
+  expect_equal_r_funs(as_r(d_raw), r_raw)
   expect_equal_r_funs(as_r(d_smooth), r_smooth)
 
   # Custom functions have smooth nature, so error should be lower
@@ -88,11 +84,7 @@ test_that('as_r works with "d"', {
 })
 
 test_that('as_r works with "q"', {
-  expect_equal_r_funs(
-    as_r(q_raw), r_raw,
-    mean_thres = 0.2, sd_thres = 0.1
-  )
-
+  expect_equal_r_funs(as_r(q_raw), r_raw)
   expect_equal_r_funs(as_r(q_smooth), r_smooth)
 
   # Custom functions have smooth nature, so error should be lower
@@ -118,10 +110,10 @@ test_that('as_r works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_r respects `n_grid` argument", {
   expect_different_r_funs(
-    as_r(p_smooth), as_r(p_smooth, n_grid = 3)
+    as_r(p_custom), as_r(p_custom, n_grid = 2)
   )
   expect_different_r_funs(
-    as_r(d_smooth), as_r(d_smooth, n_grid = 3)
+    as_r(d_custom), as_r(d_custom, n_grid = 2)
   )
 })
 

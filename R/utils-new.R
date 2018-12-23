@@ -142,6 +142,10 @@ has_meta_support <- function(f) {
   has_meta(f, "support") && is_support(meta(f, "support"))
 }
 
+has_meta_x_tbl <- function(f, type) {
+  has_meta(f, "x_tbl") && is_x_tbl(meta(f, "x_tbl"), type)
+}
+
 
 # Piecewise linear density ------------------------------------------------
 # Wrapper for `density()` assuming that output points will be the base for

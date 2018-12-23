@@ -1,6 +1,8 @@
 as_p <- function(f, ...) {
   if (inherits(f, "p")) {
     return(f)
+  } else if (has_meta_type(f) && has_meta_x_tbl(f, meta(f, "type"))) {
+    return(new_p(x = meta(f, "x_tbl"), type = meta(f, "type")))
   }
 
   UseMethod("as_p")
@@ -15,11 +17,11 @@ as_p.default <- function(f, support, ...) {
 as_p.d <- function(f, n_grid = 10001, ...) {
   assert_pdqr_fun(f)
 
-  res <- switch(
-    meta(f, "type"),
-    raw = p_from_d_raw(f),
-    smooth = p_from_d_smooth(f, n_grid = n_grid)
-  )
+  support <- meta(f, "support")
+  x_dens <- seq(from = support[1], to = support[2], length.out = n_grid)
+  y_dens <- f(x_dens)
+
+  res <- p_from_d_points(x_dens, y_dens)
   res <- add_pdqr_class(res, "p")
 
   copy_meta(res, f)
@@ -56,26 +58,6 @@ as_p.r <- function(f, n_sample = 10000, ...) {
   assert_pdqr_fun(f)
 
   as_distr_impl_r(new_p, f, n_sample, ...)
-}
-
-p_from_d_raw <- function(f, ...) {
-  support <- detect_support_raw(f, meta(f, "support"))
-  supp_prob <- f(support)
-  supp_cumprob <- c(0, cumsum(supp_prob) / sum(supp_prob))
-
-  function(q) {
-    q_ind <- findInterval(round(q, digits = 8), support) + 1
-
-    supp_cumprob[q_ind]
-  }
-}
-
-p_from_d_smooth <- function(f, n_grid) {
-  support <- meta(f, "support")
-  x_dens <- seq(from = support[1], to = support[2], length.out = n_grid)
-  y_dens <- f(x_dens)
-
-  p_from_d_points(x_dens, y_dens)
 }
 
 adjust_to_support_p <- function(f, support) {

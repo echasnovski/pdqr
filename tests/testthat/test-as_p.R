@@ -56,51 +56,20 @@ test_that('as_p returns self in case of "p"', {
 })
 
 test_that('as_p works with "d"', {
-  expect_equal_distr(
-    as_p(d_raw), p_raw,
-    grid = x_raw_vec_ext, thres = 10^(-3)
-  )
-  expect_equal_distr(
-    as_p(d_smooth), p_smooth,
-    grid = x_smooth_vec_ext, thres = 10^(-6)
-  )
-  expect_equal_distr(
-    as_p(d_custom), p_custom,
-    grid = x_custom
-  )
+  expect_equal_distr(as_p(d_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(d_smooth), p_smooth, grid = x_smooth_vec_ext)
+  expect_equal_distr(as_p(d_custom), p_custom, grid = x_custom)
 })
 
 test_that('as_p works with "q"', {
-  # Precision is quite bad in case `type = "raw"` at the points of future
-  # discontinuity in p-function. That is why `grid = x_raw_vec_seq` and not
-  # usual `grid = x_smooth_vec_ext`
-  expect_equal_distr(
-    as_p(q_raw), p_raw,
-    grid = x_raw_vec_seq, thres = 10^(-6)
-  )
-  expect_equal_distr(
-    as_p(q_smooth), p_smooth,
-    grid = x_smooth_vec_ext, thres = 10^(-5)
-  )
-  expect_equal_distr(
-    as_p(q_custom), p_custom,
-    grid = x_custom, thres = 10^(-4)
-  )
+  expect_equal_distr(as_p(q_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(q_smooth), p_smooth, grid = x_smooth_vec_ext)
+  expect_equal_distr(as_p(q_custom), p_custom, grid = x_custom, thres = 10^(-4))
 })
 
 test_that('as_p works with "r"', {
-  expect_equal_distr(
-    as_p(r_raw), p_raw,
-    grid = x_raw_vec_ext, thres = 0.01,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
-  )
-  expect_equal_distr(
-    as_p(r_smooth), p_smooth,
-    grid = x_smooth_vec_ext, thres = 0.01,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
-  )
+  expect_equal_distr(as_p(r_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(r_smooth), p_smooth, grid = x_smooth_vec_ext)
   expect_equal_distr(
     as_p(r_custom), p_custom,
     # Using truncated version because of "extending" property on the support
@@ -121,12 +90,12 @@ test_that('as_p works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_p respects `n_grid` argument", {
   expect_different_distr(
-    as_p(d_smooth), as_p(d_smooth, n_grid = 101),
-    grid = x_smooth_vec
+    as_p(d_custom), as_p(d_custom, n_grid = 1),
+    grid = x_custom
   )
   expect_different_distr(
-    as_p(q_smooth), as_p(q_smooth, n_grid = 101),
-    grid = x_smooth_vec
+    as_p(q_custom), as_p(q_custom, n_grid = 1),
+    grid = x_custom
   )
 })
 
@@ -150,8 +119,8 @@ test_that("as_p asserts extra arguments of methods", {
   expect_error(as_p(user_p, c(1, 0)), "support.*bigger")
 
   # Converting from r-function
-  expect_error(as_p(r_smooth, n_sample = "a"), "n_sample.*single number")
-  expect_error(as_p(r_smooth, n_sample = 10:11), "n_sample.*single number")
+  expect_error(as_p(r_custom, n_sample = "a"), "n_sample.*single number")
+  expect_error(as_p(r_custom, n_sample = 10:11), "n_sample.*single number")
 })
 
 
@@ -169,15 +138,6 @@ test_that("as_p asserts extra arguments of methods", {
 
 # as_p.r ------------------------------------------------------------------
 # Tested in `as_p()`
-
-
-# p_from_d_raw ------------------------------------------------------------
-# Tested in `as_p()` tests for converting from d-function in case `type = "raw"`
-
-
-# p_from_d_smooth ---------------------------------------------------------
-# Tested in `as_p()` tests for converting from d-function in case `type =
-# "smooth"`
 
 
 # adjust_to_support_p -----------------------------------------------------

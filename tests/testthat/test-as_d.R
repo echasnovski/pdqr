@@ -53,14 +53,8 @@ test_that("as_d.default throws errors", {
 })
 
 test_that('as_d works with "p"', {
-  expect_equal_distr(
-    as_d(p_raw), d_raw,
-    grid = x_raw_vec_ext, thres = 10^(-3)
-  )
-  expect_equal_distr(
-    as_d(p_smooth), d_smooth,
-    grid = x_smooth_vec_ext, thres = 10^(-3)
-  )
+  expect_equal_distr(as_d(p_raw), d_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_d(p_smooth), d_smooth, x_smooth_vec_ext)
   expect_equal_distr(
     as_d(p_custom), d_custom,
     # Behavior on support edges (here - in point 0) doesn't match the true
@@ -92,14 +86,8 @@ test_that('as_d returns self in case of "d"', {
 })
 
 test_that('as_d works with "q"', {
-  expect_equal_distr(
-    as_d(q_raw), d_raw,
-    grid = x_raw_vec_ext, thres = 10^(-3)
-  )
-  expect_equal_distr(
-    as_d(q_smooth), d_smooth,
-    grid = x_smooth_vec_ext, thres = 10^(-3)
-  )
+  expect_equal_distr(as_d(q_raw), d_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_d(q_smooth), d_smooth, grid = x_smooth_vec_ext)
   expect_equal_distr(
     # The reason edges are removed is described in test for "p".
     as_d(q_custom), d_custom,
@@ -108,20 +96,8 @@ test_that('as_d works with "q"', {
 })
 
 test_that('as_d works with "r"', {
-  expect_equal_distr(
-    as_d(r_raw), d_raw,
-    grid = c(x_raw_vec_ext, x_raw_vec), thres = 0.01,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
-  )
-  expect_equal_distr(
-    as_d(r_smooth), d_smooth,
-    # Building smooth density from random generation function has somewhat worse
-      # precision than building CDF
-    grid = x_smooth_vec_ext, thres = 0.05,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
-  )
+  expect_equal_distr(as_d(r_raw), d_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_d(r_smooth), d_smooth, grid = x_smooth_vec_ext)
   expect_equal_distr(
     as_d(r_custom), d_custom,
     # Using truncated version because of "extending" property on the support
@@ -148,15 +124,15 @@ test_that('as_d works with "pdqr" (not adding duplicated class)', {
 
 test_that("as_d respects `n_grid` argument", {
   expect_different_distr(
-    as_d(q_smooth), as_d(q_smooth, n_grid = 101),
-    grid = x_smooth_vec
+    as_d(q_custom), as_d(q_custom, n_grid = 2),
+    grid = x_custom
   )
 })
 
 test_that("as_d respects `h` argument", {
   expect_different_distr(
-    as_d(p_smooth), as_d(p_smooth, h = 0.1),
-    grid = x_smooth_vec
+    as_d(p_custom), as_d(p_custom, h = 0.1),
+    grid = x_custom
   )
 })
 
@@ -180,8 +156,8 @@ test_that("as_d asserts extra arguments of methods", {
   expect_error(as_d(user_d, c(1, 0)), "support.*bigger")
 
   # Converting from r-function
-  expect_error(as_d(r_smooth, n_sample = "a"), "n_sample.*single number")
-  expect_error(as_d(r_smooth, n_sample = 10:11), "n_sample.*single number")
+  expect_error(as_d(r_custom, n_sample = "a"), "n_sample.*single number")
+  expect_error(as_d(r_custom, n_sample = 10:11), "n_sample.*single number")
 })
 
 
