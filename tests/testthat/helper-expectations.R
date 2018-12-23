@@ -7,15 +7,16 @@ expect_distr_fun <- function(input, distr_type, type) {
 }
 
 expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
-                               check_supp = TRUE) {
+                               meta_not_check = character(0)) {
   expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))
   expect_equal(class(f_1), class(f_2))
 
-  expect_equal(length(meta(f_1)), length(meta(f_2)))
-  expect_equal(meta(f_1, "type"), meta(f_2, "type"))
-  if (check_supp) {
-    expect_equal(meta(f_1, "support"), meta(f_2, "support"))
-  }
+  meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
+  meta_names_2 <- setdiff(names(meta(f_2)), meta_not_check)
+  expect_equal(
+    lapply(meta_names_1, meta, obj = f_1),
+    lapply(meta_names_2, meta, obj = f_2)
+  )
 }
 
 expect_different_distr <- function(f_1, f_2, grid, thres = 10^(-8)) {

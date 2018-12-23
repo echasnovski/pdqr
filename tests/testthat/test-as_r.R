@@ -5,7 +5,8 @@ set.seed(4444)
 
 # Custom expectations -----------------------------------------------------
 expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
-                                mean_thres = 0.1, sd_thres = 0.05) {
+                                mean_thres = 0.1, sd_thres = 0.05,
+                                meta_not_check = character(0)) {
   smpl_1 <- f_1(n_sample)
   smpl_2 <- f_2(n_sample)
 
@@ -13,7 +14,13 @@ expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
   expect_true(abs(sd(smpl_1) - sd(smpl_2)) <= sd_thres)
 
   expect_equal(class(f_1), class(f_2))
-  expect_equal(meta(f_1), meta(f_2))
+
+  meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
+  meta_names_2 <- setdiff(names(meta(f_2)), meta_not_check)
+  expect_equal(
+    lapply(meta_names_1, meta, obj = f_1),
+    lapply(meta_names_2, meta, obj = f_2)
+  )
 }
 
 expect_different_r_funs <- function(f_1, f_2, n_sample = 10000,
@@ -48,9 +55,8 @@ test_that("as_r adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_r(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
-    # Remove "raw_tbl" metadata as it is not created in `as_r.default()`
-  attr(output_raw_ref, "meta")[["raw_tbl"]] <- NULL
-  expect_equal_r_funs(adj_r_raw, output_raw_ref)
+  # "raw_tbl" metadata is not created in `as_r.default()`
+  expect_equal_r_funs(adj_r_raw, output_raw_ref, meta_not_check = "raw_tbl")
 
   # Adjusted function produces only data inside support
   output_smooth_smpl <- adj_r_smooth(1000)

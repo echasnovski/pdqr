@@ -24,7 +24,7 @@ test_that("form_trans works", {
   expect_distr_fun(output_custom, "p", "smooth")
   expect_equal_distr(
     output_custom, p_custom_ref,
-    grid = x_custom_trunc, thres = 0.05, check_supp = FALSE
+    grid = x_custom_trunc, thres = 0.05, meta_not_check = "support"
   )
 
   # Normal distribution multiplied by 2
@@ -41,7 +41,7 @@ test_that("form_trans works", {
   expect_distr_fun(output_norm, "d", "smooth")
   expect_equal_distr(
     output_norm, d_norm_ref,
-    grid = x_norm_seq, thres = 0.02, check_supp = FALSE
+    grid = x_norm_seq, thres = 0.02, meta_not_check = "support"
   )
 })
 
@@ -125,7 +125,7 @@ test_that("Math.pdqr works", {
   expect_distr_fun(d_norm_out, "d", "smooth")
   expect_equal_distr(
     d_norm_out, d_norm_ref,
-    grid = x_norm_seq, thres = 0.05, check_supp = FALSE
+    grid = x_norm_seq, thres = 0.05, meta_not_check = "support"
   )
 })
 
@@ -141,7 +141,7 @@ test_that("Ops.pdqr works", {
   expect_distr_fun(p_norm_out, "p", "smooth")
   expect_equal_distr(
     p_norm_out, p_norm_ref,
-    grid = x_norm_seq, thres = 0.05, check_supp = FALSE
+    grid = x_norm_seq, thres = 0.05, meta_not_check = "support"
   )
 })
 

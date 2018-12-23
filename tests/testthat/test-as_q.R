@@ -25,11 +25,10 @@ test_that("as_q adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_q(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
-    # Remove "raw_tbl" metadata as it is not created in `as_q.default()`
-  attr(output_raw_ref, "meta")[["raw_tbl"]] <- NULL
+  # "raw_tbl" metadata is not created in `as_q.default()`
   expect_equal_distr(
     adj_q_raw, output_raw_ref,
-    grid = p_vec, thres = 10^(-3)
+    grid = p_vec, thres = 10^(-3), meta_not_check = "raw_tbl"
   )
 
   # Adjusted function stretches from 0 to 1 on support
@@ -105,7 +104,6 @@ test_that('as_q returns self in case of "q"', {
 test_that('as_q works with "r"', {
   expect_equal_distr(
     as_q(r_raw), q_raw,
-    # Support shouldn't be the same as random sampling is done
     # Estimating distribution from random sampling is not exact around true
     # probabilities. It means that jumps in quantile functions are made only
     # near true probabilites. As jumps might have high "height", it means very
@@ -119,22 +117,25 @@ test_that('as_q works with "r"', {
     # p <- sort(p_vec)
     # plot(p, as_q(r_raw)(p), type = "l")
     # lines(p, q_raw(p), col = "red")
-    grid = p_vec_bigwholed, check_supp = FALSE
+    grid = p_vec_bigwholed,
+    # Support and "raw_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("raw_tbl", "support")
   )
   expect_equal_distr(
     as_q(r_smooth), q_smooth,
-    # Support shouldn't be the same as random sampling is done
     # Using truncated version because of "extending" property on the support
     # edges in case `type = "smooth"`. This introduces errors around the edges.
     # That is why truncated version of `p_vec` is used.
-    grid = p_vec_trunc, thres = 0.05, check_supp = FALSE
+    grid = p_vec_trunc, thres = 0.05,
+    # Support shouldn't be the same as random sampling is done
+    meta_not_check = "support"
   )
   expect_equal_distr(
     as_q(r_custom), q_custom,
     # Support shouldn't be the same as random sampling is done
     # Using truncated version as described in test for conversion from
     # `r_smooth()`.
-    grid = p_vec_trunc, thres = 0.05, check_supp = FALSE
+    grid = p_vec_trunc, thres = 0.05, meta_not_check = "support"
   )
 })
 

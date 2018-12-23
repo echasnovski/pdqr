@@ -25,9 +25,11 @@ test_that("as_p adjusts user-defined function to be probability distribution", {
   output_raw_ref <- new_p(
     x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
   )
-    # Remove "raw_tbl" metadata as it is not created in `as_p.default()`
-  attr(output_raw_ref, "meta")[["raw_tbl"]] <- NULL
-  expect_equal_distr(adj_p_raw, output_raw_ref, x_raw_vec_seq)
+  # "raw_tbl" metadata is not created in `as_p.default()`
+  expect_equal_distr(
+    adj_p_raw, output_raw_ref,
+    grid = x_raw_vec_seq, meta_not_check = "raw_tbl"
+  )
   # Adjusted function equals 0 and 1 outside of support
   expect_equal(adj_p_raw(c(1, 7)), c(0, 1))
 
@@ -109,20 +111,21 @@ test_that('as_p works with "q"', {
 test_that('as_p works with "r"', {
   expect_equal_distr(
     as_p(r_raw), p_raw,
-    # Support shouldn't be the same as random sampling is done
-    grid = x_raw_vec_ext, thres = 0.01, check_supp = FALSE
+    grid = x_raw_vec_ext, thres = 0.01,
+    # Support and "raw_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("raw_tbl", "support")
   )
   expect_equal_distr(
     as_p(r_smooth), p_smooth,
     # Support shouldn't be the same as random sampling is done
-    grid = x_smooth_vec_ext, thres = 0.01, check_supp = FALSE
+    grid = x_smooth_vec_ext, thres = 0.01, meta_not_check = "support"
   )
   expect_equal_distr(
     as_p(r_custom), p_custom,
     # Support shouldn't be the same as random sampling is done
     # Using truncated version because of "extending" property on the support
     # edges in case `type = "smooth"`.
-    grid = x_custom_trunc, thres = 0.01, check_supp = FALSE
+    grid = x_custom_trunc, thres = 0.01, meta_not_check = "support"
   )
 })
 
