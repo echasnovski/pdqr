@@ -1,20 +1,38 @@
 # Common functionality for `new_*()` --------------------------------------
 distr_impl <- function(fun_class, impl_funs, x, type, ...) {
-  assert_common_args(x, type)
-  x <- filter_numbers(x)
-  if (length(x) == 0) {
-    stop_collapse("`x` shouldn't be empty.")
-  }
+  assert_distr_type(type)
+
+  x_tbl <- impute_x_tbl(x, type, ...)
+
+  # For efficient memory management
+  rm(list = "x", envir = environment())
 
   fun <- switch(
     type,
-    raw = impl_funs[["raw"]](x),
-    smooth = impl_funs[["smooth"]](x, ...)
+    raw = impl_funs[["raw"]](x_tbl),
+    smooth = impl_funs[["smooth"]](x_tbl)
   )
 
   res <- add_meta(fun, type = type)
 
   add_pdqr_class(res, fun_class)
+}
+
+impute_x_tbl <- function(x, type, ...) {
+  if (is.numeric(x)) {
+    x <- filter_numbers(x)
+    if (length(x) == 0) {
+      stop_collapse("`x` shouldn't be empty.")
+    }
+
+    compute_x_tbl(x, type, ...)
+  } else if (is.data.frame(x)) {
+    assert_x_tbl(x, type)
+
+    x
+  } else {
+    stop_collapse("`x` should be numeric vector or data frame.")
+  }
 }
 
 compute_x_tbl <- function(x, type, ...) {
@@ -62,13 +80,6 @@ filter_numbers <- function(x) {
   }
 
   x[!x_is_inf]
-}
-
-assert_common_args <- function(x, type) {
-  assert_type(x, is.numeric)
-  assert_distr_type(type)
-
-  x
 }
 
 

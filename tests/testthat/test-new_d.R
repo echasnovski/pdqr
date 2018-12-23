@@ -2,7 +2,7 @@ context("test-new_d")
 
 
 # new_d -------------------------------------------------------------------
-test_that("new_d works", {
+test_that("new_d works with numeric input", {
   expect_distr_fun(d_raw, "d", "raw")
   expect_equal(meta(d_raw, "support"), x_raw_support)
   expect_equal(d_raw(1:10), c(x_raw_x_tbl[["prob"]], 0))
@@ -17,6 +17,13 @@ test_that("new_d works", {
       0.09, 0.1, 0.12, 0.16, 0.21, 0.27, 0.34,  0.4, 0.45, 0.49, 0.51,
       0.51, 0.5, 0.47, 0.43, 0.39, 0.36, 0.33, 0.31, 0.29, 0.28
     )
+  )
+})
+
+test_that("new_d works with data frame input", {
+  expect_equal_distr(new_d(x_raw_x_tbl, "raw"), d_raw, x_raw_vec_ext)
+  expect_equal_distr(
+    new_d(x_smooth_x_tbl, "smooth"), d_smooth, x_smooth_vec_ext
   )
 })
 
@@ -42,7 +49,7 @@ test_that("new_d asserts", {
   expect_warning(new_d(c(1, 0, NaN)), "x.*NaN.*removed")
   expect_warning(new_d(c(1, 0, Inf)), "x.*infinite.*removed")
 
-  expect_error(new_d("a"), "x.*numeric")
+  expect_error(new_d("a"), "x.*numeric.*data.*frame")
   expect_error(new_d(numeric(0)), "x.*empty")
   expect_error(new_d(x_raw, type = 1), "type.*string")
   expect_error(new_d(x_raw, type = "a"), "type.*raw.*smooth")

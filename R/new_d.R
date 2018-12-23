@@ -6,12 +6,8 @@ new_d <- function(x, type = "smooth", ...) {
   )
 }
 
-new_d_raw <- function(x) {
-  x_tbl <- compute_x_tbl(x, "raw")
-  support <- range(x)
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
+new_d_raw <- function(x_tbl) {
+  support <- range(x_tbl[["x"]])
 
   res <- function(x) {
     x_ind <- match(round(x, digits = 8), x_tbl[["x"]], nomatch = NA)
@@ -22,12 +18,7 @@ new_d_raw <- function(x) {
   add_meta(res, support = support, x_tbl = x_tbl)
 }
 
-new_d_smooth <- function(x, ...) {
-  x_tbl <- compute_x_tbl(x, "smooth", ...)
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
-
+new_d_smooth <- function(x_tbl) {
   res <- stats::approxfun(
     x = x_tbl[["x"]], y = x_tbl[["y"]], method = "linear",
     yleft = 0, yright = 0, rule = 2

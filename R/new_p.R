@@ -6,13 +6,9 @@ new_p <- function(x, type = "smooth", ...) {
   )
 }
 
-new_p_raw <- function(x) {
-  x_tbl <- compute_x_tbl(x, "raw")
+new_p_raw <- function(x_tbl) {
   distr_cum_prob <- c(0, cumsum(x_tbl[["prob"]]))
-  support <- range(x)
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
+  support <- range(x_tbl[["x"]])
 
   res <- function(q) {
     q_ind <- findInterval(round(q, digits = 8), x_tbl[["x"]]) + 1
@@ -23,12 +19,8 @@ new_p_raw <- function(x) {
   add_meta(res, support = support, x_tbl = x_tbl)
 }
 
-new_p_smooth <- function(x, ...) {
-  x_tbl <- compute_x_tbl(x, "smooth", ...)
+new_p_smooth <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
-
-  # For efficient memory management
-  rm(list = c("x"), envir = environment())
 
   res <- p_from_d_points(x_tbl[["x"]], x_tbl[["y"]])
 

@@ -2,7 +2,7 @@ context("test-new_q")
 
 
 # new_q -------------------------------------------------------------------
-test_that("new_q works", {
+test_that("new_q works with numeric input", {
   expect_distr_fun(q_raw, "q", "raw")
   expect_equal(meta(q_raw, "support"), x_raw_support)
   expect_equal(
@@ -21,6 +21,11 @@ test_that("new_q works", {
        0.909,  1.087,  1.285,  1.533,  2.519
     )
   )
+})
+
+test_that("new_q works with data frame input", {
+  expect_equal_distr(new_q(x_raw_x_tbl, "raw"), q_raw, p_vec)
+  expect_equal_distr(new_q(x_smooth_x_tbl, "smooth"), q_smooth, p_vec)
 })
 
 test_that("new_q rounds input in case of `type` = 'raw'", {
@@ -58,7 +63,7 @@ test_that("new_q asserts", {
   expect_warning(new_q(c(1, 0, NaN)), "x.*NaN.*removed")
   expect_warning(new_q(c(1, 0, Inf)), "x.*infinite.*removed")
 
-  expect_error(new_q("a"), "x.*numeric")
+  expect_error(new_q("a"), "x.*numeric.*data.*frame")
   expect_error(new_q(numeric(0)), "x.*empty")
   expect_error(new_q(x_raw, type = 1), "type.*string")
   expect_error(new_q(x_raw, type = "a"), "type.*raw.*smooth")

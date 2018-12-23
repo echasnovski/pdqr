@@ -4,25 +4,6 @@ set.seed(4444)
 
 
 # Custom expectations -----------------------------------------------------
-expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
-                                mean_thres = 0.1, sd_thres = 0.05,
-                                meta_not_check = character(0)) {
-  smpl_1 <- f_1(n_sample)
-  smpl_2 <- f_2(n_sample)
-
-  expect_true(abs(mean(smpl_1) - mean(smpl_2)) <= mean_thres)
-  expect_true(abs(sd(smpl_1) - sd(smpl_2)) <= sd_thres)
-
-  expect_equal(class(f_1), class(f_2))
-
-  meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
-  meta_names_2 <- setdiff(names(meta(f_2)), meta_not_check)
-  expect_equal(
-    lapply(meta_names_1, meta, obj = f_1),
-    lapply(meta_names_2, meta, obj = f_2)
-  )
-}
-
 expect_different_r_funs <- function(f_1, f_2, n_sample = 10000,
                                     mean_thres = 0.1, sd_thres = 0.05) {
   smpl_1 <- f_1(n_sample)

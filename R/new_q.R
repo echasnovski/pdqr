@@ -6,13 +6,9 @@ new_q <- function(x, type = "smooth", ...) {
   )
 }
 
-new_q_raw <- function(x) {
-  x_tbl <- compute_x_tbl(x, "raw")
+new_q_raw <- function(x_tbl) {
   distr_cum_prob_small <- cumsum(x_tbl[["prob"]])
-  support <- range(x)
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
+  support <- range(x_tbl[["x"]])
 
   res <- function(p) {
     out <- numeric(length(p))
@@ -30,12 +26,7 @@ new_q_raw <- function(x) {
   add_meta(res, support = support, x_tbl = x_tbl)
 }
 
-new_q_smooth <- function(x, ...) {
-  x_tbl <- compute_x_tbl(x, "smooth", ...)
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
-
+new_q_smooth <- function(x_tbl) {
   x_dens <- x_tbl[["x"]]
   y_dens <- x_tbl[["y"]]
   n <- length(x_dens)

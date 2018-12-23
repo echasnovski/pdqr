@@ -1,17 +1,12 @@
 context("test-utils-new")
 
 
-# add_pdqr_class ----------------------------------------------------------
-test_that("add_pdqr_class works", {
-  expect_equal(
-    add_pdqr_class(structure(1, class = "a"), "b"),
-    structure(1, class = c("b", "pdqr", "a"))
-  )
-  expect_equal(
-    add_pdqr_class(structure(1, class = c("pdqr", "a")), "b"),
-    structure(1, class = c("b", "pdqr", "a"))
-  )
-})
+# distr_impl --------------------------------------------------------------
+# Tested in `new_*()` functions
+
+
+# impute_x_tbl ------------------------------------------------------------
+# Tested in `new_*()` functions
 
 
 # compute_x_tbl -----------------------------------------------------------
@@ -26,8 +21,17 @@ test_that("add_pdqr_class works", {
 # Tested in `new_*()` functions
 
 
-# distr_impl --------------------------------------------------------------
-# Tested in `new_*()` functions
+# add_pdqr_class ----------------------------------------------------------
+test_that("add_pdqr_class works", {
+  expect_equal(
+    add_pdqr_class(structure(1, class = "a"), "b"),
+    structure(1, class = c("b", "pdqr", "a"))
+  )
+  expect_equal(
+    add_pdqr_class(structure(1, class = c("pdqr", "a")), "b"),
+    structure(1, class = c("b", "pdqr", "a"))
+  )
+})
 
 
 # filter_numbers ----------------------------------------------------------
@@ -44,17 +48,6 @@ test_that("filter_numbers works", {
     expect_warning(filter_numbers(c(Inf, 0, -Inf, 1)), "x.*infinite.*removed"),
     c(0, 1)
   )
-})
-
-
-# assert_common_args ------------------------------------------------------
-test_that("assert_common_args works", {
-  expect_silent(assert_common_args(1:2, "raw"))
-  expect_silent(assert_common_args(1:2, "smooth"))
-
-  expect_error(assert_common_args("a", "raw"), "x.*numeric")
-  expect_error(assert_common_args(1:2, 1), "type.*string")
-  expect_error(assert_common_args(1:2, "a"), "type.*raw.*smooth")
 })
 
 
@@ -159,6 +152,10 @@ test_that("trapez_integral works", {
   expect_equal(trapez_integral(1:2, 1:2), 1.5)
   expect_equal(trapez_integral(cumsum(1:10), c(1:5, 5:1)), 174)
 })
+
+
+# trapez_part_integral ----------------------------------------------------
+# Tested in `p_from_d_points()`
 
 
 # p_from_d_points ---------------------------------------------------------

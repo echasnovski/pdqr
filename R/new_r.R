@@ -6,11 +6,8 @@ new_r <- function(x, type = "smooth", ...) {
   )
 }
 
-new_r_raw <- function(x) {
-  q_raw <- new_q(x, type = "raw")
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
+new_r_raw <- function(x_tbl) {
+  q_raw <- new_q(x_tbl, type = "raw")
 
   res <- function(n) {
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
@@ -23,11 +20,8 @@ new_r_raw <- function(x) {
   )
 }
 
-new_r_smooth <- function(x, ...) {
-  q_smooth <- new_q(x, type = "smooth", ...)
-
-  # For efficient memory management
-  rm(list = "x", envir = environment())
+new_r_smooth <- function(x_tbl) {
+  q_smooth <- new_q(x_tbl, type = "smooth")
 
   res <- function(n) {
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
