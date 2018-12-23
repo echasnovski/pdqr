@@ -111,37 +111,108 @@ test_that("assert_x_tbl works with `type = 'raw'`", {
   expect_silent(assert_x_tbl(x_raw_x_tbl[, c("x", "prob")], type = "raw"))
   expect_silent(assert_x_tbl(x_raw_x_tbl[, c("x", "n")], type = "raw"))
 
+  # Input type
   input <- "a"
   expect_error(assert_x_tbl(input, type = "raw"), "`input`.*data.*frame")
-  expect_error(assert_x_tbl(data.frame(a = 1), type = "raw"), "x")
-  expect_error(assert_x_tbl(data.frame(x = "a"), type = "raw"), "numeric.*x")
-  expect_error(assert_x_tbl(data.frame(x = 1), type = "raw"), "prob.*n")
+
+  # Column "x"
+  expect_error(assert_x_tbl(data.frame(a = 1), type = "raw"), '"x"')
+  expect_error(assert_x_tbl(data.frame(x = "a"), type = "raw"), 'numeric.*"x"')
+
+  # Presense of at least one of "prob" or "n"
+  expect_error(assert_x_tbl(data.frame(x = 1), type = "raw"), '"prob".*"n"')
+
+  # Column "n"
+  expect_silent(assert_x_tbl(data.frame(x = 1, n = 2), type = "raw"))
+
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"), "prob.*numeric"
+    assert_x_tbl(data.frame(x = 1, n = "a"), type = "raw"), '"n".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = 0.5), type = "raw"), "prob.*sum.*1"
+    assert_x_tbl(data.frame(x = 1, n = -1), type = "raw"), '"n".*negative'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, n = "a"), type = "raw"), "n.*numeric"
+    assert_x_tbl(data.frame(x = 1, n = 0), type = "raw"),
+    '"n".*positive sum'
+  )
+
+  # Test that "prob" is ignored if "n" is OK
+  expect_silent(assert_x_tbl(data.frame(x = 1, prob = -1, n = 1), type = "raw"))
+
+  # Column "prob"
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"), '"prob".*numeric'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, prob = -1), type = "raw"), '"prob".*negative'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, prob = 0), type = "raw"),
+    '"prob".*positive sum'
+  )
+
+  # Extra columns are allowed
+  expect_silent(
+    assert_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "raw")
+  )
+  # Different column order is allowed
+  expect_silent(
+    assert_x_tbl(
+      data.frame(prob = c(0.1, 0.9), x = 1:2, n = c(1, 9)),
+      type = "raw"
+    )
   )
 })
 
 test_that("assert_x_tbl works with `type = 'smooth'`", {
   expect_silent(assert_x_tbl(x_smooth_x_tbl, type = "smooth"))
 
+  # Input type
   input <- "a"
   expect_error(assert_x_tbl(input, type = "smooth"), "`input`.*data.*frame")
-  expect_error(assert_x_tbl(data.frame(a = 1), type = "smooth"), "x")
-  expect_error(assert_x_tbl(data.frame(x = "a"), type = "smooth"), "numeric.*x")
-  expect_error(assert_x_tbl(data.frame(x = 1), type = "smooth"), "y")
+
+  # Number of rows
   expect_error(
-    assert_x_tbl(data.frame(x = 1, y = "a"), type = "smooth"), "numeric.*y"
+    assert_x_tbl(data.frame(x = 1, y = 1), type = "smooth"), "2.*rows"
+  )
+
+  # Column "x"
+  expect_error(assert_x_tbl(data.frame(a = 1:2), type = "smooth"), "x")
+  expect_error(
+    assert_x_tbl(data.frame(x = c("a", "b")), type = "smooth"), "numeric.*x"
+  )
+
+  # Column "y"
+  expect_error(assert_x_tbl(data.frame(x = 1:2), type = "smooth"), "y")
+  expect_error(
+    assert_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "smooth"),
+    "numeric.*y"
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "smooth"),
+    '"y".*negative'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "smooth"),
+    '"y".*positive'
+  )
+
+  # Extra columns are allowed
+  expect_silent(
+    assert_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "smooth")
+  )
+  # Different column order is allowed
+  expect_silent(
+    assert_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "smooth")
   )
 })
 
 
 # assert_x_tbl_raw --------------------------------------------------------
+# Tested in `assert_x_tbl()`
+
+
+# assert_probish ----------------------------------------------------------
 # Tested in `assert_x_tbl()`
 
 

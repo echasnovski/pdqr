@@ -9,6 +9,13 @@ context("test-utils-new")
 # Tested in `new_*()` functions
 
 
+# impute_x_tbl_impl -------------------------------------------------------
+# Main tests are in `new_*()` functions
+test_that("impute_x_tbl_impl throws error", {
+  expect_error(impute_x_tbl_impl(x_raw_x_tbl, "a"), "type")
+})
+
+
 # compute_x_tbl -----------------------------------------------------------
 # Tested in `new_*()` functions
 
@@ -99,23 +106,82 @@ test_that("is_x_tbl works with `type = 'raw'`", {
   expect_true(is_x_tbl(x_raw_x_tbl[, c("x", "prob")], type = "raw"))
   expect_true(is_x_tbl(x_raw_x_tbl[, c("x", "n")], type = "raw"))
 
-  expect_false(is_x_tbl("a", type = "raw"))
+  # Input type
+  input <- "a"
+  expect_false(is_x_tbl(input, type = "raw"))
+
+  # Column "x"
   expect_false(is_x_tbl(data.frame(a = 1), type = "raw"))
   expect_false(is_x_tbl(data.frame(x = "a"), type = "raw"))
+
+  # Presense of at least one of "prob" or "n"
   expect_false(is_x_tbl(data.frame(x = 1), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, prob = 0.5), type = "raw"))
+
+  # Column "n"
+  expect_true(is_x_tbl(data.frame(x = 1, n = 2), type = "raw"))
+
   expect_false(is_x_tbl(data.frame(x = 1, n = "a"), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, n = -1), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, n = 0), type = "raw"))
+
+  # Test that "prob" is ignored if "n" is OK
+  expect_true(is_x_tbl(data.frame(x = 1, prob = -1, n = 1), type = "raw"))
+
+  # Column "prob"
+  expect_false(is_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = -1), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = 0), type = "raw"))
+
+  # Extra columns are allowed
+  expect_true(is_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "raw"))
+  # Different column order is allowed
+  expect_true(
+    is_x_tbl(
+      data.frame(prob = c(0.1, 0.9), x = 1:2, n = c(1, 9)),
+      type = "raw"
+    )
+  )
 })
 
 test_that("is_x_tbl works with `type = 'smooth'`", {
   expect_true(is_x_tbl(x_smooth_x_tbl, type = "smooth"))
 
-  expect_false(is_x_tbl("a", type = "smooth"))
-  expect_false(is_x_tbl(data.frame(a = 1), type = "smooth"))
-  expect_false(is_x_tbl(data.frame(x = "a"), type = "smooth"))
-  expect_false(is_x_tbl(data.frame(x = 1), type = "smooth"))
-  expect_false(is_x_tbl(data.frame(x = 1, y = "a"), type = "smooth"))
+  # Input type
+  input <- "a"
+  expect_false(is_x_tbl(input, type = "smooth"), "`input`.*data.*frame")
+
+  # Number of rows
+  expect_false(
+    is_x_tbl(data.frame(x = 1, y = 1), type = "smooth"), "2.*rows"
+  )
+
+  # Column "x"
+  expect_false(is_x_tbl(data.frame(a = 1:2), type = "smooth"), "x")
+  expect_false(
+    is_x_tbl(data.frame(x = c("a", "b")), type = "smooth"), "numeric.*x"
+  )
+
+  # Column "y"
+  expect_false(is_x_tbl(data.frame(x = 1:2), type = "smooth"), "y")
+  expect_false(
+    is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "smooth"),
+    "numeric.*y"
+  )
+  expect_false(
+    is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "smooth"),
+    '"y".*negative'
+  )
+  expect_false(
+    is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "smooth"),
+    '"y".*positive'
+  )
+
+  # Extra columns are allowed
+  expect_true(
+    is_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "smooth")
+  )
+  # Different column order is allowed
+  expect_true(is_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "smooth"))
 })
 
 

@@ -28,6 +28,10 @@ test_that("new_p works with data frame input", {
   )
 })
 
+test_that("new_p imputes data frame input", {
+  expect_x_tbl_imputation(new_p)
+})
+
 test_that("new_p rounds input in case of `type` = 'raw'", {
   near_1 <- 1 - 10^c(-6, -9)
   expect_equal(p_raw(near_1), c(0, 0.1))

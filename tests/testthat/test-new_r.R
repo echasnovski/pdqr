@@ -25,6 +25,10 @@ test_that("new_r works with data frame input", {
   expect_equal_r_funs(new_r(x_smooth_x_tbl, "smooth"), r_smooth)
 })
 
+test_that("new_r imputes data frame input", {
+  expect_x_tbl_imputation(new_r)
+})
+
 test_that("new_r asserts", {
   expect_warning(new_r(c(1, 0, NA)), "x.*NA.*removed")
   expect_warning(new_r(c(1, 0, NaN)), "x.*NaN.*removed")

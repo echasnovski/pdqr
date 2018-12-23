@@ -29,9 +29,39 @@ impute_x_tbl <- function(x, type, ...) {
   } else if (is.data.frame(x)) {
     assert_x_tbl(x, type)
 
-    x
+    impute_x_tbl_impl(x, type)
   } else {
     stop_collapse("`x` should be numeric vector or data frame.")
+  }
+}
+
+impute_x_tbl_impl <- function(x_tbl, type) {
+  # `if` is used for effecient memory management because calling `[` creates
+  # copy of an object
+  if (is.unsorted(x_tbl[["x"]])) {
+    x_tbl <- x_tbl[order(x_tbl[["x"]]), ]
+  }
+
+  if (type == "raw") {
+    if ("n" %in% names(x_tbl)) {
+      data.frame(
+        x = x_tbl[["x"]],
+        prob = x_tbl[["n"]] / sum(x_tbl[["n"]]),
+        n = x_tbl[["n"]]
+      )
+    } else {
+      data.frame(
+        x = x_tbl[["x"]],
+        prob = x_tbl[["prob"]] / sum(x_tbl[["prob"]])
+      )
+    }
+  } else if (type == "smooth") {
+    data.frame(
+      x = x_tbl[["x"]],
+      y = x_tbl[["y"]] / trapez_integral(x_tbl[["x"]], x_tbl[["y"]])
+    )
+  } else {
+    stop("Wrong `type`.")
   }
 }
 

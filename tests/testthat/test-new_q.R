@@ -28,6 +28,10 @@ test_that("new_q works with data frame input", {
   expect_equal_distr(new_q(x_smooth_x_tbl, "smooth"), q_smooth, p_vec)
 })
 
+test_that("new_q imputes data frame input", {
+  expect_x_tbl_imputation(new_q)
+})
+
 test_that("new_q rounds input in case of `type` = 'raw'", {
   near_1 <- 0.1 + 10^c(-6, -9)
   expect_equal(q_raw(near_1), c(2, 1))

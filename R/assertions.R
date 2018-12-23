@@ -168,17 +168,29 @@ assert_x_tbl_raw <- function(x, x_name) {
   if (!any(c("prob", "n") %in% names(x))) {
     stop_collapse(x_name, ' should have one of "prob" or "n" columns.')
   }
-  if ("prob" %in% names(x)) {
-    if (!(is.numeric(x[["prob"]]) && is_near(sum(x[["prob"]]), 1))) {
-      stop_collapse(
-        '"prob" column in ', x_name, ' should be numeric with sum equal to 1.'
-      )
-    }
-  }
+
+  # If "n" is present then it should satisfy certain conditions.
+  # If "n" is not present then "prob" should satisfy those conditions.
   if ("n" %in% names(x)) {
-    if (!is.numeric(x[["n"]])) {
-      stop_collapse('"n" column in ', x_name, ' should be numeric.')
-    }
+    assert_probish(x[["n"]], '"n"', x_name)
+  } else {
+    assert_probish(x[["prob"]], '"prob"', x_name)
+  }
+
+  TRUE
+}
+
+assert_probish <- function(vec, col_name, x_name) {
+  stop_start_chr <- paste0(col_name, " column in ", x_name)
+
+  if (!is.numeric(vec)) {
+    stop_collapse(stop_start_chr, " should be numeric.")
+  }
+  if (any(vec < 0)) {
+    stop_collapse(stop_start_chr, " should not have negative values.")
+  }
+  if (sum(vec) <= 0) {
+    stop_collapse(stop_start_chr, " should have positive sum.")
   }
 
   TRUE
@@ -188,11 +200,22 @@ assert_x_tbl_smooth <- function(x, x_name) {
   if (!is.data.frame(x)) {
     stop_collapse(x_name, " should be a data frame.")
   }
+  if (nrow(x) < 2) {
+    stop_collapse(x_name, " should have at least 2 rows.")
+  }
   if (!(("x" %in% names(x)) && is.numeric(x[["x"]]))) {
     stop_collapse(x_name, ' should have numeric column "x".')
   }
   if (!(("y" %in% names(x)) && is.numeric(x[["y"]]))) {
     stop_collapse(x_name, ' should have numeric column "y".')
+  }
+  if (any(x[["y"]] < 0)) {
+    stop_collapse('"y" column in ', x_name, ' should not have negative values.')
+  }
+  if (!any(x[["y"]] > 0)) {
+    stop_collapse(
+      '"y" column in ', x_name, ' should have at least one positive value.'
+    )
   }
 
   TRUE
