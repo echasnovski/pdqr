@@ -1,11 +1,10 @@
-as_distr_impl_def <- function(fun_class, f, type, support, adjust_to_support) {
+as_distr_impl_def <- function(fun_class, f, support, adjust_to_support) {
   assert_type(f, is.function)
-  assert_distr_type(type)
   assert_support(support)
 
-  f_adj <- adjust_to_support(f, type, support)
+  f_adj <- adjust_to_support(f, support)
 
-  res <- add_meta(remove_meta(f_adj), type = type, support = support)
+  res <- add_meta(remove_meta(f_adj), support = support, type = "smooth")
 
   add_pdqr_class(res, fun_class)
 }

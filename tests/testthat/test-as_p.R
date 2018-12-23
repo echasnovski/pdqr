@@ -5,34 +5,18 @@ set.seed(1111)
 
 # as_p --------------------------------------------------------------------
 test_that("as_p works with user-defined function", {
-  expect_distr_fun(
-    as_p(user_p, type = "smooth", support = c(0, 1)), "p", "smooth"
-  )
-  expect_error(as_p(user_p), "p-function.*supply.*type.*support")
-  expect_error(as_p(user_p, type = "smooth"), "p-function.*supply.*support")
-  expect_error(as_p(user_p, support = c(0, 1)), "p-function.*supply.*type")
+  expect_distr_fun(as_p(user_p, support = c(0, 1)), "p", "smooth")
+  expect_error(as_p(user_p), "p-function.*supply.*support")
 })
 
 test_that("as_p rewrites metadata on user-defined function", {
   input <- structure(user_p, meta = list(type = "raw", new = 1), old = 2)
-  output <- as_p(input, type = "smooth", support = c(0, 1))
+  output <- as_p(input, support = c(0, 1))
   expect_true("old" %in% names(attributes(output)))
   expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
 })
 
 test_that("as_p adjusts user-defined function to be probability distribution", {
-  # Adjusted function equals `new_p()` applied to sample on restricted support
-  output_raw_ref <- new_p(
-    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
-  )
-  # "x_tbl" metadata is not created in `as_p.default()`
-  expect_equal_distr(
-    adj_p_raw, output_raw_ref,
-    grid = x_raw_vec_seq, meta_not_check = "x_tbl"
-  )
-  # Adjusted function equals 0 and 1 outside of support
-  expect_equal(adj_p_raw(c(1, 7)), c(0, 1))
-
   # Adjusted function stretches from 0 to 1 on support
   expect_equal(adj_p_smooth(c(0, 1)), c(0, 1))
   # Adjusted function equals 0 and 1 outside of support
@@ -40,14 +24,6 @@ test_that("as_p adjusts user-defined function to be probability distribution", {
 })
 
 test_that("as_p adjusts the same way as other `as_*()` functions", {
-  expect_equal_distr(as_p(adj_d_raw), adj_p_raw, 2:6)
-  # Too much converting should be done for computing `as_p(adj_q_raw)` which
-  # results into relatively high numerical errors. `adj_q_raw` is correct
-  # q-function but instead of raw support `c(2, 3, 4, 5, 6)` it has very close
-  # one to it (run `table(adj_q_raw(0:10/10))` to see this). To verify that
-  # conversion is good enough, check plots of `as_p(adj_q_raw))` and
-  # `adj_p_raw`.
-
   expect_equal_distr(
     as_p(adj_d_smooth), adj_p_smooth,
     grid = x_smooth_vec, thres = 10^(-5)
@@ -60,11 +36,7 @@ test_that("as_p adjusts the same way as other `as_*()` functions", {
 
 test_that("as_p.default throws errors", {
   expect_error(
-    as_p(function(x) {rep(0, length.out = length(x))}, "raw", c(0, 1)),
-    "probability.*zero"
-  )
-  expect_error(
-    as_p(function(x) {rep(0, length.out = length(x))}, "smooth", c(0, 1)),
+    as_p(function(x) {rep(0, length.out = length(x))}, c(0, 1)),
     "probability.*zero"
   )
 })
@@ -135,7 +107,7 @@ test_that('as_p works with "pdqr" (not adding duplicated class)', {
   input <- structure(
     function(x) {pbeta(x, 1, 2)}, class = c("pdqr", "function")
   )
-  output <- as_p(input, type = "smooth", support = c(0, 1))
+  output <- as_p(input, support = c(0, 1))
   expect_equal(class(output), c("p", "pdqr", "function"))
 })
 
@@ -164,12 +136,10 @@ test_that("as_p methods throw error with corrupt input", {
 
 test_that("as_p asserts extra arguments of methods", {
   # Default method
-  expect_error(as_p(1, "smooth", c(0, 1)), "f.*function")
-  expect_error(as_p(user_p, 1, c(0, 1)), "type.*string")
-  expect_error(as_p(user_p, "a", c(0, 1)), "type.*raw.*smooth")
-  expect_error(as_p(user_p, "smooth", "a"), "support.*numeric")
-  expect_error(as_p(user_p, "smooth", 1), "support.*length 2")
-  expect_error(as_p(user_p, "smooth", c(1, 0)), "support.*bigger")
+  expect_error(as_p(1, c(0, 1)), "f.*function")
+  expect_error(as_p(user_p, "a"), "support.*numeric")
+  expect_error(as_p(user_p, 1), "support.*length 2")
+  expect_error(as_p(user_p, c(1, 0)), "support.*bigger")
 
   # Converting from r-function
   expect_error(as_p(r_smooth, n_sample = "a"), "n_sample.*single number")

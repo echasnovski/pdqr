@@ -5,34 +5,18 @@ set.seed(2222)
 
 # as_d --------------------------------------------------------------------
 test_that("as_d works with user-defined function", {
-  expect_distr_fun(
-    as_d(user_d, type = "smooth", support = c(0, 1)), "d", "smooth"
-  )
-  expect_error(as_d(user_d), "d-function.*supply.*type.*support")
-  expect_error(as_d(user_d, type = "smooth"), "d-function.*supply.*support")
-  expect_error(as_d(user_d, support = c(0, 1)), "d-function.*supply.*type")
+  expect_distr_fun(as_d(user_d, support = c(0, 1)), "d", "smooth")
+  expect_error(as_d(user_d), "d-function.*supply.*support")
 })
 
 test_that("as_d rewrites metadata on user-defined function", {
   input <- structure(user_d, meta = list(type = "raw", new = 1), old = 2)
-  output <- as_d(input, type = "smooth", support = c(0, 1))
+  output <- as_d(input, support = c(0, 1))
   expect_true("old" %in% names(attributes(output)))
   expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
 })
 
 test_that("as_d adjusts user-defined function to be probability distribution", {
-  # Adjusted function equals `new_d()` applied to sample on restricted support
-  output_raw_ref <- new_d(
-    x = x_raw[(x_raw >= 2) & (x_raw <= 6)], type = "raw"
-  )
-  # "x_tbl" metadata is not created in `as_d.default()`
-  expect_equal_distr(
-    adj_d_raw, output_raw_ref,
-    grid = x_raw_vec_seq, meta_not_check = "x_tbl"
-  )
-  # Adjusted function equals 0 outside of support
-  expect_equal(adj_d_raw(c(1, 7)), c(0, 0))
-
   out_integral <- stats::integrate(adj_d_smooth, 0, 1)
   # Adjusted function integrates to 1 on support
   expect_true(abs(out_integral[["value"]] - 1) <= out_integral[["abs.error"]])
@@ -41,12 +25,6 @@ test_that("as_d adjusts user-defined function to be probability distribution", {
 })
 
 test_that("as_d adjusts the same way as other `as_*()` functions", {
-  expect_equal_distr(as_d(adj_p_raw), adj_d_raw, 2:6)
-  # Too much converting should be done for computing `as_d(adj_q_raw)` which
-  # results into relatively high numerical errors. `adj_q_raw` is correct
-  # q-function but instead of raw support `c(2, 3, 4, 5, 6)` it has very
-  # close one to it (run `table(adj_q_raw(0:10/10))` to see this).
-
   expect_equal_distr(
     as_d(adj_p_smooth), adj_d_smooth,
     grid = x_smooth_vec, thres = 10^(-4)
@@ -61,11 +39,7 @@ test_that("as_d adjusts the same way as other `as_*()` functions", {
 
 test_that("as_d.default throws errors", {
   expect_error(
-    as_d(function(x) {rep(0, length.out = length(x))}, "raw", c(0, 1)),
-    "no.*positive.*probability"
-  )
-  expect_error(
-    as_d(function(x) {rep(0, length.out = length(x))}, "smooth", c(0, 1)),
+    as_d(function(x) {rep(0, length.out = length(x))}, c(0, 1)),
     "probability.*zero"
   )
 })
@@ -90,10 +64,10 @@ test_that('as_d works with "p"', {
 })
 
 test_that('as_d for "p" uses left and right derivative on support endges', {
-  p_beta_1 <- as_p(function(q) {pbeta(q, 1, 2)}, "smooth", c(0, 1))
+  p_beta_1 <- as_p(function(q) {pbeta(q, 1, 2)}, c(0, 1))
   expect_equal(as_d(p_beta_1, h = 10^(-6))(0), 2, tolerance = 10^(-6))
 
-  p_beta_2 <- as_p(function(q) {pbeta(q, 2, 1)}, "smooth", c(0, 1))
+  p_beta_2 <- as_p(function(q) {pbeta(q, 2, 1)}, c(0, 1))
   expect_equal(as_d(p_beta_2, h = 10^(-6))(1), 2, tolerance = 10^(-6))
 })
 
@@ -160,7 +134,7 @@ test_that('as_d works with "pdqr" (not adding duplicated class)', {
   input <- structure(
     function(x) {dbeta(x, 1, 2)}, class = c("pdqr", "function")
   )
-  output <- as_d(input, type = "smooth", support = c(0, 1))
+  output <- as_d(input, support = c(0, 1))
   expect_equal(class(output), c("d", "pdqr", "function"))
 })
 
@@ -192,12 +166,10 @@ test_that("as_d methods throw error with corrupt input", {
 
 test_that("as_d asserts extra arguments of methods", {
   # Default method
-  expect_error(as_d(1, "smooth", c(0, 1)), "f.*function")
-  expect_error(as_d(user_d, 1, c(0, 1)), "type.*string")
-  expect_error(as_d(user_d, "a", c(0, 1)), "type.*raw.*smooth")
-  expect_error(as_d(user_d, "smooth", "a"), "support.*numeric")
-  expect_error(as_d(user_d, "smooth", 1), "support.*length 2")
-  expect_error(as_d(user_d, "smooth", c(1, 0)), "support.*bigger")
+  expect_error(as_d(1, c(0, 1)), "f.*function")
+  expect_error(as_d(user_d, "a"), "support.*numeric")
+  expect_error(as_d(user_d, 1), "support.*length 2")
+  expect_error(as_d(user_d, c(1, 0)), "support.*bigger")
 
   # Converting from r-function
   expect_error(as_d(r_smooth, n_sample = "a"), "n_sample.*single number")
@@ -222,14 +194,6 @@ test_that("as_d asserts extra arguments of methods", {
 
 
 # adjust_to_support_d -----------------------------------------------------
-# Tested in `as_d()`
-
-
-# adjust_to_support_d_raw -------------------------------------------------
-# Tested in `as_d()`
-
-
-# adjust_to_support_d_smooth ----------------------------------------------
 # Tested in `as_d()`
 
 

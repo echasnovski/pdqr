@@ -6,12 +6,10 @@ as_p <- function(f, ...) {
   UseMethod("as_p")
 }
 
-as_p.default <- function(f, type, support, ...) {
-  assert_missing_args(
-    "p", type = missing(type), support = missing(support)
-  )
+as_p.default <- function(f, support, ...) {
+  assert_missing_args("p", support = missing(support))
 
-  as_distr_impl_def("p", f, type, support, adjust_to_support_p)
+  as_distr_impl_def("p", f, support, adjust_to_support_p)
 }
 
 as_p.d <- function(f, n_grid = 10001, ...) {
@@ -80,15 +78,8 @@ p_from_d_smooth <- function(f, n_grid) {
   p_from_d_points(x_dens, y_dens)
 }
 
-adjust_to_support_p <- function(f, type, support, h = 10^(-6)) {
-  # Computation of CDF minimum value differs for "raw" and "smooth" types
-  # because CDF is `P(x <= a)` and there can be substantial jump right on the
-  # left edge of support.
-  min_p <- switch(
-    type,
-    raw = f(support[1] - h),
-    smooth = f(support[1])
-  )
+adjust_to_support_p <- function(f, support) {
+  min_p <- f(support[1])
 
   tot_prob <- f(support[2]) - min_p
   assert_tot_prob(tot_prob)

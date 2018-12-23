@@ -31,12 +31,10 @@ test_that("form_trans works", {
 
   # Normal distribution multiplied by 2
   r_norm_input <- as_r(
-    function(n) {rnorm(n, mean = 0, sd = 1)},
-    type = "smooth", support = c(-10, 10)
+    function(n) {rnorm(n, mean = 0, sd = 1)}, support = c(-10, 10)
   )
   d_norm_ref <- as_d(
-    function(x) {dnorm(x, mean = 0, sd = 2)},
-    type = "smooth", support = c(-20, 20)
+    function(x) {dnorm(x, mean = 0, sd = 2)}, support = c(-20, 20)
   )
 
   output_norm <- form_trans(`*`, r_norm_input, 2, .pdqr_class = "d")
@@ -122,8 +120,8 @@ test_that("get_pdqr_class works", {
 
 # Math.pdqr ---------------------------------------------------------------
 test_that("Math.pdqr works", {
-  d_lnorm <- as_d(dlnorm, type = "smooth", support = c(0, 100))
-  d_norm_ref <- as_d(dnorm, type = "smooth", support = c(-10, 10))
+  d_lnorm <- as_d(dlnorm, support = c(0, 100))
+  d_norm_ref <- as_d(dnorm, support = c(-10, 10))
   d_norm_out <- log(d_lnorm)
 
   expect_distr_fun(d_norm_out, "d", "smooth")
@@ -138,8 +136,8 @@ test_that("Math.pdqr works", {
 
 # Ops.pdqr ----------------------------------------------------------------
 test_that("Ops.pdqr works", {
-  p_unif <- as_p(punif, "smooth", c(0, 1))
-  p_norm_ref <- as_p(pnorm, "smooth", c(-10, 10))
+  p_unif <- as_p(punif, c(0, 1))
+  p_norm_ref <- as_p(pnorm, c(-10, 10))
   # Approximation of standard normal as centered sum of 12 uniform
   p_norm_out <- p_unif + p_unif + p_unif + p_unif + p_unif + p_unif +
     p_unif + p_unif + p_unif + p_unif + p_unif + p_unif - 6

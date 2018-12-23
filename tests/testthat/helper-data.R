@@ -57,23 +57,15 @@ p_vec_bigwholed <- Filter(function(p) {
 
 # Constructed distribution functions --------------------------------------
 # Used in `as_*()` tests for adjusting to support
-construct_adj_raw <- function(raw_fun, as_fun, ...) {
-  res <- raw_fun
-  attributes(res) <- NULL
-
-  as_fun(res, type = "raw", support = c(2, 6), ...)
-}
-
 construct_adj_smooth <- function(smooth_fun, as_fun, ...) {
   res <- smooth_fun
   attributes(res) <- NULL
 
-  as_fun(res, type = "smooth", support = c(0, 1), ...)
+  as_fun(res, support = c(0, 1), ...)
 }
 
 # p-functions
 p_raw <- new_p(x_raw, "raw")
-adj_p_raw <- construct_adj_raw(p_raw, as_p)
 
 p_smooth <- new_p(x_smooth, "smooth")
 adj_p_smooth <- construct_adj_smooth(p_smooth, as_p)
@@ -86,7 +78,6 @@ p_custom <- structure(
 
 # d-functions
 d_raw <- new_d(x_raw, "raw")
-adj_d_raw <- expect_warning(construct_adj_raw(d_raw, as_d))
 
 d_smooth <- new_d(x_smooth, "smooth")
 adj_d_smooth <- construct_adj_smooth(d_smooth, as_d)
@@ -99,7 +90,6 @@ d_custom <- structure(
 
 # q-functions
 q_raw <- new_q(x_raw, "raw")
-adj_q_raw <- construct_adj_raw(q_raw, as_q)
 
 q_smooth <- new_q(x_smooth, "smooth")
 adj_q_smooth <- construct_adj_smooth(q_smooth, as_q)
@@ -112,7 +102,6 @@ q_custom <- structure(
 
 # r-functions
 r_raw <- new_r(x_raw, "raw")
-adj_r_raw <- construct_adj_raw(r_raw, as_r, warn_not_adjusted = FALSE)
 
 r_smooth <- new_r(x_smooth, "smooth")
 adj_r_smooth <- construct_adj_smooth(r_smooth, as_r, warn_not_adjusted = FALSE)

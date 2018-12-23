@@ -6,17 +6,15 @@ as_r <- function(f, ...) {
   UseMethod("as_r")
 }
 
-as_r.default <- function(f, type, support, adjust_max_iter = 10,
+as_r.default <- function(f, support, adjust_max_iter = 10,
                          warn_not_adjusted = TRUE, ...) {
-  assert_missing_args(
-    "r", type = missing(type), support = missing(support)
-  )
+  assert_missing_args("r", support = missing(support))
   assert_type(adjust_max_iter, is_single_number, "single number")
   assert_type(warn_not_adjusted, is_truefalse, "`TRUE` or `FALSE`")
 
   adjust_to_support_r <- adjusting_r_impl(adjust_max_iter, warn_not_adjusted)
 
-  as_distr_impl_def("r", f, type, support, adjust_to_support_r)
+  as_distr_impl_def("r", f, support, adjust_to_support_r)
 }
 
 as_r.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
@@ -51,7 +49,7 @@ as_r_impl <- function(q_f) {
 }
 
 adjusting_r_impl <- function(adjust_max_iter, warn_not_adjusted) {
-  function(f, type, support) {
+  function(f, support) {
     res <- function(n) {
       res <- na_outside_support(f(n), support)
       adjust_iter <- 1

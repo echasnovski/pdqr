@@ -6,12 +6,10 @@ as_q <- function(f, ...) {
   UseMethod("as_q")
 }
 
-as_q.default <- function(f, type, support, ...) {
-  assert_missing_args(
-    "q", type = missing(type), support = missing(support)
-  )
+as_q.default <- function(f, support, ...) {
+  assert_missing_args("q", support = missing(support))
 
-  as_distr_impl_def("q", f, type, support, adjust_to_support_q)
+  as_distr_impl_def("q", f, support, adjust_to_support_q)
 }
 
 as_q.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {
@@ -55,8 +53,8 @@ as_q.r <- function(f, n_sample = 10000, ...) {
   as_distr_impl_r(new_q, f, n_sample, ...)
 }
 
-adjust_to_support_q <- function(f, type, support) {
-  f_inv <- inversing(f, interval = c(0, 1), f_type = type)
+adjust_to_support_q <- function(f, support) {
+  f_inv <- inversing(f, interval = c(0, 1), f_type = "smooth")
   p_f <- function(q) {
     out <- numeric(length(q))
 
@@ -72,7 +70,7 @@ adjust_to_support_q <- function(f, type, support) {
 
   }
 
-  new_p <- as_p(p_f, type = type, support = support)
+  new_p <- as_p(p_f, support = support)
 
   copy_attrs(as_q(new_p, warn_precision = FALSE), f)
 }
