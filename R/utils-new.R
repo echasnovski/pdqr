@@ -77,6 +77,10 @@ is_raw_tbl <- function(x) {
   tryCatch(assert_raw_tbl(x), error = function(e) {FALSE})
 }
 
+is_smooth_tbl <- function(x) {
+  tryCatch(assert_smooth_tbl(x), error = function(e) {FALSE})
+}
+
 is_pdqr_class <- function(chr) {
   chr %in% c("p", "d", "q", "r")
 }

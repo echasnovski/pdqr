@@ -108,6 +108,19 @@ test_that("is_raw_tbl works", {
 })
 
 
+# is_smooth_tbl -----------------------------------------------------------
+test_that("is_smooth_tbl works", {
+  expect_true(is_smooth_tbl(x_smooth_smooth_tbl))
+
+  input <- "a"
+  expect_false(is_smooth_tbl(input))
+  expect_false(is_smooth_tbl(data.frame(a = 1)))
+  expect_false(is_smooth_tbl(data.frame(x = "a")))
+  expect_false(is_smooth_tbl(data.frame(x = 1)))
+  expect_false(is_smooth_tbl(data.frame(x = 1, y = "a")))
+})
+
+
 # is_pdqr_class -----------------------------------------------------------
 test_that("is_pdqr_class works", {
   expect_true(all(is_pdqr_class(c("p", "d", "q", "r"))))

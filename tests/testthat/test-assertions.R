@@ -122,6 +122,19 @@ test_that("assert_raw_tbl works", {
 })
 
 
+# assert_smooth_tbl -------------------------------------------------------
+test_that("assert_smooth_tbl works", {
+  expect_silent(assert_smooth_tbl(x_smooth_smooth_tbl))
+
+  input <- "a"
+  expect_error(assert_smooth_tbl(input), "`input`.*data.*frame")
+  expect_error(assert_smooth_tbl(data.frame(a = 1)), "x")
+  expect_error(assert_smooth_tbl(data.frame(x = "a")), "numeric.*x")
+  expect_error(assert_smooth_tbl(data.frame(x = 1)), "y")
+  expect_error(assert_smooth_tbl(data.frame(x = 1, y = "a")), "numeric.*y")
+})
+
+
 # assert_tot_prob ---------------------------------------------------------
 test_that("assert_tot_prob works", {
   expect_error(assert_tot_prob(0), "probability.*zero")

@@ -176,6 +176,22 @@ assert_raw_tbl <- function(x) {
   TRUE
 }
 
+assert_smooth_tbl <- function(x) {
+  x_name <- paste0("`", deparse(substitute(x)), "`")
+
+  if (!is.data.frame(x)) {
+    stop_collapse(x_name, " should be a data frame.")
+  }
+  if (!(("x" %in% names(x)) && is.numeric(x[["x"]]))) {
+    stop_collapse(x_name, ' should have numeric column "x".')
+  }
+  if (!(("y" %in% names(x)) && is.numeric(x[["y"]]))) {
+    stop_collapse(x_name, ' should have numeric column "y".')
+  }
+
+  TRUE
+}
+
 assert_tot_prob <- function(tot_prob) {
   if (is_near(tot_prob, 0)) {
     stop_collapse("Total probability on supplied `support` is zero.")
