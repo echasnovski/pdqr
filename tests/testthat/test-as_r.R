@@ -24,7 +24,9 @@ test_that("as_r rewrites metadata on user-defined function", {
   input <- structure(user_r, meta = list(type = "raw", new = 1), old = 2)
   output <- as_r(input, support = c(0, 1))
   expect_true("old" %in% names(attributes(output)))
-  expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
+  expect_equal(
+    meta(output), list(support = c(0, 1), type = "smooth", x_tbl = NULL)
+  )
 })
 
 test_that("as_r uses `...` for currying on user-defined function", {

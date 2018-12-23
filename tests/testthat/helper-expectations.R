@@ -2,6 +2,7 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_true(is.function(input))
   expect_is(input, distr_type)
   expect_is(input, "pdqr")
+  expect_named(meta(input), c("support", "type", "x_tbl"))
   expect_equal(meta(input, "type"), type)
   expect_true(is_support(meta(input, "support")))
 }
