@@ -27,6 +27,12 @@ test_that("as_r rewrites metadata on user-defined function", {
   expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
 })
 
+test_that("as_r uses `...` for currying on user-defined function", {
+  output <- as_r(rnorm, c(0, 20), mean = 10, sd = 2)
+  output_ref <- as_r(function(n) {rnorm(n, mean = 10, sd = 2)}, c(0, 20))
+  expect_equal_r_funs(output, output_ref)
+})
+
 test_that("as_r adjusts user-defined function to be probability distribution", {
   # Adjusted function produces only data inside support
   output_smooth_smpl <- adj_r_smooth(1000)

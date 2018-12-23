@@ -9,7 +9,7 @@ as_p <- function(f, ...) {
 as_p.default <- function(f, support, ...) {
   assert_missing_args("p", support = missing(support))
 
-  as_distr_impl_def("p", f, support, adjust_to_support_p)
+  as_distr_impl_def("p", f, support, adjust_to_support_p, ...)
 }
 
 as_p.d <- function(f, n_grid = 10001, ...) {

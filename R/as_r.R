@@ -14,7 +14,7 @@ as_r.default <- function(f, support, adjust_max_iter = 10,
 
   adjust_to_support_r <- adjusting_r_impl(adjust_max_iter, warn_not_adjusted)
 
-  as_distr_impl_def("r", f, support, adjust_to_support_r)
+  as_distr_impl_def("r", f, support, adjust_to_support_r, ...)
 }
 
 as_r.p <- function(f, n_grid = 10001, warn_precision = TRUE, ...) {

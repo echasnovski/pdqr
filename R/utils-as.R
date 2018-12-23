@@ -1,8 +1,13 @@
-as_distr_impl_def <- function(fun_class, f, support, adjust_to_support) {
+as_distr_impl_def <- function(fun_class, f, support, adjust_to_support, ...) {
   assert_type(f, is.function)
   assert_support(support)
 
-  f_adj <- adjust_to_support(f, support)
+  f_partial <- function(t) {
+    f(t, ...)
+  }
+  attributes(f_partial) <- attributes(f)
+
+  f_adj <- adjust_to_support(f_partial, support)
 
   res <- add_meta(remove_meta(f_adj), support = support, type = "smooth")
 

@@ -9,7 +9,7 @@ as_d <- function(f, ...) {
 as_d.default <- function(f, support, ...) {
   assert_missing_args("d", support = missing(support))
 
-  as_distr_impl_def("d", f, support, adjust_to_support_d)
+  as_distr_impl_def("d", f, support, adjust_to_support_d, ...)
 }
 
 as_d.p <- function(f, h = 10^(-6), ...) {

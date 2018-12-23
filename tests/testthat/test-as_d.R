@@ -16,6 +16,12 @@ test_that("as_d rewrites metadata on user-defined function", {
   expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
 })
 
+test_that("as_d uses `...` for currying on user-defined function", {
+  output <- as_d(dnorm, c(0, 20), mean = 10, sd = 2)
+  output_ref <- as_d(function(x) {dnorm(x, mean = 10, sd = 2)}, c(0, 20))
+  expect_equal_distr(output, output_ref, seq(0, 20, by = 0.01))
+})
+
 test_that("as_d adjusts user-defined function to be probability distribution", {
   out_integral <- stats::integrate(adj_d_smooth, 0, 1)
   # Adjusted function integrates to 1 on support

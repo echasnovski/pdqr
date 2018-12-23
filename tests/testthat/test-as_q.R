@@ -16,6 +16,12 @@ test_that("as_q rewrites metadata on user-defined function", {
   expect_equal(meta(output), list(support = c(0, 1), type = "smooth"))
 })
 
+test_that("as_q uses `...` for currying on user-defined function", {
+  output <- as_q(qnorm, c(0, 20), mean = 10, sd = 2)
+  output_ref <- as_q(function(p) {qnorm(p, mean = 10, sd = 2)}, c(0, 20))
+  expect_equal_distr(output, output_ref, p_vec)
+})
+
 test_that("as_q adjusts user-defined function to be probability distribution", {
   # Adjusted function stretches from 0 to 1 on support
   expect_equal(adj_q_smooth(c(0, 1)), c(0, 1))
