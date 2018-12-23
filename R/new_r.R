@@ -35,7 +35,11 @@ new_r_smooth <- function(x, ...) {
     q_smooth(rand_q_vec)
   }
 
-  add_meta(res, support = meta(q_smooth, "support"))
+  add_meta(
+    res,
+    support = meta(q_smooth, "support"),
+    smooth_tbl = meta(q_smooth, "smooth_tbl")
+  )
 }
 
 print.r <- function(x, ...) {

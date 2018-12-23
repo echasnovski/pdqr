@@ -117,15 +117,17 @@ test_that('as_p works with "r"', {
   )
   expect_equal_distr(
     as_p(r_smooth), p_smooth,
-    # Support shouldn't be the same as random sampling is done
-    grid = x_smooth_vec_ext, thres = 0.01, meta_not_check = "support"
+    grid = x_smooth_vec_ext, thres = 0.01,
+    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("smooth_tbl", "support")
   )
   expect_equal_distr(
     as_p(r_custom), p_custom,
-    # Support shouldn't be the same as random sampling is done
     # Using truncated version because of "extending" property on the support
     # edges in case `type = "smooth"`.
-    grid = x_custom_trunc, thres = 0.01, meta_not_check = "support"
+    grid = x_custom_trunc, thres = 0.01,
+    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("smooth_tbl", "support")
   )
 })
 

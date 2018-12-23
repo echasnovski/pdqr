@@ -31,13 +31,13 @@ new_q_raw <- function(x) {
 }
 
 new_q_smooth <- function(x, ...) {
-  dens <- density_piecelin(x, ...)
+  smooth_tbl <- density_piecelin(x, ...)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
-  x_dens <- dens[["x"]]
-  y_dens <- dens[["y"]]
+  x_dens <- smooth_tbl[["x"]]
+  y_dens <- smooth_tbl[["y"]]
   n <- length(x_dens)
   support <- range(x_dens)
 
@@ -68,7 +68,7 @@ new_q_smooth <- function(x, ...) {
     out
   }
 
-  add_meta(res, support = support)
+  add_meta(res, support = support, smooth_tbl = smooth_tbl)
 }
 
 find_quant <- function(p, cdf_start, x_start, slope, intercept) {

@@ -127,15 +127,16 @@ test_that('as_q works with "r"', {
     # edges in case `type = "smooth"`. This introduces errors around the edges.
     # That is why truncated version of `p_vec` is used.
     grid = p_vec_trunc, thres = 0.05,
-    # Support shouldn't be the same as random sampling is done
-    meta_not_check = "support"
+    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("smooth_tbl", "support")
   )
   expect_equal_distr(
     as_q(r_custom), q_custom,
-    # Support shouldn't be the same as random sampling is done
     # Using truncated version as described in test for conversion from
     # `r_smooth()`.
-    grid = p_vec_trunc, thres = 0.05, meta_not_check = "support"
+    grid = p_vec_trunc, thres = 0.05,
+    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("smooth_tbl", "support")
   )
 })
 

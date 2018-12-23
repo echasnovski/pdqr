@@ -100,7 +100,7 @@ density_piecelin <- function(x, ...) {
 
   tot_integral <- trapez_integral(x_dens, y_dens)
 
-  list(x = x_dens, y = y_dens / tot_integral)
+  data.frame(x = x_dens, y = y_dens / tot_integral)
 }
 
 trapez_integral <- function(x, y) {

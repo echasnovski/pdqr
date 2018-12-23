@@ -134,18 +134,20 @@ test_that('as_d works with "r"', {
   )
   expect_equal_distr(
     as_d(r_smooth), d_smooth,
-    # Support shouldn't be the same as random sampling is done
     # Building smooth density from random generation function has somewhat worse
       # precision than building CDF
-    grid = x_smooth_vec_ext, thres = 0.05, meta_not_check = "support"
+    grid = x_smooth_vec_ext, thres = 0.05,
+    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("smooth_tbl", "support")
   )
   expect_equal_distr(
     as_d(r_custom), d_custom,
-    # Support shouldn't be the same as random sampling is done
     # Using truncated version because of "extending" property on the support
     # edges in case `type = "smooth"`. Both this and discontinuous nature of
     # custom distribution (with big jump at 0) give bad precision.
-    grid = x_custom_trunc, thres = 0.15, meta_not_check = "support"
+    grid = x_custom_trunc, thres = 0.15,
+    # Support and "smooth_tbl" shouldn't be the same as random sampling is done
+    meta_not_check = c("smooth_tbl", "support")
   )
   # Illustration of big impact of discontinuity:
   # x <- sort(x_custom)

@@ -23,17 +23,17 @@ new_d_raw <- function(x) {
 }
 
 new_d_smooth <- function(x, ...) {
-  dens <- density_piecelin(x, ...)
+  smooth_tbl <- density_piecelin(x, ...)
 
   # For efficient memory management
   rm(list = "x", envir = environment())
 
   res <- stats::approxfun(
-    x = dens[["x"]], y = dens[["y"]], method = "linear",
+    x = smooth_tbl[["x"]], y = smooth_tbl[["y"]], method = "linear",
     yleft = 0, yright = 0, rule = 2
   )
 
-  add_meta(res, support = range(dens[["x"]]))
+  add_meta(res, support = range(smooth_tbl[["x"]]), smooth_tbl = smooth_tbl)
 }
 
 print.d <- function(x, ...) {

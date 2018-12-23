@@ -75,7 +75,8 @@ test_that("new_p handles metadata", {
     list(raw_tbl = x_raw_raw_tbl, support = x_raw_support, type = "raw")
   )
 
-  expect_named(meta(p_smooth), c("support", "type"))
+  expect_named(meta(p_smooth), c("smooth_tbl", "support", "type"))
+  expect_equal(meta(p_smooth, "smooth_tbl"), x_smooth_smooth_tbl)
   expect_equal(
     round(meta(p_smooth, "support"), 2), round(x_smooth_support, 2)
   )

@@ -13,6 +13,7 @@ x_smooth <- c(
   -1.27, 1.04, 1.06, -1.87, -1.71, -0.3, -0.26, 0.62,  1.42, 0.36
 )
 x_smooth_support <- c(-2.91865392160928, 2.51865392160928)
+x_smooth_smooth_tbl <- density_piecelin(x_smooth)
 
 
 # Input test vectors ------------------------------------------------------

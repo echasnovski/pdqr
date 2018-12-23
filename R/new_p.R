@@ -24,15 +24,15 @@ new_p_raw <- function(x) {
 }
 
 new_p_smooth <- function(x, ...) {
-  dens <- density_piecelin(x, ...)
-  support <- range(dens[["x"]])
-
-  res <- p_from_d_points(dens[["x"]], dens[["y"]])
+  smooth_tbl <- density_piecelin(x, ...)
+  support <- range(smooth_tbl[["x"]])
 
   # For efficient memory management
-  rm(list = c("x", "dens"), envir = environment())
+  rm(list = c("x"), envir = environment())
 
-  add_meta(res, support = support)
+  res <- p_from_d_points(smooth_tbl[["x"]], smooth_tbl[["y"]])
+
+  add_meta(res, support = support, smooth_tbl = smooth_tbl)
 }
 
 print.p <- function(x, ...) {
