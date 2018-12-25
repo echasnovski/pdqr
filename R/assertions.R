@@ -165,43 +165,50 @@ assert_support <- function(support) {
   TRUE
 }
 
-assert_x_tbl <- function(x, type) {
-  x_name <- paste0("`", deparse(substitute(x)), "`")
+assert_x_tbl <- function(x_tbl, type) {
+  x_tbl_name <- paste0("`", deparse(substitute(x_tbl)), "`")
+
+  if (!is.data.frame(x_tbl)) {
+    stop_collapse(x_tbl_name, " should be a data frame.")
+  }
+  if (!("x" %in% names(x_tbl)) || !is.numeric(x_tbl[["x"]]) ||
+      anyNA(x_tbl[["x"]])) {
+    stop_collapse(
+      x_tbl_name, ' should have numeric column "x" without `NA` values.'
+    )
+  }
 
   switch(
     type,
-    raw = assert_x_tbl_raw(x, x_name),
-    smooth = assert_x_tbl_smooth(x, x_name)
+    raw = assert_x_tbl_raw(x_tbl, x_tbl_name),
+    smooth = assert_x_tbl_smooth(x_tbl, x_tbl_name)
   )
 }
 
-assert_x_tbl_raw <- function(x, x_name) {
-  if (!is.data.frame(x)) {
-    stop_collapse(x_name, " should be a data frame.")
-  }
-  if (!(("x" %in% names(x)) && is.numeric(x[["x"]]))) {
-    stop_collapse(x_name, ' should have numeric column "x".')
-  }
-  if (!any(c("prob", "n") %in% names(x))) {
-    stop_collapse(x_name, ' should have one of "prob" or "n" columns.')
+assert_x_tbl_raw <- function(x_tbl, x_tbl_name) {
+  if (!any(c("prob", "n") %in% names(x_tbl))) {
+    stop_collapse(x_tbl_name, ' should have one of "prob" or "n" columns.')
   }
 
-  # If "n" is present then it should satisfy certain conditions.
-  # If "n" is not present then "prob" should satisfy those conditions.
-  if ("n" %in% names(x)) {
-    assert_probish(x[["n"]], '"n"', x_name)
+  # If "n" is present then it should by "probability distribution"-like.
+  # If "n" is not present then "prob" should be like that.
+  if ("n" %in% names(x_tbl)) {
+    assert_probish(x_tbl[["n"]], '"n"', x_tbl_name)
   } else {
-    assert_probish(x[["prob"]], '"prob"', x_name)
+    assert_probish(x_tbl[["prob"]], '"prob"', x_tbl_name)
   }
 
   TRUE
 }
 
-assert_probish <- function(vec, col_name, x_name) {
-  stop_start_chr <- paste0(col_name, " column in ", x_name)
+assert_probish <- function(vec, col_name, x_tbl_name) {
+  stop_start_chr <- paste0(col_name, " column in ", x_tbl_name)
 
   if (!is.numeric(vec)) {
     stop_collapse(stop_start_chr, " should be numeric.")
+  }
+  if (anyNA(vec)) {
+    stop_collapse(stop_start_chr, " should not have `NA` values.")
   }
   if (any(vec < 0)) {
     stop_collapse(stop_start_chr, " should not have negative values.")
@@ -213,25 +220,24 @@ assert_probish <- function(vec, col_name, x_name) {
   TRUE
 }
 
-assert_x_tbl_smooth <- function(x, x_name) {
-  if (!is.data.frame(x)) {
-    stop_collapse(x_name, " should be a data frame.")
+assert_x_tbl_smooth <- function(x_tbl, x_tbl_name) {
+  if (nrow(x_tbl) < 2) {
+    stop_collapse(x_tbl_name, " should have at least 2 rows.")
   }
-  if (nrow(x) < 2) {
-    stop_collapse(x_name, " should have at least 2 rows.")
-  }
-  if (!(("x" %in% names(x)) && is.numeric(x[["x"]]))) {
-    stop_collapse(x_name, ' should have numeric column "x".')
-  }
-  if (!(("y" %in% names(x)) && is.numeric(x[["y"]]))) {
-    stop_collapse(x_name, ' should have numeric column "y".')
-  }
-  if (any(x[["y"]] < 0)) {
-    stop_collapse('"y" column in ', x_name, ' should not have negative values.')
-  }
-  if (!any(x[["y"]] > 0)) {
+  if (!("y" %in% names(x_tbl)) || !is.numeric(x_tbl[["y"]]) ||
+      anyNA(x_tbl[["y"]])) {
     stop_collapse(
-      '"y" column in ', x_name, ' should have at least one positive value.'
+      x_tbl_name, ' should have numeric column "y" without `NA` values.'
+    )
+  }
+  if (any(x_tbl[["y"]] < 0)) {
+    stop_collapse(
+      '"y" column in ', x_tbl_name, ' should not have negative values.'
+    )
+  }
+  if (!any(x_tbl[["y"]] > 0)) {
+    stop_collapse(
+      '"y" column in ', x_tbl_name, ' should have at least one positive value.'
     )
   }
 
