@@ -73,7 +73,7 @@ adj_p_smooth <- construct_adj_smooth(p_smooth, as_p)
 user_p <- function(q) {pbeta(q, 1, 2)}
 p_custom <- structure(
   user_p, class = c("p", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth")
+  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
 )
 
 # d-functions
@@ -85,7 +85,7 @@ adj_d_smooth <- construct_adj_smooth(d_smooth, as_d)
 user_d <- function(x) {dbeta(x, 1, 2)}
 d_custom <- structure(
   user_d, class = c("d", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth")
+  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
 )
 
 # q-functions
@@ -97,7 +97,7 @@ adj_q_smooth <- construct_adj_smooth(q_smooth, as_q)
 user_q <- function(p) {qbeta(p, 1, 2)}
 q_custom <- structure(
   user_q, class = c("q", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth")
+  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
 )
 
 # r-functions
@@ -109,5 +109,5 @@ adj_r_smooth <- construct_adj_smooth(r_smooth, as_r, warn_not_adjusted = FALSE)
 user_r <- function(n) {rbeta(n, 1, 2)}
 r_custom <- structure(
   user_r, class = c("r", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth")
+  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
 )
