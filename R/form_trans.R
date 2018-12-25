@@ -41,12 +41,12 @@ assert_trans_dots <- function(dots_list) {
 
   if (!all(pdqr_check | num_check)) {
     stop_collapse(
-      '`...` should contain only "pdqr" functions and single numbers.'
+      '`...` should contain only pdqr-functions and single numbers.'
     )
   }
 
   if (!any(pdqr_check)) {
-    stop_collapse("`...` should have at least one", '"pdqr" function.')
+    stop_collapse("`...` should have at least one pdqr-function.")
   }
 
   dots_list
