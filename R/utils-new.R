@@ -43,26 +43,41 @@ impute_x_tbl_impl <- function(x_tbl, type) {
   }
 
   if (type == "raw") {
-    if ("n" %in% names(x_tbl)) {
-      data.frame(
-        x = x_tbl[["x"]],
-        prob = x_tbl[["n"]] / sum(x_tbl[["n"]]),
-        n = x_tbl[["n"]]
-      )
-    } else {
-      data.frame(
-        x = x_tbl[["x"]],
-        prob = x_tbl[["prob"]] / sum(x_tbl[["prob"]])
-      )
-    }
+    res <- data.frame(
+      x = x_tbl[["x"]],
+      prob = impute_prob(x_tbl[["prob"]], x_tbl[["n"]])
+    )
+    # If "n" is not present in `x_tbl` it won't be present in `res`
+    res[["n"]] <- x_tbl[["n"]]
+
+    res
   } else if (type == "smooth") {
     data.frame(
       x = x_tbl[["x"]],
-      y = x_tbl[["y"]] / trapez_integral(x_tbl[["x"]], x_tbl[["y"]])
+      y = impute_y(x_tbl[["y"]], x_tbl[["x"]])
     )
   } else {
     stop("Wrong `type`.")
   }
+}
+
+# Extra property checks are needed to avoid creating unnecessary copies
+impute_prob <- function(prob, n) {
+  if (is.null(n)) {
+    tot_prob <- sum(prob)
+
+    if (is_near(tot_prob, 1)) {prob} else {prob / tot_prob}
+  } else {
+    prob_n <- n / sum(n)
+
+    if (all(is_near(prob, prob_n))) {prob} else {prob_n}
+  }
+}
+
+impute_y <- function(y, x) {
+  tot_prob <- trapez_integral(x, y)
+
+  if (is_near(tot_prob, 1)) {y} else {y / tot_prob}
 }
 
 compute_x_tbl <- function(x, type, ...) {
