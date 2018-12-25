@@ -86,6 +86,7 @@ assert_pdqr_fun <- function(f) {
   if (!is.function(f)) {
     stop_collapse(f_name, " should be function.")
   }
+
   if (!inherits(f, "pdqr")) {
     stop_collapse(f_name, ' should inherit from "pdqr".')
   }
@@ -94,16 +95,32 @@ assert_pdqr_fun <- function(f) {
       f_name, ' should inherit from one of classes: "p", "d", "q", "r".'
     )
   }
+
   if (!has_meta_type(f)) {
     stop_collapse(
       f_name, ' should have proper "type" metadata ("raw" or "smooth").'
     )
   }
+
   if (!has_meta_support(f)) {
     stop_collapse(
       f_name, ' should have proper "support" metadata (numeric vector ',
       'of length 2 with non-decreasing finite elements).'
     )
+  }
+
+  if (!("x_tbl" %in% names(meta(f)))) {
+    stop_collapse(f_name, ' should have "x_tbl" metadata.')
+  }
+
+  if (is.null(meta(f, "x_tbl"))) {
+    if (meta(f, "type") == "raw") {
+      stop_collapse(
+        f_name, ' should have non-`NULL` "x_tbl" metadata if `type` is "raw".'
+      )
+    }
+  } else {
+    assert_x_tbl(meta(f, "x_tbl"), type = meta(f, "type"))
   }
 
   TRUE

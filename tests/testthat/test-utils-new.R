@@ -61,18 +61,53 @@ test_that("filter_numbers works", {
 # is_pdqr_fun -------------------------------------------------------------
 test_that("is_pdqr_fun works", {
   expect_true(is_pdqr_fun(p_raw))
-  expect_false(is_pdqr_fun("a"))
+  expect_true(is_pdqr_fun(d_raw))
+  expect_true(is_pdqr_fun(q_raw))
+  expect_true(is_pdqr_fun(r_raw))
+
+  # Function type
+  input <- 1
+  expect_false(is_pdqr_fun(input))
+
+  # Classes
   expect_false(is_pdqr_fun(user_p))
+  expect_false(is_pdqr_fun(structure(user_p, class = "pdqr")))
+
+  # "type" metadata
+  f_with_class <- structure(user_p, class = c("p", "pdqr"))
+  expect_false(is_pdqr_fun(f_with_class))
+  expect_false(is_pdqr_fun(structure(f_with_class, type = "a")))
+
+  # "support" metadata
   expect_false(
-    is_pdqr_fun(structure(user_p, class = "pdqr", meta = list(type = "a")))
+    is_pdqr_fun(structure(f_with_class, meta = list(type = "smooth")))
   )
+  f_with_corrupt_support <- structure(
+    f_with_class, meta = list(type = "smooth", support = c(2, 1))
+  )
+  expect_false(is_pdqr_fun(f_with_corrupt_support))
+
+  # "x_tbl" metadata
+  expect_true(is_pdqr_fun(p_custom))
+
+    # "x_tbl" is completely missing
+  input_bad_x_tbl_1 <- p_smooth
+  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
+  expect_false(is_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
+
+    # "x_tbl" has not proper structure
+  input_bad_x_tbl_2 <- p_raw
+  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
   expect_false(
-    is_pdqr_fun(
-      structure(
-        user_p, class = "pdqr", meta = list(type = "raw", support = c(2, 1))
-      )
-    )
+    is_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
   )
+
+    # "x_tbl" is present but equals `NULL` in case `type` is "raw"
+  input_bad_x_tbl_3 <- p_raw
+  attr(input_bad_x_tbl_3, "meta") <- c(
+    meta(input_bad_x_tbl_3)[c("support", "type")], list(x_tbl = NULL)
+  )
+  expect_false(is_pdqr_fun(input_bad_x_tbl_3), 'no.*NULL.*x_tbl.*"raw"')
 })
 
 

@@ -48,14 +48,23 @@ test_that("parse_type works", {
 
 # assert_pdqr_fun ---------------------------------------------------------
 test_that("assert_pdqr_fun works", {
+  expect_silent(assert_pdqr_fun(p_raw))
+  expect_silent(assert_pdqr_fun(d_raw))
+  expect_silent(assert_pdqr_fun(q_raw))
+  expect_silent(assert_pdqr_fun(r_raw))
+
+  # Function type
   input <- 1
   expect_error(assert_pdqr_fun(input), "`input`.*function")
+
+  # Classes
   expect_error(assert_pdqr_fun(user_p), "inherit.*pdqr")
   expect_error(
     assert_pdqr_fun(structure(user_p, class = "pdqr")),
     "inherit.*p.*d.*q.*r"
   )
 
+  # "type" metadata
   f_with_class <- structure(user_p, class = c("p", "pdqr"))
   expect_error(assert_pdqr_fun(f_with_class), "proper.*type")
   expect_error(
@@ -63,6 +72,7 @@ test_that("assert_pdqr_fun works", {
     "proper.*type"
   )
 
+  # "support" metadata
   expect_error(
     assert_pdqr_fun(structure(f_with_class, meta = list(type = "smooth"))),
     "proper.*support"
@@ -72,10 +82,27 @@ test_that("assert_pdqr_fun works", {
   )
   expect_error(assert_pdqr_fun(f_with_corrupt_support), "proper.*support")
 
-  expect_silent(assert_pdqr_fun(p_raw))
-  expect_silent(assert_pdqr_fun(d_raw))
-  expect_silent(assert_pdqr_fun(q_raw))
-  expect_silent(assert_pdqr_fun(r_raw))
+  # "x_tbl" metadata
+  expect_silent(assert_pdqr_fun(p_custom))
+
+    # "x_tbl" is completely missing
+  input_bad_x_tbl_1 <- p_smooth
+  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
+
+    # "x_tbl" has not proper structure
+  input_bad_x_tbl_2 <- p_raw
+  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
+  expect_error(
+    assert_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
+  )
+
+    # "x_tbl" is present but equals `NULL` in case `type` is "raw"
+  input_bad_x_tbl_3 <- p_raw
+  attr(input_bad_x_tbl_3, "meta") <- c(
+    meta(input_bad_x_tbl_3)[c("support", "type")], list(x_tbl = NULL)
+  )
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_3), 'no.*NULL.*x_tbl.*"raw"')
 })
 
 
