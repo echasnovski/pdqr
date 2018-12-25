@@ -17,15 +17,28 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
-  warn_plotting_raw_d(x)
+  if (meta(x, "type") == "raw") {
+    x_tbl <- meta(x, "x_tbl")
 
-  dots <- make_plot_dots(
-    ...,
-    type = "l", main = paste0("Density function ", x_name),
-    xlab = "x", ylab = "Density"
-  )
+    dots <- make_plot_dots(
+      ...,
+      type = "h", main = paste0("Density function ", x_name),
+      xlab = "x", ylab = "Probability", ylim = c(0, max(x_tbl[["prob"]]))
+    )
+    plot_args <- dedupl_list(
+      c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]]), dots)
+    )
 
-  plot_impl_pdq(x, meta(x, "support"), n_grid, dots)
+    do.call(graphics::plot, plot_args)
+  } else {
+    dots <- make_plot_dots(
+      ...,
+      type = "l", main = paste0("Density function ", x_name),
+      xlab = "x", ylab = "Density"
+    )
+
+    plot_impl_pdq(x, meta(x, "support"), n_grid, dots)
+  }
 }
 
 plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
@@ -69,16 +82,6 @@ make_plot_dots <- function(...) {
   dedupl_list(list(...))
 }
 
-warn_plotting_raw_d <- function(f) {
-  if (inherits(f, "d") && (meta(f, "type") == "raw")) {
-    warning_collapse(
-      'Plotting d-function with `type` = "raw" can miss actual points.'
-    )
-  }
-
-  f
-}
-
 
 # lines() -----------------------------------------------------------------
 lines.p <- function(x, n_grid = 1001, ...) {
@@ -91,9 +94,16 @@ lines.p <- function(x, n_grid = 1001, ...) {
 lines.d <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  warn_plotting_raw_d(x)
+  if (meta(x, "type") == "raw") {
+    x_tbl <- meta(x, "x_tbl")
+    lines_args <- dedupl_list(
+      c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...))
+    )
 
-  lines_impl_pdq(x, meta(x, "support"), n_grid, list(...))
+    do.call(graphics::lines, lines_args)
+  } else {
+    lines_impl_pdq(x, meta(x, "support"), n_grid, list(...))
+  }
 }
 
 lines.q <- function(x, n_grid = 1001, ...) {

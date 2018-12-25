@@ -71,34 +71,25 @@ test_that("plot.p throws error with corrupt input", {
 
 # plot.d ------------------------------------------------------------------
 test_that("plot.d works", {
-  density_warning <- "d-function.*raw.*can miss"
 
   vdiffr::expect_doppelganger(
     "plot-d-fun-1", recordPlot({
-      expect_warning(plot(d_raw), density_warning)
-      expect_warning(lines(d_raw, col = "red"), density_warning)
+      plot(d_raw)
+      lines(d_raw, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
     "plot-d-fun-2", recordPlot(
-      expect_warning(plot(d_raw, y = NA), density_warning)
+      plot(d_raw, y = NA)
     )
   )
   vdiffr::expect_doppelganger(
     "plot-d-fun-3", recordPlot(
-      expect_warning(
-        plot(d_raw, xlab = "a", ylab = "b", main = "c", type = "p"),
-        density_warning
-      )
+      plot(d_raw, xlab = "a", ylab = "b", main = "c", type = "p")
     )
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-4", recordPlot(
-      expect_warning(
-        plot(d_raw, xlim = c(0, 2), col = "blue"),
-        density_warning
-      )
-    )
+    "plot-d-fun-4", recordPlot(plot(d_raw, xlim = c(0, 2), col = "blue"))
   )
 
   # These are also tests for `lines.d()`
