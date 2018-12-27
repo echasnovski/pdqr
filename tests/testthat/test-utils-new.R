@@ -110,6 +110,40 @@ test_that("is_pdqr_fun works", {
   expect_false(is_pdqr_fun(input_bad_x_tbl_3), 'no.*NULL.*x_tbl.*"raw"')
 })
 
+test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
+  # "x" is sorted
+  input_bad_x_tbl_1 <- p_raw
+  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]] <- rev(
+    attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]]
+  )
+  expect_false(is_pdqr_fun(input_bad_x_tbl_1))
+
+  # "raw" `type`
+    # Column "prob" is mandatory
+  input_bad_x_tbl_2 <- p_raw
+  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
+  expect_false(is_pdqr_fun(input_bad_x_tbl_2))
+
+    # Sum of "prob" is 1
+  input_bad_x_tbl_3 <- p_raw
+  attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]] <- 10 *
+    attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
+  expect_false(is_pdqr_fun(input_bad_x_tbl_3))
+
+    # "prob" is aligned with "n" if it is present
+  input_bad_x_tbl_4 <- p_raw
+  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]] <- 1 +
+    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]]
+  expect_false(is_pdqr_fun(input_bad_x_tbl_4))
+
+  # "smooth" type
+    # Total integral is 1
+  input_bad_x_tbl_5 <- p_smooth
+  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
+  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+})
+
 
 # is_distr_type -----------------------------------------------------------
 test_that("is_distr_type works", {

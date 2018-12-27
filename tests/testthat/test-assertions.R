@@ -105,6 +105,44 @@ test_that("assert_pdqr_fun works", {
   expect_error(assert_pdqr_fun(input_bad_x_tbl_3), 'no.*NULL.*x_tbl.*"raw"')
 })
 
+test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
+  # "x" is sorted
+  input_bad_x_tbl_1 <- p_raw
+  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]] <- rev(
+    attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]]
+  )
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_1), '"x".*"x_tbl".*sorted')
+
+  # "raw" `type`
+    # Column "prob" is mandatory
+  input_bad_x_tbl_2 <- p_raw
+  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_2), '"x_tbl".*have.*"prob"')
+
+    # Sum of "prob" is 1
+  input_bad_x_tbl_3 <- p_raw
+  attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]] <- 10 *
+    attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
+
+    # "prob" is aligned with "n" if it is present
+  input_bad_x_tbl_4 <- p_raw
+  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]] <- 1 +
+    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]]
+  expect_error(
+    assert_pdqr_fun(input_bad_x_tbl_4), '"prob".*"x_tbl".*aligned.*"n"'
+  )
+
+  # "smooth" type
+    # Total integral is 1
+  input_bad_x_tbl_5 <- p_smooth
+  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
+  expect_error(
+    assert_pdqr_fun(input_bad_x_tbl_5), '[Tt]otal integral.*"x_tbl".*1'
+  )
+})
+
 
 # assert_distr_type -------------------------------------------------------
 test_that("assert_distr_type works", {
@@ -271,6 +309,10 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
 
 # assert_x_tbl_smooth -----------------------------------------------------
 # Tested in `assert_x_tbl()`
+
+
+# assert_x_tbl_meta -------------------------------------------------------
+# Tested in `assert_pdqr_fun()`
 
 
 # assert_probish ----------------------------------------------------------

@@ -121,6 +121,9 @@ assert_pdqr_fun <- function(f) {
     }
   } else {
     assert_x_tbl(meta(f, "x_tbl"), type = meta(f, "type"))
+
+    # Extra properties for "good" "x_tbl" metadata
+    assert_x_tbl_meta(meta(f, "x_tbl"), type = meta(f, "type"))
   }
 
   TRUE
@@ -213,6 +216,48 @@ assert_x_tbl_smooth <- function(x_tbl, x_tbl_name) {
     stop_collapse(
       '"y" column in ', x_tbl_name, ' should have at least one positive value.'
     )
+  }
+
+  TRUE
+}
+
+assert_x_tbl_meta <- function(x_tbl, type) {
+  if (is.unsorted(x_tbl[["x"]])) {
+    stop_collapse(
+      '"x" column in "x_tbl" metadata should be sorted increasingly.'
+    )
+  }
+
+  if (type == "raw") {
+    if (!("prob" %in% names(x_tbl))) {
+      stop_collapse(
+        '"x_tbl" metadata should have "prob" column if `type` is "raw".'
+      )
+    }
+    if (!is_near(sum(x_tbl[["prob"]]), 1)) {
+      stop_collapse(
+        '"prob" column in "x_tbl" metadata should sum to 1.'
+      )
+    }
+    if ("n" %in% names(x_tbl)) {
+      prob_n <- x_tbl[["n"]] / sum(x_tbl[["n"]])
+      is_prob_aligned <- all(is_near(x_tbl[["prob"]], prob_n))
+
+      if (!is_prob_aligned) {
+        stop_collapse(
+          '"prob" column in "x_tbl" metadata should be aligned with "n" column.'
+        )
+      }
+    }
+  }
+
+  if (type == "smooth") {
+    if (!is_near(trapez_integral(x_tbl[["x"]], x_tbl[["y"]]), 1)) {
+      stop_collapse(
+        'Total integral from "x_tbl" metadata columns should be 1 if ',
+        '`type` is "smooth".'
+      )
+    }
   }
 
   TRUE
