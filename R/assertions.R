@@ -171,12 +171,8 @@ assert_x_tbl <- function(x_tbl, type) {
   if (!is.data.frame(x_tbl)) {
     stop_collapse(x_tbl_name, " should be a data frame.")
   }
-  if (!("x" %in% names(x_tbl)) || !is.numeric(x_tbl[["x"]]) ||
-      anyNA(x_tbl[["x"]])) {
-    stop_collapse(
-      x_tbl_name, ' should have numeric column "x" without `NA` values.'
-    )
-  }
+
+  assert_num_col(x_tbl[["x"]], '"x"', x_tbl_name)
 
   switch(
     type,
@@ -201,15 +197,32 @@ assert_x_tbl_raw <- function(x_tbl, x_tbl_name) {
   TRUE
 }
 
+assert_x_tbl_smooth <- function(x_tbl, x_tbl_name) {
+  if (nrow(x_tbl) < 2) {
+    stop_collapse(x_tbl_name, " should have at least 2 rows.")
+  }
+
+  assert_num_col(x_tbl[["y"]], '"y"', x_tbl_name)
+
+  if (any(x_tbl[["y"]] < 0)) {
+    stop_collapse(
+      '"y" column in ', x_tbl_name, ' should not have negative values.'
+    )
+  }
+  if (!any(x_tbl[["y"]] > 0)) {
+    stop_collapse(
+      '"y" column in ', x_tbl_name, ' should have at least one positive value.'
+    )
+  }
+
+  TRUE
+}
+
 assert_probish <- function(vec, col_name, x_tbl_name) {
+  assert_num_col(vec, col_name, x_tbl_name)
+
   stop_start_chr <- paste0(col_name, " column in ", x_tbl_name)
 
-  if (!is.numeric(vec)) {
-    stop_collapse(stop_start_chr, " should be numeric.")
-  }
-  if (anyNA(vec)) {
-    stop_collapse(stop_start_chr, " should not have `NA` values.")
-  }
   if (any(vec < 0)) {
     stop_collapse(stop_start_chr, " should not have negative values.")
   }
@@ -220,24 +233,19 @@ assert_probish <- function(vec, col_name, x_tbl_name) {
   TRUE
 }
 
-assert_x_tbl_smooth <- function(x_tbl, x_tbl_name) {
-  if (nrow(x_tbl) < 2) {
-    stop_collapse(x_tbl_name, " should have at least 2 rows.")
+assert_num_col <- function(vec, col_name, x_tbl_name) {
+  if (is.null(vec)) {
+    stop_collapse(x_tbl_name, " should have column ", col_name, ".")
   }
-  if (!("y" %in% names(x_tbl)) || !is.numeric(x_tbl[["y"]]) ||
-      anyNA(x_tbl[["y"]])) {
-    stop_collapse(
-      x_tbl_name, ' should have numeric column "y" without `NA` values.'
-    )
+
+  stop_start_chr <- paste0(col_name, " column in ", x_tbl_name)
+
+  if (!is.numeric(vec)) {
+    stop_collapse(stop_start_chr, " should be numeric.")
   }
-  if (any(x_tbl[["y"]] < 0)) {
+  if (!all(is.finite(vec))) {
     stop_collapse(
-      '"y" column in ', x_tbl_name, ' should not have negative values.'
-    )
-  }
-  if (!any(x_tbl[["y"]] > 0)) {
-    stop_collapse(
-      '"y" column in ', x_tbl_name, ' should have at least one positive value.'
+      stop_start_chr, " should have only finite values and no `NA`s."
     )
   }
 

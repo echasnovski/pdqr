@@ -144,9 +144,12 @@ test_that("assert_x_tbl works with `type = 'raw'`", {
 
   # Column "x"
   expect_error(assert_x_tbl(data.frame(a = 1), type = "raw"), '"x"')
-  expect_error(assert_x_tbl(data.frame(x = "a"), type = "raw"), 'numeric.*"x"')
+  expect_error(assert_x_tbl(data.frame(x = "a"), type = "raw"), '"x".*numeric')
   expect_error(
     assert_x_tbl(data.frame(x = NA_real_), type = "raw"), '"x".*`NA`'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = Inf), type = "raw"), '"x".*finite'
   )
 
   # Presense of at least one of "prob" or "n"
@@ -157,6 +160,9 @@ test_that("assert_x_tbl works with `type = 'raw'`", {
 
   expect_error(
     assert_x_tbl(data.frame(x = 1, n = "a"), type = "raw"), '"n".*numeric'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, n = Inf), type = "raw"), '"n".*finite'
   )
   expect_error(
     assert_x_tbl(data.frame(x = 1, n = NA_real_), type = "raw"), '"n".*`NA`'
@@ -179,6 +185,10 @@ test_that("assert_x_tbl works with `type = 'raw'`", {
   expect_error(
     assert_x_tbl(data.frame(x = 1, prob = NA_real_), type = "raw"),
     '"prob".*`NA`'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = 1, prob = Inf), type = "raw"),
+    '"prob".*finite'
   )
   expect_error(
     assert_x_tbl(data.frame(x = 1, prob = -1), type = "raw"), '"prob".*negative'
@@ -216,14 +226,20 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
   # Column "x"
   expect_error(assert_x_tbl(data.frame(a = 1:2), type = "smooth"), '"x"')
   expect_error(
-    assert_x_tbl(data.frame(x = c("a", "b")), type = "smooth"), 'numeric.*"x"'
+    assert_x_tbl(data.frame(x = c("a", "b")), type = "smooth"), '"x".*numeric'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "smooth"), '"x".*`NA`'
+  )
+  expect_error(
+    assert_x_tbl(data.frame(x = c(1, Inf)), type = "smooth"), '"x".*finite'
   )
 
   # Column "y"
   expect_error(assert_x_tbl(data.frame(x = 1:2), type = "smooth"), '"y"')
   expect_error(
     assert_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "smooth"),
-    'numeric.*"y"'
+    '"y".*numeric'
   )
   expect_error(
     assert_x_tbl(data.frame(x = 1:2, y = c(1, NA_real_)), type = "smooth"),
@@ -253,11 +269,15 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
 # Tested in `assert_x_tbl()`
 
 
+# assert_x_tbl_smooth -----------------------------------------------------
+# Tested in `assert_x_tbl()`
+
+
 # assert_probish ----------------------------------------------------------
 # Tested in `assert_x_tbl()`
 
 
-# assert_x_tbl_smooth -----------------------------------------------------
+# assert_num_col ----------------------------------------------------------
 # Tested in `assert_x_tbl()`
 
 
