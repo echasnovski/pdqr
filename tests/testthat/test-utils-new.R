@@ -254,6 +254,37 @@ test_that("is_x_tbl works with `type = 'smooth'`", {
 })
 
 
+# is_x_tbl_meta -----------------------------------------------------------
+test_that("is_x_tbl_meta works", {
+  # "x" is sorted
+  input_bad_x_tbl_1 <- x_raw_x_tbl
+  input_bad_x_tbl_1[["x"]] <- rev(input_bad_x_tbl_1[["x"]])
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_1, "raw"))
+
+  # "raw" `type`
+    # Column "prob" is mandatory
+  input_bad_x_tbl_2 <- x_raw_x_tbl
+  input_bad_x_tbl_2[["prob"]] <- NULL
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_2, "raw"))
+
+    # Sum of "prob" is 1
+  input_bad_x_tbl_3 <- x_raw_x_tbl
+  input_bad_x_tbl_3[["prob"]] <- 10 * input_bad_x_tbl_3[["prob"]]
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_3, "raw"))
+
+    # "prob" is aligned with "n" if it is present
+  input_bad_x_tbl_4 <- x_raw_x_tbl
+  input_bad_x_tbl_4[["n"]] <- 1 + input_bad_x_tbl_4[["n"]]
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "raw"))
+
+  # "smooth" type
+    # Total integral is 1
+  input_bad_x_tbl_5 <- x_smooth_x_tbl
+  input_bad_x_tbl_5[["y"]] <- 10 * input_bad_x_tbl_5[["y"]]
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "smooth"))
+})
+
+
 # is_pdqr_class -----------------------------------------------------------
 test_that("is_pdqr_class works", {
   expect_true(all(is_pdqr_class(c("p", "d", "q", "r"))))
@@ -288,6 +319,14 @@ test_that("has_meta_x_tbl works", {
   expect_false(has_meta_x_tbl(p_custom, "smooth"))
   expect_false(has_meta_x_tbl(1, "smooth"))
   expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "raw"))
+
+  # Check for "good" "x_tbl" metadata
+  expect_false(
+    has_meta_x_tbl(
+      structure(1, meta = list(x_tbl = data.frame(x = 1, prob = -1))),
+      "raw"
+    )
+  )
 })
 
 

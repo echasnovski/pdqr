@@ -145,6 +145,10 @@ is_x_tbl <- function(x, type) {
   tryCatch(assert_x_tbl(x, type), error = function(e) {FALSE})
 }
 
+is_x_tbl_meta <- function(x, type) {
+  tryCatch(assert_x_tbl_meta(x, type), error = function(e) {FALSE})
+}
+
 is_pdqr_class <- function(chr) {
   chr %in% c("p", "d", "q", "r")
 }
@@ -158,7 +162,8 @@ has_meta_support <- function(f) {
 }
 
 has_meta_x_tbl <- function(f, type) {
-  has_meta(f, "x_tbl") && is_x_tbl(meta(f, "x_tbl"), type)
+  has_meta(f, "x_tbl") && is_x_tbl(meta(f, "x_tbl"), type) &&
+    is_x_tbl_meta(meta(f, "x_tbl"), type)
 }
 
 
