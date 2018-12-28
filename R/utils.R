@@ -8,7 +8,7 @@ is_string <- function(x) {
 }
 
 is_single_number <- function(x) {
-  is.numeric(x) && (length(x) == 1)
+  is.numeric(x) && (length(x) == 1) && is.finite(x)
 }
 
 is_truefalse <- function(x) {

@@ -29,6 +29,8 @@ test_that("is_single_number works", {
   expect_true(is_single_number(0L))
   expect_false(is_single_number(1:2))
   expect_false(is_single_number("a"))
+  expect_false(is_single_number(Inf))
+  expect_false(is_single_number(NA_real_))
 })
 
 
