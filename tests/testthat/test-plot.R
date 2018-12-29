@@ -25,6 +25,11 @@ test_that("plot.p works", {
       plot(p_raw, xlim = c(0, 2), col = "blue")
     )
   )
+  vdiffr::expect_doppelganger(
+    "plot-p-fun-5", recordPlot(
+      plot(p_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
+    )
+  )
 
   # These are also tests for `lines.p()`
   vdiffr::expect_doppelganger(

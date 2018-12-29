@@ -9,8 +9,21 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "x", ylab = "Cumulative probability"
   )
 
-  # Stretch support to guarantee 0 and 1 on edges
-  plot_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, dots)
+  if (meta(x, "type") == "raw") {
+    # Create canvas
+    no_plot_dots <- dedupl_list(c(
+      list(x = meta(x, "support"), y = c(0, 1), type = "n"),
+      dots
+    ))
+
+    do.call(graphics::plot, no_plot_dots)
+
+    # Add segments
+    add_p_raw_segments(x, list(...))
+  } else {
+    # Stretch support to guarantee 0 and 1 on edges
+    plot_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, dots)
+  }
 }
 
 plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
@@ -78,6 +91,32 @@ plot_impl_pdq <- function(f, grid_range, n_grid, dots) {
   do.call(graphics::plot, plot_args)
 }
 
+add_p_raw_segments <- function(x, dots) {
+  x_tbl <- meta(x, "x_tbl")
+  x <- x_tbl[["x"]]
+  cumprob <- x_tbl[["cumprob"]]
+  n <- nrow(x_tbl)
+
+  # Remove supplied `type` argument as it will not work and throw warnings
+  dots[["type"]] <- NULL
+
+  vertical_segments_dots <- dedupl_list(c(
+    dots,
+    list(x0 = x, y0 = c(0, cumprob[-n]), x1 = x, y1 = cumprob, lty = 2)
+  ))
+  do.call(graphics::segments, vertical_segments_dots)
+
+  horizontal_segments_dots <- dedupl_list(c(
+    dots,
+    list(x0 = x[-n], y0 = cumprob[-n], x1 = x[-1], y1 = cumprob[-n])
+  ))
+  do.call(graphics::segments, horizontal_segments_dots)
+
+  # Add points
+  points_dots <- dedupl_list(c(dots, list(x = x, y = cumprob, pch = 16)))
+  do.call(graphics::points, points_dots)
+}
+
 make_plot_dots <- function(...) {
   dedupl_list(list(...))
 }
@@ -87,8 +126,12 @@ make_plot_dots <- function(...) {
 lines.p <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  # Stretch support to guarantee 0 and 1 on edges
-  lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
+  if (meta(x, "type") == "raw") {
+    add_p_raw_segments(x, list(...))
+  } else {
+    # Stretch support to guarantee 0 and 1 on edges
+    lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
+  }
 }
 
 lines.d <- function(x, n_grid = 1001, ...) {
