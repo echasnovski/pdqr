@@ -88,25 +88,37 @@ test_that("plot.p throws error with corrupt input", {
 
 # plot.d ------------------------------------------------------------------
 test_that("plot.d works", {
-
+  # These are also tests for `lines.p()`
+  d_raw_2 <- new_d(c(1.5, 1.75), "raw")
   vdiffr::expect_doppelganger(
     "plot-d-fun-1", recordPlot({
       plot(d_raw)
-      lines(d_raw, col = "red")
+      lines(d_raw_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-2", recordPlot(
+    "plot-d-fun-2", recordPlot({
       plot(d_raw, y = NA)
-    )
+      lines(d_raw_2, col = "red")
+    })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-3", recordPlot(
+    "plot-d-fun-3", recordPlot({
       plot(d_raw, xlab = "a", ylab = "b", main = "c", type = "p")
-    )
+      lines(d_raw_2, xlab = "q")
+    })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-4", recordPlot(plot(d_raw, xlim = c(0, 2), col = "blue"))
+    "plot-d-fun-4", recordPlot({
+      plot(d_raw, xlim = c(0, 2), col = "blue")
+      lines(d_raw_2, lwd = 2)
+    })
+  )
+  vdiffr::expect_doppelganger(
+    "plot-d-fun-5", recordPlot({
+      plot(d_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(d_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    })
   )
 
   # These are also tests for `lines.d()`
