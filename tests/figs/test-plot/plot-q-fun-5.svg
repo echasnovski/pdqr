@@ -69,4 +69,9 @@
 <polygon points='549.60,169.74 556.87,182.33 542.33,182.33 ' style='stroke-width: 1.50; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 <polygon points='608.00,118.40 615.27,131.00 600.73,131.00 ' style='stroke-width: 1.50; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 <polygon points='666.40,67.07 673.67,79.67 659.13,79.67 ' style='stroke-width: 1.50; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='374.40' y1='460.47' x2='374.40' y2='447.63' style='stroke-width: 2.25; stroke-dasharray: 3.00,9.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='82.40' y1='460.47' x2='374.40' y2='460.47' style='stroke-width: 2.25; stroke-dasharray: 3.00,9.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='374.40' y1='447.63' x2='666.40' y2='447.63' style='stroke-width: 2.25; stroke-dasharray: 3.00,9.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<polygon points='366.30,460.47 374.40,452.37 382.50,460.47 374.40,468.57 ' style='stroke-width: 2.25; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<polygon points='658.30,447.63 666.40,439.53 674.50,447.63 666.40,455.73 ' style='stroke-width: 2.25; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 </svg>
