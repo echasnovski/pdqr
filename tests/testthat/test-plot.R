@@ -14,56 +14,56 @@ test_that("plot.p works", {
   # These are also tests for `lines.p()`
   p_raw_2 <- new_p(c(1.5, 1.75), "raw")
   vdiffr::expect_doppelganger(
-    "plot-p-fun-1", recordPlot({
+    "plot-p-raw-1", recordPlot({
       plot(p_raw)
       lines(p_raw_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-2", recordPlot({
+    "plot-p-raw-2", recordPlot({
       plot(p_raw, y = NA)
       lines(p_raw_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-3", recordPlot({
+    "plot-p-raw-3", recordPlot({
       plot(p_raw, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(p_raw_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-4", recordPlot({
+    "plot-p-raw-4", recordPlot({
       plot(p_raw, xlim = c(0, 2), col = "blue")
       lines(p_raw_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-5", recordPlot({
+    "plot-p-raw-5", recordPlot({
       plot(p_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
       lines(p_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
   vdiffr::expect_doppelganger(
-    "plot-lines-p-fun-1", recordPlot({
+    "plot-p-smooth-1", recordPlot({
       plot(p_smooth)
       lines(p_custom)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-p-fun-2", recordPlot({
+    "plot-p-smooth-2", recordPlot({
       plot(p_smooth, y = NA)
       lines(p_custom, y = NA)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-p-fun-3", recordPlot({
+    "plot-p-smooth-3", recordPlot({
       plot(p_smooth, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(p_custom, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-p-fun-4", recordPlot({
+    "plot-p-smooth-4", recordPlot({
       plot(p_smooth, xlim = c(0, 2), col = "blue")
       lines(p_custom)
     })
@@ -72,7 +72,7 @@ test_that("plot.p works", {
 
 test_that("plot.p and lines.p respect `n_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-lines-p-fun-n-grid", recordPlot({
+    "plot-p-smooth-n-grid", recordPlot({
       plot(p_smooth, n_grid = 6)
       lines(p_custom, n_grid = 6)
     })
@@ -91,31 +91,31 @@ test_that("plot.d works", {
   # These are also tests for `lines.p()`
   d_raw_2 <- new_d(c(1.5, 1.75), "raw")
   vdiffr::expect_doppelganger(
-    "plot-d-fun-1", recordPlot({
+    "plot-d-raw-1", recordPlot({
       plot(d_raw)
       lines(d_raw_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-2", recordPlot({
+    "plot-d-raw-2", recordPlot({
       plot(d_raw, y = NA)
       lines(d_raw_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-3", recordPlot({
+    "plot-d-raw-3", recordPlot({
       plot(d_raw, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(d_raw_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-4", recordPlot({
+    "plot-d-raw-4", recordPlot({
       plot(d_raw, xlim = c(0, 2), col = "blue")
       lines(d_raw_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fun-5", recordPlot({
+    "plot-d-raw-5", recordPlot({
       plot(d_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
       lines(d_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
@@ -123,25 +123,25 @@ test_that("plot.d works", {
 
   # These are also tests for `lines.d()`
   vdiffr::expect_doppelganger(
-    "plot-lines-d-fun-1", recordPlot({
+    "plot-d-smooth-1", recordPlot({
       plot(d_smooth)
       lines(d_custom)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-d-fun-2", recordPlot({
+    "plot-d-smooth-2", recordPlot({
       plot(d_smooth, y = NA)
       lines(d_custom, y = NA)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-d-fun-3", recordPlot({
+    "plot-d-smooth-3", recordPlot({
       plot(d_smooth, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(d_custom, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-d-fun-4", recordPlot({
+    "plot-d-smooth-4", recordPlot({
       plot(d_smooth, xlim = c(0, 2), col = "blue")
       lines(d_custom)
     })
@@ -150,7 +150,7 @@ test_that("plot.d works", {
 
 test_that("plot.d and lines.d respect `n_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-lines-d-fun-n-grid", recordPlot({
+    "plot-d-smooth-n-grid", recordPlot({
       plot(d_smooth, n_grid = 6)
       lines(d_custom, n_grid = 6)
     })
@@ -169,31 +169,31 @@ test_that("plot.q works", {
   # These are also tests for `lines.p()`
   q_raw_2 <- new_q(c(1.5, 1.75), "raw")
   vdiffr::expect_doppelganger(
-    "plot-q-fun-1", recordPlot({
+    "plot-q-raw-1", recordPlot({
       plot(q_raw)
       lines(q_raw_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fun-2", recordPlot({
+    "plot-q-raw-2", recordPlot({
       plot(q_raw, y = NA)
       lines(q_raw_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fun-3", recordPlot({
+    "plot-q-raw-3", recordPlot({
       plot(q_raw, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(q_raw_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fun-4", recordPlot({
+    "plot-q-raw-4", recordPlot({
       plot(q_raw, xlim = c(0, 2), col = "blue")
       lines(q_raw_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fun-5", recordPlot({
+    "plot-q-raw-5", recordPlot({
       plot(q_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
       lines(q_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
@@ -201,25 +201,25 @@ test_that("plot.q works", {
 
   # These are also tests for `lines.q()`
   vdiffr::expect_doppelganger(
-    "plot-lines-q-fun-1", recordPlot({
+    "plot-q-smooth-1", recordPlot({
       plot(q_smooth)
       lines(q_custom)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-q-fun-2", recordPlot({
+    "plot-q-smooth-2", recordPlot({
       plot(q_smooth, y = NA)
       lines(q_custom, y = NA)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-q-fun-3", recordPlot({
+    "plot-q-smooth-3", recordPlot({
       plot(q_smooth, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(q_custom, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-lines-q-fun-4", recordPlot({
+    "plot-q-smooth-4", recordPlot({
       plot(q_smooth, xlim = c(0, 2), col = "blue")
       lines(q_custom)
     })
@@ -228,7 +228,7 @@ test_that("plot.q works", {
 
 test_that("plot.q and lines.q respect `n_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-lines-q-fun-n-grid", recordPlot({
+    "plot-q-smooth-n-grid", recordPlot({
       plot(q_smooth, n_grid = 6)
       lines(q_custom, n_grid = 6)
     })
@@ -245,34 +245,34 @@ test_that("plot.q throws error with corrupt input", {
 # plot.r ------------------------------------------------------------------
 test_that("plot.r works", {
   vdiffr::expect_doppelganger(
-    "plot-r-fun-raw-1", recordPlot(plot(r_raw))
+    "plot-r-raw-1", recordPlot(plot(r_raw))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fun-raw-2", recordPlot(plot(r_raw, y = NA))
+    "plot-r-raw-2", recordPlot(plot(r_raw, y = NA))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fun-raw-3", recordPlot(
+    "plot-r-raw-3", recordPlot(
       plot(r_raw, xlab = "a", main = "c")
     )
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fun-raw-4", recordPlot(
+    "plot-r-raw-4", recordPlot(
       plot(r_raw, xlim = c(0, 2), col = "blue", freq = FALSE)
     )
   )
 
   vdiffr::expect_doppelganger(
-    "plot-r-fun-smooth-1", recordPlot(plot(r_smooth))
+    "plot-r-smooth-1", recordPlot(plot(r_smooth))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fun-smooth-2", recordPlot(plot(r_smooth, y = NA))
+    "plot-r-smooth-2", recordPlot(plot(r_smooth, y = NA))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fun-smooth-3",
+    "plot-r-smooth-3",
     recordPlot(plot(r_smooth, xlab = "a", main = "c"))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fun-smooth-4",
+    "plot-r-smooth-4",
     recordPlot(
       plot(r_smooth, xlim = c(0, 2), col = "blue", freq = FALSE)
     )
@@ -281,7 +281,7 @@ test_that("plot.r works", {
 
 test_that("plot.r respects `n_sample` argument", {
   vdiffr::expect_doppelganger(
-    "plot-r-fun-n-sample", recordPlot(plot(r_smooth, n_sample = 10))
+    "plot-r-n-sample", recordPlot(plot(r_smooth, n_sample = 10))
   )
 })
 
