@@ -83,6 +83,14 @@ dedupl_list <- function(l) {
   }
 }
 
+swap <- function(l, name1, name2) {
+  res <- l
+  res[[name1]] <- l[[name2]]
+  res[[name2]] <- l[[name1]]
+
+  res
+}
+
 
 # Notifications -----------------------------------------------------------
 stop_collapse <- function(...) {

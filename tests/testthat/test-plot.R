@@ -168,6 +168,11 @@ test_that("plot.q works", {
       plot(q_raw, xlim = c(0, 2), col = "blue")
     )
   )
+  vdiffr::expect_doppelganger(
+    "plot-q-fun-5", recordPlot({
+      plot(q_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
+    })
+  )
 
   # These are also tests for `lines.q()`
   vdiffr::expect_doppelganger(
@@ -264,6 +269,18 @@ test_that("plot.r throws error with corrupt input", {
 
 # plot_impl_pdq -----------------------------------------------------------
 # Tested in `plot()` methods
+
+
+# add_p_raw_segments ------------------------------------------------------
+# Tested in `plot.p()`
+
+
+# add_q_raw_segments ------------------------------------------------------
+# Tested in `plot.q()`
+
+
+# compute_p_raw_dots ------------------------------------------------------
+# Tested in `plot.p()` and `plot.q()`
 
 
 # make_plot_dots ----------------------------------------------------------

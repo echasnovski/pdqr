@@ -122,6 +122,14 @@ test_that("dedupl_list works", {
 })
 
 
+# swap --------------------------------------------------------------------
+test_that("swap works", {
+  expect_equal(
+    swap(list(a = 1, b = 2, c = 3), "a", "b"), list(a = 2, b = 1, c = 3)
+  )
+})
+
+
 # stop_collapse -----------------------------------------------------------
 test_that("stop_collapse works", {
   expect_error(

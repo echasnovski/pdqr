@@ -64,7 +64,20 @@ plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "Cumulative probability", ylab = "x"
   )
 
-  plot_impl_pdq(x, c(0, 1), n_grid, dots)
+  if (meta(x, "type") == "raw") {
+    # Create canvas
+    no_plot_dots <- dedupl_list(c(
+      list(x = c(0, 1), y = meta(x, "support"), type = "n"),
+      dots
+    ))
+
+    do.call(graphics::plot, no_plot_dots)
+
+    # Add segments
+    add_q_raw_segments(x, list(...))
+  } else {
+    plot_impl_pdq(x, c(0, 1), n_grid, dots)
+  }
 }
 
 plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
@@ -92,6 +105,38 @@ plot_impl_pdq <- function(f, grid_range, n_grid, dots) {
 }
 
 add_p_raw_segments <- function(x, dots) {
+  plot_dots <- compute_p_raw_dots(x, dots)
+
+  do.call(graphics::segments, plot_dots[["seg_ver"]])
+  do.call(graphics::segments, plot_dots[["seg_hor"]])
+  do.call(graphics::points, plot_dots[["points"]])
+}
+
+add_q_raw_segments <- function(x, dots) {
+  plot_p_dots <- compute_p_raw_dots(x, dots)
+
+  # Output should be inverse of plot for "p"
+  plot_dots <- list(
+    seg_ver = plot_p_dots[["seg_hor"]],
+    seg_hor = plot_p_dots[["seg_ver"]],
+    points = plot_p_dots[["points"]]
+  )
+  plot_dots[["seg_ver"]] <- swap(plot_dots[["seg_ver"]], "x0", "y0")
+  plot_dots[["seg_ver"]] <- swap(plot_dots[["seg_ver"]], "x1", "y1")
+  plot_dots[["seg_ver"]][["lty"]] <- plot_p_dots[["seg_ver"]][["lty"]]
+
+  plot_dots[["seg_hor"]] <- swap(plot_dots[["seg_hor"]], "x0", "y0")
+  plot_dots[["seg_hor"]] <- swap(plot_dots[["seg_hor"]], "x1", "y1")
+  plot_dots[["seg_hor"]][["lty"]] <- plot_p_dots[["seg_hor"]][["lty"]]
+
+  plot_dots[["points"]] <- swap(plot_dots[["points"]], "x", "y")
+
+  do.call(graphics::segments, plot_dots[["seg_ver"]])
+  do.call(graphics::segments, plot_dots[["seg_hor"]])
+  do.call(graphics::points, plot_dots[["points"]])
+}
+
+compute_p_raw_dots <- function(x, dots) {
   x_tbl <- meta(x, "x_tbl")
   x <- x_tbl[["x"]]
   cumprob <- x_tbl[["cumprob"]]
@@ -104,17 +149,19 @@ add_p_raw_segments <- function(x, dots) {
     dots,
     list(x0 = x, y0 = c(0, cumprob[-n]), x1 = x, y1 = cumprob, lty = 2)
   ))
-  do.call(graphics::segments, vertical_segments_dots)
 
   horizontal_segments_dots <- dedupl_list(c(
     dots,
     list(x0 = x[-n], y0 = cumprob[-n], x1 = x[-1], y1 = cumprob[-n])
   ))
-  do.call(graphics::segments, horizontal_segments_dots)
 
-  # Add points
   points_dots <- dedupl_list(c(dots, list(x = x, y = cumprob, pch = 16)))
-  do.call(graphics::points, points_dots)
+
+  list(
+    seg_ver = vertical_segments_dots,
+    seg_hor = horizontal_segments_dots,
+    points = points_dots
+  )
 }
 
 make_plot_dots <- function(...) {
@@ -152,7 +199,11 @@ lines.d <- function(x, n_grid = 1001, ...) {
 lines.q <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  lines_impl_pdq(x, c(0, 1), n_grid, list(...))
+  if (meta(x, "type") == "raw") {
+    add_q_raw_segments(x, list(...))
+  } else {
+    lines_impl_pdq(x, c(0, 1), n_grid, list(...))
+  }
 }
 
 lines_impl_pdq <- function(f, grid_range, n_grid, dots) {
