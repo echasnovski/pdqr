@@ -51,4 +51,9 @@
 <line x1='666.40' y1='362.93' x2='720.00' y2='362.93' style='stroke-width: 0.75; stroke: #0000FF;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 <circle cx='374.40' cy='445.07' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #0000FF;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 <circle cx='666.40' cy='362.93' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #0000FF;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='520.40' y1='486.13' x2='520.40' y2='280.80' style='stroke-width: 1.50; stroke-dasharray: 8.00,8.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='593.40' y1='280.80' x2='593.40' y2='75.47' style='stroke-width: 1.50; stroke-dasharray: 8.00,8.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='520.40' y1='280.80' x2='593.40' y2='280.80' style='stroke-width: 1.50;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<circle cx='520.40' cy='280.80' r='2.70pt' style='stroke-width: 1.50; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<circle cx='593.40' cy='75.47' r='2.70pt' style='stroke-width: 1.50; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 </svg>

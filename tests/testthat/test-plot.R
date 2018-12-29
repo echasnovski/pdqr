@@ -11,27 +11,39 @@ set.seed(5555)
 
 # plot.p --------------------------------------------------------------
 test_that("plot.p works", {
-  vdiffr::expect_doppelganger("plot-p-fun-1", recordPlot(plot(p_raw)))
+  # These are also tests for `lines.p()`
+  p_raw_2 <- new_p(c(1.5, 1.75), "raw")
   vdiffr::expect_doppelganger(
-    "plot-p-fun-2", recordPlot(plot(p_raw, y = NA))
+    "plot-p-fun-1", recordPlot({
+      plot(p_raw)
+      lines(p_raw_2)
+    })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-3", recordPlot(
+    "plot-p-fun-2", recordPlot({
+      plot(p_raw, y = NA)
+      lines(p_raw_2, col = "red")
+    })
+  )
+  vdiffr::expect_doppelganger(
+    "plot-p-fun-3", recordPlot({
       plot(p_raw, xlab = "a", ylab = "b", main = "c", type = "p")
-    )
+      lines(p_raw_2, xlab = "q")
+    })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-4", recordPlot(
+    "plot-p-fun-4", recordPlot({
       plot(p_raw, xlim = c(0, 2), col = "blue")
-    )
+      lines(p_raw_2, lwd = 2)
+    })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fun-5", recordPlot(
+    "plot-p-fun-5", recordPlot({
       plot(p_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
-    )
+      lines(p_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    })
   )
 
-  # These are also tests for `lines.p()`
   vdiffr::expect_doppelganger(
     "plot-lines-p-fun-1", recordPlot({
       plot(p_smooth)
