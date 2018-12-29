@@ -43,14 +43,10 @@ impute_x_tbl_impl <- function(x_tbl, type) {
   }
 
   if (type == "raw") {
-    res <- data.frame(
+    data.frame(
       x = x_tbl[["x"]],
-      prob = impute_prob(x_tbl[["prob"]], x_tbl[["n"]])
+      prob = impute_prob(x_tbl[["prob"]])
     )
-    # If "n" is not present in `x_tbl` it won't be present in `res`
-    res[["n"]] <- x_tbl[["n"]]
-
-    res
   } else if (type == "smooth") {
     data.frame(
       x = x_tbl[["x"]],
@@ -62,15 +58,13 @@ impute_x_tbl_impl <- function(x_tbl, type) {
 }
 
 # Extra property checks are needed to avoid creating unnecessary copies
-impute_prob <- function(prob, n) {
-  if (is.null(n)) {
-    tot_prob <- sum(prob)
+impute_prob <- function(prob) {
+  tot_prob <- sum(prob)
 
-    if (is_near(tot_prob, 1)) {prob} else {prob / tot_prob}
+  if (is_near(tot_prob, 1)) {
+    prob
   } else {
-    prob_n <- n / sum(n)
-
-    if (all(is_near(prob, prob_n))) {prob} else {prob_n}
+    prob / tot_prob
   }
 }
 
@@ -92,10 +86,9 @@ compute_x_tbl_raw <- function(x, vals = sort(unique(x))) {
   x <- x[!is.na(x)]
 
   x_val_id <- match(x, vals)
-  val_n <- tabulate(x_val_id)
-  prob <- val_n / length(x)
+  prob <- tabulate(x_val_id) / length(x)
 
-  data.frame(x = vals, prob = prob, n = val_n)
+  data.frame(x = vals, prob = prob)
 }
 
 compute_x_tbl_smooth <- function(x, ...) {

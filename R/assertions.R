@@ -185,16 +185,20 @@ assert_x_tbl <- function(x_tbl, type) {
 }
 
 assert_x_tbl_raw <- function(x_tbl, x_tbl_name) {
-  if (!any(c("prob", "n") %in% names(x_tbl))) {
-    stop_collapse(x_tbl_name, ' should have one of "prob" or "n" columns.')
+  if (!("prob" %in% names(x_tbl))) {
+    stop_collapse(x_tbl_name, ' should have "prob" column.')
   }
 
-  # If "n" is present then it should by "probability distribution"-like.
-  # If "n" is not present then "prob" should be like that.
-  if ("n" %in% names(x_tbl)) {
-    assert_probish(x_tbl[["n"]], '"n"', x_tbl_name)
-  } else {
-    assert_probish(x_tbl[["prob"]], '"prob"', x_tbl_name)
+  prob <- x_tbl[["prob"]]
+  assert_num_col(prob, '"prob"', x_tbl_name)
+
+  if (any(prob < 0)) {
+    stop_collapse(
+      '"prob" column in ', x_tbl_name, " should not have negative values."
+    )
+  }
+  if (sum(prob <= 0)) {
+    stop_collapse('"prob" column in ', x_tbl_name, " should have positive sum.")
   }
 
   TRUE
@@ -239,16 +243,6 @@ assert_x_tbl_meta <- function(x_tbl, type) {
         '"prob" column in "x_tbl" metadata should sum to 1.'
       )
     }
-    if ("n" %in% names(x_tbl)) {
-      prob_n <- x_tbl[["n"]] / sum(x_tbl[["n"]])
-      is_prob_aligned <- all(is_near(x_tbl[["prob"]], prob_n))
-
-      if (!is_prob_aligned) {
-        stop_collapse(
-          '"prob" column in "x_tbl" metadata should be aligned with "n" column.'
-        )
-      }
-    }
   }
 
   if (type == "smooth") {
@@ -258,21 +252,6 @@ assert_x_tbl_meta <- function(x_tbl, type) {
         '`type` is "smooth".'
       )
     }
-  }
-
-  TRUE
-}
-
-assert_probish <- function(vec, col_name, x_tbl_name) {
-  assert_num_col(vec, col_name, x_tbl_name)
-
-  stop_start_chr <- paste0(col_name, " column in ", x_tbl_name)
-
-  if (any(vec < 0)) {
-    stop_collapse(stop_start_chr, " should not have negative values.")
-  }
-  if (sum(vec) <= 0) {
-    stop_collapse(stop_start_chr, " should have positive sum.")
   }
 
   TRUE

@@ -130,18 +130,12 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
     attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
   expect_false(is_pdqr_fun(input_bad_x_tbl_3))
 
-    # "prob" is aligned with "n" if it is present
-  input_bad_x_tbl_4 <- p_raw
-  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]] <- 1 +
-    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]]
-  expect_false(is_pdqr_fun(input_bad_x_tbl_4))
-
   # "smooth" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- p_smooth
-  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
-  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+  input_bad_x_tbl_4 <- p_smooth
+  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]]
+  expect_false(is_pdqr_fun(input_bad_x_tbl_4))
 })
 
 
@@ -172,8 +166,6 @@ test_that("is_support works", {
 # is_x_tbl ----------------------------------------------------------------
 test_that("is_x_tbl works with `type = 'raw'`", {
   expect_true(is_x_tbl(x_raw_x_tbl, type = "raw"))
-  expect_true(is_x_tbl(x_raw_x_tbl[, c("x", "prob")], type = "raw"))
-  expect_true(is_x_tbl(x_raw_x_tbl[, c("x", "n")], type = "raw"))
 
   # Input type
   input <- "a"
@@ -183,20 +175,8 @@ test_that("is_x_tbl works with `type = 'raw'`", {
   expect_false(is_x_tbl(data.frame(a = 1), type = "raw"))
   expect_false(is_x_tbl(data.frame(x = "a"), type = "raw"))
 
-  # Presense of at least one of "prob" or "n"
-  expect_false(is_x_tbl(data.frame(x = 1), type = "raw"))
-
-  # Column "n"
-  expect_true(is_x_tbl(data.frame(x = 1, n = 2), type = "raw"))
-
-  expect_false(is_x_tbl(data.frame(x = 1, n = "a"), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, n = -1), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, n = 0), type = "raw"))
-
-  # Test that "prob" is ignored if "n" is OK
-  expect_true(is_x_tbl(data.frame(x = 1, prob = -1, n = 1), type = "raw"))
-
   # Column "prob"
+  expect_false(is_x_tbl(data.frame(x = 1), type = "raw"))
   expect_false(is_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"))
   expect_false(is_x_tbl(data.frame(x = 1, prob = -1), type = "raw"))
   expect_false(is_x_tbl(data.frame(x = 1, prob = 0), type = "raw"))
@@ -205,10 +185,7 @@ test_that("is_x_tbl works with `type = 'raw'`", {
   expect_true(is_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "raw"))
   # Different column order is allowed
   expect_true(
-    is_x_tbl(
-      data.frame(prob = c(0.1, 0.9), x = 1:2, n = c(1, 9)),
-      type = "raw"
-    )
+    is_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "raw")
   )
 })
 
@@ -272,16 +249,11 @@ test_that("is_x_tbl_meta works", {
   input_bad_x_tbl_3[["prob"]] <- 10 * input_bad_x_tbl_3[["prob"]]
   expect_false(is_x_tbl_meta(input_bad_x_tbl_3, "raw"))
 
-    # "prob" is aligned with "n" if it is present
-  input_bad_x_tbl_4 <- x_raw_x_tbl
-  input_bad_x_tbl_4[["n"]] <- 1 + input_bad_x_tbl_4[["n"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "raw"))
-
   # "smooth" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- x_smooth_x_tbl
-  input_bad_x_tbl_5[["y"]] <- 10 * input_bad_x_tbl_5[["y"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "smooth"))
+  input_bad_x_tbl_4 <- x_smooth_x_tbl
+  input_bad_x_tbl_4[["y"]] <- 10 * input_bad_x_tbl_4[["y"]]
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "smooth"))
 })
 
 

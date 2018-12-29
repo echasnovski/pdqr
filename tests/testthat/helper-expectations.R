@@ -49,21 +49,15 @@ expect_x_tbl_imputation <- function(f) {
   expect_equal(meta(output_1, "x_tbl"), x_raw_x_tbl)
 
     # Reordering columns
-  bad_raw_input_2 <- x_raw_x_tbl[, c("n", "x", "prob")]
+  bad_raw_input_2 <- x_raw_x_tbl[, c("x", "prob")]
   output_2 <- f(bad_raw_input_2, "raw")
   expect_equal(meta(output_2, "x_tbl"), x_raw_x_tbl)
 
-    # Normalising with "n" column
-  bad_raw_input_3 <- x_raw_x_tbl
-  bad_raw_input_3[["prob"]] <- seq_len(n_raw)
+    # Normalising "prob" column
+  bad_raw_input_3 <- x_raw_x_tbl[, c("x", "prob")]
+  bad_raw_input_3[["prob"]] <- bad_raw_input_3[["prob"]] * 10
   output_3 <- f(bad_raw_input_3, "raw")
-  expect_equal(meta(output_3, "x_tbl"), x_raw_x_tbl)
-
-    # Normalising with "prob" column
-  bad_raw_input_4 <- x_raw_x_tbl[, c("x", "prob")]
-  bad_raw_input_4[["prob"]] <- bad_raw_input_4[["prob"]] * 10
-  output_4 <- f(bad_raw_input_4, "raw")
-  expect_equal(meta(output_4, "x_tbl"), x_raw_x_tbl[, c("x", "prob")])
+  expect_equal(meta(output_3, "x_tbl"), x_raw_x_tbl[, c("x", "prob")])
 
   # Type "smooth"
   n_smooth <- nrow(x_smooth_x_tbl)

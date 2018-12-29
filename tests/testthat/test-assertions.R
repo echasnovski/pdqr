@@ -125,21 +125,13 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
     attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
   expect_error(assert_pdqr_fun(input_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
 
-    # "prob" is aligned with "n" if it is present
-  input_bad_x_tbl_4 <- p_raw
-  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]] <- 1 +
-    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["n"]]
-  expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_4), '"prob".*"x_tbl".*aligned.*"n"'
-  )
-
   # "smooth" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- p_smooth
-  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
+  input_bad_x_tbl_4 <- p_smooth
+  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]]
   expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_5), '[Tt]otal integral.*"x_tbl".*1'
+    assert_pdqr_fun(input_bad_x_tbl_4), '[Tt]otal integral.*"x_tbl".*1'
   )
 })
 
@@ -173,8 +165,6 @@ test_that("assert_support works", {
 # assert_x_tbl ------------------------------------------------------------
 test_that("assert_x_tbl works with `type = 'raw'`", {
   expect_silent(assert_x_tbl(x_raw_x_tbl, type = "raw"))
-  expect_silent(assert_x_tbl(x_raw_x_tbl[, c("x", "prob")], type = "raw"))
-  expect_silent(assert_x_tbl(x_raw_x_tbl[, c("x", "n")], type = "raw"))
 
   # Input type
   input <- "a"
@@ -190,33 +180,8 @@ test_that("assert_x_tbl works with `type = 'raw'`", {
     assert_x_tbl(data.frame(x = Inf), type = "raw"), '"x".*finite'
   )
 
-  # Presense of at least one of "prob" or "n"
-  expect_error(assert_x_tbl(data.frame(x = 1), type = "raw"), '"prob".*"n"')
-
-  # Column "n"
-  expect_silent(assert_x_tbl(data.frame(x = 1, n = 2), type = "raw"))
-
-  expect_error(
-    assert_x_tbl(data.frame(x = 1, n = "a"), type = "raw"), '"n".*numeric'
-  )
-  expect_error(
-    assert_x_tbl(data.frame(x = 1, n = Inf), type = "raw"), '"n".*finite'
-  )
-  expect_error(
-    assert_x_tbl(data.frame(x = 1, n = NA_real_), type = "raw"), '"n".*`NA`'
-  )
-  expect_error(
-    assert_x_tbl(data.frame(x = 1, n = -1), type = "raw"), '"n".*negative'
-  )
-  expect_error(
-    assert_x_tbl(data.frame(x = 1, n = 0), type = "raw"),
-    '"n".*positive sum'
-  )
-
-  # Test that "prob" is ignored if "n" is OK
-  expect_silent(assert_x_tbl(data.frame(x = 1, prob = -1, n = 1), type = "raw"))
-
   # Column "prob"
+  expect_error(assert_x_tbl(data.frame(x = 1), type = "raw"), '"prob"')
   expect_error(
     assert_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"), '"prob".*numeric'
   )
@@ -242,10 +207,7 @@ test_that("assert_x_tbl works with `type = 'raw'`", {
   )
   # Different column order is allowed
   expect_silent(
-    assert_x_tbl(
-      data.frame(prob = c(0.1, 0.9), x = 1:2, n = c(1, 9)),
-      type = "raw"
-    )
+    assert_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "raw")
   )
 })
 
@@ -313,10 +275,6 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
 
 # assert_x_tbl_meta -------------------------------------------------------
 # Tested in `assert_pdqr_fun()`
-
-
-# assert_probish ----------------------------------------------------------
-# Tested in `assert_x_tbl()`
 
 
 # assert_num_col ----------------------------------------------------------
