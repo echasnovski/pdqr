@@ -7,15 +7,12 @@ new_q <- function(x, type = "smooth", ...) {
 }
 
 new_q_raw <- function(x_tbl) {
-  distr_cum_prob_small <- cumsum(x_tbl[["prob"]])
-  support <- range(x_tbl[["x"]])
-
   res <- function(p) {
     out <- numeric(length(p))
 
     is_prob <- (p >= 0) & (p <= 1)
     p_prob <- round(p[is_prob], digits = 8)
-    p_ind <- findInterval(p_prob, distr_cum_prob_small, left.open = TRUE) + 1
+    p_ind <- findInterval(p_prob, x_tbl[["cumprob"]], left.open = TRUE) + 1
 
     out[is_prob] <- x_tbl[["x"]][p_ind]
     out[!is_prob] <- NaN
@@ -23,16 +20,17 @@ new_q_raw <- function(x_tbl) {
     out
   }
 
-  add_meta(res, support = support, x_tbl = x_tbl)
+  add_meta(res, support = range(x_tbl[["x"]]), x_tbl = x_tbl)
 }
 
 new_q_smooth <- function(x_tbl) {
   x_dens <- x_tbl[["x"]]
   y_dens <- x_tbl[["y"]]
+  p_grid <- x_tbl[["cumprob"]]
+
   n <- length(x_dens)
   support <- range(x_dens)
 
-  p_grid <- trapez_part_integral(x_dens, y_dens)[-n]
   slope_vec <- diff(y_dens) / diff(x_dens)
   inter_vec <- y_dens[-n] - slope_vec * x_dens[-n]
 
