@@ -49,15 +49,21 @@ expect_x_tbl_imputation <- function(f) {
   expect_equal(meta(output_1, "x_tbl"), x_raw_x_tbl)
 
     # Reordering columns
-  bad_raw_input_2 <- x_raw_x_tbl[, c("x", "prob")]
+  bad_raw_input_2 <- x_raw_x_tbl[, c("cumprob", "x", "prob")]
   output_2 <- f(bad_raw_input_2, "raw")
   expect_equal(meta(output_2, "x_tbl"), x_raw_x_tbl)
 
     # Normalising "prob" column
-  bad_raw_input_3 <- x_raw_x_tbl[, c("x", "prob")]
+  bad_raw_input_3 <- x_raw_x_tbl
   bad_raw_input_3[["prob"]] <- bad_raw_input_3[["prob"]] * 10
   output_3 <- f(bad_raw_input_3, "raw")
-  expect_equal(meta(output_3, "x_tbl"), x_raw_x_tbl[, c("x", "prob")])
+  expect_equal(meta(output_3, "x_tbl"), x_raw_x_tbl)
+
+    # Recomputing "cumprob" column
+  bad_raw_input_4 <- x_raw_x_tbl
+  bad_raw_input_4[["cumprob"]] <- bad_raw_input_4[["cumprob"]] * 10
+  output_4 <- f(bad_raw_input_4, "raw")
+  expect_equal(meta(output_4, "x_tbl"), x_raw_x_tbl)
 
   # Type "smooth"
   n_smooth <- nrow(x_smooth_x_tbl)
@@ -77,6 +83,12 @@ expect_x_tbl_imputation <- function(f) {
   bad_smooth_input_3[["y"]] <- bad_smooth_input_3[["y"]] * 10
   output_3 <- new_d(bad_smooth_input_3, "smooth")
   expect_equal(meta(output_3, "x_tbl"), x_smooth_x_tbl)
+
+    # Recomputing "cumprob" column
+  bad_smooth_input_4 <- x_smooth_x_tbl
+  bad_smooth_input_4[["cumprob"]] <- bad_smooth_input_4[["cumprob"]] * 10
+  output_4 <- f(bad_smooth_input_4, "smooth")
+  expect_equal(meta(output_4, "x_tbl"), x_smooth_x_tbl)
 }
 
 expect_different_distr <- function(f_1, f_2, grid, thres = 10^(-8)) {

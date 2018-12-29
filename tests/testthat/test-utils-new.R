@@ -16,6 +16,18 @@ test_that("impute_x_tbl_impl throws error", {
 })
 
 
+# impute_prob -------------------------------------------------------------
+# Tested in `impute_x_tbl_impl()`
+
+
+# impute_y ----------------------------------------------------------------
+# Tested in `impute_x_tbl_impl()`
+
+
+# impute_vec --------------------------------------------------------------
+# Tested in `impute_x_tbl_impl()`
+
+
 # compute_x_tbl -----------------------------------------------------------
 # Tested in `new_*()` functions
 
@@ -130,12 +142,22 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
     attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
   expect_false(is_pdqr_fun(input_bad_x_tbl_3))
 
+    # Column "cumprob" is mandatory
+  input_bad_x_tbl_4 <- p_raw
+  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
+  expect_false(is_pdqr_fun(input_bad_x_tbl_4))
+
   # "smooth" type
     # Total integral is 1
-  input_bad_x_tbl_4 <- p_smooth
-  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]]
-  expect_false(is_pdqr_fun(input_bad_x_tbl_4))
+  input_bad_x_tbl_5 <- p_smooth
+  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
+  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+
+    # Column "cumprob" is mandatory
+  input_bad_x_tbl_6 <- p_smooth
+  attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["cumprob"]] <- NULL
+  expect_false(is_pdqr_fun(input_bad_x_tbl_6))
 })
 
 
@@ -249,11 +271,21 @@ test_that("is_x_tbl_meta works", {
   input_bad_x_tbl_3[["prob"]] <- 10 * input_bad_x_tbl_3[["prob"]]
   expect_false(is_x_tbl_meta(input_bad_x_tbl_3, "raw"))
 
+    # Column "cumprob" is mandatory
+  input_bad_x_tbl_4 <- x_raw_x_tbl
+  input_bad_x_tbl_4[["cumprob"]] <- NULL
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "raw"))
+
   # "smooth" type
     # Total integral is 1
-  input_bad_x_tbl_4 <- x_smooth_x_tbl
-  input_bad_x_tbl_4[["y"]] <- 10 * input_bad_x_tbl_4[["y"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "smooth"))
+  input_bad_x_tbl_5 <- x_smooth_x_tbl
+  input_bad_x_tbl_5[["y"]] <- 10 * input_bad_x_tbl_5[["y"]]
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "smooth"))
+
+    # Column "cumprob" is mandatory
+  input_bad_x_tbl_5 <- x_smooth_x_tbl
+  input_bad_x_tbl_5[["cumprob"]] <- NULL
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "smooth"))
 })
 
 

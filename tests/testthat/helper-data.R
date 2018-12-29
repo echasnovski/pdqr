@@ -2,7 +2,8 @@
 x_raw <- c(4, 1, 2, 6, 8, 6, 7, 3, 2, 3, 2, 6, 7, 8, 1, 9, 2, 9, 5, 7)
 x_raw_x_tbl <- data.frame(
   x = as.numeric(1:9),
-  prob = c(0.1, 0.2, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.1)
+  prob    = c(0.1, 0.2, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.1),
+  cumprob = c(0.1, 0.3, 0.4, 0.45,  0.5, 0.65,  0.8, 0.9, 1)
 )
 x_raw_cumprobs <- cumsum(x_raw_x_tbl[["prob"]])
 x_raw_support <- c(1, 9)
@@ -13,6 +14,9 @@ x_smooth <- c(
 )
 x_smooth_support <- c(-2.91865392160928, 2.51865392160928)
 x_smooth_x_tbl <- density_piecelin(x_smooth)
+x_smooth_x_tbl[["cumprob"]] <- trapez_part_integral(
+  x_smooth_x_tbl[["x"]], x_smooth_x_tbl[["y"]]
+)
 
 
 # Input test vectors ------------------------------------------------------

@@ -231,6 +231,9 @@ assert_x_tbl_meta <- function(x_tbl, type) {
       '"x" column in "x_tbl" metadata should be sorted increasingly.'
     )
   }
+  if (!("cumprob" %in% names(x_tbl))) {
+    stop_collapse('"x_tbl" metadata should have "cumprob" column.')
+  }
 
   if (type == "raw") {
     if (!("prob" %in% names(x_tbl))) {

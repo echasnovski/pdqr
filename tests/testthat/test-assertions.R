@@ -125,14 +125,24 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
     attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
   expect_error(assert_pdqr_fun(input_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
 
+    # Column "cumprob" is mandatory
+  input_bad_x_tbl_4 <- p_raw
+  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_4), '"x_tbl".*have.*"cumprob"')
+
   # "smooth" type
     # Total integral is 1
-  input_bad_x_tbl_4 <- p_smooth
-  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["y"]]
+  input_bad_x_tbl_5 <- p_smooth
+  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
   expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_4), '[Tt]otal integral.*"x_tbl".*1'
+    assert_pdqr_fun(input_bad_x_tbl_5), '[Tt]otal integral.*"x_tbl".*1'
   )
+
+    # Column "cumprob" is mandatory
+  input_bad_x_tbl_6 <- p_smooth
+  attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["cumprob"]] <- NULL
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_6), '"x_tbl".*have.*"cumprob"')
 })
 
 

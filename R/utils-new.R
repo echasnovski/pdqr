@@ -43,18 +43,27 @@ impute_x_tbl_impl <- function(x_tbl, type) {
   }
 
   if (type == "raw") {
-    data.frame(
+    res <- data.frame(
       x = x_tbl[["x"]],
       prob = impute_prob(x_tbl[["prob"]])
     )
+    res[["cumprob"]] <- impute_vec(
+      vec = x_tbl[["cumprob"]], new_vec = cumsum(res[["prob"]])
+    )
   } else if (type == "smooth") {
-    data.frame(
+    res <- data.frame(
       x = x_tbl[["x"]],
       y = impute_y(x_tbl[["y"]], x_tbl[["x"]])
+    )
+    res[["cumprob"]] <- impute_vec(
+      vec = x_tbl[["cumprob"]],
+      new_vec = trapez_part_integral(res[["x"]], res[["y"]])
     )
   } else {
     stop("Wrong `type`.")
   }
+
+  res
 }
 
 # Extra property checks are needed to avoid creating unnecessary copies
@@ -74,6 +83,14 @@ impute_y <- function(y, x) {
   if (is_near(tot_prob, 1)) {y} else {y / tot_prob}
 }
 
+impute_vec <- function(vec, new_vec) {
+  if (is.null(vec) || !all(is_near(vec, new_vec))) {
+    new_vec
+  } else {
+    vec
+  }
+}
+
 compute_x_tbl <- function(x, type, ...) {
   switch(
     type,
@@ -87,12 +104,16 @@ compute_x_tbl_raw <- function(x, vals = sort(unique(x))) {
 
   x_val_id <- match(x, vals)
   prob <- tabulate(x_val_id) / length(x)
+  cumprob <- cumsum(prob)
 
-  data.frame(x = vals, prob = prob)
+  data.frame(x = vals, prob = prob, cumprob = cumprob)
 }
 
 compute_x_tbl_smooth <- function(x, ...) {
-  density_piecelin(x, ...)
+  res <- density_piecelin(x, ...)
+  res[["cumprob"]] <- trapez_part_integral(res[["x"]], res[["y"]])
+
+  res
 }
 
 add_pdqr_class <- function(f, subclass) {
