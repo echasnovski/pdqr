@@ -19,10 +19,18 @@ new_d_raw <- function(x_tbl) {
 }
 
 new_d_smooth <- function(x_tbl) {
-  res <- stats::approxfun(
-    x = x_tbl[["x"]], y = x_tbl[["y"]], method = "linear",
-    yleft = 0, yright = 0, rule = 2
-  )
+  # Using custom `approx_lin()` instead of `stats::approxfun()` to avoid
+  # creating copies of `x_tbl[["x"]]` and `x_tbl[["y"]]`. It is slower but at
+  # acceptable level.
+  res <- approx_lin(x_tbl[["x"]], x_tbl[["y"]])
+
+  # A better solution which doesn't pass R CMD CHECK:
+  # res <- function(v) {
+  #   stats:::.approxfun(
+  #     x = x_tbl[["x"]], y = x_tbl[["y"]], v = v,
+  #     method = 1, yleft = 0, yright = 0, f = 0
+  #   )
+  # }
 
   add_meta(res, support = range(x_tbl[["x"]]), x_tbl = x_tbl)
 }

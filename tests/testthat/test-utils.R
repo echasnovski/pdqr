@@ -78,6 +78,21 @@ test_that("approx_method_from_type works", {
 })
 
 
+# approx_lin --------------------------------------------------------------
+test_that("approx_lin works", {
+  x <- sort(rnorm(10))
+  y <- rnorm(10)
+  ref_f <- stats::approxfun(x, y, yleft = 0, yright = 0)
+  x_grid <- c(seq(-5, 5, by = 0.001), x)
+
+  f_1 <- approx_lin(x, y)
+  expect_true(max(abs(ref_f(x_grid) - f_1(x_grid))) < 10^(-15))
+
+  f_2 <- approx_lin(rev(x), rev(y))
+  expect_true(max(abs(ref_f(x_grid) - f_2(x_grid))) < 10^(-15))
+})
+
+
 # stretch_range -----------------------------------------------------------
 test_that("stretch_range works", {
   expect_equal(stretch_range(c(0, 1)), c(-10^(-6), 1 + 10^(-6)))
