@@ -351,3 +351,7 @@ test_that("trapez_integral works", {
 
 # p_from_d_points ---------------------------------------------------------
 # Tested in `new_p` and `as_p`
+
+
+# compute_cum_quadr_coeffs ------------------------------------------------
+# Tested in `p_from_d_points()` and `new_q_smooth()`

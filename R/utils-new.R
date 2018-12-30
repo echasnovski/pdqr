@@ -209,15 +209,11 @@ trapez_part_integral <- function(x, y) {
 
 # CDF from points of piecewise-linear density -----------------------------
 p_from_d_points <- function(x_dens, y_dens, cumprob = NULL) {
-  n <- length(x_dens)
-
   if (is.null(cumprob)) {
     p_grid <- trapez_part_integral(x_dens, y_dens)
   } else {
     p_grid <- cumprob
   }
-  slope_vec <- diff(y_dens) / diff(x_dens)
-  inter_vec <- y_dens[-n] - slope_vec * x_dens[-n]
 
   res <- function(q) {
     out <- numeric(length(q))
@@ -233,18 +229,26 @@ p_from_d_points <- function(x_dens, y_dens, cumprob = NULL) {
     q_ind_bet <- q_ind[is_q_between]
     q_bet <- q[is_q_between]
     x_bet <- x_dens[q_ind_bet]
+
     # Exact integration of density linear interpolation
+    coeffs <- compute_cum_quadr_coeffs(x_dens, y_dens, q_ind_bet)
+
     out_between <- p_grid[q_ind_bet] +
-      0.5 * slope_vec[q_ind_bet] * (q_bet * q_bet - x_bet * x_bet) +
-      inter_vec[q_ind_bet] * (q_bet - x_bet)
+      0.5 * coeffs[["slope"]] * (q_bet * q_bet - x_bet * x_bet) +
+      coeffs[["intercept"]] * (q_bet - x_bet)
     # Extra cutoffs to respect floating point precision (~10^(-15))
     out[is_q_between] <- pmin(pmax(out_between, 0), 1)
 
     out
   }
 
-  # For efficient memory management
-  rm(list = "y_dens", envir = environment())
-
   res
+}
+
+compute_cum_quadr_coeffs <- function(x_dens, y_dens, ind_vec) {
+  slope <- (y_dens[ind_vec+1] - y_dens[ind_vec]) /
+    (x_dens[ind_vec+1] - x_dens[ind_vec])
+  intercept <- y_dens[ind_vec] - slope * x_dens[ind_vec]
+
+  list(slope = slope, intercept = intercept)
 }

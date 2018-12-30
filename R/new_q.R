@@ -28,11 +28,7 @@ new_q_smooth <- function(x_tbl) {
   y_dens <- x_tbl[["y"]]
   p_grid <- x_tbl[["cumprob"]]
 
-  n <- length(x_dens)
   support <- range(x_dens)
-
-  slope_vec <- diff(y_dens) / diff(x_dens)
-  inter_vec <- y_dens[-n] - slope_vec * x_dens[-n]
 
   res <- function(p) {
     out <- numeric(length(p))
@@ -42,12 +38,14 @@ new_q_smooth <- function(x_tbl) {
 
     p_ind <- findInterval(p_prob, p_grid)
 
+    coeffs <- compute_cum_quadr_coeffs(x_dens, y_dens, p_ind)
+
     out[is_inside] <- find_quant(
       p = p_prob,
       cdf_start = p_grid[p_ind],
       x_start = x_dens[p_ind],
-      slope = slope_vec[p_ind],
-      intercept = inter_vec[p_ind]
+      slope = coeffs[["slope"]],
+      intercept = coeffs[["intercept"]]
     )
 
     out[is_near(p, 0) & (p >= 0)] <- support[1]
