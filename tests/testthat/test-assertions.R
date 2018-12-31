@@ -49,7 +49,14 @@ test_that("parse_type works", {
 
 
 # assert_missing_args -----------------------------------------------------
-# Tested in tests for conversion of pdqr-functions from user-defined function
+test_that("assert_missing_args works", {
+  expect_silent(assert_missing_args("d"))
+  expect_silent(assert_missing_args("d", support = FALSE))
+  expect_error(
+    assert_missing_args("p", type = TRUE, support = FALSE),
+    'p-function.*supply.*`type`'
+  )
+})
 
 
 # assert_pdqr_fun ---------------------------------------------------------
@@ -89,8 +96,6 @@ test_that("assert_pdqr_fun works", {
   expect_error(assert_pdqr_fun(f_with_corrupt_support), "proper.*support")
 
   # "x_tbl" metadata
-  expect_silent(assert_pdqr_fun(p_custom))
-
     # "x_tbl" is completely missing
   input_bad_x_tbl_1 <- p_smooth
   attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
@@ -102,13 +107,6 @@ test_that("assert_pdqr_fun works", {
   expect_error(
     assert_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
   )
-
-    # "x_tbl" is present but equals `NULL` in case `type` is "raw"
-  input_bad_x_tbl_3 <- p_raw
-  attr(input_bad_x_tbl_3, "meta") <- c(
-    meta(input_bad_x_tbl_3)[c("support", "type")], list(x_tbl = NULL)
-  )
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_3), 'no.*NULL.*x_tbl.*"raw"')
 })
 
 test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {

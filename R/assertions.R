@@ -111,22 +111,14 @@ assert_pdqr_fun <- function(f) {
     )
   }
 
-  if (!("x_tbl" %in% names(meta(f)))) {
+  if (is.null(meta(f, "x_tbl"))) {
     stop_collapse(f_name, ' should have "x_tbl" metadata.')
   }
 
-  if (is.null(meta(f, "x_tbl"))) {
-    if (meta(f, "type") == "raw") {
-      stop_collapse(
-        f_name, ' should have non-`NULL` "x_tbl" metadata if `type` is "raw".'
-      )
-    }
-  } else {
-    assert_x_tbl(meta(f, "x_tbl"), type = meta(f, "type"))
+  assert_x_tbl(meta(f, "x_tbl"), type = meta(f, "type"))
 
-    # Extra properties for "good" "x_tbl" metadata
-    assert_x_tbl_meta(meta(f, "x_tbl"), type = meta(f, "type"))
-  }
+  # Extra properties for "good" "x_tbl" metadata
+  assert_x_tbl_meta(meta(f, "x_tbl"), type = meta(f, "type"))
 
   TRUE
 }

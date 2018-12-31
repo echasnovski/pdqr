@@ -113,13 +113,6 @@ test_that("is_pdqr_fun works", {
   expect_false(
     is_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
   )
-
-    # "x_tbl" is present but equals `NULL` in case `type` is "raw"
-  input_bad_x_tbl_3 <- p_raw
-  attr(input_bad_x_tbl_3, "meta") <- c(
-    meta(input_bad_x_tbl_3)[c("support", "type")], list(x_tbl = NULL)
-  )
-  expect_false(is_pdqr_fun(input_bad_x_tbl_3), 'no.*NULL.*x_tbl.*"raw"')
 })
 
 test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
@@ -320,7 +313,6 @@ test_that("has_meta_x_tbl works", {
 
   expect_false(has_meta_x_tbl(p_raw, "smooth"))
   expect_false(has_meta_x_tbl(p_smooth, "raw"))
-  expect_false(has_meta_x_tbl(p_custom, "smooth"))
   expect_false(has_meta_x_tbl(1, "smooth"))
   expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "raw"))
 

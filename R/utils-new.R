@@ -209,11 +209,7 @@ trapez_part_integral <- function(x, y) {
 
 # CDF from points of piecewise-linear density -----------------------------
 p_from_d_points <- function(x_dens, y_dens, cumprob = NULL) {
-  if (is.null(cumprob)) {
-    p_grid <- trapez_part_integral(x_dens, y_dens)
-  } else {
-    p_grid <- cumprob
-  }
+  p_grid <- cumprob
 
   res <- function(q) {
     out <- numeric(length(q))

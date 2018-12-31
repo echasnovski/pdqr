@@ -39,78 +39,35 @@ x_smooth_vec_ext <- sample(
   )
 )
 
-x_custom <- c(runif(998), 0, 1)
-# Range [0.05, 0.95] instead of [0, 1] will be useful when testing conversion
-  # from "r" class. This is because custom functions have finite support [0, 1]
-  # and `type = "smooth"`. Current behaviour is to extend output range a little
-  # bit (consequence of using `density()`), so result on the edge of true
-  # support may differ a lot.
 x_custom_trunc <- runif(1000, 0.05, 0.95)
-x_custom_inner <- setdiff(x_custom, c(0, 1))
 
 p_vec <- sample(0:1000 / 1000)
-p_vec_trunc <- p_vec[(p_vec >= 0.05) & (p_vec <= 0.95)]
-# "Wholed" vectors of probabilities is needed for estimation tests of `as_q`,
-  # as behavior around actual raw values is not precise.
-p_vec_wholed <- setdiff(p_vec, c(0, x_raw_cumprobs))
-p_vec_bigwholed <- Filter(function(p) {
-  all(abs(p - x_raw_cumprobs) >= 0.01)
-}, p_vec)
 
 
 # Constructed distribution functions --------------------------------------
-# Used in `as_*()` tests for adjusting to support
-construct_adj_smooth <- function(smooth_fun, as_fun, ...) {
-  res <- smooth_fun
-  attributes(res) <- NULL
-
-  as_fun(res, support = c(0, 1), ...)
-}
+custom_x_tbl <- data.frame(x = seq(0, 1, by = 0.0001))
+custom_x_tbl[["y"]] <- dbeta(custom_x_tbl[["x"]], 1, 2)
 
 # p-functions
 p_raw <- new_p(x_raw, "raw")
-
 p_smooth <- new_p(x_smooth, "smooth")
-adj_p_smooth <- construct_adj_smooth(p_smooth, as_p)
-
 user_p <- function(q) {pbeta(q, 1, 2)}
-p_custom <- structure(
-  user_p, class = c("p", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
-)
+p_custom <- new_p(custom_x_tbl)
 
 # d-functions
 d_raw <- new_d(x_raw, "raw")
-
 d_smooth <- new_d(x_smooth, "smooth")
-adj_d_smooth <- construct_adj_smooth(d_smooth, as_d)
-
 user_d <- function(x) {dbeta(x, 1, 2)}
-d_custom <- structure(
-  user_d, class = c("d", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
-)
+d_custom <- new_d(custom_x_tbl)
 
 # q-functions
 q_raw <- new_q(x_raw, "raw")
-
 q_smooth <- new_q(x_smooth, "smooth")
-adj_q_smooth <- construct_adj_smooth(q_smooth, as_q)
-
 user_q <- function(p) {qbeta(p, 1, 2)}
-q_custom <- structure(
-  user_q, class = c("q", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
-)
+q_custom <- new_q(custom_x_tbl)
 
 # r-functions
 r_raw <- new_r(x_raw, "raw")
-
 r_smooth <- new_r(x_smooth, "smooth")
-adj_r_smooth <- construct_adj_smooth(r_smooth, as_r, warn_not_adjusted = FALSE)
-
 user_r <- function(n) {rbeta(n, 1, 2)}
-r_custom <- structure(
-  user_r, class = c("r", "pdqr", "function"),
-  meta = list(support = c(0, 1), type = "smooth", x_tbl = NULL)
-)
+r_custom <- new_r(custom_x_tbl)
