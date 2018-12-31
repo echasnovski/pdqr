@@ -33,6 +33,20 @@ test_that("is_single_number works", {
   expect_false(is_single_number(NA_real_))
 })
 
+test_that("is_single_number checks value bounds", {
+  expect_true(is_single_number(1, min_val = 0))
+  expect_true(is_single_number(1, min_val = 1))
+  expect_false(is_single_number(1, min_val = 2))
+
+  expect_true(is_single_number(1, max_val = 2))
+  expect_true(is_single_number(1, max_val = 1))
+  expect_false(is_single_number(1, max_val = 0))
+
+  expect_true(is_single_number(1, min_val = 0, max_val = 2))
+  expect_true(is_single_number(1, min_val = 1, max_val = 1))
+  expect_false(is_single_number(NA_real_, min_val = 1, max_val = 1))
+})
+
 
 # is_truefalse ------------------------------------------------------------
 test_that("is_truefalse worksq", {
