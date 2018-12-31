@@ -18,7 +18,7 @@ as_distr_impl_def <- function(fun_class, f, support, adjust_to_support, ...) {
 }
 
 as_distr_impl_r <- function(distr_fun, f, n_sample, ...) {
-  assert_type(n_sample, is_single_number, type = "single number")
+  assert_type(n_sample, is_single_number, type_name = "single number")
 
   distr_fun(x = f(n_sample), type = meta(f, "type"), ...)
 }

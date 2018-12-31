@@ -4,7 +4,7 @@ form_trans <- function(trans, ..., .n_sample = 10000, .pdqr_class = NULL,
   assert_type(trans, is.function)
   dots <- list(...)
   assert_trans_dots(dots)
-  assert_type(.n_sample, is_single_number, type = "single number")
+  assert_type(.n_sample, is_single_number, type_name = "single number")
   assert_type(.pdqr_class, is_string, allow_null = TRUE)
   assert_type(.pdqr_args, is.list)
 

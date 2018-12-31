@@ -25,6 +25,12 @@ test_that("assert_type allows `NULL`", {
   expect_silent(assert_type(input, is.numeric, allow_null = TRUE))
 })
 
+test_that("assert_type allows extra arguments for `predicate`", {
+  is_geq <- function(x, min_val) {x >= min_val}
+  expect_silent(assert_type(1, is_geq, min_val = 0))
+  expect_error(assert_type(1, is_geq, min_val = 2))
+})
+
 
 # get_type ----------------------------------------------------------------
 test_that("get_type works", {
