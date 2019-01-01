@@ -19,39 +19,21 @@ is_truefalse <- function(x) {
   identical(x, TRUE) || identical(x, FALSE)
 }
 
-inversing <- function(f, interval, f_type, n_grid = 10001) {
+inversing <- function(f, interval, n_grid = 10001, ...,
+                      .approxfun_args = list()) {
   x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
-  y_grid <- f(x_grid)
+  y_grid <- f(x_grid, ...)
 
-  # Removing duplicates from end is needed for correct inversion of "raw" ECDF
   # Removing all non-finite elements is needed for correct interpolation
-  is_good_y <- !duplicated.default(y_grid, fromLast = f_type == "raw") &
-    is.finite(y_grid)
-  x_grid <- x_grid[is_good_y]
-  y_grid <- y_grid[is_good_y]
+  is_fin_y <- is.finite(y_grid)
+  x_grid <- x_grid[is_fin_y]
+  y_grid <- y_grid[is_fin_y]
 
-  if (length(x_grid) == 1) {
-    only_val <- x_grid[1]
-
-    res <- function(v) {rep(only_val, length(v))}
-  } else {
-    approx_method <- approx_method_from_type(f_type)
-
-    res <- stats::approxfun(
-      x = y_grid, y = x_grid, method = approx_method, rule = 2
-    )
-  }
-
-  # For efficient memory management
-  rm(list = c("x_grid", "y_grid", "is_good_y", "f"), envir = environment())
-
-  res
-}
-
-approx_method_from_type <- function(chr) {
-  switch(
-    chr, raw = "constant", smooth = "linear", stop_collapse("Invalid type.")
-  )
+  call_args <- dedupl_list(c(
+    .approxfun_args,
+    list(x = y_grid, y = x_grid, method = "linear", rule = 2)
+  ))
+  do.call(stats::approxfun, call_args)
 }
 
 approx_lin <- function(x, y) {

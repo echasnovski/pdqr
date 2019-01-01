@@ -61,34 +61,31 @@ test_that("is_truefalse worksq", {
 # inversing ---------------------------------------------------------------
 test_that("inversing works", {
   square <- function(x) {x^2}
-  inv_square <- inversing(square, c(0.5, 10), f_type = "smooth")
+  inv_square <- inversing(square, c(0.5, 10))
   x_vec <- sample(seq(0.5, 10, by = 0.01))
 
   max_error <- max(abs(inv_square(x_vec) - sqrt(x_vec)))
   expect_true(max_error <= 10^(-4))
 })
 
-test_that("inversing works with constant correctly in case `type` is 'raw'", {
-  const_inv <- inversing(
-    function(x) {rep(10, length(x))}, c(0, 20), f_type = "raw"
-  )
-  expect_equal(const_inv(c(0, 10, 20)), rep(20, 3))
-})
-
 test_that("inversing removes infinite values", {
-  f_inv <- inversing(
-    function(x) {1 / x}, c(0, 1), f_type = "smooth"
-  )
+  f_inv <- inversing(function(x) {1 / x}, c(0, 1))
   expect_true(is.finite(f_inv(10^7)))
 })
 
+test_that("inversing accepts extra arguments for input function", {
+  f_inv <- inversing(qunif, c(0, 1), min = 10, max = 11)
+  f_ref <- function(q) {punif(q, min = 10, max = 11)}
+  expect_equal_on_grid(f_inv, f_ref, seq(-9, 12, by = 0.001))
+})
 
-# approx_method_from_type -------------------------------------------------
-test_that("approx_method_from_type works", {
-  expect_equal(approx_method_from_type("raw"), "constant")
-  expect_equal(approx_method_from_type("smooth"), "linear")
-
-  expect_error(approx_method_from_type("a"), "Invalid")
+test_that("inversing accepts extra arguments for `approxfun()`", {
+  f_inv <- inversing(
+    qunif, c(0, 1), .approxfun_args = list(yleft = -100, yright = 100)
+  )
+  expect_equal(
+    f_inv(c(-1, -0.001, 0, 1, 1.001, 2)), c(-100, -100, 0, 1, 100, 100)
+  )
 })
 
 
