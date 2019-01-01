@@ -107,6 +107,20 @@ test_that("approx_lin works", {
 })
 
 
+# extrap_lin --------------------------------------------------------------
+test_that("extrap_lin works", {
+  # True are: y = -x, y = 10, y = 2x + 2
+  expect_equal(
+    extrap_lin(
+      x_1 = c(-1,  0, 1), x_2 = c( 2,  3,  4),
+      y_1 = c( 1, 10, 4), y_2 = c(-2, 10, 10),
+      x_target = c(-10, 0, 10)
+    ),
+    c(10, 10, 22)
+  )
+})
+
+
 # stretch_range -----------------------------------------------------------
 test_that("stretch_range works", {
   expect_equal(stretch_range(c(0, 1)), c(-10^(-6), 1 + 10^(-6)))

@@ -9,9 +9,13 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_true(is_x_tbl_meta(meta(input, "x_tbl"), type = meta(input, "type")))
 }
 
+expect_equal_on_grid <- function(f_1, f_2, grid, thres = 10^(-8)) {
+  expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))
+}
+
 expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
                                meta_not_check = character(0)) {
-  expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))
+  expect_equal_on_grid(f_1, f_2, grid, thres)
   expect_equal(class(f_1), class(f_2))
 
   meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
@@ -39,6 +43,28 @@ expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
     lapply(meta_names_1, meta, obj = f_1),
     lapply(meta_names_2, meta, obj = f_2)
   )
+}
+
+# @fam A list representing distribution family of functions (see
+#   'helper-distributions.R')
+expect_approx <- function(method_as, fam, pdqr_class,
+                          stat_f = max, thres = 10^(-6), ...) {
+  f_as <- method_as(fam[[pdqr_class]], support = fam[["support"]], ...)
+  grid <- fam[["grid"]]
+
+  grid_stat <- stat_f(abs(f_as(grid) - fam[[pdqr_class]](grid)))
+
+  expect_true(grid_stat <= thres)
+}
+
+expect_not_approx <- function(method_as, fam, pdqr_class,
+                          stat_f = max, thres = 10^(-6), ...) {
+  f_as <- method_as(fam[[pdqr_class]], support = fam[["support"]], ...)
+  grid <- fam[["grid"]]
+
+  grid_stat <- stat_f(abs(f_as(grid) - fam[[pdqr_class]](grid)))
+
+  expect_true(grid_stat > thres)
 }
 
 expect_x_tbl_imputation <- function(f) {

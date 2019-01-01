@@ -79,6 +79,13 @@ approx_lin <- function(x, y) {
   }
 }
 
+extrap_lin <- function(x_1, x_2, y_1, y_2, x_target) {
+  slope <- (y_2 - y_1) / (x_2 - x_1)
+  inter <- y_1 - slope * x_1
+
+  slope * x_target + inter
+}
+
 stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
 }
