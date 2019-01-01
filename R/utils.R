@@ -26,10 +26,8 @@ inversing <- function(f, interval, n_grid = 10001, ...,
   x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
   y_grid <- f(x_grid, ...)
 
-  # Removing all non-finite elements is needed for correct interpolation
-  is_fin_y <- is.finite(y_grid)
-  x_grid <- x_grid[is_fin_y]
-  y_grid <- y_grid[is_fin_y]
+  # Impute infinity `y` values by linear extrapolations
+  y_grid <- impute_inf(x_grid, y_grid, "`y` grid during inversing")
 
   call_args <- dedupl_list(c(
     .approxfun_args,

@@ -68,9 +68,9 @@ test_that("inversing works", {
   expect_true(max_error <= 10^(-4))
 })
 
-test_that("inversing removes infinite values", {
-  f_inv <- inversing(function(x) {1 / x}, c(0, 1))
-  expect_true(is.finite(f_inv(10^7)))
+test_that("inversing linearly imputes infinite values", {
+  f_inv <- inversing(function(x) {1 / x}, c(0, 1), n_grid = 11)
+  expect_equal(f_inv(10:15), seq(0.1, 0, by = -0.02))
 })
 
 test_that("inversing accepts extra arguments for input function", {
