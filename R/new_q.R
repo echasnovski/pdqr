@@ -33,10 +33,14 @@ new_q_smooth <- function(x_tbl) {
   res <- function(p) {
     out <- numeric(length(p))
 
-    is_inside <- (p > 0) & (p < 1)
+    is_inside <- (p >= 0) & (p <= 1)
     p_prob <- p[is_inside]
 
-    p_ind <- findInterval(p_prob, p_grid)
+    # `left.open = TRUE` and `all.inside = TRUE` ensure that index of interval
+    # with **the smallest** left end is returned. This is needed to ensure
+    # definition of quantile function: "the smallest value with cumulative
+    # probability not exceeding given one".
+    p_ind <- findInterval(p_prob, p_grid, left.open = TRUE, all.inside = TRUE)
 
     coeffs <- compute_cum_quadr_coeffs(x_dens, y_dens, p_ind)
 
@@ -48,8 +52,6 @@ new_q_smooth <- function(x_tbl) {
       intercept = coeffs[["intercept"]]
     )
 
-    out[is_near(p, 0) & (p >= 0)] <- support[1]
-    out[is_near(p, 1) & (p <= 1)] <- support[2]
     out[(p < 0) | (p > 1)] <- NaN
 
     out
@@ -71,7 +73,9 @@ find_quant <- function(p, cdf_start, x_start, slope, intercept) {
   c <- (cdf_start[is_quadr] - a * x_start[is_quadr] * x_start[is_quadr] -
           b * x_start[is_quadr] - p[is_quadr])
     # Equations have form of a * x^2 + b * x + c = 0
-  discr <- b * b - 4 * a * c
+  # Theoretically, `discr` should always be >= 0. However, due to numerical
+  # inaccuracies of magnitude ~10^(-15), here call to `pmax()` is needed.
+  discr <- pmax(b * b - 4 * a * c, 0)
   res[is_quadr] <- (-b + sqrt(discr)) / (2 * a)
 
   # Case of linear CDF curve (density is non-zero constant)

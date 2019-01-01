@@ -62,6 +62,22 @@ test_that("new_q returns `NaN` for out of range probabilities", {
   expect_true(all(is.nan(q_smooth(c(-1, 2)))))
 })
 
+test_that("new_q returns the smallest `x` with not exceeding `p`", {
+  # Here values 1 and 2 correspond to cumulative probability of 0 and
+  # values 4, 5, and 6 - to 1. Quantile function should return the smallest from
+  # those sets.
+  cur_x_tbl_raw <- data.frame(x = 1:6, prob = c(0, 0, 0.5, 0.5, 0, 0))
+  cur_q_raw <- new_q(cur_x_tbl_raw, "raw")
+  expect_equal(cur_q_raw(c(0, 1)), c(1, 4))
+
+  # Here values 1 and 2 correspond to cumulative probability of 0 and
+  # values 5 and 6 - to 1. Quantile function should return the smallest from
+  # pairs.
+  cur_x_tbl_smooth <- data.frame(x = 1:6, y = c(0, 0, 1, 1, 0, 0))
+  cur_q_smooth <- new_q(cur_x_tbl_smooth, "smooth")
+  expect_equal(cur_q_smooth(c(0, 1)), c(1, 5))
+})
+
 test_that("new_q asserts", {
   expect_warning(new_q(c(1, 0, NA)), "x.*NA.*removed")
   expect_warning(new_q(c(1, 0, NaN)), "x.*NaN.*removed")
@@ -94,7 +110,7 @@ test_that("new_q uses `...` as arguments for `density()`", {
     c(
       -2.919, -1.82, -1.427, -0.91, -0.589, -0.408, -0.273, -0.158,
       -0.053, 0.048,  0.148,  0.25,  0.357,  0.473,    0.6,  0.743,
-       0.903, 1.083,  1.286,  1.54,  2.519
+       0.903, 1.083,  1.286,  1.54,  2.476
     )
   )
 })
