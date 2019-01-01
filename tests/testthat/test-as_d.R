@@ -85,7 +85,7 @@ test_that("as_d.default throws errors on bad input", {
     as_d(fam_norm$d, fam_norm$support, n_grid = "a"), "`n_grid`.*number"
   )
   expect_error(
-    as_d(fam_norm$d, fam_norm$support, n_grid = 1), "`n_grid`.*more.*2"
+    as_d(fam_norm$d, fam_norm$support, n_grid = 2), "`n_grid`.*more.*2"
   )
 })
 

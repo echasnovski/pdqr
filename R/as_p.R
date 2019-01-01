@@ -8,7 +8,7 @@ as_p.default <- function(f, support, n_grid = 10001, ...) {
   assert_support(support)
   assert_type(
     n_grid, is_single_number,
-    type_name = "single number more than 2", min_val = 2
+    type_name = "single number more than 2", min_val = 3
   )
 
   x <- seq(support[1], support[2], length.out = n_grid)
