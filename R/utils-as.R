@@ -31,3 +31,14 @@ y_from_p_grid <- function(x, p) {
   # renormalization should be done.
   y / trapez_integral(x, y)
 }
+
+assert_as_def_args <- function(f, support, n_grid) {
+  assert_type(f, is.function)
+  assert_support(support)
+  assert_type(
+    n_grid, is_single_number,
+    type_name = "single number more than 2", min_val = 3
+  )
+
+  TRUE
+}

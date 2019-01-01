@@ -4,12 +4,7 @@ as_d <- function(f, ...) {
 
 as_d.default <- function(f, support, n_grid = 10001, ...) {
   assert_missing_args("d", support = missing(support))
-  assert_type(f, is.function)
-  assert_support(support)
-  assert_type(
-    n_grid, is_single_number,
-    type_name = "single number more than 2", min_val = 3
-  )
+  assert_as_def_args(f, support, n_grid)
 
   x <- seq(support[1], support[2], length.out = n_grid)
   y <- f(x, ...)

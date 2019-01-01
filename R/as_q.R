@@ -4,12 +4,7 @@ as_q <- function(f, ...) {
 
 as_q.default <- function(f, support, n_grid = 10001, ...) {
   assert_missing_args("p", support = missing(support))
-  assert_type(f, is.function)
-  assert_support(support)
-  assert_type(
-    n_grid, is_single_number,
-    type_name = "single number more than 2", min_val = 2
-  )
+  assert_as_def_args(f, support, n_grid)
 
   p_f <- inversing(f, c(0, 1), n_grid = n_grid, ...)
   p_f <- as_p(p_f, support, n_grid)
