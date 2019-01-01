@@ -109,35 +109,3 @@ test_that('as_d.pdqr works with "r"', {
 test_that("as_d.pdqr throws errors on bad input", {
   expect_error(as_d(structure(user_d, class = c("p", "pdqr"))), "`f`")
 })
-
-
-# impute_inf --------------------------------------------------------------
-test_that("impute_inf works", {
-  expect_equal(
-    # All equations are y = x
-    impute_inf(1:6, c(1, Inf, 3, 4, Inf, 6), "y"), 1:6
-  )
-  expect_equal(
-    # All equations are y = x
-    impute_inf(1:7, c(Inf, 2, Inf, 4, Inf, 6, Inf), "y"), 1:7
-  )
-  expect_equal(
-    # Left: y = x, right: y = -2x + 10
-    impute_inf(1:5, c(1, 2, Inf, 2, 0), "y"), c(1, 2, 4, 2, 0)
-  )
-  expect_equal(
-    # Left: y = x, right: y = -x + 9
-    impute_inf(c(1, 2, 3, 7, 9), c(1, 2, Inf, 2, 0), "y"), c(1, 2, 6, 2, 0)
-  )
-  expect_equal(
-    # Left: y = x, right: y = x + 7
-    impute_inf(c(1, 2, 3, 7, 9), c(1, 2, Inf, 0, 2), "y"), c(1, 2, 3, 0, 2)
-  )
-
-  expect_error(impute_inf(1:3, c(NA, 1, 3), "`a`"), "[Aa]ll.*`a`.*number.*NA")
-  expect_error(impute_inf(1:3, c(1, 2, Inf), "`a`"), "`a`.*3 finite values")
-})
-
-
-# impute_linearly ---------------------------------------------------------
-# Tested in `impute_inf()`

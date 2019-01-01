@@ -1,4 +1,4 @@
-# General -----------------------------------------------------------------
+# General predicates ------------------------------------------------------
 is_near <- function (x, y, tol = 10^(-8)) {
   abs(x - y) < tol
 }
@@ -19,6 +19,8 @@ is_truefalse <- function(x) {
   identical(x, TRUE) || identical(x, FALSE)
 }
 
+
+# Function and vector manipulations ---------------------------------------
 inversing <- function(f, interval, n_grid = 10001, ...,
                       .approxfun_args = list()) {
   x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
@@ -34,6 +36,76 @@ inversing <- function(f, interval, n_grid = 10001, ...,
     list(x = y_grid, y = x_grid, method = "linear", rule = 2)
   ))
   do.call(stats::approxfun, call_args)
+}
+
+impute_inf <- function(x, y, vec_name) {
+  is_inf <- is.infinite(y)
+  is_fin <- is.finite(y)
+  if (!all(is_inf | is_fin)) {
+    stop_collapse(
+      "All values in ", vec_name, " should be finite or infinite numbers ",
+      "(with no `NA`s)."
+    )
+  }
+  if (sum(is_fin) < 3) {
+    stop_collapse(vec_name, " should have at least 3 finite values.")
+  }
+  if (!any(is_inf)) {
+    return(y)
+  }
+
+  inf_inds <- which(is_inf)
+  x_inf <- x[is_inf]
+
+  fin_inds <- which(is_fin)
+  x_fin <- x[is_fin]
+  y_fin <- y[is_fin]
+
+  l_ind <- findInterval(inf_inds, fin_inds)
+
+  # Extrapolate linearly based on two nearest *from left* points with finite
+  # `y`. If there are none, return `-Inf`.
+  left_imputation <- impute_linearly(
+    ind_1 = l_ind - 1, ind_2 = l_ind,
+    x = x_fin, y = y_fin, x_target = x_inf,
+    direction = "left"
+  )
+  # Extrapolate linearly based on two nearest *from right* points with finite
+  # `y`. If there are none, return `-Inf`.
+  right_imputation <- impute_linearly(
+    ind_1 = l_ind + 1, ind_2 = l_ind + 2,
+    x = x_fin, y = y_fin, x_target = x_inf,
+    direction = "right"
+  )
+
+  # Compute maximum from two linear imputations
+  y[is_inf] <- pmax(left_imputation, right_imputation)
+
+  y
+}
+
+impute_linearly <- function(ind_1, ind_2, x, y, x_target, direction) {
+  res <- numeric(length(x_target))
+  condition_bad <- switch(
+    direction, left = ind_2 < 2, right = ind_1 > length(x) - 1
+  )
+  res[condition_bad] <- -Inf
+
+  not_bad <- !condition_bad
+  res[not_bad] <- extrap_lin(
+    x_1 = x[ind_1[not_bad]], x_2 = x[ind_2[not_bad]],
+    y_1 = y[ind_1[not_bad]], y_2 = y[ind_2[not_bad]],
+    x_target = x_target[not_bad]
+  )
+
+  res
+}
+
+extrap_lin <- function(x_1, x_2, y_1, y_2, x_target) {
+  slope <- (y_2 - y_1) / (x_2 - x_1)
+  inter <- y_1 - slope * x_1
+
+  slope * x_target + inter
 }
 
 approx_lin <- function(x, y) {
@@ -61,17 +133,32 @@ approx_lin <- function(x, y) {
   }
 }
 
-extrap_lin <- function(x_1, x_2, y_1, y_2, x_target) {
-  slope <- (y_2 - y_1) / (x_2 - x_1)
-  inter <- y_1 - slope * x_1
-
-  slope * x_target + inter
-}
-
 stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
 }
 
+
+# List manipulations ------------------------------------------------------
+dedupl_list <- function(l) {
+  l_names <- names(l)
+
+  if (is.null(l_names)) {
+    l
+  } else {
+    l[!duplicated(l_names) | (l_names == "")]
+  }
+}
+
+swap <- function(l, name1, name2) {
+  res <- l
+  res[[name1]] <- l[[name2]]
+  res[[name2]] <- l[[name1]]
+
+  res
+}
+
+
+# Class and attributes manipulations --------------------------------------
 add_class <- function(x, cl) {
   x_cl <- class(x)
   n_cl <- length(cl)
@@ -89,24 +176,6 @@ copy_attrs <- function(to, from) {
   attributes(to) <- attributes(from)
 
   to
-}
-
-dedupl_list <- function(l) {
-  l_names <- names(l)
-
-  if (is.null(l_names)) {
-    l
-  } else {
-    l[!duplicated(l_names) | (l_names == "")]
-  }
-}
-
-swap <- function(l, name1, name2) {
-  res <- l
-  res[[name1]] <- l[[name2]]
-  res[[name2]] <- l[[name1]]
-
-  res
 }
 
 
