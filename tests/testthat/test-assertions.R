@@ -179,6 +179,9 @@ test_that("assert_support works", {
 # assert_x_tbl ------------------------------------------------------------
 test_that("assert_x_tbl works with `type = 'raw'`", {
   expect_silent(assert_x_tbl(x_raw_x_tbl, type = "raw"))
+  expect_silent(
+    assert_x_tbl(data.frame(x = 1:3, prob = c(0, 1, 0)), type = "raw")
+  )
 
   # Input type
   input <- "a"

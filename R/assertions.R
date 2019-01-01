@@ -191,7 +191,7 @@ assert_x_tbl_raw <- function(x_tbl, x_tbl_name) {
       '"prob" column in ', x_tbl_name, " should not have negative values."
     )
   }
-  if (sum(prob <= 0)) {
+  if (sum(prob) <= 0) {
     stop_collapse('"prob" column in ', x_tbl_name, " should have positive sum.")
   }
 
