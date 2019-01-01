@@ -47,20 +47,24 @@ expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
 
 # @fam A list representing distribution family of functions (see
 #   'helper-distributions.R')
-expect_approx <- function(method_as, fam, pdqr_class,
+expect_approx <- function(method_as, fam, pdqr_class, grid = NULL,
                           stat_f = max, thres = 10^(-6), ...) {
   f_as <- method_as(fam[[pdqr_class]], support = fam[["support"]], ...)
-  grid <- fam[["grid"]]
+  if (is.null(grid)) {
+    grid <- fam[["grid"]]
+  }
 
   grid_stat <- stat_f(abs(f_as(grid) - fam[[pdqr_class]](grid)))
 
   expect_true(grid_stat <= thres)
 }
 
-expect_not_approx <- function(method_as, fam, pdqr_class,
+expect_not_approx <- function(method_as, fam, pdqr_class, grid = NULL,
                           stat_f = max, thres = 10^(-6), ...) {
   f_as <- method_as(fam[[pdqr_class]], support = fam[["support"]], ...)
-  grid <- fam[["grid"]]
+  if (is.null(grid)) {
+    grid <- fam[["grid"]]
+  }
 
   grid_stat <- stat_f(abs(f_as(grid) - fam[[pdqr_class]](grid)))
 

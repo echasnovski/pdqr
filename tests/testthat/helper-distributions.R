@@ -1,15 +1,8 @@
+set.seed(18345)
+
 # Helpers -----------------------------------------------------------------
 curry <- function(f, ...) {
   function(t) {f(t, ...)}
-}
-
-inversing_simple <- function(f, interval, n_grid = 10001) {
-  x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
-  y_grid <- f(x_grid)
-
-  stats::approxfun(
-    x = y_grid, y = x_grid, method = "linear", rule = 2
-  )
 }
 
 # To use instead of `max()` in case of infinity is involved
@@ -94,6 +87,17 @@ fam_chisq_inf <- list(
 )
 
 # Mixture of two normal. Important type of bimodal distribution.
+r_mix_norm <- function(n) {
+  smpl_1 <- rnorm(n, mean = -3)
+  smpl_2 <- rnorm(n, sd = 0.5)
+  smpl_unif <- runif(n)
+
+  ifelse(smpl_unif <= 0.1, smpl_1, smpl_2)
+}
+mix_norm_smpl <- r_mix_norm(1e5)
+p_sequence <- seq(0, 1, length.out = 1e5)
+q_seq <- quantile(mix_norm_smpl, probs = p_sequence)
+
 fam_mix_norm <- list(
   p = function(q) {
     0.1 * pnorm(q, mean = -3) + 0.9 * pnorm(q, sd = 0.5)
@@ -101,17 +105,8 @@ fam_mix_norm <- list(
   d = function(x) {
     0.1 * dnorm(x, mean = -3) + 0.9 * dnorm(x, sd = 0.5)
   },
-  q = inversing_simple(
-    function(q) {0.1 * pnorm(q, mean = -3) + 0.9 * pnorm(q, sd = 0.5)},
-    c(-13, 10)
-  ),
-  r = function(n) {
-    smpl_1 <- rnorm(n, mean = -3)
-    smpl_2 <- rnorm(n, sd = 0.5)
-    smpl_unif <- runif(n)
-
-    ifelse(smpl_unif <= 0.1, smpl_1, smpl_2)
-  },
+  q = stats::approxfun(p_sequence, q_seq, method = "linear"),
+  r = r_mix_norm,
   support = c(-13, 10),
   grid = seq(-13, 10, length.out = 1e5)
 )
@@ -129,7 +124,7 @@ fam_mix_unif <- list(
     res <- numeric(length(p))
     p_ind <- findInterval(p, c(0, 0.2, 1), left.open = TRUE)
     res[p_ind == 0] <- NaN
-    res[is_near(p, 0) & (p > 0)] <- p[is_near(p, 0) & (p > 0)] / 0.2
+    res[is_near(p, 0) & (p >= 0)] <- p[is_near(p, 0) & (p >= 0)] / 0.2
     res[p_ind == 1] <- p[p_ind == 1] / 0.2
     res[p_ind == 2] <- 2.5 * p[p_ind == 2] + 1.5
     res[p == 3] <- NaN
