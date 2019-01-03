@@ -120,6 +120,13 @@ add_pdqr_class <- function(f, subclass) {
   add_class(f, c(subclass, "pdqr"))
 }
 
+unpdqr <- function(f) {
+  attr(f, "meta") <- NULL
+  class(f) <- setdiff(class(f), c("p", "d", "q", "r", "pdqr"))
+
+  f
+}
+
 filter_numbers <- function(x) {
   x_is_nan <- is.nan(x)
   if (any(x_is_nan)) {

@@ -53,6 +53,14 @@ test_that("add_pdqr_class works", {
 })
 
 
+# unpdqr ------------------------------------------------------------------
+test_that("unpdqr works", {
+  out_f <- unpdqr(p_raw)
+  expect_null(attr(out_f, "meta"))
+  expect_false(inherits(out_f, c("p", "d", "q", "r", "pdqr")))
+})
+
+
 # filter_numbers ----------------------------------------------------------
 test_that("filter_numbers works", {
   expect_equal(
