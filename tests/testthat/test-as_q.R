@@ -38,6 +38,8 @@ test_that("as_q.default results in good approximations of input", {
 
   # `max()` isn't used because of density discontinuity
   expect_approx(as_q, fam_mix_unif, "q", grid = p_seq, stat_f = quan999)
+
+  expect_approx(as_q, fam_unif, "q", grid = p_seq, thres = 5e-4)
 })
 
 test_that("as_q.default uses `n_grid` argument", {

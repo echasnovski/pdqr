@@ -19,6 +19,7 @@ test_that("as_p.default results in good approximations of input", {
   expect_approx(as_p, fam_chisq_inf, "p", thres = 1e-2)
   expect_approx(as_p, fam_mix_norm, "p", thres = 2e-6)
   expect_approx(as_p, fam_mix_unif, "p", thres = 1e-4)
+  expect_approx(as_p, fam_unif, "p", thres = 1e-4)
 })
 
 test_that("as_p.default uses `n_grid` argument", {

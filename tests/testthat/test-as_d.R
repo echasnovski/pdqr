@@ -20,12 +20,15 @@ test_that("as_d.default results in good approximations of input", {
   expect_approx(as_d, fam_beta_inf, "d", stat_f = quan90, thres = 5e-2)
 
   expect_approx(as_d, fam_chisq, "d")
+
   # `max()` isn't used because of infinite density
   expect_approx(as_d, fam_chisq_inf, "d", stat_f = quan999, thres = 5e-2)
 
   expect_approx(as_d, fam_mix_norm, "d", thres = 2e-6)
+
   # `max()` isn't used because of density discontinuity
   expect_approx(as_d, fam_mix_unif, "d", stat_f = quan999, thres = 1e-4)
+  expect_approx(as_d, fam_unif, "d", stat_f = quan999, thres = 1e-4)
 })
 
 test_that("as_d.default uses `n_grid` argument", {

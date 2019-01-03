@@ -112,7 +112,7 @@ fam_mix_norm <- list(
 )
 
 # Mixture of two uniform. Has segment of exactly zero density. Also "bimodal".
-# Also density is discontinuos.
+# Also density is discontinuous.
 fam_mix_unif <- list(
   p = function(q) {
     0.2 * punif(q) + 0.8 * punif(q, min = 2, max = 4)
@@ -140,4 +140,10 @@ fam_mix_unif <- list(
   },
   support = c(0, 4),
   grid = seq(0, 4, length.out = 1e5)
+)
+
+# Uniform with too wide support. Discontinuous at beginning and end.
+fam_unif <- list(
+  p = stats::punif, d = stats::dunif, q = stats::qunif, r = stats::runif,
+  support = c(-0.5, 1.2), grid = seq(-0.5, 1.2, length.out = 1e5)
 )
