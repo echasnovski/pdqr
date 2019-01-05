@@ -18,8 +18,8 @@ test_that("as_d.default results in good approximations of input", {
   # `max()` isn't used because of infinite density
   # Overall accuracy isn't great because infinite density is cut which decreases
   # total probability. This causes overall density to increase.
-  expect_approx(as_d, fam_beta_inf, "d", stat_f = median, thres = 2e-2)
   expect_approx(as_d, fam_beta_inf, "d", stat_f = quan90, thres = 5e-2)
+  expect_not_approx(as_d, fam_beta_inf, "d", stat_f = min, thres = 1e-2)
   expect_approx(as_d, fam_beta_midinf, "d", stat_f = quan90, thres = 4e-2)
   expect_not_approx(as_d, fam_beta_midinf, "d", stat_f = min, thres = 1e-2)
 
