@@ -15,6 +15,7 @@ test_that("as_p.default results in good approximations of input", {
   expect_approx(as_p, fam_exp_rev, "p")
   expect_approx(as_p, fam_beta, "p")
   expect_approx(as_p, fam_beta_inf, "p", thres = 1e-2)
+  expect_approx(as_p, fam_beta_midinf, "p", thres = 1e-4)
   expect_approx(as_p, fam_chisq, "p")
   expect_approx(as_p, fam_chisq_inf, "p", thres = 1e-2)
   expect_approx(as_p, fam_mix_norm, "p", thres = 2e-6)

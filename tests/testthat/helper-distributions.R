@@ -64,6 +64,61 @@ fam_beta_inf <- list(
   grid = seq(0.001, 1-0.001, length.out = 1e5)
 )
 
+# Beta-based distribution. Has infinity density point inside support.
+# Constructed from `fam_beta_inf` density by swapping halves of support.
+fam_beta_midinf <- list(
+  p = function(q) {
+    res <- numeric(length(q))
+
+    q_ind <- findInterval(q, c(0, 0.5, 1))
+    res[q_ind == 1] <- fam_beta_inf$p(q[q_ind == 1] + 0.5) - fam_beta_inf$p(0.5)
+    res[q_ind == 2] <- fam_beta_inf$p(q[q_ind == 2] - 0.5) +
+      diff(fam_beta_inf$p(c(0.5, 1)))
+    res[q == 1] <- 1
+
+    res
+  },
+  d = function(x) {
+    res <- numeric(length(x))
+
+    x_ind <- findInterval(x, c(0, 0.5, 1))
+    res[x_ind == 1] <- fam_beta_inf$d(x[x_ind == 1] + 0.5)
+    res[x_ind == 2] <- fam_beta_inf$d(x[x_ind == 2] - 0.5)
+    res[x == 1] <- fam_beta_inf$d(0.5)
+
+    res
+  },
+  q = function(p) {
+    mid_image <- diff(fam_beta_inf$p(c(0.5, 1)))
+    res <- numeric(length(p))
+
+    p_ind <- findInterval(x = p, vec = c(0, mid_image, 1))
+    res[p_ind == 1] <- fam_beta_inf$q(p[p_ind == 1] + 1 - mid_image) -
+      fam_beta_inf$q(1 - mid_image)
+    res[p_ind == 2] <- fam_beta_inf$q(p[p_ind == 2] - mid_image) +
+      diff(fam_beta_inf$q(c(1 - mid_image, 1)))
+    res[p == 1] <- 1
+
+    res
+  },
+  r = function(n) {
+    res <- numeric(n)
+
+    smpl <- fam_beta_inf$r(n)
+    smpl_ind <- findInterval(smpl, c(0, 0.5, 1))
+    res[smpl_ind == 1] <- smpl[smpl_ind == 1] + 0.5
+    res[smpl_ind == 2] <- smpl[smpl_ind == 2] - 0.5
+    res[smpl == 1] <- 0.5
+
+    res
+  },
+  support = c(0, 1),
+  # Step away a little from 0.5 where density goes to infinity
+  grid = c(
+    seq(0, 0.499, length.out = 0.5e5), seq(0.501, 1, length.out = 0.5e5)
+  )
+)
+
 # Chi square distribution. Support is unbounded from right.
 fam_chisq <- list(
   p = curry(stats::pchisq, df = 2),

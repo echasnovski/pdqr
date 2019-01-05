@@ -32,6 +32,7 @@ test_that("as_q.default results in good approximations of input", {
   expect_approx(as_q, fam_exp_rev, "q", grid = p_seq_ltail, thres = 6e-5)
   expect_approx(as_q, fam_beta, "q", grid = p_seq, thres = 4e-5)
   expect_approx(as_q, fam_beta_inf, "q", grid = p_seq, thres = 6e-3)
+  expect_approx(as_q, fam_beta_midinf, "q", grid = p_seq, thres = 1e-4)
   expect_approx(as_q, fam_chisq, "q", grid = p_seq_rtail, thres = 2e-4)
   expect_approx(as_q, fam_chisq_inf, "q", grid = p_seq_rtail, thres = 1.5e-2)
   expect_approx(as_q, fam_mix_norm, "q", grid = p_seq_btail, thres = 2e-3)
