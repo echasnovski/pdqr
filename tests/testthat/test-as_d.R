@@ -23,6 +23,33 @@ d_unif <-        as_d(fam_unif$d,        fam_unif$support)
 
 
 # as_d.default ------------------------------------------------------------
+test_that("as_d.default output approximates CDF after `as_p()`", {
+  expect_close_f(as_p(d_norm), fam_norm$p, fam_norm$grid)
+  expect_close_f(as_p(d_norm_2), fam_norm_2$p, fam_norm_2$grid)
+  expect_close_f(as_p(d_exp), fam_exp$p, fam_exp$grid)
+  expect_close_f(as_p(d_exp_rev), fam_exp_rev$p, fam_exp_rev$grid)
+  expect_close_f(as_p(d_beta), fam_beta$p, fam_beta$grid)
+  expect_close_f(
+    as_p(d_beta_inf), fam_beta_inf$p, fam_beta_inf$grid,
+    thres = 4e-2
+  )
+  expect_close_f(
+    as_p(d_beta_midinf), fam_beta_midinf$p, fam_beta_midinf$grid,
+    thres = 2e-2
+  )
+  expect_close_f(as_p(d_chisq), fam_chisq$p, fam_chisq$grid)
+  expect_close_f(
+    as_p(d_chisq_inf), fam_chisq_inf$p, fam_chisq_inf$grid,
+    thres = 2e-2
+  )
+  expect_close_f(as_p(d_mix_norm), fam_mix_norm$p, fam_mix_norm$grid)
+  expect_close_f(
+    as_p(d_mix_unif), fam_mix_unif$p, fam_mix_unif$grid,
+    thres = 1e-4
+  )
+  expect_close_f(as_p(d_unif), fam_unif$p, fam_unif$grid, thres = 1e-4)
+})
+
 test_that("as_d.default results in good approximations of input", {
   expect_close_f(d_norm, fam_norm$d, fam_norm$grid)
   expect_close_f(d_norm_2, fam_norm_2$d, fam_norm_2$grid)
@@ -69,6 +96,30 @@ test_that("as_d.default results in good approximations of input", {
     d_unif, fam_unif$d, fam_unif$grid,
     stat_f = quan999, thres = 1e-4
   )
+})
+
+test_that("as_d.default output approximates quantile function after `as_q()`", {
+  expect_close_f(as_q(d_norm), fam_norm$q, p_seq_btail, thres = 6e-5)
+  expect_close_f(as_q(d_norm_2), fam_norm_2$q, p_seq_btail, thres = 1e-5)
+  expect_close_f(as_q(d_exp), fam_exp$q, p_seq_rtail, thres = 5e-6)
+  expect_close_f(as_q(d_exp_rev), fam_exp_rev$q, p_seq_ltail, thres = 5e-6)
+  expect_close_f(as_q(d_beta), fam_beta$q, p_seq, thres = 2e-3)
+  expect_close_f(as_q(d_beta_inf), fam_beta_inf$q, p_seq, thres = 2.5e-2)
+  expect_close_f(as_q(d_beta_midinf), fam_beta_midinf$q, p_seq, thres = 1e-2)
+  expect_close_f(as_q(d_chisq), fam_chisq$q, p_seq_rtail, thres = 5e-5)
+  expect_close_f(
+    as_q(d_chisq_inf), fam_chisq_inf$q, p_seq_rtail,
+    thres = 4e-2
+  )
+  expect_close_f(as_q(d_mix_norm), fam_mix_norm$q, p_seq_btail, thres = 5e-2)
+
+  # `max()` isn't used because of zero density segment (q-function
+  # discontinuity)
+  expect_close_f(as_q(d_mix_unif), fam_mix_unif$q, p_seq, thres = 4e-4)
+
+  # Too big threshold because "x_tbl" metadata contains too small `y` values
+  # with cumulative probability 0.
+  expect_close_f(as_q(d_unif), fam_unif$q, p_seq, thres = 1)
 })
 
 test_that("as_d.default uses `n_grid` argument", {

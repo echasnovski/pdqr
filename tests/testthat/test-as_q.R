@@ -23,6 +23,70 @@ q_unif <-        as_q(fam_unif$q,        fam_unif$support)
 
 
 # as_q.default ------------------------------------------------------------
+test_that("as_q.default output approximates CDF after `as_p()`", {
+  expect_close_f(as_p(q_norm), fam_norm$p, fam_norm$grid, thres = 5e-5)
+  expect_close_f(as_p(q_norm_2), fam_norm_2$p, fam_norm_2$grid, thres = 5e-5)
+  expect_close_f(as_p(q_exp), fam_exp$p, fam_exp$grid, thres = 6e-5)
+  expect_close_f(as_p(q_exp_rev), fam_exp_rev$p, fam_exp_rev$grid, thres = 6e-5)
+  expect_close_f(as_p(q_beta), fam_beta$p, fam_beta$grid, thres = 4e-5)
+  expect_close_f(
+    as_p(q_beta_inf), fam_beta_inf$p, fam_beta_inf$grid,
+    thres = 1e-2
+  )
+  expect_close_f(
+    as_p(q_beta_midinf), fam_beta_midinf$p, fam_beta_midinf$grid,
+    thres = 6e-5
+  )
+  expect_close_f(as_p(q_chisq), fam_chisq$p, fam_chisq$grid, thres = 6e-5)
+  expect_close_f(
+    as_p(q_chisq_inf), fam_chisq_inf$p, fam_chisq_inf$grid,
+    thres = 1e-2
+  )
+  expect_close_f(
+    as_p(q_mix_norm), fam_mix_norm$p, fam_mix_norm$grid,
+    thres = 3e-3
+  )
+  expect_close_f(
+    as_p(q_mix_unif), fam_mix_unif$p, fam_mix_unif$grid,
+    thres = 2e-4
+  )
+  expect_close_f(as_p(q_unif), fam_unif$p, fam_unif$grid, thres = 6e-5)
+})
+
+test_that("as_q.default output approximates density after `as_d()`", {
+  expect_close_f(as_d(q_norm), fam_norm$d, fam_norm$grid, thres = 4e-4)
+  expect_close_f(as_d(q_norm_2), fam_norm_2$d, fam_norm_2$grid, thres = 4e-3)
+  expect_close_f(as_d(q_exp), fam_exp$d, fam_exp$grid, thres = 1e-4)
+  expect_close_f(as_d(q_exp_rev), fam_exp_rev$d, fam_exp_rev$grid, thres = 1e-4)
+  expect_close_f(as_d(q_beta), fam_beta$d, fam_beta$grid, thres = 5e-3)
+  expect_close_f(
+    as_d(q_beta_inf), fam_beta_inf$d, fam_beta_inf$grid,
+    stat_f = quan90, thres = 2e-2
+  )
+  expect_close_f(
+    as_d(q_beta_midinf), fam_beta_midinf$d, fam_beta_midinf$grid,
+    stat_f = quan99, thres = 3e-4
+  )
+  expect_close_f(as_d(q_chisq), fam_chisq$d, fam_chisq$grid, thres = 5e-5)
+  expect_close_f(
+    as_d(q_chisq_inf), fam_chisq_inf$d, fam_chisq_inf$grid,
+    stat_f = quan999, thres = 2e-2
+  )
+  # Accuracy is bad because of non-precise construction of `fam_mix_norm$q`
+  expect_close_f(
+    as_d(q_mix_norm), fam_mix_norm$d, fam_mix_norm$grid,
+    stat_f = median
+  )
+  expect_close_f(
+    as_d(q_mix_unif), fam_mix_unif$d, fam_mix_unif$grid,
+    stat_f = quan999, thres = 1e-4
+  )
+  expect_close_f(
+    as_d(q_unif), fam_unif$d, fam_unif$grid,
+    stat_f = quan999
+  )
+})
+
 test_that("as_q.default results in good approximations of input", {
   # General tendency: maximum error is rather big but overall is quite good
   # To test it, run it with higher `n_grid` value
