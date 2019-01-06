@@ -108,8 +108,6 @@ test_that("as_p.default output approximates quantile function after `as_q()`", {
   # discontinuity)
   expect_close_f(as_q(p_mix_unif), fam_mix_unif$q, p_seq, stat_f = quan999)
 
-  # Too big threshold because "x_tbl" metadata contains too small `y` values
-  # with cumulative probability 0.
   expect_close_f(as_q(p_unif), fam_unif$q, p_seq, thres = 3e-4)
 })
 

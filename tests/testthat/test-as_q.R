@@ -123,7 +123,7 @@ test_that("as_q.default results in good approximations of input", {
   expect_close_f(q_unif, fam_unif$q, p_seq, thres = 5e-4)
 })
 
-test_that("as_d.default output has the same support as was in input", {
+test_that("as_q.default output has the same support as was in input", {
   is_equal_supp <- vapply(
     seq_along(q_list), function(i) {
       isTRUE(all.equal(
