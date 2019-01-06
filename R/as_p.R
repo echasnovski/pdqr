@@ -11,6 +11,8 @@ as_p.default <- function(f, support, n_grid = 10001, ...) {
 
   y <- y_from_p_grid(x, p)
 
+  assert_tot_prob(sum(y, na.rm = TRUE))
+
   # This doesn't change output computation results and is needed for correct
   # approximation of q-function in case `as_q()` is called
   x_tbl <- remove_zero_edge_y(data.frame(x = x, y = y))

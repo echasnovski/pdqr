@@ -9,6 +9,13 @@ context("test-utils-as")
 # Tested in `as_*.default()` functions
 
 
+# assert_tot_prob ---------------------------------------------------------
+test_that("assert_tot_prob works", {
+  expect_error(assert_tot_prob(0), "probability.*positive")
+  expect_silent(assert_tot_prob(0.1))
+})
+
+
 # remove_zero_edge_y ------------------------------------------------------
 test_that("remove_zero_edge_y works", {
   input_x_tbl <- data.frame(x = 1:8, y = c(0, 0, 1, 0, 0, 1, 0, 0))

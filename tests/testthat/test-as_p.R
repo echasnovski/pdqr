@@ -150,6 +150,10 @@ test_that("as_p.default properly adjusts to support", {
   )
 })
 
+test_that("as_p.default throws error if total probability on support is zero", {
+  expect_error(as_p(fam_beta$p, c(1.5, 2)), "probability.*positive")
+})
+
 test_that("as_p.default throws errors on bad input", {
   expect_error(as_p(fam_norm$p), "supply.*support")
   expect_error(as_p("a", c(0, 1)), "`f`.*function")

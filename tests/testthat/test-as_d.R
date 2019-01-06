@@ -174,6 +174,10 @@ test_that("as_d.default properly adjusts to support", {
   expect_true(abs(round(integral[["value"]], 8) - 1) <= integral[["abs.error"]])
 })
 
+test_that("as_d.default throws error if total probability on support is zero", {
+  expect_error(as_d(fam_beta$d, c(1.5, 2)), "probability.*positive")
+})
+
 test_that("as.d.default properly imputes infinity values", {
   # Imputed value should be a maximum of linear extrapolations based on two
   # nearest left and two nearest right non-infinite values

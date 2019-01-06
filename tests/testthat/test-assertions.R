@@ -296,10 +296,3 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
 
 # assert_num_col ----------------------------------------------------------
 # Tested in `assert_x_tbl()`
-
-
-# assert_tot_prob ---------------------------------------------------------
-test_that("assert_tot_prob works", {
-  expect_error(assert_tot_prob(0), "probability.*zero")
-  expect_silent(assert_tot_prob(0.1))
-})

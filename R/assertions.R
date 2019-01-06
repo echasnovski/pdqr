@@ -272,11 +272,3 @@ assert_num_col <- function(vec, col_name, x_tbl_name) {
 
   TRUE
 }
-
-assert_tot_prob <- function(tot_prob) {
-  if (is_near(tot_prob, 0)) {
-    stop_collapse("Total probability on supplied `support` is zero.")
-  }
-
-  TRUE
-}

@@ -158,6 +158,10 @@ test_that("as_q.default properly adjusts to support", {
   expect_close_f(out_q, ref_q, p_seq, thres = 1e-7)
 })
 
+test_that("as_q.default throws error if total probability on support is zero", {
+  expect_error(as_q(fam_beta$q, c(1.5, 2)), "probability.*positive")
+})
+
 test_that("as_q.default throws errors on bad input", {
   expect_error(as_q(fam_norm$q), "supply.*support")
   expect_error(as_q("a", c(0, 1)), "`f`.*function")

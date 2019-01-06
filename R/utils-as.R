@@ -49,6 +49,14 @@ assert_as_def_args <- function(f, support, n_grid) {
   TRUE
 }
 
+assert_tot_prob <- function(tot_prob) {
+  if (tot_prob <= 0) {
+    stop_collapse("Total probability on supplied `support` isn't positive.")
+  }
+
+  TRUE
+}
+
 # Removes redundant rows from `x_tbl` corresponding to zero `y` values near the
 # edges (beginning or end of data frame) except the most "center" ones. It
 # doesn't affect the computation of future p- and d-functions.
