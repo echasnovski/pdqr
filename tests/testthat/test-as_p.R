@@ -73,6 +73,11 @@ test_that("as_p.default throws errors on bad input", {
 
 
 # as_p.pdqr ---------------------------------------------------------------
+test_that('as_p.pdqr works with "p"', {
+  expect_equal_distr(as_p(p_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(p_smooth), p_smooth, grid = x_smooth_vec_ext)
+})
+
 test_that('as_p.pdqr works with "d"', {
   expect_equal_distr(as_p(d_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
   expect_equal_distr(as_p(d_smooth), p_smooth, grid = x_smooth_vec_ext)
@@ -86,4 +91,8 @@ test_that('as_p.pdqr works with "q"', {
 test_that('as_p.pdqr works with "r"', {
   expect_equal_distr(as_p(r_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
   expect_equal_distr(as_p(r_smooth), p_smooth, grid = x_smooth_vec_ext)
+})
+
+test_that("as_p.pdqr throws errors on bad input", {
+  expect_error(as_p(structure(user_p, class = c("d", "pdqr"))), "`f`")
 })

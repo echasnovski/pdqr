@@ -85,7 +85,16 @@ test_that('as_q.pdqr works with "d"', {
   expect_equal_distr(as_q(d_smooth), q_smooth, grid = p_vec)
 })
 
+test_that('as_q.pdqr works with "q"', {
+  expect_equal_distr(as_q(q_raw), q_raw, grid = p_vec)
+  expect_equal_distr(as_q(q_smooth), q_smooth, grid = p_vec)
+})
+
 test_that('as_q.pdqr works with "r"', {
   expect_equal_distr(as_q(r_raw), q_raw, grid = p_vec)
   expect_equal_distr(as_q(r_smooth), q_smooth, grid = p_vec)
+})
+
+test_that("as_q.pdqr throws errors on bad input", {
+  expect_error(as_q(structure(user_q, class = c("p", "pdqr"))), "`f`")
 })
