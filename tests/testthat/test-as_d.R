@@ -135,6 +135,54 @@ test_that("as_d.default output approximates quantile function after `as_q()`", {
   expect_close_f(as_q(d_unif), fam_unif$q, p_seq, thres = 9e-5)
 })
 
+test_that("as_d.default output approximates random-gen-func after `as_r()`", {
+  expect_close_r_f(
+    as_r(d_norm), fam_norm$r,
+    mean_thres = 1e-2, sd_thres = 4e-2
+  )
+  expect_close_r_f(
+    as_r(d_norm_2), fam_norm_2$r,
+    mean_thres = 1e-3, sd_thres = 5e-3
+  )
+  expect_close_r_f(
+    as_r(d_exp), fam_exp$r,
+    mean_thres = 3e-2, sd_thres = 1e-2
+  )
+  expect_close_r_f(
+    as_r(d_exp_rev), fam_exp_rev$r,
+    mean_thres = 1e-2, sd_thres = 5e-2
+  )
+  expect_close_r_f(
+    as_r(d_beta), fam_beta$r,
+    mean_thres = 4e-3, sd_thres = 4e-3
+  )
+  expect_close_r_f(
+    as_r(d_beta_inf), fam_beta_inf$r,
+    mean_thres = 5e-2, sd_thres = 5e-3
+  )
+  expect_close_r_f(
+    as_r(d_beta_midinf), fam_beta_midinf$r,
+    mean_thres = 2e-3, sd_thres = 7e-3
+  )
+  expect_close_r_f(
+    as_r(d_chisq), fam_chisq$r,
+    mean_thres = 8e-2, sd_thres = 8e-2
+  )
+  expect_close_r_f(
+    as_r(d_chisq_inf), fam_chisq_inf$r,
+    mean_thres = 8e-2, sd_thres = 8e-2
+  )
+  expect_close_r_f(
+    as_r(d_mix_norm), fam_mix_norm$r,
+    mean_thres = 5e-2, sd_thres = 6e-2
+  )
+  expect_close_r_f(
+    as_r(d_mix_unif), fam_mix_unif$r,
+    mean_thres = 5e-3, sd_thres = 2e-2
+  )
+  expect_close_r_f(as_r(d_unif), fam_unif$r, mean_thres = 1e-2, sd_thres = 2e-3)
+})
+
 test_that("as_d.default output has the same support as was in input", {
   is_equal_supp <- vapply(
     seq_along(d_list), function(i) {
