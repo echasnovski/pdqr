@@ -21,8 +21,8 @@ test_that("new_r works with numeric input", {
 })
 
 test_that("new_r works with data frame input", {
-  expect_equal_r_funs(new_r(x_raw_x_tbl, "raw"), r_raw)
-  expect_equal_r_funs(new_r(x_smooth_x_tbl, "smooth"), r_smooth)
+  expect_equal_r_distr(new_r(x_raw_x_tbl, "raw"), r_raw)
+  expect_equal_r_distr(new_r(x_smooth_x_tbl, "smooth"), r_smooth)
 })
 
 test_that("new_r imputes data frame input", {

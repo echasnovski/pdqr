@@ -21,28 +21,40 @@ expect_not_close_f <- function(f_1, f_2, grid, stat_f = max, thres = 10^(-6)) {
   expect_true(stat > thres)
 }
 
-expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
-                               meta_not_check = character(0)) {
-  expect_close_f(f_1, f_2, grid, thres = thres)
-  expect_equal(class(f_1), class(f_2))
-
-  meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
-  meta_names_2 <- setdiff(names(meta(f_2)), meta_not_check)
-  expect_equal(
-    lapply(meta_names_1, meta, obj = f_1),
-    lapply(meta_names_2, meta, obj = f_2)
-  )
-}
-
-expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
-                                mean_thres = 0.1, sd_thres = 0.05,
-                                meta_not_check = character(0)) {
+expect_close_r_f <- function(f_1, f_2, n_sample = 10000,
+                             mean_thres = 0.1, sd_thres = 0.05) {
   smpl_1 <- f_1(n_sample)
   smpl_2 <- f_2(n_sample)
 
   expect_true(abs(mean(smpl_1) - mean(smpl_2)) <= mean_thres)
   expect_true(abs(sd(smpl_1) - sd(smpl_2)) <= sd_thres)
+}
 
+expect_not_close_r_f <- function(f_1, f_2, n_sample = 10000,
+                                 mean_thres = 0.1, sd_thres = 0.05) {
+  smpl_1 <- f_1(n_sample)
+  smpl_2 <- f_2(n_sample)
+
+  expect_false(
+    (abs(mean(smpl_1) - mean(smpl_2)) <= mean_thres) &&
+      (abs(sd(smpl_1) - sd(smpl_2)) <= sd_thres)
+  )
+}
+
+expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
+                               meta_not_check = character(0)) {
+  expect_close_f(f_1, f_2, grid, thres = thres)
+  expect_equal_pdqr_attrs(f_1, f_2, meta_not_check)
+}
+
+expect_equal_r_distr <- function(f_1, f_2, n_sample = 10000,
+                                 mean_thres = 0.1, sd_thres = 0.05,
+                                 meta_not_check = character(0)) {
+  expect_close_r_f(f_1, f_2, n_sample, mean_thres, sd_thres)
+  expect_equal_pdqr_attrs(f_1, f_2, meta_not_check)
+}
+
+expect_equal_pdqr_attrs <- function(f_1, f_2, meta_not_check = character(0)) {
   expect_equal(class(f_1), class(f_2))
 
   meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
