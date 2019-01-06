@@ -17,6 +17,21 @@ q_mix_norm <-    as_q(fam_mix_norm$q,    fam_mix_norm$support)
 q_mix_unif <-    as_q(fam_mix_unif$q,    fam_mix_unif$support)
 q_unif <-        as_q(fam_unif$q,        fam_unif$support)
 
+q_list <- list(
+  q_norm = q_norm,
+  q_norm_2 = q_norm_2,
+  q_exp = q_exp,
+  q_exp_rev = q_exp_rev,
+  q_beta = q_beta,
+  q_beta_inf = q_beta_inf,
+  q_beta_midinf = q_beta_midinf,
+  q_chisq = q_chisq,
+  q_chisq_inf = q_chisq_inf,
+  q_mix_norm = q_mix_norm,
+  q_mix_unif = q_mix_unif,
+  q_unif = q_unif
+)
+
 
 # as_q --------------------------------------------------------------------
 # Tested in its methods
@@ -108,6 +123,24 @@ test_that("as_q.default results in good approximations of input", {
   expect_close_f(q_unif, fam_unif$q, p_seq, thres = 5e-4)
 })
 
+test_that("as_d.default output has the same support as was in input", {
+  is_equal_supp <- vapply(
+    seq_along(q_list), function(i) {
+      isTRUE(all.equal(
+        meta(q_list[[i]], "support"), fam_list[[i]]$support
+      ))
+    },
+    logical(1)
+  )
+
+  expect_equal(is_equal_supp, rep(TRUE, length(q_list)))
+})
+
+test_that("as_q.default removes edge `y` with zero density", {
+  x_tbl <- meta(q_unif, "x_tbl")
+  expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
+})
+
 test_that("as_q.default uses `n_grid` argument", {
   expect_not_close_f(
     as_q(fam_norm_2$q, fam_norm_2$support, n_grid = 10),
@@ -161,4 +194,11 @@ test_that('as_q.pdqr works with "r"', {
 
 test_that("as_q.pdqr throws errors on bad input", {
   expect_error(as_q(structure(user_q, class = c("p", "pdqr"))), "`f`")
+})
+
+test_that("as_q.pdqr ensures maximum proper support", {
+  input <- p_raw
+  attr(input, "meta")[["support"]] <- c(-100, 100)
+
+  expect_equal(meta(as_q(input), "support"), c(-100, 100))
 })

@@ -202,3 +202,20 @@ fam_unif <- list(
   p = stats::punif, d = stats::dunif, q = stats::qunif, r = stats::runif,
   support = c(-0.5, 1.2), grid = seq(-0.5, 1.2, length.out = 1e5)
 )
+
+
+# List of distributions ---------------------------------------------------
+fam_list <- list(
+  fam_norm = fam_norm,
+  fam_norm_2 = fam_norm_2,
+  fam_exp = fam_exp,
+  fam_exp_rev = fam_exp_rev,
+  fam_beta = fam_beta,
+  fam_beta_inf = fam_beta_inf,
+  fam_beta_midinf = fam_beta_midinf,
+  fam_chisq = fam_chisq,
+  fam_chisq_inf = fam_chisq_inf,
+  fam_mix_norm = fam_mix_norm,
+  fam_mix_unif = fam_mix_unif,
+  fam_unif = fam_unif
+)

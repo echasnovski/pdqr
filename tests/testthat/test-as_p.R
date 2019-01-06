@@ -17,6 +17,21 @@ p_mix_norm <-    as_p(fam_mix_norm$p,    fam_mix_norm$support)
 p_mix_unif <-    as_p(fam_mix_unif$p,    fam_mix_unif$support)
 p_unif <-        as_p(fam_unif$p,        fam_unif$support)
 
+p_list <- list(
+  p_norm = p_norm,
+  p_norm_2 = p_norm_2,
+  p_exp = p_exp,
+  p_exp_rev = p_exp_rev,
+  p_beta = p_beta,
+  p_beta_inf = p_beta_inf,
+  p_beta_midinf = p_beta_midinf,
+  p_chisq = p_chisq,
+  p_chisq_inf = p_chisq_inf,
+  p_mix_norm = p_mix_norm,
+  p_mix_unif = p_mix_unif,
+  p_unif = p_unif
+)
+
 
 # as_p --------------------------------------------------------------------
 # Tested in its methods
@@ -95,7 +110,25 @@ test_that("as_p.default output approximates quantile function after `as_q()`", {
 
   # Too big threshold because "x_tbl" metadata contains too small `y` values
   # with cumulative probability 0.
-  expect_close_f(as_q(p_unif), fam_unif$q, p_seq, thres = 1)
+  expect_close_f(as_q(p_unif), fam_unif$q, p_seq, thres = 3e-4)
+})
+
+test_that("as_p.default output has the same support as was in input", {
+  is_equal_supp <- vapply(
+    seq_along(p_list), function(i) {
+      isTRUE(all.equal(
+        meta(p_list[[i]], "support"), fam_list[[i]]$support
+      ))
+    },
+    logical(1)
+  )
+
+  expect_equal(is_equal_supp, rep(TRUE, length(p_list)))
+})
+
+test_that("as_p.default removes edge `y` with zero density", {
+  x_tbl <- meta(p_unif, "x_tbl")
+  expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
 })
 
 test_that("as_p.default uses `n_grid` argument", {
@@ -153,4 +186,11 @@ test_that('as_p.pdqr works with "r"', {
 
 test_that("as_p.pdqr throws errors on bad input", {
   expect_error(as_p(structure(user_p, class = c("d", "pdqr"))), "`f`")
+})
+
+test_that("as_p.pdqr ensures maximum proper support", {
+  input <- d_raw
+  attr(input, "meta")[["support"]] <- c(-100, 100)
+
+  expect_equal(meta(as_p(input), "support"), c(-100, 100))
 })

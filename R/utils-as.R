@@ -48,3 +48,42 @@ assert_as_def_args <- function(f, support, n_grid) {
 
   TRUE
 }
+
+# Removes redundant rows from `x_tbl` corresponding to zero `y` values near the
+# edges (beginning or end of data frame) except the most "center" ones. It
+# doesn't affect the computation of future p- and d-functions.
+# This is needed to ensure that q-function, created based on the `x_tbl`,
+# returns not extreme results (withing `as_*.default()` functions), as it
+# returns **the smallest** value with cumulative probability not more than
+# input. For example, if first two rows of `x_tbl` have `x = c(-100, 0)` with
+# zero `y` than future q-function `q()` would give `q(0) = -100`, which is not
+# desirable because that `-100` is usually a result of too wide input `support`.
+remove_zero_edge_y <- function(x_tbl) {
+  n <- nrow(x_tbl)
+  y <- x_tbl[["y"]]
+  is_y_zero <- y == 0
+
+  # `left_y_zero` is `TRUE` at all places in the beginning where `y == 0` except
+  # for last (the most center) one
+  left_y_zero <- cumsum(is_y_zero) == 1:n
+  left_y_zero <- left_y_zero & duplicated.default(left_y_zero, fromLast = TRUE)
+
+  # `right_y_zero` is `TRUE` at all places in the end where `y == 0` except for
+  # first (the most center) one
+  right_y_zero <- (cumsum(is_y_zero[n:1]) == 1:n)[n:1]
+  right_y_zero <- right_y_zero & duplicated.default(right_y_zero)
+
+  is_to_remove <- left_y_zero | right_y_zero
+  if (any(is_to_remove)) {
+    x_tbl <- x_tbl[!is_to_remove, ]
+  }
+
+  x_tbl
+}
+
+ensure_support <- function(f, support) {
+  f_support <- meta(f, "support")
+  new_support <- c(min(f_support[1], support[1]), max(f_support[2], support[2]))
+
+  add_meta(f, support = new_support)
+}

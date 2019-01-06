@@ -7,3 +7,32 @@ context("test-utils-as")
 
 # assert_as_def_args ------------------------------------------------------
 # Tested in `as_*.default()` functions
+
+
+# remove_zero_edge_y ------------------------------------------------------
+test_that("remove_zero_edge_y works", {
+  input_x_tbl <- data.frame(x = 1:8, y = c(0, 0, 1, 0, 0, 1, 0, 0))
+  n <- nrow(input_x_tbl)
+  output_ref <- input_x_tbl[2:7, ]
+
+  expect_equal(remove_zero_edge_y(input_x_tbl), output_ref)
+  expect_equal(remove_zero_edge_y(input_x_tbl[-1, ]), output_ref)
+  expect_equal(remove_zero_edge_y(input_x_tbl[-n, ]), output_ref)
+  expect_equal(remove_zero_edge_y(output_ref), output_ref)
+})
+
+
+# ensure_support ----------------------------------------------------------
+test_that("ensure_support works", {
+  out_1 <- ensure_support(d_raw, x_raw_support + c(-1, 1))
+  expect_equal(meta(out_1, "support"), x_raw_support + c(-1, 1))
+
+  out_2 <- ensure_support(d_raw, x_raw_support + c(1, 1))
+  expect_equal(meta(out_2, "support"), c(x_raw_support[1], x_raw_support[2]+1))
+
+  out_3 <- ensure_support(d_raw, x_raw_support + c(-1, -1))
+  expect_equal(meta(out_3, "support"), c(x_raw_support[1]-1, x_raw_support[2]))
+
+  out_4 <- ensure_support(d_raw, x_raw_support + c(1, -1))
+  expect_equal(meta(out_4, "support"), x_raw_support)
+})
