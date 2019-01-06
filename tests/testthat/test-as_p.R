@@ -133,8 +133,8 @@ test_that("as_p.default removes edge `y` with zero density", {
 
 test_that("as_p.default uses `n_grid` argument", {
   expect_not_close_f(
-    as_p(fam_norm_2$p, fam_norm_2$support, n_grid = 10),
-    fam_norm_2$p, fam_norm_2$grid,
+    as_p(fam_norm$p, fam_norm$support, n_grid = 10),
+    fam_norm$p, fam_norm$grid,
     thres = 1e-2
   )
 })
