@@ -39,6 +39,8 @@ q_list <- list(
 
 # as_q.default ------------------------------------------------------------
 test_that("as_q.default output approximates CDF after `as_p()`", {
+  skip_on_cran()
+
   expect_close_f(as_p(q_norm), fam_norm$p, fam_norm$grid, thres = 5e-5)
   expect_close_f(as_p(q_norm_2), fam_norm_2$p, fam_norm_2$grid, thres = 5e-5)
   expect_close_f(as_p(q_exp), fam_exp$p, fam_exp$grid, thres = 6e-5)
@@ -69,6 +71,8 @@ test_that("as_q.default output approximates CDF after `as_p()`", {
 })
 
 test_that("as_q.default output approximates density after `as_d()`", {
+  skip_on_cran()
+
   expect_close_f(as_d(q_norm), fam_norm$d, fam_norm$grid, thres = 4e-4)
   expect_close_f(as_d(q_norm_2), fam_norm_2$d, fam_norm_2$grid, thres = 4e-3)
   expect_close_f(as_d(q_exp), fam_exp$d, fam_exp$grid, thres = 1e-4)
@@ -124,6 +128,8 @@ test_that("as_q.default results in good approximations of input", {
 })
 
 test_that("as_q.default output approximates random-gen-func after `as_r()`", {
+  skip_on_cran()
+
   expect_close_r_f(
     as_r(q_norm), fam_norm$r,
     mean_thres = 5e-2, sd_thres = 2e-2

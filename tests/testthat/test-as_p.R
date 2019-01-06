@@ -57,6 +57,8 @@ test_that("as_p.default results in good approximations of input", {
 })
 
 test_that("as_p.default output approximates density after `as_d()`", {
+  skip_on_cran()
+
   expect_close_f(as_d(p_norm), fam_norm$d, fam_norm$grid)
   expect_close_f(as_d(p_norm_2), fam_norm_2$d, fam_norm_2$grid, thres = 2e-6)
   expect_close_f(as_d(p_exp), fam_exp$d, fam_exp$grid, thres = 3e-6)
@@ -90,6 +92,8 @@ test_that("as_p.default output approximates density after `as_d()`", {
 })
 
 test_that("as_p.default output approximates quantile function after `as_q()`", {
+  skip_on_cran()
+
   expect_close_f(as_q(p_norm), fam_norm$q, p_seq_btail, thres = 4e-6)
   expect_close_f(as_q(p_norm_2), fam_norm_2$q, p_seq_btail, thres = 9e-6)
   expect_close_f(as_q(p_exp), fam_exp$q, p_seq_rtail, thres = 3e-6)
@@ -112,6 +116,8 @@ test_that("as_p.default output approximates quantile function after `as_q()`", {
 })
 
 test_that("as_p.default output approximates random-gen-func after `as_r()`", {
+  skip_on_cran()
+
   expect_close_r_f(
     as_r(p_norm), fam_norm$r,
     mean_thres = 2e-2, sd_thres = 4e-2

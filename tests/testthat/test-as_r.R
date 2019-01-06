@@ -39,6 +39,8 @@ r_list <- list(
 
 # as_r.default ------------------------------------------------------------
 test_that("as_r.default output approximates CDF after `as_p()`", {
+  skip_on_cran()
+
   # Maximum error is quite big due to random sampling during r-function creation
   # That is why tests are for median error
   expect_close_f(
@@ -92,6 +94,8 @@ test_that("as_r.default output approximates CDF after `as_p()`", {
 })
 
 test_that("as_r.default output approximates density after `as_d()`", {
+  skip_on_cran()
+
   # Maximum error is quite big due to random sampling during r-function creation
   # That is why tests are for median error
   expect_close_f(
@@ -149,6 +153,8 @@ test_that("as_r.default output approximates density after `as_d()`", {
 })
 
 test_that("as_r.default output approximates quantile function after `as_q()`", {
+  skip_on_cran()
+
   # Maximum error is quite big due to random sampling during r-function creation
   # That is why tests are for median error
   expect_close_f(

@@ -39,6 +39,8 @@ d_list <- list(
 
 # as_d.default ------------------------------------------------------------
 test_that("as_d.default output approximates CDF after `as_p()`", {
+  skip_on_cran()
+
   expect_close_f(as_p(d_norm), fam_norm$p, fam_norm$grid)
   expect_close_f(as_p(d_norm_2), fam_norm_2$p, fam_norm_2$grid)
   expect_close_f(as_p(d_exp), fam_exp$p, fam_exp$grid)
@@ -114,6 +116,8 @@ test_that("as_d.default results in good approximations of input", {
 })
 
 test_that("as_d.default output approximates quantile function after `as_q()`", {
+  skip_on_cran()
+
   expect_close_f(as_q(d_norm), fam_norm$q, p_seq_btail, thres = 6e-5)
   expect_close_f(as_q(d_norm_2), fam_norm_2$q, p_seq_btail, thres = 1e-5)
   expect_close_f(as_q(d_exp), fam_exp$q, p_seq_rtail, thres = 5e-6)
@@ -136,6 +140,8 @@ test_that("as_d.default output approximates quantile function after `as_q()`", {
 })
 
 test_that("as_d.default output approximates random-gen-func after `as_r()`", {
+  skip_on_cran()
+
   expect_close_r_f(
     as_r(d_norm), fam_norm$r,
     mean_thres = 1e-2, sd_thres = 4e-2
