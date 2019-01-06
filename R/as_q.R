@@ -3,7 +3,7 @@ as_q <- function(f, ...) {
 }
 
 as_q.default <- function(f, support, n_grid = 10001, ...) {
-  assert_missing_args("p", support = missing(support))
+  assert_missing_args("q", support = missing(support))
   assert_as_def_args(f, support, n_grid)
 
   p_f <- inversing(f, c(0, 1), n_grid = n_grid, ...)
