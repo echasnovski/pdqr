@@ -3,19 +3,19 @@ context("test-as_q")
 set.seed(3333)
 
 
-# Input data --------------------------------------------------------------
-# **Note** that step is ~1e-4, but in `as_d()` and `as_p()` tests it is ~1e-5.
-# This is done because of slower `as_q.default()` performance.
-p_seq <- seq(0, 1, length.out = 1e4)
-
-# Sequences of probabilities used to test quantile functions that go to infinity
-# on one or both edges. Corresponds to unbounded (from left and/or right)
-# support, i.e. left, right, or both tails.
-p_isnt_small <- p_seq >= 0.001
-p_isnt_big <- p_seq <= 0.999
-p_seq_ltail <- p_seq[p_isnt_small]
-p_seq_rtail <- p_seq[p_isnt_big]
-p_seq_btail <- p_seq[p_isnt_small & p_isnt_big]
+# Computation of q-functions ----------------------------------------------
+q_norm <-        as_q(fam_norm$q,        fam_norm$support)
+q_norm_2 <-      as_q(fam_norm_2$q,      fam_norm_2$support)
+q_exp <-         as_q(fam_exp$q,         fam_exp$support)
+q_exp_rev <-     as_q(fam_exp_rev$q,     fam_exp_rev$support)
+q_beta <-        as_q(fam_beta$q,        fam_beta$support)
+q_beta_inf <-    as_q(fam_beta_inf$q,    fam_beta_inf$support)
+q_beta_midinf <- as_q(fam_beta_midinf$q, fam_beta_midinf$support)
+q_chisq <-       as_q(fam_chisq$q,       fam_chisq$support)
+q_chisq_inf <-   as_q(fam_chisq_inf$q,   fam_chisq_inf$support)
+q_mix_norm <-    as_q(fam_mix_norm$q,    fam_mix_norm$support)
+q_mix_unif <-    as_q(fam_mix_unif$q,    fam_mix_unif$support)
+q_unif <-        as_q(fam_unif$q,        fam_unif$support)
 
 
 # as_q --------------------------------------------------------------------
@@ -26,27 +26,29 @@ p_seq_btail <- p_seq[p_isnt_small & p_isnt_big]
 test_that("as_q.default results in good approximations of input", {
   # General tendency: maximum error is rather big but overall is quite good
   # To test it, run it with higher `n_grid` value
-  expect_approx(as_q, fam_norm, "q", grid = p_seq_btail, thres = 6e-5)
-  expect_approx(as_q, fam_norm_2, "q", grid = p_seq_btail, thres = 5e-6)
-  expect_approx(as_q, fam_exp, "q", grid = p_seq_rtail, thres = 6e-5)
-  expect_approx(as_q, fam_exp_rev, "q", grid = p_seq_ltail, thres = 6e-5)
-  expect_approx(as_q, fam_beta, "q", grid = p_seq, thres = 4e-5)
-  expect_approx(as_q, fam_beta_inf, "q", grid = p_seq, thres = 6e-3)
-  expect_approx(as_q, fam_beta_midinf, "q", grid = p_seq, thres = 1e-4)
-  expect_approx(as_q, fam_chisq, "q", grid = p_seq_rtail, thres = 2e-4)
-  expect_approx(as_q, fam_chisq_inf, "q", grid = p_seq_rtail, thres = 1.5e-2)
-  expect_approx(as_q, fam_mix_norm, "q", grid = p_seq_btail, thres = 2e-3)
+  expect_close_f(q_norm, fam_norm$q, p_seq_btail, thres = 6e-5)
+  expect_close_f(q_norm_2, fam_norm_2$q, p_seq_btail, thres = 5e-6)
+  expect_close_f(q_exp, fam_exp$q, p_seq_rtail, thres = 6e-5)
+  expect_close_f(q_exp_rev, fam_exp_rev$q, p_seq_ltail, thres = 6e-5)
+  expect_close_f(q_beta, fam_beta$q, p_seq, thres = 4e-5)
+  expect_close_f(q_beta_inf, fam_beta_inf$q, p_seq, thres = 6e-3)
+  expect_close_f(q_beta_midinf, fam_beta_midinf$q, p_seq, thres = 1e-4)
+  expect_close_f(q_chisq, fam_chisq$q, p_seq_rtail, thres = 2e-4)
+  expect_close_f(q_chisq_inf, fam_chisq_inf$q, p_seq_rtail, thres = 1.5e-2)
+  expect_close_f(q_mix_norm, fam_mix_norm$q, p_seq_btail, thres = 2e-3)
 
-  # `max()` isn't used because of density discontinuity
-  expect_approx(as_q, fam_mix_unif, "q", grid = p_seq, stat_f = quan999)
+  # `max()` isn't used because of zero density segment (q-function
+  # discontinuity)
+  expect_close_f(q_mix_unif, fam_mix_unif$q, p_seq, stat_f = quan999)
 
-  expect_approx(as_q, fam_unif, "q", grid = p_seq, thres = 5e-4)
+  expect_close_f(q_unif, fam_unif$q, p_seq, thres = 5e-4)
 })
 
 test_that("as_q.default uses `n_grid` argument", {
-  expect_not_approx(
-    as_q, fam_norm_2, "q",
-    grid = p_seq, thres = 1e-2, n_grid = 10
+  expect_not_close_f(
+    as_q(fam_norm_2$q, fam_norm_2$support, n_grid = 10),
+    fam_norm_2$q, p_seq,
+    thres = 1e-2
   )
 })
 
@@ -56,7 +58,7 @@ test_that("as_q.default properly adjusts to support", {
   # This assumes that `as_d()` correctly adjusts to support and uses
   # `as_q.pdqr()`.
   ref_q <- as_q(as_d(fam_norm[["d"]], supp))
-  expect_equal_on_grid(out_q, ref_q, p_seq, thres = 1e-7)
+  expect_close_f(out_q, ref_q, p_seq, thres = 1e-7)
 })
 
 test_that("as_q.default throws errors on bad input", {

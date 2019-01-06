@@ -3,28 +3,49 @@ context("test-as_p")
 set.seed(1111)
 
 
+# Computation of p-functions ----------------------------------------------
+p_norm <-        as_p(fam_norm$p,        fam_norm$support)
+p_norm_2 <-      as_p(fam_norm_2$p,      fam_norm_2$support)
+p_exp <-         as_p(fam_exp$p,         fam_exp$support)
+p_exp_rev <-     as_p(fam_exp_rev$p,     fam_exp_rev$support)
+p_beta <-        as_p(fam_beta$p,        fam_beta$support)
+p_beta_inf <-    as_p(fam_beta_inf$p,    fam_beta_inf$support)
+p_beta_midinf <- as_p(fam_beta_midinf$p, fam_beta_midinf$support)
+p_chisq <-       as_p(fam_chisq$p,       fam_chisq$support)
+p_chisq_inf <-   as_p(fam_chisq_inf$p,   fam_chisq_inf$support)
+p_mix_norm <-    as_p(fam_mix_norm$p,    fam_mix_norm$support)
+p_mix_unif <-    as_p(fam_mix_unif$p,    fam_mix_unif$support)
+p_unif <-        as_p(fam_unif$p,        fam_unif$support)
+
+
 # as_p --------------------------------------------------------------------
 # Tested in its methods
 
 
 # as_p.default ------------------------------------------------------------
 test_that("as_p.default results in good approximations of input", {
-  expect_approx(as_p, fam_norm, "p")
-  expect_approx(as_p, fam_norm_2, "p")
-  expect_approx(as_p, fam_exp, "p")
-  expect_approx(as_p, fam_exp_rev, "p")
-  expect_approx(as_p, fam_beta, "p")
-  expect_approx(as_p, fam_beta_inf, "p", thres = 1e-2)
-  expect_approx(as_p, fam_beta_midinf, "p", thres = 1e-4)
-  expect_approx(as_p, fam_chisq, "p")
-  expect_approx(as_p, fam_chisq_inf, "p", thres = 1e-2)
-  expect_approx(as_p, fam_mix_norm, "p", thres = 2e-6)
-  expect_approx(as_p, fam_mix_unif, "p", thres = 1e-4)
-  expect_approx(as_p, fam_unif, "p", thres = 1e-4)
+  expect_close_f(p_norm, fam_norm$p, fam_norm$grid)
+  expect_close_f(p_norm_2, fam_norm_2$p, fam_norm_2$grid)
+  expect_close_f(p_exp, fam_exp$p, fam_exp$grid)
+  expect_close_f(p_exp_rev, fam_exp_rev$p, fam_exp_rev$grid)
+  expect_close_f(p_beta, fam_beta$p, fam_beta$grid)
+  expect_close_f(p_beta_inf, fam_beta_inf$p, fam_beta_inf$grid, thres = 1e-2)
+  expect_close_f(
+    p_beta_midinf, fam_beta_midinf$p, fam_beta_midinf$grid, thres = 1e-4
+  )
+  expect_close_f(p_chisq, fam_chisq$p, fam_chisq$grid)
+  expect_close_f(p_chisq_inf, fam_chisq_inf$p, fam_chisq_inf$grid, thres = 1e-2)
+  expect_close_f(p_mix_norm, fam_mix_norm$p, fam_mix_norm$grid, thres = 2e-6)
+  expect_close_f(p_mix_unif, fam_mix_unif$p, fam_mix_unif$grid, thres = 1e-4)
+  expect_close_f(p_unif, fam_unif$p, fam_unif$grid, thres = 1e-4)
 })
 
 test_that("as_p.default uses `n_grid` argument", {
-  expect_not_approx(as_p, fam_norm_2, "p", thres = 1e-2, n_grid = 10)
+  expect_not_close_f(
+    as_p(fam_norm_2$p, fam_norm_2$support, n_grid = 10),
+    fam_norm_2$p, fam_norm_2$grid,
+    thres = 1e-2
+  )
 })
 
 test_that("as_p.default properly adjusts to support", {
@@ -33,7 +54,7 @@ test_that("as_p.default properly adjusts to support", {
   # This assumes that `as_d()` correctly adjusts to support and uses
   # `as_p.pdqr()`.
   ref_p <- as_p(as_d(fam_norm[["d"]], supp))
-  expect_equal_on_grid(
+  expect_close_f(
     out_p, ref_p, seq(supp[1], supp[2], length.out = 1e5)
   )
 })

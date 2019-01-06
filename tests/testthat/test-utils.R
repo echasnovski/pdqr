@@ -76,7 +76,7 @@ test_that("inversing linearly imputes infinite values", {
 test_that("inversing accepts extra arguments for input function", {
   f_inv <- inversing(qunif, c(0, 1), min = 10, max = 11)
   f_ref <- function(q) {punif(q, min = 10, max = 11)}
-  expect_equal_on_grid(f_inv, f_ref, seq(-9, 12, by = 0.001))
+  expect_close_f(f_inv, f_ref, seq(-9, 12, by = 0.001))
 })
 
 test_that("inversing accepts extra arguments for `approxfun()`", {

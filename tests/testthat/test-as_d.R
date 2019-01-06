@@ -3,47 +3,87 @@ context("test-as_d")
 set.seed(2222)
 
 
+# Computation of d-functions ----------------------------------------------
+d_norm <-        as_d(fam_norm$d,        fam_norm$support)
+d_norm_2 <-      as_d(fam_norm_2$d,      fam_norm_2$support)
+d_exp <-         as_d(fam_exp$d,         fam_exp$support)
+d_exp_rev <-     as_d(fam_exp_rev$d,     fam_exp_rev$support)
+d_beta <-        as_d(fam_beta$d,        fam_beta$support)
+d_beta_inf <-    as_d(fam_beta_inf$d,    fam_beta_inf$support)
+d_beta_midinf <- as_d(fam_beta_midinf$d, fam_beta_midinf$support)
+d_chisq <-       as_d(fam_chisq$d,       fam_chisq$support)
+d_chisq_inf <-   as_d(fam_chisq_inf$d,   fam_chisq_inf$support)
+d_mix_norm <-    as_d(fam_mix_norm$d,    fam_mix_norm$support)
+d_mix_unif <-    as_d(fam_mix_unif$d,    fam_mix_unif$support)
+d_unif <-        as_d(fam_unif$d,        fam_unif$support)
+
+
 # as_d --------------------------------------------------------------------
 # Tested in its methods
 
 
 # as_d.default ------------------------------------------------------------
 test_that("as_d.default results in good approximations of input", {
-  expect_approx(as_d, fam_norm, "d")
-  expect_approx(as_d, fam_norm_2, "d")
-  expect_approx(as_d, fam_exp, "d")
-  expect_approx(as_d, fam_exp_rev, "d")
-  expect_approx(as_d, fam_beta, "d")
+  expect_close_f(d_norm, fam_norm$d, fam_norm$grid)
+  expect_close_f(d_norm_2, fam_norm_2$d, fam_norm_2$grid)
+  expect_close_f(d_exp, fam_exp$d, fam_exp$grid)
+  expect_close_f(d_exp_rev, fam_exp_rev$d, fam_exp_rev$grid)
+  expect_close_f(d_beta, fam_beta$d, fam_beta$grid)
 
   # `max()` isn't used because of infinite density
   # Overall accuracy isn't great because infinite density is cut which decreases
   # total probability. This causes overall density to increase.
-  expect_approx(as_d, fam_beta_inf, "d", stat_f = quan90, thres = 5e-2)
-  expect_not_approx(as_d, fam_beta_inf, "d", stat_f = min, thres = 1e-2)
-  expect_approx(as_d, fam_beta_midinf, "d", stat_f = quan90, thres = 4e-2)
-  expect_not_approx(as_d, fam_beta_midinf, "d", stat_f = min, thres = 1e-2)
+  expect_close_f(
+    d_beta_inf, fam_beta_inf$d, fam_beta_inf$grid,
+    stat_f = quan90, thres = 5e-2
+  )
+  expect_not_close_f(
+    d_beta_inf, fam_beta_inf$d, fam_beta_inf$grid,
+    stat_f = min, thres = 1e-2
+  )
+  expect_close_f(
+    d_beta_midinf, fam_beta_midinf$d, fam_beta_midinf$grid,
+    stat_f = quan90, thres = 4e-2
+  )
+  expect_not_close_f(
+    d_beta_inf, fam_beta_inf$d, fam_beta_inf$grid,
+    stat_f = min, thres = 1e-2
+  )
 
-  expect_approx(as_d, fam_chisq, "d")
+  expect_close_f(d_chisq, fam_chisq$d, fam_chisq$grid)
 
   # `max()` isn't used because of infinite density
-  expect_approx(as_d, fam_chisq_inf, "d", stat_f = quan999, thres = 5e-2)
+  expect_close_f(
+    d_chisq_inf, fam_chisq_inf$d, fam_chisq_inf$grid,
+    stat_f = quan999, thres = 5e-2
+  )
 
-  expect_approx(as_d, fam_mix_norm, "d", thres = 2e-6)
+  expect_close_f(d_mix_norm, fam_mix_norm$d, fam_mix_norm$grid, thres = 2e-6)
 
   # `max()` isn't used because of density discontinuity
-  expect_approx(as_d, fam_mix_unif, "d", stat_f = quan999, thres = 1e-4)
-  expect_approx(as_d, fam_unif, "d", stat_f = quan999, thres = 1e-4)
+  expect_close_f(
+    d_mix_unif, fam_mix_unif$d, fam_mix_unif$grid,
+    stat_f = quan999, thres = 1e-4
+  )
+  expect_close_f(
+    d_unif, fam_unif$d, fam_unif$grid,
+    stat_f = quan999, thres = 1e-4
+  )
 })
 
 test_that("as_d.default uses `n_grid` argument", {
-  expect_not_approx(as_d, fam_norm_2, "d", thres = 1e-2, n_grid = 10)
+  expect_not_close_f(
+    as_d(fam_norm_2$d, fam_norm_2$support, n_grid = 10),
+    fam_norm_2$d, fam_norm_2$grid,
+    thres = 1e-2
+  )
 })
 
 test_that("as_d.default properly adjusts to support", {
   supp <- c(-0.5, 1.5)
   out_d <- as_d(fam_norm[["d"]], supp)
   ref_d <- function(x) {fam_norm[["d"]](x) / diff(fam_norm[["p"]](supp))}
-  expect_equal_on_grid(
+  expect_close_f(
     out_d, ref_d, seq(supp[1], supp[2], length.out = 1e5)
   )
 

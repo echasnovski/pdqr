@@ -9,13 +9,21 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_true(is_x_tbl_meta(meta(input, "x_tbl"), type = meta(input, "type")))
 }
 
-expect_equal_on_grid <- function(f_1, f_2, grid, thres = 10^(-8)) {
-  expect_true(all(abs(f_1(grid) - f_2(grid)) <= thres))
+expect_close_f <- function(f_1, f_2, grid, stat_f = max, thres = 10^(-6)) {
+  stat <- stat_f(abs(f_1(grid) - f_2(grid)))
+
+  expect_true(stat <= thres)
+}
+
+expect_not_close_f <- function(f_1, f_2, grid, stat_f = max, thres = 10^(-6)) {
+  stat <- stat_f(abs(f_1(grid) - f_2(grid)))
+
+  expect_true(stat > thres)
 }
 
 expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
                                meta_not_check = character(0)) {
-  expect_equal_on_grid(f_1, f_2, grid, thres)
+  expect_close_f(f_1, f_2, grid, thres = thres)
   expect_equal(class(f_1), class(f_2))
 
   meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
@@ -43,32 +51,6 @@ expect_equal_r_funs <- function(f_1, f_2, n_sample = 10000,
     lapply(meta_names_1, meta, obj = f_1),
     lapply(meta_names_2, meta, obj = f_2)
   )
-}
-
-# @fam A list representing distribution family of functions (see
-#   'helper-distributions.R')
-expect_approx <- function(method_as, fam, pdqr_class, grid = NULL,
-                          stat_f = max, thres = 10^(-6), ...) {
-  f_as <- method_as(fam[[pdqr_class]], support = fam[["support"]], ...)
-  if (is.null(grid)) {
-    grid <- fam[["grid"]]
-  }
-
-  grid_stat <- stat_f(abs(f_as(grid) - fam[[pdqr_class]](grid)))
-
-  expect_true(grid_stat <= thres)
-}
-
-expect_not_approx <- function(method_as, fam, pdqr_class, grid = NULL,
-                          stat_f = max, thres = 10^(-6), ...) {
-  f_as <- method_as(fam[[pdqr_class]], support = fam[["support"]], ...)
-  if (is.null(grid)) {
-    grid <- fam[["grid"]]
-  }
-
-  grid_stat <- stat_f(abs(f_as(grid) - fam[[pdqr_class]](grid)))
-
-  expect_true(grid_stat > thres)
 }
 
 expect_x_tbl_imputation <- function(f) {
@@ -121,10 +103,6 @@ expect_x_tbl_imputation <- function(f) {
   bad_smooth_input_4[["cumprob"]] <- bad_smooth_input_4[["cumprob"]] * 10
   output_4 <- f(bad_smooth_input_4, "smooth")
   expect_equal(meta(output_4, "x_tbl"), x_smooth_x_tbl)
-}
-
-expect_different_distr <- function(f_1, f_2, grid, thres = 10^(-8)) {
-  expect_true(max(abs(f_1(grid) - f_2(grid)), na.rm = TRUE) >= thres)
 }
 
 expect_pdqr_print <- function(f, f_name) {
