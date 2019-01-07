@@ -158,8 +158,8 @@ is_distr_type <- function(type) {
   tryCatch(assert_distr_type(type), error = function(e) {FALSE})
 }
 
-is_support <- function(supp) {
-  tryCatch(assert_support(supp), error = function(e) {FALSE})
+is_support <- function(supp, allow_na = FALSE) {
+  tryCatch(assert_support(supp, allow_na), error = function(e) {FALSE})
 }
 
 is_x_tbl <- function(x, type) {

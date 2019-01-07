@@ -165,6 +165,7 @@ test_that("assert_distr_type works", {
 test_that("assert_support works", {
   expect_silent(assert_support(c(0, 1)))
   expect_silent(assert_support(c(1, 1)))
+  expect_silent(assert_support(c(1, NA), allow_na = TRUE))
 
   expect_error(assert_support("a"), "numeric")
   expect_error(assert_support(1), "length 2")

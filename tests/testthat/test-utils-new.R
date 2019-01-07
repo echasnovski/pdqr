@@ -176,10 +176,12 @@ test_that("is_distr_type works", {
 # is_support --------------------------------------------------------------
 test_that("is_support works", {
   expect_true(is_support(c(-1, 1)))
+  expect_true(is_support(c(1, NA), allow_na = TRUE))
 
   expect_false(is_support("a"))
   expect_false(is_support(1))
   expect_false(is_support(c(1, -1)))
+  expect_false(is_support(c(1, NA)))
   expect_false(is_support(c(-Inf, 1)))
   expect_false(is_support(c(-1, Inf)))
   expect_false(is_support(c(-Inf, Inf)))

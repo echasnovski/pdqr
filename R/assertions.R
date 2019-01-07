@@ -138,7 +138,7 @@ assert_distr_type <- function(type) {
   TRUE
 }
 
-assert_support <- function(support) {
+assert_support <- function(support, allow_na = FALSE) {
   support_name <- paste0("`", deparse(substitute(support)), "`")
 
   if (!(is.numeric(support) && (length(support) == 2))) {
@@ -147,10 +147,10 @@ assert_support <- function(support) {
       get_type(support), "'."
     )
   }
-  if (anyNA(support)) {
+  if (!allow_na && anyNA(support)) {
     stop_collapse(support_name, " should not have missing values.")
   }
-  if (support[1] > support[2]) {
+  if (!anyNA(support) && (support[1] > support[2])) {
     stop_collapse(
       "First value in ", support_name, " should be not bigger than second one."
     )
