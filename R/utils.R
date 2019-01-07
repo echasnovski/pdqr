@@ -135,6 +135,28 @@ stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
 }
 
+integrate_safely <- function(f, lower, upper, n_grid = 10001, ...) {
+  tryCatch(
+    expr = stats::integrate(f, lower, upper, ...)[["value"]],
+    error = function(e) {
+      tryCatch(
+        expr = {
+          x <- seq(lower, upper, length.out = n_grid)
+          y <- f(x)
+          y <- impute_inf(x, y, "`y`")
+
+          trapez_integral(x, y)
+        },
+        error = function(e) {
+          stop_collapse(
+            "Can't compute integral from ", lower, " to ", upper, "."
+          )
+        }
+      )
+    }
+  )
+}
+
 
 # List manipulations ------------------------------------------------------
 dedupl_list <- function(l) {

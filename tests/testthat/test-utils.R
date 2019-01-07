@@ -158,6 +158,17 @@ test_that("stretch_range works", {
 })
 
 
+# integrate_safely --------------------------------------------------------
+test_that("integrate_safely integrates when `stats::integrate()` can't", {
+  expect_silent(integrate_safely(fam_beta_inf$d, -1e8, 1e8))
+})
+
+test_that("integrate_safely throws informative error", {
+  f <- function(x) {rep(Inf, length.out = length(x))}
+  expect_error(integrate_safely(f, -1, 1), "Can't")
+})
+
+
 # dedupl_list -------------------------------------------------------------
 test_that("dedupl_list works", {
   input_1 <- list(1, 2)
