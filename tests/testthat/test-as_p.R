@@ -276,7 +276,7 @@ test_that("detect_support_p detects both edges of support", {
   skip_on_cran()
 
   edges_are_detected <- vapply(fam_list, function(fam) {
-    supp <- detect_support_p(fam$p, NULL)
+    supp <- detect_support_p(fam$p, c(NA_real_, NA_real_))
     p_on_supp <- fam$p(supp)
 
     (p_on_supp[1] <= 1e-7) && (p_on_supp[2] >= 1 - 1e-7)
@@ -289,7 +289,7 @@ test_that("detect_support_p detects left edge of support", {
   skip_on_cran()
 
   left_edge_is_detected <- vapply(fam_list, function(fam) {
-    supp <- detect_support_p(fam$p, support = c(NA, fam$support[2]))
+    supp <- detect_support_p(fam$p, c(NA, fam$support[2]))
     p_on_supp <- fam$p(supp)
 
     p_on_supp[1] <= 1e-7
@@ -302,7 +302,7 @@ test_that("detect_support_p detects right edge of support", {
   skip_on_cran()
 
   right_edge_is_detected <- vapply(fam_list, function(fam) {
-    supp <- detect_support_p(fam$p, support = c(fam$support[1], NA))
+    supp <- detect_support_p(fam$p, c(fam$support[1], NA))
     p_on_supp <- fam$p(supp)
 
     p_on_supp[2] >= 1 - 1e-7
@@ -323,7 +323,9 @@ test_that("detect_support_p returns input support if it's proper all numeric", {
 
 test_that("detect_support_p throws informative error on bad input function", {
   bad_p_f <- function(q) {fam_norm$p(q) - 10}
-  expect_error(detect_support_p(bad_p_f, NULL), "[Cc]an't find")
+  expect_error(
+    detect_support_p(bad_p_f, c(NA_real_, NA_real_)), "[Cc]an't find"
+  )
 })
 
 

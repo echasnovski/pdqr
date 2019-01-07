@@ -5,8 +5,14 @@ as_p <- function(f, ...) {
 as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
   assert_as_def_args(f, support, n_grid)
 
-  support <- detect_support_p(f, support)
+  # Format support as vector with length two where `NA` indicates value to be
+  # detected
+  supp <- format_support(support)
 
+  # Detect support
+  support <- detect_support_p(f, supp)
+
+  # Compute `y`
   x <- seq(support[1], support[2], length.out = n_grid)
   p <- f(x, ...)
 
@@ -20,9 +26,14 @@ as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
 
   res <- new_p(x_tbl, "smooth")
 
+  # Make detected support more precise: if initial edge was `NA` then use the
+  # one stored in `x_tbl` (which is more precise than in `support` because of
+  # removing edge zero `y`)
+  supp <- coalesce_pair(supp, range(x_tbl[["x"]]))
+
   # Ensure that output has maximum available support (usually equal to
   # `support`)
-  ensure_support(res, support)
+  ensure_support(res, supp)
 }
 
 as_p.pdqr <- function(f, ...) {
@@ -35,11 +46,7 @@ as_p.pdqr <- function(f, ...) {
   ensure_support(res, meta(f, "support"))
 }
 
-detect_support_p <- function(p_f, support) {
-  # Format support as vector with length two where `NA` indicates value to be
-  # detected
-  supp <- format_support(support)
-
+detect_support_p <- function(p_f, supp) {
   if (is.na(supp[1])) {
     supp[1] <- solve_for_quan(p_f, 1e-8)
   }

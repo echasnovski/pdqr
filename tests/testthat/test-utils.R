@@ -158,6 +158,15 @@ test_that("stretch_range works", {
 })
 
 
+# coalesce_pair -----------------------------------------------------------
+test_that("coalesce_pair works", {
+  expect_equal(
+    coalesce_pair(c(1, NA, NA, 4), c(NA, 2, NA, 3)),
+    c(1, 2, NA, 4)
+  )
+})
+
+
 # integrate_safely --------------------------------------------------------
 test_that("integrate_safely integrates when `stats::integrate()` can't", {
   expect_silent(integrate_safely(fam_beta_inf$d, -1e8, 1e8))

@@ -5,8 +5,14 @@ as_d <- function(f, ...) {
 as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
   assert_as_def_args(f, support, n_grid)
 
-  support <- detect_support_d(f, support)
+  # Format support as vector with length two where `NA` indicates value to be
+  # detected
+  supp <- format_support(support)
 
+  # Detect support
+  support <- detect_support_d(f, supp)
+
+  # Compute `y`
   x <- seq(support[1], support[2], length.out = n_grid)
   y <- f(x, ...)
   y <- impute_inf(x, y, '`f` output')
@@ -19,9 +25,14 @@ as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
 
   res <- new_d(x_tbl, "smooth")
 
+  # Make detected support more precise: if initial edge was `NA` then use the
+  # one stored in `x_tbl` (which is more precise than in `support` because of
+  # removing edge zero `y`)
+  supp <- coalesce_pair(supp, range(x_tbl[["x"]]))
+
   # Ensure that output has maximum available support (usually equal to
   # `support`)
-  ensure_support(res, support)
+  ensure_support(res, supp)
 }
 
 as_d.pdqr <- function(f, ...) {
@@ -34,10 +45,7 @@ as_d.pdqr <- function(f, ...) {
   ensure_support(res, meta(f, "support"))
 }
 
-detect_support_d <- function(d_f, support) {
-  # Format support as vector with length two where `NA` indicates value to be
-  # detected
-  supp <- format_support(support)
+detect_support_d <- function(d_f, supp) {
   is_supp_na <- is.na(supp)
   if (!any(is_supp_na)) {
     return(supp)

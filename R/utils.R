@@ -135,6 +135,14 @@ stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
 }
 
+coalesce_pair <- function(x, y) {
+  res <- x
+  x_is_na <- is.na(x)
+  res[x_is_na] <- y[x_is_na]
+
+  res
+}
+
 integrate_safely <- function(f, lower, upper, n_grid = 10001, ...) {
   tryCatch(
     expr = stats::integrate(f, lower, upper, ...)[["value"]],
