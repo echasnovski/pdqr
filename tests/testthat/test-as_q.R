@@ -190,6 +190,21 @@ test_that("as_q.default output has the same support as was in input", {
   expect_equal(is_equal_supp, rep(TRUE, length(q_list)))
 })
 
+test_that("as_q.default detects support", {
+  # Much more tests are done in `detect_support_q`
+  q_beta_both <- as_q(fam_beta$q)
+  support_both <- meta(q_beta_both, "support")
+  expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 1e-7)
+
+  q_beta_left <- as_q(fam_beta$q, support = c(NA, 0.7))
+  support_left <- meta(q_beta_left, "support")
+  expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 1e-7)
+
+  q_beta_right <- as_q(fam_beta$q, support = c(0.3, NA))
+  support_right <- meta(q_beta_right, "support")
+  expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 1e-7)
+})
+
 test_that("as_q.default removes edge `y` with zero density", {
   x_tbl <- meta(q_unif, "x_tbl")
   expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
@@ -217,7 +232,6 @@ test_that("as_q.default throws error if total probability on support is zero", {
 })
 
 test_that("as_q.default throws errors on bad input", {
-  expect_error(as_q(fam_norm$q), "supply.*support")
   expect_error(as_q("a", c(0, 1)), "`f`.*function")
   expect_error(as_q(fam_norm$q, c(2, 1)), "`support`")
   expect_error(
@@ -226,6 +240,11 @@ test_that("as_q.default throws errors on bad input", {
   expect_error(
     as_q(fam_norm$q, fam_norm$support, n_grid = 2), "`n_grid`.*more.*2"
   )
+})
+
+test_that("as_q.default throws error if detected support isn't proper", {
+  expect_error(as_q(fam_beta$q, c(1.5, NA)), "support.*proper")
+  expect_error(as_q(fam_beta$q, c(NA, -0.2)), "support.*proper")
 })
 
 
@@ -259,4 +278,68 @@ test_that("as_q.pdqr ensures maximum proper support", {
   attr(input, "meta")[["support"]] <- c(-100, 100)
 
   expect_equal(meta(as_q(input), "support"), c(-100, 100))
+})
+
+
+# detect_support_q --------------------------------------------------------
+test_that("detect_support_q detects both edges of support", {
+  skip_on_cran()
+
+  edges_are_detected <- vapply(fam_list, function(fam) {
+    supp <- detect_support_q(fam$q, c(NA_real_, NA_real_))
+    p_on_supp <- fam$p(supp)
+
+    # The "real" accuracy is even 1e-7 but here it is lower because of
+    # artificial nature of `fam_mix_norm$q()`
+    (p_on_supp[1] <= 2e-5) && (p_on_supp[2] >= 1 - 2e-5)
+  }, logical(1))
+
+  expect_true(all(edges_are_detected))
+})
+
+test_that("detect_support_q detects left edge of support", {
+  skip_on_cran()
+
+  left_edge_is_detected <- vapply(fam_list, function(fam) {
+    supp <- detect_support_q(fam$q, c(NA, fam$support[2]))
+    p_on_supp <- fam$p(supp)
+
+    # The "real" accuracy is even 1e-7 but here it is lower because of
+    # artificial nature of `fam_mix_norm$q()`
+    p_on_supp[1] <= 2e-5
+  }, logical(1))
+
+  expect_true(all(left_edge_is_detected))
+})
+
+test_that("detect_support_q detects right edge of support", {
+  skip_on_cran()
+
+  right_edge_is_detected <- vapply(fam_list, function(fam) {
+    supp <- detect_support_q(fam$q, c(fam$support[1], NA))
+    p_on_supp <- fam$p(supp)
+
+    # The "real" accuracy is even 1e-7 but here it is lower because of
+    # artificial nature of `fam_mix_norm$q()`
+    p_on_supp[2] >= 1 - 2e-5
+  }, logical(1))
+
+  expect_true(all(right_edge_is_detected))
+})
+
+test_that("detect_support_q returns input support if it's proper all numeric", {
+  input_is_returned <- vapply(fam_list, function(fam) {
+    supp <- detect_support_q(fam$q, fam$support)
+
+    isTRUE(all.equal(supp, fam$support))
+  }, logical(1))
+
+  expect_true(all(input_is_returned))
+})
+
+test_that("detect_support_q throws informative error on bad input function", {
+  bad_q_f <- function(p) {rep(NA, length.out = length(p))}
+  expect_error(
+    detect_support_q(bad_q_f, c(NA_real_, NA_real_)), "support.*isn't proper"
+  )
 })
