@@ -74,7 +74,7 @@ fam_beta_midinf <- list(
     res[q_ind == 1] <- fam_beta_inf$p(q[q_ind == 1] + 0.5) - fam_beta_inf$p(0.5)
     res[q_ind == 2] <- fam_beta_inf$p(q[q_ind == 2] - 0.5) +
       diff(fam_beta_inf$p(c(0.5, 1)))
-    res[q == 1] <- 1
+    res[(q == 1) | (q_ind == 3)] <- 1
 
     res
   },

@@ -2,9 +2,10 @@ as_p <- function(f, ...) {
   UseMethod("as_p")
 }
 
-as_p.default <- function(f, support, n_grid = 10001, ...) {
-  assert_missing_args("p", support = missing(support))
+as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
   assert_as_def_args(f, support, n_grid)
+
+  support <- detect_support_p(f, support)
 
   x <- seq(support[1], support[2], length.out = n_grid)
   p <- f(x, ...)
@@ -32,4 +33,38 @@ as_p.pdqr <- function(f, ...) {
   # Ensure that output has maximum available support (usually equal to
   # `meta(f, "support")`)
   ensure_support(res, meta(f, "support"))
+}
+
+detect_support_p <- function(p_f, support) {
+  # Format support as vector with length two where `NA` indicates value to be
+  # detected
+  supp <- format_support(support)
+
+  if (is.na(supp[1])) {
+    supp[1] <- solve_for_quan(p_f, 1e-8)
+  }
+  if (is.na(supp[2])) {
+    supp[2] <- solve_for_quan(p_f, 1 - 1e-8)
+  }
+
+  if (!is_support(supp)) {
+    stop_collapse(
+      "Detected support isn't proper. Usually this is because supplied edge ",
+      "is not compatible with actual support (left too high or right too low)"
+    )
+  }
+
+  supp
+}
+
+solve_for_quan <- function(p_f, quan) {
+  tryCatch(
+    # Solve equation on interval (-10^100; 10^100)
+    stats::uniroot(
+      function(q) {p_f(q) - quan}, 1e100 * c(-1, 1)
+    )[["root"]],
+    error = function(e) {
+      stop_collapse("Can't find quantile ", quan, " during support detection.")
+    }
+  )
 }

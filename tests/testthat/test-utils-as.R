@@ -43,3 +43,10 @@ test_that("ensure_support works", {
   out_4 <- ensure_support(d_raw, x_raw_support + c(1, -1))
   expect_equal(meta(out_4, "support"), x_raw_support)
 })
+
+
+# format_support ----------------------------------------------------------
+test_that("format_support works", {
+  expect_equal(format_support(NULL), c(NA_real_, NA_real_))
+  expect_equal(format_support(c(1, NA)), c(1, NA))
+})

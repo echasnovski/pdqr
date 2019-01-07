@@ -40,7 +40,10 @@ y_from_p_grid <- function(x, p) {
 
 assert_as_def_args <- function(f, support, n_grid) {
   assert_type(f, is.function)
-  assert_support(support)
+  # `support` in `as_*.default()` is allowed to be `NULL` or have `NA`s
+  if (!is.null(support)) {
+    assert_support(support, allow_na = TRUE)
+  }
   assert_type(
     n_grid, is_single_number,
     type_name = "single number more than 2", min_val = 3
@@ -94,4 +97,12 @@ ensure_support <- function(f, support) {
   new_support <- c(min(f_support[1], support[1]), max(f_support[2], support[2]))
 
   add_meta(f, support = new_support)
+}
+
+format_support <- function(support) {
+  if (is.null(support)) {
+    c(NA_real_, NA_real_)
+  } else {
+    support
+  }
 }
