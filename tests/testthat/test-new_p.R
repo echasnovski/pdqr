@@ -78,6 +78,7 @@ test_that("new_p asserts", {
   expect_error(new_p(numeric(0)), "x.*empty")
   expect_error(new_p(x_raw, type = 1), "type.*string")
   expect_error(new_p(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_p(1, type = "smooth"), "at least 2")
 })
 
 test_that("new_p handles metadata", {

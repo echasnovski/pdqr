@@ -110,6 +110,12 @@ compute_x_tbl_raw <- function(x, vals = sort(unique(x))) {
 }
 
 compute_x_tbl_smooth <- function(x, ...) {
+  if (length(x) < 2) {
+    stop_collapse(
+      'There should be at least 2 values in `x` for `type` "smooth".'
+    )
+  }
+
   res <- density_piecelin(x, ...)
   res[["cumprob"]] <- trapez_part_integral(res[["x"]], res[["y"]])
 
