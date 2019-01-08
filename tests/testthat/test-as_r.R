@@ -297,6 +297,16 @@ test_that("as_r.default uses `n_grid` and `n_sample` arguments", {
   )
 })
 
+test_that("as_r.default uses `...` to forward arguments to `f`", {
+  output <- as_r(runif, support = c(0, 10), max = 10)
+  expect_true(mean(output(1000)) > 1)
+})
+
+test_that("as_r.default uses `.pdqr_args`", {
+  output <- as_r(runif, .pdqr_args = list(from = 0.5))
+  expect_true(meta(output, "x_tbl")[["x"]][1] > 0.45)
+})
+
 test_that("as_r.default properly adjusts to support", {
   supp <- c(-0.5, 1.5)
   out_r <- as_r(fam_norm[["r"]], supp)
@@ -319,6 +329,15 @@ test_that("as_r.default throws errors on bad input", {
   expect_error(
     as_r(fam_norm$r, fam_norm$support, n_grid = 2), "`n_grid`.*more.*2"
   )
+  expect_error(
+    as_r(fam_norm$r, fam_norm$support, n_sample = "a"), "`n_sample`.*number"
+  )
+  expect_error(
+    as_r(fam_norm$r, fam_norm$support, n_sample = 1), "`n_sample`.*more.*1"
+  )
+  expect_error(
+    as_r(fam_norm$r, fam_norm$support, .pdqr_args = "a"), "`.pdqr_args`.*list"
+  )
 })
 
 test_that("as_r.default throws error if detected support isn't proper", {
@@ -338,7 +357,7 @@ test_that('as_r works with "d"', {
 })
 
 test_that('as_r works with "q"', {
-  expect_equal_r_distr(as_r(q_raw), r_raw)
+  expect_equal_r_distr(as_r(q_raw), r_raw, mean_thres = 0.12)
   expect_equal_r_distr(as_r(q_smooth), r_smooth)
 })
 
