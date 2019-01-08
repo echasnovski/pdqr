@@ -206,6 +206,13 @@ test_that("as_p.default uses `n_grid` argument", {
   )
 })
 
+test_that("as_p.default uses `...` to forward arguments to `f`", {
+  output_1 <- as_p(punif, support = c(0, 10), max = 10)
+  expect_true(output_1(9) > 0)
+  output_2 <- as_p(punif, support = NULL, max = 10)
+  expect_true(output_2(9) > 0)
+})
+
 test_that("as_p.default properly adjusts to support", {
   supp <- c(-0.5, 1.5)
   out_p <- as_p(fam_norm[["p"]], supp)

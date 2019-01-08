@@ -5,16 +5,18 @@ as_d <- function(f, ...) {
 as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
   assert_as_def_args(f, support, n_grid)
 
+  d_f <- function(x) {f(x, ...)}
+
   # Format support as vector with length two where `NA` indicates value to be
   # detected
   supp <- format_support(support)
 
   # Detect support
-  support <- detect_support_d(f, supp)
+  support <- detect_support_d(d_f, supp)
 
   # Compute `y`
   x <- seq(support[1], support[2], length.out = n_grid)
-  y <- f(x, ...)
+  y <- d_f(x)
   y <- impute_inf(x, y, '`f` output')
 
   assert_tot_prob(sum(y, na.rm = TRUE))

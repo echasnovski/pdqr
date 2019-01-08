@@ -218,6 +218,13 @@ test_that("as_q.default uses `n_grid` argument", {
   )
 })
 
+test_that("as_q.default uses `...` to forward arguments to `f`", {
+  output_1 <- as_q(qunif, support = c(0, 10), max = 10)
+  expect_true(output_1(0.95) > 9)
+  output_2 <- as_q(qunif, support = NULL, max = 10)
+  expect_true(output_2(0.95) > 9)
+})
+
 test_that("as_q.default properly adjusts to support", {
   supp <- c(-0.5, 1.5)
   out_q <- as_q(fam_norm[["q"]], supp)

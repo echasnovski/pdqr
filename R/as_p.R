@@ -5,16 +5,18 @@ as_p <- function(f, ...) {
 as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
   assert_as_def_args(f, support, n_grid)
 
+  p_f <- function(q) {f(q, ...)}
+
   # Format support as vector with length two where `NA` indicates value to be
   # detected
   supp <- format_support(support)
 
   # Detect support
-  support <- detect_support_p(f, supp)
+  support <- detect_support_p(p_f, supp)
 
   # Compute `y`
   x <- seq(support[1], support[2], length.out = n_grid)
-  p <- f(x, ...)
+  p <- p_f(x)
 
   y <- y_from_p_grid(x, p)
 

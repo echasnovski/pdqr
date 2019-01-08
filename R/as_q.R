@@ -5,10 +5,12 @@ as_q <- function(f, ...) {
 as_q.default <- function(f, support = NULL, n_grid = 10001, ...) {
   assert_as_def_args(f, support, n_grid)
 
-  # Detect support
-  support <- detect_support_q(f, format_support(support))
+  q_f <- function(p) {f(p, ...)}
 
-  p_f <- inversing(f, c(0, 1), n_grid = n_grid, ...)
+  # Detect support
+  support <- detect_support_q(q_f, format_support(support))
+
+  p_f <- inversing(q_f, c(0, 1), n_grid = n_grid)
 
   as_q(as_p(p_f, support, n_grid))
 }
