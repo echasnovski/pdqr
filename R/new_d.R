@@ -36,5 +36,11 @@ new_d_infin <- function(x_tbl) {
 }
 
 print.d <- function(x, ...) {
-  pdqr_print(x, "Density")
+  x_type <- meta(x, "type")
+
+  if (!is.null(x_type) && (x_type == "fin")) {
+    pdqr_print(x, "Probability mass")
+  } else {
+    pdqr_print(x, "Density")
+  }
 }

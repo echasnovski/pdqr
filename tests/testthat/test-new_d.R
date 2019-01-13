@@ -96,5 +96,5 @@ test_that("new_d uses `...` as arguments for `density()`", {
 
 # print.d -----------------------------------------------------------------
 test_that("print.d works", {
-  expect_pdqr_print(new_d, "Density")
+  expect_pdqr_print(new_d, "Probability mass", "Density")
 })

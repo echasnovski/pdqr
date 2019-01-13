@@ -22,7 +22,25 @@ line_support <- function(x) {
     x_supp_string <- paste0(round(x_support, digits = 5), collapse = ", ")
     support_print <- bold(paste0("[", x_supp_string, "]"))
 
-    paste0("Support: ", support_print, "\n")
+    paste0("Support: ", support_print, n_x_tbl_info(x), "\n")
+  }
+}
+
+n_x_tbl_info <- function(x) {
+  x_type <- meta(x, "type")
+  x_tbl <- meta(x, "x_tbl")
+
+  if (is.null(x_type) || !is.character(x_type) ||
+      is.null(x_tbl) || !is.data.frame(x_tbl)) {
+    return("")
+  }
+
+  n_x_tbl <- nrow(x_tbl)
+
+  if (x_type == "fin") {
+    paste0(" (", n_x_tbl, " ", ngettext(n_x_tbl, "element", "elements"), ")")
+  } else {
+    ""
   }
 }
 
@@ -51,13 +69,5 @@ meta_type_print_name <- function(x) {
     "unknown"
   } else {
     switch(x_type, fin = "finite", infin = "infinite")
-  }
-}
-
-elements <- function(len) {
-  if (len == 1) {
-    "(1 element)"
-  } else {
-    paste0("(", len, " elements)")
   }
 }

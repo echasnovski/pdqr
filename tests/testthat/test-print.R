@@ -13,6 +13,11 @@ test_that("pdqr_print works with bad input", {
   expect_output(pdqr_print(input_2, "Temp"), "Support: not proper")
 })
 
+test_that("pdqr_print targets output to number of elements in `x_tbl`", {
+  d_one <- new_d(1, "fin")
+  expect_output(pdqr_print(d_one, "Temp"), "1 element")
+})
+
 
 # line_title --------------------------------------------------------------
 # Tested in `new_*()` functions
@@ -20,6 +25,13 @@ test_that("pdqr_print works with bad input", {
 
 # line_support ------------------------------------------------------------
 # Tested in `new_*()` functions
+
+
+# n_x_tbl_info ------------------------------------------------------------
+# Main functionality is tested in `*_fun()` functions
+test_that("n_x_tbl_info works with bad input", {
+  expect_equal(n_x_tbl_info(1), "")
+})
 
 
 # bold --------------------------------------------------------------------
@@ -34,10 +46,3 @@ test_that("bold works", {
 
 # meta_type_print_name ----------------------------------------------------
 # Tested in `new_*()` functions
-
-
-# elements ----------------------------------------------------------------
-test_that("elements works", {
-  expect_match(elements(1), "1 element")
-  expect_match(elements(2), "2 elements")
-})
