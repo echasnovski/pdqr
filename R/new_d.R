@@ -1,7 +1,7 @@
-new_d <- function(x, type = "smooth", ...) {
+new_d <- function(x, type = "infin", ...) {
   distr_impl(
     fun_class = "d",
-    impl_funs = list(fin = new_d_fin, smooth = new_d_smooth),
+    impl_funs = list(fin = new_d_fin, infin = new_d_infin),
     x = x, type = type, ...
   )
 }
@@ -18,7 +18,7 @@ new_d_fin <- function(x_tbl) {
   add_meta(res, support = support, x_tbl = x_tbl)
 }
 
-new_d_smooth <- function(x_tbl) {
+new_d_infin <- function(x_tbl) {
   # Using custom `approx_lin()` instead of `stats::approxfun()` to avoid
   # creating copies of `x_tbl[["x"]]` and `x_tbl[["y"]]`. It is slower but at
   # acceptable level.

@@ -18,7 +18,7 @@ as_r.default <- function(f, support = NULL, n_grid = 10001, n_sample = 10000,
   support <- detect_support_r(smpl, format_support(support))
 
   # Create density function from sample
-  new_call_args <- dedupl_list(c(list(x = smpl, type = "smooth"), .pdqr_args))
+  new_call_args <- dedupl_list(c(list(x = smpl, type = "infin"), .pdqr_args))
   d_f <- do.call(new_d, new_call_args)
 
   # Adjust to supplied support

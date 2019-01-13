@@ -7,12 +7,12 @@ test_that("new_p works with numeric input", {
   expect_equal(meta(p_fin, "support"), x_fin_support)
   expect_equal(p_fin(1:10), c(cumsum(x_fin_x_tbl[["prob"]]), 1))
 
-  expect_distr_fun(p_smooth, "p", "smooth")
+  expect_distr_fun(p_infin, "p", "infin")
   expect_equal(
-    round(meta(p_smooth, "support"), 2), round(x_smooth_support, 2)
+    round(meta(p_infin, "support"), 2), round(x_infin_support, 2)
   )
   expect_equal(
-    round(p_smooth(seq(from = -1, to = 1, by = 0.1)), 3),
+    round(p_infin(seq(from = -1, to = 1, by = 0.1)), 3),
     c(
       0.143, 0.152, 0.163, 0.177, 0.195, 0.219,  0.25, 0.286, 0.329,
       0.376, 0.426, 0.477, 0.528, 0.577, 0.622, 0.663, 0.701, 0.735,
@@ -24,7 +24,7 @@ test_that("new_p works with numeric input", {
 test_that("new_p works with data frame input", {
   expect_equal_distr(new_p(x_fin_x_tbl, "fin"), p_fin, x_fin_vec_ext)
   expect_equal_distr(
-    new_p(x_smooth_x_tbl, "smooth"), p_smooth, x_smooth_vec_ext
+    new_p(x_infin_x_tbl, "infin"), p_infin, x_infin_vec_ext
   )
 })
 
@@ -42,31 +42,31 @@ test_that("new_p behaves like ecdf() in case of `type` = 'fin'", {
   expect_equal(p_fin(x_fin_grid), ecdf(x_fin)(x_fin_grid))
 })
 
-test_that("new_p output is integration of new_d in case of `type` = 'smooth'", {
-  d_support <- meta(d_smooth, "support")
-  x_smooth_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
+test_that("new_p output is integration of new_d in case of `type` = 'infin'", {
+  d_support <- meta(d_infin, "support")
+  x_infin_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
 
-  p_smooth_int <- vapply(
-    x_smooth_grid,
+  p_infin_int <- vapply(
+    x_infin_grid,
     function(q) {
-      integrate(d_smooth, x_smooth_grid[1], q)[["value"]]
+      integrate(d_infin, x_infin_grid[1], q)[["value"]]
     },
     numeric(1)
   )
-  p_smooth_out <- p_smooth(x_smooth_grid)
+  p_infin_out <- p_infin(x_infin_grid)
 
 
-  # `p_smooth()` differs insignificantly from `integrate()` output
+  # `p_infin()` differs insignificantly from `integrate()` output
   # (due to approximate nature of `integrate()`)
   expect_true(
-    all(abs(p_smooth_out - p_smooth_int) <= 10^(-4))
+    all(abs(p_infin_out - p_infin_int) <= 10^(-4))
   )
 })
 
 test_that("new_p output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
   expect_equal(p_fin(extreme_vec), c(0, 1))
-  expect_equal(p_smooth(extreme_vec), c(0, 1))
+  expect_equal(p_infin(extreme_vec), c(0, 1))
 })
 
 test_that("new_p asserts", {
@@ -77,8 +77,8 @@ test_that("new_p asserts", {
   expect_error(new_p("a"), "x.*numeric.*data.*frame")
   expect_error(new_p(numeric(0)), "x.*empty")
   expect_error(new_p(x_fin, type = 1), "type.*string")
-  expect_error(new_p(x_fin, type = "a"), "type.*fin.*smooth")
-  expect_error(new_p(1, type = "smooth"), "at least 2")
+  expect_error(new_p(x_fin, type = "a"), "type.*fin.*infin")
+  expect_error(new_p(1, type = "infin"), "at least 2")
 })
 
 test_that("new_p handles metadata", {
@@ -87,18 +87,18 @@ test_that("new_p handles metadata", {
     list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
   )
 
-  expect_named(meta(p_smooth), c("support", "type", "x_tbl"))
-  expect_equal(meta(p_smooth, "x_tbl"), x_smooth_x_tbl)
+  expect_named(meta(p_infin), c("support", "type", "x_tbl"))
+  expect_equal(meta(p_infin, "x_tbl"), x_infin_x_tbl)
   expect_equal(
-    round(meta(p_smooth, "support"), 2), round(x_smooth_support, 2)
+    round(meta(p_infin, "support"), 2), round(x_infin_support, 2)
   )
-  expect_equal(meta(p_smooth)["type"], list(type = "smooth"))
+  expect_equal(meta(p_infin)["type"], list(type = "infin"))
 })
 
 test_that("new_p uses `...` as arguments for `density()`", {
-  p_smooth_cosine <- new_p(x_smooth, type = "smooth", kernel = "cosine")
+  p_infin_cosine <- new_p(x_infin, type = "infin", kernel = "cosine")
   expect_equal(
-    round(p_smooth_cosine(seq(from = -1, to = 1, by = 0.1)), 3),
+    round(p_infin_cosine(seq(from = -1, to = 1, by = 0.1)), 3),
     c(
       0.141, 0.151, 0.163, 0.178, 0.197, 0.222, 0.253, 0.289, 0.331,
       0.377, 0.426, 0.476, 0.526, 0.574, 0.619, 0.661,   0.7, 0.735,
@@ -112,7 +112,7 @@ test_that("new_p uses `...` as arguments for `density()`", {
 # Tested in `new_p()`
 
 
-# new_p_smooth ------------------------------------------------------------
+# new_p_infin -------------------------------------------------------------
 # Tested in `new_p()`
 
 

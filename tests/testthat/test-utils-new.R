@@ -36,7 +36,7 @@ test_that("impute_x_tbl_impl throws error", {
 # Tested in `new_*()` functions
 
 
-# compute_x_tbl_smooth ----------------------------------------------------
+# compute_x_tbl_infin -----------------------------------------------------
 # Tested in `new_*()` functions
 
 
@@ -100,10 +100,10 @@ test_that("is_pdqr_fun works", {
 
   # "support" metadata
   expect_false(
-    is_pdqr_fun(structure(f_with_class, meta = list(type = "smooth")))
+    is_pdqr_fun(structure(f_with_class, meta = list(type = "infin")))
   )
   f_with_corrupt_support <- structure(
-    f_with_class, meta = list(type = "smooth", support = c(2, 1))
+    f_with_class, meta = list(type = "infin", support = c(2, 1))
   )
   expect_false(is_pdqr_fun(f_with_corrupt_support))
 
@@ -111,7 +111,7 @@ test_that("is_pdqr_fun works", {
   expect_true(is_pdqr_fun(p_custom))
 
     # "x_tbl" is completely missing
-  input_bad_x_tbl_1 <- p_smooth
+  input_bad_x_tbl_1 <- p_infin
   attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
   expect_false(is_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
 
@@ -148,15 +148,15 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_false(is_pdqr_fun(input_bad_x_tbl_4))
 
-  # "smooth" type
+  # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- p_smooth
+  input_bad_x_tbl_5 <- p_infin
   attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
     attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
   expect_false(is_pdqr_fun(input_bad_x_tbl_5))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_6 <- p_smooth
+  input_bad_x_tbl_6 <- p_infin
   attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_false(is_pdqr_fun(input_bad_x_tbl_6))
 })
@@ -165,10 +165,10 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 # is_distr_type -----------------------------------------------------------
 test_that("is_distr_type works", {
   expect_true(is_distr_type("fin"))
-  expect_true(is_distr_type("smooth"))
+  expect_true(is_distr_type("infin"))
 
   expect_false(is_distr_type(1))
-  expect_false(is_distr_type(c("fin", "smooth")))
+  expect_false(is_distr_type(c("fin", "infin")))
   expect_false(is_distr_type("a"))
 })
 
@@ -214,45 +214,45 @@ test_that("is_x_tbl works with `type = 'fin'`", {
   )
 })
 
-test_that("is_x_tbl works with `type = 'smooth'`", {
-  expect_true(is_x_tbl(x_smooth_x_tbl, type = "smooth"))
+test_that("is_x_tbl works with `type = 'infin'`", {
+  expect_true(is_x_tbl(x_infin_x_tbl, type = "infin"))
 
   # Input type
   input <- "a"
-  expect_false(is_x_tbl(input, type = "smooth"), "`input`.*data.*frame")
+  expect_false(is_x_tbl(input, type = "infin"), "`input`.*data.*frame")
 
   # Number of rows
   expect_false(
-    is_x_tbl(data.frame(x = 1, y = 1), type = "smooth"), "2.*rows"
+    is_x_tbl(data.frame(x = 1, y = 1), type = "infin"), "2.*rows"
   )
 
   # Column "x"
-  expect_false(is_x_tbl(data.frame(a = 1:2), type = "smooth"), "x")
+  expect_false(is_x_tbl(data.frame(a = 1:2), type = "infin"), "x")
   expect_false(
-    is_x_tbl(data.frame(x = c("a", "b")), type = "smooth"), "numeric.*x"
+    is_x_tbl(data.frame(x = c("a", "b")), type = "infin"), "numeric.*x"
   )
 
   # Column "y"
-  expect_false(is_x_tbl(data.frame(x = 1:2), type = "smooth"), "y")
+  expect_false(is_x_tbl(data.frame(x = 1:2), type = "infin"), "y")
   expect_false(
-    is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "smooth"),
+    is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "infin"),
     "numeric.*y"
   )
   expect_false(
-    is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "smooth"),
+    is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "infin"),
     '"y".*negative'
   )
   expect_false(
-    is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "smooth"),
+    is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "infin"),
     '"y".*positive'
   )
 
   # Extra columns are allowed
   expect_true(
-    is_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "smooth")
+    is_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "infin")
   )
   # Different column order is allowed
-  expect_true(is_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "smooth"))
+  expect_true(is_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "infin"))
 })
 
 
@@ -279,16 +279,16 @@ test_that("is_x_tbl_meta works", {
   input_bad_x_tbl_4[["cumprob"]] <- NULL
   expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "fin"))
 
-  # "smooth" type
+  # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- x_smooth_x_tbl
+  input_bad_x_tbl_5 <- x_infin_x_tbl
   input_bad_x_tbl_5[["y"]] <- 10 * input_bad_x_tbl_5[["y"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "smooth"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "infin"))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_5 <- x_smooth_x_tbl
+  input_bad_x_tbl_5 <- x_infin_x_tbl
   input_bad_x_tbl_5[["cumprob"]] <- NULL
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "smooth"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "infin"))
 })
 
 
@@ -319,11 +319,11 @@ test_that("has_meta_support works", {
 # has_meta_x_tbl ----------------------------------------------------------
 test_that("has_meta_x_tbl works", {
   expect_true(has_meta_x_tbl(p_fin, "fin"))
-  expect_true(has_meta_x_tbl(p_smooth, "smooth"))
+  expect_true(has_meta_x_tbl(p_infin, "infin"))
 
-  expect_false(has_meta_x_tbl(p_fin, "smooth"))
-  expect_false(has_meta_x_tbl(p_smooth, "fin"))
-  expect_false(has_meta_x_tbl(1, "smooth"))
+  expect_false(has_meta_x_tbl(p_fin, "infin"))
+  expect_false(has_meta_x_tbl(p_infin, "fin"))
+  expect_false(has_meta_x_tbl(1, "infin"))
   expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "fin"))
 
   # Check for "good" "x_tbl" metadata
@@ -356,4 +356,4 @@ test_that("trapez_integral works", {
 
 
 # compute_cum_quadr_coeffs ------------------------------------------------
-# Tested in `p_from_d_points()` and `new_q_smooth()`
+# Tested in `p_from_d_points()` and `new_q_infin()`

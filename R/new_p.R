@@ -1,7 +1,7 @@
-new_p <- function(x, type = "smooth", ...) {
+new_p <- function(x, type = "infin", ...) {
   distr_impl(
     fun_class = "p",
-    impl_funs = list(fin = new_p_fin, smooth = new_p_smooth),
+    impl_funs = list(fin = new_p_fin, infin = new_p_infin),
     x = x, type = type, ...
   )
 }
@@ -24,7 +24,7 @@ new_p_fin <- function(x_tbl) {
   add_meta(res, support = support, x_tbl = x_tbl)
 }
 
-new_p_smooth <- function(x_tbl) {
+new_p_infin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   res <- p_from_d_points(

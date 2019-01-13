@@ -1,7 +1,7 @@
-new_q <- function(x, type = "smooth", ...) {
+new_q <- function(x, type = "infin", ...) {
   distr_impl(
     fun_class = "q",
-    impl_funs = list(fin = new_q_fin, smooth = new_q_smooth),
+    impl_funs = list(fin = new_q_fin, infin = new_q_infin),
     x = x, type = type, ...
   )
 }
@@ -23,7 +23,7 @@ new_q_fin <- function(x_tbl) {
   add_meta(res, support = range(x_tbl[["x"]]), x_tbl = x_tbl)
 }
 
-new_q_smooth <- function(x_tbl) {
+new_q_infin <- function(x_tbl) {
   x_dens <- x_tbl[["x"]]
   y_dens <- x_tbl[["y"]]
   p_grid <- x_tbl[["cumprob"]]

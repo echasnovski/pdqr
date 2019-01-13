@@ -87,17 +87,17 @@ test_that("assert_pdqr_fun works", {
 
   # "support" metadata
   expect_error(
-    assert_pdqr_fun(structure(f_with_class, meta = list(type = "smooth"))),
+    assert_pdqr_fun(structure(f_with_class, meta = list(type = "infin"))),
     "proper.*support"
   )
   f_with_corrupt_support <- structure(
-    f_with_class, meta = list(type = "smooth", support = c(2, 1))
+    f_with_class, meta = list(type = "infin", support = c(2, 1))
   )
   expect_error(assert_pdqr_fun(f_with_corrupt_support), "proper.*support")
 
   # "x_tbl" metadata
     # "x_tbl" is completely missing
-  input_bad_x_tbl_1 <- p_smooth
+  input_bad_x_tbl_1 <- p_infin
   attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
   expect_error(assert_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
 
@@ -134,9 +134,9 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_error(assert_pdqr_fun(input_bad_x_tbl_4), '"x_tbl".*have.*"cumprob"')
 
-  # "smooth" type
+  # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- p_smooth
+  input_bad_x_tbl_5 <- p_infin
   attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
     attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
   expect_error(
@@ -144,7 +144,7 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   )
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_6 <- p_smooth
+  input_bad_x_tbl_6 <- p_infin
   attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_error(assert_pdqr_fun(input_bad_x_tbl_6), '"x_tbl".*have.*"cumprob"')
 })
@@ -153,11 +153,11 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 # assert_distr_type -------------------------------------------------------
 test_that("assert_distr_type works", {
   expect_silent(assert_distr_type("fin"))
-  expect_silent(assert_distr_type("smooth"))
+  expect_silent(assert_distr_type("infin"))
 
   expect_error(assert_distr_type(1), "string")
-  expect_error(assert_distr_type(c("fin", "smooth")), "string")
-  expect_error(assert_distr_type("a"), "fin.*smooth")
+  expect_error(assert_distr_type(c("fin", "infin")), "string")
+  expect_error(assert_distr_type("a"), "fin.*infin")
 })
 
 
@@ -229,56 +229,56 @@ test_that("assert_x_tbl works with `type = 'fin'`", {
   )
 })
 
-test_that("assert_x_tbl works with `type = 'smooth'`", {
-  expect_silent(assert_x_tbl(x_smooth_x_tbl, type = "smooth"))
+test_that("assert_x_tbl works with `type = 'infin'`", {
+  expect_silent(assert_x_tbl(x_infin_x_tbl, type = "infin"))
 
   # Input type
   input <- "a"
-  expect_error(assert_x_tbl(input, type = "smooth"), "`input`.*data.*frame")
+  expect_error(assert_x_tbl(input, type = "infin"), "`input`.*data.*frame")
 
   # Number of rows
   expect_error(
-    assert_x_tbl(data.frame(x = 1, y = 1), type = "smooth"), "2.*rows"
+    assert_x_tbl(data.frame(x = 1, y = 1), type = "infin"), "2.*rows"
   )
 
   # Column "x"
-  expect_error(assert_x_tbl(data.frame(a = 1:2), type = "smooth"), '"x"')
+  expect_error(assert_x_tbl(data.frame(a = 1:2), type = "infin"), '"x"')
   expect_error(
-    assert_x_tbl(data.frame(x = c("a", "b")), type = "smooth"), '"x".*numeric'
+    assert_x_tbl(data.frame(x = c("a", "b")), type = "infin"), '"x".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "smooth"), '"x".*`NA`'
+    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "infin"), '"x".*`NA`'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, Inf)), type = "smooth"), '"x".*finite'
+    assert_x_tbl(data.frame(x = c(1, Inf)), type = "infin"), '"x".*finite'
   )
 
   # Column "y"
-  expect_error(assert_x_tbl(data.frame(x = 1:2), type = "smooth"), '"y"')
+  expect_error(assert_x_tbl(data.frame(x = 1:2), type = "infin"), '"y"')
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "smooth"),
+    assert_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "infin"),
     '"y".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c(1, NA_real_)), type = "smooth"),
+    assert_x_tbl(data.frame(x = 1:2, y = c(1, NA_real_)), type = "infin"),
     '"y".*`NA`'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "smooth"),
+    assert_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "infin"),
     '"y".*negative'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "smooth"),
+    assert_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "infin"),
     '"y".*positive'
   )
 
   # Extra columns are allowed
   expect_silent(
-    assert_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "smooth")
+    assert_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "infin")
   )
   # Different column order is allowed
   expect_silent(
-    assert_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "smooth")
+    assert_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "infin")
   )
 })
 
@@ -287,7 +287,7 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
 # Tested in `assert_x_tbl()`
 
 
-# assert_x_tbl_smooth -----------------------------------------------------
+# assert_x_tbl_infin ------------------------------------------------------
 # Tested in `assert_x_tbl()`
 
 

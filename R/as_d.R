@@ -25,7 +25,7 @@ as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
   # approximation of q-function in case `as_q()` is called
   x_tbl <- remove_zero_edge_y(data.frame(x = x, y = y))
 
-  res <- new_d(x_tbl, "smooth")
+  res <- new_d(x_tbl, "infin")
 
   # Make detected support more precise: if initial edge was `NA` then use the
   # one stored in `x_tbl` (which is more precise than in `support` because of

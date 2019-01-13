@@ -10,7 +10,7 @@ distr_impl <- function(fun_class, impl_funs, x, type, ...) {
   fun <- switch(
     type,
     fin = impl_funs[["fin"]](x_tbl),
-    smooth = impl_funs[["smooth"]](x_tbl)
+    infin = impl_funs[["infin"]](x_tbl)
   )
 
   res <- add_meta(fun, type = type)
@@ -50,7 +50,7 @@ impute_x_tbl_impl <- function(x_tbl, type) {
     res[["cumprob"]] <- impute_vec(
       vec = x_tbl[["cumprob"]], new_vec = cumsum(res[["prob"]])
     )
-  } else if (type == "smooth") {
+  } else if (type == "infin") {
     res <- data.frame(
       x = x_tbl[["x"]],
       y = impute_y(x_tbl[["y"]], x_tbl[["x"]])
@@ -95,7 +95,7 @@ compute_x_tbl <- function(x, type, ...) {
   switch(
     type,
     fin = compute_x_tbl_fin(x),
-    smooth = compute_x_tbl_smooth(x, ...)
+    infin = compute_x_tbl_infin(x, ...)
   )
 }
 
@@ -109,10 +109,10 @@ compute_x_tbl_fin <- function(x, vals = sort(unique(x))) {
   data.frame(x = vals, prob = prob, cumprob = cumprob)
 }
 
-compute_x_tbl_smooth <- function(x, ...) {
+compute_x_tbl_infin <- function(x, ...) {
   if (length(x) < 2) {
     stop_collapse(
-      'There should be at least 2 values in `x` for `type` "smooth".'
+      'There should be at least 2 values in `x` for `type` "infin".'
     )
   }
 

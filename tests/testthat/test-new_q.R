@@ -9,12 +9,12 @@ test_that("new_q works with numeric input", {
     q_fin(cumsum(x_fin_x_tbl[["prob"]])), x_fin_x_tbl[["x"]]
   )
 
-  expect_distr_fun(q_smooth, "q", "smooth")
+  expect_distr_fun(q_infin, "q", "infin")
   expect_equal(
-    round(meta(q_smooth, "support"), 2), round(x_smooth_support, 2)
+    round(meta(q_infin, "support"), 2), round(x_infin_support, 2)
   )
   expect_equal(
-    round(q_smooth(0:20/20), 3),
+    round(q_infin(0:20/20), 3),
     c(
       -2.919, -1.816, -1.434, -0.922, -0.579, -0.399, -0.267, -0.154,
       -0.052,  0.047,  0.144,  0.244,  0.351,  0.467,  0.598,  0.745,
@@ -25,7 +25,7 @@ test_that("new_q works with numeric input", {
 
 test_that("new_q works with data frame input", {
   expect_equal_distr(new_q(x_fin_x_tbl, "fin"), q_fin, p_vec)
-  expect_equal_distr(new_q(x_smooth_x_tbl, "smooth"), q_smooth, p_vec)
+  expect_equal_distr(new_q(x_infin_x_tbl, "infin"), q_infin, p_vec)
 })
 
 test_that("new_q imputes data frame input", {
@@ -48,18 +48,18 @@ test_that("new_q output is inverse of new_p output", {
   expect_equal(x_fin_vec, q_fin(p_fin(x_fin_vec)))
   # There is not test `p_vec == p_fin(q_fin(p_vec))` because it shouldn't be
   # true in "fin" case. This is tested in "behaves like inverse of ecdf()" test.
-  expect_equal(x_smooth_vec, q_smooth(p_smooth(x_smooth_vec)))
-  expect_equal(p_vec, p_smooth(q_smooth(p_vec)))
+  expect_equal(x_infin_vec, q_infin(p_infin(x_infin_vec)))
+  expect_equal(p_vec, p_infin(q_infin(p_vec)))
 })
 
 test_that("new_q output works with extreme values", {
   expect_equal(q_fin(c(0, 1)), x_fin_support)
-  expect_equal(q_smooth(c(0, 1)), x_smooth_support)
+  expect_equal(q_infin(c(0, 1)), x_infin_support)
 })
 
 test_that("new_q returns `NaN` for out of range probabilities", {
   expect_true(all(is.nan(q_fin(c(-1, 2)))))
-  expect_true(all(is.nan(q_smooth(c(-1, 2)))))
+  expect_true(all(is.nan(q_infin(c(-1, 2)))))
 })
 
 test_that("new_q returns the smallest `x` with not exceeding `p`", {
@@ -73,9 +73,9 @@ test_that("new_q returns the smallest `x` with not exceeding `p`", {
   # Here values 1 and 2 correspond to cumulative probability of 0 and
   # values 5 and 6 - to 1. Quantile function should return the smallest from
   # pairs.
-  cur_x_tbl_smooth <- data.frame(x = 1:6, y = c(0, 0, 1, 1, 0, 0))
-  cur_q_smooth <- new_q(cur_x_tbl_smooth, "smooth")
-  expect_equal(cur_q_smooth(c(0, 1)), c(1, 5))
+  cur_x_tbl_infin <- data.frame(x = 1:6, y = c(0, 0, 1, 1, 0, 0))
+  cur_q_infin <- new_q(cur_x_tbl_infin, "infin")
+  expect_equal(cur_q_infin(c(0, 1)), c(1, 5))
 })
 
 test_that("new_q asserts", {
@@ -86,8 +86,8 @@ test_that("new_q asserts", {
   expect_error(new_q("a"), "x.*numeric.*data.*frame")
   expect_error(new_q(numeric(0)), "x.*empty")
   expect_error(new_q(x_fin, type = 1), "type.*string")
-  expect_error(new_q(x_fin, type = "a"), "type.*fin.*smooth")
-  expect_error(new_q(1, type = "smooth"), "at least 2")
+  expect_error(new_q(x_fin, type = "a"), "type.*fin.*infin")
+  expect_error(new_q(1, type = "infin"), "at least 2")
 })
 
 test_that("new_q handles metadata", {
@@ -96,18 +96,18 @@ test_that("new_q handles metadata", {
     list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
   )
 
-  expect_named(meta(q_smooth), c("support", "type", "x_tbl"))
-  expect_equal(meta(q_smooth, "x_tbl"), x_smooth_x_tbl)
+  expect_named(meta(q_infin), c("support", "type", "x_tbl"))
+  expect_equal(meta(q_infin, "x_tbl"), x_infin_x_tbl)
   expect_equal(
-    round(meta(q_smooth, "support"), 2), round(x_smooth_support, 2)
+    round(meta(q_infin, "support"), 2), round(x_infin_support, 2)
   )
-  expect_equal(meta(q_smooth)["type"], list(type = "smooth"))
+  expect_equal(meta(q_infin)["type"], list(type = "infin"))
 })
 
 test_that("new_q uses `...` as arguments for `density()`", {
-  q_smooth_cosine <- new_q(x_smooth, type = "smooth", kernel = "cosine")
+  q_infin_cosine <- new_q(x_infin, type = "infin", kernel = "cosine")
   expect_equal(
-    round(q_smooth_cosine(0:20/20), 3),
+    round(q_infin_cosine(0:20/20), 3),
     c(
       -2.919, -1.82, -1.427, -0.91, -0.589, -0.408, -0.273, -0.158,
       -0.053, 0.048,  0.148,  0.25,  0.357,  0.473,    0.6,  0.743,
@@ -121,7 +121,7 @@ test_that("new_q uses `...` as arguments for `density()`", {
 # Tested in `new_q()`
 
 
-# new_q_smooth ------------------------------------------------------------
+# new_q_infin -------------------------------------------------------------
 # Tested in `new_q()`
 
 

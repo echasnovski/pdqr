@@ -91,30 +91,30 @@ expect_x_tbl_imputation <- function(f) {
   output_4 <- f(bad_fin_input_4, "fin")
   expect_equal(meta(output_4, "x_tbl"), x_fin_x_tbl)
 
-  # Type "smooth"
-  n_smooth <- nrow(x_smooth_x_tbl)
+  # Type "infin"
+  n_infin <- nrow(x_infin_x_tbl)
 
     # Reordering rows
-  bad_smooth_input_1 <- x_smooth_x_tbl[n_smooth:1, ]
-  output_1 <- new_d(bad_smooth_input_1, "smooth")
-  expect_equal(meta(output_1, "x_tbl"), x_smooth_x_tbl)
+  bad_infin_input_1 <- x_infin_x_tbl[n_infin:1, ]
+  output_1 <- new_d(bad_infin_input_1, "infin")
+  expect_equal(meta(output_1, "x_tbl"), x_infin_x_tbl)
 
     # Reordering columns
-  bad_smooth_input_2 <- x_smooth_x_tbl[, c("y", "x")]
-  output_2 <- f(bad_smooth_input_2, "smooth")
-  expect_equal(meta(output_2, "x_tbl"), x_smooth_x_tbl)
+  bad_infin_input_2 <- x_infin_x_tbl[, c("y", "x")]
+  output_2 <- f(bad_infin_input_2, "infin")
+  expect_equal(meta(output_2, "x_tbl"), x_infin_x_tbl)
 
     # Normalizing
-  bad_smooth_input_3 <- x_smooth_x_tbl
-  bad_smooth_input_3[["y"]] <- bad_smooth_input_3[["y"]] * 10
-  output_3 <- new_d(bad_smooth_input_3, "smooth")
-  expect_equal(meta(output_3, "x_tbl"), x_smooth_x_tbl)
+  bad_infin_input_3 <- x_infin_x_tbl
+  bad_infin_input_3[["y"]] <- bad_infin_input_3[["y"]] * 10
+  output_3 <- new_d(bad_infin_input_3, "infin")
+  expect_equal(meta(output_3, "x_tbl"), x_infin_x_tbl)
 
     # Recomputing "cumprob" column
-  bad_smooth_input_4 <- x_smooth_x_tbl
-  bad_smooth_input_4[["cumprob"]] <- bad_smooth_input_4[["cumprob"]] * 10
-  output_4 <- f(bad_smooth_input_4, "smooth")
-  expect_equal(meta(output_4, "x_tbl"), x_smooth_x_tbl)
+  bad_infin_input_4 <- x_infin_x_tbl
+  bad_infin_input_4[["cumprob"]] <- bad_infin_input_4[["cumprob"]] * 10
+  output_4 <- f(bad_infin_input_4, "infin")
+  expect_equal(meta(output_4, "x_tbl"), x_infin_x_tbl)
 }
 
 expect_pdqr_print <- function(f, f_name) {
@@ -126,10 +126,10 @@ expect_pdqr_print <- function(f, f_name) {
     regex_scatter(f_name, "fin type", supp_regex)
   )
 
-  f_smooth <- f(x_smooth, type = "smooth")
+  f_infin <- f(x_infin, type = "infin")
   expect_output(
-    print(f_smooth),
-    regex_scatter(f_name, "smooth type", supp_regex)
+    print(f_infin),
+    regex_scatter(f_name, "infin type", supp_regex)
   )
 }
 

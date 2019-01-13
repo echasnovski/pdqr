@@ -12,7 +12,7 @@ p_custom_ref <- structure(
     user_p(sqrt(q)) - user_p(-sqrt(q))
   },
   class = c("p", "pdqr", "function"),
-  meta = list(type = "smooth", support = c(0, 1))
+  meta = list(type = "infin", support = c(0, 1))
 )
 
 x_norm_seq <- seq(-10, 10, by = 0.01)
@@ -21,7 +21,7 @@ x_norm_seq <- seq(-10, 10, by = 0.01)
 # form_trans --------------------------------------------------------------
 test_that("form_trans works", {
   output_custom <- form_trans(sq, p_custom)
-  expect_distr_fun(output_custom, "p", "smooth")
+  expect_distr_fun(output_custom, "p", "infin")
   expect_equal_distr(
     output_custom, p_custom_ref,
     grid = x_custom_trunc, thres = 0.05,
@@ -38,7 +38,7 @@ test_that("form_trans works", {
   )
 
   output_norm <- form_trans(`*`, r_norm_input, 2, .pdqr_class = "d")
-  expect_distr_fun(output_norm, "d", "smooth")
+  expect_distr_fun(output_norm, "d", "infin")
   expect_equal_distr(
     output_norm, d_norm_ref,
     grid = x_norm_seq, thres = 0.02,
@@ -126,7 +126,7 @@ test_that("Math.pdqr works", {
   d_norm_ref <- new_d(data.frame(x = x_norm_seq, y = dnorm(x_norm_seq)))
   d_norm_out <- log(d_lnorm)
 
-  expect_distr_fun(d_norm_out, "d", "smooth")
+  expect_distr_fun(d_norm_out, "d", "infin")
   expect_equal_distr(
     d_norm_out, d_norm_ref,
     grid = x_norm_seq, thres = 0.05,
@@ -146,7 +146,7 @@ test_that("Ops.pdqr works", {
   p_norm_out <- p_unif + p_unif + p_unif + p_unif + p_unif + p_unif +
     p_unif + p_unif + p_unif + p_unif + p_unif + p_unif - 6
 
-  expect_distr_fun(p_norm_out, "p", "smooth")
+  expect_distr_fun(p_norm_out, "p", "infin")
   expect_equal_distr(
     p_norm_out, p_norm_ref,
     grid = x_norm_seq, thres = 0.05,
@@ -156,7 +156,7 @@ test_that("Ops.pdqr works", {
 })
 
 test_that("Ops.pdqr warns about not numeric type", {
-  expect_warning(p_fin >= p_smooth, ">=.*logical.*[Cc]onvert")
+  expect_warning(p_fin >= p_infin, ">=.*logical.*[Cc]onvert")
 })
 
 test_that("Ops.pdqr works with for generics with one argument", {
@@ -168,8 +168,8 @@ test_that("Ops.pdqr works with for generics with one argument", {
 test_that("Summary.pdqr works", {
   expect_distr_fun(min(p_fin), "p", "fin")
   expect_distr_fun(max(p_fin, p_fin), "p", "fin")
-  expect_distr_fun(sum(q_custom, q_smooth, q_smooth), "q", "smooth")
-  expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "smooth")
+  expect_distr_fun(sum(q_custom, q_infin, q_infin), "q", "infin")
+  expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "infin")
 })
 
 test_that("Summary.pdqr throws error on `range()`", {

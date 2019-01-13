@@ -100,7 +100,7 @@ assert_pdqr_fun <- function(f) {
 
   if (!has_meta_type(f)) {
     stop_collapse(
-      f_name, ' should have proper "type" metadata ("fin" or "smooth").'
+      f_name, ' should have proper "type" metadata ("fin" or "infin").'
     )
   }
 
@@ -129,9 +129,9 @@ assert_distr_type <- function(type) {
   if (!is_string(type)) {
     stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
   }
-  if (!(type %in% c("fin", "smooth"))) {
+  if (!(type %in% c("fin", "infin"))) {
     stop_collapse(
-      type_name, ' should be one of "fin" or "smooth", not "', type, '".'
+      type_name, ' should be one of "fin" or "infin", not "', type, '".'
     )
   }
 
@@ -174,7 +174,7 @@ assert_x_tbl <- function(x_tbl, type) {
   switch(
     type,
     fin = assert_x_tbl_fin(x_tbl, x_tbl_name),
-    smooth = assert_x_tbl_smooth(x_tbl, x_tbl_name)
+    infin = assert_x_tbl_infin(x_tbl, x_tbl_name)
   )
 }
 
@@ -198,7 +198,7 @@ assert_x_tbl_fin <- function(x_tbl, x_tbl_name) {
   TRUE
 }
 
-assert_x_tbl_smooth <- function(x_tbl, x_tbl_name) {
+assert_x_tbl_infin <- function(x_tbl, x_tbl_name) {
   if (nrow(x_tbl) < 2) {
     stop_collapse(x_tbl_name, " should have at least 2 rows.")
   }
@@ -242,11 +242,11 @@ assert_x_tbl_meta <- function(x_tbl, type) {
     }
   }
 
-  if (type == "smooth") {
+  if (type == "infin") {
     if (!is_near(trapez_integral(x_tbl[["x"]], x_tbl[["y"]]), 1)) {
       stop_collapse(
         'Total integral from "x_tbl" metadata columns should be 1 if ',
-        '`type` is "smooth".'
+        '`type` is "infin".'
       )
     }
   }

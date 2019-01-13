@@ -30,10 +30,10 @@ test_that("summ_pval works", {
   expect_pval(p_fin, 5,     c(0.55, 0.55, 0.5, 1))
   expect_pval(p_fin, 9.001, c(0,    0,    1,   0))
 
-  expect_pval(p_smooth,          -100, c(1,     1,     0,     0))
-  expect_pval(p_smooth, min(x_smooth), c(0.957, 0.957, 0.043, 0.087))
-  expect_pval(p_smooth,             0, c(0.574, 0.574, 0.426, 0.852))
-  expect_pval(p_smooth, max(x_smooth), c(0.061, 0.061, 0.939, 0.122))
+  expect_pval(p_infin,          -100, c(1,     1,     0,     0))
+  expect_pval(p_infin,  min(x_infin), c(0.957, 0.957, 0.043, 0.087))
+  expect_pval(p_infin,             0, c(0.574, 0.574, 0.426, 0.852))
+  expect_pval(p_infin,  max(x_infin), c(0.061, 0.061, 0.939, 0.122))
 
   expect_pval(p_custom, 0,    c(1,    1,    0,    0))
   expect_pval(p_custom, 0.01, c(0.98, 0.98, 0.02, 0.04))
@@ -51,21 +51,21 @@ test_that("summ_pval works with vector observations", {
 test_that("summ_pval adjusts multiple p-values", {
   obs_vec <- seq(0, 0.1, by = 0.01)
 
-  expect_adjust(p_smooth, obs_vec, "holm")
-  expect_adjust(p_smooth, obs_vec, "hochberg")
-  expect_adjust(p_smooth, obs_vec, "hommel")
-  expect_adjust(p_smooth, obs_vec, "bonferroni")
-  expect_adjust(p_smooth, obs_vec, "BH")
-  expect_adjust(p_smooth, obs_vec, "BY")
-  expect_adjust(p_smooth, obs_vec, "fdr")
-  expect_adjust(p_smooth, obs_vec, "none")
+  expect_adjust(p_infin, obs_vec, "holm")
+  expect_adjust(p_infin, obs_vec, "hochberg")
+  expect_adjust(p_infin, obs_vec, "hommel")
+  expect_adjust(p_infin, obs_vec, "bonferroni")
+  expect_adjust(p_infin, obs_vec, "BH")
+  expect_adjust(p_infin, obs_vec, "BY")
+  expect_adjust(p_infin, obs_vec, "fdr")
+  expect_adjust(p_infin, obs_vec, "none")
 })
 
 test_that("summ_pval excepts not only objects of class 'p'", {
   expect_pval(q_fin, 5, c(0.55, 0.55, 0.5, 1))
 
-  expect_pval(d_smooth, 0, c(0.574, 0.574, 0.426, 0.852))
-  expect_pval(r_smooth, 0, c(0.574, 0.574, 0.426, 0.852), digits = 2)
+  expect_pval(d_infin, 0, c(0.574, 0.574, 0.426, 0.852))
+  expect_pval(r_infin, 0, c(0.574, 0.574, 0.426, 0.852), digits = 2)
 
   # First two values differ because there is some randomness involved during
   # conversion from r-function to p-function inside `summ_pval()`.

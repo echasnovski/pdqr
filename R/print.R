@@ -47,7 +47,7 @@ use_color <- function() {
 get_meta_type <- function(x) {
   x_type <- meta(x, "type")
 
-  if (is.null(x_type) || !(x_type %in% c("fin", "smooth"))) {
+  if (is.null(x_type) || !(x_type %in% c("fin", "infin"))) {
     "unknown"
   } else {
     x_type
