@@ -6,7 +6,7 @@ context("test-print")
 test_that("pdqr_print works with bad input", {
   input_1 <- structure(1, meta = list(type = "a"))
   expect_output(
-    pdqr_print(input_1, "Temp"), "unknown type.*Support: not proper"
+    pdqr_print(input_1, "Temp"), "unknown number.*Support: not proper"
   )
 
   input_2 <- structure(1, meta = list(type = "fin", support = c(1, Inf)))
@@ -32,7 +32,7 @@ test_that("bold works", {
 # Tested in `new_*()` functions
 
 
-# get_meta_type -----------------------------------------------------------
+# meta_type_print_name ----------------------------------------------------
 # Tested in `new_*()` functions
 
 

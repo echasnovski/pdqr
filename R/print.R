@@ -6,10 +6,10 @@ pdqr_print <- function(x, fun_name) {
 }
 
 line_title <- function(x, fun_name) {
-  type_print <- paste0(get_meta_type(x))
+  type_print <- paste0(meta_type_print_name(x))
 
   paste0(
-    bold(fun_name), " function based on ", bold(type_print), " type of input\n"
+    bold(fun_name), " function with ", bold(type_print), " number of values\n"
   )
 }
 
@@ -44,13 +44,13 @@ use_color <- function() {
     )
 }
 
-get_meta_type <- function(x) {
+meta_type_print_name <- function(x) {
   x_type <- meta(x, "type")
 
   if (is.null(x_type) || !(x_type %in% c("fin", "infin"))) {
     "unknown"
   } else {
-    x_type
+    switch(x_type, fin = "finite", infin = "infinite")
   }
 }
 

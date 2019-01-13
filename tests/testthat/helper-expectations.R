@@ -117,19 +117,19 @@ expect_x_tbl_imputation <- function(f) {
   expect_equal(meta(output_4, "x_tbl"), x_infin_x_tbl)
 }
 
-expect_pdqr_print <- function(f, f_name) {
+expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
   supp_regex <- "Support: \\[[-0-9\\.]+, [-0-9\\.]+\\]"
 
   f_fin <- f(x_fin, type = "fin")
   expect_output(
     print(f_fin),
-    regex_scatter(f_name, "fin type", supp_regex)
+    regex_scatter(fin_name, "finite number", supp_regex)
   )
 
   f_infin <- f(x_infin, type = "infin")
   expect_output(
     print(f_infin),
-    regex_scatter(f_name, "infin type", supp_regex)
+    regex_scatter(infin_name, "infinite number", supp_regex)
   )
 }
 
