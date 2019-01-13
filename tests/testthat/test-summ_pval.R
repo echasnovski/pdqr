@@ -25,10 +25,10 @@ expect_adjust <- function(p_f, obs, adjust, digits = 3) {
 
 # summ_pval ---------------------------------------------------------------
 test_that("summ_pval works", {
-  expect_pval(p_raw, 0.9,   c(1,    1,    0,   0))
-  expect_pval(p_raw, 1,     c(1,    1,    0.1, 0.2))
-  expect_pval(p_raw, 5,     c(0.55, 0.55, 0.5, 1))
-  expect_pval(p_raw, 9.001, c(0,    0,    1,   0))
+  expect_pval(p_fin, 0.9,   c(1,    1,    0,   0))
+  expect_pval(p_fin, 1,     c(1,    1,    0.1, 0.2))
+  expect_pval(p_fin, 5,     c(0.55, 0.55, 0.5, 1))
+  expect_pval(p_fin, 9.001, c(0,    0,    1,   0))
 
   expect_pval(p_smooth,          -100, c(1,     1,     0,     0))
   expect_pval(p_smooth, min(x_smooth), c(0.957, 0.957, 0.043, 0.087))
@@ -43,7 +43,7 @@ test_that("summ_pval works", {
 
 test_that("summ_pval works with vector observations", {
   expect_equal(
-    summ_pval(p_raw, c(0.9, 1, 5, 9.001), adjust = "none"),
+    summ_pval(p_fin, c(0.9, 1, 5, 9.001), adjust = "none"),
     c(1, 1, 0.55, 0)
   )
 })
@@ -62,7 +62,7 @@ test_that("summ_pval adjusts multiple p-values", {
 })
 
 test_that("summ_pval excepts not only objects of class 'p'", {
-  expect_pval(q_raw, 5, c(0.55, 0.55, 0.5, 1))
+  expect_pval(q_fin, 5, c(0.55, 0.55, 0.5, 1))
 
   expect_pval(d_smooth, 0, c(0.574, 0.574, 0.426, 0.852))
   expect_pval(r_smooth, 0, c(0.574, 0.574, 0.426, 0.852), digits = 2)
@@ -79,17 +79,17 @@ test_that("summ_pval throws errors", {
     "f.*proper.*type"
   )
 
-  expect_error(summ_pval(p_raw, "a"), "obs.*numeric")
-  expect_error(summ_pval(p_raw, 1, direction = 1), "direction.*string")
+  expect_error(summ_pval(p_fin, "a"), "obs.*numeric")
+  expect_error(summ_pval(p_fin, 1, direction = 1), "direction.*string")
   expect_error(
-    summ_pval(p_raw, 1, direction = "a"),
+    summ_pval(p_fin, 1, direction = "a"),
     'direction.*"left".*"right".*"both".*not "a"'
   )
-  expect_error(summ_pval(p_raw, 1, adjust = 1), "adjust.*string")
+  expect_error(summ_pval(p_fin, 1, adjust = 1), "adjust.*string")
 
   adjust_error <- paste0(c("adjust", stats::p.adjust.methods), collapse = ".*")
   expect_error(
-    summ_pval(p_raw, 1, adjust = "b"),
+    summ_pval(p_fin, 1, adjust = "b"),
     paste0(adjust_error, '.*not "b"')
   )
 })

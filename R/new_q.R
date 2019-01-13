@@ -1,12 +1,12 @@
 new_q <- function(x, type = "smooth", ...) {
   distr_impl(
     fun_class = "q",
-    impl_funs = list(raw = new_q_raw, smooth = new_q_smooth),
+    impl_funs = list(fin = new_q_fin, smooth = new_q_smooth),
     x = x, type = type, ...
   )
 }
 
-new_q_raw <- function(x_tbl) {
+new_q_fin <- function(x_tbl) {
   res <- function(p) {
     out <- numeric(length(p))
 

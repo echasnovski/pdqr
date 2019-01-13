@@ -1,4 +1,4 @@
-# To use `summ_distr_tbl` given a sample, call `new_*()` with `type = "raw"`.
+# To use `summ_distr_tbl` given a sample, call `new_*()` with `type = "fin"`.
 summ_distr_tbl <- function(f, n_discrete = 10001, ...) {
   if (!is_pdqr_fun(f)) {
     stop_collapse('`f` should be "pdqr" function.')

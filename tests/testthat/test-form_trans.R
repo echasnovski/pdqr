@@ -48,20 +48,20 @@ test_that("form_trans works", {
 })
 
 test_that("form_trans doesn't attach `x` by default", {
-  output <- form_trans(sq, q_raw)
+  output <- form_trans(sq, q_fin)
   expect_false(has_meta(output, "x"))
 })
 
 test_that("form_trans correctly restores 'pdqr' type", {
-  expect_is(form_trans(`+`, 1, p_raw), "p")
-  expect_is(form_trans(`+`, d_raw, p_raw), "d")
-  expect_is(form_trans(`+`, d_raw, p_raw, .pdqr_class = "r"), "r")
+  expect_is(form_trans(`+`, 1, p_fin), "p")
+  expect_is(form_trans(`+`, d_fin, p_fin), "d")
+  expect_is(form_trans(`+`, d_fin, p_fin, .pdqr_class = "r"), "r")
 })
 
 test_that("form_trans throws errors", {
   expect_error(form_trans(1, p_custom), "trans.*function")
-  expect_error(form_trans(`+`, r_raw, user_r), "`...`.*should.*pdqr.*fun")
-  expect_error(form_trans(`+`, r_raw, 1:2), "`...`.*should.*single numbers")
+  expect_error(form_trans(`+`, r_fin, user_r), "`...`.*should.*pdqr.*fun")
+  expect_error(form_trans(`+`, r_fin, 1:2), "`...`.*should.*single numbers")
   expect_error(form_trans(`+`, 1, 2), "`...`.*should.*at least one.*pdqr")
   expect_error(
     form_trans(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single number"
@@ -86,7 +86,7 @@ test_that("form_trans throws errors", {
 
 # find_ref_f --------------------------------------------------------------
 test_that("find_ref_f works", {
-  expect_equal(find_ref_f(list(1, p_raw, 2)), p_raw)
+  expect_equal(find_ref_f(list(1, p_fin, 2)), p_fin)
   expect_null(find_ref_f(list(1, 2)))
 })
 
@@ -98,12 +98,12 @@ test_that("impute_pdqr_fun works", {
   expect_equal(impute_pdqr_fun("q", NULL), new_q)
   expect_equal(impute_pdqr_fun("r", NULL), new_r)
 
-  expect_equal(impute_pdqr_fun(NULL, p_raw), new_p)
+  expect_equal(impute_pdqr_fun(NULL, p_fin), new_p)
 })
 
 test_that("impute_pdqr_fun throws errors", {
   expect_error(
-    impute_pdqr_fun("a", r_raw), 'pdqr_class.*one of.*"p", "d", "q", "r"'
+    impute_pdqr_fun("a", r_fin), 'pdqr_class.*one of.*"p", "d", "q", "r"'
   )
 })
 
@@ -156,22 +156,22 @@ test_that("Ops.pdqr works", {
 })
 
 test_that("Ops.pdqr warns about not numeric type", {
-  expect_warning(p_raw >= p_smooth, ">=.*logical.*[Cc]onvert")
+  expect_warning(p_fin >= p_smooth, ">=.*logical.*[Cc]onvert")
 })
 
 test_that("Ops.pdqr works with for generics with one argument", {
-  expect_warning(!p_raw, "!.*logical.*[Cc]onvert")
+  expect_warning(!p_fin, "!.*logical.*[Cc]onvert")
 })
 
 
 # Summary.pdqr ------------------------------------------------------------
 test_that("Summary.pdqr works", {
-  expect_distr_fun(min(p_raw), "p", "raw")
-  expect_distr_fun(max(p_raw, p_raw), "p", "raw")
+  expect_distr_fun(min(p_fin), "p", "fin")
+  expect_distr_fun(max(p_fin, p_fin), "p", "fin")
   expect_distr_fun(sum(q_custom, q_smooth, q_smooth), "q", "smooth")
   expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "smooth")
 })
 
 test_that("Summary.pdqr throws error on `range()`", {
-  expect_error(range(p_raw, p_raw), "range.*two.*numbers")
+  expect_error(range(p_fin, p_fin), "range.*two.*numbers")
 })

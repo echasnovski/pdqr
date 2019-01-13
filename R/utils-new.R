@@ -9,7 +9,7 @@ distr_impl <- function(fun_class, impl_funs, x, type, ...) {
 
   fun <- switch(
     type,
-    raw = impl_funs[["raw"]](x_tbl),
+    fin = impl_funs[["fin"]](x_tbl),
     smooth = impl_funs[["smooth"]](x_tbl)
   )
 
@@ -42,7 +42,7 @@ impute_x_tbl_impl <- function(x_tbl, type) {
     x_tbl <- x_tbl[order(x_tbl[["x"]]), ]
   }
 
-  if (type == "raw") {
+  if (type == "fin") {
     res <- data.frame(
       x = x_tbl[["x"]],
       prob = impute_prob(x_tbl[["prob"]])
@@ -94,12 +94,12 @@ impute_vec <- function(vec, new_vec) {
 compute_x_tbl <- function(x, type, ...) {
   switch(
     type,
-    raw = compute_x_tbl_raw(x),
+    fin = compute_x_tbl_fin(x),
     smooth = compute_x_tbl_smooth(x, ...)
   )
 }
 
-compute_x_tbl_raw <- function(x, vals = sort(unique(x))) {
+compute_x_tbl_fin <- function(x, vals = sort(unique(x))) {
   x <- x[!is.na(x)]
 
   x_val_id <- match(x, vals)

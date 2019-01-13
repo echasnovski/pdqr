@@ -3,9 +3,9 @@ context("test-new_p")
 
 # new_p -------------------------------------------------------------------
 test_that("new_p works with numeric input", {
-  expect_distr_fun(p_raw, "p", "raw")
-  expect_equal(meta(p_raw, "support"), x_raw_support)
-  expect_equal(p_raw(1:10), c(cumsum(x_raw_x_tbl[["prob"]]), 1))
+  expect_distr_fun(p_fin, "p", "fin")
+  expect_equal(meta(p_fin, "support"), x_fin_support)
+  expect_equal(p_fin(1:10), c(cumsum(x_fin_x_tbl[["prob"]]), 1))
 
   expect_distr_fun(p_smooth, "p", "smooth")
   expect_equal(
@@ -22,7 +22,7 @@ test_that("new_p works with numeric input", {
 })
 
 test_that("new_p works with data frame input", {
-  expect_equal_distr(new_p(x_raw_x_tbl, "raw"), p_raw, x_raw_vec_ext)
+  expect_equal_distr(new_p(x_fin_x_tbl, "fin"), p_fin, x_fin_vec_ext)
   expect_equal_distr(
     new_p(x_smooth_x_tbl, "smooth"), p_smooth, x_smooth_vec_ext
   )
@@ -32,14 +32,14 @@ test_that("new_p imputes data frame input", {
   expect_x_tbl_imputation(new_p)
 })
 
-test_that("new_p rounds input in case of `type` = 'raw'", {
+test_that("new_p rounds input in case of `type` = 'fin'", {
   near_1 <- 1 - 10^c(-6, -9)
-  expect_equal(p_raw(near_1), c(0, 0.1))
+  expect_equal(p_fin(near_1), c(0, 0.1))
 })
 
-test_that("new_p behaves like ecdf() in case of `type` = 'raw'", {
-  x_raw_grid <- seq(from = min(x_raw) - 1, to = max(x_raw) + 1, by = 0.01)
-  expect_equal(p_raw(x_raw_grid), ecdf(x_raw)(x_raw_grid))
+test_that("new_p behaves like ecdf() in case of `type` = 'fin'", {
+  x_fin_grid <- seq(from = min(x_fin) - 1, to = max(x_fin) + 1, by = 0.01)
+  expect_equal(p_fin(x_fin_grid), ecdf(x_fin)(x_fin_grid))
 })
 
 test_that("new_p output is integration of new_d in case of `type` = 'smooth'", {
@@ -65,7 +65,7 @@ test_that("new_p output is integration of new_d in case of `type` = 'smooth'", {
 
 test_that("new_p output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
-  expect_equal(p_raw(extreme_vec), c(0, 1))
+  expect_equal(p_fin(extreme_vec), c(0, 1))
   expect_equal(p_smooth(extreme_vec), c(0, 1))
 })
 
@@ -76,15 +76,15 @@ test_that("new_p asserts", {
 
   expect_error(new_p("a"), "x.*numeric.*data.*frame")
   expect_error(new_p(numeric(0)), "x.*empty")
-  expect_error(new_p(x_raw, type = 1), "type.*string")
-  expect_error(new_p(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_p(x_fin, type = 1), "type.*string")
+  expect_error(new_p(x_fin, type = "a"), "type.*fin.*smooth")
   expect_error(new_p(1, type = "smooth"), "at least 2")
 })
 
 test_that("new_p handles metadata", {
   expect_equal(
-    meta(p_raw),
-    list(support = x_raw_support, type = "raw", x_tbl = x_raw_x_tbl)
+    meta(p_fin),
+    list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
   )
 
   expect_named(meta(p_smooth), c("support", "type", "x_tbl"))
@@ -108,7 +108,7 @@ test_that("new_p uses `...` as arguments for `density()`", {
 })
 
 
-# new_p_raw ---------------------------------------------------------------
+# new_p_fin ---------------------------------------------------------------
 # Tested in `new_p()`
 
 

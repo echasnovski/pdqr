@@ -3,9 +3,9 @@ context("test-new_d")
 
 # new_d -------------------------------------------------------------------
 test_that("new_d works with numeric input", {
-  expect_distr_fun(d_raw, "d", "raw")
-  expect_equal(meta(d_raw, "support"), x_raw_support)
-  expect_equal(d_raw(1:10), c(x_raw_x_tbl[["prob"]], 0))
+  expect_distr_fun(d_fin, "d", "fin")
+  expect_equal(meta(d_fin, "support"), x_fin_support)
+  expect_equal(d_fin(1:10), c(x_fin_x_tbl[["prob"]], 0))
 
   expect_distr_fun(d_smooth, "d", "smooth")
   expect_equal(
@@ -21,7 +21,7 @@ test_that("new_d works with numeric input", {
 })
 
 test_that("new_d works with data frame input", {
-  expect_equal_distr(new_d(x_raw_x_tbl, "raw"), d_raw, x_raw_vec_ext)
+  expect_equal_distr(new_d(x_fin_x_tbl, "fin"), d_fin, x_fin_vec_ext)
   expect_equal_distr(
     new_d(x_smooth_x_tbl, "smooth"), d_smooth, x_smooth_vec_ext
   )
@@ -31,9 +31,9 @@ test_that("new_d imputes data frame input", {
   expect_x_tbl_imputation(new_d)
 })
 
-test_that("new_d rounds input in case of `type` = 'raw'", {
+test_that("new_d rounds input in case of `type` = 'fin'", {
   near_1 <- 1 + 10^c(-6, -9)
-  expect_equal(d_raw(near_1), c(0, 0.1))
+  expect_equal(d_fin(near_1), c(0, 0.1))
 })
 
 test_that("new_d output integrates to 1 in case `type` = 'smooth'", {
@@ -44,7 +44,7 @@ test_that("new_d output integrates to 1 in case `type` = 'smooth'", {
 
 test_that("new_d output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
-  expect_equal(d_raw(extreme_vec), c(0, 0))
+  expect_equal(d_fin(extreme_vec), c(0, 0))
   expect_equal(d_smooth(extreme_vec), c(0, 0))
 })
 
@@ -55,15 +55,15 @@ test_that("new_d asserts", {
 
   expect_error(new_d("a"), "x.*numeric.*data.*frame")
   expect_error(new_d(numeric(0)), "x.*empty")
-  expect_error(new_d(x_raw, type = 1), "type.*string")
-  expect_error(new_d(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_d(x_fin, type = 1), "type.*string")
+  expect_error(new_d(x_fin, type = "a"), "type.*fin.*smooth")
   expect_error(new_d(1, type = "smooth"), "at least 2")
 })
 
 test_that("new_d handles metadata", {
   expect_equal(
-    meta(d_raw),
-    list(support = x_raw_support, type = "raw", x_tbl = x_raw_x_tbl)
+    meta(d_fin),
+    list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
   )
 
   expect_named(meta(d_smooth), c("support", "type", "x_tbl"))
@@ -86,7 +86,7 @@ test_that("new_d uses `...` as arguments for `density()`", {
 })
 
 
-# new_d_raw ---------------------------------------------------------------
+# new_d_fin ---------------------------------------------------------------
 # Tested in `new_d()`
 
 

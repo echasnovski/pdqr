@@ -66,30 +66,30 @@ expect_equal_pdqr_attrs <- function(f_1, f_2, meta_not_check = character(0)) {
 }
 
 expect_x_tbl_imputation <- function(f) {
-  # Type "raw"
-  n_raw <- nrow(x_raw_x_tbl)
+  # Type "fin"
+  n_fin <- nrow(x_fin_x_tbl)
 
     # Reordering rows
-  bad_raw_input_1 <- x_raw_x_tbl[n_raw:1, ]
-  output_1 <- f(bad_raw_input_1, "raw")
-  expect_equal(meta(output_1, "x_tbl"), x_raw_x_tbl)
+  bad_fin_input_1 <- x_fin_x_tbl[n_fin:1, ]
+  output_1 <- f(bad_fin_input_1, "fin")
+  expect_equal(meta(output_1, "x_tbl"), x_fin_x_tbl)
 
     # Reordering columns
-  bad_raw_input_2 <- x_raw_x_tbl[, c("cumprob", "x", "prob")]
-  output_2 <- f(bad_raw_input_2, "raw")
-  expect_equal(meta(output_2, "x_tbl"), x_raw_x_tbl)
+  bad_fin_input_2 <- x_fin_x_tbl[, c("cumprob", "x", "prob")]
+  output_2 <- f(bad_fin_input_2, "fin")
+  expect_equal(meta(output_2, "x_tbl"), x_fin_x_tbl)
 
     # Normalising "prob" column
-  bad_raw_input_3 <- x_raw_x_tbl
-  bad_raw_input_3[["prob"]] <- bad_raw_input_3[["prob"]] * 10
-  output_3 <- f(bad_raw_input_3, "raw")
-  expect_equal(meta(output_3, "x_tbl"), x_raw_x_tbl)
+  bad_fin_input_3 <- x_fin_x_tbl
+  bad_fin_input_3[["prob"]] <- bad_fin_input_3[["prob"]] * 10
+  output_3 <- f(bad_fin_input_3, "fin")
+  expect_equal(meta(output_3, "x_tbl"), x_fin_x_tbl)
 
     # Recomputing "cumprob" column
-  bad_raw_input_4 <- x_raw_x_tbl
-  bad_raw_input_4[["cumprob"]] <- bad_raw_input_4[["cumprob"]] * 10
-  output_4 <- f(bad_raw_input_4, "raw")
-  expect_equal(meta(output_4, "x_tbl"), x_raw_x_tbl)
+  bad_fin_input_4 <- x_fin_x_tbl
+  bad_fin_input_4[["cumprob"]] <- bad_fin_input_4[["cumprob"]] * 10
+  output_4 <- f(bad_fin_input_4, "fin")
+  expect_equal(meta(output_4, "x_tbl"), x_fin_x_tbl)
 
   # Type "smooth"
   n_smooth <- nrow(x_smooth_x_tbl)
@@ -120,10 +120,10 @@ expect_x_tbl_imputation <- function(f) {
 expect_pdqr_print <- function(f, f_name) {
   supp_regex <- "Support: \\[[-0-9\\.]+, [-0-9\\.]+\\]"
 
-  f_raw <- f(x_raw, type = "raw")
+  f_fin <- f(x_fin, type = "fin")
   expect_output(
-    print(f_raw),
-    regex_scatter(f_name, "raw type", supp_regex)
+    print(f_fin),
+    regex_scatter(f_name, "fin type", supp_regex)
   )
 
   f_smooth <- f(x_smooth, type = "smooth")

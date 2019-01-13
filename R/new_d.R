@@ -1,12 +1,12 @@
 new_d <- function(x, type = "smooth", ...) {
   distr_impl(
     fun_class = "d",
-    impl_funs = list(raw = new_d_raw, smooth = new_d_smooth),
+    impl_funs = list(fin = new_d_fin, smooth = new_d_smooth),
     x = x, type = type, ...
   )
 }
 
-new_d_raw <- function(x_tbl) {
+new_d_fin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   res <- function(x) {

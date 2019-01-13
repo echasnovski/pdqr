@@ -12,7 +12,7 @@ context("test-utils-new")
 # impute_x_tbl_impl -------------------------------------------------------
 # Main tests are in `new_*()` functions
 test_that("impute_x_tbl_impl throws error", {
-  expect_error(impute_x_tbl_impl(x_raw_x_tbl, "a"), "type")
+  expect_error(impute_x_tbl_impl(x_fin_x_tbl, "a"), "type")
 })
 
 
@@ -32,7 +32,7 @@ test_that("impute_x_tbl_impl throws error", {
 # Tested in `new_*()` functions
 
 
-# compute_x_tbl_raw -------------------------------------------------------
+# compute_x_tbl_fin -------------------------------------------------------
 # Tested in `new_*()` functions
 
 
@@ -55,7 +55,7 @@ test_that("add_pdqr_class works", {
 
 # unpdqr ------------------------------------------------------------------
 test_that("unpdqr works", {
-  out_f <- unpdqr(p_raw)
+  out_f <- unpdqr(p_fin)
   expect_null(attr(out_f, "meta"))
   expect_false(inherits(out_f, c("p", "d", "q", "r", "pdqr")))
 })
@@ -80,10 +80,10 @@ test_that("filter_numbers works", {
 
 # is_pdqr_fun -------------------------------------------------------------
 test_that("is_pdqr_fun works", {
-  expect_true(is_pdqr_fun(p_raw))
-  expect_true(is_pdqr_fun(d_raw))
-  expect_true(is_pdqr_fun(q_raw))
-  expect_true(is_pdqr_fun(r_raw))
+  expect_true(is_pdqr_fun(p_fin))
+  expect_true(is_pdqr_fun(d_fin))
+  expect_true(is_pdqr_fun(q_fin))
+  expect_true(is_pdqr_fun(r_fin))
 
   # Function type
   input <- 1
@@ -116,7 +116,7 @@ test_that("is_pdqr_fun works", {
   expect_false(is_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
 
     # "x_tbl" has not proper structure
-  input_bad_x_tbl_2 <- p_raw
+  input_bad_x_tbl_2 <- p_fin
   attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
   expect_false(
     is_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
@@ -125,26 +125,26 @@ test_that("is_pdqr_fun works", {
 
 test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   # "x" is sorted
-  input_bad_x_tbl_1 <- p_raw
+  input_bad_x_tbl_1 <- p_fin
   attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]] <- rev(
     attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]]
   )
   expect_false(is_pdqr_fun(input_bad_x_tbl_1))
 
-  # "raw" `type`
+  # "fin" `type`
     # Column "prob" is mandatory
-  input_bad_x_tbl_2 <- p_raw
+  input_bad_x_tbl_2 <- p_fin
   attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
   expect_false(is_pdqr_fun(input_bad_x_tbl_2))
 
     # Sum of "prob" is 1
-  input_bad_x_tbl_3 <- p_raw
+  input_bad_x_tbl_3 <- p_fin
   attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]] <- 10 *
     attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
   expect_false(is_pdqr_fun(input_bad_x_tbl_3))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_4 <- p_raw
+  input_bad_x_tbl_4 <- p_fin
   attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_false(is_pdqr_fun(input_bad_x_tbl_4))
 
@@ -164,11 +164,11 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 
 # is_distr_type -----------------------------------------------------------
 test_that("is_distr_type works", {
-  expect_true(is_distr_type("raw"))
+  expect_true(is_distr_type("fin"))
   expect_true(is_distr_type("smooth"))
 
   expect_false(is_distr_type(1))
-  expect_false(is_distr_type(c("raw", "smooth")))
+  expect_false(is_distr_type(c("fin", "smooth")))
   expect_false(is_distr_type("a"))
 })
 
@@ -189,28 +189,28 @@ test_that("is_support works", {
 
 
 # is_x_tbl ----------------------------------------------------------------
-test_that("is_x_tbl works with `type = 'raw'`", {
-  expect_true(is_x_tbl(x_raw_x_tbl, type = "raw"))
+test_that("is_x_tbl works with `type = 'fin'`", {
+  expect_true(is_x_tbl(x_fin_x_tbl, type = "fin"))
 
   # Input type
   input <- "a"
-  expect_false(is_x_tbl(input, type = "raw"))
+  expect_false(is_x_tbl(input, type = "fin"))
 
   # Column "x"
-  expect_false(is_x_tbl(data.frame(a = 1), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = "a"), type = "raw"))
+  expect_false(is_x_tbl(data.frame(a = 1), type = "fin"))
+  expect_false(is_x_tbl(data.frame(x = "a"), type = "fin"))
 
   # Column "prob"
-  expect_false(is_x_tbl(data.frame(x = 1), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, prob = -1), type = "raw"))
-  expect_false(is_x_tbl(data.frame(x = 1, prob = 0), type = "raw"))
+  expect_false(is_x_tbl(data.frame(x = 1), type = "fin"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = "a"), type = "fin"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = -1), type = "fin"))
+  expect_false(is_x_tbl(data.frame(x = 1, prob = 0), type = "fin"))
 
   # Extra columns are allowed
-  expect_true(is_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "raw"))
+  expect_true(is_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "fin"))
   # Different column order is allowed
   expect_true(
-    is_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "raw")
+    is_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "fin")
   )
 })
 
@@ -259,25 +259,25 @@ test_that("is_x_tbl works with `type = 'smooth'`", {
 # is_x_tbl_meta -----------------------------------------------------------
 test_that("is_x_tbl_meta works", {
   # "x" is sorted
-  input_bad_x_tbl_1 <- x_raw_x_tbl
+  input_bad_x_tbl_1 <- x_fin_x_tbl
   input_bad_x_tbl_1[["x"]] <- rev(input_bad_x_tbl_1[["x"]])
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_1, "raw"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_1, "fin"))
 
-  # "raw" `type`
+  # "fin" `type`
     # Column "prob" is mandatory
-  input_bad_x_tbl_2 <- x_raw_x_tbl
+  input_bad_x_tbl_2 <- x_fin_x_tbl
   input_bad_x_tbl_2[["prob"]] <- NULL
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_2, "raw"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_2, "fin"))
 
     # Sum of "prob" is 1
-  input_bad_x_tbl_3 <- x_raw_x_tbl
+  input_bad_x_tbl_3 <- x_fin_x_tbl
   input_bad_x_tbl_3[["prob"]] <- 10 * input_bad_x_tbl_3[["prob"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_3, "raw"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_3, "fin"))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_4 <- x_raw_x_tbl
+  input_bad_x_tbl_4 <- x_fin_x_tbl
   input_bad_x_tbl_4[["cumprob"]] <- NULL
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "raw"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "fin"))
 
   # "smooth" type
     # Total integral is 1
@@ -302,7 +302,7 @@ test_that("is_pdqr_class works", {
 
 # has_meta_type -----------------------------------------------------------
 test_that("has_meta_type works", {
-  expect_true(has_meta_type(p_raw))
+  expect_true(has_meta_type(p_fin))
   expect_false(has_meta_type(1))
   expect_false(has_meta_type(structure(1, meta = list(type = "a"))))
 })
@@ -310,7 +310,7 @@ test_that("has_meta_type works", {
 
 # has_meta_support --------------------------------------------------------
 test_that("has_meta_support works", {
-  expect_true(has_meta_support(p_raw))
+  expect_true(has_meta_support(p_fin))
   expect_false(has_meta_support(1))
   expect_false(has_meta_support(structure(1, meta = list(support = c(2, 1)))))
 })
@@ -318,19 +318,19 @@ test_that("has_meta_support works", {
 
 # has_meta_x_tbl ----------------------------------------------------------
 test_that("has_meta_x_tbl works", {
-  expect_true(has_meta_x_tbl(p_raw, "raw"))
+  expect_true(has_meta_x_tbl(p_fin, "fin"))
   expect_true(has_meta_x_tbl(p_smooth, "smooth"))
 
-  expect_false(has_meta_x_tbl(p_raw, "smooth"))
-  expect_false(has_meta_x_tbl(p_smooth, "raw"))
+  expect_false(has_meta_x_tbl(p_fin, "smooth"))
+  expect_false(has_meta_x_tbl(p_smooth, "fin"))
   expect_false(has_meta_x_tbl(1, "smooth"))
-  expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "raw"))
+  expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "fin"))
 
   # Check for "good" "x_tbl" metadata
   expect_false(
     has_meta_x_tbl(
       structure(1, meta = list(x_tbl = data.frame(x = 1, prob = -1))),
-      "raw"
+      "fin"
     )
   )
 })

@@ -347,22 +347,22 @@ test_that("as_r.default throws error if detected support isn't proper", {
 
 # as_r.pdqr ---------------------------------------------------------------
 test_that('as_r works with "p"', {
-  expect_equal_r_distr(as_r(p_raw), r_raw)
+  expect_equal_r_distr(as_r(p_fin), r_fin)
   expect_equal_r_distr(as_r(p_smooth), r_smooth)
 })
 
 test_that('as_r works with "d"', {
-  expect_equal_r_distr(as_r(d_raw), r_raw)
+  expect_equal_r_distr(as_r(d_fin), r_fin)
   expect_equal_r_distr(as_r(d_smooth), r_smooth)
 })
 
 test_that('as_r works with "q"', {
-  expect_equal_r_distr(as_r(q_raw), r_raw, mean_thres = 0.12)
+  expect_equal_r_distr(as_r(q_fin), r_fin, mean_thres = 0.12)
   expect_equal_r_distr(as_r(q_smooth), r_smooth)
 })
 
 test_that('as_r works with "r"', {
-  expect_equal_r_distr(as_r(r_raw), r_raw)
+  expect_equal_r_distr(as_r(r_fin), r_fin)
   expect_equal_r_distr(as_r(r_smooth), r_smooth)
 })
 
@@ -371,7 +371,7 @@ test_that("as_r.pdqr throws errors on bad input", {
 })
 
 test_that("as_r.pdqr ensures maximum proper support", {
-  input <- p_raw
+  input <- p_fin
   attr(input, "meta")[["support"]] <- c(-100, 100)
 
   expect_equal(meta(as_r(input), "support"), c(-100, 100))

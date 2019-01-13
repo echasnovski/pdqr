@@ -35,7 +35,7 @@
 <text transform='translate(41.76,232.80) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>6</text>
 <text transform='translate(41.76,130.14) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='6.67px' lengthAdjust='spacingAndGlyphs'>8</text>
 <polyline points='59.04,502.56 689.76,502.56 689.76,59.04 59.04,59.04 59.04,502.56 ' style='stroke-width: 0.75;' />
-<text x='292.43' y='34.47' style='font-size: 14.40px; font-weight: bold; font-family: Liberation Sans;' textLength='163.94px' lengthAdjust='spacingAndGlyphs'>Quantile function q_raw</text>
+<text x='296.03' y='34.47' style='font-size: 14.40px; font-weight: bold; font-family: Liberation Sans;' textLength='156.75px' lengthAdjust='spacingAndGlyphs'>Quantile function q_fin</text>
 <text x='315.37' y='557.28' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='118.06px' lengthAdjust='spacingAndGlyphs'>Cumulative probability</text>
 <text transform='translate(12.96,283.80) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='6.00px' lengthAdjust='spacingAndGlyphs'>x</text>
 <defs>
@@ -69,9 +69,9 @@
 <circle cx='549.60' cy='178.13' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 <circle cx='608.00' cy='126.80' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 <circle cx='666.40' cy='75.47' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
-<line x1='374.40' y1='460.47' x2='374.40' y2='447.63' style='stroke-width: 0.75; stroke: #FF0000; stroke-dasharray: 4.00,4.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
-<line x1='82.40' y1='460.47' x2='374.40' y2='460.47' style='stroke-width: 0.75; stroke: #FF0000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
-<line x1='374.40' y1='447.63' x2='666.40' y2='447.63' style='stroke-width: 0.75; stroke: #FF0000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
-<circle cx='374.40' cy='460.47' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #FF0000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
-<circle cx='666.40' cy='447.63' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #FF0000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='374.40' y1='460.47' x2='374.40' y2='447.63' style='stroke-width: 0.75; stroke-dasharray: 4.00,4.00;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='82.40' y1='460.47' x2='374.40' y2='460.47' style='stroke-width: 0.75;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<line x1='374.40' y1='447.63' x2='666.40' y2='447.63' style='stroke-width: 0.75;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<circle cx='374.40' cy='460.47' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
+<circle cx='666.40' cy='447.63' r='2.70pt' style='stroke-width: 0.75; stroke: none; fill: #000000;' clip-path='url(#cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA==)' />
 </svg>

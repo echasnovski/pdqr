@@ -1,22 +1,22 @@
 new_r <- function(x, type = "smooth", ...) {
   distr_impl(
     fun_class = "r",
-    impl_funs = list(raw = new_r_raw, smooth = new_r_smooth),
+    impl_funs = list(fin = new_r_fin, smooth = new_r_smooth),
     x = x, type = type, ...
   )
 }
 
-new_r_raw <- function(x_tbl) {
-  q_raw <- new_q(x_tbl, type = "raw")
+new_r_fin <- function(x_tbl) {
+  q_fin <- new_q(x_tbl, type = "fin")
 
   res <- function(n) {
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
 
-    q_raw(rand_q_vec)
+    q_fin(rand_q_vec)
   }
 
   add_meta(
-    res, support = meta(q_raw, "support"), x_tbl = meta(q_raw, "x_tbl")
+    res, support = meta(q_fin, "support"), x_tbl = meta(q_fin, "x_tbl")
   )
 }
 

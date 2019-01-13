@@ -3,10 +3,10 @@ context("test-new_q")
 
 # new_q -------------------------------------------------------------------
 test_that("new_q works with numeric input", {
-  expect_distr_fun(q_raw, "q", "raw")
-  expect_equal(meta(q_raw, "support"), x_raw_support)
+  expect_distr_fun(q_fin, "q", "fin")
+  expect_equal(meta(q_fin, "support"), x_fin_support)
   expect_equal(
-    q_raw(cumsum(x_raw_x_tbl[["prob"]])), x_raw_x_tbl[["x"]]
+    q_fin(cumsum(x_fin_x_tbl[["prob"]])), x_fin_x_tbl[["x"]]
   )
 
   expect_distr_fun(q_smooth, "q", "smooth")
@@ -24,7 +24,7 @@ test_that("new_q works with numeric input", {
 })
 
 test_that("new_q works with data frame input", {
-  expect_equal_distr(new_q(x_raw_x_tbl, "raw"), q_raw, p_vec)
+  expect_equal_distr(new_q(x_fin_x_tbl, "fin"), q_fin, p_vec)
   expect_equal_distr(new_q(x_smooth_x_tbl, "smooth"), q_smooth, p_vec)
 })
 
@@ -32,33 +32,33 @@ test_that("new_q imputes data frame input", {
   expect_x_tbl_imputation(new_q)
 })
 
-test_that("new_q rounds input in case of `type` = 'raw'", {
+test_that("new_q rounds input in case of `type` = 'fin'", {
   near_1 <- 0.1 + 10^c(-6, -9)
-  expect_equal(q_raw(near_1), c(2, 1))
+  expect_equal(q_fin(near_1), c(2, 1))
 })
 
-test_that("new_q behaves like inverse of ecdf() in case of `type` = 'raw'", {
-  inv_ecdf <- quantile(x_raw, probs = p_vec, type = 1)
+test_that("new_q behaves like inverse of ecdf() in case of `type` = 'fin'", {
+  inv_ecdf <- quantile(x_fin, probs = p_vec, type = 1)
   names(inv_ecdf) <- NULL
 
-  expect_equal(q_raw(p_vec), inv_ecdf)
+  expect_equal(q_fin(p_vec), inv_ecdf)
 })
 
 test_that("new_q output is inverse of new_p output", {
-  expect_equal(x_raw_vec, q_raw(p_raw(x_raw_vec)))
-  # There is not test `p_vec == p_raw(q_raw(p_vec))` because it shouldn't be
-  # true in "raw" case. This is tested in "behaves like inverse of ecdf()" test.
+  expect_equal(x_fin_vec, q_fin(p_fin(x_fin_vec)))
+  # There is not test `p_vec == p_fin(q_fin(p_vec))` because it shouldn't be
+  # true in "fin" case. This is tested in "behaves like inverse of ecdf()" test.
   expect_equal(x_smooth_vec, q_smooth(p_smooth(x_smooth_vec)))
   expect_equal(p_vec, p_smooth(q_smooth(p_vec)))
 })
 
 test_that("new_q output works with extreme values", {
-  expect_equal(q_raw(c(0, 1)), x_raw_support)
+  expect_equal(q_fin(c(0, 1)), x_fin_support)
   expect_equal(q_smooth(c(0, 1)), x_smooth_support)
 })
 
 test_that("new_q returns `NaN` for out of range probabilities", {
-  expect_true(all(is.nan(q_raw(c(-1, 2)))))
+  expect_true(all(is.nan(q_fin(c(-1, 2)))))
   expect_true(all(is.nan(q_smooth(c(-1, 2)))))
 })
 
@@ -66,9 +66,9 @@ test_that("new_q returns the smallest `x` with not exceeding `p`", {
   # Here values 1 and 2 correspond to cumulative probability of 0 and
   # values 4, 5, and 6 - to 1. Quantile function should return the smallest from
   # those sets.
-  cur_x_tbl_raw <- data.frame(x = 1:6, prob = c(0, 0, 0.5, 0.5, 0, 0))
-  cur_q_raw <- new_q(cur_x_tbl_raw, "raw")
-  expect_equal(cur_q_raw(c(0, 1)), c(1, 4))
+  cur_x_tbl_fin <- data.frame(x = 1:6, prob = c(0, 0, 0.5, 0.5, 0, 0))
+  cur_q_fin <- new_q(cur_x_tbl_fin, "fin")
+  expect_equal(cur_q_fin(c(0, 1)), c(1, 4))
 
   # Here values 1 and 2 correspond to cumulative probability of 0 and
   # values 5 and 6 - to 1. Quantile function should return the smallest from
@@ -85,15 +85,15 @@ test_that("new_q asserts", {
 
   expect_error(new_q("a"), "x.*numeric.*data.*frame")
   expect_error(new_q(numeric(0)), "x.*empty")
-  expect_error(new_q(x_raw, type = 1), "type.*string")
-  expect_error(new_q(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_q(x_fin, type = 1), "type.*string")
+  expect_error(new_q(x_fin, type = "a"), "type.*fin.*smooth")
   expect_error(new_q(1, type = "smooth"), "at least 2")
 })
 
 test_that("new_q handles metadata", {
   expect_equal(
-    meta(q_raw),
-    list(support = x_raw_support, type = "raw", x_tbl = x_raw_x_tbl)
+    meta(q_fin),
+    list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
   )
 
   expect_named(meta(q_smooth), c("support", "type", "x_tbl"))
@@ -117,7 +117,7 @@ test_that("new_q uses `...` as arguments for `density()`", {
 })
 
 
-# new_q_raw ---------------------------------------------------------------
+# new_q_fin ---------------------------------------------------------------
 # Tested in `new_q()`
 
 

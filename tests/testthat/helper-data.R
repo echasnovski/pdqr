@@ -1,12 +1,12 @@
 # Input sample data -------------------------------------------------------
-x_raw <- c(4, 1, 2, 6, 8, 6, 7, 3, 2, 3, 2, 6, 7, 8, 1, 9, 2, 9, 5, 7)
-x_raw_x_tbl <- data.frame(
+x_fin <- c(4, 1, 2, 6, 8, 6, 7, 3, 2, 3, 2, 6, 7, 8, 1, 9, 2, 9, 5, 7)
+x_fin_x_tbl <- data.frame(
   x = as.numeric(1:9),
   prob    = c(0.1, 0.2, 0.1, 0.05, 0.05, 0.15, 0.15, 0.1, 0.1),
   cumprob = c(0.1, 0.3, 0.4, 0.45,  0.5, 0.65,  0.8, 0.9, 1)
 )
-x_raw_cumprobs <- cumsum(x_raw_x_tbl[["prob"]])
-x_raw_support <- c(1, 9)
+x_fin_cumprobs <- cumsum(x_fin_x_tbl[["prob"]])
+x_fin_support <- c(1, 9)
 
 x_smooth <- c(
   1.47, 0.11, 0.04,  0.37, -0.43, 0.17, -0.18, 0.85, -0.05, 0.17,
@@ -22,13 +22,13 @@ x_smooth_x_tbl[["cumprob"]] <- trapez_part_integral(
 # Input test vectors ------------------------------------------------------
 set.seed(13579)
 
-x_raw_vec <- sample(unique(x_raw))
-x_raw_vec_seq <- sample(
-  seq(x_raw_support[1] - 0.1, x_raw_support[2] + 0.1, length.out = 1000)
+x_fin_vec <- sample(unique(x_fin))
+x_fin_vec_seq <- sample(
+  seq(x_fin_support[1] - 0.1, x_fin_support[2] + 0.1, length.out = 1000)
 )
-# Adding `x_raw_vec` is needed as behavior in actual values of `x_raw` is
+# Adding `x_fin_vec` is needed as behavior in actual values of `x_fin` is
 # often important.
-x_raw_vec_ext <- c(x_raw_vec_seq, x_raw_vec)
+x_fin_vec_ext <- c(x_fin_vec_seq, x_fin_vec)
 
 x_smooth_vec <- sample(
   seq(x_smooth_support[1], x_smooth_support[2], length.out = 1000)
@@ -63,25 +63,25 @@ custom_x_tbl <- data.frame(x = seq(0, 1, by = 0.0001))
 custom_x_tbl[["y"]] <- dbeta(custom_x_tbl[["x"]], 1, 2)
 
 # p-functions
-p_raw <- new_p(x_raw, "raw")
+p_fin <- new_p(x_fin, "fin")
 p_smooth <- new_p(x_smooth, "smooth")
 user_p <- function(q) {pbeta(q, 1, 2)}
 p_custom <- new_p(custom_x_tbl)
 
 # d-functions
-d_raw <- new_d(x_raw, "raw")
+d_fin <- new_d(x_fin, "fin")
 d_smooth <- new_d(x_smooth, "smooth")
 user_d <- function(x) {dbeta(x, 1, 2)}
 d_custom <- new_d(custom_x_tbl)
 
 # q-functions
-q_raw <- new_q(x_raw, "raw")
+q_fin <- new_q(x_fin, "fin")
 q_smooth <- new_q(x_smooth, "smooth")
 user_q <- function(p) {qbeta(p, 1, 2)}
 q_custom <- new_q(custom_x_tbl)
 
 # r-functions
-r_raw <- new_r(x_raw, "raw")
+r_fin <- new_r(x_fin, "fin")
 r_smooth <- new_r(x_smooth, "smooth")
 user_r <- function(n) {rbeta(n, 1, 2)}
 r_custom <- new_r(custom_x_tbl)

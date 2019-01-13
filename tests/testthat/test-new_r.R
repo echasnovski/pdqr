@@ -3,10 +3,10 @@ context("test-new_r")
 
 # new_r -------------------------------------------------------------------
 test_that("new_r works with numeric input", {
-  expect_distr_fun(r_raw, "r", "raw")
-  expect_equal(meta(r_raw, "support"), x_raw_support)
-  expect_equal(meta(r_raw, "x_tbl"), x_raw_x_tbl)
-  expect_true(all(r_raw(100) %in% x_raw_x_tbl[["x"]]))
+  expect_distr_fun(r_fin, "r", "fin")
+  expect_equal(meta(r_fin, "support"), x_fin_support)
+  expect_equal(meta(r_fin, "x_tbl"), x_fin_x_tbl)
+  expect_true(all(r_fin(100) %in% x_fin_x_tbl[["x"]]))
 
   expect_distr_fun(r_smooth, "r", "smooth")
   expect_equal(
@@ -21,7 +21,7 @@ test_that("new_r works with numeric input", {
 })
 
 test_that("new_r works with data frame input", {
-  expect_equal_r_distr(new_r(x_raw_x_tbl, "raw"), r_raw)
+  expect_equal_r_distr(new_r(x_fin_x_tbl, "fin"), r_fin)
   expect_equal_r_distr(new_r(x_smooth_x_tbl, "smooth"), r_smooth)
 })
 
@@ -36,15 +36,15 @@ test_that("new_r asserts", {
 
   expect_error(new_r("a"), "x.*numeric.*data.*frame")
   expect_error(new_r(numeric(0)), "x.*empty")
-  expect_error(new_r(x_raw, type = 1), "type.*string")
-  expect_error(new_r(x_raw, type = "a"), "type.*raw.*smooth")
+  expect_error(new_r(x_fin, type = 1), "type.*string")
+  expect_error(new_r(x_fin, type = "a"), "type.*fin.*smooth")
   expect_error(new_r(1, type = "smooth"), "at least 2")
 })
 
 test_that("new_r handles metadata", {
   expect_equal(
-    meta(r_raw),
-    list(support = x_raw_support, type = "raw", x_tbl = x_raw_x_tbl)
+    meta(r_fin),
+    list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
   )
 
   expect_named(meta(r_smooth), c("support", "type", "x_tbl"))
@@ -56,7 +56,7 @@ test_that("new_r handles metadata", {
 })
 
 
-# new_r_raw ---------------------------------------------------------------
+# new_r_fin ---------------------------------------------------------------
 # Tested in `new_r()`
 
 

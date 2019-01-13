@@ -9,7 +9,7 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "x", ylab = "Cumulative probability"
   )
 
-  if (meta(x, "type") == "raw") {
+  if (meta(x, "type") == "fin") {
     # Create canvas
     no_plot_dots <- dedupl_list(c(
       list(x = meta(x, "support"), y = c(0, 1), type = "n"),
@@ -19,7 +19,7 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     do.call(graphics::plot, no_plot_dots)
 
     # Add segments
-    add_p_raw_segments(x, list(...))
+    add_p_fin_segments(x, list(...))
   } else {
     # Stretch support to guarantee 0 and 1 on edges
     plot_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, dots)
@@ -30,7 +30,7 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
-  if (meta(x, "type") == "raw") {
+  if (meta(x, "type") == "fin") {
     x_tbl <- meta(x, "x_tbl")
 
     dots <- make_plot_dots(
@@ -64,7 +64,7 @@ plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "Cumulative probability", ylab = "x"
   )
 
-  if (meta(x, "type") == "raw") {
+  if (meta(x, "type") == "fin") {
     # Create canvas
     no_plot_dots <- dedupl_list(c(
       list(x = c(0, 1), y = meta(x, "support"), type = "n"),
@@ -74,7 +74,7 @@ plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
     do.call(graphics::plot, no_plot_dots)
 
     # Add segments
-    add_q_raw_segments(x, list(...))
+    add_q_fin_segments(x, list(...))
   } else {
     plot_impl_pdq(x, c(0, 1), n_grid, dots)
   }
@@ -104,16 +104,16 @@ plot_impl_pdq <- function(f, grid_range, n_grid, dots) {
   do.call(graphics::plot, plot_args)
 }
 
-add_p_raw_segments <- function(x, dots) {
-  plot_dots <- compute_p_raw_dots(x, dots)
+add_p_fin_segments <- function(x, dots) {
+  plot_dots <- compute_p_fin_dots(x, dots)
 
   do.call(graphics::segments, plot_dots[["seg_ver"]])
   do.call(graphics::segments, plot_dots[["seg_hor"]])
   do.call(graphics::points, plot_dots[["points"]])
 }
 
-add_q_raw_segments <- function(x, dots) {
-  plot_p_dots <- compute_p_raw_dots(x, dots)
+add_q_fin_segments <- function(x, dots) {
+  plot_p_dots <- compute_p_fin_dots(x, dots)
 
   # Output should be inverse of plot for "p"
   plot_dots <- list(
@@ -136,7 +136,7 @@ add_q_raw_segments <- function(x, dots) {
   do.call(graphics::points, plot_dots[["points"]])
 }
 
-compute_p_raw_dots <- function(x, dots) {
+compute_p_fin_dots <- function(x, dots) {
   x_tbl <- meta(x, "x_tbl")
   x <- x_tbl[["x"]]
   cumprob <- x_tbl[["cumprob"]]
@@ -173,8 +173,8 @@ make_plot_dots <- function(...) {
 lines.p <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (meta(x, "type") == "raw") {
-    add_p_raw_segments(x, list(...))
+  if (meta(x, "type") == "fin") {
+    add_p_fin_segments(x, list(...))
   } else {
     # Stretch support to guarantee 0 and 1 on edges
     lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
@@ -184,7 +184,7 @@ lines.p <- function(x, n_grid = 1001, ...) {
 lines.d <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (meta(x, "type") == "raw") {
+  if (meta(x, "type") == "fin") {
     x_tbl <- meta(x, "x_tbl")
     lines_args <- dedupl_list(
       c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...))
@@ -199,8 +199,8 @@ lines.d <- function(x, n_grid = 1001, ...) {
 lines.q <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (meta(x, "type") == "raw") {
-    add_q_raw_segments(x, list(...))
+  if (meta(x, "type") == "fin") {
+    add_q_fin_segments(x, list(...))
   } else {
     lines_impl_pdq(x, c(0, 1), n_grid, list(...))
   }

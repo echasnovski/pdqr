@@ -247,22 +247,22 @@ test_that("as_p.default throws error if detected support isn't proper", {
 
 # as_p.pdqr ---------------------------------------------------------------
 test_that('as_p.pdqr works with "p"', {
-  expect_equal_distr(as_p(p_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(p_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_p(p_smooth), p_smooth, grid = x_smooth_vec_ext)
 })
 
 test_that('as_p.pdqr works with "d"', {
-  expect_equal_distr(as_p(d_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(d_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_p(d_smooth), p_smooth, grid = x_smooth_vec_ext)
 })
 
 test_that('as_p.pdqr works with "q"', {
-  expect_equal_distr(as_p(q_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(q_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_p(q_smooth), p_smooth, grid = x_smooth_vec_ext)
 })
 
 test_that('as_p.pdqr works with "r"', {
-  expect_equal_distr(as_p(r_raw), p_raw, grid = c(x_raw_vec_ext, x_raw_vec))
+  expect_equal_distr(as_p(r_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_p(r_smooth), p_smooth, grid = x_smooth_vec_ext)
 })
 
@@ -271,7 +271,7 @@ test_that("as_p.pdqr throws errors on bad input", {
 })
 
 test_that("as_p.pdqr ensures maximum proper support", {
-  input <- d_raw
+  input <- d_fin
   attr(input, "meta")[["support"]] <- c(-100, 100)
 
   expect_equal(meta(as_p(input), "support"), c(-100, 100))

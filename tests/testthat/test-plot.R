@@ -12,35 +12,35 @@ set.seed(5555)
 # plot.p --------------------------------------------------------------
 test_that("plot.p works", {
   # These are also tests for `lines.p()`
-  p_raw_2 <- new_p(c(1.5, 1.75), "raw")
+  p_fin_2 <- new_p(c(1.5, 1.75), "fin")
   vdiffr::expect_doppelganger(
-    "plot-p-raw-1", recordPlot({
-      plot(p_raw)
-      lines(p_raw_2)
+    "plot-p-fin-1", recordPlot({
+      plot(p_fin)
+      lines(p_fin_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-raw-2", recordPlot({
-      plot(p_raw, y = NA)
-      lines(p_raw_2, col = "red")
+    "plot-p-fin-2", recordPlot({
+      plot(p_fin, y = NA)
+      lines(p_fin_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-raw-3", recordPlot({
-      plot(p_raw, xlab = "a", ylab = "b", main = "c", type = "p")
-      lines(p_raw_2, xlab = "q")
+    "plot-p-fin-3", recordPlot({
+      plot(p_fin, xlab = "a", ylab = "b", main = "c", type = "p")
+      lines(p_fin_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-raw-4", recordPlot({
-      plot(p_raw, xlim = c(0, 2), col = "blue")
-      lines(p_raw_2, lwd = 2)
+    "plot-p-fin-4", recordPlot({
+      plot(p_fin, xlim = c(0, 2), col = "blue")
+      lines(p_fin_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-raw-5", recordPlot({
-      plot(p_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
-      lines(p_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    "plot-p-fin-5", recordPlot({
+      plot(p_fin, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(p_fin_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
@@ -89,35 +89,35 @@ test_that("plot.p throws error with corrupt input", {
 # plot.d ------------------------------------------------------------------
 test_that("plot.d works", {
   # These are also tests for `lines.p()`
-  d_raw_2 <- new_d(c(1.5, 1.75), "raw")
+  d_fin_2 <- new_d(c(1.5, 1.75), "fin")
   vdiffr::expect_doppelganger(
-    "plot-d-raw-1", recordPlot({
-      plot(d_raw)
-      lines(d_raw_2)
+    "plot-d-fin-1", recordPlot({
+      plot(d_fin)
+      lines(d_fin_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-raw-2", recordPlot({
-      plot(d_raw, y = NA)
-      lines(d_raw_2, col = "red")
+    "plot-d-fin-2", recordPlot({
+      plot(d_fin, y = NA)
+      lines(d_fin_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-raw-3", recordPlot({
-      plot(d_raw, xlab = "a", ylab = "b", main = "c", type = "p")
-      lines(d_raw_2, xlab = "q")
+    "plot-d-fin-3", recordPlot({
+      plot(d_fin, xlab = "a", ylab = "b", main = "c", type = "p")
+      lines(d_fin_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-raw-4", recordPlot({
-      plot(d_raw, xlim = c(0, 2), col = "blue")
-      lines(d_raw_2, lwd = 2)
+    "plot-d-fin-4", recordPlot({
+      plot(d_fin, xlim = c(0, 2), col = "blue")
+      lines(d_fin_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-raw-5", recordPlot({
-      plot(d_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
-      lines(d_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    "plot-d-fin-5", recordPlot({
+      plot(d_fin, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(d_fin_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
@@ -167,35 +167,35 @@ test_that("plot.d throws error with corrupt input", {
 # plot.q ------------------------------------------------------------------
 test_that("plot.q works", {
   # These are also tests for `lines.p()`
-  q_raw_2 <- new_q(c(1.5, 1.75), "raw")
+  q_fin_2 <- new_q(c(1.5, 1.75), "fin")
   vdiffr::expect_doppelganger(
-    "plot-q-raw-1", recordPlot({
-      plot(q_raw)
-      lines(q_raw_2)
+    "plot-q-fin-1", recordPlot({
+      plot(q_fin)
+      lines(q_fin_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-raw-2", recordPlot({
-      plot(q_raw, y = NA)
-      lines(q_raw_2, col = "red")
+    "plot-q-fin-2", recordPlot({
+      plot(q_fin, y = NA)
+      lines(q_fin_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-raw-3", recordPlot({
-      plot(q_raw, xlab = "a", ylab = "b", main = "c", type = "p")
-      lines(q_raw_2, xlab = "q")
+    "plot-q-fin-3", recordPlot({
+      plot(q_fin, xlab = "a", ylab = "b", main = "c", type = "p")
+      lines(q_fin_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-raw-4", recordPlot({
-      plot(q_raw, xlim = c(0, 2), col = "blue")
-      lines(q_raw_2, lwd = 2)
+    "plot-q-fin-4", recordPlot({
+      plot(q_fin, xlim = c(0, 2), col = "blue")
+      lines(q_fin_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-raw-5", recordPlot({
-      plot(q_raw, lty = 2, lwd = 2, pch = 17, cex = 2)
-      lines(q_raw_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    "plot-q-fin-5", recordPlot({
+      plot(q_fin, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(q_fin_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
@@ -245,19 +245,19 @@ test_that("plot.q throws error with corrupt input", {
 # plot.r ------------------------------------------------------------------
 test_that("plot.r works", {
   vdiffr::expect_doppelganger(
-    "plot-r-raw-1", recordPlot(plot(r_raw))
+    "plot-r-fin-1", recordPlot(plot(r_fin))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-raw-2", recordPlot(plot(r_raw, y = NA))
+    "plot-r-fin-2", recordPlot(plot(r_fin, y = NA))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-raw-3", recordPlot(
-      plot(r_raw, xlab = "a", main = "c")
+    "plot-r-fin-3", recordPlot(
+      plot(r_fin, xlab = "a", main = "c")
     )
   )
   vdiffr::expect_doppelganger(
-    "plot-r-raw-4", recordPlot(
-      plot(r_raw, xlim = c(0, 2), col = "blue", freq = FALSE)
+    "plot-r-fin-4", recordPlot(
+      plot(r_fin, xlim = c(0, 2), col = "blue", freq = FALSE)
     )
   )
 
@@ -296,15 +296,15 @@ test_that("plot.r throws error with corrupt input", {
 # Tested in `plot()` methods
 
 
-# add_p_raw_segments ------------------------------------------------------
+# add_p_fin_segments ------------------------------------------------------
 # Tested in `plot.p()`
 
 
-# add_q_raw_segments ------------------------------------------------------
+# add_q_fin_segments ------------------------------------------------------
 # Tested in `plot.q()`
 
 
-# compute_p_raw_dots ------------------------------------------------------
+# compute_p_fin_dots ------------------------------------------------------
 # Tested in `plot.p()` and `plot.q()`
 
 

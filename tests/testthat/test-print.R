@@ -9,7 +9,7 @@ test_that("pdqr_print works with bad input", {
     pdqr_print(input_1, "Temp"), "unknown type.*Support: not proper"
   )
 
-  input_2 <- structure(1, meta = list(type = "raw", support = c(1, Inf)))
+  input_2 <- structure(1, meta = list(type = "fin", support = c(1, Inf)))
   expect_output(pdqr_print(input_2, "Temp"), "Support: not proper")
 })
 

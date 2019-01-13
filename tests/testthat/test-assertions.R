@@ -61,10 +61,10 @@ test_that("assert_missing_args works", {
 
 # assert_pdqr_fun ---------------------------------------------------------
 test_that("assert_pdqr_fun works", {
-  expect_silent(assert_pdqr_fun(p_raw))
-  expect_silent(assert_pdqr_fun(d_raw))
-  expect_silent(assert_pdqr_fun(q_raw))
-  expect_silent(assert_pdqr_fun(r_raw))
+  expect_silent(assert_pdqr_fun(p_fin))
+  expect_silent(assert_pdqr_fun(d_fin))
+  expect_silent(assert_pdqr_fun(q_fin))
+  expect_silent(assert_pdqr_fun(r_fin))
 
   # Function type
   input <- 1
@@ -102,7 +102,7 @@ test_that("assert_pdqr_fun works", {
   expect_error(assert_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
 
     # "x_tbl" has not proper structure
-  input_bad_x_tbl_2 <- p_raw
+  input_bad_x_tbl_2 <- p_fin
   attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
   expect_error(
     assert_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
@@ -111,26 +111,26 @@ test_that("assert_pdqr_fun works", {
 
 test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   # "x" is sorted
-  input_bad_x_tbl_1 <- p_raw
+  input_bad_x_tbl_1 <- p_fin
   attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]] <- rev(
     attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]]
   )
   expect_error(assert_pdqr_fun(input_bad_x_tbl_1), '"x".*"x_tbl".*sorted')
 
-  # "raw" `type`
+  # "fin" `type`
     # Column "prob" is mandatory
-  input_bad_x_tbl_2 <- p_raw
+  input_bad_x_tbl_2 <- p_fin
   attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
   expect_error(assert_pdqr_fun(input_bad_x_tbl_2), '"x_tbl".*have.*"prob"')
 
     # Sum of "prob" is 1
-  input_bad_x_tbl_3 <- p_raw
+  input_bad_x_tbl_3 <- p_fin
   attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]] <- 10 *
     attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
   expect_error(assert_pdqr_fun(input_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_4 <- p_raw
+  input_bad_x_tbl_4 <- p_fin
   attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_error(assert_pdqr_fun(input_bad_x_tbl_4), '"x_tbl".*have.*"cumprob"')
 
@@ -152,12 +152,12 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 
 # assert_distr_type -------------------------------------------------------
 test_that("assert_distr_type works", {
-  expect_silent(assert_distr_type("raw"))
+  expect_silent(assert_distr_type("fin"))
   expect_silent(assert_distr_type("smooth"))
 
   expect_error(assert_distr_type(1), "string")
-  expect_error(assert_distr_type(c("raw", "smooth")), "string")
-  expect_error(assert_distr_type("a"), "raw.*smooth")
+  expect_error(assert_distr_type(c("fin", "smooth")), "string")
+  expect_error(assert_distr_type("a"), "fin.*smooth")
 })
 
 
@@ -178,54 +178,54 @@ test_that("assert_support works", {
 
 
 # assert_x_tbl ------------------------------------------------------------
-test_that("assert_x_tbl works with `type = 'raw'`", {
-  expect_silent(assert_x_tbl(x_raw_x_tbl, type = "raw"))
+test_that("assert_x_tbl works with `type = 'fin'`", {
+  expect_silent(assert_x_tbl(x_fin_x_tbl, type = "fin"))
   expect_silent(
-    assert_x_tbl(data.frame(x = 1:3, prob = c(0, 1, 0)), type = "raw")
+    assert_x_tbl(data.frame(x = 1:3, prob = c(0, 1, 0)), type = "fin")
   )
 
   # Input type
   input <- "a"
-  expect_error(assert_x_tbl(input, type = "raw"), "`input`.*data.*frame")
+  expect_error(assert_x_tbl(input, type = "fin"), "`input`.*data.*frame")
 
   # Column "x"
-  expect_error(assert_x_tbl(data.frame(a = 1), type = "raw"), '"x"')
-  expect_error(assert_x_tbl(data.frame(x = "a"), type = "raw"), '"x".*numeric')
+  expect_error(assert_x_tbl(data.frame(a = 1), type = "fin"), '"x"')
+  expect_error(assert_x_tbl(data.frame(x = "a"), type = "fin"), '"x".*numeric')
   expect_error(
-    assert_x_tbl(data.frame(x = NA_real_), type = "raw"), '"x".*`NA`'
+    assert_x_tbl(data.frame(x = NA_real_), type = "fin"), '"x".*`NA`'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = Inf), type = "raw"), '"x".*finite'
+    assert_x_tbl(data.frame(x = Inf), type = "fin"), '"x".*finite'
   )
 
   # Column "prob"
-  expect_error(assert_x_tbl(data.frame(x = 1), type = "raw"), '"prob"')
+  expect_error(assert_x_tbl(data.frame(x = 1), type = "fin"), '"prob"')
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "raw"), '"prob".*numeric'
+    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "fin"), '"prob".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = NA_real_), type = "raw"),
+    assert_x_tbl(data.frame(x = 1, prob = NA_real_), type = "fin"),
     '"prob".*`NA`'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = Inf), type = "raw"),
+    assert_x_tbl(data.frame(x = 1, prob = Inf), type = "fin"),
     '"prob".*finite'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = -1), type = "raw"), '"prob".*negative'
+    assert_x_tbl(data.frame(x = 1, prob = -1), type = "fin"), '"prob".*negative'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = 0), type = "raw"),
+    assert_x_tbl(data.frame(x = 1, prob = 0), type = "fin"),
     '"prob".*positive sum'
   )
 
   # Extra columns are allowed
   expect_silent(
-    assert_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "raw")
+    assert_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "fin")
   )
   # Different column order is allowed
   expect_silent(
-    assert_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "raw")
+    assert_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "fin")
   )
 })
 
@@ -283,7 +283,7 @@ test_that("assert_x_tbl works with `type = 'smooth'`", {
 })
 
 
-# assert_x_tbl_raw --------------------------------------------------------
+# assert_x_tbl_fin --------------------------------------------------------
 # Tested in `assert_x_tbl()`
 
 

@@ -100,7 +100,7 @@ assert_pdqr_fun <- function(f) {
 
   if (!has_meta_type(f)) {
     stop_collapse(
-      f_name, ' should have proper "type" metadata ("raw" or "smooth").'
+      f_name, ' should have proper "type" metadata ("fin" or "smooth").'
     )
   }
 
@@ -129,9 +129,9 @@ assert_distr_type <- function(type) {
   if (!is_string(type)) {
     stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
   }
-  if (!(type %in% c("raw", "smooth"))) {
+  if (!(type %in% c("fin", "smooth"))) {
     stop_collapse(
-      type_name, ' should be one of "raw" or "smooth", not "', type, '".'
+      type_name, ' should be one of "fin" or "smooth", not "', type, '".'
     )
   }
 
@@ -173,12 +173,12 @@ assert_x_tbl <- function(x_tbl, type) {
 
   switch(
     type,
-    raw = assert_x_tbl_raw(x_tbl, x_tbl_name),
+    fin = assert_x_tbl_fin(x_tbl, x_tbl_name),
     smooth = assert_x_tbl_smooth(x_tbl, x_tbl_name)
   )
 }
 
-assert_x_tbl_raw <- function(x_tbl, x_tbl_name) {
+assert_x_tbl_fin <- function(x_tbl, x_tbl_name) {
   if (!("prob" %in% names(x_tbl))) {
     stop_collapse(x_tbl_name, ' should have "prob" column.')
   }
@@ -229,10 +229,10 @@ assert_x_tbl_meta <- function(x_tbl, type) {
     stop_collapse('"x_tbl" metadata should have "cumprob" column.')
   }
 
-  if (type == "raw") {
+  if (type == "fin") {
     if (!("prob" %in% names(x_tbl))) {
       stop_collapse(
-        '"x_tbl" metadata should have "prob" column if `type` is "raw".'
+        '"x_tbl" metadata should have "prob" column if `type` is "fin".'
       )
     }
     if (!is_near(sum(x_tbl[["prob"]]), 1)) {
