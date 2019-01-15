@@ -252,6 +252,10 @@ test_that("assert_x_tbl works with `type = 'infin'`", {
   expect_error(
     assert_x_tbl(data.frame(x = c(1, Inf)), type = "infin"), '"x".*finite'
   )
+  expect_error(
+    assert_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "infin"),
+    '"x".*duplicate'
+  )
 
   # Column "y"
   expect_error(assert_x_tbl(data.frame(x = 1:2), type = "infin"), '"y"')

@@ -219,33 +219,23 @@ test_that("is_x_tbl works with `type = 'infin'`", {
 
   # Input type
   input <- "a"
-  expect_false(is_x_tbl(input, type = "infin"), "`input`.*data.*frame")
+  expect_false(is_x_tbl(input, type = "infin"))
 
   # Number of rows
-  expect_false(
-    is_x_tbl(data.frame(x = 1, y = 1), type = "infin"), "2.*rows"
-  )
+  expect_false(is_x_tbl(data.frame(x = 1, y = 1), type = "infin"))
 
   # Column "x"
   expect_false(is_x_tbl(data.frame(a = 1:2), type = "infin"), "x")
+  expect_false(is_x_tbl(data.frame(x = c("a", "b")), type = "infin"))
   expect_false(
-    is_x_tbl(data.frame(x = c("a", "b")), type = "infin"), "numeric.*x"
+    is_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "infin")
   )
 
   # Column "y"
   expect_false(is_x_tbl(data.frame(x = 1:2), type = "infin"), "y")
-  expect_false(
-    is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "infin"),
-    "numeric.*y"
-  )
-  expect_false(
-    is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "infin"),
-    '"y".*negative'
-  )
-  expect_false(
-    is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "infin"),
-    '"y".*positive'
-  )
+  expect_false(is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "infin"))
+  expect_false(is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "infin"))
+  expect_false(is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "infin"))
 
   # Extra columns are allowed
   expect_true(

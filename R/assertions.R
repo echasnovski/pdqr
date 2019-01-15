@@ -203,6 +203,12 @@ assert_x_tbl_infin <- function(x_tbl, x_tbl_name) {
     stop_collapse(x_tbl_name, " should have at least 2 rows.")
   }
 
+  if (anyDuplicated(x_tbl[["x"]])) {
+    stop_collapse(
+      '"x" column in ', x_tbl_name, ' should not have duplicate values.'
+    )
+  }
+
   assert_num_col(x_tbl[["y"]], '"y"', x_tbl_name)
 
   if (any(x_tbl[["y"]] < 0)) {
