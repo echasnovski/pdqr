@@ -18,7 +18,10 @@ as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
   x <- seq(support[1], support[2], length.out = n_grid)
   p <- p_f(x)
 
-  y <- y_from_p_grid(x, p)
+  # Adjust p grid to support ("cut-and-normalize" method)
+  p_norm <- (p - p[1]) / (p[length(p)] - p[1])
+
+  y <- y_from_p_grid(x, p_norm)
 
   assert_tot_prob(sum(y, na.rm = TRUE))
 

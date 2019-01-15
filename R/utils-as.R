@@ -1,12 +1,9 @@
 y_from_p_grid <- function(x, p) {
-  n <- length(x)
   # It is assumed that `x` has no duplicates and sorted increasingly
-
-  # Adjust to support ("cut-and-normalize" method)
-  p_norm <- (p - p[1]) / (p[n] - p[1])
+  n <- length(x)
 
   # `y_inter_sum` is vector: (y_1 + y_2; y_2 + y_3; ...; y_{n-1} + y_n)
-  y_inter_sum <- 2 * diff(p_norm) / diff(x)
+  y_inter_sum <- 2 * diff(p) / diff(x)
   n_inter_sum <- length(y_inter_sum)
 
   # To solve this system of algebraic equations for y_1, ..., y_n precisely one
