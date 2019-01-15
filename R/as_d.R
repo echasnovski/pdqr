@@ -43,8 +43,8 @@ as_d.pdqr <- function(f, ...) {
   res <- new_d(x = meta(f, "x_tbl"), type = meta(f, "type"))
 
   # Ensure that output has maximum available support (usually equal to
-  # `meta(f, "support")`)
-  ensure_support(res, meta(f, "support"))
+  # `pdqr_support(f)`)
+  ensure_support(res, pdqr_support(f))
 }
 
 detect_support_d <- function(d_f, supp) {

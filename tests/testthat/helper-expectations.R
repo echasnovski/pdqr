@@ -4,7 +4,7 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_is(input, "pdqr")
   expect_named(meta(input), c("support", "type", "x_tbl"))
   expect_equal(meta(input, "type"), type)
-  expect_true(is_support(meta(input, "support")))
+  expect_true(is_support(pdqr_support(input)))
   expect_true(is_x_tbl(meta(input, "x_tbl"), type = meta(input, "type")))
   expect_true(is_x_tbl_meta(meta(input, "x_tbl"), type = meta(input, "type")))
 }

@@ -4,13 +4,11 @@ context("test-new_p")
 # new_p -------------------------------------------------------------------
 test_that("new_p works with numeric input", {
   expect_distr_fun(p_fin, "p", "fin")
-  expect_equal(meta(p_fin, "support"), x_fin_support)
+  expect_equal(pdqr_support(p_fin), x_fin_support)
   expect_equal(p_fin(1:10), c(cumsum(x_fin_x_tbl[["prob"]]), 1))
 
   expect_distr_fun(p_infin, "p", "infin")
-  expect_equal(
-    round(meta(p_infin, "support"), 2), round(x_infin_support, 2)
-  )
+  expect_equal(round(pdqr_support(p_infin), 2), round(x_infin_support, 2))
   expect_equal(
     round(p_infin(seq(from = -1, to = 1, by = 0.1)), 3),
     c(
@@ -43,7 +41,7 @@ test_that("new_p behaves like ecdf() in case of `type` = 'fin'", {
 })
 
 test_that("new_p output is integration of new_d in case of `type` = 'infin'", {
-  d_support <- meta(d_infin, "support")
+  d_support <- pdqr_support(d_infin)
   x_infin_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
 
   p_infin_int <- vapply(
@@ -89,9 +87,7 @@ test_that("new_p handles metadata", {
 
   expect_named(meta(p_infin), c("support", "type", "x_tbl"))
   expect_equal(meta(p_infin, "x_tbl"), x_infin_x_tbl)
-  expect_equal(
-    round(meta(p_infin, "support"), 2), round(x_infin_support, 2)
-  )
+  expect_equal(round(pdqr_support(p_infin), 2), round(x_infin_support, 2))
   expect_equal(meta(p_infin)["type"], list(type = "infin"))
 })
 

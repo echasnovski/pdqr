@@ -12,7 +12,7 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
   if (meta(x, "type") == "fin") {
     # Create canvas
     no_plot_dots <- dedupl_list(c(
-      list(x = meta(x, "support"), y = c(0, 1), type = "n"),
+      list(x = pdqr_support(x), y = c(0, 1), type = "n"),
       dots
     ))
 
@@ -22,7 +22,7 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     add_p_fin_segments(x, list(...))
   } else {
     # Stretch support to guarantee 0 and 1 on edges
-    plot_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, dots)
+    plot_impl_pdq(x, stretch_range(pdqr_support(x)), n_grid, dots)
   }
 }
 
@@ -50,7 +50,7 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
       xlab = "x", ylab = "Density"
     )
 
-    plot_impl_pdq(x, meta(x, "support"), n_grid, dots)
+    plot_impl_pdq(x, pdqr_support(x), n_grid, dots)
   }
 }
 
@@ -67,7 +67,7 @@ plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
   if (meta(x, "type") == "fin") {
     # Create canvas
     no_plot_dots <- dedupl_list(c(
-      list(x = c(0, 1), y = meta(x, "support"), type = "n"),
+      list(x = c(0, 1), y = pdqr_support(x), type = "n"),
       dots
     ))
 
@@ -177,7 +177,7 @@ lines.p <- function(x, n_grid = 1001, ...) {
     add_p_fin_segments(x, list(...))
   } else {
     # Stretch support to guarantee 0 and 1 on edges
-    lines_impl_pdq(x, stretch_range(meta(x, "support")), n_grid, list(...))
+    lines_impl_pdq(x, stretch_range(pdqr_support(x)), n_grid, list(...))
   }
 }
 
@@ -192,7 +192,7 @@ lines.d <- function(x, n_grid = 1001, ...) {
 
     do.call(graphics::lines, lines_args)
   } else {
-    lines_impl_pdq(x, meta(x, "support"), n_grid, list(...))
+    lines_impl_pdq(x, pdqr_support(x), n_grid, list(...))
   }
 }
 

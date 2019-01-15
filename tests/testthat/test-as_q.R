@@ -181,7 +181,7 @@ test_that("as_q.default output has the same support as was in input", {
   is_equal_supp <- vapply(
     seq_along(q_list), function(i) {
       isTRUE(all.equal(
-        meta(q_list[[i]], "support"), fam_list[[i]]$support
+        pdqr_support(q_list[[i]]), fam_list[[i]]$support
       ))
     },
     logical(1)
@@ -193,15 +193,15 @@ test_that("as_q.default output has the same support as was in input", {
 test_that("as_q.default detects support", {
   # Much more tests are done in `detect_support_q`
   q_beta_both <- as_q(fam_beta$q)
-  support_both <- meta(q_beta_both, "support")
+  support_both <- pdqr_support(q_beta_both)
   expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 1e-7)
 
   q_beta_left <- as_q(fam_beta$q, support = c(NA, 0.7))
-  support_left <- meta(q_beta_left, "support")
+  support_left <- pdqr_support(q_beta_left)
   expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 1e-7)
 
   q_beta_right <- as_q(fam_beta$q, support = c(0.3, NA))
-  support_right <- meta(q_beta_right, "support")
+  support_right <- pdqr_support(q_beta_right)
   expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 1e-7)
 })
 
@@ -284,7 +284,7 @@ test_that("as_q.pdqr ensures maximum proper support", {
   input <- p_fin
   attr(input, "meta")[["support"]] <- c(-100, 100)
 
-  expect_equal(meta(as_q(input), "support"), c(-100, 100))
+  expect_equal(pdqr_support(as_q(input)), c(-100, 100))
 })
 
 

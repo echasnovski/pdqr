@@ -32,16 +32,16 @@ test_that("remove_zero_edge_y works", {
 # ensure_support ----------------------------------------------------------
 test_that("ensure_support works", {
   out_1 <- ensure_support(d_fin, x_fin_support + c(-1, 1))
-  expect_equal(meta(out_1, "support"), x_fin_support + c(-1, 1))
+  expect_equal(pdqr_support(out_1), x_fin_support + c(-1, 1))
 
   out_2 <- ensure_support(d_fin, x_fin_support + c(1, 1))
-  expect_equal(meta(out_2, "support"), c(x_fin_support[1], x_fin_support[2]+1))
+  expect_equal(pdqr_support(out_2), c(x_fin_support[1], x_fin_support[2]+1))
 
   out_3 <- ensure_support(d_fin, x_fin_support + c(-1, -1))
-  expect_equal(meta(out_3, "support"), c(x_fin_support[1]-1, x_fin_support[2]))
+  expect_equal(pdqr_support(out_3), c(x_fin_support[1]-1, x_fin_support[2]))
 
   out_4 <- ensure_support(d_fin, x_fin_support + c(1, -1))
-  expect_equal(meta(out_4, "support"), x_fin_support)
+  expect_equal(pdqr_support(out_4), x_fin_support)
 })
 
 

@@ -14,7 +14,7 @@ line_title <- function(x, fun_name) {
 }
 
 line_support <- function(x) {
-  x_support <- meta(x, "support")
+  x_support <- pdqr_support(x)
 
   if (is.null(x_support) || !is_support(x_support)) {
     paste0("Support: ", bold("not proper"), "\n")

@@ -4,14 +4,12 @@ context("test-new_r")
 # new_r -------------------------------------------------------------------
 test_that("new_r works with numeric input", {
   expect_distr_fun(r_fin, "r", "fin")
-  expect_equal(meta(r_fin, "support"), x_fin_support)
+  expect_equal(pdqr_support(r_fin), x_fin_support)
   expect_equal(meta(r_fin, "x_tbl"), x_fin_x_tbl)
   expect_true(all(r_fin(100) %in% x_fin_x_tbl[["x"]]))
 
   expect_distr_fun(r_infin, "r", "infin")
-  expect_equal(
-    round(meta(r_infin, "support"), 2), round(x_infin_support, 2)
-  )
+  expect_equal(round(pdqr_support(r_infin), 2), round(x_infin_support, 2))
   expect_equal(meta(r_infin, "x_tbl"), x_infin_x_tbl)
   r_infin_out <- r_infin(100)
   expect_true(all(
@@ -49,9 +47,7 @@ test_that("new_r handles metadata", {
 
   expect_named(meta(r_infin), c("support", "type", "x_tbl"))
   expect_equal(meta(r_infin, "x_tbl"), x_infin_x_tbl)
-  expect_equal(
-    round(meta(r_infin, "support"), 2), round(x_infin_support, 2)
-  )
+  expect_equal(round(pdqr_support(r_infin), 2), round(x_infin_support, 2))
   expect_equal(meta(r_infin)["type"], list(type = "infin"))
 })
 

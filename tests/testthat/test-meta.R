@@ -87,3 +87,10 @@ test_that("name_sort works", {
   input_no_name <- list(3, 1, 2)
   expect_equal(name_sort(input_no_name), input_no_name)
 })
+
+
+# pdqr_support ------------------------------------------------------------
+test_that("pdqr_support works", {
+  input <- structure(1, meta = list(support = c(0, 1)))
+  expect_equal(pdqr_support(input), c(0, 1))
+})

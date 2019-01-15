@@ -34,8 +34,8 @@ as_r.pdqr <- function(f, ...) {
   res <- new_r(x = meta(f, "x_tbl"), type = meta(f, "type"))
 
   # Ensure that output has maximum available support (usually equal to
-  # `meta(f, "support")`)
-  ensure_support(res, meta(f, "support"))
+  # `pdqr_support(f)`)
+  ensure_support(res, pdqr_support(f))
 }
 
 detect_support_r <- function(smpl, supp) {
