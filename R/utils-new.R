@@ -189,8 +189,8 @@ has_meta_support <- function(f) {
 }
 
 has_meta_x_tbl <- function(f, type) {
-  has_meta(f, "x_tbl") && is_x_tbl(meta(f, "x_tbl"), type) &&
-    is_x_tbl_meta(meta(f, "x_tbl"), type)
+  has_meta(f, "x_tbl") && is_x_tbl(pdqr_x_tbl(f), type) &&
+    is_x_tbl_meta(pdqr_x_tbl(f), type)
 }
 
 

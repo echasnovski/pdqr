@@ -86,7 +86,7 @@ test_that("new_p handles metadata", {
   )
 
   expect_named(meta(p_infin), c("support", "type", "x_tbl"))
-  expect_equal(meta(p_infin, "x_tbl"), x_infin_x_tbl)
+  expect_equal(pdqr_x_tbl(p_infin), x_infin_x_tbl)
   expect_equal(round(pdqr_support(p_infin), 2), round(x_infin_support, 2))
   expect_equal(meta(p_infin)["type"], list(type = "infin"))
 })

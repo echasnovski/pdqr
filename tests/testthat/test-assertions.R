@@ -105,7 +105,7 @@ test_that("assert_pdqr_fun works", {
   input_bad_x_tbl_2 <- p_fin
   attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
   expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
+    assert_pdqr_fun(input_bad_x_tbl_2), 'x_tbl.*data.*frame'
   )
 })
 
@@ -121,7 +121,7 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
     # Column "prob" is mandatory
   input_bad_x_tbl_2 <- p_fin
   attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_2), '"x_tbl".*have.*"prob"')
+  expect_error(assert_pdqr_fun(input_bad_x_tbl_2), 'x_tbl.*have.*"prob"')
 
     # Sum of "prob" is 1
   input_bad_x_tbl_3 <- p_fin

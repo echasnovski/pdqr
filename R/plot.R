@@ -31,7 +31,7 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   if (pdqr_type(x) == "fin") {
-    x_tbl <- meta(x, "x_tbl")
+    x_tbl <- pdqr_x_tbl(x)
 
     dots <- make_plot_dots(
       ...,
@@ -137,7 +137,7 @@ add_q_fin_segments <- function(x, dots) {
 }
 
 compute_p_fin_dots <- function(x, dots) {
-  x_tbl <- meta(x, "x_tbl")
+  x_tbl <- pdqr_x_tbl(x)
   x <- x_tbl[["x"]]
   cumprob <- x_tbl[["cumprob"]]
   n <- nrow(x_tbl)
@@ -185,7 +185,7 @@ lines.d <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   if (pdqr_type(x) == "fin") {
-    x_tbl <- meta(x, "x_tbl")
+    x_tbl <- pdqr_x_tbl(x)
     lines_args <- dedupl_list(
       c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...))
     )

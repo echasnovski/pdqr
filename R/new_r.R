@@ -16,7 +16,7 @@ new_r_fin <- function(x_tbl) {
   }
 
   add_meta(
-    res, support = pdqr_support(q_fin), x_tbl = meta(q_fin, "x_tbl")
+    res, support = pdqr_support(q_fin), x_tbl = pdqr_x_tbl(q_fin)
   )
 }
 
@@ -30,7 +30,7 @@ new_r_infin <- function(x_tbl) {
   }
 
   add_meta(
-    res, support = pdqr_support(q_infin), x_tbl = meta(q_infin, "x_tbl")
+    res, support = pdqr_support(q_infin), x_tbl = pdqr_x_tbl(q_infin)
   )
 }
 

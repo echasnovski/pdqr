@@ -206,7 +206,7 @@ test_that("as_q.default detects support", {
 })
 
 test_that("as_q.default removes edge `y` with zero density", {
-  x_tbl <- meta(q_unif, "x_tbl")
+  x_tbl <- pdqr_x_tbl(q_unif)
   expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
 })
 

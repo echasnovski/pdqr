@@ -284,7 +284,7 @@ test_that("as_r.default detects support", {
 })
 
 test_that("as_r.default removes edge `y` with zero density", {
-  x_tbl <- meta(r_unif, "x_tbl")
+  x_tbl <- pdqr_x_tbl(r_unif)
   expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
 })
 
@@ -304,7 +304,7 @@ test_that("as_r.default uses `...` to forward arguments to `f`", {
 
 test_that("as_r.default uses `.pdqr_args`", {
   output <- as_r(runif, .pdqr_args = list(from = 0.5))
-  expect_true(meta(output, "x_tbl")[["x"]][1] > 0.45)
+  expect_true(pdqr_x_tbl(output)[["x"]][1] > 0.45)
 })
 
 test_that("as_r.default properly adjusts to support", {

@@ -218,7 +218,7 @@ test_that("as_d.default detects support", {
 })
 
 test_that("as_d.default removes edge `y` with zero density", {
-  x_tbl <- meta(d_unif, "x_tbl")
+  x_tbl <- pdqr_x_tbl(d_unif)
   expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
 })
 
@@ -259,7 +259,7 @@ test_that("as.d.default properly imputes infinity values", {
   # nearest left and two nearest right non-infinite values
 
   d_beta <- as_d(fam_beta_inf[["d"]], c(-1, 1))
-  d_x_tbl <- meta(d_beta, "x_tbl")
+  d_x_tbl <- pdqr_x_tbl(d_beta)
   d_x <- d_x_tbl[["x"]]
   d_y <- d_x_tbl[["y"]]
 

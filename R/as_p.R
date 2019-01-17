@@ -44,7 +44,7 @@ as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
 as_p.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
-  res <- new_p(x = meta(f, "x_tbl"), type = pdqr_type(f))
+  res <- new_p(x = pdqr_x_tbl(f), type = pdqr_type(f))
 
   # Ensure that output has maximum available support (usually equal to
   # `pdqr_support(f)`)

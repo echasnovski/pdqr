@@ -60,3 +60,7 @@ pdqr_type <- function(obj) {
 pdqr_support <- function(obj) {
   meta(obj, "support")
 }
+
+pdqr_x_tbl <- function(obj) {
+  meta(obj, "x_tbl")
+}

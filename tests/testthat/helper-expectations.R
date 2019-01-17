@@ -5,8 +5,8 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_named(meta(input), c("support", "type", "x_tbl"))
   expect_equal(pdqr_type(input), type)
   expect_true(is_support(pdqr_support(input)))
-  expect_true(is_x_tbl(meta(input, "x_tbl"), type = pdqr_type(input)))
-  expect_true(is_x_tbl_meta(meta(input, "x_tbl"), type = pdqr_type(input)))
+  expect_true(is_x_tbl(pdqr_x_tbl(input), type = pdqr_type(input)))
+  expect_true(is_x_tbl_meta(pdqr_x_tbl(input), type = pdqr_type(input)))
 }
 
 expect_close_f <- function(f_1, f_2, grid, stat_f = max, thres = 10^(-6)) {
@@ -72,24 +72,24 @@ expect_x_tbl_imputation <- function(f) {
     # Reordering rows
   bad_fin_input_1 <- x_fin_x_tbl[n_fin:1, ]
   output_1 <- f(bad_fin_input_1, "fin")
-  expect_equal(meta(output_1, "x_tbl"), x_fin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_1), x_fin_x_tbl)
 
     # Reordering columns
   bad_fin_input_2 <- x_fin_x_tbl[, c("cumprob", "x", "prob")]
   output_2 <- f(bad_fin_input_2, "fin")
-  expect_equal(meta(output_2, "x_tbl"), x_fin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_2), x_fin_x_tbl)
 
     # Normalising "prob" column
   bad_fin_input_3 <- x_fin_x_tbl
   bad_fin_input_3[["prob"]] <- bad_fin_input_3[["prob"]] * 10
   output_3 <- f(bad_fin_input_3, "fin")
-  expect_equal(meta(output_3, "x_tbl"), x_fin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_3), x_fin_x_tbl)
 
     # Recomputing "cumprob" column
   bad_fin_input_4 <- x_fin_x_tbl
   bad_fin_input_4[["cumprob"]] <- bad_fin_input_4[["cumprob"]] * 10
   output_4 <- f(bad_fin_input_4, "fin")
-  expect_equal(meta(output_4, "x_tbl"), x_fin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_4), x_fin_x_tbl)
 
   # Type "infin"
   n_infin <- nrow(x_infin_x_tbl)
@@ -97,24 +97,24 @@ expect_x_tbl_imputation <- function(f) {
     # Reordering rows
   bad_infin_input_1 <- x_infin_x_tbl[n_infin:1, ]
   output_1 <- new_d(bad_infin_input_1, "infin")
-  expect_equal(meta(output_1, "x_tbl"), x_infin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_1), x_infin_x_tbl)
 
     # Reordering columns
   bad_infin_input_2 <- x_infin_x_tbl[, c("y", "x")]
   output_2 <- f(bad_infin_input_2, "infin")
-  expect_equal(meta(output_2, "x_tbl"), x_infin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_2), x_infin_x_tbl)
 
     # Normalizing
   bad_infin_input_3 <- x_infin_x_tbl
   bad_infin_input_3[["y"]] <- bad_infin_input_3[["y"]] * 10
   output_3 <- new_d(bad_infin_input_3, "infin")
-  expect_equal(meta(output_3, "x_tbl"), x_infin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_3), x_infin_x_tbl)
 
     # Recomputing "cumprob" column
   bad_infin_input_4 <- x_infin_x_tbl
   bad_infin_input_4[["cumprob"]] <- bad_infin_input_4[["cumprob"]] * 10
   output_4 <- f(bad_infin_input_4, "infin")
-  expect_equal(meta(output_4, "x_tbl"), x_infin_x_tbl)
+  expect_equal(pdqr_x_tbl(output_4), x_infin_x_tbl)
 }
 
 expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {

@@ -14,7 +14,7 @@ retype_fin <- function(f) {
     return(f)
   }
 
-  x_tbl <- meta(f, "x_tbl")
+  x_tbl <- pdqr_x_tbl(f)
   n <- nrow(x_tbl)
 
   x_lag <- x_tbl[["x"]][-n]
@@ -44,7 +44,7 @@ retype_infin <- function(f) {
   }
 
   # Collapse duplicate `x` values
-  x_tbl <- normalize_fin_x_tbl(meta(f, "x_tbl"))
+  x_tbl <- normalize_fin_x_tbl(pdqr_x_tbl(f))
 
   n <- nrow(x_tbl)
   if (n < 4) {

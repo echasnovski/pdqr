@@ -28,7 +28,7 @@ line_support <- function(x) {
 
 n_x_tbl_info <- function(x) {
   x_type <- pdqr_type(x)
-  x_tbl <- meta(x, "x_tbl")
+  x_tbl <- pdqr_x_tbl(x)
 
   if (is.null(x_type) || !is.character(x_type) ||
       is.null(x_tbl) || !is.data.frame(x_tbl)) {

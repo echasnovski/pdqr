@@ -101,3 +101,10 @@ test_that("pdqr_support works", {
   input <- structure(1, meta = list(support = c(0, 1)))
   expect_equal(pdqr_support(input), c(0, 1))
 })
+
+
+# pdqr_x_tbl --------------------------------------------------------------
+test_that("pdqr_x_tbl works", {
+  input <- structure(1, meta = list(x_tbl = data.frame(x = 1, prob = 1)))
+  expect_equal(pdqr_x_tbl(input), data.frame(x = 1, prob = 1))
+})
