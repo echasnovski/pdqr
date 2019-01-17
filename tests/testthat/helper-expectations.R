@@ -3,10 +3,10 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_is(input, distr_type)
   expect_is(input, "pdqr")
   expect_named(meta(input), c("support", "type", "x_tbl"))
-  expect_equal(meta(input, "type"), type)
+  expect_equal(pdqr_type(input), type)
   expect_true(is_support(pdqr_support(input)))
-  expect_true(is_x_tbl(meta(input, "x_tbl"), type = meta(input, "type")))
-  expect_true(is_x_tbl_meta(meta(input, "x_tbl"), type = meta(input, "type")))
+  expect_true(is_x_tbl(meta(input, "x_tbl"), type = pdqr_type(input)))
+  expect_true(is_x_tbl_meta(meta(input, "x_tbl"), type = pdqr_type(input)))
 }
 
 expect_close_f <- function(f_1, f_2, grid, stat_f = max, thres = 10^(-6)) {

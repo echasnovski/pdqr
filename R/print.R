@@ -27,7 +27,7 @@ line_support <- function(x) {
 }
 
 n_x_tbl_info <- function(x) {
-  x_type <- meta(x, "type")
+  x_type <- pdqr_type(x)
   x_tbl <- meta(x, "x_tbl")
 
   if (is.null(x_type) || !is.character(x_type) ||
@@ -63,7 +63,7 @@ use_color <- function() {
 }
 
 meta_type_print_name <- function(x) {
-  x_type <- meta(x, "type")
+  x_type <- pdqr_type(x)
 
   if (is.null(x_type) || !(x_type %in% c("fin", "infin"))) {
     "unknown"

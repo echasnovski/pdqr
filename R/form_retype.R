@@ -10,7 +10,7 @@ form_retype <- function(f, type) {
 }
 
 retype_fin <- function(f) {
-  if (meta(f, "type") == "fin") {
+  if (pdqr_type(f) == "fin") {
     return(f)
   }
 
@@ -39,7 +39,7 @@ retype_fin <- function(f) {
 }
 
 retype_infin <- function(f) {
-  if (meta(f, "type") == "infin") {
+  if (pdqr_type(f) == "infin") {
     return(f)
   }
 

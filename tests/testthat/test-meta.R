@@ -89,6 +89,13 @@ test_that("name_sort works", {
 })
 
 
+# pdqr_type ---------------------------------------------------------------
+test_that("pdqr_type works", {
+  input <- structure(1, meta = list(type = "fin"))
+  expect_equal(pdqr_type(input), "fin")
+})
+
+
 # pdqr_support ------------------------------------------------------------
 test_that("pdqr_support works", {
   input <- structure(1, meta = list(support = c(0, 1)))

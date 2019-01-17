@@ -181,7 +181,7 @@ is_pdqr_class <- function(chr) {
 }
 
 has_meta_type <- function(f) {
-  has_meta(f, "type") && is_distr_type(meta(f, "type"))
+  has_meta(f, "type") && is_distr_type(pdqr_type(f))
 }
 
 has_meta_support <- function(f) {

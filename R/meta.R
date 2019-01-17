@@ -53,6 +53,10 @@ name_sort <- function(obj) {
   obj[order(raw_names, na.last = TRUE)]
 }
 
+pdqr_type <- function(obj) {
+  meta(obj, "type")
+}
+
 pdqr_support <- function(obj) {
   meta(obj, "support")
 }
