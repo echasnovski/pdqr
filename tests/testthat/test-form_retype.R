@@ -91,22 +91,3 @@ test_that("form_retype asserts bad input", {
 
 # retype_infin ------------------------------------------------------------
 # Tested in `form_retype()`
-
-
-# normalize_fin_x_tbl -----------------------------------------------------
-test_that("normalize_fin_x_tbl works", {
-  good_input <- pdqr_x_tbl(d_fin)
-  expect_identical(normalize_fin_x_tbl(good_input), good_input)
-
-  input_1 <- data.frame(x = c(1, 1, 2), prob = c(0.25, 0.25, 0.5))
-  expect_equal(
-    normalize_fin_x_tbl(input_1),
-    data.frame(x = c(1, 2), prob = c(0.5, 0.5), cumprob = c(0.5, 1))
-  )
-
-  input_2 <- data.frame(x = c(1, -2, 1, -2), prob = c(0, 0.5, 0, 0.5))
-  expect_equal(
-    normalize_fin_x_tbl(input_2),
-    data.frame(x = c(-2, 1), prob = c(1, 0), cumprob = c(1, 1))
-  )
-})

@@ -43,25 +43,49 @@ impute_x_tbl_impl <- function(x_tbl, type) {
   }
 
   if (type == "fin") {
+    impute_x_tbl_impl_fin(x_tbl)
+  } else if (type == "infin") {
+    impute_x_tbl_impl_infin(x_tbl)
+  } else {
+    stop("Wrong `type`.")
+  }
+}
+
+impute_x_tbl_impl_fin <- function(x_tbl) {
+  if (anyDuplicated(x_tbl[["x"]])) {
+    # `x_tbl[["x"]]` is already sorted, so `vals` is automatically sorted too,
+    # i.e. no need for `sort()`
+    vals <- unique(x_tbl[["x"]])
+    x_val_id <- match(x_tbl[["x"]], vals)
+
+    # `as.vector()` is used to remove extra attributes
+    prob <- as.vector(tapply(x_tbl[["prob"]], x_val_id, sum))
+    prob <- prob / sum(prob)
+
+    res <- data.frame(x = vals, prob = prob)
+  } else {
     res <- data.frame(
       x = x_tbl[["x"]],
       prob = impute_prob(x_tbl[["prob"]])
     )
-    res[["cumprob"]] <- impute_vec(
-      vec = x_tbl[["cumprob"]], new_vec = cumsum(res[["prob"]])
-    )
-  } else if (type == "infin") {
-    res <- data.frame(
-      x = x_tbl[["x"]],
-      y = impute_y(x_tbl[["y"]], x_tbl[["x"]])
-    )
-    res[["cumprob"]] <- impute_vec(
-      vec = x_tbl[["cumprob"]],
-      new_vec = trapez_part_integral(res[["x"]], res[["y"]])
-    )
-  } else {
-    stop("Wrong `type`.")
   }
+
+  res[["cumprob"]] <- impute_vec(
+    vec = x_tbl[["cumprob"]], new_vec = cumsum(res[["prob"]])
+  )
+
+  res
+}
+
+impute_x_tbl_impl_infin <- function(x_tbl) {
+  res <- data.frame(
+    x = x_tbl[["x"]],
+    y = impute_y(x_tbl[["y"]], x_tbl[["x"]])
+  )
+  res[["cumprob"]] <- impute_vec(
+    vec = x_tbl[["cumprob"]],
+    new_vec = trapez_part_integral(res[["x"]], res[["y"]])
+  )
 
   res
 }

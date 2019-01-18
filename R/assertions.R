@@ -246,6 +246,11 @@ assert_x_tbl_meta <- function(x_tbl, type) {
         '"prob" column in "x_tbl" metadata should sum to 1.'
       )
     }
+    if (anyDuplicated(x_tbl[["x"]])) {
+      stop_collapse(
+        '"x" column in "x_tbl" metadata should not have duplicate values.'
+      )
+    }
   }
 
   if (type == "infin") {

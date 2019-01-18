@@ -16,6 +16,14 @@ test_that("impute_x_tbl_impl throws error", {
 })
 
 
+# impute_x_tbl_impl_fin ---------------------------------------------------
+# Tested in `impute_x_tbl_impl()`
+
+
+# impute_x_tbl_impl_infin -------------------------------------------------
+# Tested in `impute_x_tbl_impl()`
+
+
 # impute_prob -------------------------------------------------------------
 # Tested in `impute_x_tbl_impl()`
 
@@ -148,17 +156,22 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
   expect_false(is_pdqr_fun(input_bad_x_tbl_4))
 
+    # Column "x" shouldn't have duplicate values
+  input_bad_x_tbl_5 <- p_fin
+  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["x"]] <- 1
+  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+
   # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- p_infin
-  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["y"]]
+  input_bad_x_tbl_6 <- p_infin
+  attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["y"]] <- 10 *
+    attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["y"]]
   expect_false(is_pdqr_fun(input_bad_x_tbl_5))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_6 <- p_infin
-  attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["cumprob"]] <- NULL
-  expect_false(is_pdqr_fun(input_bad_x_tbl_6))
+  input_bad_x_tbl_7 <- p_infin
+  attr(input_bad_x_tbl_7, "meta")[["x_tbl"]][["cumprob"]] <- NULL
+  expect_false(is_pdqr_fun(input_bad_x_tbl_7))
 })
 
 
@@ -269,16 +282,21 @@ test_that("is_x_tbl_meta works", {
   input_bad_x_tbl_4[["cumprob"]] <- NULL
   expect_false(is_x_tbl_meta(input_bad_x_tbl_4, "fin"))
 
+    # Column "x" shouldn't have duplicate values
+  input_bad_x_tbl_5 <- x_fin_x_tbl
+  input_bad_x_tbl_5[["x"]] <- 1
+  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+
   # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_5 <- x_infin_x_tbl
-  input_bad_x_tbl_5[["y"]] <- 10 * input_bad_x_tbl_5[["y"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "infin"))
+  input_bad_x_tbl_6 <- x_infin_x_tbl
+  input_bad_x_tbl_6[["y"]] <- 10 * input_bad_x_tbl_6[["y"]]
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_6, "infin"))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_5 <- x_infin_x_tbl
-  input_bad_x_tbl_5[["cumprob"]] <- NULL
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_5, "infin"))
+  input_bad_x_tbl_7 <- x_infin_x_tbl
+  input_bad_x_tbl_7[["cumprob"]] <- NULL
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_7, "infin"))
 })
 
 

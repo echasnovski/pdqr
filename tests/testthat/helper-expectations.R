@@ -91,6 +91,16 @@ expect_x_tbl_imputation <- function(f) {
   output_4 <- f(bad_fin_input_4, "fin")
   expect_equal(pdqr_x_tbl(output_4), x_fin_x_tbl)
 
+    # Collapsing duplicate `x` values
+  bad_fin_input_5 <- data.frame(x = c(1, -2, 1, 3), prob = c(0, 0.6, 0.3, 0.1))
+  output_5 <- f(bad_fin_input_5, "fin")
+  expect_equal(
+    pdqr_x_tbl(output_5),
+    data.frame(
+      x = c(-2, 1, 3), prob = c(0.6, 0.3, 0.1), cumprob = c(0.6, 0.9, 1)
+    )
+  )
+
   # Type "infin"
   n_infin <- nrow(x_infin_x_tbl)
 

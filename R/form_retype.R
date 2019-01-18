@@ -43,8 +43,9 @@ retype_infin <- function(f) {
     return(f)
   }
 
-  # Collapse duplicate `x` values
-  x_tbl <- normalize_fin_x_tbl(pdqr_x_tbl(f))
+  # Note that `f` has already passed `assert_pdqr_fun()` which means that "x"
+  # column in "x_tbl" metadata is sorted and has no duplicate values
+  x_tbl <- pdqr_x_tbl(f)
 
   n <- nrow(x_tbl)
   if (n < 4) {
@@ -86,21 +87,4 @@ retype_infin <- function(f) {
   pdqr_fun <- impute_pdqr_fun(pdqr_class = NULL, ref = f)
 
   pdqr_fun(data.frame(x = x_grid, y = y), "infin")
-}
-
-normalize_fin_x_tbl <- function(x_tbl) {
-  x <- x_tbl[["x"]]
-  vals <- sort(unique(x))
-
-  if (!is.unsorted(x) && (length(x) == length(vals))) {
-    return(x_tbl)
-  }
-
-  x_val_id <- match(x, vals)
-
-  # `as.vector()` is used to remove extra attributes
-  prob_new <- as.vector(tapply(x_tbl[["prob"]], x_val_id, sum))
-  prob_new <- prob_new / sum(prob_new)
-
-  data.frame(x = vals, prob = prob_new, cumprob = cumsum(prob_new))
 }
