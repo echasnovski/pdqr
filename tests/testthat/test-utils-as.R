@@ -29,22 +29,6 @@ test_that("remove_zero_edge_y works", {
 })
 
 
-# ensure_support ----------------------------------------------------------
-test_that("ensure_support works", {
-  out_1 <- ensure_support(d_fin, x_fin_support + c(-1, 1))
-  expect_equal(pdqr_support(out_1), x_fin_support + c(-1, 1))
-
-  out_2 <- ensure_support(d_fin, x_fin_support + c(1, 1))
-  expect_equal(pdqr_support(out_2), c(x_fin_support[1], x_fin_support[2]+1))
-
-  out_3 <- ensure_support(d_fin, x_fin_support + c(-1, -1))
-  expect_equal(pdqr_support(out_3), c(x_fin_support[1]-1, x_fin_support[2]))
-
-  out_4 <- ensure_support(d_fin, x_fin_support + c(1, -1))
-  expect_equal(pdqr_support(out_4), x_fin_support)
-})
-
-
 # format_support ----------------------------------------------------------
 test_that("format_support works", {
   expect_equal(format_support(NULL), c(NA_real_, NA_real_))

@@ -1,66 +1,42 @@
-meta <- function(obj, elem = NULL) {
-  if (is.null(elem)) {
-    attr(obj, "meta", exact = TRUE)
-  } else {
-    attr(obj, "meta", exact = TRUE)[[elem]]
+meta <- function(f) {
+  check_f_envir(f)
+
+  meta_names <- c("support", "type", "x_tbl")
+
+  # Usage of `get0()` ensures that `NULL` is returned if (for some reason) an
+  # object isn't found in environement
+  res <- lapply(meta_names, get0, envir = environment(f), inherits = FALSE)
+  names(res) <- meta_names
+
+  res
+}
+
+has_meta <- function(f, elem) {
+  !is.null(meta(f)[[elem]])
+}
+
+pdqr_type <- function(f) {
+  check_f_envir(f)
+
+  get0("type", envir = environment(f), inherits = FALSE)
+}
+
+pdqr_support <- function(f) {
+  check_f_envir(f)
+
+  get0("support", envir = environment(f), inherits = FALSE)
+}
+
+pdqr_x_tbl <- function(f) {
+  check_f_envir(f)
+
+  get0("x_tbl", envir = environment(f), inherits = FALSE)
+}
+
+check_f_envir <- function(f) {
+  if (is.null(environment(f))) {
+    stop_collapse("`f` should have enclosing environment.")
   }
-}
 
-add_meta <- function(obj, ...) {
-  dots <- list(...)
-  cur_meta <- meta(obj)
-
-  if (is.null(cur_meta)) {
-    attr(obj, "meta") <- name_sort(dots)
-  } else {
-    attr(obj, "meta") <- dedupl_list(name_sort(c(dots, cur_meta)))
-  }
-
-  obj
-}
-
-add_meta_cond <- function(obj, cond, ...) {
-  if (isTRUE(cond)) {
-    add_meta(obj, ...)
-  } else {
-    obj
-  }
-}
-
-remove_meta <- function(obj) {
-  attr(obj, "meta") <- NULL
-
-  obj
-}
-
-copy_meta <- function(to, from) {
-  attr(to, "meta") <- attr(from, "meta")
-
-  to
-}
-
-has_meta <- function(obj, elem = NULL) {
-  !is.null(meta(obj, elem))
-}
-
-name_sort <- function(obj) {
-  raw_names <- names(obj)
-  if (is.null(raw_names)) {
-    raw_names <- rep(NA, length(obj))
-  }
-  raw_names[raw_names == ""] <- NA
-
-  obj[order(raw_names, na.last = TRUE)]
-}
-
-pdqr_type <- function(obj) {
-  meta(obj, "type")
-}
-
-pdqr_support <- function(obj) {
-  meta(obj, "support")
-}
-
-pdqr_x_tbl <- function(obj) {
-  meta(obj, "x_tbl")
+  TRUE
 }

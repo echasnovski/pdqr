@@ -106,31 +106,6 @@ extrap_lin <- function(x_1, x_2, y_1, y_2, x_target) {
   slope * x_target + inter
 }
 
-approx_lin <- function(x, y) {
-  # It is assumed that all `x` are unique
-  if (is.unsorted(x)) {
-    x_ord <- order(x)
-    x <- x[x_ord]
-    y <- y[x_ord]
-    # For efficient memory management
-    rm(x_ord)
-  }
-
-  function(v) {
-    res <- numeric(length(v))
-
-    bounds <- range(x)
-    is_inside <- (v >= bounds[1]) & (v <= bounds[2])
-
-    # `all.inside = TRUE` is needed to account for case `v` equals `bounds[2]`
-    x_ind <- findInterval(v[is_inside], x, all.inside = TRUE)
-    slopes <- (y[x_ind+1] - y[x_ind]) / (x[x_ind+1] - x[x_ind])
-    res[is_inside] <- slopes * (v[is_inside] - x[x_ind]) + y[x_ind]
-
-    res
-  }
-}
-
 stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
 }

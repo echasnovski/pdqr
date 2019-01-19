@@ -64,7 +64,6 @@ test_that("add_pdqr_class works", {
 # unpdqr ------------------------------------------------------------------
 test_that("unpdqr works", {
   out_f <- unpdqr(p_fin)
-  expect_null(attr(out_f, "meta"))
   expect_false(inherits(out_f, c("p", "d", "q", "r", "pdqr")))
 })
 
@@ -102,76 +101,85 @@ test_that("is_pdqr_fun works", {
   expect_false(is_pdqr_fun(structure(user_p, class = "pdqr")))
 
   # "type" metadata
-  f_with_class <- structure(user_p, class = c("p", "pdqr"))
-  expect_false(is_pdqr_fun(f_with_class))
-  expect_false(is_pdqr_fun(structure(f_with_class, type = "a")))
+  f_no_type <- structure(user_p, class = c("p", "pdqr"))
+  expect_false(is_pdqr_fun(f_no_type))
+
+  f_bad_type <- f_no_type
+  assign("type", "a", environment(f_bad_type))
+  expect_false(is_pdqr_fun(structure(f_bad_type, type = "a")))
 
   # "support" metadata
-  expect_false(
-    is_pdqr_fun(structure(f_with_class, meta = list(type = "infin")))
-  )
-  f_with_corrupt_support <- structure(
-    f_with_class, meta = list(type = "infin", support = c(2, 1))
-  )
-  expect_false(is_pdqr_fun(f_with_corrupt_support))
+  f_no_support <- f_no_type
+  assign("type", "infin", environment(f_no_support))
+  expect_false(is_pdqr_fun(f_no_support))
+
+  f_bad_support <- f_no_support
+  assign("support", c(2, 1), environment(f_bad_support))
+  expect_false(is_pdqr_fun(f_bad_support))
 
   # "x_tbl" metadata
-  expect_true(is_pdqr_fun(p_custom))
-
     # "x_tbl" is completely missing
-  input_bad_x_tbl_1 <- p_infin
-  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
-  expect_false(is_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
+  f_no_x_tbl <- as_p(p_infin)
+  rm("x_tbl", envir = environment(f_no_x_tbl))
+  expect_false(is_pdqr_fun(f_no_x_tbl))
 
     # "x_tbl" has not proper structure
-  input_bad_x_tbl_2 <- p_fin
-  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
-  expect_false(
-    is_pdqr_fun(input_bad_x_tbl_2), 'meta.*x_tbl.*data.*frame'
-  )
+  f_bad_x_tbl <- as_p(p_fin)
+  assign("x_tbl", "a", environment(f_bad_x_tbl))
+  expect_false(is_pdqr_fun(f_bad_x_tbl))
 })
 
 test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   # "x" is sorted
-  input_bad_x_tbl_1 <- p_fin
-  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]] <- rev(
-    attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]]
-  )
-  expect_false(is_pdqr_fun(input_bad_x_tbl_1))
+  bad_x_tbl_1 <- x_fin_x_tbl
+  bad_x_tbl_1[["x"]] <- rev(bad_x_tbl_1[["x"]])
+  f_bad_x_tbl_1 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_1, environment(f_bad_x_tbl_1))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_1))
 
   # "fin" `type`
     # Column "prob" is mandatory
-  input_bad_x_tbl_2 <- p_fin
-  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
-  expect_false(is_pdqr_fun(input_bad_x_tbl_2))
+  bad_x_tbl_2 <- x_fin_x_tbl
+  bad_x_tbl_2[["prob"]] <- NULL
+  f_bad_x_tbl_2 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_2, environment(f_bad_x_tbl_2))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_2))
 
     # Sum of "prob" is 1
-  input_bad_x_tbl_3 <- p_fin
-  attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]] <- 10 *
-    attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
-  expect_false(is_pdqr_fun(input_bad_x_tbl_3))
+  bad_x_tbl_3 <- x_fin_x_tbl
+  bad_x_tbl_3[["prob"]] <- 10 * bad_x_tbl_3[["prob"]]
+  f_bad_x_tbl_3 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_3, environment(f_bad_x_tbl_3))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_3))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_4 <- p_fin
-  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
-  expect_false(is_pdqr_fun(input_bad_x_tbl_4))
+  bad_x_tbl_4 <- x_fin_x_tbl
+  bad_x_tbl_4[["cumprob"]] <- NULL
+  f_bad_x_tbl_4 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_4, environment(f_bad_x_tbl_4))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_4))
 
     # Column "x" shouldn't have duplicate values
-  input_bad_x_tbl_5 <- p_fin
-  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["x"]] <- 1
-  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+  bad_x_tbl_5 <- x_fin_x_tbl
+  bad_x_tbl_5[["x"]] <- 1
+  f_bad_x_tbl_5 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_5, environment(f_bad_x_tbl_5))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_5))
 
   # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_6 <- p_infin
-  attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["y"]]
-  expect_false(is_pdqr_fun(input_bad_x_tbl_5))
+  bad_x_tbl_6 <- x_infin_x_tbl
+  bad_x_tbl_6[["y"]] <- 10 * bad_x_tbl_6[["y"]]
+  f_bad_x_tbl_6 <- as_p(p_infin)
+  assign("x_tbl", bad_x_tbl_6, environment(f_bad_x_tbl_6))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_6))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_7 <- p_infin
-  attr(input_bad_x_tbl_7, "meta")[["x_tbl"]][["cumprob"]] <- NULL
-  expect_false(is_pdqr_fun(input_bad_x_tbl_7))
+  bad_x_tbl_7 <- x_infin_x_tbl
+  bad_x_tbl_7[["cumprob"]] <- NULL
+  f_bad_x_tbl_7 <- as_p(p_infin)
+  assign("x_tbl", bad_x_tbl_7, environment(f_bad_x_tbl_7))
+  expect_false(is_pdqr_fun(f_bad_x_tbl_7))
 })
 
 
@@ -311,16 +319,28 @@ test_that("is_pdqr_class works", {
 # has_meta_type -----------------------------------------------------------
 test_that("has_meta_type works", {
   expect_true(has_meta_type(p_fin))
-  expect_false(has_meta_type(1))
-  expect_false(has_meta_type(structure(1, meta = list(type = "a"))))
+
+  f_no_type <- as_p(p_fin)
+  rm("type", envir = environment(f_no_type))
+  expect_false(has_meta_type(f_no_type))
+
+  f_bad_type <- as_p(p_fin)
+  assign("type", "a", environment(f_bad_type))
+  expect_false(has_meta_type(f_bad_type))
 })
 
 
 # has_meta_support --------------------------------------------------------
 test_that("has_meta_support works", {
   expect_true(has_meta_support(p_fin))
-  expect_false(has_meta_support(1))
-  expect_false(has_meta_support(structure(1, meta = list(support = c(2, 1)))))
+
+  f_no_support <- as_p(p_fin)
+  rm("support", envir = environment(f_no_support))
+  expect_false(has_meta_support(f_no_support))
+
+  f_bad_support <- as_p(p_fin)
+  assign("support", c(2, 1), environment(f_bad_support))
+  expect_false(has_meta_support(f_bad_support))
 })
 
 
@@ -331,16 +351,19 @@ test_that("has_meta_x_tbl works", {
 
   expect_false(has_meta_x_tbl(p_fin, "infin"))
   expect_false(has_meta_x_tbl(p_infin, "fin"))
-  expect_false(has_meta_x_tbl(1, "infin"))
-  expect_false(has_meta_x_tbl(structure(1, meta = list(x_tbl = "a")), "fin"))
+
+  f_no_x_tbl <- as_p(p_fin)
+  rm("x_tbl", envir = environment(f_no_x_tbl))
+  expect_false(has_meta_x_tbl(f_no_x_tbl, "fin"))
+
+  f_bad_x_tbl_1 <- as_p(p_infin)
+  assign("x_tbl", "a", environment(f_bad_x_tbl_1))
+  expect_false(has_meta_x_tbl(f_bad_x_tbl_1, "infin"))
 
   # Check for "good" "x_tbl" metadata
-  expect_false(
-    has_meta_x_tbl(
-      structure(1, meta = list(x_tbl = data.frame(x = 1, prob = -1))),
-      "fin"
-    )
-  )
+  f_bad_x_tbl_2 <- as_p(p_fin)
+  assign("x_tbl", data.frame(x = 1, prob = -1), environment(f_bad_x_tbl_2))
+  expect_false(has_meta_x_tbl(f_bad_x_tbl_2, "fin"))
 })
 
 
@@ -359,9 +382,5 @@ test_that("trapez_integral works", {
 # Tested in `p_from_d_points()`
 
 
-# p_from_d_points ---------------------------------------------------------
-# Tested in `new_p` and `as_p`
-
-
-# compute_cum_quadr_coeffs ------------------------------------------------
-# Tested in `p_from_d_points()` and `new_q_infin()`
+# compute_piecelin_density_coeffs -----------------------------------------
+# Tested in `new_p()` and `new_q()`

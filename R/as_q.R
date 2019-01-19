@@ -18,11 +18,7 @@ as_q.default <- function(f, support = NULL, n_grid = 10001, ...) {
 as_q.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
-  res <- new_q(x = pdqr_x_tbl(f), type = pdqr_type(f))
-
-  # Ensure that output has maximum available support (usually equal to
-  # `pdqr_support(f)`)
-  ensure_support(res, pdqr_support(f))
+  new_q(x = pdqr_x_tbl(f), type = pdqr_type(f))
 }
 
 detect_support_q <- function(q_f, supp) {

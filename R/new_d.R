@@ -7,32 +7,44 @@ new_d <- function(x, type = "infin", ...) {
 }
 
 new_d_fin <- function(x_tbl) {
+  type <- "fin"
   support <- range(x_tbl[["x"]])
 
-  res <- function(x) {
+  function(x) {
     x_ind <- match(round(x, digits = 8), x_tbl[["x"]], nomatch = NA)
 
     ifelse(is.na(x_ind), 0, x_tbl[["prob"]][x_ind])
   }
-
-  add_meta(res, support = support, x_tbl = x_tbl)
 }
 
 new_d_infin <- function(x_tbl) {
-  # Using custom `approx_lin()` instead of `stats::approxfun()` to avoid
-  # creating copies of `x_tbl[["x"]]` and `x_tbl[["y"]]`. It is slower but at
-  # acceptable level.
-  res <- approx_lin(x_tbl[["x"]], x_tbl[["y"]])
+  type <- "infin"
+  support <- range(x_tbl[["x"]])
 
-  # A better solution which doesn't pass R CMD CHECK:
-  # res <- function(v) {
+  # Using custom function instead of `stats::approxfun()` to avoid creating
+  # copies of `x_tbl[["x"]]` and `x_tbl[["y"]]`. It is slower but at acceptable
+  # level.
+  # For speed a better solution (which doesn't pass R CMD CHECK) would be:
+  # function(v) {
   #   stats:::.approxfun(
   #     x = x_tbl[["x"]], y = x_tbl[["y"]], v = v,
   #     method = 1, yleft = 0, yright = 0, f = 0
   #   )
   # }
+  function(x) {
+    res <- numeric(length(x))
+    x_vec <- x_tbl[["x"]]
+    y_vec <- x_tbl[["y"]]
 
-  add_meta(res, support = range(x_tbl[["x"]]), x_tbl = x_tbl)
+    is_inside <- (x >= support[1]) & (x <= support[2])
+
+    # `all.inside = TRUE` is needed to account for case `x` equals `support[2]`
+    x_ind <- findInterval(x[is_inside], x_vec, all.inside = TRUE)
+    slopes <- (y_vec[x_ind+1] - y_vec[x_ind]) / (x_vec[x_ind+1] - x_vec[x_ind])
+    res[is_inside] <- slopes * (x[is_inside] - x_vec[x_ind]) + y_vec[x_ind]
+
+    res
+  }
 }
 
 print.d <- function(x, ...) {

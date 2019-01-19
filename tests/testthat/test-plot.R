@@ -80,9 +80,9 @@ test_that("plot.p and lines.p respect `n_grid` argument", {
 })
 
 test_that("plot.p throws error with corrupt input", {
-  expect_error(
-    plot(structure(user_p, class = c("p", "pdqr"))), "x.*proper.*type"
-  )
+  f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
+  environment(f_no_type) <- new.env(parent = emptyenv())
+  expect_error(plot(f_no_type, "x.*proper.*type"))
 })
 
 
@@ -315,9 +315,9 @@ test_that("plot.r throws error with corrupt input", {
 # lines.p -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
 test_that("lines.p throws error with corrupt input", {
-  expect_error(
-    lines(structure(user_p, class = c("p", "pdqr"))), "x.*proper.*type"
-  )
+  f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
+  environment(f_no_type) <- new.env(parent = emptyenv())
+  expect_error(lines(f_no_type), "x.*proper.*type")
 })
 
 

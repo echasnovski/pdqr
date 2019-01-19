@@ -89,13 +89,6 @@ remove_zero_edge_y <- function(x_tbl) {
   x_tbl
 }
 
-ensure_support <- function(f, support) {
-  f_support <- pdqr_support(f)
-  new_support <- c(min(f_support[1], support[1]), max(f_support[2], support[2]))
-
-  add_meta(f, support = new_support)
-}
-
 format_support <- function(support) {
   if (is.null(support)) {
     c(NA_real_, NA_real_)

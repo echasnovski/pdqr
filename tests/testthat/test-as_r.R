@@ -255,11 +255,11 @@ test_that("as_r.default results in good approximations of input", {
   expect_close_r_f(r_unif, fam_unif$r, mean_thres = 5e-3, sd_thres = 7e-3)
 })
 
-test_that("as_r.default output has the same support as was in input", {
+test_that("as_r.default output has minimum support according to 'x_tbl'", {
   is_equal_supp <- vapply(
     seq_along(r_list), function(i) {
       isTRUE(all.equal(
-        pdqr_support(r_list[[i]]), fam_list[[i]]$support
+        pdqr_support(r_list[[i]]), range(pdqr_x_tbl(r_list[[i]])[["x"]])
       ))
     },
     logical(1)
@@ -368,13 +368,6 @@ test_that('as_r works with "r"', {
 
 test_that("as_r.pdqr throws errors on bad input", {
   expect_error(as_r(structure(user_r, class = c("p", "pdqr"))), "`f`")
-})
-
-test_that("as_r.pdqr ensures maximum proper support", {
-  input <- p_fin
-  attr(input, "meta")[["support"]] <- c(-100, 100)
-
-  expect_equal(pdqr_support(as_r(input)), c(-100, 100))
 })
 
 

@@ -7,13 +7,11 @@ distr_impl <- function(fun_class, impl_funs, x, type, ...) {
   # For efficient memory management
   rm(list = "x", envir = environment())
 
-  fun <- switch(
+  res <- switch(
     type,
     fin = impl_funs[["fin"]](x_tbl),
     infin = impl_funs[["infin"]](x_tbl)
   )
-
-  res <- add_meta(fun, type = type)
 
   add_pdqr_class(res, fun_class)
 }
@@ -151,7 +149,6 @@ add_pdqr_class <- function(f, subclass) {
 }
 
 unpdqr <- function(f) {
-  attr(f, "meta") <- NULL
   class(f) <- setdiff(class(f), c("p", "d", "q", "r", "pdqr"))
 
   f
@@ -244,41 +241,8 @@ trapez_part_integral <- function(x, y) {
 }
 
 
-# CDF from points of piecewise-linear density -----------------------------
-p_from_d_points <- function(x_dens, y_dens, cumprob = NULL) {
-  p_grid <- cumprob
-
-  res <- function(q) {
-    out <- numeric(length(q))
-
-    q_ind <- findInterval(q, x_dens)
-
-    is_q_small <- q_ind == 0
-    out[is_q_small] <- 0
-    is_q_large <- q_ind == length(x_dens)
-    out[is_q_large] <- 1
-
-    is_q_between <- !(is_q_small | is_q_large)
-    q_ind_bet <- q_ind[is_q_between]
-    q_bet <- q[is_q_between]
-    x_bet <- x_dens[q_ind_bet]
-
-    # Exact integration of density linear interpolation
-    coeffs <- compute_cum_quadr_coeffs(x_dens, y_dens, q_ind_bet)
-
-    out_between <- p_grid[q_ind_bet] +
-      0.5 * coeffs[["slope"]] * (q_bet * q_bet - x_bet * x_bet) +
-      coeffs[["intercept"]] * (q_bet - x_bet)
-    # Extra cutoffs to respect floating point precision (~10^(-15))
-    out[is_q_between] <- pmin(pmax(out_between, 0), 1)
-
-    out
-  }
-
-  res
-}
-
-compute_cum_quadr_coeffs <- function(x_dens, y_dens, ind_vec) {
+# Coefficients of piecewise-linear density --------------------------------
+compute_piecelin_density_coeffs <- function(x_dens, y_dens, ind_vec) {
   slope <- (y_dens[ind_vec+1] - y_dens[ind_vec]) /
     (x_dens[ind_vec+1] - x_dens[ind_vec])
   intercept <- y_dens[ind_vec] - slope * x_dens[ind_vec]

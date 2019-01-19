@@ -7,7 +7,10 @@ new_q <- function(x, type = "infin", ...) {
 }
 
 new_q_fin <- function(x_tbl) {
-  res <- function(p) {
+  type <- "fin"
+  support <- range(x_tbl[["x"]])
+
+  function(p) {
     out <- numeric(length(p))
 
     is_prob <- (p >= 0) & (p <= 1)
@@ -19,18 +22,17 @@ new_q_fin <- function(x_tbl) {
 
     out
   }
-
-  add_meta(res, support = range(x_tbl[["x"]]), x_tbl = x_tbl)
 }
 
 new_q_infin <- function(x_tbl) {
-  x_dens <- x_tbl[["x"]]
-  y_dens <- x_tbl[["y"]]
-  p_grid <- x_tbl[["cumprob"]]
+  type <- "infin"
+  support <- range(x_tbl[["x"]])
 
-  support <- range(x_dens)
+  function(p) {
+    x <- x_tbl[["x"]]
+    y <- x_tbl[["y"]]
+    p_grid <- x_tbl[["cumprob"]]
 
-  res <- function(p) {
     out <- numeric(length(p))
 
     is_inside <- (p >= 0) & (p <= 1)
@@ -42,12 +44,12 @@ new_q_infin <- function(x_tbl) {
     # probability not exceeding given one".
     p_ind <- findInterval(p_prob, p_grid, left.open = TRUE, all.inside = TRUE)
 
-    coeffs <- compute_cum_quadr_coeffs(x_dens, y_dens, p_ind)
+    coeffs <- compute_piecelin_density_coeffs(x, y, p_ind)
 
     out[is_inside] <- find_quant(
       p = p_prob,
       cdf_start = p_grid[p_ind],
-      x_start = x_dens[p_ind],
+      x_start = x[p_ind],
       slope = coeffs[["slope"]],
       intercept = coeffs[["intercept"]]
     )
@@ -56,8 +58,6 @@ new_q_infin <- function(x_tbl) {
 
     out
   }
-
-  add_meta(res, support = support, x_tbl = x_tbl)
 }
 
 find_quant <- function(p, cdf_start, x_start, slope, intercept) {

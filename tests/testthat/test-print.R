@@ -4,12 +4,15 @@ context("test-print")
 # pdqr_print --------------------------------------------------------------
 # Main functionality is tested in `*_fun()` functions
 test_that("pdqr_print works with bad input", {
-  input_1 <- structure(1, meta = list(type = "a"))
+  input_1 <- function(x) {x}
+  environment(input_1) <- new.env(parent = emptyenv())
   expect_output(
     pdqr_print(input_1, "Temp"), "unknown number.*Support: not proper"
   )
 
-  input_2 <- structure(1, meta = list(type = "fin", support = c(1, Inf)))
+  input_2 <- function(x) {x}
+  environment(input_2) <- new.env(parent = emptyenv())
+  assign("support", c(1, Inf), environment(input_2))
   expect_output(pdqr_print(input_2, "Temp"), "Support: not proper")
 })
 
@@ -33,11 +36,15 @@ test_that("pdqr_print targets output to number of rows in `x_tbl`", {
 # n_x_tbl_info ------------------------------------------------------------
 # Main functionality is tested in `*_fun()` functions
 test_that("n_x_tbl_info works with bad input", {
-  expect_equal(n_x_tbl_info(1), "")
+  bad_input_1 <- function(x) {x}
+  environment(bad_input_1) <- new.env(parent = emptyenv())
+  expect_equal(n_x_tbl_info(bad_input_1), "")
 
-  bad_input <- p_fin
-  attr(bad_input, "meta")[["type"]] <- "a"
-  expect_equal(n_x_tbl_info(bad_input), "")
+  bad_input_2 <- function(x) {x}
+  environment(bad_input_2) <- new.env(parent = emptyenv())
+  assign("type", "a", environment(bad_input_2))
+  assign("x_tbl", x_fin_x_tbl, environment(bad_input_2))
+  expect_equal(n_x_tbl_info(bad_input_2), "")
 })
 
 

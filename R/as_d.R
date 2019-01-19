@@ -25,26 +25,13 @@ as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
   # approximation of q-function in case `as_q()` is called
   x_tbl <- remove_zero_edge_y(data.frame(x = x, y = y))
 
-  res <- new_d(x_tbl, "infin")
-
-  # Make detected support more precise: if initial edge was `NA` then use the
-  # one stored in `x_tbl` (which is more precise than in `support` because of
-  # removing edge zero `y`)
-  supp <- coalesce_pair(supp, range(x_tbl[["x"]]))
-
-  # Ensure that output has maximum available support (usually equal to
-  # `support`)
-  ensure_support(res, supp)
+  new_d(x_tbl, "infin")
 }
 
 as_d.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
-  res <- new_d(x = pdqr_x_tbl(f), type = pdqr_type(f))
-
-  # Ensure that output has maximum available support (usually equal to
-  # `pdqr_support(f)`)
-  ensure_support(res, pdqr_support(f))
+  new_d(x = pdqr_x_tbl(f), type = pdqr_type(f))
 }
 
 detect_support_d <- function(d_f, supp) {

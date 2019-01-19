@@ -11,9 +11,10 @@ p_custom_ref <- structure(
   function(q) {
     user_p(sqrt(q)) - user_p(-sqrt(q))
   },
-  class = c("p", "pdqr", "function"),
-  meta = list(type = "infin", support = c(0, 1))
+  class = c("p", "pdqr", "function")
 )
+assign("type", "infin", environment(p_custom_ref))
+assign("support", c(0, 1), environment(p_custom_ref))
 
 x_norm_seq <- seq(-10, 10, by = 0.01)
 

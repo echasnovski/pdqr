@@ -31,11 +31,7 @@ as_r.default <- function(f, support = NULL, n_grid = 10001, n_sample = 10000,
 as_r.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
-  res <- new_r(x = pdqr_x_tbl(f), type = pdqr_type(f))
-
-  # Ensure that output has maximum available support (usually equal to
-  # `pdqr_support(f)`)
-  ensure_support(res, pdqr_support(f))
+  new_r(x = pdqr_x_tbl(f), type = pdqr_type(f))
 }
 
 detect_support_r <- function(smpl, supp) {

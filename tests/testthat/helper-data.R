@@ -62,26 +62,32 @@ p_seq_btail <- p_seq[p_isnt_small & p_isnt_big]
 custom_x_tbl <- data.frame(x = seq(0, 1, by = 0.0001))
 custom_x_tbl[["y"]] <- dbeta(custom_x_tbl[["x"]], 1, 2)
 
+create_user_pdqr <- function(custom_pdqr, ...) {
+  function(t) {
+    custom_pdqr(t, ...)
+  }
+}
+
 # p-functions
 p_fin <- new_p(x_fin, "fin")
 p_infin <- new_p(x_infin, "infin")
-user_p <- function(q) {pbeta(q, 1, 2)}
+user_p <- create_user_pdqr(pbeta, 1, 2)
 p_custom <- new_p(custom_x_tbl)
 
 # d-functions
 d_fin <- new_d(x_fin, "fin")
 d_infin <- new_d(x_infin, "infin")
-user_d <- function(x) {dbeta(x, 1, 2)}
+user_d <- create_user_pdqr(dbeta, 1, 2)
 d_custom <- new_d(custom_x_tbl)
 
 # q-functions
 q_fin <- new_q(x_fin, "fin")
 q_infin <- new_q(x_infin, "infin")
-user_q <- function(p) {qbeta(p, 1, 2)}
+user_q <- create_user_pdqr(qbeta, 1, 2)
 q_custom <- new_q(custom_x_tbl)
 
 # r-functions
 r_fin <- new_r(x_fin, "fin")
 r_infin <- new_r(x_infin, "infin")
-user_r <- function(n) {rbeta(n, 1, 2)}
+user_r <- create_user_pdqr(rbeta, 1, 2)
 r_custom <- new_r(custom_x_tbl)

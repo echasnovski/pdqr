@@ -177,11 +177,11 @@ test_that("as_q.default output approximates random-gen-func after `as_r()`", {
   expect_close_r_f(as_r(q_unif), fam_unif$r, mean_thres = 1e-2, sd_thres = 2e-3)
 })
 
-test_that("as_q.default output has the same support as was in input", {
+test_that("as_q.default output has minimum support according to 'x_tbl'", {
   is_equal_supp <- vapply(
     seq_along(q_list), function(i) {
       isTRUE(all.equal(
-        pdqr_support(q_list[[i]]), fam_list[[i]]$support
+        pdqr_support(q_list[[i]]), range(pdqr_x_tbl(q_list[[i]])[["x"]])
       ))
     },
     logical(1)
@@ -278,13 +278,6 @@ test_that('as_q.pdqr works with "r"', {
 
 test_that("as_q.pdqr throws errors on bad input", {
   expect_error(as_q(structure(user_q, class = c("p", "pdqr"))), "`f`")
-})
-
-test_that("as_q.pdqr ensures maximum proper support", {
-  input <- p_fin
-  attr(input, "meta")[["support"]] <- c(-100, 100)
-
-  expect_equal(pdqr_support(as_q(input)), c(-100, 100))
 })
 
 

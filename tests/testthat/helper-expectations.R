@@ -44,25 +44,24 @@ expect_not_close_r_f <- function(f_1, f_2, n_sample = 10000,
 expect_equal_distr <- function(f_1, f_2, grid, thres = 10^(-8),
                                meta_not_check = character(0)) {
   expect_close_f(f_1, f_2, grid, thres = thres)
-  expect_equal_pdqr_attrs(f_1, f_2, meta_not_check)
+  expect_equal_meta(f_1, f_2, meta_not_check)
 }
 
 expect_equal_r_distr <- function(f_1, f_2, n_sample = 10000,
                                  mean_thres = 0.1, sd_thres = 0.05,
                                  meta_not_check = character(0)) {
   expect_close_r_f(f_1, f_2, n_sample, mean_thres, sd_thres)
-  expect_equal_pdqr_attrs(f_1, f_2, meta_not_check)
+  expect_equal_meta(f_1, f_2, meta_not_check)
 }
 
-expect_equal_pdqr_attrs <- function(f_1, f_2, meta_not_check = character(0)) {
+expect_equal_meta <- function(f_1, f_2, meta_not_check = character(0)) {
   expect_equal(class(f_1), class(f_2))
 
-  meta_names_1 <- setdiff(names(meta(f_1)), meta_not_check)
-  meta_names_2 <- setdiff(names(meta(f_2)), meta_not_check)
-  expect_equal(
-    lapply(meta_names_1, meta, obj = f_1),
-    lapply(meta_names_2, meta, obj = f_2)
-  )
+  meta_1 <- meta(f_1)
+  meta_2 <- meta(f_2)
+  meta_names_1 <- setdiff(names(meta_1), meta_not_check)
+  meta_names_2 <- setdiff(names(meta_2), meta_not_check)
+  expect_equal(meta_1[meta_names_1], meta_2[meta_names_2])
 }
 
 expect_x_tbl_imputation <- function(f) {

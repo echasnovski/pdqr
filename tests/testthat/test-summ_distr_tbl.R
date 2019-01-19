@@ -16,8 +16,8 @@ test_that("summ_distr_tbl works", {
 test_that("summ_distr_tbl throws errors", {
   expect_error(summ_distr_tbl("a"), "pdqr.*function")
 
-  corrupt_d <- d_infin
-  attr(corrupt_d, "meta")[["support"]] <- c(2, 1)
+  corrupt_d <- as_d(d_infin)
+  assign("support", c(2, 1), environment(corrupt_d))
   expect_error(summ_distr_tbl(corrupt_d), "pdqr.*function")
 })
 

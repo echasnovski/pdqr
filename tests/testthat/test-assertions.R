@@ -1,6 +1,12 @@
 context("test-assertions")
 
 
+# Notes -------------------------------------------------------------------
+# Usage of `as_*()` functions withoub seamingly apparent reason (for example,
+# `as_p(p_infin)`) ensures that output object has different enclosing
+# environement. This is needed for caregul test behavior with "bad" metadat.
+
+
 # assert_type -------------------------------------------------------------
 test_that("assert_type works", {
   x_var <- 1L
@@ -78,82 +84,89 @@ test_that("assert_pdqr_fun works", {
   )
 
   # "type" metadata
-  f_with_class <- structure(user_p, class = c("p", "pdqr"))
-  expect_error(assert_pdqr_fun(f_with_class), "proper.*type")
+  f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
+  environment(f_no_type) <- new.env(parent = emptyenv())
+  expect_error(assert_pdqr_fun(f_no_type), "proper.*type")
+
+  f_bad_type <- f_no_type
+  assign("type", "a", environment(f_bad_type))
   expect_error(
-    assert_pdqr_fun(structure(f_with_class, type = "a")),
+    assert_pdqr_fun(structure(f_bad_type, type = "a")),
     "proper.*type"
   )
 
   # "support" metadata
-  expect_error(
-    assert_pdqr_fun(structure(f_with_class, meta = list(type = "infin"))),
-    "proper.*support"
-  )
-  f_with_corrupt_support <- structure(
-    f_with_class, meta = list(type = "infin", support = c(2, 1))
-  )
-  expect_error(assert_pdqr_fun(f_with_corrupt_support), "proper.*support")
+  f_no_support <- f_no_type
+  assign("type", "infin", environment(f_no_support))
+  expect_error(assert_pdqr_fun(f_no_support), "proper.*support")
+
+  f_bad_support <- f_no_support
+  assign("support", c(2, 1), environment(f_bad_support))
+  expect_error(assert_pdqr_fun(f_bad_support), "proper.*support")
 
   # "x_tbl" metadata
     # "x_tbl" is completely missing
-  input_bad_x_tbl_1 <- p_infin
-  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]] <- NULL
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_1), "have.*x_tbl")
+  f_no_x_tbl <- as_p(p_infin)
+  rm("x_tbl", envir = environment(f_no_x_tbl))
+  expect_error(assert_pdqr_fun(f_no_x_tbl), "have.*x_tbl")
 
     # "x_tbl" has not proper structure
-  input_bad_x_tbl_2 <- p_fin
-  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]] <- "a"
-  expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_2), 'x_tbl.*data.*frame'
-  )
+  f_bad_x_tbl <- as_p(p_fin)
+  assign("x_tbl", "a", environment(f_bad_x_tbl))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl), 'x_tbl.*data.*frame')
 })
 
 test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   # "x" is sorted
-  input_bad_x_tbl_1 <- p_fin
-  attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]] <- rev(
-    attr(input_bad_x_tbl_1, "meta")[["x_tbl"]][["x"]]
-  )
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_1), '"x".*"x_tbl".*sorted')
+  bad_x_tbl_1 <- x_fin_x_tbl
+  bad_x_tbl_1[["x"]] <- rev(bad_x_tbl_1[["x"]])
+  f_bad_x_tbl_1 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_1, environment(f_bad_x_tbl_1))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_1), '"x".*"x_tbl".*sorted')
 
   # "fin" `type`
     # Column "prob" is mandatory
-  input_bad_x_tbl_2 <- p_fin
-  attr(input_bad_x_tbl_2, "meta")[["x_tbl"]][["prob"]] <- NULL
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_2), 'x_tbl.*have.*"prob"')
+  bad_x_tbl_2 <- x_fin_x_tbl
+  bad_x_tbl_2[["prob"]] <- NULL
+  f_bad_x_tbl_2 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_2, environment(f_bad_x_tbl_2))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_2), 'x_tbl.*have.*"prob"')
 
     # Sum of "prob" is 1
-  input_bad_x_tbl_3 <- p_fin
-  attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]] <- 10 *
-    attr(input_bad_x_tbl_3, "meta")[["x_tbl"]][["prob"]]
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
+  bad_x_tbl_3 <- x_fin_x_tbl
+  bad_x_tbl_3[["prob"]] <- 10 * bad_x_tbl_3[["prob"]]
+  f_bad_x_tbl_3 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_3, environment(f_bad_x_tbl_3))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_4 <- p_fin
-  attr(input_bad_x_tbl_4, "meta")[["x_tbl"]][["cumprob"]] <- NULL
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_4), '"x_tbl".*have.*"cumprob"')
+  bad_x_tbl_4 <- x_fin_x_tbl
+  bad_x_tbl_4[["cumprob"]] <- NULL
+  f_bad_x_tbl_4 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_4, environment(f_bad_x_tbl_4))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_4), '"x_tbl".*have.*"cumprob"')
 
     # Column "x" shouldn't have duplicate values
-  input_bad_x_tbl_5 <- p_fin
-  attr(input_bad_x_tbl_5, "meta")[["x_tbl"]][["x"]] <- 1
-  expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_5), '"x".*"x_tbl".*duplicate'
-  )
+  bad_x_tbl_5 <- x_fin_x_tbl
+  bad_x_tbl_5[["x"]] <- 1
+  f_bad_x_tbl_5 <- as_p(p_fin)
+  assign("x_tbl", bad_x_tbl_5, environment(f_bad_x_tbl_5))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_5), '"x".*"x_tbl".*duplicate')
 
   # "infin" type
     # Total integral is 1
-  input_bad_x_tbl_6 <- p_infin
-  attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["y"]] <- 10 *
-    attr(input_bad_x_tbl_6, "meta")[["x_tbl"]][["y"]]
-  expect_error(
-    assert_pdqr_fun(input_bad_x_tbl_6), '[Tt]otal integral.*"x_tbl".*1'
-  )
+  bad_x_tbl_6 <- x_infin_x_tbl
+  bad_x_tbl_6[["y"]] <- 10 * bad_x_tbl_6[["y"]]
+  f_bad_x_tbl_6 <- as_p(p_infin)
+  assign("x_tbl", bad_x_tbl_6, environment(f_bad_x_tbl_6))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_6), '[Tt]otal integral.*"x_tbl".*1')
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_7 <- p_infin
-  attr(input_bad_x_tbl_7, "meta")[["x_tbl"]][["cumprob"]] <- NULL
-  expect_error(assert_pdqr_fun(input_bad_x_tbl_7), '"x_tbl".*have.*"cumprob"')
+  bad_x_tbl_7 <- x_infin_x_tbl
+  bad_x_tbl_7[["cumprob"]] <- NULL
+  f_bad_x_tbl_7 <- as_p(p_infin)
+  assign("x_tbl", bad_x_tbl_7, environment(f_bad_x_tbl_7))
+  expect_error(assert_pdqr_fun(f_bad_x_tbl_7), '"x_tbl".*have.*"cumprob"')
 })
 
 
