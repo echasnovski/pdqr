@@ -138,9 +138,12 @@ expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
   )
 
   f_infin <- f(x_infin, type = "infin")
+  n_infin <- nrow(x_infin_x_tbl)
   expect_output(
     print(f_infin),
-    regex_scatter(infin_name, "infinite number", supp_regex)
+    regex_scatter(
+      infin_name, "infinite number", supp_regex, n_infin-1, "intervals"
+    )
   )
 }
 

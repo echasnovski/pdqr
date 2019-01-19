@@ -39,6 +39,10 @@ n_x_tbl_info <- function(x) {
 
   if (x_type == "fin") {
     paste0(" (", n_x_tbl, " ", ngettext(n_x_tbl, "element", "elements"), ")")
+  } else if (x_type == "infin") {
+    paste0(
+      " (", n_x_tbl-1, " ", ngettext(n_x_tbl-1, "interval", "intervals"), ")"
+    )
   } else {
     ""
   }

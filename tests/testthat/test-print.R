@@ -13,9 +13,12 @@ test_that("pdqr_print works with bad input", {
   expect_output(pdqr_print(input_2, "Temp"), "Support: not proper")
 })
 
-test_that("pdqr_print targets output to number of elements in `x_tbl`", {
+test_that("pdqr_print targets output to number of rows in `x_tbl`", {
   d_one <- new_d(1, "fin")
   expect_output(pdqr_print(d_one, "Temp"), "1 element")
+
+  d_infin_one <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+  expect_output(pdqr_print(d_infin_one, "Temp"), "1 interval")
 })
 
 
@@ -31,6 +34,10 @@ test_that("pdqr_print targets output to number of elements in `x_tbl`", {
 # Main functionality is tested in `*_fun()` functions
 test_that("n_x_tbl_info works with bad input", {
   expect_equal(n_x_tbl_info(1), "")
+
+  bad_input <- p_fin
+  attr(bad_input, "meta")[["type"]] <- "a"
+  expect_equal(n_x_tbl_info(bad_input), "")
 })
 
 
