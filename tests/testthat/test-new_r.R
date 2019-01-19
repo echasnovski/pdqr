@@ -41,14 +41,14 @@ test_that("new_r asserts", {
 
 test_that("new_r handles metadata", {
   expect_equal(
-    meta(r_fin),
-    list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
+    meta_all(r_fin),
+    list(type = "fin", support = x_fin_support, x_tbl = x_fin_x_tbl)
   )
 
-  expect_named(meta(r_infin), c("support", "type", "x_tbl"))
+  expect_named(meta_all(r_infin), c("type", "support", "x_tbl"))
   expect_equal(meta_x_tbl(r_infin), x_infin_x_tbl)
   expect_equal(round(meta_support(r_infin), 2), round(x_infin_support, 2))
-  expect_equal(meta(r_infin)["type"], list(type = "infin"))
+  expect_equal(meta_all(r_infin)["type"], list(type = "infin"))
 })
 
 

@@ -1,7 +1,7 @@
-meta <- function(f) {
+meta_all <- function(f) {
   check_f_envir(f)
 
-  meta_names <- c("support", "type", "x_tbl")
+  meta_names <- c("type", "support", "x_tbl")
 
   # Usage of `get0()` ensures that `NULL` is returned if (for some reason) an
   # object isn't found in environement
@@ -9,10 +9,6 @@ meta <- function(f) {
   names(res) <- meta_names
 
   res
-}
-
-has_meta <- function(f, elem) {
-  !is.null(meta(f)[[elem]])
 }
 
 meta_type <- function(f) {
@@ -31,6 +27,10 @@ meta_x_tbl <- function(f) {
   check_f_envir(f)
 
   get0("x_tbl", envir = environment(f), inherits = FALSE)
+}
+
+has_meta <- function(f, elem) {
+  !is.null(meta_all(f)[[elem]])
 }
 
 check_f_envir <- function(f) {

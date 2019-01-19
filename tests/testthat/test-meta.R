@@ -1,23 +1,13 @@
 context("test-meta")
 
 
-# meta --------------------------------------------------------------------
-test_that("meta throws errors on bad input", {
-  expect_error(meta(1), "`f`.*environment")
+# meta_all ----------------------------------------------------------------
+test_that("meta_all throws errors on bad input", {
+  expect_error(meta_all(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
-  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
-})
-
-
-# has_meta ----------------------------------------------------------------
-test_that("has_meta works", {
-  input <- function(x) {x}
-  assign("type", "fin", environment(input))
-
-  expect_true(has_meta(input, "type"))
-  expect_false(has_meta(input, "support"))
+  expect_error(meta_all(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -33,7 +23,7 @@ test_that("meta_type throws errors on bad input", {
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
-  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
+  expect_error(meta_type(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -49,7 +39,7 @@ test_that("meta_support throws errors on bad input", {
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
-  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
+  expect_error(meta_support(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -65,7 +55,17 @@ test_that("meta_x_tbl throws errors on bad input", {
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
-  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
+  expect_error(meta_x_tbl(f_from_global), "`f`.*[Gg]lobal")
+})
+
+
+# has_meta ----------------------------------------------------------------
+test_that("has_meta works", {
+  input <- function(x) {x}
+  assign("type", "fin", environment(input))
+
+  expect_true(has_meta(input, "type"))
+  expect_false(has_meta(input, "support"))
 })
 
 
@@ -76,5 +76,5 @@ test_that("check_f_envir works", {
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
-  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
+  expect_error(check_f_envir(f_from_global), "`f`.*[Gg]lobal")
 })

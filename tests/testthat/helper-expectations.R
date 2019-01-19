@@ -2,7 +2,7 @@ expect_distr_fun <- function(input, distr_type, type) {
   expect_true(is.function(input))
   expect_is(input, distr_type)
   expect_is(input, "pdqr")
-  expect_named(meta(input), c("support", "type", "x_tbl"))
+  expect_named(meta_all(input), c("type", "support", "x_tbl"))
   expect_equal(meta_type(input), type)
   expect_true(is_support(meta_support(input)))
   expect_true(is_x_tbl(meta_x_tbl(input), type = meta_type(input)))
@@ -57,8 +57,8 @@ expect_equal_r_distr <- function(f_1, f_2, n_sample = 10000,
 expect_equal_meta <- function(f_1, f_2, meta_not_check = character(0)) {
   expect_equal(class(f_1), class(f_2))
 
-  meta_1 <- meta(f_1)
-  meta_2 <- meta(f_2)
+  meta_1 <- meta_all(f_1)
+  meta_2 <- meta_all(f_2)
   meta_names_1 <- setdiff(names(meta_1), meta_not_check)
   meta_names_2 <- setdiff(names(meta_2), meta_not_check)
   expect_equal(meta_1[meta_names_1], meta_2[meta_names_2])

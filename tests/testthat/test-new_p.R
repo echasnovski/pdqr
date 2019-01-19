@@ -81,14 +81,14 @@ test_that("new_p asserts", {
 
 test_that("new_p handles metadata", {
   expect_equal(
-    meta(p_fin),
-    list(support = x_fin_support, type = "fin", x_tbl = x_fin_x_tbl)
+    meta_all(p_fin),
+    list(type = "fin", support = x_fin_support, x_tbl = x_fin_x_tbl)
   )
 
-  expect_named(meta(p_infin), c("support", "type", "x_tbl"))
+  expect_named(meta_all(p_infin), c("type", "support", "x_tbl"))
   expect_equal(meta_x_tbl(p_infin), x_infin_x_tbl)
   expect_equal(round(meta_support(p_infin), 2), round(x_infin_support, 2))
-  expect_equal(meta(p_infin)["type"], list(type = "infin"))
+  expect_equal(meta_all(p_infin)["type"], list(type = "infin"))
 })
 
 test_that("new_p uses `...` as arguments for `density()`", {
