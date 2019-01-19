@@ -9,10 +9,10 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "x", ylab = "Cumulative probability"
   )
 
-  if (pdqr_type(x) == "fin") {
+  if (meta_type(x) == "fin") {
     # Create canvas
     no_plot_dots <- dedupl_list(c(
-      list(x = pdqr_support(x), y = c(0, 1), type = "n"),
+      list(x = meta_support(x), y = c(0, 1), type = "n"),
       dots
     ))
 
@@ -22,7 +22,7 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     add_p_fin_segments(x, list(...))
   } else {
     # Stretch support to guarantee 0 and 1 on edges
-    plot_impl_pdq(x, stretch_range(pdqr_support(x)), n_grid, dots)
+    plot_impl_pdq(x, stretch_range(meta_support(x)), n_grid, dots)
   }
 }
 
@@ -30,8 +30,8 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
-  if (pdqr_type(x) == "fin") {
-    x_tbl <- pdqr_x_tbl(x)
+  if (meta_type(x) == "fin") {
+    x_tbl <- meta_x_tbl(x)
 
     dots <- make_plot_dots(
       ...,
@@ -50,7 +50,7 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
       xlab = "x", ylab = "Density"
     )
 
-    plot_impl_pdq(x, pdqr_support(x), n_grid, dots)
+    plot_impl_pdq(x, meta_support(x), n_grid, dots)
   }
 }
 
@@ -64,10 +64,10 @@ plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
     xlab = "Cumulative probability", ylab = "x"
   )
 
-  if (pdqr_type(x) == "fin") {
+  if (meta_type(x) == "fin") {
     # Create canvas
     no_plot_dots <- dedupl_list(c(
-      list(x = c(0, 1), y = pdqr_support(x), type = "n"),
+      list(x = c(0, 1), y = meta_support(x), type = "n"),
       dots
     ))
 
@@ -137,7 +137,7 @@ add_q_fin_segments <- function(x, dots) {
 }
 
 compute_p_fin_dots <- function(x, dots) {
-  x_tbl <- pdqr_x_tbl(x)
+  x_tbl <- meta_x_tbl(x)
   x <- x_tbl[["x"]]
   cumprob <- x_tbl[["cumprob"]]
   n <- nrow(x_tbl)
@@ -173,33 +173,33 @@ make_plot_dots <- function(...) {
 lines.p <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (pdqr_type(x) == "fin") {
+  if (meta_type(x) == "fin") {
     add_p_fin_segments(x, list(...))
   } else {
     # Stretch support to guarantee 0 and 1 on edges
-    lines_impl_pdq(x, stretch_range(pdqr_support(x)), n_grid, list(...))
+    lines_impl_pdq(x, stretch_range(meta_support(x)), n_grid, list(...))
   }
 }
 
 lines.d <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (pdqr_type(x) == "fin") {
-    x_tbl <- pdqr_x_tbl(x)
+  if (meta_type(x) == "fin") {
+    x_tbl <- meta_x_tbl(x)
     lines_args <- dedupl_list(
       c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...))
     )
 
     do.call(graphics::lines, lines_args)
   } else {
-    lines_impl_pdq(x, pdqr_support(x), n_grid, list(...))
+    lines_impl_pdq(x, meta_support(x), n_grid, list(...))
   }
 }
 
 lines.q <- function(x, n_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (pdqr_type(x) == "fin") {
+  if (meta_type(x) == "fin") {
     add_q_fin_segments(x, list(...))
   } else {
     lines_impl_pdq(x, c(0, 1), n_grid, list(...))

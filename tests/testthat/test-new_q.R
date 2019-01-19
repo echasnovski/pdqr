@@ -4,13 +4,13 @@ context("test-new_q")
 # new_q -------------------------------------------------------------------
 test_that("new_q works with numeric input", {
   expect_distr_fun(q_fin, "q", "fin")
-  expect_equal(pdqr_support(q_fin), x_fin_support)
+  expect_equal(meta_support(q_fin), x_fin_support)
   expect_equal(
     q_fin(cumsum(x_fin_x_tbl[["prob"]])), x_fin_x_tbl[["x"]]
   )
 
   expect_distr_fun(q_infin, "q", "infin")
-  expect_equal(round(pdqr_support(q_infin), 2), round(x_infin_support, 2))
+  expect_equal(round(meta_support(q_infin), 2), round(x_infin_support, 2))
   expect_equal(
     round(q_infin(0:20/20), 3),
     c(
@@ -95,8 +95,8 @@ test_that("new_q handles metadata", {
   )
 
   expect_named(meta(q_infin), c("support", "type", "x_tbl"))
-  expect_equal(pdqr_x_tbl(q_infin), x_infin_x_tbl)
-  expect_equal(round(pdqr_support(q_infin), 2), round(x_infin_support, 2))
+  expect_equal(meta_x_tbl(q_infin), x_infin_x_tbl)
+  expect_equal(round(meta_support(q_infin), 2), round(x_infin_support, 2))
   expect_equal(meta(q_infin)["type"], list(type = "infin"))
 })
 

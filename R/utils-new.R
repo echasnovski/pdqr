@@ -202,16 +202,16 @@ is_pdqr_class <- function(chr) {
 }
 
 has_meta_type <- function(f) {
-  has_meta(f, "type") && is_distr_type(pdqr_type(f))
+  has_meta(f, "type") && is_distr_type(meta_type(f))
 }
 
 has_meta_support <- function(f) {
-  has_meta(f, "support") && is_support(pdqr_support(f))
+  has_meta(f, "support") && is_support(meta_support(f))
 }
 
 has_meta_x_tbl <- function(f, type) {
-  has_meta(f, "x_tbl") && is_x_tbl(pdqr_x_tbl(f), type) &&
-    is_x_tbl_meta(pdqr_x_tbl(f), type)
+  has_meta(f, "x_tbl") && is_x_tbl(meta_x_tbl(f), type) &&
+    is_x_tbl_meta(meta_x_tbl(f), type)
 }
 
 

@@ -21,15 +21,15 @@ test_that("has_meta works", {
 })
 
 
-# pdqr_type ---------------------------------------------------------------
-test_that("pdqr_type works", {
+# meta_type ---------------------------------------------------------------
+test_that("meta_type works", {
   input <- function(x) {x}
   assign("type", "a", environment(input))
-  expect_equal(pdqr_type(input), "a")
+  expect_equal(meta_type(input), "a")
 })
 
-test_that("pdqr_type throws errors on bad input", {
-  expect_error(pdqr_type(1), "`f`.*environment")
+test_that("meta_type throws errors on bad input", {
+  expect_error(meta_type(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
@@ -37,15 +37,15 @@ test_that("pdqr_type throws errors on bad input", {
 })
 
 
-# pdqr_support ------------------------------------------------------------
-test_that("pdqr_support works", {
+# meta_support ------------------------------------------------------------
+test_that("meta_support works", {
   input <- function(x) {x}
   assign("support", "a", environment(input))
-  expect_equal(pdqr_support(input), "a")
+  expect_equal(meta_support(input), "a")
 })
 
-test_that("pdqr_support throws errors on bad input", {
-  expect_error(pdqr_support(1), "`f`.*environment")
+test_that("meta_support throws errors on bad input", {
+  expect_error(meta_support(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
@@ -53,15 +53,15 @@ test_that("pdqr_support throws errors on bad input", {
 })
 
 
-# pdqr_x_tbl --------------------------------------------------------------
-test_that("pdqr_x_tbl works", {
+# meta_x_tbl --------------------------------------------------------------
+test_that("meta_x_tbl works", {
   input <- function(x) {x}
   assign("x_tbl", "a", environment(input))
-  expect_equal(pdqr_x_tbl(input), "a")
+  expect_equal(meta_x_tbl(input), "a")
 })
 
-test_that("pdqr_x_tbl throws errors on bad input", {
-  expect_error(pdqr_x_tbl(1), "`f`.*environment")
+test_that("meta_x_tbl throws errors on bad input", {
+  expect_error(meta_x_tbl(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()

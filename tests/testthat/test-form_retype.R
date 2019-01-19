@@ -9,7 +9,7 @@ test_that("form_retype converts to `type` 'fin'", {
   expect_distr_fun(output, "p", "fin")
 
   # "infin" function should have one row more in "x_tbl" than "fin" function
-  expect_equal(nrow(pdqr_x_tbl(p_infin)) - 1, nrow(pdqr_x_tbl(output)))
+  expect_equal(nrow(meta_x_tbl(p_infin)) - 1, nrow(meta_x_tbl(output)))
 })
 
 test_that("form_retype converts to `type` 'infin'", {
@@ -17,7 +17,7 @@ test_that("form_retype converts to `type` 'infin'", {
   expect_distr_fun(output, "d", "infin")
 
   # "infin" function should have one row more in "x_tbl" than "fin" function
-  expect_equal(nrow(pdqr_x_tbl(d_fin)), nrow(pdqr_x_tbl(output)) - 1)
+  expect_equal(nrow(meta_x_tbl(d_fin)), nrow(meta_x_tbl(output)) - 1)
 })
 
 test_that("form_retype correctly handles adjacent zero densities", {
@@ -25,7 +25,7 @@ test_that("form_retype correctly handles adjacent zero densities", {
   output_fin <- form_retype(input_infin, "fin")
 
   # "Centre of mass" in case both ends have zero density should be in the middle
-  expect_equal(pdqr_x_tbl(output_fin)[["x"]][2], 2.5)
+  expect_equal(meta_x_tbl(output_fin)[["x"]][2], 2.5)
 })
 
 test_that("form_retype converts accurately 'infin'->'fin'->'infin'", {

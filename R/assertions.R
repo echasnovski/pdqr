@@ -111,14 +111,14 @@ assert_pdqr_fun <- function(f) {
     )
   }
 
-  if (is.null(pdqr_x_tbl(f))) {
+  if (is.null(meta_x_tbl(f))) {
     stop_collapse(f_name, ' should have "x_tbl" metadata.')
   }
 
-  assert_x_tbl(pdqr_x_tbl(f), type = pdqr_type(f))
+  assert_x_tbl(meta_x_tbl(f), type = meta_type(f))
 
   # Extra properties for "good" "x_tbl" metadata
-  assert_x_tbl_meta(pdqr_x_tbl(f), type = pdqr_type(f))
+  assert_x_tbl_meta(meta_x_tbl(f), type = meta_type(f))
 
   TRUE
 }

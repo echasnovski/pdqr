@@ -35,7 +35,7 @@ as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
 as_p.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
-  new_p(x = pdqr_x_tbl(f), type = pdqr_type(f))
+  new_p(x = meta_x_tbl(f), type = meta_type(f))
 }
 
 detect_support_p <- function(p_f, supp) {

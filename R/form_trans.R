@@ -29,7 +29,7 @@ form_trans <- function(trans, ..., .n_sample = 10000, .pdqr_class = NULL,
   pdqr_call_args <- dedupl_list(c(
     list(x = smpl),
     .pdqr_args,
-    list(type = pdqr_type(ref_f))
+    list(type = meta_type(ref_f))
   ))
 
   do.call(pdqr_fun, pdqr_call_args)

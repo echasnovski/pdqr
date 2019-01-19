@@ -10,8 +10,8 @@ new_r_fin <- function(x_tbl) {
   q_fin <- new_q(x_tbl, type = "fin")
 
   type <- "fin"
-  support <- pdqr_support(q_fin)
-  x_tbl <- pdqr_x_tbl(q_fin)
+  support <- meta_support(q_fin)
+  x_tbl <- meta_x_tbl(q_fin)
 
   function(n) {
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
@@ -24,8 +24,8 @@ new_r_infin <- function(x_tbl) {
   q_infin <- new_q(x_tbl, type = "infin")
 
   type <- "infin"
-  support <- pdqr_support(q_infin)
-  x_tbl <- pdqr_x_tbl(q_infin)
+  support <- meta_support(q_infin)
+  x_tbl <- meta_x_tbl(q_infin)
 
   function(n) {
     rand_q_vec <- stats::runif(n, min = 0, max = 1)

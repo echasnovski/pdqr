@@ -10,11 +10,11 @@ form_retype <- function(f, type) {
 }
 
 retype_fin <- function(f) {
-  if (pdqr_type(f) == "fin") {
+  if (meta_type(f) == "fin") {
     return(f)
   }
 
-  x_tbl <- pdqr_x_tbl(f)
+  x_tbl <- meta_x_tbl(f)
   n <- nrow(x_tbl)
 
   x_lag <- x_tbl[["x"]][-n]
@@ -39,13 +39,13 @@ retype_fin <- function(f) {
 }
 
 retype_infin <- function(f) {
-  if (pdqr_type(f) == "infin") {
+  if (meta_type(f) == "infin") {
     return(f)
   }
 
   # Note that `f` has already passed `assert_pdqr_fun()` which means that "x"
   # column in "x_tbl" metadata is sorted and has no duplicate values
-  x_tbl <- pdqr_x_tbl(f)
+  x_tbl <- meta_x_tbl(f)
 
   n <- nrow(x_tbl)
   if (n < 4) {

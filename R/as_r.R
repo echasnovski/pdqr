@@ -31,7 +31,7 @@ as_r.default <- function(f, support = NULL, n_grid = 10001, n_sample = 10000,
 as_r.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
-  new_r(x = pdqr_x_tbl(f), type = pdqr_type(f))
+  new_r(x = meta_x_tbl(f), type = meta_type(f))
 }
 
 detect_support_r <- function(smpl, supp) {

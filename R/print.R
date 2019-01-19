@@ -14,7 +14,7 @@ line_title <- function(x, fun_name) {
 }
 
 line_support <- function(x) {
-  x_support <- pdqr_support(x)
+  x_support <- meta_support(x)
 
   if (is.null(x_support) || !is_support(x_support)) {
     paste0("Support: ", bold("not proper"), "\n")
@@ -27,8 +27,8 @@ line_support <- function(x) {
 }
 
 n_x_tbl_info <- function(x) {
-  x_type <- pdqr_type(x)
-  x_tbl <- pdqr_x_tbl(x)
+  x_type <- meta_type(x)
+  x_tbl <- meta_x_tbl(x)
 
   if (is.null(x_type) || !is.character(x_type) ||
       is.null(x_tbl) || !is.data.frame(x_tbl)) {
@@ -67,7 +67,7 @@ use_color <- function() {
 }
 
 meta_type_print_name <- function(x) {
-  x_type <- pdqr_type(x)
+  x_type <- meta_type(x)
 
   if (is.null(x_type) || !(x_type %in% c("fin", "infin"))) {
     "unknown"

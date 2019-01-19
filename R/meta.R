@@ -15,19 +15,19 @@ has_meta <- function(f, elem) {
   !is.null(meta(f)[[elem]])
 }
 
-pdqr_type <- function(f) {
+meta_type <- function(f) {
   check_f_envir(f)
 
   get0("type", envir = environment(f), inherits = FALSE)
 }
 
-pdqr_support <- function(f) {
+meta_support <- function(f) {
   check_f_envir(f)
 
   get0("support", envir = environment(f), inherits = FALSE)
 }
 
-pdqr_x_tbl <- function(f) {
+meta_x_tbl <- function(f) {
   check_f_envir(f)
 
   get0("x_tbl", envir = environment(f), inherits = FALSE)

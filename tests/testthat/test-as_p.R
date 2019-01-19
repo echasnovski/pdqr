@@ -169,7 +169,7 @@ test_that("as_p.default output has minimum support according to 'x_tbl'", {
   is_equal_supp <- vapply(
     seq_along(p_list), function(i) {
       isTRUE(all.equal(
-        pdqr_support(p_list[[i]]), range(pdqr_x_tbl(p_list[[i]])[["x"]])
+        meta_support(p_list[[i]]), range(meta_x_tbl(p_list[[i]])[["x"]])
       ))
     },
     logical(1)
@@ -181,20 +181,20 @@ test_that("as_p.default output has minimum support according to 'x_tbl'", {
 test_that("as_p.default detects support", {
   # Much more tests are done in `detect_support_p`
   p_beta_both <- as_p(fam_beta$p)
-  support_both <- pdqr_support(p_beta_both)
+  support_both <- meta_support(p_beta_both)
   expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 1e-7)
 
   p_beta_left <- as_p(fam_beta$p, support = c(NA, 0.7))
-  support_left <- pdqr_support(p_beta_left)
+  support_left <- meta_support(p_beta_left)
   expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 1e-7)
 
   p_beta_right <- as_p(fam_beta$p, support = c(0.3, NA))
-  support_right <- pdqr_support(p_beta_right)
+  support_right <- meta_support(p_beta_right)
   expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 1e-7)
 })
 
 test_that("as_p.default removes edge `y` with zero density", {
-  x_tbl <- pdqr_x_tbl(p_unif)
+  x_tbl <- meta_x_tbl(p_unif)
   expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
 })
 
