@@ -34,8 +34,13 @@ pdqr_x_tbl <- function(f) {
 }
 
 check_f_envir <- function(f) {
-  if (is.null(environment(f))) {
+  f_env <- environment(f)
+
+  if (is.null(f_env)) {
     stop_collapse("`f` should have enclosing environment.")
+  }
+  if (identical(f_env, globalenv())) {
+    stop_collapse("`f` should not be created in Global environment.")
   }
 
   TRUE

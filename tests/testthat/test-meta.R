@@ -4,6 +4,10 @@ context("test-meta")
 # meta --------------------------------------------------------------------
 test_that("meta throws errors on bad input", {
   expect_error(meta(1), "`f`.*environment")
+
+  f_from_global <- function(x) {x}
+  environment(f_from_global) <- globalenv()
+  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -26,6 +30,10 @@ test_that("pdqr_type works", {
 
 test_that("pdqr_type throws errors on bad input", {
   expect_error(pdqr_type(1), "`f`.*environment")
+
+  f_from_global <- function(x) {x}
+  environment(f_from_global) <- globalenv()
+  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -38,6 +46,10 @@ test_that("pdqr_support works", {
 
 test_that("pdqr_support throws errors on bad input", {
   expect_error(pdqr_support(1), "`f`.*environment")
+
+  f_from_global <- function(x) {x}
+  environment(f_from_global) <- globalenv()
+  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -50,6 +62,10 @@ test_that("pdqr_x_tbl works", {
 
 test_that("pdqr_x_tbl throws errors on bad input", {
   expect_error(pdqr_x_tbl(1), "`f`.*environment")
+
+  f_from_global <- function(x) {x}
+  environment(f_from_global) <- globalenv()
+  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
 })
 
 
@@ -57,4 +73,8 @@ test_that("pdqr_x_tbl throws errors on bad input", {
 test_that("check_f_envir works", {
   expect_silent(check_f_envir(p_fin))
   expect_error(check_f_envir(1), "`f`.*environment")
+
+  f_from_global <- function(x) {x}
+  environment(f_from_global) <- globalenv()
+  expect_error(meta(f_from_global), "`f`.*[Gg]lobal")
 })
