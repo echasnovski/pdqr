@@ -33,7 +33,7 @@ retype_fin <- function(f) {
   prob <- diff(x_tbl[["cumprob"]])
 
   # Creating pdqr-function
-  pdqr_fun <- impute_pdqr_fun(pdqr_class = NULL, ref = f)
+  pdqr_fun <- new_pdqr_by_ref(f)
 
   pdqr_fun(data.frame(x = x_mass, prob = prob), "fin")
 }
@@ -84,7 +84,7 @@ retype_infin <- function(f) {
   y <- y_from_p_grid(x_grid, p_grid)
 
   # Creating pdqr-function
-  pdqr_fun <- impute_pdqr_fun(pdqr_class = NULL, ref = f)
+  pdqr_fun <- new_pdqr_by_ref(f)
 
   pdqr_fun(data.frame(x = x_grid, y = y), "infin")
 }

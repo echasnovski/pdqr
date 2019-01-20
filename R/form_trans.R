@@ -73,13 +73,6 @@ impute_pdqr_fun <- function(pdqr_class, ref) {
   )
 }
 
-get_pdqr_class <- function(f) {
-  pdqr_classes <- c("p", "d", "q", "r")
-  f_type <- pdqr_classes[match(class(f), pdqr_classes)]
-
-  f_type[!is.na(f_type)][1]
-}
-
 
 # Group generics ----------------------------------------------------------
 Math.pdqr <- function(x, ...) {

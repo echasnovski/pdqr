@@ -109,16 +109,6 @@ test_that("impute_pdqr_fun throws errors", {
 })
 
 
-# get_pdqr_class ----------------------------------------------------------
-test_that("get_pdqr_class works", {
-  expect_equal(get_pdqr_class(structure("a", class = "p")), "p")
-  expect_equal(
-    get_pdqr_class(structure("a", class = c("p", "d"))), "p"
-  )
-  expect_equal(get_pdqr_class(structure("a", class = "bbb")), NA_character_)
-})
-
-
 # Math.pdqr ---------------------------------------------------------------
 test_that("Math.pdqr works", {
   lnorm_x <- seq(0, 100, by = 0.001)
