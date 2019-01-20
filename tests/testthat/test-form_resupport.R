@@ -70,6 +70,43 @@ test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
   expect_error(form_resupport(d_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
 })
 
+test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
+  p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
+
+  out_x_tbl_1 <- meta_x_tbl(form_resupport(p_f, c(-0.5, 3), "linear"))
+  expect_equal(
+    out_x_tbl_1[, c("x", "prob")],
+    data.frame(x = c(-0.5, 0.375, 3), prob = meta_x_tbl(p_f)[["prob"]])
+  )
+
+  out_x_tbl_2 <- meta_x_tbl(form_resupport(p_f, c(15, 15), "linear"))
+  expect_equal(out_x_tbl_2[, c("x", "prob")], data.frame(x = 15, prob = 1))
+
+  # Can't resupport from single point support to interval one
+  expect_error(
+    form_resupport(new_p(1, "fin"), c(0, 1), "linear"), "single.*interval"
+  )
+})
+
+test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
+  x_tbl <- data.frame(
+    x = c(0, 1,   2, 5),
+    y = c(0, 0, 0.5, 0)
+  )
+  p_f <- new_p(x_tbl, "infin")
+
+  out_x_tbl_1 <- meta_x_tbl(form_resupport(p_f, c(1, 3.5), "linear"))
+  expect_equal(
+    out_x_tbl_1[, c("x", "y")],
+    data.frame(x = c(1, 1.5, 2, 3.5), y = c(0, 0, 1, 0))
+  )
+
+  # For now collapsing "infin" pdqr-function into singular "fin" one is
+  # considered correct behaviour
+  out_x_tbl_2 <- meta_x_tbl(form_resupport(p_f, c(15, 15), "linear"))
+  expect_equal(out_x_tbl_2[, c("x", "prob")], data.frame(x = 15, prob = 1))
+})
+
 test_that("form_resupport returns correct pdqr-function", {
   p_f_fin <- new_p(data.frame(x = 1:2, prob = c(0.3, 0.7)), "fin")
   p_f_infin <- new_p(data.frame(x = 1:3, y = c(0, 1, 0)), "infin")
@@ -84,6 +121,17 @@ test_that("form_resupport returns correct pdqr-function", {
   expect_is(form_resupport(as_d(p_f_infin), c(1, 2), "trim"), "d")
   expect_is(form_resupport(as_q(p_f_infin), c(1, 2), "trim"), "q")
   expect_is(form_resupport(as_r(p_f_infin), c(1, 2), "trim"), "r")
+
+  # Method "linear"
+  expect_is(form_resupport(p_f_fin, c(1, 2), "linear"), "p")
+  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "linear"), "d")
+  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "linear"), "q")
+  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "linear"), "r")
+
+  expect_is(form_resupport(p_f_infin, c(1, 2), "linear"), "p")
+  expect_is(form_resupport(as_d(p_f_infin), c(1, 2), "linear"), "d")
+  expect_is(form_resupport(as_q(p_f_infin), c(1, 2), "linear"), "q")
+  expect_is(form_resupport(as_r(p_f_infin), c(1, 2), "linear"), "r")
 })
 
 test_that("form_resupport handles `NA`s in `support`", {
