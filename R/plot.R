@@ -35,7 +35,7 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
 
     dots <- make_plot_dots(
       ...,
-      type = "h", main = paste0("Density function ", x_name),
+      type = "h", main = paste0("Probability mass function ", x_name),
       xlab = "x", ylab = "Probability", ylim = c(0, max(x_tbl[["prob"]]))
     )
     plot_args <- dedupl_list(
