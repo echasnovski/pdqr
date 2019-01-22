@@ -44,6 +44,20 @@ test_that("impute_x_tbl_impl throws error", {
 # Tested in `impute_x_tbl_impl()`
 
 
+# get_x_tbl_sec_col -------------------------------------------------------
+test_that("get_x_tbl_sec_col works", {
+  expect_equal(get_x_tbl_sec_col(x_fin_x_tbl), "prob")
+  expect_equal(get_x_tbl_sec_col(x_infin_x_tbl), "y")
+})
+
+
+# get_type_from_x_tbl -----------------------------------------------------
+test_that("get_type_from_x_tbl works", {
+  expect_equal(get_type_from_x_tbl(x_fin_x_tbl), "fin")
+  expect_equal(get_type_from_x_tbl(x_infin_x_tbl), "infin")
+})
+
+
 # filter_x_tbl ------------------------------------------------------------
 test_that("filter_x_tbl works", {
   x_tbl_fin <- data.frame(x = 1:5, prob = (1:5) / 15)

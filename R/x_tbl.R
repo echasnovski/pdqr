@@ -130,7 +130,29 @@ impute_vec <- function(vec, new_vec) {
 }
 
 
+# Get "x_tbl" info --------------------------------------------------------
+# Most of the functions here assume "x_tbl" to be a "proper" one (`is_x_tbl()`
+# with appropriate `type` returns `TRUE`)
+get_x_tbl_sec_col <- function(x_tbl) {
+  if ("prob" %in% names(x_tbl)) {
+    "prob"
+  } else {
+    "y"
+  }
+}
+
+get_type_from_x_tbl <- function(x_tbl) {
+  if (get_x_tbl_sec_col(x_tbl) == "prob") {
+    "fin"
+  } else {
+    "infin"
+  }
+}
+
+
 # Modify "x_tbl" ----------------------------------------------------------
+# Most of the functions here assume "x_tbl" to be a "proper" one (`is_x_tbl()`
+# returns `TRUE`)
 filter_x_tbl <- function(x_tbl, support) {
   is_x_in_support <- (x_tbl[["x"]] >= support[1]) & (x_tbl[["x"]] <= support[2])
 
@@ -142,7 +164,7 @@ union_inside_x_tbl <- function(x_tbl_orig, x_tbl_new) {
   orig_supp <- range(x_tbl_orig[["x"]])
   x_tbl_new <- filter_x_tbl(x_tbl_new, orig_supp)
 
-  second_col <- if ("prob" %in% names(x_tbl_orig)) {"prob"} else {"y"}
+  second_col <- get_x_tbl_sec_col(x_tbl_orig)
 
   res <- data.frame(x = c(x_tbl_orig[["x"]], x_tbl_new[["x"]]))
   res[[second_col]] <- c(x_tbl_orig[[second_col]], x_tbl_new[[second_col]])
