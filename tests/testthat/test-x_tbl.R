@@ -92,3 +92,47 @@ test_that("union_inside_x_tbl works", {
     data.frame(x = c(1, 1.5, 2, 3), y = c(0, 0.5, 1, 0))
   )
 })
+
+
+# reflect_x_tbl -----------------------------------------------------------
+test_that("reflect_x_tbl works when `type` 'fin'", {
+  x_tbl_fin <- data.frame(
+    x = c(1, 2, 4), prob = c(0.1, 0, 0.9), cumprob = c(0.1, 0.1, 1)
+  )
+  expect_equal(
+    reflect_x_tbl(x_tbl_fin, 0),
+    data.frame(
+      x = c(-4, -2, -1), prob = c(0.9, 0, 0.1), cumprob = c(0.9, 0.9, 1)
+    )
+  )
+  expect_equal(
+    reflect_x_tbl(x_tbl_fin, 2),
+    data.frame(
+      x = c(0, 2, 3), prob = c(0.9, 0, 0.1), cumprob = c(0.9, 0.9, 1)
+    )
+  )
+})
+
+test_that("reflect_x_tbl works when `type` 'infin'", {
+  x_tbl_infin <- data.frame(
+    x = c( -2, -1, 0, 0.5, 4),
+    y = c(0.5,  0, 1,   0, 0),
+    cumprob = c(0, 0.25, 0.75, 1, 1)
+  )
+  expect_equal(
+    reflect_x_tbl(x_tbl_infin, 0),
+    data.frame(
+      x = c(-4, -0.5, 0, 1,   2),
+      y = c( 0,    0, 1, 0, 0.5),
+      cumprob = c(0, 0, 0.25, 0.75, 1)
+    )
+  )
+  expect_equal(
+    reflect_x_tbl(x_tbl_infin, 10),
+    data.frame(
+      x = c(16, 19.5, 20, 21,  22),
+      y = c( 0,    0,  1,  0, 0.5),
+      cumprob = c(0, 0, 0.25, 0.75, 1)
+    )
+  )
+})

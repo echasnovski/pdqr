@@ -177,3 +177,19 @@ union_inside_x_tbl <- function(x_tbl_orig, x_tbl_new) {
 
   res
 }
+
+reflect_x_tbl <- function(x_tbl, around) {
+  res <- x_tbl[rev(seq_len(nrow(x_tbl))), ]
+  res[["x"]] <- around + (around - res[["x"]])
+
+  x_tbl_probs <- switch(
+    get_type_from_x_tbl(x_tbl),
+    fin = diff(c(0, x_tbl[["cumprob"]])),
+    infin = diff(c(x_tbl[["cumprob"]], 1))
+  )
+  res[["cumprob"]] <- cumsum(rev(x_tbl_probs))
+
+  row.names(res) <- NULL
+
+  res
+}
