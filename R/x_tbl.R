@@ -193,3 +193,33 @@ reflect_x_tbl <- function(x_tbl, around) {
 
   res
 }
+
+ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
+  if (get_type_from_x_tbl(x_tbl) == "fin") {
+    return(x_tbl)
+  }
+
+  n_x_tbl <- nrow(x_tbl)
+
+  if (dir == "left") {
+    data.frame(
+      x = c(x_tbl[["x"]][1] - h, x_tbl[["x"]]),
+      y = c(0, x_tbl[["y"]]),
+      cumprob = c(0, x_tbl[["cumprob"]])
+    )
+  } else if (dir == "right") {
+    data.frame(
+      x = c(x_tbl[["x"]], x_tbl[["x"]][n_x_tbl] + h),
+      y = c(x_tbl[["y"]], 0),
+      cumprob = c(x_tbl[["cumprob"]], 1)
+    )
+  } else if (dir == "both") {
+    data.frame(
+      x = c(x_tbl[["x"]][1] - h, x_tbl[["x"]], x_tbl[["x"]][n_x_tbl] + h),
+      y = c(0, x_tbl[["y"]], 0),
+      cumprob = c(0, x_tbl[["cumprob"]], 1)
+    )
+  } else {
+    stop_collapse("Corrupt `dir` input to `ground_x_tbl().")
+  }
+}

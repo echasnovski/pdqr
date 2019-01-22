@@ -136,3 +136,38 @@ test_that("reflect_x_tbl works when `type` 'infin'", {
     )
   )
 })
+
+
+# ground_x_tbl ------------------------------------------------------------
+test_that("ground_x_tbl works", {
+  expect_equal(ground_x_tbl(x_fin_x_tbl), x_fin_x_tbl)
+  expect_error(ground_x_tbl(x_infin_x_tbl, "a"), "Corrupt.*dir")
+
+  x_tbl <- data.frame(
+    x = c(-1, 0.25, 2), y = c(1.6, 0, 0), cumprob = c(0, 1, 1)
+  )
+  n <- nrow(x_tbl)
+
+  out_left <- ground_x_tbl(x_tbl, "left")
+  expect_true(
+    (x_tbl[["x"]][1] - out_left[["x"]][1] <= 1e-8) &&
+      (x_tbl[["x"]][1] >= out_left[["x"]][1])
+  )
+  expect_equal(out_left[["y"]][1], 0)
+
+  out_right <- ground_x_tbl(x_tbl, "right")
+  expect_true(
+    (out_right[["x"]][n+1] - x_tbl[["x"]][n] <= 1e-8) &&
+      (out_right[["x"]][n+1] >= x_tbl[["x"]][n])
+  )
+  expect_equal(out_right[["y"]][n+1], 0)
+
+  out_both <- ground_x_tbl(x_tbl, "both")
+  expect_true(
+    (x_tbl[["x"]][1] - out_both[["x"]][1] <= 1e-8) &&
+      (x_tbl[["x"]][1] >= out_both[["x"]][1]) &&
+      (out_both[["x"]][n+1] - x_tbl[["x"]][n] <= 1e-8) &&
+      (out_both[["x"]][n+1] >= x_tbl[["x"]][n])
+  )
+  expect_equal(out_both[["y"]][c(1, n+1)], c(0, 0))
+})
