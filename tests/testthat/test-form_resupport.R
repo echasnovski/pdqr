@@ -197,41 +197,5 @@ test_that("form_resupport throws errors on bad input", {
 # Tested in `form_resupport()`
 
 
-# filter_x_tbl ------------------------------------------------------------
-test_that("filter_x_tbl works", {
-  x_tbl_fin <- data.frame(x = 1:5, prob = (1:5) / 15)
-  expect_equal(
-    filter_x_tbl(x_tbl_fin, c(-10, 1))[, c("x", "prob")],
-    x_tbl_fin[1, ]
-  )
-
-  x_tbl_infin <- data.frame(x = 1:5, y = (1:5) / 12)
-  expect_equal(
-    filter_x_tbl(x_tbl_infin, c(2.5, 5))[, c("x", "y")],
-    x_tbl_infin[3:5, ]
-  )
-})
-
-
-# union_inside_x_tbl ------------------------------------------------------
-test_that("union_inside_x_tbl works", {
-  x_tbl_fin_1 <- data.frame(x = 1:3, prob = c(0, 0.3, 0.7))
-  x_tbl_fin_2 <- data.frame(x = c(0, 1, 1.5, 3.1), prob = rep(0.5, 4))
-
-  expect_equal(
-    union_inside_x_tbl(x_tbl_fin_1, x_tbl_fin_2),
-    data.frame(x = c(1, 1.5, 2, 3), prob = c(0, 0.5, 0.3, 0.7))
-  )
-
-  x_tbl_infin_1 <- data.frame(x = 1:3, y = c(0, 1, 0))
-  x_tbl_infin_2 <- data.frame(x = c(0, 1, 1.5, 3.1), y = rep(0.5, 4))
-
-  expect_equal(
-    union_inside_x_tbl(x_tbl_infin_1, x_tbl_infin_2),
-    data.frame(x = c(1, 1.5, 2, 3), y = c(0, 0.5, 1, 0))
-  )
-})
-
-
 # stop_resupport_zero_tot_prob --------------------------------------------
 # Tested in `form_resupport()`

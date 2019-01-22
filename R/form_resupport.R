@@ -101,31 +101,6 @@ resupport_linear <- function(f, support) {
 #
 # }
 
-filter_x_tbl <- function(x_tbl, support) {
-  is_x_in_support <- (x_tbl[["x"]] >= support[1]) & (x_tbl[["x"]] <= support[2])
-
-  x_tbl[is_x_in_support, ]
-}
-
-union_inside_x_tbl <- function(x_tbl_orig, x_tbl_new) {
-  # Remove rows from `x_tbl_new` which are outside from `x_tbl_orig`'s support
-  orig_supp <- range(x_tbl_orig[["x"]])
-  x_tbl_new <- filter_x_tbl(x_tbl_new, orig_supp)
-
-  second_col <- if ("prob" %in% names(x_tbl_orig)) {"prob"} else {"y"}
-
-  res <- data.frame(x = c(x_tbl_orig[["x"]], x_tbl_new[["x"]]))
-  res[[second_col]] <- c(x_tbl_orig[[second_col]], x_tbl_new[[second_col]])
-
-  # Remove rows with duplicate "x" (leaving in output rows from `x_tbl_orig`)
-  res <- res[!duplicated(res[["x"]]), ]
-
-  res <- res[order(res[["x"]]), ]
-  row.names(res) <- NULL
-
-  res
-}
-
 stop_resupport_zero_tot_prob <- function() {
   stop_collapse(
     'Output of `form_resupport()` will not have positive total probability.'

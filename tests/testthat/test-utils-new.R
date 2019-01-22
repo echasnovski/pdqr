@@ -5,49 +5,6 @@ context("test-utils-new")
 # Tested in `new_*()` functions
 
 
-# impute_x_tbl ------------------------------------------------------------
-# Tested in `new_*()` functions
-
-
-# impute_x_tbl_impl -------------------------------------------------------
-# Main tests are in `new_*()` functions
-test_that("impute_x_tbl_impl throws error", {
-  expect_error(impute_x_tbl_impl(x_fin_x_tbl, "a"), "type")
-})
-
-
-# impute_x_tbl_impl_fin ---------------------------------------------------
-# Tested in `impute_x_tbl_impl()`
-
-
-# impute_x_tbl_impl_infin -------------------------------------------------
-# Tested in `impute_x_tbl_impl()`
-
-
-# impute_prob -------------------------------------------------------------
-# Tested in `impute_x_tbl_impl()`
-
-
-# impute_y ----------------------------------------------------------------
-# Tested in `impute_x_tbl_impl()`
-
-
-# impute_vec --------------------------------------------------------------
-# Tested in `impute_x_tbl_impl()`
-
-
-# compute_x_tbl -----------------------------------------------------------
-# Tested in `new_*()` functions
-
-
-# compute_x_tbl_fin -------------------------------------------------------
-# Tested in `new_*()` functions
-
-
-# compute_x_tbl_infin -----------------------------------------------------
-# Tested in `new_*()` functions
-
-
 # add_pdqr_class ----------------------------------------------------------
 test_that("add_pdqr_class works", {
   expect_equal(
