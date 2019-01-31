@@ -141,33 +141,36 @@ test_that("reflect_x_tbl works when `type` 'infin'", {
 # ground_x_tbl ------------------------------------------------------------
 test_that("ground_x_tbl works", {
   expect_equal(ground_x_tbl(x_fin_x_tbl), x_fin_x_tbl)
-  expect_error(ground_x_tbl(x_infin_x_tbl, "a"), "Corrupt.*dir")
 
   x_tbl <- data.frame(
-    x = c(-1, 0.25, 2), y = c(1.6, 0, 0), cumprob = c(0, 1, 1)
+    x = c(-1, 0.25, 2), y = c(1/1.25, 0, 1/1.75), cumprob = c(0, 0.5, 1)
   )
+  x <- x_tbl[["x"]]
+  y <- x_tbl[["y"]]
   n <- nrow(x_tbl)
 
   out_left <- ground_x_tbl(x_tbl, "left")
-  expect_true(
-    (x_tbl[["x"]][1] - out_left[["x"]][1] <= 1e-8) &&
-      (x_tbl[["x"]][1] >= out_left[["x"]][1])
-  )
-  expect_equal(out_left[["y"]][1], 0)
+  expect_equal(out_left[["x"]], c(x[1]-1e-8, x))
+  expect_equal(out_left[["y"]], c(        0, y))
 
   out_right <- ground_x_tbl(x_tbl, "right")
-  expect_true(
-    (out_right[["x"]][n+1] - x_tbl[["x"]][n] <= 1e-8) &&
-      (out_right[["x"]][n+1] >= x_tbl[["x"]][n])
-  )
-  expect_equal(out_right[["y"]][n+1], 0)
+  expect_equal(out_right[["x"]], c(x, x[n]+1e-8))
+  expect_equal(out_right[["y"]], c(y,         0))
 
   out_both <- ground_x_tbl(x_tbl, "both")
-  expect_true(
-    (x_tbl[["x"]][1] - out_both[["x"]][1] <= 1e-8) &&
-      (x_tbl[["x"]][1] >= out_both[["x"]][1]) &&
-      (out_both[["x"]][n+1] - x_tbl[["x"]][n] <= 1e-8) &&
-      (out_both[["x"]][n+1] >= x_tbl[["x"]][n])
-  )
-  expect_equal(out_both[["y"]][c(1, n+1)], c(0, 0))
+  expect_equal(out_both[["x"]], c(x[1]-1e-8, x, x[n]+1e-8))
+  expect_equal(out_both[["y"]], c(        0, y,         0))
+})
+
+test_that("ground_x_tbl doesn't add new zeros to 'y'",  {
+  x_tbl <- data.frame(x = c(1, 2, 3), y = c(0, 1, 0), cumprob = c(0, 0.5, 1))
+
+  expect_equal(ground_x_tbl(x_tbl, "left"), x_tbl)
+  expect_equal(ground_x_tbl(x_tbl, "right"), x_tbl)
+  expect_equal(ground_x_tbl(x_tbl, "both"), x_tbl)
+})
+
+test_that("ground_x_tbl works without column 'cumprob' present",  {
+  output <- ground_x_tbl(data.frame(x = 0:1, y = c(1, 1)), "both")
+  expect_named(output, c("x", "y"))
 })

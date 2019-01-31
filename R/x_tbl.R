@@ -199,27 +199,33 @@ ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
     return(x_tbl)
   }
 
-  n_x_tbl <- nrow(x_tbl)
+  x <- x_tbl[["x"]]
+  y <- x_tbl[["y"]]
+  n <- nrow(x_tbl)
 
-  if (dir == "left") {
-    data.frame(
-      x = c(x_tbl[["x"]][1] - h, x_tbl[["x"]]),
-      y = c(0, x_tbl[["y"]]),
-      cumprob = c(0, x_tbl[["cumprob"]])
-    )
-  } else if (dir == "right") {
-    data.frame(
-      x = c(x_tbl[["x"]], x_tbl[["x"]][n_x_tbl] + h),
-      y = c(x_tbl[["y"]], 0),
-      cumprob = c(x_tbl[["cumprob"]], 1)
-    )
-  } else if (dir == "both") {
-    data.frame(
-      x = c(x_tbl[["x"]][1] - h, x_tbl[["x"]], x_tbl[["x"]][n_x_tbl] + h),
-      y = c(0, x_tbl[["y"]], 0),
-      cumprob = c(0, x_tbl[["cumprob"]], 1)
-    )
+  add_left <- (dir %in% c("left", "both")) && (y[1] != 0)
+  add_right <- (dir %in% c("right", "both")) && (y[n] != 0)
+
+  if (add_left) {
+    if (add_right) {
+      res <- x_tbl[c(1, 1:n, n), ]
+      res[["x"]][c(1, n+2)] <- x[c(1, n)] + h*c(-1, 1)
+      res[["y"]][c(1, n+2)] <- 0
+    } else {
+      res <- x_tbl[c(1, 1:n), ]
+      res[["x"]][1] <- x[1] - h
+      res[["y"]][1] <- 0
+    }
   } else {
-    stop_collapse("Corrupt `dir` input to `ground_x_tbl().")
+    if (add_right) {
+      res <- x_tbl[c(1:n, n), ]
+      res[["x"]][n+1] <- x[n] + h
+      res[["y"]][n+1] <- 0
+    } else {
+      res <- x_tbl
+    }
   }
+
+  rownames(res) <- NULL
+  res
 }
