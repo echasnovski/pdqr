@@ -174,3 +174,55 @@ test_that("ground_x_tbl works without column 'cumprob' present",  {
   output <- ground_x_tbl(data.frame(x = 0:1, y = c(1, 1)), "both")
   expect_named(output, c("x", "y"))
 })
+
+
+# stack_x_tbl -------------------------------------------------------------
+test_that("stack_x_tbl works with 'fin' type",  {
+  x_tbl_fin_1 <- data.frame(x = 1, prob = 1)
+  x_tbl_fin_2 <- data.frame(x = 2:4, prob = c(0.2, 0.5, 0.3))
+  x_tbl_fin_3 <- data.frame(x = c(-1, 1, 4, 5), prob = c(0.1, 0.2, 0.3, 0.4))
+
+  expect_equal(
+    stack_x_tbl(list(x_tbl_fin_1, x_tbl_fin_2, x_tbl_fin_3)),
+    data.frame(x = c(-1, 1, 2, 3, 4, 5), prob = c(0.1, 1.2, 0.2, 0.5, 0.6, 0.4))
+  )
+  expect_equal(stack_x_tbl(list(x_tbl_fin_3)), x_tbl_fin_3)
+})
+
+test_that("stack_x_tbl works with 'infin' type",  {
+  x_tbl_infin_1 <- data.frame(x = c(1, 3), y = c(0.5, 0.5))
+  x_tbl_infin_2 <- data.frame(x = c(2, 6), y = c(0.25, 0.25))
+  x_tbl_infin_3 <- data.frame(x = c(7, 8), y = c(1, 1))
+
+  expect_equal(
+    data.frame(
+      x = c(  1, 2-1e-8,    2,    3, 3+1e-8,    6, 6+1e-8, 7-1e-8, 7, 8),
+      y = c(0.5,    0.5, 0.75, 0.75,   0.25, 0.25,      0,      0, 1, 1)
+    ),
+    stack_x_tbl(list(x_tbl_infin_1, x_tbl_infin_2, x_tbl_infin_3))
+  )
+})
+
+test_that("stack_x_tbl handles zero density edges",  {
+  x_tbl_1 <- data.frame(x = 1:3, y = c(0, 1, 0))
+  x_tbl_2 <- data.frame(x = 2:4, y = c(0, 1, 0))
+  expect_equal(
+    stack_x_tbl(list(x_tbl_1, x_tbl_2)), data.frame(x = 1:4, y = c(0, 1, 1, 0))
+  )
+})
+
+
+# stack_x_tbl_fin ---------------------------------------------------------
+# Tested in `stack_x_tbl()`
+
+
+# stack_x_tbl_infin -------------------------------------------------------
+# Tested in `stack_x_tbl()`
+
+
+# remove_extra_edges ------------------------------------------------------
+# Tested in `stack_x_tbl()`
+
+
+# is_x_extra --------------------------------------------------------------
+# Tested in `stack_x_tbl()`

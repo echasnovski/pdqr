@@ -229,3 +229,83 @@ ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
   rownames(res) <- NULL
   res
 }
+
+
+# Stack "x_tbl"s (sum densities/probabilities) ----------------------------
+stack_x_tbl <- function(x_tbl_list) {
+  # It is assumed that all "x_tbl"s have the same type
+  type <- get_type_from_x_tbl(x_tbl_list[[1]])
+
+  res <- switch(
+    type,
+    fin = stack_x_tbl_fin(x_tbl_list),
+    infin = stack_x_tbl_infin(x_tbl_list)
+  )
+  row.names(res) <- NULL
+
+  res
+}
+
+stack_x_tbl_fin <- function(x_tbl_list) {
+  x <- unlist(lapply(x_tbl_list, `[[`, i = "x"))
+  prob <- unlist(lapply(x_tbl_list, `[[`, i = "prob"))
+
+  if (anyDuplicated(x) != 0) {
+    vals <- sort(unique(x))
+    x_val_id <- match(x, vals)
+    prob <- as.vector(tapply(prob, x_val_id, sum))
+    x <- vals
+  }
+
+  data.frame(x = x, prob = prob)
+}
+
+stack_x_tbl_infin <- function(x_tbl_list) {
+  x_tbl_funs <- lapply(x_tbl_list, function(x_tbl) {
+    stats::approxfun(
+      x_tbl[["x"]], x_tbl[["y"]], method = "linear", yleft = 0, yright = 0
+    )
+  })
+
+  x <- unlist(lapply(x_tbl_list, function(x_tbl) {
+    # Grounding is needed to ensure that `x_tbl` doesn't affect its outside
+    ground_x_tbl(x_tbl)[["x"]]
+  }))
+  x <- sort(unique(x))
+
+  y_at_x <- lapply(x_tbl_funs, do.call, list(x))
+  y_mat <- matrix(unlist(y_at_x), nrow = length(x))
+  y <- rowSums(y_mat)
+
+  res <- data.frame(x = x, y = y)
+
+  # Ensure that zero probability edges (possibly created during "grounding")
+  # aren't newly created
+  remove_extra_edges(res, x_tbl_list)
+}
+
+remove_extra_edges <- function(x_tbl, x_tbl_list) {
+  n <- nrow(x_tbl)
+
+  x_left <- x_tbl[["x"]][1]
+  x_left_is_extra <- is_x_extra(x_left, x_tbl_list)
+
+  x_right <- x_tbl[["x"]][n]
+  x_right_is_extra <- is_x_extra(x_right, x_tbl_list)
+
+  rows_to_remove <- c(1, n)[c(x_left_is_extra, x_right_is_extra)]
+
+  if (length(rows_to_remove) > 0) {
+    x_tbl[-rows_to_remove, ]
+  } else {
+    x_tbl
+  }
+}
+
+is_x_extra <- function(x, x_tbl_list) {
+  x_is_present <- vapply(x_tbl_list, function(x_tbl) {
+    x %in% x_tbl[["x"]]
+  }, logical(1))
+
+  !any(x_is_present)
+}
