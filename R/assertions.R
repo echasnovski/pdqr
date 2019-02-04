@@ -203,7 +203,7 @@ assert_x_tbl_infin <- function(x_tbl, x_tbl_name) {
     stop_collapse(x_tbl_name, " should have at least 2 rows.")
   }
 
-  if (anyDuplicated(x_tbl[["x"]])) {
+  if (anyDuplicated(x_tbl[["x"]]) != 0) {
     stop_collapse(
       '"x" column in ', x_tbl_name, ' should not have duplicate values.'
     )
@@ -246,7 +246,7 @@ assert_x_tbl_meta <- function(x_tbl, type) {
         '"prob" column in "x_tbl" metadata should sum to 1.'
       )
     }
-    if (anyDuplicated(x_tbl[["x"]])) {
+    if (anyDuplicated(x_tbl[["x"]]) != 0) {
       stop_collapse(
         '"x" column in "x_tbl" metadata should not have duplicate values.'
       )

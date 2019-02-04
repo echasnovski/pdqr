@@ -66,7 +66,7 @@ impute_x_tbl_impl <- function(x_tbl, type) {
 }
 
 impute_x_tbl_impl_fin <- function(x_tbl) {
-  if (anyDuplicated(x_tbl[["x"]])) {
+  if (anyDuplicated(x_tbl[["x"]]) != 0) {
     # `x_tbl[["x"]]` is already sorted, so `vals` is automatically sorted too,
     # i.e. no need for `sort()`
     vals <- unique(x_tbl[["x"]])
