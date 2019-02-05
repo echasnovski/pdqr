@@ -76,19 +76,18 @@ impute_x_tbl_impl_fin <- function(x_tbl) {
     prob <- as.vector(tapply(x_tbl[["prob"]], x_val_id, sum))
     prob <- prob / sum(prob)
 
-    res <- data.frame(x = vals, prob = prob)
+    data.frame(x = vals, prob = prob, cumprob = cumsum(prob))
   } else {
     res <- data.frame(
       x = x_tbl[["x"]],
       prob = impute_prob(x_tbl[["prob"]])
     )
+    res[["cumprob"]] <- impute_vec(
+      vec = x_tbl[["cumprob"]], new_vec = cumsum(res[["prob"]])
+    )
+
+    res
   }
-
-  res[["cumprob"]] <- impute_vec(
-    vec = x_tbl[["cumprob"]], new_vec = cumsum(res[["prob"]])
-  )
-
-  res
 }
 
 impute_x_tbl_impl_infin <- function(x_tbl) {

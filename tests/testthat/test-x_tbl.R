@@ -25,7 +25,13 @@ test_that("impute_x_tbl_impl throws error", {
 
 
 # impute_x_tbl_impl_fin ---------------------------------------------------
-# Tested in `impute_x_tbl_impl()`
+# Main functionality is tested in `impute_x_tbl_impl()`
+test_that("impute_x_tbl_impl_fin correctly collapses duplicate 'x'",  {
+  expect_equal(
+    impute_x_tbl_impl_fin(data.frame(x = c(1, 2, 1), prob = c(0.3, 0.2, 0.5))),
+    data.frame(x = c(1, 2), prob = c(0.8, 0.2), cumprob = c(0.8, 1))
+  )
+})
 
 
 # impute_x_tbl_impl_infin -------------------------------------------------
