@@ -107,6 +107,78 @@ test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
   expect_equal(out_x_tbl_2[, c("x", "prob")], data.frame(x = 15, prob = 1))
 })
 
+test_that("form_resupport works with `method = 'reflect'` and `type`='fin'", {
+  p_f <- new_p(data.frame(x = 1:4, prob = (1:4)/10), "fin")
+  p_f_x_tbl <- meta_x_tbl(p_f)
+
+  # Returns self when supplied support equals `f`'s support or wider
+  expect_equal(meta_x_tbl(form_resupport(p_f, c(1, 4), "reflect")), p_f_x_tbl)
+  expect_equal(meta_x_tbl(form_resupport(p_f, c(0, 5), "reflect")), p_f_x_tbl)
+
+  # Left reflection
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(1.1, 5), "reflect"))[, c("x", "prob")],
+    data.frame(x = c(1.2, 2:4), prob = (1:4)/10)
+  )
+
+  # Right reflection
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(0, 2.3), "reflect"))[, c("x", "prob")],
+    data.frame(x = c(0.6, 1, 1.6, 2), prob = c(0.4, 0.1, 0.3, 0.2))
+  )
+
+  # Reflection from both sides
+  # There are 3 numbers instead of four because 4 got reflected to 0.6 which is
+  # outside of supplied support
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(1.1, 2.3), "reflect"))[, c("x", "prob")],
+    data.frame(x = c(1.2, 1.6, 2), prob = c(0.1, 0.3, 0.2) / 0.6)
+  )
+
+  # Collapsing into single element is possible
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(1.1, 1.3), "reflect"))[, c("x", "prob")],
+    data.frame(x = 1.2, prob = 1)
+  )
+
+  # If there is an element on edge of supplied support then it is reflected into
+  # itself
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(2, 5), "reflect"))[, c("x", "prob")],
+    data.frame(x = 2:4, prob = c(0.2+0.2, 0.3+0.1, 0.4)/1.2)
+  )
+})
+
+test_that("form_resupport works with `method='reflect'` and `type`='infin'",  {
+  p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
+  p_f_x_tbl <- meta_x_tbl(p_f)
+
+  # Returns self when supplied support equals `f`'s support or wider
+  expect_equal(meta_x_tbl(form_resupport(p_f, c(0, 1), "reflect")), p_f_x_tbl)
+  expect_equal(meta_x_tbl(form_resupport(p_f, c(-1, 2), "reflect")), p_f_x_tbl)
+
+  # Left reflection
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(0.2, 1), "reflect"))[, c("x", "y")],
+    data.frame(x = c(0.2, 0.4, 0.4+1e-8, 1), y = c(2, 2, 1, 1))
+  )
+
+  # Right reflection
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(0, 0.6), "reflect"))[, c("x", "y")],
+    data.frame(x = c(0, 0.2-1e-8, 0.2, 0.6), y = c(1, 1, 2, 2))
+  )
+
+  # Reflection from both sides
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(0.1, 0.9), "reflect"))[, c("x", "y")],
+    data.frame(
+      x = c(0.1, 0.2, 0.2+1e-8, 0.8-1e-8, 0.8, 0.9),
+      y = c(  2,   2,        1,        1,   2,   2)
+    )
+  )
+})
+
 test_that("form_resupport returns correct pdqr-function", {
   p_f_fin <- new_p(data.frame(x = 1:2, prob = c(0.3, 0.7)), "fin")
   p_f_infin <- new_p(data.frame(x = 1:3, y = c(0, 1, 0)), "infin")
@@ -132,6 +204,17 @@ test_that("form_resupport returns correct pdqr-function", {
   expect_is(form_resupport(as_d(p_f_infin), c(1, 2), "linear"), "d")
   expect_is(form_resupport(as_q(p_f_infin), c(1, 2), "linear"), "q")
   expect_is(form_resupport(as_r(p_f_infin), c(1, 2), "linear"), "r")
+
+  # Method "reflect"
+  expect_is(form_resupport(p_f_fin, c(1, 2), "reflect"), "p")
+  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "reflect"), "d")
+  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "reflect"), "q")
+  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "reflect"), "r")
+
+  expect_is(form_resupport(p_f_infin, c(1, 2), "reflect"), "p")
+  expect_is(form_resupport(as_d(p_f_infin), c(1, 2), "reflect"), "d")
+  expect_is(form_resupport(as_q(p_f_infin), c(1, 2), "reflect"), "q")
+  expect_is(form_resupport(as_r(p_f_infin), c(1, 2), "reflect"), "r")
 })
 
 test_that("form_resupport handles `NA`s in `support`", {

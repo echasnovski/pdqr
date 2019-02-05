@@ -25,8 +25,8 @@ form_resupport <- function(f, support = NULL, method = "trim") {
   switch(
     method,
     trim = resupport_trim(f, supp),
-    linear = resupport_linear(f, supp)
-    # reflect = resupport_reflect(f, supp),
+    linear = resupport_linear(f, supp),
+    reflect = resupport_reflect(f, supp)
     # winsor = resupport_winsor(f, supp)
   )
 }
@@ -93,9 +93,26 @@ resupport_linear <- function(f, support) {
   }
 }
 
-# resupport_reflect <- function(f, support) {
-#
-# }
+resupport_reflect <- function(f, support) {
+  f_supp <- meta_support(f)
+  f_x_tbl <- meta_x_tbl(f)
+
+  # Sum up densities for possible reflections
+  x_tbl_list <- list(f_x_tbl)
+
+  if (support[1] > f_supp[1]) {
+    x_tbl_list <- c(x_tbl_list, list(reflect_x_tbl(f_x_tbl, support[1])))
+  }
+  if (support[2] < f_supp[2]) {
+    x_tbl_list <- c(x_tbl_list, list(reflect_x_tbl(f_x_tbl, support[2])))
+  }
+
+  x_tbl <- stack_x_tbl(x_tbl_list)
+  res <- new_pdqr_by_ref(f)(x_tbl, meta_type(f))
+
+  # Trim total sum to supplied support
+  form_resupport(res, support, "trim")
+}
 
 # resupport_winsor <- function(f, support) {
 #
