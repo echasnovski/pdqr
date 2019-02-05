@@ -182,6 +182,15 @@ test_that("ground_x_tbl works without column 'cumprob' present",  {
 })
 
 
+# enfun_x_tbl -------------------------------------------------------------
+test_that("enfun_x_tbl works",  {
+  out_f <- enfun_x_tbl(data.frame(x = c(1, 2, 5), y = c(0, 10, 2)))
+  expect_equal(
+    out_f(c(0, 1, 1.5, 2.75, 5, 1000)), c(0, 0, 5, 8, 2, 0)
+  )
+})
+
+
 # stack_x_tbl -------------------------------------------------------------
 test_that("stack_x_tbl works with 'fin' type",  {
   x_tbl_fin_1 <- data.frame(x = 1, prob = 1)

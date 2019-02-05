@@ -230,6 +230,15 @@ ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
 }
 
 
+# Compute based on "x_tbl" ------------------------------------------------
+# This helper is code-lighter and faster than `new_d()`
+enfun_x_tbl <- function(x_tbl) {
+  stats::approxfun(
+    x_tbl[["x"]], x_tbl[["y"]], method = "linear", yleft = 0, yright = 0
+  )
+}
+
+
 # Stack "x_tbl"s (sum densities/probabilities) ----------------------------
 stack_x_tbl <- function(x_tbl_list) {
   # It is assumed that all "x_tbl"s have the same type
@@ -260,11 +269,7 @@ stack_x_tbl_fin <- function(x_tbl_list) {
 }
 
 stack_x_tbl_infin <- function(x_tbl_list) {
-  x_tbl_funs <- lapply(x_tbl_list, function(x_tbl) {
-    stats::approxfun(
-      x_tbl[["x"]], x_tbl[["y"]], method = "linear", yleft = 0, yright = 0
-    )
-  })
+  x_tbl_funs <- lapply(x_tbl_list, enfun_x_tbl)
 
   x <- unlist(lapply(x_tbl_list, function(x_tbl) {
     # Grounding is needed to ensure that `x_tbl` doesn't affect its outside
