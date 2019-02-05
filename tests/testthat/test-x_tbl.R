@@ -182,6 +182,27 @@ test_that("ground_x_tbl works without column 'cumprob' present",  {
 })
 
 
+# add_x_tbl_knots ---------------------------------------------------------
+test_that("add_x_tbl_knots works",  {
+  x_tbl <- data.frame(x = 1:3, y = c(1, 2, 1))
+
+  expect_equal(
+    add_x_tbl_knots(x_tbl, c(1.5, 1, -1, 10), only_inside = TRUE),
+    data.frame(x = c(1, 1.5, 2, 3), y = c(1, 1.5, 2, 1))
+  )
+  expect_equal(
+    add_x_tbl_knots(x_tbl, c(1.5, 1, -1, 10), only_inside = FALSE),
+    data.frame(x = c(-1, 1, 1.5, 2, 3, 10), y = c(0, 1, 1.5, 2, 1, 0))
+  )
+
+  # `only_inside` is `TRUE` by default
+  expect_equal(add_x_tbl_knots(x_tbl, c(-100, 100)), x_tbl)
+
+  # Present knots aren't get duplicated
+  expect_equal(add_x_tbl_knots(x_tbl, x_tbl[["x"]]), x_tbl)
+})
+
+
 # enfun_x_tbl -------------------------------------------------------------
 test_that("enfun_x_tbl works",  {
   out_f <- enfun_x_tbl(data.frame(x = c(1, 2, 5), y = c(0, 10, 2)))

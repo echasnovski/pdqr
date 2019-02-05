@@ -229,6 +229,27 @@ ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
   res
 }
 
+add_x_tbl_knots <- function(x_tbl, at_x, only_inside = TRUE) {
+  # Ensure that present knots aren't get duplicated
+  at_x <- setdiff(at_x, x_tbl[["x"]])
+
+  # Add only knots inside current range if `only_inside` is `TRUE`
+  if (only_inside) {
+    supp <- range(x_tbl[["x"]])
+    at_x <- at_x[(at_x > supp[1]) & (at_x < supp[2])]
+  }
+
+  if (length(at_x) == 0) {
+    return(x_tbl)
+  }
+
+  new_x <- c(x_tbl[["x"]], at_x)
+  new_y <- c(x_tbl[["y"]], enfun_x_tbl(x_tbl)(at_x))
+  x_order <- order(new_x)
+
+  data.frame(x = new_x[x_order], y = new_y[x_order])
+}
+
 
 # Compute based on "x_tbl" ------------------------------------------------
 # This helper is code-lighter and faster than `new_d()`
