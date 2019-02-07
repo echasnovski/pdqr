@@ -1,7 +1,5 @@
 # form_resupport ----------------------------------------------------------
-form_resupport <- function(f, support = NULL, method = "trim") {
-  support <- format_support(support)
-
+form_resupport <- function(f, support, method = "trim") {
   assert_pdqr_fun(f)
   assert_support(support, allow_na = TRUE)
   assert_type(method, is_string)

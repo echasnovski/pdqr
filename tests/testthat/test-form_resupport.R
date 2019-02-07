@@ -324,14 +324,16 @@ test_that("form_resupport handles `NA`s in `support`", {
 })
 
 test_that("form_resupport returns self when appropriate", {
-  output_1 <- form_resupport(p_fin)
+  output_1 <- form_resupport(p_fin, c(NA_real_, NA_real_))
   expect_close_f(p_fin, output_1, x_fin_vec)
 
-  output_2 <- form_resupport(p_fin, support = NULL)
-  expect_close_f(p_fin, output_2, x_fin_vec)
+  for (method in c("trim", "linear", "reflect", "winsor")) {
+    output_fin <- form_resupport(p_fin, meta_support(p_fin), method)
+    expect_close_f(p_fin, output_fin, x_fin_vec)
 
-  output_3 <- form_resupport(p_fin, c(NA_real_, NA_real_))
-  expect_close_f(p_fin, output_3, x_fin_vec)
+    output_infin <- form_resupport(p_infin, meta_support(p_infin), method)
+    expect_close_f(p_infin, output_infin, x_infin_vec)
+  }
 })
 
 test_that("form_resupport throws errors on bad input", {
