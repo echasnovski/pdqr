@@ -179,6 +179,87 @@ test_that("form_resupport works with `method='reflect'` and `type`='infin'",  {
   )
 })
 
+test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
+  d_f <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "fin")
+
+  # Collapsing into single element
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(5, 6), "winsor"))[, c("x", "prob")],
+    data.frame(x = 5, prob = 1)
+  )
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(0, 0.5), "winsor"))[, c("x", "prob")],
+    data.frame(x = 0.5, prob = 1)
+  )
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(3.14, 3.14), "winsor"))[, c("x", "prob")],
+    data.frame(x = 3.14, prob = 1)
+  )
+
+  # Left
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(2.5, 6), "winsor"))[, c("x", "prob")],
+    data.frame(x = c(2.5, 3, 4), prob = c(0.3, 0.3, 0.4))
+  )
+
+  # Right
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(0, 2.5), "winsor"))[, c("x", "prob")],
+    data.frame(x = c(1, 2, 2.5), prob = c(0.1, 0.2, 0.7))
+  )
+
+  # Both
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(2.5, 2.75), "winsor"))[, c("x", "prob")],
+    data.frame(x = c(2.5, 2.75), prob = c(0.3, 0.7))
+  )
+})
+
+test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
+  d_f <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+
+  # Collapsing into single element
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(2, 3), "winsor"))[, c("x", "prob")],
+    data.frame(x = 2, prob = 1)
+  )
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(-1, 0), "winsor"))[, c("x", "prob")],
+    data.frame(x = 0, prob = 1)
+  )
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(0.7, 0.7), "winsor"))[, c("x", "prob")],
+    data.frame(x = 0.7, prob = 1)
+  )
+
+  # Left
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(0.3, 1), "winsor"))[, c("x", "y")],
+    # Here `+1.032` in `y[1]` seems to be because of numerical representation
+    # accuracy.
+    data.frame(x = c(0.3, 0.3+1e-8, 1), y = c(6e7+1.032, 1, 1))
+  )
+
+  # Right
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(0, 0.7), "winsor"))[, c("x", "y")],
+    # Here `+0.696` in `y[3]` seems to be because of numerical representation
+    # accuracy.
+    data.frame(x = c(0, 0.7-1e-8, 0.7), y = c(1, 1, 6e7+0.696))
+  )
+
+  # Both
+  expect_equal(
+    meta_x_tbl(form_resupport(d_f, c(0.3, 0.7), "winsor"))[, c("x", "y")],
+    # Adding of "small" values to edges explained in tests for left and right
+    # winsoring
+    data.frame(
+      x = c(0.3, 0.3+1e-8, 0.7-1e-8, 0.7),
+      y = c(6e7+1.03, 1, 1, 6e7+0.696)
+    )
+  )
+})
+
 test_that("form_resupport returns correct pdqr-function", {
   p_f_fin <- new_p(data.frame(x = 1:2, prob = c(0.3, 0.7)), "fin")
   p_f_infin <- new_p(data.frame(x = 1:3, y = c(0, 1, 0)), "infin")
@@ -215,6 +296,17 @@ test_that("form_resupport returns correct pdqr-function", {
   expect_is(form_resupport(as_d(p_f_infin), c(1, 2), "reflect"), "d")
   expect_is(form_resupport(as_q(p_f_infin), c(1, 2), "reflect"), "q")
   expect_is(form_resupport(as_r(p_f_infin), c(1, 2), "reflect"), "r")
+
+  # Method "winsor"
+  expect_is(form_resupport(p_f_fin, c(1, 2), "winsor"), "p")
+  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "winsor"), "d")
+  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "winsor"), "q")
+  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "winsor"), "r")
+
+  expect_is(form_resupport(p_f_infin, c(1, 2), "winsor"), "p")
+  expect_is(form_resupport(as_d(p_f_infin), c(1, 2), "winsor"), "d")
+  expect_is(form_resupport(as_q(p_f_infin), c(1, 2), "winsor"), "q")
+  expect_is(form_resupport(as_r(p_f_infin), c(1, 2), "winsor"), "r")
 })
 
 test_that("form_resupport handles `NA`s in `support`", {
@@ -268,7 +360,7 @@ test_that("form_resupport throws errors on bad input", {
 # Tested in `resupport_trim()`
 
 
-# resupport_move ----------------------------------------------------------
+# resupport_linear --------------------------------------------------------
 # Tested in `form_resupport()`
 
 
@@ -277,6 +369,18 @@ test_that("form_resupport throws errors on bad input", {
 
 
 # resupport_winsor --------------------------------------------------------
+# Tested in `form_resupport()`
+
+
+# resupport_winsor_fin ----------------------------------------------------
+# Tested in `form_resupport()`
+
+
+# resupport_winsor_infin --------------------------------------------------
+# Tested in `form_resupport()`
+
+
+# increase_tail_weight ----------------------------------------------------
 # Tested in `form_resupport()`
 
 

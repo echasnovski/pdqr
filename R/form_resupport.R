@@ -1,3 +1,4 @@
+# form_resupport ----------------------------------------------------------
 form_resupport <- function(f, support = NULL, method = "trim") {
   support <- format_support(support)
 
@@ -26,11 +27,13 @@ form_resupport <- function(f, support = NULL, method = "trim") {
     method,
     trim = resupport_trim(f, supp),
     linear = resupport_linear(f, supp),
-    reflect = resupport_reflect(f, supp)
-    # winsor = resupport_winsor(f, supp)
+    reflect = resupport_reflect(f, supp),
+    winsor = resupport_winsor(f, supp)
   )
 }
 
+
+# "trim" ------------------------------------------------------------------
 resupport_trim <- function(f, support) {
   switch(
     meta_type(f),
@@ -70,6 +73,8 @@ resupport_trim_infin <- function(f, support) {
   new_pdqr_by_ref(f)(res_x_tbl, "infin")
 }
 
+
+# "linear" ----------------------------------------------------------------
 resupport_linear <- function(f, support) {
   if (support[1] == support[2]) {
     new_pdqr_by_ref(f)(data.frame(x = support[1], prob = 1), "fin")
@@ -93,6 +98,8 @@ resupport_linear <- function(f, support) {
   }
 }
 
+
+# "reflect" ---------------------------------------------------------------
 resupport_reflect <- function(f, support) {
   f_supp <- meta_support(f)
   f_x_tbl <- meta_x_tbl(f)
@@ -114,10 +121,90 @@ resupport_reflect <- function(f, support) {
   form_resupport(res, support, "trim")
 }
 
-# resupport_winsor <- function(f, support) {
-#
-# }
 
+# "winsor" ----------------------------------------------------------------
+resupport_winsor <- function(f, support) {
+  if (support[1] == support[2]) {
+    return(
+      new_pdqr_by_ref(f)(data.frame(x = support[1], prob = 1), "fin")
+    )
+  }
+
+  switch(
+    meta_type(f),
+    fin = resupport_winsor_fin(f, support),
+    infin = resupport_winsor_infin(f, support)
+  )
+}
+
+resupport_winsor_fin <- function(f, support) {
+  f_x_tbl <- meta_x_tbl(f)
+  x <- f_x_tbl[["x"]]
+  x[x <= support[1]] <- support[1]
+  x[x >= support[2]] <- support[2]
+  f_x_tbl[["x"]] <- x
+
+  new_pdqr_by_ref(f)(f_x_tbl, "fin")
+}
+
+resupport_winsor_infin <- function(f, support, h = 1e-8) {
+  p_f <- as_p.pdqr(f)
+  f_x_tbl <- meta_x_tbl(f)
+  f_supp <- meta_support(f)
+
+  # Early return extreme cases
+  if (support[1] >= f_supp[2]) {
+    return(
+      new_pdqr_by_ref(f)(data.frame(x = support[1], prob = 1), "fin")
+    )
+  }
+  if (support[2] <= f_supp[1]) {
+    return(
+      new_pdqr_by_ref(f)(data.frame(x = support[2], prob = 1), "fin")
+    )
+  }
+
+  x_tbl <- f_x_tbl
+
+  # Winsor left
+  if (support[1] > f_supp[1]) {
+    x_tbl <- add_x_tbl_knots(x_tbl, support[1] + c(0, h))
+    x_tbl <- filter_x_tbl(x_tbl, c(support[1], f_supp[2]))
+    tail_prob <- p_f(support[1])
+    x_tbl <- increase_tail_weight(x_tbl, tail_prob, "left")
+  }
+
+  # Winsor right
+  if (support[2] < f_supp[2]) {
+    x_tbl <- add_x_tbl_knots(x_tbl, support[2] - c(h, 0))
+    x_tbl <- filter_x_tbl(x_tbl, c(f_supp[1], support[2]))
+    tail_prob <- 1 - p_f(support[2])
+    x_tbl <- increase_tail_weight(x_tbl, tail_prob, "right")
+  }
+
+  new_pdqr_by_ref(f)(x_tbl, "infin")
+}
+
+increase_tail_weight <- function(x_tbl, by_prob, edge) {
+  n <- nrow(x_tbl)
+  x <- x_tbl[["x"]]
+  y <- x_tbl[["y"]]
+
+  if (edge == "left") {
+    present_prob <- (y[1] + y[2]) * (x[2] - x[1]) / 2
+    to_prob <- present_prob + by_prob
+    y[1] <- 2 * to_prob / (x[2] - x[1]) - y[2]
+  } else if (edge == "right") {
+    present_prob <- (y[n-1] + y[n]) * (x[n] - x[n-1]) / 2
+    to_prob <- present_prob + by_prob
+    y[n] <- 2 * to_prob / (x[n] - x[n-1]) - y[n-1]
+  }
+
+  data.frame(x = x, y = y)
+}
+
+
+# Other -------------------------------------------------------------------
 stop_resupport_zero_tot_prob <- function() {
   stop_collapse(
     'Output of `form_resupport()` will not have positive total probability.'
