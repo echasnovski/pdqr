@@ -1,6 +1,6 @@
+# 'pdqr' classes functionality --------------------------------------------
 new_pdqr_by_ref <- function(f) {
   pdqr_class <- get_pdqr_class(f)
-
   switch(
     pdqr_class,
     p = new_p, d = new_d, q = new_q, r = new_r,
@@ -23,4 +23,23 @@ get_pdqr_class <- function(f) {
   f_type <- pdqr_classes[match(class(f), pdqr_classes)]
 
   f_type[!is.na(f_type)][1]
+}
+
+
+# Point dirac -------------------------------------------------------------
+point_dirac <- function(at_x, type, pdqr_class, h = 1e-8) {
+  x_tbl <- switch(
+    type,
+    fin = data.frame(x = at_x, prob = 1),
+    infin = data.frame(x = at_x + h*c(-1, 0, 1), y = c(0, 1, 0)/h),
+    stop_collapse("Incorrect `type` for `point_dirac()`.")
+  )
+
+  pdqr_f <- switch(
+    pdqr_class,
+    p = new_p, d = new_d, q = new_q, r = new_r,
+    stop_collapse("Incorrect `pdqr_class` for `point_dirac()`.")
+  )
+
+  pdqr_f(x_tbl, type)
 }

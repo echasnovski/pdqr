@@ -75,25 +75,25 @@ resupport_trim_infin <- function(f, support) {
 # "linear" ----------------------------------------------------------------
 resupport_linear <- function(f, support) {
   if (support[1] == support[2]) {
-    new_pdqr_by_ref(f)(data.frame(x = support[1], prob = 1), "fin")
-  } else {
-    f_supp <- meta_support(f)
-
-    if (f_supp[1] == f_supp[2]) {
-      stop_collapse(
-        "Can't resupport from single point support to interval one."
-      )
-    }
-
-    res_x_tbl <- meta_x_tbl(f)
-    res_x_tbl[["x"]] <- extrap_lin(
-      x_1 = f_supp[1], x_2 = f_supp[2],
-      y_1 = support[1], y_2 = support[2],
-      x_target = res_x_tbl[["x"]]
-    )
-
-    new_pdqr_by_ref(f)(res_x_tbl, meta_type(f))
+    return(point_dirac(support[1], meta_type(f), get_pdqr_class(f)))
   }
+
+  f_supp <- meta_support(f)
+
+  if (f_supp[1] == f_supp[2]) {
+    stop_collapse(
+      "Can't resupport from single point support to interval one."
+    )
+  }
+
+  res_x_tbl <- meta_x_tbl(f)
+  res_x_tbl[["x"]] <- extrap_lin(
+    x_1 = f_supp[1], x_2 = f_supp[2],
+    y_1 = support[1], y_2 = support[2],
+    x_target = res_x_tbl[["x"]]
+  )
+
+  new_pdqr_by_ref(f)(res_x_tbl, meta_type(f))
 }
 
 
@@ -123,9 +123,7 @@ resupport_reflect <- function(f, support) {
 # "winsor" ----------------------------------------------------------------
 resupport_winsor <- function(f, support) {
   if (support[1] == support[2]) {
-    return(
-      new_pdqr_by_ref(f)(data.frame(x = support[1], prob = 1), "fin")
-    )
+    return(point_dirac(support[1], meta_type(f), get_pdqr_class(f)))
   }
 
   switch(
@@ -153,13 +151,11 @@ resupport_winsor_infin <- function(f, support, h = 1e-8) {
   # Early return extreme cases
   if (support[1] >= f_supp[2]) {
     return(
-      new_pdqr_by_ref(f)(data.frame(x = support[1], prob = 1), "fin")
+      return(point_dirac(support[1], meta_type(f), get_pdqr_class(f), h = h))
     )
   }
   if (support[2] <= f_supp[1]) {
-    return(
-      new_pdqr_by_ref(f)(data.frame(x = support[2], prob = 1), "fin")
-    )
+    return(point_dirac(support[2], meta_type(f), get_pdqr_class(f), h = h))
   }
 
   x_tbl <- f_x_tbl

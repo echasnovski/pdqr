@@ -73,14 +73,15 @@ test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
 test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
   p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
 
-  out_x_tbl_1 <- meta_x_tbl(form_resupport(p_f, c(-0.5, 3), "linear"))
   expect_equal(
-    out_x_tbl_1[, c("x", "prob")],
+    meta_x_tbl(form_resupport(p_f, c(-0.5, 3), "linear"))[, c("x", "prob")],
     data.frame(x = c(-0.5, 0.375, 3), prob = meta_x_tbl(p_f)[["prob"]])
   )
 
-  out_x_tbl_2 <- meta_x_tbl(form_resupport(p_f, c(15, 15), "linear"))
-  expect_equal(out_x_tbl_2[, c("x", "prob")], data.frame(x = 15, prob = 1))
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(15, 15), "linear")),
+    meta_x_tbl(point_dirac(15, "fin", "p"))
+  )
 
   # Can't resupport from single point support to interval one
   expect_error(
@@ -95,16 +96,15 @@ test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
   )
   p_f <- new_p(x_tbl, "infin")
 
-  out_x_tbl_1 <- meta_x_tbl(form_resupport(p_f, c(1, 3.5), "linear"))
   expect_equal(
-    out_x_tbl_1[, c("x", "y")],
+    meta_x_tbl(form_resupport(p_f, c(1, 3.5), "linear"))[, c("x", "y")],
     data.frame(x = c(1, 1.5, 2, 3.5), y = c(0, 0, 1, 0))
   )
 
-  # For now collapsing "infin" pdqr-function into singular "fin" one is
-  # considered correct behaviour
-  out_x_tbl_2 <- meta_x_tbl(form_resupport(p_f, c(15, 15), "linear"))
-  expect_equal(out_x_tbl_2[, c("x", "prob")], data.frame(x = 15, prob = 1))
+  expect_equal(
+    meta_x_tbl(form_resupport(p_f, c(15, 15), "linear")),
+    meta_x_tbl(point_dirac(15, "infin", "p"))
+  )
 })
 
 test_that("form_resupport works with `method = 'reflect'` and `type`='fin'", {
@@ -184,16 +184,16 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
 
   # Collapsing into single element
   expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(5, 6), "winsor"))[, c("x", "prob")],
-    data.frame(x = 5, prob = 1)
+    meta_x_tbl(form_resupport(d_f, c(5, 6), "winsor")),
+    meta_x_tbl(point_dirac(5, "fin", "d"))
   )
   expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0, 0.5), "winsor"))[, c("x", "prob")],
-    data.frame(x = 0.5, prob = 1)
+    meta_x_tbl(form_resupport(d_f, c(0, 0.5), "winsor")),
+    meta_x_tbl(point_dirac(0.5, "fin", "d"))
   )
   expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(3.14, 3.14), "winsor"))[, c("x", "prob")],
-    data.frame(x = 3.14, prob = 1)
+    meta_x_tbl(form_resupport(d_f, c(3.14, 3.14), "winsor")),
+    meta_x_tbl(point_dirac(3.14, "fin", "d"))
   )
 
   # Left
@@ -220,16 +220,16 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
 
   # Collapsing into single element
   expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(2, 3), "winsor"))[, c("x", "prob")],
-    data.frame(x = 2, prob = 1)
+    meta_x_tbl(form_resupport(d_f, c(2, 3), "winsor")),
+    meta_x_tbl(point_dirac(2, "infin", "d"))
   )
   expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(-1, 0), "winsor"))[, c("x", "prob")],
-    data.frame(x = 0, prob = 1)
+    meta_x_tbl(form_resupport(d_f, c(-1, 0), "winsor")),
+    meta_x_tbl(point_dirac(0, "infin", "d"))
   )
   expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0.7, 0.7), "winsor"))[, c("x", "prob")],
-    data.frame(x = 0.7, prob = 1)
+    meta_x_tbl(form_resupport(d_f, c(0.7, 0.7), "winsor")),
+    meta_x_tbl(point_dirac(0.7, "infin", "d"))
   )
 
   # Left
