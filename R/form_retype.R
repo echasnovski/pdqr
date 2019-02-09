@@ -1,19 +1,31 @@
-form_retype <- function(f, type) {
+form_retype <- function(f, type, method = "piecelin") {
   assert_pdqr_fun(f)
   assert_distr_type(type)
+  assert_type(method, is_string)
+  if (!(method %in% c("piecelin", "dirac"))) {
+    stop_collapse('`method` should be one of "piecelin" or "dirac".')
+  }
 
   switch(
     type,
-    fin = retype_fin(f),
-    infin = retype_infin(f)
+    fin = retype_fin(f, method),
+    infin = retype_infin(f, method)
   )
 }
 
-retype_fin <- function(f) {
+retype_fin <- function(f, method) {
   if (meta_type(f) == "fin") {
     return(f)
   }
 
+  switch(
+    method,
+    piecelin = retype_fin_piecelin(f),
+    dirac = retype_fin_dirac(f)
+  )
+}
+
+retype_fin_piecelin <- function(f) {
   x_tbl <- meta_x_tbl(f)
   n <- nrow(x_tbl)
 
@@ -38,11 +50,52 @@ retype_fin <- function(f) {
   pdqr_fun(data.frame(x = x_mass, prob = prob), "fin")
 }
 
-retype_infin <- function(f) {
+retype_fin_dirac <- function(f) {
+  x_tbl <- meta_x_tbl(f)
+  # Ensure presense of zero densities
+  x_tbl <- ground_x_tbl(x_tbl)
+
+  # One output "fin" value is computed as mean of two consequtive "x"s with zero
+  # density. Each "x" corresponds to only one "fin" value counting from left:
+  # x_1 and x_2 are used to compute first "fin" value; x_3 and x_4 - second, and
+  # so on. Probability of "fin" value is computed as difference in cumulative
+  # probabilities between corresponding right and left "x" values.
+  y_is_zero <- x_tbl[["y"]] == 0
+  n_y_zero <- sum(y_is_zero)
+  fin_groups <- rep(seq_len(n_y_zero), each = 2, length.out = n_y_zero)
+
+  new_x <- tapply(x_tbl[["x"]][y_is_zero], fin_groups, mean)
+  # Remove dimnames
+  new_x <- as.vector(new_x)
+
+  new_prob <- tapply(
+    x_tbl[["cumprob"]][y_is_zero],
+    fin_groups,
+    function(cumprob) {
+      # This custom function is used instead of `diff()` if, for some reason,
+      # there are odd number of zero density rows in `x_tbl`. In that case
+      # output probability is zero.
+      cumprob[length(cumprob)] - cumprob[1]
+    })
+  # Remove dimnames
+  new_prob <- as.vector(new_prob)
+
+  new_pdqr_by_ref(f)(data.frame(x = new_x, prob = new_prob), "fin")
+}
+
+retype_infin <- function(f, method) {
   if (meta_type(f) == "infin") {
     return(f)
   }
 
+  switch(
+    method,
+    piecelin = retype_infin_piecelin(f),
+    dirac = retype_infin_dirac(f)
+  )
+}
+
+retype_infin_piecelin <- function(f) {
   # Note that `f` has already passed `assert_pdqr_fun()` which means that "x"
   # column in "x_tbl" metadata is sorted and has no duplicate values
   x_tbl <- meta_x_tbl(f)
@@ -87,4 +140,21 @@ retype_infin <- function(f) {
   pdqr_fun <- new_pdqr_by_ref(f)
 
   pdqr_fun(data.frame(x = x_grid, y = y), "infin")
+}
+
+retype_infin_dirac <- function(f, h = 1e-8) {
+  x_tbl <- meta_x_tbl(f)
+  x <- x_tbl[["x"]]
+  half_diff_x <- diff(x) / 2
+
+  # Vector of "dirac" radius values
+  left_h_vec <- pmin(h, c(h, half_diff_x))
+  right_h_vec <- pmin(h, c(half_diff_x, h))
+  h_vec <- pmin(left_h_vec, right_h_vec)
+
+  y_zero <- rep(0, length(x))
+  new_x <- c(x - h_vec,                           x, x + h_vec)
+  new_y <- c(   y_zero, x_tbl[["prob"]] / (2*h_vec),    y_zero)
+
+  new_pdqr_by_ref(f)(data.frame(x = new_x, y = new_y), "infin")
 }
