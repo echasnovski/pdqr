@@ -157,6 +157,20 @@ test_that("plot.d and lines.d respect `n_grid` argument", {
   )
 })
 
+test_that("plot.d handles dirac-like entries in 'x_tbl'",  {
+  vdiffr::expect_doppelganger(
+    "dirac-like-1", recordPlot({
+      # Currently does a bad job because of numerical default `n_grid`
+      plot(form_retype(d_fin, "infin", method = "dirac"))
+    })
+  )
+  vdiffr::expect_doppelganger(
+    "dirac-like-2", recordPlot({
+      plot(form_resupport(d_infin, c(-2, 1), method = "winsor"))
+    })
+  )
+})
+
 test_that("plot.d throws error with corrupt input", {
   expect_error(
     plot(structure(user_d, class = c("d", "pdqr"))), "x.*proper.*type"
@@ -294,6 +308,10 @@ test_that("plot.r throws error with corrupt input", {
 
 # plot_impl_pdq -----------------------------------------------------------
 # Tested in `plot()` methods
+
+
+# compute_d_infin_ylim ----------------------------------------------------
+# Tested in `plot.d()`
 
 
 # add_p_fin_segments ------------------------------------------------------

@@ -47,7 +47,13 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
     dots <- make_plot_dots(
       ...,
       type = "l", main = paste0("Density function ", x_name),
-      xlab = "x", ylab = "Density"
+      xlab = "x", ylab = "Density",
+      # This is needed for a nice plotting in presence of dirac-like entries in
+      # "x_tbl". Note, that this will compute `ylim` based on "x_tbl" in `x` and
+      # not based on actually plotted points, so the output `ylim` can be an
+      # overestimation (which is kind of a good indication of too small value
+      # of `n_grid`).
+      ylim = compute_d_infin_ylim(x)
     )
 
     plot_impl_pdq(x, meta_support(x), n_grid, dots)
@@ -102,6 +108,29 @@ plot_impl_pdq <- function(f, grid_range, n_grid, dots) {
   plot_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
 
   do.call(graphics::plot, plot_args)
+}
+
+compute_d_infin_ylim <- function(f) {
+  # This is an euristic for a nice plotting in presence of dirac-like entries in
+  # "x_tbl"
+  f_x_tbl <- meta_x_tbl(f)
+  x <- f_x_tbl[["x"]]
+  y <- f_x_tbl[["y"]]
+
+  x_neigh_dist <- neigh_dist(x, neigh_type = "max")
+
+  # Here `2e-8` is used instead of default `1e-8` to account for possible
+  # numerical representation inaccuracies.
+  y_non_dirac <- y[x_neigh_dist >= 2e-8]
+  if (max(y_non_dirac) == 0) {
+    # The case when all entries seems to be dirac-like. So all points should be
+    # used in computing `ylim`.
+    range(y)
+  } else {
+    # The case when only some entries are dirac-like and the respective "y"s
+    # should be removed.
+    range(y_non_dirac)
+  }
 }
 
 add_p_fin_segments <- function(x, dots) {
