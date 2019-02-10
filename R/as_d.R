@@ -15,7 +15,7 @@ as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
   support <- detect_support_d(d_f, supp)
 
   # Compute `y`
-  x <- seq(support[1], support[2], length.out = n_grid)
+  x <- seq_between(support, length.out = n_grid)
   y <- d_f(x)
   y <- impute_inf(x, y, '`f` output')
 

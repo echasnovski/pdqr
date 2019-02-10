@@ -13,7 +13,7 @@ summ_distr_tbl <- function(f, n_discrete = 10001, ...) {
 p_summ_distr_tbl <- function(p_f, n_discrete = n_discrete) {
   support <- meta_support(p_f)
 
-  x_discrete <- seq(from = support[1], to = support[2], length.out = n_discrete)
+  x_discrete <- seq_between(support, length.out = n_discrete)
   p_vec <- p_f(c(support[1] - 10^(-6), x_discrete))
   prob <- diff(p_vec)
   prob <- prob / sum(prob)

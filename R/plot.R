@@ -104,7 +104,7 @@ plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
 }
 
 plot_impl_pdq <- function(f, grid_range, n_grid, dots) {
-  grid <- seq(grid_range[1], grid_range[2], length.out = n_grid)
+  grid <- seq_between(grid_range, length.out = n_grid)
   plot_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
 
   do.call(graphics::plot, plot_args)
@@ -236,7 +236,7 @@ lines.q <- function(x, n_grid = 1001, ...) {
 }
 
 lines_impl_pdq <- function(f, grid_range, n_grid, dots) {
-  grid <- seq(grid_range[1], grid_range[2], length.out = n_grid)
+  grid <- seq_between(grid_range, length.out = n_grid)
   lines_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
 
   do.call(graphics::lines, lines_args)

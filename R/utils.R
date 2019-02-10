@@ -53,7 +53,7 @@ neigh_dist <- function(vec, neigh_type = "min", def_dist = NULL) {
 # Function and vector manipulations ---------------------------------------
 inversing <- function(f, interval, n_grid = 10001, ...,
                       .approxfun_args = list()) {
-  x_grid <- seq(from = interval[1], to = interval[2], length.out = n_grid)
+  x_grid <- seq_between(interval, length.out = n_grid)
   y_grid <- f(x_grid, ...)
 
   # Impute infinity `y` values by linear extrapolations
@@ -138,6 +138,10 @@ extrap_lin <- function(x_1, x_2, y_1, y_2, x_target) {
 
 stretch_range <- function(x, ext = 10^(-6)) {
   x + ext * c(-1, 1)
+}
+
+seq_between <- function(seq_range, ...) {
+  seq(from = seq_range[1], to = seq_range[2], ...)
 }
 
 coalesce_pair <- function(x, y) {

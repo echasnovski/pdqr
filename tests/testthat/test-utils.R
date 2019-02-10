@@ -166,6 +166,19 @@ test_that("stretch_range works", {
 })
 
 
+# seq_between -------------------------------------------------------------
+test_that("seq_between works",  {
+  expect_equal(
+    seq_between(c(-1, 10), length.out = 101),
+    seq(from = -1, to = 10, length.out = 101)
+  )
+  expect_equal(
+    seq_between(c(-1, 10), by = 0.03),
+    seq(from = -1, to = 10, by = 0.03)
+  )
+})
+
+
 # coalesce_pair -----------------------------------------------------------
 test_that("coalesce_pair works", {
   expect_equal(

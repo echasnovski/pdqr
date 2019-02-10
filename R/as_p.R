@@ -15,7 +15,7 @@ as_p.default <- function(f, support = NULL, n_grid = 10001, ...) {
   support <- detect_support_p(p_f, supp)
 
   # Compute `y`
-  x <- seq(support[1], support[2], length.out = n_grid)
+  x <- seq_between(support, length.out = n_grid)
   p <- p_f(x)
 
   # Adjust p grid to support ("cut-and-normalize" method)
