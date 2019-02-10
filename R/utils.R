@@ -20,6 +20,36 @@ is_truefalse <- function(x) {
 }
 
 
+# Get information about objects -------------------------------------------
+neigh_dist <- function(vec, neigh_type = "min", def_dist = NULL) {
+  if (is.unsorted(vec)) {
+    vec_ord <- order(vec)
+    inv_vec_ord <- order(vec_ord)
+  } else {
+    vec_ord <- seq_along(vec)
+    inv_vec_ord <- vec_ord
+  }
+
+  vec_sorted <- vec[vec_ord]
+
+  if (is.null(def_dist)) {
+    def_dist <- if (neigh_type == "min") {Inf} else {-Inf}
+  }
+
+  diff_vec <- diff(vec_sorted)
+  left_dist <- c(def_dist, diff_vec)
+  right_dist <- c(diff_vec, def_dist)
+
+  if (neigh_type == "min") {
+    sorted_dist <- pmin(left_dist, right_dist)
+  } else {
+    sorted_dist <- pmax(left_dist, right_dist)
+  }
+
+  sorted_dist[inv_vec_ord]
+}
+
+
 # Function and vector manipulations ---------------------------------------
 inversing <- function(f, interval, n_grid = 10001, ...,
                       .approxfun_args = list()) {

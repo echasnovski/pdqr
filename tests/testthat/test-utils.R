@@ -58,6 +58,29 @@ test_that("is_truefalse worksq", {
 })
 
 
+# neigh_dist --------------------------------------------------------------
+test_that("neigh_dist works",  {
+  vec      <- c(  2,   1, 2.5,  2.6, -100,  100)
+
+  min_dist <- c(0.5,   1, 0.1,  0.1,  101, 97.4)
+  max_dist <- c(  1, 101, 0.5, 97.4,  101, 97.4)
+
+  expect_equal(neigh_dist(vec, "min"), min_dist)
+  expect_equal(neigh_dist(vec, "max"), max_dist)
+
+  # Output doesn't depend on order of input
+  vec_ord <- order(vec)
+  expect_equal(neigh_dist(vec[vec_ord], "min"), min_dist[vec_ord])
+  expect_equal(neigh_dist(vec[vec_ord], "max"), max_dist[vec_ord])
+
+  # Default distance is used
+  expect_equal(
+    neigh_dist(vec, "max", def_dist = 1e5),
+    c(1, 101, 0.5, 97.4, 1e5, 1e5)
+  )
+})
+
+
 # inversing ---------------------------------------------------------------
 test_that("inversing works", {
   square <- function(x) {x^2}
