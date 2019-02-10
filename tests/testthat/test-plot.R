@@ -314,6 +314,10 @@ test_that("plot.r throws error with corrupt input", {
 # Tested in `plot.d()`
 
 
+# compute_plot_grid -------------------------------------------------------
+# Tested in `plot()` methods
+
+
 # add_p_fin_segments ------------------------------------------------------
 # Tested in `plot.p()`
 

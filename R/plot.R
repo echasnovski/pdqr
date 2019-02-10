@@ -1,5 +1,5 @@
 # plot() ------------------------------------------------------------------
-plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
+plot.p <- function(x, y = NULL, n_grid = NULL, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -21,12 +21,11 @@ plot.p <- function(x, y = NULL, n_grid = 1001, ...) {
     # Add segments
     add_p_fin_segments(x, list(...))
   } else {
-    # Stretch support to guarantee 0 and 1 on edges
-    plot_impl_pdq(x, stretch_range(meta_support(x)), n_grid, dots)
+    plot_impl_pdq(x, compute_plot_grid(x, n_grid), dots)
   }
 }
 
-plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
+plot.d <- function(x, y = NULL, n_grid = NULL, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -56,11 +55,11 @@ plot.d <- function(x, y = NULL, n_grid = 1001, ...) {
       ylim = compute_d_infin_ylim(x)
     )
 
-    plot_impl_pdq(x, meta_support(x), n_grid, dots)
+    plot_impl_pdq(x, compute_plot_grid(x, n_grid), dots)
   }
 }
 
-plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
+plot.q <- function(x, y = NULL, n_grid = NULL, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -82,7 +81,7 @@ plot.q <- function(x, y = NULL, n_grid = 1001, ...) {
     # Add segments
     add_q_fin_segments(x, list(...))
   } else {
-    plot_impl_pdq(x, c(0, 1), n_grid, dots)
+    plot_impl_pdq(x, compute_plot_grid(x, n_grid), dots)
   }
 }
 
@@ -103,8 +102,7 @@ plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
   invisible()
 }
 
-plot_impl_pdq <- function(f, grid_range, n_grid, dots) {
-  grid <- seq_between(grid_range, length.out = n_grid)
+plot_impl_pdq <- function(f, grid, dots) {
   plot_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
 
   do.call(graphics::plot, plot_args)
@@ -130,6 +128,25 @@ compute_d_infin_ylim <- function(f) {
     # The case when only some entries are dirac-like and the respective "y"s
     # should be removed.
     range(y_non_dirac)
+  }
+}
+
+compute_plot_grid <- function(f, n_grid) {
+  f_class <- get_pdqr_class(f)
+  f_x_tbl <- meta_x_tbl(f)
+  f_support <- meta_support(f)
+
+  if (is.null(n_grid)) {
+    switch(
+      f_class, p = f_x_tbl[["x"]], d = f_x_tbl[["x"]], q = f_x_tbl[["cumprob"]]
+    )
+  } else {
+    switch(
+      f_class,
+      p = seq_between(f_support, length.out = n_grid),
+      d = seq_between(f_support, length.out = n_grid),
+      q = seq_between(c(0, 1), length.out = n_grid)
+    )
   }
 }
 
@@ -199,18 +216,17 @@ make_plot_dots <- function(...) {
 
 
 # lines() -----------------------------------------------------------------
-lines.p <- function(x, n_grid = 1001, ...) {
+lines.p <- function(x, n_grid = NULL, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
     add_p_fin_segments(x, list(...))
   } else {
-    # Stretch support to guarantee 0 and 1 on edges
-    lines_impl_pdq(x, stretch_range(meta_support(x)), n_grid, list(...))
+    lines_impl_pdq(x, compute_plot_grid(x, n_grid), list(...))
   }
 }
 
-lines.d <- function(x, n_grid = 1001, ...) {
+lines.d <- function(x, n_grid = NULL, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
@@ -221,22 +237,21 @@ lines.d <- function(x, n_grid = 1001, ...) {
 
     do.call(graphics::lines, lines_args)
   } else {
-    lines_impl_pdq(x, meta_support(x), n_grid, list(...))
+    lines_impl_pdq(x, compute_plot_grid(x, n_grid), list(...))
   }
 }
 
-lines.q <- function(x, n_grid = 1001, ...) {
+lines.q <- function(x, n_grid = NULL, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
     add_q_fin_segments(x, list(...))
   } else {
-    lines_impl_pdq(x, c(0, 1), n_grid, list(...))
+    lines_impl_pdq(x, compute_plot_grid(x, n_grid), list(...))
   }
 }
 
-lines_impl_pdq <- function(f, grid_range, n_grid, dots) {
-  grid <- seq_between(grid_range, length.out = n_grid)
+lines_impl_pdq <- function(f, grid, dots) {
   lines_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
 
   do.call(graphics::lines, lines_args)
