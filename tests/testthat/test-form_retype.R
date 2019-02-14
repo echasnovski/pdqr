@@ -32,8 +32,8 @@ test_that("form_retype works with `method` 'dirac'", {
   d_fin <- new_d(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), "fin")
   d_infin_dirac <- form_retype(d_fin, "infin", method = "dirac")
 
-  expect_equal(
-    meta_x_tbl(d_infin_dirac)[, c("x", "y")],
+  expect_ref_x_tbl(
+    d_infin_dirac,
     data.frame(
       x = c(1-1e-8,   1, 1+1e-8, 2-1e-8,   2, 2+1e-8, 3-1e-8,   3, 3+1e-8),
       y = c(     0, 1e7,      0,      0, 2e7,      0,      0, 7e7,      0)
@@ -41,7 +41,7 @@ test_that("form_retype works with `method` 'dirac'", {
   )
 
   d_fin_dirac <- form_retype(d_infin_dirac, "fin", method = "dirac")
-  expect_equal(meta_x_tbl(d_fin_dirac), meta_x_tbl(d_fin))
+  expect_equal_x_tbl(d_fin_dirac, d_fin)
 })
 
 test_that("form_retype by default accurately retypes 'infin'->'fin'->'infin'", {

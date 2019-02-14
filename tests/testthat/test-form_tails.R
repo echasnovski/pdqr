@@ -5,10 +5,7 @@ context("test-form_tails")
 expect_self_x_tbl <- function(pdqr_f) {
   for (method in c("trim", "winsor")) {
     for (dir in c("both", "left", "right")) {
-      expect_equal(
-        meta_x_tbl(form_tails(pdqr_f, 0, method, dir)),
-        meta_x_tbl(pdqr_f)
-      )
+      expect_equal_x_tbl(form_tails(pdqr_f, 0, method, dir), pdqr_f)
     }
   }
 }
@@ -18,11 +15,9 @@ expect_dirac <- function(pdqr_f, x_vec) {
 
   for (method in c("trim", "winsor")) {
     for (dir in c("both", "left", "right")) {
-      expect_equal(
-        meta_x_tbl(form_tails(pdqr_f, max_levels[dir], method, dir)),
-        meta_x_tbl(
-          point_dirac(x_vec[dir], meta_type(pdqr_f), get_pdqr_class(pdqr_f))
-        )
+      expect_equal_x_tbl(
+        form_tails(pdqr_f, max_levels[dir], method, dir),
+        point_dirac(x_vec[dir], meta_type(pdqr_f), get_pdqr_class(pdqr_f))
       )
     }
   }
@@ -49,74 +44,74 @@ cur_infin <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
 test_that("form_tails works with `type='fin'` and `method='trim'`", {
   # `direction = "both"`
   # This should remove first row (not leave it with value 0 at "prob" column)
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.1, "trim", "both"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.1, "trim", "both"),
     data.frame(x = 2:4, prob = c(0.2, 0.3, 0.3) / 0.8)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.15, "trim", "both"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.15, "trim", "both"),
     data.frame(x = 2:4, prob = c(0.15, 0.3, 0.25) / 0.7)
   )
 
   # `direction = "left"`
   # This should remove first row (not leave it with value 0 at "prob" column)
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.1, "trim", "left"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.1, "trim", "left"),
     data.frame(x = 2:4, prob = c(0.2, 0.3, 0.4) / 0.9)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.15, "trim", "left"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.15, "trim", "left"),
     data.frame(x = 2:4, prob = c(0.15, 0.3, 0.4) / 0.85)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.8, "trim", "left"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.8, "trim", "left"),
     data.frame(x = 4, prob = 1)
   )
 
   # `direction = "right"`
   # This should remove last row (not leave it with value 0 at "prob" column)
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.4, "trim", "right"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.4, "trim", "right"),
     data.frame(x = 1:3, prob = c(0.1, 0.2, 0.3) / 0.6)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.45, "trim", "right"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.45, "trim", "right"),
     data.frame(x = 1:3, prob = c(0.1, 0.2, 0.25) / 0.55)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.8, "trim", "right"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.8, "trim", "right"),
     data.frame(x = 1:2, prob = c(0.5, 0.5))
   )
 })
 
 test_that("form_tails works with `type='infin'` and `method='trim'`", {
   # `direction = "both"`
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.05, "trim", "both"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.05, "trim", "both"),
     data.frame(x = c(0.05, 0.95), y = c(1, 1) / 0.9)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.4, "trim", "both"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.4, "trim", "both"),
     data.frame(x = c(0.4, 0.6), y = c(1, 1) / 0.2)
   )
 
   # `direction = "left"`
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.05, "trim", "left"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.05, "trim", "left"),
     data.frame(x = c(0.05, 1), y = c(1, 1) / 0.95)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.8, "trim", "left"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.8, "trim", "left"),
     data.frame(x = c(0.8, 1), y = c(1, 1) / 0.2)
   )
 
   # `direction = "right"`
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.05, "trim", "right"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.05, "trim", "right"),
     data.frame(x = c(0, 0.95), y = c(1, 1) / 0.95)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.8, "trim", "right"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.8, "trim", "right"),
     data.frame(x = c(0, 0.2), y = c(1, 1) / 0.2)
   )
 })
@@ -124,42 +119,42 @@ test_that("form_tails works with `type='infin'` and `method='trim'`", {
 test_that("form_tails works with `type='fin'` and `method='winsor'`", {
   # `direction = "both"`
   # Here first row ISN'T removed (unlike with "trim") because 10% quantile is 1
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.1, "winsor", "both"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.1, "winsor", "both"),
     data.frame(x = 1:4, prob = (1:4) / 10)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.11, "winsor", "both"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.11, "winsor", "both"),
     data.frame(x = 2:4, prob = c(0.3, 0.3, 0.4))
   )
 
   # `direction = "left"`
   # Here first row ISN'T removed (unlike with "trim") because 10% quantile is 1
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.1, "winsor", "left"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.1, "winsor", "left"),
     data.frame(x = 1:4, prob = (1:4) / 10)
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.11, "winsor", "left"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.11, "winsor", "left"),
     data.frame(x = 2:4, prob = c(0.3, 0.3, 0.4))
   )
 
   # `direction = "right"`
   # Here last row IS removed because 60% (100-40) quantile is 3
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.4, "winsor", "right"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.4, "winsor", "right"),
     data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7))
   )
-  expect_equal(
-    meta_x_tbl(form_tails(cur_fin, 0.41, "winsor", "right"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_tails(cur_fin, 0.41, "winsor", "right"),
     data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7))
   )
 })
 
 test_that("form_tails works with `type='infin'` and `method='winsor'`", {
   # `direction = "both"`
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.1, "winsor", "both"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.1, "winsor", "both"),
     data.frame(
       x = c(  0.1, 0.1+1e-8, 0.9-1e-8,   0.9),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
@@ -169,8 +164,8 @@ test_that("form_tails works with `type='infin'` and `method='winsor'`", {
   )
 
   # `direction = "left"`
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.1, "winsor", "left"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.1, "winsor", "left"),
     data.frame(
       x = c(  0.1, 0.1+1e-8, 1),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
@@ -180,8 +175,8 @@ test_that("form_tails works with `type='infin'` and `method='winsor'`", {
   )
 
   # `direction = "right"`
-  expect_equal(
-    meta_x_tbl(form_tails(cur_infin, 0.1, "winsor", "right"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_tails(cur_infin, 0.1, "winsor", "right"),
     data.frame(
       x = c(0, 0.9-1e-8,   0.9),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical

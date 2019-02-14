@@ -9,18 +9,17 @@ test_that("form_resupport works with `method = 'trim'` and `type`='fin'", {
   )
   p_f <- new_p(x_tbl, "fin")
 
-  out_x_tbl_1 <- meta_x_tbl(form_resupport(p_f, c(1.5, 4.5), "trim"))
-  expect_equal(
-    out_x_tbl_1[, c("x", "prob")], data.frame(x = 2:4, prob = c(0, 0.8, 0.2))
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1.5, 4.5), "trim"),
+    data.frame(x = 2:4, prob = c(0, 0.8, 0.2))
   )
 
-  out_x_tbl_2 <- meta_x_tbl(form_resupport(p_f, c(-1, 1), "trim"))
-  expect_equal(
-    out_x_tbl_2[, c("x", "prob")], data.frame(x = 0:1, prob = c(0, 1))
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(-1, 1), "trim"),
+    data.frame(x = 0:1, prob = c(0, 1))
   )
 
-  out_x_tbl_3 <- meta_x_tbl(form_resupport(p_f, c(-100, 100), "trim"))
-  expect_equal(out_x_tbl_3[, c("x", "prob")], x_tbl)
+  expect_ref_x_tbl(form_resupport(p_f, c(-100, 100), "trim"), x_tbl)
 
   expect_error(form_resupport(p_f, c(0.5, 0.75), "trim"), "not.*positive.*prob")
   expect_error(form_resupport(p_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
@@ -34,26 +33,22 @@ test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
   )
   d_f <- new_d(x_tbl, "infin")
 
-  out_x_tbl_1 <- meta_x_tbl(form_resupport(d_f, c(0.5, 3.5), "trim"))
-  expect_equal(
-    out_x_tbl_1[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(0.5, 3.5), "trim"),
     data.frame(x = c(0.5, 1, 2, 3, 3.5), y = c(0, 0, 1, 0, 0))
   )
 
-  out_x_tbl_2 <- meta_x_tbl(form_resupport(d_f, c(-1, 1.5), "trim"))
-  expect_equal(
-    out_x_tbl_2[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(-1, 1.5), "trim"),
     data.frame(x = c(0, 1, 1.5), y = c(0, 0, 4))
   )
 
-  out_x_tbl_3 <- meta_x_tbl(form_resupport(d_f, c(6.5, 7.5), "trim"))
-  expect_equal(
-    out_x_tbl_3[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(6.5, 7.5), "trim"),
     data.frame(x = c(6.5, 7, 7.5), y = c(2, 0, 2))
   )
 
-  out_x_tbl_4 <- meta_x_tbl(form_resupport(d_f, c(-100, 100), "trim"))
-  expect_equal(out_x_tbl_4[, c("x", "y")], x_tbl)
+  expect_ref_x_tbl(form_resupport(d_f, c(-100, 100), "trim"), x_tbl)
 
   # Check that output doesn't increase support
   expect_equal(
@@ -73,14 +68,14 @@ test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
 test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
   p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
 
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(-0.5, 3), "linear"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(-0.5, 3), "linear"),
     data.frame(x = c(-0.5, 0.375, 3), prob = meta_x_tbl(p_f)[["prob"]])
   )
 
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(15, 15), "linear")),
-    meta_x_tbl(point_dirac(15, "fin", "p"))
+  expect_equal_x_tbl(
+    form_resupport(p_f, c(15, 15), "linear"),
+    point_dirac(15, "fin", "p")
   )
 
   # Can't resupport from single point support to interval one
@@ -96,14 +91,14 @@ test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
   )
   p_f <- new_p(x_tbl, "infin")
 
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(1, 3.5), "linear"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1, 3.5), "linear"),
     data.frame(x = c(1, 1.5, 2, 3.5), y = c(0, 0, 1, 0))
   )
 
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(15, 15), "linear")),
-    meta_x_tbl(point_dirac(15, "infin", "p"))
+  expect_equal_x_tbl(
+    form_resupport(p_f, c(15, 15), "linear"),
+    point_dirac(15, "infin", "p")
   )
 })
 
@@ -112,39 +107,39 @@ test_that("form_resupport works with `method = 'reflect'` and `type`='fin'", {
   p_f_x_tbl <- meta_x_tbl(p_f)
 
   # Returns self when supplied support equals `f`'s support or wider
-  expect_equal(meta_x_tbl(form_resupport(p_f, c(1, 4), "reflect")), p_f_x_tbl)
-  expect_equal(meta_x_tbl(form_resupport(p_f, c(0, 5), "reflect")), p_f_x_tbl)
+  expect_ref_x_tbl(form_resupport(p_f, c(1, 4), "reflect"), p_f_x_tbl)
+  expect_ref_x_tbl(form_resupport(p_f, c(0, 5), "reflect"), p_f_x_tbl)
 
   # Left reflection
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(1.1, 5), "reflect"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1.1, 5), "reflect"),
     data.frame(x = c(1.2, 2:4), prob = (1:4)/10)
   )
 
   # Right reflection
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(0, 2.3), "reflect"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(0, 2.3), "reflect"),
     data.frame(x = c(0.6, 1, 1.6, 2), prob = c(0.4, 0.1, 0.3, 0.2))
   )
 
   # Reflection from both sides
   # There are 3 numbers instead of four because 4 got reflected to 0.6 which is
   # outside of supplied support
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(1.1, 2.3), "reflect"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1.1, 2.3), "reflect"),
     data.frame(x = c(1.2, 1.6, 2), prob = c(0.1, 0.3, 0.2) / 0.6)
   )
 
   # Collapsing into single element is possible
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(1.1, 1.3), "reflect"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1.1, 1.3), "reflect"),
     data.frame(x = 1.2, prob = 1)
   )
 
   # If there is an element on edge of supplied support then it is reflected into
   # itself
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(2, 5), "reflect"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(2, 5), "reflect"),
     data.frame(x = 2:4, prob = c(0.2+0.2, 0.3+0.1, 0.4)/1.2)
   )
 })
@@ -154,24 +149,24 @@ test_that("form_resupport works with `method='reflect'` and `type`='infin'",  {
   p_f_x_tbl <- meta_x_tbl(p_f)
 
   # Returns self when supplied support equals `f`'s support or wider
-  expect_equal(meta_x_tbl(form_resupport(p_f, c(0, 1), "reflect")), p_f_x_tbl)
-  expect_equal(meta_x_tbl(form_resupport(p_f, c(-1, 2), "reflect")), p_f_x_tbl)
+  expect_ref_x_tbl(form_resupport(p_f, c(0, 1), "reflect"), p_f_x_tbl)
+  expect_ref_x_tbl(form_resupport(p_f, c(-1, 2), "reflect"), p_f_x_tbl)
 
   # Left reflection
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(0.2, 1), "reflect"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(0.2, 1), "reflect"),
     data.frame(x = c(0.2, 0.4, 0.4+1e-8, 1), y = c(2, 2, 1, 1))
   )
 
   # Right reflection
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(0, 0.6), "reflect"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(0, 0.6), "reflect"),
     data.frame(x = c(0, 0.2-1e-8, 0.2, 0.6), y = c(1, 1, 2, 2))
   )
 
   # Reflection from both sides
-  expect_equal(
-    meta_x_tbl(form_resupport(p_f, c(0.1, 0.9), "reflect"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(0.1, 0.9), "reflect"),
     data.frame(
       x = c(0.1, 0.2, 0.2+1e-8, 0.8-1e-8, 0.8, 0.9),
       y = c(  2,   2,        1,        1,   2,   2)
@@ -183,34 +178,34 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
   d_f <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "fin")
 
   # Collapsing into single element
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(5, 6), "winsor")),
-    meta_x_tbl(point_dirac(5, "fin", "d"))
+  expect_equal_x_tbl(
+    form_resupport(d_f, c(5, 6), "winsor"),
+    point_dirac(5, "fin", "d")
   )
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0, 0.5), "winsor")),
-    meta_x_tbl(point_dirac(0.5, "fin", "d"))
+  expect_equal_x_tbl(
+    form_resupport(d_f, c(0, 0.5), "winsor"),
+    point_dirac(0.5, "fin", "d")
   )
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(3.14, 3.14), "winsor")),
-    meta_x_tbl(point_dirac(3.14, "fin", "d"))
+  expect_equal_x_tbl(
+    form_resupport(d_f, c(3.14, 3.14), "winsor"),
+    point_dirac(3.14, "fin", "d")
   )
 
   # Left
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(2.5, 6), "winsor"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(2.5, 6), "winsor"),
     data.frame(x = c(2.5, 3, 4), prob = c(0.3, 0.3, 0.4))
   )
 
   # Right
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0, 2.5), "winsor"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(0, 2.5), "winsor"),
     data.frame(x = c(1, 2, 2.5), prob = c(0.1, 0.2, 0.7))
   )
 
   # Both
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(2.5, 2.75), "winsor"))[, c("x", "prob")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(2.5, 2.75), "winsor"),
     data.frame(x = c(2.5, 2.75), prob = c(0.3, 0.7))
   )
 })
@@ -219,38 +214,38 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
   d_f <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
 
   # Collapsing into single element
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(2, 3), "winsor")),
-    meta_x_tbl(point_dirac(2, "infin", "d"))
+  expect_equal_x_tbl(
+    form_resupport(d_f, c(2, 3), "winsor"),
+    point_dirac(2, "infin", "d")
   )
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(-1, 0), "winsor")),
-    meta_x_tbl(point_dirac(0, "infin", "d"))
+  expect_equal_x_tbl(
+    form_resupport(d_f, c(-1, 0), "winsor"),
+    point_dirac(0, "infin", "d")
   )
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0.7, 0.7), "winsor")),
-    meta_x_tbl(point_dirac(0.7, "infin", "d"))
+  expect_equal_x_tbl(
+    form_resupport(d_f, c(0.7, 0.7), "winsor"),
+    point_dirac(0.7, "infin", "d")
   )
 
   # Left
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0.3, 1), "winsor"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(0.3, 1), "winsor"),
     # Here `+1.032` in `y[1]` seems to be because of numerical representation
     # accuracy.
     data.frame(x = c(0.3, 0.3+1e-8, 1), y = c(6e7+1.032, 1, 1))
   )
 
   # Right
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0, 0.7), "winsor"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(0, 0.7), "winsor"),
     # Here `+0.696` in `y[3]` seems to be because of numerical representation
     # accuracy.
     data.frame(x = c(0, 0.7-1e-8, 0.7), y = c(1, 1, 6e7+0.696))
   )
 
   # Both
-  expect_equal(
-    meta_x_tbl(form_resupport(d_f, c(0.3, 0.7), "winsor"))[, c("x", "y")],
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(0.3, 0.7), "winsor"),
     # Adding of "small" values to edges explained in tests for left and right
     # winsoring
     data.frame(
