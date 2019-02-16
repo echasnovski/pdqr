@@ -54,6 +54,24 @@ test_that("parse_type works", {
 })
 
 
+# assert_in_set -----------------------------------------------------------
+test_that("assert_in_set works",  {
+  expect_silent(assert_in_set(1, 1:3))
+  expect_silent(assert_in_set("a", c("b", "a")))
+
+  input <- "a"
+  expect_error(
+    assert_in_set(input, c("b", "c")),
+    '`input` should be one of: "b", "c" \\(supplied "a"\\)\\.'
+  )
+  expect_error(assert_in_set(input, "b"), 'one of: "b" \\(supplied "a"\\)\\.')
+  expect_error(assert_in_set(1, 2:3), 'one of: "2", "3" \\(supplied "1"\\)\\.')
+  expect_error(
+    assert_in_set(1, 2:3, quote_set = FALSE), 'one of: 2, 3 \\(supplied 1\\)\\.'
+  )
+})
+
+
 # assert_missing_args -----------------------------------------------------
 test_that("assert_missing_args works", {
   expect_silent(assert_missing_args("d"))

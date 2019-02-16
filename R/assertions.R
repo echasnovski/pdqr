@@ -65,6 +65,28 @@ parse_type <- function(f_name) {
 }
 
 
+# Assert object being in set ----------------------------------------------
+assert_in_set <- function(x, set, quote_set = TRUE) {
+  x_name <- paste0("`", deparse(substitute(x)), "`")
+
+  if (!(x %in% set)) {
+    if (quote_set) {
+      set_string <- paste0('"', set, '"', collapse = ", ")
+      x_string <- paste0('"', x, '"')
+    } else {
+      set_string <- paste0(set, collapse = ", ")
+      x_string <- as.character(x)
+    }
+
+    stop_collapse(
+      x_name, " should be one of: ", set_string, " (supplied ", x_string, ")."
+    )
+  }
+
+  TRUE
+}
+
+
 # Assert missing arguments ------------------------------------------------
 assert_missing_args <- function(f_name, ...) {
   dots <- list(...)

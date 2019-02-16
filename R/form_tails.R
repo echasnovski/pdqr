@@ -74,14 +74,10 @@ assert_form_tails_args <- function(f, level, method, direction) {
   }
 
   assert_type(method, is_string)
-  if (!(method %in% c("trim", "winsor"))) {
-    stop_collapse('`method` should be one of "trim", "winsor".')
-  }
+  assert_in_set(method, c("trim", "winsor"))
 
   assert_type(direction, is_string)
-  if (!(direction %in% c("left", "right", "both"))) {
-    stop_collapse('`direction` should be one of "left", "right", "both".')
-  }
+  assert_in_set(direction, c("left", "right", "both"))
 
   if (direction == "both") {
     if (level > 0.5) {

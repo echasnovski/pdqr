@@ -3,11 +3,7 @@ form_resupport <- function(f, support, method = "trim") {
   assert_pdqr_fun(f)
   assert_support(support, allow_na = TRUE)
   assert_type(method, is_string)
-  if (!(method %in% c("trim", "linear", "reflect", "winsor"))) {
-    stop_collapse(
-      '`method` should be one of "trim", "linear", "reflect", or "winsor".'
-    )
-  }
+  assert_in_set(method, c("trim", "linear", "reflect", "winsor"))
 
   if (all(is.na(support))) {
     return(f)

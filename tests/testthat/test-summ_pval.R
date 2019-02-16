@@ -83,14 +83,14 @@ test_that("summ_pval throws errors", {
   expect_error(summ_pval(p_fin, 1, direction = 1), "direction.*string")
   expect_error(
     summ_pval(p_fin, 1, direction = "a"),
-    'direction.*"left".*"right".*"both".*not "a"'
+    'direction.*"left".*"right".*"both".*\\(supplied "a"\\)\\.'
   )
   expect_error(summ_pval(p_fin, 1, adjust = 1), "adjust.*string")
 
   adjust_error <- paste0(c("adjust", stats::p.adjust.methods), collapse = ".*")
   expect_error(
     summ_pval(p_fin, 1, adjust = "b"),
-    paste0(adjust_error, '.*not "b"')
+    paste0(adjust_error, '.* \\(supplied "b"\\)\\.')
   )
 })
 
@@ -104,8 +104,4 @@ test_that("summ_pval throws errors", {
 
 
 # both_pval ---------------------------------------------------------------
-# Tested in `summ_pval()`
-
-
-# assert_adjust -----------------------------------------------------------
 # Tested in `summ_pval()`

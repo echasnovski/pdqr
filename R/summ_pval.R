@@ -1,8 +1,12 @@
 summ_pval <- function(f, obs, direction = "right", adjust = "holm") {
   assert_pdqr_fun(f)
   assert_type(obs, is.numeric)
+
   assert_type(direction, is_string)
-  assert_adjust(adjust)
+  assert_in_set(direction, c("left", "right", "both"))
+
+  assert_type(adjust, is_string)
+  assert_in_set(adjust, stats::p.adjust.methods)
 
   f <- as_p(f)
 
@@ -10,11 +14,7 @@ summ_pval <- function(f, obs, direction = "right", adjust = "holm") {
     direction,
     left = left_pval(f, obs),
     right = right_pval(f, obs),
-    both = both_pval(f, obs),
-    stop_collapse(
-      '`direction` should be one of "left", "right", or "both", not ',
-      '"', direction, '".'
-    )
+    both = both_pval(f, obs)
   )
 
   stats::p.adjust(res, method = adjust)
@@ -34,19 +34,4 @@ both_pval <- function(p_f, obs) {
   res <- 2 * pmin(left_pval(p_f, obs), right_pval(p_f, obs))
 
   pmin(res, 1)
-}
-
-assert_adjust <- function(adjust) {
-  assert_type(adjust, is_string)
-
-  if (!(adjust %in% stats::p.adjust.methods)) {
-    adjust_values <- paste0(
-      '"holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", or "none"'
-    )
-    stop_collapse(
-      "`adjust` should be one of ", adjust_values, ', not "', adjust, '".'
-    )
-  }
-
-  adjust
 }

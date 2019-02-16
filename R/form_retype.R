@@ -2,9 +2,7 @@ form_retype <- function(f, type, method = "piecelin") {
   assert_pdqr_fun(f)
   assert_distr_type(type)
   assert_type(method, is_string)
-  if (!(method %in% c("piecelin", "dirac"))) {
-    stop_collapse('`method` should be one of "piecelin" or "dirac".')
-  }
+  assert_in_set(method, c("piecelin", "dirac"))
 
   switch(
     type,
