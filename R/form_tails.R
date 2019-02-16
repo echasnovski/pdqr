@@ -107,7 +107,7 @@ trim_all <- function(f, direction) {
     both = as_q.pdqr(f)(0.5)
   )
 
-  point_dirac(at_x = res_x, meta_type(f), get_pdqr_class(f))
+  new_pdqr_by_ref(f)(res_x, meta_type(f))
 }
 
 compute_support_after_remove <- function(f, level, direction) {

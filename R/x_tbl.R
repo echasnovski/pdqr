@@ -18,16 +18,20 @@ compute_x_tbl_fin <- function(x, vals = sort(unique(x))) {
 }
 
 compute_x_tbl_infin <- function(x, ...) {
-  if (length(x) < 2) {
-    stop_collapse(
-      'There should be at least 2 values in `x` for `type` "infin".'
-    )
+  if (length(x) == 1) {
+    dirac_x_tbl(x)
+  } else {
+    res <- density_piecelin(x, ...)
+    res[["cumprob"]] <- trapez_part_integral(res[["x"]], res[["y"]])
+
+    res
   }
+}
 
-  res <- density_piecelin(x, ...)
-  res[["cumprob"]] <- trapez_part_integral(res[["x"]], res[["y"]])
-
-  res
+dirac_x_tbl <- function(at_x, h = 1e-8) {
+  data.frame(
+    x = at_x + h*c(-1, 0, 1), y = c(0, 1, 0)/h, cumprob = c(0, 0.5, 1)
+  )
 }
 
 

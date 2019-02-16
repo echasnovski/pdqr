@@ -17,7 +17,7 @@ expect_dirac <- function(pdqr_f, x_vec) {
     for (dir in c("both", "left", "right")) {
       expect_equal_x_tbl(
         form_tails(pdqr_f, max_levels[dir], method, dir),
-        point_dirac(x_vec[dir], meta_type(pdqr_f), get_pdqr_class(pdqr_f))
+        new_pdqr_by_ref(pdqr_f)(x_vec[dir], meta_type(pdqr_f))
       )
     }
   }

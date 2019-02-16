@@ -75,7 +75,7 @@ test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
 
   expect_equal_x_tbl(
     form_resupport(p_f, c(15, 15), "linear"),
-    point_dirac(15, "fin", "p")
+    new_p(15, "fin")
   )
 
   # Can't resupport from single point support to interval one
@@ -98,7 +98,7 @@ test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
 
   expect_equal_x_tbl(
     form_resupport(p_f, c(15, 15), "linear"),
-    point_dirac(15, "infin", "p")
+    new_p(15, "infin")
   )
 })
 
@@ -180,15 +180,15 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
   # Collapsing into single element
   expect_equal_x_tbl(
     form_resupport(d_f, c(5, 6), "winsor"),
-    point_dirac(5, "fin", "d")
+    new_d(5, "fin")
   )
   expect_equal_x_tbl(
     form_resupport(d_f, c(0, 0.5), "winsor"),
-    point_dirac(0.5, "fin", "d")
+    new_d(0.5, "fin")
   )
   expect_equal_x_tbl(
     form_resupport(d_f, c(3.14, 3.14), "winsor"),
-    point_dirac(3.14, "fin", "d")
+    new_d(3.14, "fin")
   )
 
   # Left
@@ -216,15 +216,15 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
   # Collapsing into single element
   expect_equal_x_tbl(
     form_resupport(d_f, c(2, 3), "winsor"),
-    point_dirac(2, "infin", "d")
+    new_d(2, "infin")
   )
   expect_equal_x_tbl(
     form_resupport(d_f, c(-1, 0), "winsor"),
-    point_dirac(0, "infin", "d")
+    new_d(0, "infin")
   )
   expect_equal_x_tbl(
     form_resupport(d_f, c(0.7, 0.7), "winsor"),
-    point_dirac(0.7, "infin", "d")
+    new_d(0.7, "infin")
   )
 
   # Left

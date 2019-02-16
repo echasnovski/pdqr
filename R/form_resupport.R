@@ -71,7 +71,8 @@ resupport_trim_infin <- function(f, support) {
 # "linear" ----------------------------------------------------------------
 resupport_linear <- function(f, support) {
   if (support[1] == support[2]) {
-    return(point_dirac(support[1], meta_type(f), get_pdqr_class(f)))
+    # Return dirac-like function
+    return(new_pdqr_by_ref(f)(support[1], meta_type(f)))
   }
 
   f_supp <- meta_support(f)
@@ -119,7 +120,7 @@ resupport_reflect <- function(f, support) {
 # "winsor" ----------------------------------------------------------------
 resupport_winsor <- function(f, support) {
   if (support[1] == support[2]) {
-    return(point_dirac(support[1], meta_type(f), get_pdqr_class(f)))
+    return(new_pdqr_by_ref(f)(support[1], meta_type(f)))
   }
 
   switch(
@@ -146,12 +147,10 @@ resupport_winsor_infin <- function(f, support, h = 1e-8) {
 
   # Early return extreme cases
   if (support[1] >= f_supp[2]) {
-    return(
-      return(point_dirac(support[1], meta_type(f), get_pdqr_class(f), h = h))
-    )
+    return(new_pdqr_by_ref(f)(support[1], meta_type(f)))
   }
   if (support[2] <= f_supp[1]) {
-    return(point_dirac(support[2], meta_type(f), get_pdqr_class(f), h = h))
+    return(new_pdqr_by_ref(f)(support[2], meta_type(f)))
   }
 
   x_tbl <- f_x_tbl

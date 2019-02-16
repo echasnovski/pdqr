@@ -18,6 +18,14 @@ test_that("new_d works with numeric input", {
   )
 })
 
+test_that("new_d returns dirac-like function with length-one numeric input",  {
+  expect_ref_x_tbl(new_d(0.1, "fin"), data.frame(x = 0.1, prob = 1))
+  expect_ref_x_tbl(
+    new_d(0.1, "infin"),
+    data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
+  )
+})
+
 test_that("new_d works with data frame input", {
   expect_equal_distr(new_d(x_fin_x_tbl, "fin"), d_fin, x_fin_vec_ext)
   expect_equal_distr(
@@ -55,7 +63,6 @@ test_that("new_d asserts", {
   expect_error(new_d(numeric(0)), "x.*empty")
   expect_error(new_d(x_fin, type = 1), "type.*string")
   expect_error(new_d(x_fin, type = "a"), "type.*fin.*infin")
-  expect_error(new_d(1, type = "infin"), "at least 2")
 })
 
 test_that("new_d handles metadata", {

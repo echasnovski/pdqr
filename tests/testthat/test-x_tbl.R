@@ -13,6 +13,10 @@ context("test-x_tbl")
 # Tested in `new_*()` functions
 
 
+# dirac_x_tbl -------------------------------------------------------------
+# Tested in `new_*()` functions
+
+
 # impute_x_tbl ------------------------------------------------------------
 # Tested in `new_*()` functions
 
