@@ -30,7 +30,7 @@ test_that("new_d imputes data frame input", {
 })
 
 test_that("new_d rounds input in case of `type` = 'fin'", {
-  near_1 <- 1 + 10^c(-6, -9)
+  near_1 <- 1 + 10^c(-6, -11)
   expect_equal(d_fin(near_1), c(0, 0.1))
 })
 

@@ -13,7 +13,7 @@ new_p_fin <- function(x_tbl) {
   function(q) {
     res <- numeric(length(q))
 
-    q_ind <- findInterval(round(q, digits = 8), x_tbl[["x"]])
+    q_ind <- findInterval(q, x_tbl[["x"]])
     q_ind_isnt_zero <- q_ind != 0
 
     res[q_ind_isnt_zero] <- x_tbl[["cumprob"]][q_ind[q_ind_isnt_zero]]

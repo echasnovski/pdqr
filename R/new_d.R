@@ -11,7 +11,7 @@ new_d_fin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(x) {
-    x_ind <- match(round(x, digits = 8), x_tbl[["x"]], nomatch = NA)
+    x_ind <- match(round(x, digits = 10), x_tbl[["x"]], nomatch = NA)
 
     ifelse(is.na(x_ind), 0, x_tbl[["prob"]][x_ind])
   }

@@ -68,8 +68,10 @@ impute_x_tbl_impl <- function(x_tbl, type) {
 impute_x_tbl_impl_fin <- function(x_tbl) {
   if (anyDuplicated(x_tbl[["x"]]) != 0) {
     # `x_tbl[["x"]]` is already sorted, so `vals` is automatically sorted too,
-    # i.e. no need for `sort()`
-    vals <- unique(x_tbl[["x"]])
+    # i.e. no need for `sort()`.
+    # Rounding is needed due to some usage of `form_retype()`. This also aligns
+    # with how d-functions of type "fin" work (see `new_d_fin()`).
+    vals <- unique(round(x_tbl[["x"]], 10))
     x_val_id <- match(x_tbl[["x"]], vals)
 
     # `as.vector()` is used to remove extra attributes

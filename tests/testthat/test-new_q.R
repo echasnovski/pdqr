@@ -30,11 +30,6 @@ test_that("new_q imputes data frame input", {
   expect_x_tbl_imputation(new_q)
 })
 
-test_that("new_q rounds input in case of `type` = 'fin'", {
-  near_1 <- 0.1 + 10^c(-6, -9)
-  expect_equal(q_fin(near_1), c(2, 1))
-})
-
 test_that("new_q behaves like inverse of ecdf() in case of `type` = 'fin'", {
   inv_ecdf <- quantile(x_fin, probs = p_vec, type = 1)
   names(inv_ecdf) <- NULL

@@ -14,7 +14,7 @@ new_q_fin <- function(x_tbl) {
     out <- numeric(length(p))
 
     is_prob <- (p >= 0) & (p <= 1)
-    p_prob <- round(p[is_prob], digits = 8)
+    p_prob <- p[is_prob]
     p_ind <- findInterval(p_prob, x_tbl[["cumprob"]], left.open = TRUE) + 1
 
     out[is_prob] <- x_tbl[["x"]][p_ind]
