@@ -24,10 +24,18 @@ left_pval <- function(p_f, obs) {
   p_f(obs)
 }
 
-right_pval <- function(p_f, obs, h = 10^(-6)) {
-  # Shifting by small value `h` is needed to compute probability of `x >= obs`
-  # and not of `x > obs` (which is returned by `1 - p_v(obs)`)
-  1 - p_f(obs - h)
+right_pval <- function(p_f, obs) {
+  if (meta_type(p_f) == "fin") {
+    # This is needed to compute probability of `x >= obs` and not of `x > obs`
+    # (which is returned by `1 - p_f(obs)`).
+    # Alternative implementation is to sum probabilities directly from "x_tbl"
+    # (for every element in `obs). Although this would be faster on target
+    # usecase of small number of observations (`as_d` converting here takes some
+    # time), it has slower algorithmic (big-O) speed.
+    1 - p_f(obs) + as_d(p_f)(obs)
+  } else {
+    1 - p_f(obs)
+  }
 }
 
 both_pval <- function(p_f, obs) {
