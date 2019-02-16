@@ -1,21 +1,26 @@
 # 'pdqr' classes functionality --------------------------------------------
-new_pdqr_by_ref <- function(f) {
-  pdqr_class <- get_pdqr_class(f)
+new_pdqr_by_class <- function(pdqr_class) {
   switch(
     pdqr_class,
     p = new_p, d = new_d, q = new_q, r = new_r,
-    stop_collapse("`f` does not have 'pdqr' class.")
+    stop_collapse("Wrong 'pdqr' class.")
+  )
+}
+
+new_pdqr_by_ref <- function(f) {
+  new_pdqr_by_class(get_pdqr_class(f))
+}
+
+as_pdqr_by_class <- function(pdqr_class) {
+  switch(
+    pdqr_class,
+    p = as_p, d = as_d, q = as_q, r = as_r,
+    stop_collapse("Wrong 'pdqr' class.")
   )
 }
 
 as_pdqr_by_ref <- function(f) {
-  pdqr_class <- get_pdqr_class(f)
-
-  switch(
-    pdqr_class,
-    p = as_p, d = as_d, q = as_q, r = as_r,
-    stop_collapse("`f` does not have 'pdqr' class.")
-  )
+  as_pdqr_by_class(get_pdqr_class(f))
 }
 
 get_pdqr_class <- function(f) {
@@ -35,11 +40,7 @@ point_dirac <- function(at_x, type, pdqr_class, h = 1e-8) {
     stop_collapse("Incorrect `type` for `point_dirac()`.")
   )
 
-  pdqr_f <- switch(
-    pdqr_class,
-    p = new_p, d = new_d, q = new_q, r = new_r,
-    stop_collapse("Incorrect `pdqr_class` for `point_dirac()`.")
-  )
+  pdqr_f <- new_pdqr_by_class(pdqr_class)
 
   pdqr_f(x_tbl, type)
 }

@@ -67,10 +67,7 @@ impute_pdqr_fun <- function(pdqr_class, ref) {
     )
   }
 
-  switch(
-    pdqr_class,
-    p = new_p, d = new_d, q = new_q, r = new_r
-  )
+  new_pdqr_by_class(pdqr_class)
 }
 
 

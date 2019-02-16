@@ -1,6 +1,17 @@
 context("test-utils-form")
 
 
+# new_pdqr_by_class -------------------------------------------------------
+test_that("new_pdqr_by_class works",  {
+  expect_equal(new_pdqr_by_class("p"), new_p)
+  expect_equal(new_pdqr_by_class("d"), new_d)
+  expect_equal(new_pdqr_by_class("q"), new_q)
+  expect_equal(new_pdqr_by_class("r"), new_r)
+
+  expect_error(new_pdqr_by_class("aaa"), "class")
+})
+
+
 # new_pdqr_by_ref ---------------------------------------------------------
 test_that("new_pdqr_by_ref works", {
   expect_equal(new_pdqr_by_ref(p_fin), new_p)
@@ -9,6 +20,17 @@ test_that("new_pdqr_by_ref works", {
   expect_equal(new_pdqr_by_ref(r_infin), new_r)
 
   expect_error(new_pdqr_by_ref(function(x) {x}), "class")
+})
+
+
+# as_pdqr_by_class --------------------------------------------------------
+test_that("as_pdqr_by_class works",  {
+  expect_equal(as_pdqr_by_class("p"), as_p)
+  expect_equal(as_pdqr_by_class("d"), as_d)
+  expect_equal(as_pdqr_by_class("q"), as_q)
+  expect_equal(as_pdqr_by_class("r"), as_r)
+
+  expect_error(as_pdqr_by_class("aaa"), "class")
 })
 
 
@@ -54,5 +76,5 @@ test_that("point_dirac works", {
 
 test_that("point_dirac throws errors", {
   expect_error(point_dirac(0, "a", "p"), "`type`")
-  expect_error(point_dirac(0, "fin", "a"), "`pdqr_class`")
+  expect_error(point_dirac(0, "fin", "a"), "class")
 })
