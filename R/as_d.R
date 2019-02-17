@@ -2,7 +2,7 @@ as_d <- function(f, ...) {
   UseMethod("as_d")
 }
 
-as_d.default <- function(f, support = NULL, n_grid = 10001, ...) {
+as_d.default <- function(f, support = NULL, ..., n_grid = 10001) {
   assert_as_def_args(f, support, n_grid)
 
   d_f <- function(x) {f(x, ...)}

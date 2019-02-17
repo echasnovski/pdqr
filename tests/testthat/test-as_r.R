@@ -302,8 +302,8 @@ test_that("as_r.default uses `...` to forward arguments to `f`", {
   expect_true(mean(output(1000)) > 1)
 })
 
-test_that("as_r.default uses `.pdqr_args`", {
-  output <- as_r(runif, .pdqr_args = list(from = 0.5))
+test_that("as_r.default uses `pdqr_args`", {
+  output <- as_r(runif, pdqr_args = list(from = 0.5))
   expect_true(meta_x_tbl(output)[["x"]][1] > 0.45)
 })
 
@@ -336,7 +336,7 @@ test_that("as_r.default throws errors on bad input", {
     as_r(fam_norm$r, fam_norm$support, n_sample = 1), "`n_sample`.*more.*1"
   )
   expect_error(
-    as_r(fam_norm$r, fam_norm$support, .pdqr_args = "a"), "`.pdqr_args`.*list"
+    as_r(fam_norm$r, fam_norm$support, pdqr_args = "a"), "`pdqr_args`.*list"
   )
 })
 

@@ -51,8 +51,8 @@ neigh_dist <- function(vec, neigh_type = "min", def_dist = NULL) {
 
 
 # Function and vector manipulations ---------------------------------------
-inversing <- function(f, interval, n_grid = 10001, ...,
-                      .approxfun_args = list()) {
+inversing <- function(f, interval, ..., n_grid = 10001,
+                      approxfun_args = list()) {
   x_grid <- seq_between(interval, length.out = n_grid)
   y_grid <- f(x_grid, ...)
 
@@ -60,7 +60,7 @@ inversing <- function(f, interval, n_grid = 10001, ...,
   y_grid <- impute_inf(x_grid, y_grid, "`y` grid during inversing")
 
   call_args <- dedupl_list(c(
-    .approxfun_args,
+    approxfun_args,
     list(x = y_grid, y = x_grid, method = "linear", rule = 2)
   ))
   do.call(stats::approxfun, call_args)

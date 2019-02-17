@@ -104,7 +104,7 @@ test_that("inversing accepts extra arguments for input function", {
 
 test_that("inversing accepts extra arguments for `approxfun()`", {
   f_inv <- inversing(
-    qunif, c(0, 1), .approxfun_args = list(yleft = -100, yright = 100)
+    qunif, c(0, 1), approxfun_args = list(yleft = -100, yright = 100)
   )
   expect_equal(
     f_inv(c(-1, -0.001, 0, 1, 1.001, 2)), c(-100, -100, 0, 1, 100, 100)

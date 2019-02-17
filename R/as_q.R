@@ -2,7 +2,7 @@ as_q <- function(f, ...) {
   UseMethod("as_q")
 }
 
-as_q.default <- function(f, support = NULL, n_grid = 10001, ...) {
+as_q.default <- function(f, support = NULL, ..., n_grid = 10001) {
   assert_as_def_args(f, support, n_grid)
 
   q_f <- function(p) {f(p, ...)}
@@ -12,7 +12,7 @@ as_q.default <- function(f, support = NULL, n_grid = 10001, ...) {
 
   p_f <- inversing(q_f, c(0, 1), n_grid = n_grid)
 
-  as_q(as_p(p_f, support, n_grid))
+  as_q(as_p(p_f, support, n_grid = n_grid))
 }
 
 as_q.pdqr <- function(f, ...) {
