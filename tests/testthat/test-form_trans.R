@@ -48,11 +48,29 @@ test_that("form_trans works", {
   )
 })
 
-test_that("form_trans produces correct 'pdqr' type", {
+test_that("form_trans produces correct 'pdqr' class", {
   expect_is(form_trans(list(1, p_fin), `+`), "p")
   expect_is(form_trans(list(p_fin, 1), `+`), "p")
   expect_is(form_trans(list(d_fin, p_fin), `+`), "d")
   expect_is(form_trans(list(p_fin, d_fin), `+`), "p")
+})
+
+test_that("form_trans produces correct 'pdqr' type", {
+  expect_equal(meta_type(form_trans(list(1, p_fin), `+`)), "fin")
+  expect_equal(meta_type(form_trans(list(p_fin, q_fin), `+`)), "fin")
+  expect_equal(meta_type(form_trans(list(p_infin, q_fin), `+`)), "infin")
+  expect_equal(meta_type(form_trans(list(d_fin, p_infin), `+`)), "infin")
+  expect_equal(meta_type(form_trans(list(p_infin, d_infin), `+`)), "infin")
+
+  # If `trans` produces logical output, type should be "fin"
+  expect_equal(meta_type(form_trans(list(p_infin, q_infin), `>=`)), "fin")
+})
+
+test_that("form_trans throws error if `trans` produces bad output",  {
+  bad_trans <- function(x) {rep("a", length(x))}
+  expect_error(
+    form_trans(list(p_fin), bad_trans), "transformation.*numeric.*logical"
+  )
 })
 
 test_that("form_trans uses `...` as `density` argument",  {
@@ -116,12 +134,17 @@ test_that("Ops.pdqr works", {
   )
 })
 
-test_that("Ops.pdqr warns about not numeric type", {
-  expect_warning(p_fin >= p_infin, ">=.*logical.*[Cc]onvert")
+test_that("Ops.pdqr works with logical functions", {
+  d_leq <- d_fin <= 3
+  expect_true(abs(d_leq(1) - p_fin(3)) <= 0.1)
+
+  d_negate <- !d_fin
+  expect_equal(d_negate(1), 0)
 })
 
 test_that("Ops.pdqr works with for generics with one argument", {
-  expect_warning(!p_fin, "!.*logical.*[Cc]onvert")
+  d_minus <- -d_fin
+  expect_true(abs(d_minus(-1) - d_fin(1)) <= 0.1)
 })
 
 

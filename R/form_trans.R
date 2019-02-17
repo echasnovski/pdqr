@@ -7,6 +7,9 @@ form_trans <- function(f_list, trans, ..., n_sample = 10000) {
   assert_type(trans, is.function)
   assert_type(n_sample, is_single_number, type_name = "single number")
 
+  # Compute type and class of output function
+  res_meta <- compute_f_list_meta(f_list)
+
   # Convert to random generation functions. If `f_list` element isn't
   # pdqr-function then it is a number.
   r_dots <- lapply(f_list, function(f) {
@@ -23,12 +26,17 @@ form_trans <- function(f_list, trans, ..., n_sample = 10000) {
   # Call `trans` with all generated samples to produce sample from transformed
   # distribution
   smpl <- do.call(trans, smpl_list)
+  if (is.logical(smpl)) {
+    smpl <- as.numeric(smpl)
+    res_meta[["type"]] <- "fin"
+  } else if (!is.numeric(smpl)) {
+    stop_collapse("Output of transformation should be numeric of logical.")
+  }
 
   # Produce output pdqr function
-  f_list_meta <- compute_f_list_meta(f_list)
-  new_pdqr <- new_pdqr_by_class(f_list_meta[["class"]])
+  new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
 
-  new_pdqr(x = smpl, type = f_list_meta[["type"]], ...)
+  new_pdqr(x = smpl, type = res_meta[["type"]], ...)
 }
 
 
@@ -46,18 +54,7 @@ Math.pdqr <- function(x, ...) {
 Ops.pdqr <- function(e1, e2) {
   n_sample <- getOption("pdqr.transform.n_sample")
 
-  gen_fun <- function(...) {
-    res <- get(.Generic)(...)
-    if (!is.numeric(res)) {
-      warning_collapse(
-        "Output of `", .Generic, "` is '", get_type(res), "'. ",
-        "Converting to 'numeric'."
-      )
-      res <- as.numeric(res)
-    }
-
-    res
-  }
+  gen_fun <- get(.Generic)
 
   if (missing(e2)) {
     form_trans(list(e1), gen_fun, n_sample = n_sample)
