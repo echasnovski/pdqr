@@ -21,7 +21,7 @@ x_norm_seq <- seq(-10, 10, by = 0.01)
 
 # form_trans --------------------------------------------------------------
 test_that("form_trans works", {
-  output_custom <- form_trans(sq, p_custom)
+  output_custom <- form_trans(list(p_custom), sq)
   expect_distr_fun(output_custom, "p", "infin")
   expect_equal_distr(
     output_custom, p_custom_ref,
@@ -31,14 +31,14 @@ test_that("form_trans works", {
   )
 
   # Normal distribution multiplied by 2
-  r_norm_input <- new_r(rnorm(10000, mean = 0, sd = 1))
+  d_norm_input <- new_d(rnorm(10000, mean = 0, sd = 1))
 
   norm_seq <- seq(-20, 20, by = 0.001)
   d_norm_ref <- new_d(
     data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2))
   )
 
-  output_norm <- form_trans(`*`, r_norm_input, 2, .pdqr_class = "d")
+  output_norm <- form_trans(list(2, d_norm_input), `*`)
   expect_distr_fun(output_norm, "d", "infin")
   expect_equal_distr(
     output_norm, d_norm_ref,
@@ -48,63 +48,33 @@ test_that("form_trans works", {
   )
 })
 
-test_that("form_trans doesn't attach `x` by default", {
-  output <- form_trans(sq, q_fin)
-  expect_false(has_meta(output, "x"))
+test_that("form_trans produces correct 'pdqr' type", {
+  expect_is(form_trans(list(1, p_fin), `+`), "p")
+  expect_is(form_trans(list(p_fin, 1), `+`), "p")
+  expect_is(form_trans(list(d_fin, p_fin), `+`), "d")
+  expect_is(form_trans(list(p_fin, d_fin), `+`), "p")
 })
 
-test_that("form_trans correctly restores 'pdqr' type", {
-  expect_is(form_trans(`+`, 1, p_fin), "p")
-  expect_is(form_trans(`+`, d_fin, p_fin), "d")
-  expect_is(form_trans(`+`, d_fin, p_fin, .pdqr_class = "r"), "r")
+test_that("form_trans uses `...` as `density` argument",  {
+  output <- form_trans(list(p_infin), sq, n = 3)
+  expect_equal(nrow(meta_x_tbl(output)), 3)
+})
+
+test_that("form_trans uses `n_sample` argument",  {
+  output <- form_trans(list(p_fin), sq, n_sample = 1)
+  expect_equal(nrow(meta_x_tbl(output)), 1)
 })
 
 test_that("form_trans throws errors", {
-  expect_error(form_trans(1, p_custom), "trans.*function")
-  expect_error(form_trans(`+`, r_fin, user_r), "`...`.*should.*pdqr.*fun")
-  expect_error(form_trans(`+`, r_fin, 1:2), "`...`.*should.*single numbers")
-  expect_error(form_trans(`+`, 1, 2), "`...`.*should.*at least one.*pdqr")
+  expect_error(form_trans(p_fin, sq), "`f_list`.*list")
+  expect_error(form_trans(list("a"), sq), "`f_list`.*pdqr-function.*number")
+  expect_error(form_trans(list(1), sq), "`f_list`.*one.*pdqr-function")
+  expect_error(form_trans(list(p_fin), 1), "`trans`.*function")
   expect_error(
-    form_trans(sq, p_custom, .n_sample = "a"), "\\.n_sample.*single number"
+    form_trans(list(p_fin), sq, n_sample = "a"), "`n_sample`.*single number"
   )
   expect_error(
-    form_trans(sq, p_custom, .n_sample = 1:2), "\\.n_sample.*single number"
-  )
-  expect_error(
-    form_trans(sq, p_custom, .pdqr_class = 1), "\\.pdqr_class.*string"
-  )
-  expect_error(
-    form_trans(sq, p_custom, .pdqr_class = c("a", "b")),
-    "\\.pdqr_class.*string"
-  )
-  expect_error(form_trans(sq, p_custom, .pdqr_args = "a"), "\\.pdqr_args.*list")
-})
-
-
-# assert_trans_dots -------------------------------------------------------
-# Tested in `form_trans()`
-
-
-# find_ref_f --------------------------------------------------------------
-test_that("find_ref_f works", {
-  expect_equal(find_ref_f(list(1, p_fin, 2)), p_fin)
-  expect_null(find_ref_f(list(1, 2)))
-})
-
-
-# impute_pdqr_fun ---------------------------------------------------------
-test_that("impute_pdqr_fun works", {
-  expect_equal(impute_pdqr_fun("p", NULL), new_p)
-  expect_equal(impute_pdqr_fun("d", NULL), new_d)
-  expect_equal(impute_pdqr_fun("q", NULL), new_q)
-  expect_equal(impute_pdqr_fun("r", NULL), new_r)
-
-  expect_equal(impute_pdqr_fun(NULL, p_fin), new_p)
-})
-
-test_that("impute_pdqr_fun throws errors", {
-  expect_error(
-    impute_pdqr_fun("a", r_fin), 'pdqr_class.*one of.*"p", "d", "q", "r"'
+    form_trans(list(p_fin), sq, n_sample = 1:2), "`n_sample`.*single number"
   )
 })
 

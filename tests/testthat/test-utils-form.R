@@ -51,3 +51,52 @@ test_that("get_pdqr_class works", {
   expect_equal(get_pdqr_class(structure("a", class = c("p", "d"))), "p")
   expect_equal(get_pdqr_class(structure("a", class = "bbb")), NA_character_)
 })
+
+
+# assert_f_list -----------------------------------------------------------
+test_that("assert_f_list works",  {
+  expect_silent(assert_f_list(list(d_fin)))
+  expect_silent(assert_f_list(list(1, p_infin), allow_numbers = TRUE))
+
+  input <- list("a")
+  expect_error(assert_f_list(input), "`input`.*pdqr-function")
+  expect_error(
+    assert_f_list(input, allow_numbers = TRUE),
+    "`input`.*pdqr-function.*number"
+  )
+
+  expect_error(
+    assert_f_list(list(1, 2), allow_numbers = TRUE),
+    "at least one pdqr-function"
+  )
+})
+
+
+# compute_f_list_meta -----------------------------------------------------
+test_that("compute_f_list_meta works",  {
+  # Type is "fin" only if all pdqr-functions are "fin"
+  expect_equal(
+    compute_f_list_meta(list(p_fin, p_fin, d_fin)),
+    list(type = "fin", class = "p")
+  )
+  expect_equal(
+    compute_f_list_meta(list(1, p_fin, 1)),
+    list(type = "fin", class = "p")
+  )
+  expect_equal(
+    compute_f_list_meta(list(p_fin, p_fin, d_infin)),
+    list(type = "infin", class = "p")
+  )
+
+  # Class is based on the first pdqr-function in the list
+  expect_equal(
+    compute_f_list_meta(list(p_fin, 1)), list(type = "fin", class = "p")
+  )
+  expect_equal(
+    compute_f_list_meta(list(1, d_infin)), list(type = "infin", class = "d")
+  )
+  expect_equal(
+    compute_f_list_meta(list(q_infin, d_infin)),
+    list(type = "infin", class = "q")
+  )
+})

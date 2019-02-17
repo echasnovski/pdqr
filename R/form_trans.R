@@ -1,73 +1,34 @@
 # Main transformation function --------------------------------------------
-form_trans <- function(trans, ..., .n_sample = 10000, .pdqr_class = NULL,
-                       .pdqr_args = list()) {
+form_trans <- function(f_list, trans, ..., n_sample = 10000) {
+  # The resaon `n_sample` is after the `...` is because if it was before `...`
+  # it would mask the `n` argument to `density()` due to R's partial matching.
+  assert_type(f_list, is.list)
+  assert_f_list(f_list, allow_numbers = TRUE)
   assert_type(trans, is.function)
-  dots <- list(...)
-  assert_trans_dots(dots)
-  assert_type(.n_sample, is_single_number, type_name = "single number")
-  assert_type(.pdqr_class, is_string, allow_null = TRUE)
-  assert_type(.pdqr_args, is.list)
+  assert_type(n_sample, is_single_number, type_name = "single number")
 
-  # Convert to random generation functions.
-    # If `dots` entry isn't "pdqr" function than it is a numeric.
-  r_dots <- lapply(dots, function(cur_dot) {
-    if (is_pdqr_fun(cur_dot)) {
-      as_r(cur_dot)
+  # Convert to random generation functions. If `f_list` element isn't
+  # pdqr-function then it is a number.
+  r_dots <- lapply(f_list, function(f) {
+    if (is_pdqr_fun(f)) {
+      as_r(f)
     } else {
-      function(n) {rep(cur_dot, length.out = n)}
+      function(n) {rep(f, length.out = n)}
     }
   })
+
   # Generate samples for every such function
-  smpl_list <- lapply(r_dots, do.call, args = list(.n_sample))
+  smpl_list <- lapply(r_dots, do.call, args = list(n_sample))
+
   # Call `trans` with all generated samples to produce sample from transformed
   # distribution
   smpl <- do.call(trans, smpl_list)
 
   # Produce output pdqr function
-  ref_f <- find_ref_f(dots)
-  pdqr_fun <- impute_pdqr_fun(.pdqr_class, ref_f)
-  pdqr_call_args <- dedupl_list(c(
-    list(x = smpl),
-    .pdqr_args,
-    list(type = meta_type(ref_f))
-  ))
+  f_list_meta <- compute_f_list_meta(f_list)
+  new_pdqr <- new_pdqr_by_class(f_list_meta[["class"]])
 
-  do.call(pdqr_fun, pdqr_call_args)
-}
-
-assert_trans_dots <- function(dots_list) {
-  pdqr_check <- vapply(dots_list, is_pdqr_fun, logical(1))
-  num_check <- vapply(dots_list, is_single_number, logical(1))
-
-  if (!all(pdqr_check | num_check)) {
-    stop_collapse(
-      '`...` should contain only pdqr-functions and single numbers.'
-    )
-  }
-
-  if (!any(pdqr_check)) {
-    stop_collapse("`...` should have at least one pdqr-function.")
-  }
-
-  dots_list
-}
-
-find_ref_f <- function(obj_list) {
-  is_obj_pdqr <- vapply(obj_list, is_pdqr_fun, logical(1))
-
-  obj_list[[which(is_obj_pdqr)[1]]]
-}
-
-impute_pdqr_fun <- function(pdqr_class, ref) {
-  if (is.null(pdqr_class)) {
-    pdqr_class <- get_pdqr_class(ref)
-  } else if (!is_pdqr_class(pdqr_class)) {
-    stop_collapse(
-      '`.pdqr_class` should be one of "p", "d", "q", "r".'
-    )
-  }
-
-  new_pdqr_by_class(pdqr_class)
+  new_pdqr(x = smpl, type = f_list_meta[["type"]], ...)
 }
 
 
@@ -79,7 +40,7 @@ Math.pdqr <- function(x, ...) {
     get(.Generic)(y, ...)
   }
 
-  form_trans(gen_fun, x, .n_sample = n_sample)
+  form_trans(list(x), gen_fun, n_sample = n_sample)
 }
 
 Ops.pdqr <- function(e1, e2) {
@@ -99,9 +60,9 @@ Ops.pdqr <- function(e1, e2) {
   }
 
   if (missing(e2)) {
-    form_trans(gen_fun, e1, .n_sample = n_sample)
+    form_trans(list(e1), gen_fun, n_sample = n_sample)
   } else {
-    form_trans(gen_fun, e1, e2, .n_sample = n_sample)
+    form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
   }
 }
 
@@ -123,5 +84,5 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
     unlist(Map(f, ...))
   }
 
-  form_trans(gen_fun, ..., .n_sample = n_sample)
+  form_trans(list(...), gen_fun, n_sample = n_sample)
 }
