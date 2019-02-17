@@ -73,14 +73,21 @@ test_that("form_trans throws error if `trans` produces bad output",  {
   )
 })
 
-test_that("form_trans uses `...` as `density` argument",  {
-  output <- form_trans(list(p_infin), sq, n = 3)
-  expect_equal(nrow(meta_x_tbl(output)), 3)
+test_that("form_trans uses `...` as `trans` arguments",  {
+  adder <- function(x, y) {x + y}
+  output <- form_trans(list(p_fin), adder, y = 100)
+
+  expect_true(meta_support(p_fin)[1] == meta_support(output)[1] - 100)
 })
 
 test_that("form_trans uses `n_sample` argument",  {
   output <- form_trans(list(p_fin), sq, n_sample = 1)
   expect_equal(nrow(meta_x_tbl(output)), 1)
+})
+
+test_that("form_trans uses `pdqr_args` as arguments for `new_*()",  {
+  output <- form_trans(list(p_infin), sq, pdqr_args = list(n = 3))
+  expect_equal(nrow(meta_x_tbl(output)), 3)
 })
 
 test_that("form_trans throws errors", {
@@ -93,6 +100,9 @@ test_that("form_trans throws errors", {
   )
   expect_error(
     form_trans(list(p_fin), sq, n_sample = 1:2), "`n_sample`.*single number"
+  )
+  expect_error(
+    form_trans(list(p_fin), sq, pdqr_args = "a"), "`pdqr_args`.*list"
   )
 })
 

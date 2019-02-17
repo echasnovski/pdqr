@@ -1,11 +1,11 @@
 # Main transformation function --------------------------------------------
-form_trans <- function(f_list, trans, ..., n_sample = 10000) {
-  # The resaon `n_sample` is after the `...` is because if it was before `...`
-  # it would mask the `n` argument to `density()` due to R's partial matching.
+form_trans <- function(f_list, trans, ..., n_sample = 10000,
+                       pdqr_args = list()) {
   assert_type(f_list, is.list)
   assert_f_list(f_list, allow_numbers = TRUE)
   assert_type(trans, is.function)
   assert_type(n_sample, is_single_number, type_name = "single number")
+  assert_type(pdqr_args, is.list)
 
   # Compute type and class of output function
   res_meta <- compute_f_list_meta(f_list)
@@ -24,8 +24,8 @@ form_trans <- function(f_list, trans, ..., n_sample = 10000) {
   smpl_list <- lapply(r_dots, do.call, args = list(n_sample))
 
   # Call `trans` with all generated samples to produce sample from transformed
-  # distribution
-  smpl <- do.call(trans, smpl_list)
+  # distribution. Use `...` as additional arguments to `trans`.
+  smpl <- do.call(trans, args = c(smpl_list, list(...)))
   if (is.logical(smpl)) {
     smpl <- as.numeric(smpl)
     res_meta[["type"]] <- "fin"
@@ -35,8 +35,9 @@ form_trans <- function(f_list, trans, ..., n_sample = 10000) {
 
   # Produce output pdqr function
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
+  call_args <- c(list(x = smpl, type = res_meta[["type"]]), pdqr_args)
 
-  new_pdqr(x = smpl, type = res_meta[["type"]], ...)
+  do.call(new_pdqr, args = call_args)
 }
 
 
