@@ -38,6 +38,11 @@ test_that("new_p imputes data frame input", {
   expect_x_tbl_imputation(new_p)
 })
 
+test_that("new_p rounds input in case of `type` = 'fin'", {
+  near_1 <- 1 - 10^c(-6, -11)
+  expect_equal(p_fin(near_1), c(0, 0.1))
+})
+
 test_that("new_p behaves like ecdf() in case of `type` = 'fin'", {
   x_fin_grid <- seq(from = min(x_fin) - 1, to = max(x_fin) + 1, by = 0.01)
   expect_equal(p_fin(x_fin_grid), ecdf(x_fin)(x_fin_grid))
