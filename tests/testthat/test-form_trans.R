@@ -20,8 +20,8 @@ x_norm_seq <- seq(-10, 10, by = 0.01)
 
 
 # form_trans --------------------------------------------------------------
-test_that("form_trans works", {
-  output_custom <- form_trans(list(p_custom), sq)
+test_that("form_trans works with `method = 'random'`", {
+  output_custom <- form_trans(list(p_custom), sq, method = "random")
   expect_distr_fun(output_custom, "p", "infin")
   expect_equal_distr(
     output_custom, p_custom_ref,
@@ -38,7 +38,7 @@ test_that("form_trans works", {
     data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2))
   )
 
-  output_norm <- form_trans(list(2, d_norm_input), `*`)
+  output_norm <- form_trans(list(2, d_norm_input), `*`, method = "random")
   expect_distr_fun(output_norm, "d", "infin")
   expect_equal_distr(
     output_norm, d_norm_ref,
@@ -48,46 +48,137 @@ test_that("form_trans works", {
   )
 })
 
+test_that("form_trans works with `method = 'bruteforce'`", {
+  # Output type "fin"
+    # Single input
+  add_one <- function(x) {x + 1}
+  cur_fin <- new_d(data.frame(x = 0:2, prob = c(0.1, 0.2, 0.7)), "fin")
+  expect_ref_x_tbl(
+    form_trans(list(cur_fin), add_one, method = "bruteforce"),
+    data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7))
+  )
+
+    # Multiple input
+  cur_fin_2 <- new_p(data.frame(x = 1:2, prob = c(0.4, 0.6)), "fin")
+  expect_ref_x_tbl(
+    form_trans(list(cur_fin, cur_fin_2), `+`, method = "bruteforce"),
+    data.frame(
+      x =    c(      1,               2,               3,       4),
+      prob = c(0.1*0.4, 0.1*0.6+0.2*0.4, 0.2*0.6+0.7*0.4, 0.7*0.6)
+    )
+  )
+
+    # Output of `trans` is logical
+  d_geq <- form_trans(list(0, d_infin), `>=`, method = "bruteforce")
+  expect_true(abs(d_geq(1) - p_infin(0)) <= 5e-3)
+
+  # Output type "infin"
+  output <- form_trans(list(d_infin, 1), `+`, method = "bruteforce")
+  expect_distr_fun(output, "d", "infin")
+  output_support <- meta_support(output)
+  expect_true(all(abs(output_support - (x_infin_support+1)) < 1e-3))
+})
+
 test_that("form_trans produces correct 'pdqr' class", {
-  expect_is(form_trans(list(1, p_fin), `+`), "p")
-  expect_is(form_trans(list(p_fin, 1), `+`), "p")
-  expect_is(form_trans(list(d_fin, p_fin), `+`), "d")
-  expect_is(form_trans(list(p_fin, d_fin), `+`), "p")
+  expect_is(form_trans(list(1, p_fin), `+`, method = "random"), "p")
+  expect_is(form_trans(list(p_fin, 1), `+`, method = "random"), "p")
+  expect_is(form_trans(list(d_fin, p_fin), `+`, method = "random"), "d")
+  expect_is(form_trans(list(p_fin, d_fin), `+`, method = "random"), "p")
+
+  expect_is(form_trans(list(1, p_fin), `+`, method = "bruteforce"), "p")
+  expect_is(form_trans(list(p_fin, 1), `+`, method = "bruteforce"), "p")
+  expect_is(form_trans(list(d_fin, p_fin), `+`, method = "bruteforce"), "d")
+  expect_is(form_trans(list(p_fin, d_fin), `+`, method = "bruteforce"), "p")
 })
 
 test_that("form_trans produces correct 'pdqr' type", {
-  expect_equal(meta_type(form_trans(list(1, p_fin), `+`)), "fin")
-  expect_equal(meta_type(form_trans(list(p_fin, q_fin), `+`)), "fin")
-  expect_equal(meta_type(form_trans(list(p_infin, q_fin), `+`)), "infin")
-  expect_equal(meta_type(form_trans(list(d_fin, p_infin), `+`)), "infin")
-  expect_equal(meta_type(form_trans(list(p_infin, d_infin), `+`)), "infin")
+  expect_equal(
+    meta_type(form_trans(list(1, p_fin), `+`, method = "random")), "fin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(p_fin, q_fin), `+`, method = "random")), "fin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(p_infin, q_fin), `+`, method = "random")), "infin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(d_fin, p_infin), `+`, method = "random")), "infin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(p_infin, d_infin), `+`, method = "random")),
+    "infin"
+  )
+
+  expect_equal(
+    meta_type(form_trans(list(1, p_fin), `+`, method = "bruteforce")), "fin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(p_fin, q_fin), `+`, method = "bruteforce")), "fin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(p_infin, q_fin), `+`, method = "bruteforce")),
+    "infin"
+  )
 
   # If `trans` produces logical output, type should be "fin"
-  expect_equal(meta_type(form_trans(list(p_infin, q_infin), `>=`)), "fin")
+  expect_equal(
+    meta_type(form_trans(list(p_infin, q_fin), `>=`, method = "random")),
+    "fin"
+  )
+  expect_equal(
+    meta_type(form_trans(list(p_infin, q_fin), `>=`, method = "bruteforce")),
+    "fin"
+  )
 })
 
 test_that("form_trans throws error if `trans` produces bad output",  {
   bad_trans <- function(x) {rep("a", length(x))}
   expect_error(
-    form_trans(list(p_fin), bad_trans), "transformation.*numeric.*logical"
+    form_trans(list(p_fin), bad_trans, method = "random"),
+    "transformation.*numeric.*logical"
+  )
+  expect_error(
+    form_trans(list(p_fin), bad_trans, method = "bruteforce"),
+    "transformation.*numeric.*logical"
   )
 })
 
 test_that("form_trans uses `...` as `trans` arguments",  {
   adder <- function(x, y) {x + y}
-  output <- form_trans(list(p_fin), adder, y = 100)
 
-  expect_true(meta_support(p_fin)[1] == meta_support(output)[1] - 100)
+  output_random <- form_trans(list(p_fin), adder, y = 100, method = "random")
+  expect_true(meta_support(p_fin)[1] == meta_support(output_random)[1] - 100)
+
+  output_brute <- form_trans(list(p_fin), adder, y = 100, method = "bruteforce")
+  expect_true(meta_support(p_fin)[1] == meta_support(output_brute)[1] - 100)
 })
 
-test_that("form_trans uses `n_sample` argument",  {
-  output <- form_trans(list(p_fin), sq, n_sample = 1)
-  expect_equal(nrow(meta_x_tbl(output)), 1)
+test_that("form_trans handles `n_sample` argument",  {
+  # It is used with "random" method
+  output_random <- form_trans(list(p_fin), sq, method = "random", n_sample = 1)
+  expect_equal(nrow(meta_x_tbl(output_random)), 1)
+
+  # It is not used with "bruteforce" method
+  output_brute <- form_trans(
+    list(p_fin), sq, method = "bruteforce", n_sample = 1
+  )
+  expect_equal(nrow(meta_x_tbl(output_brute)), nrow(meta_x_tbl(p_fin)))
 })
 
-test_that("form_trans uses `pdqr_args` as arguments for `new_*()",  {
-  output <- form_trans(list(p_infin), sq, pdqr_args = list(n = 3))
+test_that("form_trans uses `pdqr_args` as arguments for `new_*()`",  {
+  output <- form_trans(
+    list(p_infin), sq, method = "random", pdqr_args = list(n = 3)
+  )
   expect_equal(nrow(meta_x_tbl(output)), 3)
+
+  # Currently there is no effect in using `pdqr_args` in case `method =
+  # "bruteforce"` because in computes data frame input for `new_*()` functions,
+  # in which case extra arguments are currently not used. However, `pdqr_args`
+  # are passed to `new_*()` in the code.
+  expect_equal(
+    form_trans(list(p_fin), sq, method = "bruteforce", pdqr_args = list(n = 3)),
+    form_trans(list(p_fin), sq, method = "bruteforce")
+  )
 })
 
 test_that("form_trans throws errors", {
@@ -95,6 +186,8 @@ test_that("form_trans throws errors", {
   expect_error(form_trans(list("a"), sq), "`f_list`.*pdqr-function.*number")
   expect_error(form_trans(list(1), sq), "`f_list`.*one.*pdqr-function")
   expect_error(form_trans(list(p_fin), 1), "`trans`.*function")
+  expect_error(form_trans(list(p_fin), sq, method = 1), "`method`.*string")
+  expect_error(form_trans(list(p_fin), sq, method = "a"), "`method`.*one of")
   expect_error(
     form_trans(list(p_fin), sq, n_sample = "a"), "`n_sample`.*single number"
   )
@@ -105,6 +198,26 @@ test_that("form_trans throws errors", {
     form_trans(list(p_fin), sq, pdqr_args = "a"), "`pdqr_args`.*list"
   )
 })
+
+
+# trans_random ------------------------------------------------------------
+# Tested in `form_trans()`
+
+
+# trans_bruteforce --------------------------------------------------------
+# Tested in `form_trans()`
+
+
+# list_grid ---------------------------------------------------------------
+# Tested in `form_trans()`
+
+
+# assert_trans_output -----------------------------------------------------
+# Tested in `form_trans()`
+
+
+# update_f_list_meta ------------------------------------------------------
+# Tested in `form_trans()`
 
 
 # Math.pdqr ---------------------------------------------------------------
