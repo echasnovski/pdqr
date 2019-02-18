@@ -1,4 +1,4 @@
-# Main transformation function --------------------------------------------
+# Main transformation functions -------------------------------------------
 form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
                        pdqr_args = list()) {
   # Notes in docs about `method = "bruteforce"`:
@@ -26,6 +26,14 @@ form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
       f_list = f_list, trans = trans, ...,
       pdqr_args = pdqr_args
     )
+  )
+}
+
+form_trans_self <- function(f, trans, ..., method = "bruteforce",
+                            pdqr_args = list()) {
+  form_trans(
+    f_list = list(f), trans = trans, ...,
+    method = method, pdqr_args = pdqr_args
   )
 }
 

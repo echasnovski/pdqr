@@ -200,6 +200,23 @@ test_that("form_trans throws errors", {
 })
 
 
+# form_trans_self ---------------------------------------------------------
+# This is a thin wrapper for `form_trans()` so main tests are done in
+# `form_trans()`
+test_that("form_trans_self works",  {
+  expect_equal(
+    form_trans_self(p_fin, sq),
+    form_trans(list(p_fin), sq, method = "bruteforce")
+  )
+
+  cur_fin <- new_d(data.frame(x = c(-2, 0, 1), prob = c(0.1, 0.7, 0.2)), "fin")
+  expect_ref_x_tbl(
+    form_trans_self(cur_fin, `-`),
+    data.frame(x = c(-1, 0, 2), prob = c(0.2, 0.7, 0.1))
+  )
+})
+
+
 # trans_random ------------------------------------------------------------
 # Tested in `form_trans()`
 
