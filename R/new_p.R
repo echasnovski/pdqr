@@ -47,7 +47,7 @@ new_p_infin <- function(x_tbl) {
     x_bet <- x[q_ind_bet]
 
     # Exact integration of density linear interpolation
-    coeffs <- compute_piecelin_density_coeffs(x, y, q_ind_bet)
+    coeffs <- compute_piecelin_density_coeffs(x_tbl, q_ind_bet)
 
     out_between <- p_grid[q_ind_bet] +
       0.5 * coeffs[["slope"]] * (q_bet * q_bet - x_bet * x_bet) +

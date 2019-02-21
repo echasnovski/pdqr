@@ -114,10 +114,19 @@ trapez_part_integral <- function(x, y) {
 
 
 # Coefficients of piecewise-linear density --------------------------------
-compute_piecelin_density_coeffs <- function(x_dens, y_dens, ind_vec) {
-  slope <- (y_dens[ind_vec+1] - y_dens[ind_vec]) /
-    (x_dens[ind_vec+1] - x_dens[ind_vec])
-  intercept <- y_dens[ind_vec] - slope * x_dens[ind_vec]
+compute_piecelin_density_coeffs <- function(x_tbl, ind_vec) {
+  n <- length(ind_vec)
+  slope <- numeric(n)
+  intercept <- numeric(n)
+
+  x <- x_tbl[["x"]]
+  y <- x_tbl[["y"]]
+
+  ind_is_in <- (ind_vec >= 1) & (ind_vec < length(x))
+  inds_in <- ind_vec[ind_is_in]
+
+  slope[ind_is_in] <- (y[inds_in+1] - y[inds_in]) / (x[inds_in+1] - x[inds_in])
+  intercept[ind_is_in] <- y[inds_in] - slope[ind_is_in] * x[inds_in]
 
   list(slope = slope, intercept = intercept)
 }

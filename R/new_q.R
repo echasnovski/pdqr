@@ -44,7 +44,7 @@ new_q_infin <- function(x_tbl) {
     # probability not exceeding given one".
     p_ind <- findInterval(p_prob, p_grid, left.open = TRUE, all.inside = TRUE)
 
-    coeffs <- compute_piecelin_density_coeffs(x, y, p_ind)
+    coeffs <- compute_piecelin_density_coeffs(x_tbl, p_ind)
 
     out[is_inside] <- find_quant(
       p = p_prob,
