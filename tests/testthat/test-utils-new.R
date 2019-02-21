@@ -335,6 +335,12 @@ test_that("trapez_integral works", {
 })
 
 
+# trapez_piece_integral ---------------------------------------------------
+test_that("trapez_piece_integral works", {
+  expect_equal(trapez_piece_integral(cumsum(1:4), c(1:2, 2:1)), c(3, 6, 6))
+})
+
+
 # trapez_part_integral ----------------------------------------------------
 # Tested in `p_from_d_points()`
 

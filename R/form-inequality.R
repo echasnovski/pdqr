@@ -85,7 +85,7 @@ prob_geq_fin_any <- function(f_1, f_2) {
   sum(d_f_1(x_1) * p_f_2(x_1))
 }
 
-prob_geq_infin_infin <- function(f_1, f_2) {
+prob_geq_infin_infin <- function(f_1, f_2, h = 1e-5) {
   f_x_tbl_1 <- meta_x_tbl(f_1)
   f_x_tbl_2 <- meta_x_tbl(f_2)
 
@@ -119,33 +119,52 @@ prob_geq_infin_infin <- function(f_1, f_2) {
   # probability tends to `d_1(x) * p_2(x)`. Overall probability is equal to
   # integral of that expression over combined support of `f_1` and `f_2`, which
   # here is `[comm_x[1], comm_x[n]]`.
-  infin_geq_integral(
+  cumprob_2 <- as_p(f_2)(comm_x)
+
+  # Its computation can be devided into parts where both densities are strictly
+  # linear (here - intervals between consecutive `comm_x` values) and later
+  # adding them together.
+  res <- infin_geq_piece_integral(
     slope_1 = coeffs_1[["slope"]], inter_1 = coeffs_1[["intercept"]],
     slope_2 = coeffs_2[["slope"]], inter_2 = coeffs_2[["intercept"]],
     x_left = comm_left, x_right = comm_right,
-    cumprob_2_left = as_p(f_2)(comm_left)
+    cumprob_2_left = cumprob_2[-n]
   )
+
+  # However, this computation can be very inaccurate if interval width is very
+  # small (which happens at dirac-like approximations): this leads to very big
+  # numbers inside multiplications and additions: present numerical accuracy
+  # isn't enough. The solution to avoid this is to use trapezoidal approximation
+  # to those interval integrals. The integrated function is still `d_1(x) *
+  # p_2(x)` which at `comm_x` points is equal to `y_1 * cumprob_2`.
+  y_1 <- as_d(f_1)(comm_x)
+  approx_res <- trapez_piece_integral(comm_x, y_1 * cumprob_2)
+
+  # Here `h` is taken to be relatively high (1e-5) because at that level
+  # computation is still inaccurate.
+  x_is_close <- (comm_right - comm_left) < h
+  res[x_is_close] <- approx_res[x_is_close]
+
+  sum(res)
 }
 
-infin_geq_integral <- function(slope_1, inter_1, slope_2, inter_2,
-                               x_left, x_right, cumprob_2_left) {
+infin_geq_piece_integral <- function(slope_1, inter_1, slope_2, inter_2,
+                                     x_left, x_right, cumprob_2_left) {
   lpow <- four_powers(x_left)
   rpow <- four_powers(x_right)
 
   # Output probability is equal to definite integral of `d_1(x) * p_2(x)` over
   # maximum support (on outside of which both densities equal to zero). On each
   # interval, where both densities have linear nature, definite integral is
-  # equal to the `piece_integrals`, as `d_1` is equal to `slope_1 * x + inter_1`
-  # and `p_2` is `0.5*slope_2 * x^2 + inter_2 * x + c_2` where `c_2` is free
+  # equal to the output because `d_1` is equal to `slope_1 * x + inter_1` and
+  # `p_2` is `0.5*slope_2 * x^2 + inter_2 * x + c_2` where `c_2` is free
   # coefficient of `p_2` computed as below.
   c_2 <- cumprob_2_left - lpow$p2 * slope_2/2 - lpow$p1 * inter_2
 
-  piece_integrals <- (rpow$p4 - lpow$p4) * slope_1*slope_2 / 8 +
+  (rpow$p4 - lpow$p4) * slope_1*slope_2 / 8 +
     (rpow$p3 - lpow$p3) * (2*slope_1*inter_2 + inter_1*slope_2) / 6 +
     (rpow$p2 - lpow$p2) * (slope_1*c_2 + inter_1*inter_2) / 2 +
     (rpow$p1 - lpow$p1) * inter_1 * c_2
-
-  sum(piece_integrals)
 }
 
 four_powers <- function(x) {

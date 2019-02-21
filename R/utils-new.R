@@ -101,9 +101,14 @@ density_piecelin <- function(x, ...) {
 }
 
 trapez_integral <- function(x, y) {
+  sum(trapez_piece_integral(x, y))
+}
+
+trapez_piece_integral <- function(x, y) {
   n <- length(y)
+
   # `x` is assumed to be sorted increasingly (as after the `density()` call)
-  sum((x[-1] - x[-n]) * (y[-1] + y[-n])) / 2
+  (x[-1] - x[-n]) * (y[-1] + y[-n]) / 2
 }
 
 trapez_part_integral <- function(x, y) {
