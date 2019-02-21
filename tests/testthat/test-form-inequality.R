@@ -6,7 +6,7 @@ set.seed(8888)
 # Input data --------------------------------------------------------------
 f_fin_1 <- new_d(data.frame(x = 0:2, prob = c(0.2, 0.3, 0.5)), "fin")
 f_fin_2 <- new_d(data.frame(x = 1:3, prob = c(0.3, 0.2, 0.5)), "fin")
-f_infin_1 <- new_d(data.frame(x = 0:2, y = c(0, 1, 0)), "infin")
+f_infin_1 <- new_d(data.frame(x = 0:2, y = c(0, 1/3, 1/3)), "infin")
 f_infin_2 <- new_d(data.frame(x = 0:2 + 0.5, y = c(0, 1, 0)), "infin")
 
 

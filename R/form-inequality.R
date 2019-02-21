@@ -89,17 +89,26 @@ prob_geq_infin_infin <- function(f_1, f_2) {
   f_x_tbl_1 <- meta_x_tbl(f_1)
   f_x_tbl_2 <- meta_x_tbl(f_2)
 
-  # Create common grid for `f_1` and `f_2`
+  # Create common grid (with accompanying grids) for `f_1` and `f_2`
   comm_x <- sort(union(f_x_tbl_1[["x"]], f_x_tbl_2[["x"]]))
-  y_1 <- enfun_x_tbl(f_x_tbl_1)(comm_x)
-  y_2 <- enfun_x_tbl(f_x_tbl_2)(comm_x)
+  n <- length(comm_x)
+  comm_left <- comm_x[-n]
+  comm_right <- comm_x[-1]
+  # This is later used as "indicator" of common grid interval
+  comm_mid <- (comm_left + comm_right) / 2
 
   # Compute coefficients of lines representing `f_1` and `f_2` densities at each
   # interval of common grid.
-  n <- length(comm_x)
-  ind_vec <- seq_len(n - 1)
-  coeffs_1 <- compute_piecelin_density_coeffs(comm_x, y_1, ind_vec)
-  coeffs_2 <- compute_piecelin_density_coeffs(comm_x, y_2, ind_vec)
+  coeffs_1 <- compute_piecelin_density_coeffs(
+    x_tbl = f_x_tbl_1,
+    # Here `rightmost.closed = TRUE` is needed so that coefficients at the most
+    # right point will be from the "inside" of support and not from "outside"
+    ind_vec = findInterval(comm_mid, f_x_tbl_1[["x"]], rightmost.closed = TRUE)
+  )
+  coeffs_2 <- compute_piecelin_density_coeffs(
+    x_tbl = f_x_tbl_2,
+    ind_vec = findInterval(comm_mid, f_x_tbl_2[["x"]], rightmost.closed = TRUE)
+  )
 
   # Output probability is equal to definite integral from `comm_x[1]` to
   # `comm_x[n]` of `d_1(x) * p_2(x)` (`d_1` - PDF of `f_1`, `p_2` - CDF of
@@ -113,8 +122,8 @@ prob_geq_infin_infin <- function(f_1, f_2) {
   infin_geq_integral(
     slope_1 = coeffs_1[["slope"]], inter_1 = coeffs_1[["intercept"]],
     slope_2 = coeffs_2[["slope"]], inter_2 = coeffs_2[["intercept"]],
-    x_left = comm_x[-n], x_right = comm_x[-1],
-    cumprob_2_left = as_p(f_2)(comm_x[-n])
+    x_left = comm_left, x_right = comm_right,
+    cumprob_2_left = as_p(f_2)(comm_left)
   )
 }
 
