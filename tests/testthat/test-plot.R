@@ -169,6 +169,11 @@ test_that("plot.d handles dirac-like entries in 'x_tbl'",  {
       plot(form_resupport(d_infin, c(-2, 1), method = "winsor"))
     })
   )
+  vdiffr::expect_doppelganger(
+    "dirac-like-3", recordPlot({
+      plot(form_mix(list(d_fin, d_infin)))
+    })
+  )
 })
 
 test_that("plot.d throws error with corrupt input", {

@@ -51,6 +51,16 @@ neigh_dist <- function(vec, neigh_type = "min", def_dist = NULL) {
 
 
 # Function and vector manipulations ---------------------------------------
+recycle_vec <- function(vec, n) {
+  vec_name <- paste0("`", deparse(substitute(vec)), "`")
+
+  if (!(length(vec) %in% c(1, n))) {
+    stop_collapse(vec_name, " should have length 1 or ", n, ".")
+  }
+
+  rep(vec, length.out = n)
+}
+
 inversing <- function(f, interval, ..., n_grid = 10001,
                       approxfun_args = list()) {
   x_grid <- seq_between(interval, length.out = n_grid)

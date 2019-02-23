@@ -81,6 +81,16 @@ test_that("neigh_dist works",  {
 })
 
 
+# recycle_vec -------------------------------------------------------------
+test_that("recycle_vec works", {
+  expect_equal(recycle_vec(1:2, 2), 1:2)
+  expect_equal(recycle_vec(1, 3), c(1, 1, 1))
+
+  input <- 1:3
+  expect_error(recycle_vec(input, 2), "`input`.*length 1 or 2")
+})
+
+
 # inversing ---------------------------------------------------------------
 test_that("inversing works", {
   square <- function(x) {x^2}
