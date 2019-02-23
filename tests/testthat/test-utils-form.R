@@ -58,6 +58,8 @@ test_that("assert_f_list works",  {
   expect_silent(assert_f_list(list(d_fin)))
   expect_silent(assert_f_list(list(1, p_infin), allow_numbers = TRUE))
 
+  expect_error(assert_f_list(list()), "empty")
+
   input <- list("a")
   expect_error(assert_f_list(input), "`input`.*pdqr-function")
   expect_error(

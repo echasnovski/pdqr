@@ -35,6 +35,10 @@ get_pdqr_class <- function(f) {
 assert_f_list <- function(f_list, allow_numbers = FALSE) {
   f_list_name <- paste0("`", deparse(substitute(f_list)), "`")
 
+  if (length(f_list) == 0) {
+    stop_collapse(f_list_name, " shouldn't be empty.")
+  }
+
   elem_is_pdqr <- vapply(f_list, is_pdqr_fun, logical(1))
 
   if (allow_numbers) {

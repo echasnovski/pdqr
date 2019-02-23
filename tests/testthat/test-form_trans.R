@@ -183,6 +183,7 @@ test_that("form_trans uses `pdqr_args` as arguments for `new_*()`",  {
 
 test_that("form_trans throws errors", {
   expect_error(form_trans(p_fin, sq), "`f_list`.*list")
+  expect_error(form_trans(list(), sq), "`f_list`.*empty")
   expect_error(form_trans(list("a"), sq), "`f_list`.*pdqr-function.*number")
   expect_error(form_trans(list(1), sq), "`f_list`.*one.*pdqr-function")
   expect_error(form_trans(list(p_fin), 1), "`trans`.*function")
