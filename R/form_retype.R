@@ -151,8 +151,8 @@ retype_infin_dirac <- function(f, h = 1e-8) {
   h_vec <- pmin(left_h_vec, right_h_vec)
 
   y_zero <- rep(0, length(x))
-  new_x <- c(x - h_vec,                           x, x + h_vec)
-  new_y <- c(   y_zero, x_tbl[["prob"]] / (2*h_vec),    y_zero)
+  new_x <- c(x - h_vec,                       x, x + h_vec)
+  new_y <- c(   y_zero, x_tbl[["prob"]] / h_vec,    y_zero)
 
   new_pdqr_by_ref(f)(data.frame(x = new_x, y = new_y), "infin")
 }
