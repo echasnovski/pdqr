@@ -13,8 +13,6 @@ Math.pdqr <- function(x, ...) {
 Ops.pdqr <- function(e1, e2) {
   n_sample <- getOption("pdqr.transform.n_sample")
 
-  gen_fun <- get(.Generic)
-
   if (missing(e2)) {
     assert_pdqr_fun(e1)
 
@@ -29,11 +27,13 @@ Ops.pdqr <- function(e1, e2) {
       ops_linear(.Generic, e1, e2)
     } else if (.Generic %in% c(">=", ">", "<=", "<", "==", "!=")) {
       ops_compare(.Generic, e1, e2)
+    } else if (.Generic %in% c("&", "|")) {
+      ops_logic(.Generic, e1, e2)
     } else {
       assert_pdqr_fun(e1)
       assert_pdqr_fun(e2)
 
-      form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
+      form_trans(list(e1, e2), get(.Generic), n_sample = n_sample)
     }
   }
 }
@@ -123,6 +123,25 @@ ops_compare <- function(gen, e1, e2) {
     `<`  = form_less(e1, e2),
     `==` = form_equal(e1, e2),
     `!=` = form_not_equal(e1, e2)
+  )
+}
+
+ops_logic <- function(gen, e1, e2) {
+  input <- ensure_pdqr_functions(e1, e2)
+  e1 <- input[[1]]
+  e2 <- input[[2]]
+
+  d_zero <- new_d(0, "fin")
+
+  zero_prob_1 <- prob_equal(e1, d_zero)
+  zero_prob_2 <- prob_equal(e2, d_zero)
+
+  out_class <- get_pdqr_class(e1)
+
+  switch(
+    gen,
+    `&` = boolean_pdqr((1 - zero_prob_1) * (1 - zero_prob_2), out_class),
+    `|` = boolean_pdqr(1 - zero_prob_1*zero_prob_2, out_class)
   )
 }
 

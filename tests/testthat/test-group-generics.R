@@ -15,6 +15,10 @@ expect_lin_trans <- function(f_out, f_in, ref_supp) {
   expect_equal_x_tbl(f_out, output_ref)
 }
 
+expect_prob_true <- function(f, val) {
+  expect_equal(as_d(f)(1), val)
+}
+
 
 # Math.pdqr ---------------------------------------------------------------
 test_that("Math.pdqr works", {
@@ -228,6 +232,52 @@ test_that("Ops.pdqr asserts bad input in case of comparison", {
   expect_error(d_fin != bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" != d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin != "a", "`e2`.*pdqr-function.*number")
+})
+
+test_that("Ops.pdqr works in case of logical AND/OR", {
+  cur_d_fin <- new_d(
+    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "fin"
+  )
+
+  # `&`
+  expect_prob_true(cur_d_fin & cur_d_fin, (1-0.2)*(1-0.2))
+  expect_prob_true(cur_d_fin & 1, 1-0.2)
+  expect_prob_true(2 & cur_d_fin, 1-0.2)
+  expect_prob_true(cur_d_fin & 0, 0)
+
+    # Probability of `d_infin` being 0 is always 0 (i.e. it is always "`TRUE`"),
+    # so presence of "infin" terms is irrelevant
+  expect_prob_true(d_infin & cur_d_fin, 1-0.2)
+  expect_prob_true(d_infin & d_infin, 1)
+
+  # `|`
+  expect_prob_true(cur_d_fin | cur_d_fin, 1-0.2*0.2)
+  expect_prob_true(cur_d_fin | 0, 1-0.2)
+  expect_prob_true(0 | cur_d_fin, 1-0.2)
+  expect_prob_true(cur_d_fin | 2, 1)
+
+    # Probability of `d_infin` being 0 is always 0 (i.e. it is always "`TRUE`"),
+    # so presence of "infin" terms means output is always 1
+  expect_prob_true(d_infin | cur_d_fin, 1)
+  expect_prob_true(d_infin | d_infin, 1)
+})
+
+test_that("Ops.pdqr asserts bad input in case of logical AND/OR", {
+  # `&`
+  expect_error(bad_pdqr & 1, "`e1`")
+  expect_error(1 & bad_pdqr, "`e2`")
+  expect_error(bad_pdqr & bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin & bad_pdqr_2, "`e2`.*pdqr-function.*number")
+  expect_error("a" & d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin & "a", "`e2`.*pdqr-function.*number")
+
+  # `|`
+  expect_error(bad_pdqr | 1, "`e1`")
+  expect_error(1 | bad_pdqr, "`e2`")
+  expect_error(bad_pdqr | bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin | bad_pdqr_2, "`e2`.*pdqr-function.*number")
+  expect_error("a" | d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin | "a", "`e2`.*pdqr-function.*number")
 })
 
 test_that("Ops.pdqr asserts bad input", {

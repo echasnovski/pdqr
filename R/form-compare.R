@@ -39,12 +39,6 @@ form_not_equal <- function(f_1, f_2) {
   )
 }
 
-boolean_pdqr <- function(prob_true, pdqr_class) {
-  x_tbl <- data.frame(x = c(0, 1), prob = c(1-prob_true, prob_true))
-
-  new_pdqr_by_class(pdqr_class)(x_tbl, "fin")
-}
-
 prob_geq <- function(f_1, f_2) {
   if (meta_type(f_1) == "fin") {
     prob_geq_fin_any(f_1, f_2)

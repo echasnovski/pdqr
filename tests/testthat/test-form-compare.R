@@ -242,10 +242,6 @@ test_that("form_not_equal returns appropriate pdqr class", {
 })
 
 
-# boolean_pdqr ------------------------------------------------------------
-# Tested in `form_*()` comparisons
-
-
 # prob_geq ----------------------------------------------------------------
 # Tested in `form_*()` comparisons
 

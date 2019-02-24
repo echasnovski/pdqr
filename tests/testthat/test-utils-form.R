@@ -53,6 +53,18 @@ test_that("get_pdqr_class works", {
 })
 
 
+# boolean_pdqr ------------------------------------------------------------
+test_that("boolean_pdqr works", {
+  output_1 <- boolean_pdqr(0.61, "p")
+  expect_is(output_1, "p")
+  expect_ref_x_tbl(output_1, data.frame(x = 0:1, prob = c(0.39, 0.61)))
+
+  output_2 <- boolean_pdqr(0, "d")
+  expect_is(output_2, "d")
+  expect_ref_x_tbl(output_2, data.frame(x = 0:1, prob = c(1, 0)))
+})
+
+
 # assert_f_list -----------------------------------------------------------
 test_that("assert_f_list works",  {
   expect_silent(assert_f_list(list(d_fin)))
