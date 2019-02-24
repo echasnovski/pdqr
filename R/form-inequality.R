@@ -1,5 +1,3 @@
-# NOTE that currently these functions don't work properly when "infin"
-# dirac-like data is involved
 form_geq <- function(f_1, f_2) {
   assert_pdqr_fun(f_1)
   assert_pdqr_fun(f_2)
