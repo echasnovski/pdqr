@@ -5,6 +5,14 @@ context("test-group-generics")
 x_norm_seq <- seq(-10, 10, by = 0.01)
 
 
+# Custom expactations -----------------------------------------------------
+expect_lin_trans <- function(f_out, f_in, ref_supp) {
+  output_ref <- form_resupport(f_in, ref_supp, method = "linear")
+
+  expect_equal_x_tbl(f_out, output_ref)
+}
+
+
 # Math.pdqr ---------------------------------------------------------------
 test_that("Math.pdqr works", {
   lnorm_x <- seq(0, 100, by = 0.001)
@@ -71,6 +79,58 @@ test_that("Ops.pdqr works with generics which take one argument", {
   expect_equal((!d_infin)(1), 0)
 })
 
+test_that("Ops.pdqr works in case of linear operation", {
+  d_fin_supp <- meta_support(d_fin)
+  d_infin_supp <- meta_support(d_infin)
+  d_dirac <- form_retype(d_fin, "infin", method = "dirac")
+  d_dirac_supp <- meta_support(d_dirac)
+
+  # `+`
+  expect_lin_trans(d_fin + 10, f_in = d_fin, ref_supp = d_fin_supp + 10)
+  expect_lin_trans(10 + d_fin, f_in = d_fin, ref_supp = d_fin_supp + 10)
+  expect_lin_trans(d_infin + 10, f_in = d_infin, ref_supp = d_infin_supp + 10)
+  expect_lin_trans(10 + d_infin, f_in = d_infin, ref_supp = d_infin_supp + 10)
+  expect_lin_trans(d_dirac + 10, f_in = d_dirac, ref_supp = d_dirac_supp + 10)
+  expect_lin_trans(10 + d_dirac, f_in = d_dirac, ref_supp = d_dirac_supp + 10)
+
+  # `-`
+  expect_lin_trans(d_fin - 10, f_in = d_fin, ref_supp = d_fin_supp - 10)
+  expect_lin_trans(10 - d_fin, f_in = -d_fin, ref_supp = 10 - d_fin_supp[2:1])
+  expect_lin_trans(d_infin - 10, f_in = d_infin, ref_supp = d_infin_supp - 10)
+  expect_lin_trans(
+    10 - d_infin, f_in = -d_infin, ref_supp = 10 - d_infin_supp[2:1]
+  )
+  expect_lin_trans(d_dirac - 10, f_in = d_dirac, ref_supp = d_dirac_supp - 10)
+  expect_lin_trans(
+    10 - d_dirac, f_in = -d_dirac, ref_supp = 10 - d_dirac_supp[2:1]
+  )
+
+  # `*`
+  expect_lin_trans(d_fin * 10, f_in = d_fin, ref_supp = d_fin_supp * 10)
+  expect_lin_trans(10 * d_fin, f_in = d_fin, ref_supp = d_fin_supp * 10)
+  expect_lin_trans(d_infin * 10, f_in = d_infin, ref_supp = d_infin_supp * 10)
+  expect_lin_trans(10 * d_infin, f_in = d_infin, ref_supp = d_infin_supp * 10)
+  expect_lin_trans(d_dirac * 10, f_in = d_dirac, ref_supp = d_dirac_supp * 10)
+  expect_lin_trans(10 * d_dirac, f_in = d_dirac, ref_supp = d_dirac_supp * 10)
+
+  # `/`
+  expect_lin_trans(d_fin / 10, f_in = d_fin, ref_supp = d_fin_supp / 10)
+  expect_lin_trans(d_infin / 10, f_in = d_infin, ref_supp = d_infin_supp / 10)
+  expect_lin_trans(d_dirac / 10, f_in = d_dirac, ref_supp = d_dirac_supp / 10)
+})
+
+test_that("Ops.pdqr asserts bad input in case of linear operation", {
+  bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
+
+  expect_error(bad_pdqr + 1, "`e1`")
+  expect_error(1 + bad_pdqr, "`e2`")
+  expect_error(bad_pdqr - 1, "`e1`")
+  expect_error(1 - bad_pdqr, "`e2`")
+  expect_error(bad_pdqr * 1, "`e1`")
+  expect_error(1 * bad_pdqr, "`e2`")
+  expect_error(bad_pdqr / 1, "`e1`")
+})
+
 
 # Summary.pdqr ------------------------------------------------------------
 test_that("Summary.pdqr works", {
@@ -90,4 +150,12 @@ test_that("Summary.pdqr throws error on `range()`", {
 
 
 # negate_pdqr -------------------------------------------------------------
+# Tested in `Ops.pdqr`
+
+
+# is_ops_linear -----------------------------------------------------------
+# Tested in `Ops.pdqr`
+
+
+# ops_linear --------------------------------------------------------------
 # Tested in `Ops.pdqr`

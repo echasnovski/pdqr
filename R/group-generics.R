@@ -21,7 +21,11 @@ Ops.pdqr <- function(e1, e2) {
       `!` = negate_pdqr(e1)
     )
   } else {
-    form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
+    if (is_ops_linear(.Generic, e1, e2)) {
+      ops_linear(.Generic, e1, e2)
+    } else {
+      form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
+    }
   }
 }
 
@@ -59,4 +63,40 @@ negate_pdqr <- function(f) {
   new_pdqr_by_ref(f)(
     data.frame(x = 0:1, prob = c(1-prob_zero, prob_zero)), "fin"
   )
+}
+
+is_ops_linear <- function(gen, e1, e2) {
+  e1_is_number <- is_single_number(e1)
+  e2_is_number <- is_single_number(e2)
+
+  ((gen %in% c("+", "-", "*")) && (e1_is_number || e2_is_number)) ||
+    ((gen == "/") && (e2_is_number))
+}
+
+ops_linear <- function(gen, e1, e2) {
+  # It is assumed that this function is run only if `is_ops_linear` gave `TRUE`
+  e1_is_number <- is_single_number(e1)
+
+  # `e1` and `e2` should be exactly one single number and one pdqr-function
+  if (e1_is_number) {
+    assert_pdqr_fun(e2)
+
+    ops_meta <- list(e1_num = e1, e2_num = meta_support(e2), pdqr = e2)
+  } else {
+    assert_pdqr_fun(e1)
+
+    ops_meta <- list(e1_num = meta_support(e1), e2_num = e2, pdqr = e1)
+  }
+
+  if ((gen == "-") && e1_is_number) {
+    # This relies on custom implementations of `-` which takes one argument and
+    # `+` which takes two arguments and goes into the next clause
+    (-e2) + e1
+  } else {
+    # Output is done by transforming support linearly based on the input
+    # operation `gen` and number
+    res_supp <- get(gen)(ops_meta[["e1_num"]], ops_meta[["e2_num"]])
+
+    form_resupport(ops_meta[["pdqr"]], res_supp, method = "linear")
+  }
 }
