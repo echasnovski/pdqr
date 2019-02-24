@@ -1,14 +1,8 @@
 form_geq <- function(f_1, f_2) {
-  assert_pdqr_fun(f_1)
-  assert_pdqr_fun(f_2)
-
   boolean_pdqr(prob_true = prob_geq(f_1, f_2), pdqr_class = get_pdqr_class(f_1))
 }
 
 form_greater <- function(f_1, f_2) {
-  assert_pdqr_fun(f_1)
-  assert_pdqr_fun(f_2)
-
   boolean_pdqr(
     prob_true = prob_greater(f_1, f_2),
     pdqr_class = get_pdqr_class(f_1)
@@ -16,9 +10,6 @@ form_greater <- function(f_1, f_2) {
 }
 
 form_leq <- function(f_1, f_2) {
-  assert_pdqr_fun(f_1)
-  assert_pdqr_fun(f_2)
-
   boolean_pdqr(
     # P(f_1 <= f_2) = 1 - P(f_1 > f_2)
     prob_true = 1 - prob_greater(f_1, f_2),
@@ -27,9 +18,6 @@ form_leq <- function(f_1, f_2) {
 }
 
 form_less <- function(f_1, f_2) {
-  assert_pdqr_fun(f_1)
-  assert_pdqr_fun(f_2)
-
   boolean_pdqr(
     # P(f_1 < f_2) = 1 - P(f_1 >= f_2)
     prob_true = 1 - prob_geq(f_1, f_2),

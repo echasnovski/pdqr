@@ -23,6 +23,8 @@ Ops.pdqr <- function(e1, e2) {
   } else {
     if (is_ops_linear(.Generic, e1, e2)) {
       ops_linear(.Generic, e1, e2)
+    } else if (.Generic %in% c(">=", ">", "<=", "<")) {
+      ops_inequality(.Generic, e1, e2)
     } else {
       form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
     }
@@ -99,4 +101,31 @@ ops_linear <- function(gen, e1, e2) {
 
     form_resupport(ops_meta[["pdqr"]], res_supp, method = "linear")
   }
+}
+
+ops_inequality <- function(gen, e1, e2) {
+  if (is_single_number(e1)) {
+    assert_pdqr_fun(e2)
+
+    e1 <- new_pdqr_by_ref(e2)(e1, "fin")
+  } else if (is_single_number(e2)) {
+    assert_pdqr_fun(e1)
+
+    e2 <- new_pdqr_by_ref(e1)(e2, "fin")
+  } else {
+    if (!is_pdqr_fun(e1)) {
+      stop_collapse("`e1` should be pdqr-function or single number.")
+    }
+    if (!is_pdqr_fun(e2)) {
+      stop_collapse("`e2` should be pdqr-function or single number.")
+    }
+  }
+
+  switch(
+    gen,
+    `>=` = form_geq(e1, e2),
+    `>`  = form_greater(e1, e2),
+    `<=` = form_leq(e1, e2),
+    `<`  = form_less(e1, e2)
+  )
 }

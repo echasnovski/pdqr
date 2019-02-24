@@ -69,13 +69,6 @@ test_that("form_geq returns appropriate pdqr class", {
   expect_is(form_geq(as_p(f_fin_1), as_q(f_fin_2)), "p")
 })
 
-test_that("form_geq asserts bad input", {
-  expect_error(form_geq(1, f_fin_2), "`f_1`.*function")
-  expect_error(form_geq(function(x) {x}, f_fin_2), "`f_1`.*pdqr")
-  expect_error(form_geq(f_fin_1, 2), "`f_2`.*function")
-  expect_error(form_geq(f_fin_1, function(x) {x}), "`f_2`.*pdqr")
-})
-
 
 # form_greater ------------------------------------------------------------
 test_that("form_greater works", {
@@ -110,13 +103,6 @@ test_that("form_greater works with dirac-like functions", {
 
 test_that("form_greater returns appropriate pdqr class", {
   expect_is(form_greater(as_p(f_fin_1), as_q(f_fin_2)), "p")
-})
-
-test_that("form_greater asserts bad input", {
-  expect_error(form_greater(1, f_fin_2), "`f_1`.*function")
-  expect_error(form_greater(function(x) {x}, f_fin_2), "`f_1`.*pdqr")
-  expect_error(form_greater(f_fin_1, 2), "`f_2`.*function")
-  expect_error(form_greater(f_fin_1, function(x) {x}), "`f_2`.*pdqr")
 })
 
 
@@ -155,13 +141,6 @@ test_that("form_leq returns appropriate pdqr class", {
   expect_is(form_leq(as_p(f_fin_1), as_q(f_fin_2)), "p")
 })
 
-test_that("form_leq asserts bad input", {
-  expect_error(form_leq(1, f_fin_2), "`f_1`.*function")
-  expect_error(form_leq(function(x) {x}, f_fin_2), "`f_1`.*pdqr")
-  expect_error(form_leq(f_fin_1, 2), "`f_2`.*function")
-  expect_error(form_leq(f_fin_1, function(x) {x}), "`f_2`.*pdqr")
-})
-
 
 # form_less ---------------------------------------------------------------
 test_that("form_less works", {
@@ -196,13 +175,6 @@ test_that("form_less works with dirac-like functions", {
 
 test_that("form_less returns appropriate pdqr class", {
   expect_is(form_less(as_p(f_fin_1), as_q(f_fin_2)), "p")
-})
-
-test_that("form_less asserts bad input", {
-  expect_error(form_less(1, f_fin_2), "`f_1`.*function")
-  expect_error(form_less(function(x) {x}, f_fin_2), "`f_1`.*pdqr")
-  expect_error(form_less(f_fin_1, 2), "`f_2`.*function")
-  expect_error(form_less(f_fin_1, function(x) {x}), "`f_2`.*pdqr")
 })
 
 

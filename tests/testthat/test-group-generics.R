@@ -119,6 +119,37 @@ test_that("Ops.pdqr works in case of linear operation", {
   expect_lin_trans(d_dirac / 10, f_in = d_dirac, ref_supp = d_dirac_supp / 10)
 })
 
+test_that("Ops.pdqr works in case of inequalitiy", {
+  d_dirac <- form_retype(d_fin, "infin", method = "dirac")
+  d_infin_2 <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  num <- 3
+  num_d <- new_d(num, "fin")
+
+  # `>=`
+  expect_equal_x_tbl(d_fin >= num, form_geq(d_fin, num_d))
+  expect_equal_x_tbl(num >= d_infin, form_geq(num_d, d_infin))
+  expect_equal_x_tbl(d_infin >= d_infin_2, form_geq(d_infin, d_infin_2))
+  expect_equal_x_tbl(d_infin >= d_dirac, form_geq(d_infin, d_dirac))
+
+  # `>`
+  expect_equal_x_tbl(d_fin > num, form_greater(d_fin, num_d))
+  expect_equal_x_tbl(num > d_infin, form_greater(num_d, d_infin))
+  expect_equal_x_tbl(d_infin > d_infin_2, form_greater(d_infin, d_infin_2))
+  expect_equal_x_tbl(d_infin > d_dirac, form_greater(d_infin, d_dirac))
+
+  # `<=`
+  expect_equal_x_tbl(d_fin <= num, form_leq(d_fin, num_d))
+  expect_equal_x_tbl(num <= d_infin, form_leq(num_d, d_infin))
+  expect_equal_x_tbl(d_infin <= d_infin_2, form_leq(d_infin, d_infin_2))
+  expect_equal_x_tbl(d_infin <= d_dirac, form_leq(d_infin, d_dirac))
+
+  # `<`
+  expect_equal_x_tbl(d_fin < num, form_less(d_fin, num_d))
+  expect_equal_x_tbl(num < d_infin, form_less(num_d, d_infin))
+  expect_equal_x_tbl(d_infin < d_infin_2, form_less(d_infin, d_infin_2))
+  expect_equal_x_tbl(d_infin < d_dirac, form_less(d_infin, d_dirac))
+})
+
 test_that("Ops.pdqr asserts bad input in case of linear operation", {
   bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
 
@@ -129,6 +160,39 @@ test_that("Ops.pdqr asserts bad input in case of linear operation", {
   expect_error(bad_pdqr * 1, "`e1`")
   expect_error(1 * bad_pdqr, "`e2`")
   expect_error(bad_pdqr / 1, "`e1`")
+})
+
+test_that("Ops.pdqr asserts bad input in case of inequality", {
+  bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
+  bad_pdqr_2 <- structure(function(x) {x+1}, class = c("p", "pdqr", "function"))
+
+  expect_error(bad_pdqr >= 1, "`e1`")
+  expect_error(1 >= bad_pdqr, "`e2`")
+  expect_error(bad_pdqr >= bad_pdqr_2, "`e1`")
+  expect_error(d_fin >= bad_pdqr_2, "`e2`")
+  expect_error("a" >= d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin >= "a", "`e2`.*pdqr-function.*number")
+
+  expect_error(bad_pdqr > 1, "`e1`")
+  expect_error(1 > bad_pdqr, "`e2`")
+  expect_error(bad_pdqr > bad_pdqr_2, "`e1`")
+  expect_error(d_fin > bad_pdqr_2, "`e2`")
+  expect_error("a" > d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin > "a", "`e2`.*pdqr-function.*number")
+
+  expect_error(bad_pdqr <= 1, "`e1`")
+  expect_error(1 <= bad_pdqr, "`e2`")
+  expect_error(bad_pdqr <= bad_pdqr_2, "`e1`")
+  expect_error(d_fin <= bad_pdqr_2, "`e2`")
+  expect_error("a" <= d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin <= "a", "`e2`.*pdqr-function.*number")
+
+  expect_error(bad_pdqr < 1, "`e1`")
+  expect_error(1 < bad_pdqr, "`e2`")
+  expect_error(bad_pdqr < bad_pdqr_2, "`e1`")
+  expect_error(d_fin < bad_pdqr_2, "`e2`")
+  expect_error("a" < d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin < "a", "`e2`.*pdqr-function.*number")
 })
 
 
@@ -158,4 +222,8 @@ test_that("Summary.pdqr throws error on `range()`", {
 
 
 # ops_linear --------------------------------------------------------------
+# Tested in `Ops.pdqr`
+
+
+# ops_inequality ----------------------------------------------------------
 # Tested in `Ops.pdqr`
