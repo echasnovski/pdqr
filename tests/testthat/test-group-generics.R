@@ -45,14 +45,30 @@ test_that("Ops.pdqr works", {
 test_that("Ops.pdqr works with logical functions", {
   d_leq <- d_fin <= 3
   expect_true(abs(d_leq(1) - p_fin(3)) <= 0.1)
-
-  d_negate <- !d_fin
-  expect_equal(d_negate(1), 0)
 })
 
-test_that("Ops.pdqr works with for generics with one argument", {
-  d_minus <- -d_fin
-  expect_true(abs(d_minus(-1) - d_fin(1)) <= 0.1)
+test_that("Ops.pdqr works with generics which take one argument", {
+  # `+`
+  expect_equal(+d_fin, d_fin)
+  expect_equal(+d_infin, d_infin)
+
+  # `-`
+  d_fin_minus <- -d_fin
+  expect_equal(-meta_support(d_fin)[2:1], meta_support(d_fin_minus))
+  expect_equal(d_fin(x_fin_vec_ext), d_fin_minus(-x_fin_vec_ext))
+
+  d_infin_minus <- -d_infin
+  expect_equal(-meta_support(d_infin)[2:1], meta_support(d_infin_minus))
+  expect_equal(d_infin(x_infin_vec_ext), d_infin_minus(-x_infin_vec_ext))
+
+  # `!`
+  d_negate <- !new_d(
+    data.frame(x = c(-1, 0, 1), prob = c(0.1, 0.2, 0.7)), "fin"
+  )
+  expect_equal(d_negate(1), 0.2)
+
+    # Probability of type "infin" pdqr-function being exactly 0 is equal to zero
+  expect_equal((!d_infin)(1), 0)
 })
 
 
@@ -67,3 +83,11 @@ test_that("Summary.pdqr works", {
 test_that("Summary.pdqr throws error on `range()`", {
   expect_error(range(p_fin, p_fin), "range.*two.*numbers")
 })
+
+
+# reflect_pdqr_around_zero ------------------------------------------------
+# Tested in `Ops.pdqr`
+
+
+# negate_pdqr -------------------------------------------------------------
+# Tested in `Ops.pdqr`
