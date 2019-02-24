@@ -14,6 +14,8 @@ Ops.pdqr <- function(e1, e2) {
   gen_fun <- get(.Generic)
 
   if (missing(e2)) {
+    assert_pdqr_fun(e1)
+
     switch(
       .Generic,
       `+` = e1,
@@ -26,6 +28,9 @@ Ops.pdqr <- function(e1, e2) {
     } else if (.Generic %in% c(">=", ">", "<=", "<", "==", "!=")) {
       ops_compare(.Generic, e1, e2)
     } else {
+      assert_pdqr_fun(e1)
+      assert_pdqr_fun(e2)
+
       form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
     }
   }
@@ -104,6 +109,22 @@ ops_linear <- function(gen, e1, e2) {
 }
 
 ops_compare <- function(gen, e1, e2) {
+  input <- ensure_pdqr_functions(e1, e2)
+  e1 <- input[[1]]
+  e2 <- input[[2]]
+
+  switch(
+    gen,
+    `>=` = form_geq(e1, e2),
+    `>`  = form_greater(e1, e2),
+    `<=` = form_leq(e1, e2),
+    `<`  = form_less(e1, e2),
+    `==` = form_equal(e1, e2),
+    `!=` = form_not_equal(e1, e2)
+  )
+}
+
+ensure_pdqr_functions <- function(e1, e2) {
   if (is_single_number(e1)) {
     assert_pdqr_fun(e2)
 
@@ -121,13 +142,5 @@ ops_compare <- function(gen, e1, e2) {
     }
   }
 
-  switch(
-    gen,
-    `>=` = form_geq(e1, e2),
-    `>`  = form_greater(e1, e2),
-    `<=` = form_leq(e1, e2),
-    `<`  = form_less(e1, e2),
-    `==` = form_equal(e1, e2),
-    `!=` = form_not_equal(e1, e2)
-  )
+  list(e1, e2)
 }

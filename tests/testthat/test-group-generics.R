@@ -4,6 +4,9 @@ context("test-group-generics")
 # Input data --------------------------------------------------------------
 x_norm_seq <- seq(-10, 10, by = 0.01)
 
+bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
+bad_pdqr_2 <- structure(function(x) {x+1}, class = c("p", "pdqr", "function"))
+
 
 # Custom expactations -----------------------------------------------------
 expect_lin_trans <- function(f_out, f_in, ref_supp) {
@@ -50,11 +53,6 @@ test_that("Ops.pdqr works", {
   )
 })
 
-test_that("Ops.pdqr works with logical functions", {
-  d_leq <- d_fin <= 3
-  expect_true(abs(d_leq(1) - p_fin(3)) <= 0.1)
-})
-
 test_that("Ops.pdqr works with generics which take one argument", {
   # `+`
   expect_equal(+d_fin, d_fin)
@@ -77,6 +75,12 @@ test_that("Ops.pdqr works with generics which take one argument", {
 
     # Probability of type "infin" pdqr-function being exactly 0 is equal to zero
   expect_equal((!d_infin)(1), 0)
+})
+
+test_that("Ops.pdqr asserts bad input with generics which take one argument", {
+  expect_error(+bad_pdqr, "`e1`")
+  expect_error(-bad_pdqr, "`e1`")
+  expect_error(!bad_pdqr, "`e1`")
 })
 
 test_that("Ops.pdqr works in case of linear operation", {
@@ -117,6 +121,16 @@ test_that("Ops.pdqr works in case of linear operation", {
   expect_lin_trans(d_fin / 10, f_in = d_fin, ref_supp = d_fin_supp / 10)
   expect_lin_trans(d_infin / 10, f_in = d_infin, ref_supp = d_infin_supp / 10)
   expect_lin_trans(d_dirac / 10, f_in = d_dirac, ref_supp = d_dirac_supp / 10)
+})
+
+test_that("Ops.pdqr asserts bad input in case of linear operation", {
+  expect_error(bad_pdqr + 1, "`e1`")
+  expect_error(1 + bad_pdqr, "`e2`")
+  expect_error(bad_pdqr - 1, "`e1`")
+  expect_error(1 - bad_pdqr, "`e2`")
+  expect_error(bad_pdqr * 1, "`e1`")
+  expect_error(1 * bad_pdqr, "`e2`")
+  expect_error(bad_pdqr / 1, "`e1`")
 })
 
 test_that("Ops.pdqr works in case of comparison", {
@@ -162,69 +176,61 @@ test_that("Ops.pdqr works in case of comparison", {
   expect_equal_x_tbl(d_infin != d_dirac, form_not_equal(d_infin, d_dirac))
 })
 
-test_that("Ops.pdqr asserts bad input in case of linear operation", {
-  bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
-
-  expect_error(bad_pdqr + 1, "`e1`")
-  expect_error(1 + bad_pdqr, "`e2`")
-  expect_error(bad_pdqr - 1, "`e1`")
-  expect_error(1 - bad_pdqr, "`e2`")
-  expect_error(bad_pdqr * 1, "`e1`")
-  expect_error(1 * bad_pdqr, "`e2`")
-  expect_error(bad_pdqr / 1, "`e1`")
-})
-
 test_that("Ops.pdqr asserts bad input in case of comparison", {
-  bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
-  bad_pdqr_2 <- structure(function(x) {x+1}, class = c("p", "pdqr", "function"))
-
   # `>=`
   expect_error(bad_pdqr >= 1, "`e1`")
   expect_error(1 >= bad_pdqr, "`e2`")
-  expect_error(bad_pdqr >= bad_pdqr_2, "`e1`")
-  expect_error(d_fin >= bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr >= bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin >= bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" >= d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin >= "a", "`e2`.*pdqr-function.*number")
 
   `>`
   expect_error(bad_pdqr > 1, "`e1`")
   expect_error(1 > bad_pdqr, "`e2`")
-  expect_error(bad_pdqr > bad_pdqr_2, "`e1`")
-  expect_error(d_fin > bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr > bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin > bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" > d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin > "a", "`e2`.*pdqr-function.*number")
 
   `<=`
   expect_error(bad_pdqr <= 1, "`e1`")
   expect_error(1 <= bad_pdqr, "`e2`")
-  expect_error(bad_pdqr <= bad_pdqr_2, "`e1`")
-  expect_error(d_fin <= bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr <= bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin <= bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" <= d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin <= "a", "`e2`.*pdqr-function.*number")
 
   `<`
   expect_error(bad_pdqr < 1, "`e1`")
   expect_error(1 < bad_pdqr, "`e2`")
-  expect_error(bad_pdqr < bad_pdqr_2, "`e1`")
-  expect_error(d_fin < bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr < bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin < bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" < d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin < "a", "`e2`.*pdqr-function.*number")
 
   `==`
   expect_error(bad_pdqr == 1, "`e1`")
   expect_error(1 == bad_pdqr, "`e2`")
-  expect_error(bad_pdqr == bad_pdqr_2, "`e1`")
-  expect_error(d_fin == bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr == bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin == bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" == d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin == "a", "`e2`.*pdqr-function.*number")
 
   `!=`
   expect_error(bad_pdqr != 1, "`e1`")
   expect_error(1 != bad_pdqr, "`e2`")
-  expect_error(bad_pdqr != bad_pdqr_2, "`e1`")
-  expect_error(d_fin != bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr != bad_pdqr_2, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin != bad_pdqr_2, "`e2`.*pdqr-function.*number")
   expect_error("a" != d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin != "a", "`e2`.*pdqr-function.*number")
+})
+
+test_that("Ops.pdqr asserts bad input", {
+  expect_error(bad_pdqr + d_fin, "`e1`")
+  expect_error(d_fin - bad_pdqr_2, "`e2`")
+  expect_error(bad_pdqr * bad_pdqr_2, "`e1`")
+  expect_error(bad_pdqr %% bad_pdqr_2, "`e1`")
 })
 
 
@@ -258,4 +264,8 @@ test_that("Summary.pdqr throws error on `range()`", {
 
 
 # ops_compare -------------------------------------------------------------
+# Tested in `Ops.pdqr`
+
+
+# ensure_pdqr_functions ---------------------------------------------------
 # Tested in `Ops.pdqr`
