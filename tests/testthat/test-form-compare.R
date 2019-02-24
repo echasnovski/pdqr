@@ -1,4 +1,4 @@
-context("test-form-inequality")
+context("test-form-compare")
 
 set.seed(8888)
 
@@ -179,28 +179,28 @@ test_that("form_less returns appropriate pdqr class", {
 
 
 # boolean_pdqr ------------------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons
 
 
 # prob_geq ----------------------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons
 
 
 # prob_greater ------------------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons
 
 
 # prob_geq_fin_any --------------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons
 
 
 # prob_geq_infin_infin ----------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons
 
 
 # infin_geq_integral ------------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons
 
 
 # four_powers -------------------------------------------------------------
-# Tested in `form_*()` inequalities
+# Tested in `form_*()` comparisons

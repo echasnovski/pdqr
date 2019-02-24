@@ -24,7 +24,7 @@ Ops.pdqr <- function(e1, e2) {
     if (is_ops_linear(.Generic, e1, e2)) {
       ops_linear(.Generic, e1, e2)
     } else if (.Generic %in% c(">=", ">", "<=", "<")) {
-      ops_inequality(.Generic, e1, e2)
+      ops_compare(.Generic, e1, e2)
     } else {
       form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
     }
@@ -103,7 +103,7 @@ ops_linear <- function(gen, e1, e2) {
   }
 }
 
-ops_inequality <- function(gen, e1, e2) {
+ops_compare <- function(gen, e1, e2) {
   if (is_single_number(e1)) {
     assert_pdqr_fun(e2)
 

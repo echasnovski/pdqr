@@ -119,7 +119,7 @@ test_that("Ops.pdqr works in case of linear operation", {
   expect_lin_trans(d_dirac / 10, f_in = d_dirac, ref_supp = d_dirac_supp / 10)
 })
 
-test_that("Ops.pdqr works in case of inequalitiy", {
+test_that("Ops.pdqr works in case of comparison", {
   d_dirac <- form_retype(d_fin, "infin", method = "dirac")
   d_infin_2 <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
   num <- 3
@@ -162,7 +162,7 @@ test_that("Ops.pdqr asserts bad input in case of linear operation", {
   expect_error(bad_pdqr / 1, "`e1`")
 })
 
-test_that("Ops.pdqr asserts bad input in case of inequality", {
+test_that("Ops.pdqr asserts bad input in case of comparison", {
   bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
   bad_pdqr_2 <- structure(function(x) {x+1}, class = c("p", "pdqr", "function"))
 
@@ -225,5 +225,5 @@ test_that("Summary.pdqr throws error on `range()`", {
 # Tested in `Ops.pdqr`
 
 
-# ops_inequality ----------------------------------------------------------
+# ops_compare -------------------------------------------------------------
 # Tested in `Ops.pdqr`
