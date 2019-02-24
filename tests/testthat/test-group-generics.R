@@ -33,6 +33,10 @@ test_that("Math.pdqr works", {
   )
 })
 
+test_that("Math.pdqr asserts bad input", {
+  expect_error(log(bad_pdqr), "`x`")
+})
+
 
 # Ops.pdqr ----------------------------------------------------------------
 test_that("Ops.pdqr works", {

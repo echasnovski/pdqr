@@ -5,6 +5,8 @@ Math.pdqr <- function(x, ...) {
     get(.Generic)(y, ...)
   }
 
+  assert_pdqr_fun(x)
+
   form_trans(list(x), gen_fun, n_sample = n_sample)
 }
 
