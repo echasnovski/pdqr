@@ -23,7 +23,7 @@ Ops.pdqr <- function(e1, e2) {
   } else {
     if (is_ops_linear(.Generic, e1, e2)) {
       ops_linear(.Generic, e1, e2)
-    } else if (.Generic %in% c(">=", ">", "<=", "<")) {
+    } else if (.Generic %in% c(">=", ">", "<=", "<", "==", "!=")) {
       ops_compare(.Generic, e1, e2)
     } else {
       form_trans(list(e1, e2), gen_fun, n_sample = n_sample)
@@ -126,6 +126,8 @@ ops_compare <- function(gen, e1, e2) {
     `>=` = form_geq(e1, e2),
     `>`  = form_greater(e1, e2),
     `<=` = form_leq(e1, e2),
-    `<`  = form_less(e1, e2)
+    `<`  = form_less(e1, e2),
+    `==` = form_equal(e1, e2),
+    `!=` = form_not_equal(e1, e2)
   )
 }

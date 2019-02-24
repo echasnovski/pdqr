@@ -178,11 +178,79 @@ test_that("form_less returns appropriate pdqr class", {
 })
 
 
+# form_equal --------------------------------------------------------------
+test_that("form_equal works", {
+  output <- form_equal(f_infin_1, f_fin_2)
+  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
+})
+
+test_that("form_equal agrees with simulation", {
+  skip_on_cran()
+
+  expect_equal_probs(f_fin_1, f_fin_2, form_equal, `==`)
+  expect_equal_probs(f_fin_1, f_infin_2, form_equal, `==`)
+  expect_equal_probs(f_infin_1, f_fin_2, form_equal, `==`)
+  expect_equal_probs(f_infin_1, f_infin_2, form_equal, `==`)
+})
+
+test_that("form_equal works with dirac-like functions", {
+  expect_equal(
+    form_equal(f_fin_1, f_infin_2)(1),
+    form_equal(f_fin_1_dirac, f_infin_2)(1)
+  )
+  expect_equal(
+    form_equal(f_infin_1, f_fin_2)(1),
+    form_equal(f_infin_1, f_fin_2_dirac)(1)
+  )
+})
+
+test_that("form_equal returns appropriate pdqr class", {
+  expect_is(form_equal(as_p(f_fin_1), as_q(f_fin_2)), "p")
+})
+
+
+# form_not_equal ----------------------------------------------------------
+test_that("form_not_equal works", {
+  output <- form_not_equal(f_infin_1, f_fin_2)
+  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
+})
+
+test_that("form_not_equal agrees with simulation", {
+  skip_on_cran()
+
+  expect_equal_probs(f_fin_1, f_fin_2, form_not_equal, `!=`)
+  expect_equal_probs(f_fin_1, f_infin_2, form_not_equal, `!=`)
+  expect_equal_probs(f_infin_1, f_fin_2, form_not_equal, `!=`)
+  expect_equal_probs(f_infin_1, f_infin_2, form_not_equal, `!=`)
+})
+
+test_that("form_not_equal works with dirac-like functions", {
+  expect_equal(
+    form_not_equal(f_fin_1, f_infin_2)(1),
+    form_not_equal(f_fin_1_dirac, f_infin_2)(1)
+  )
+  expect_equal(
+    form_not_equal(f_infin_1, f_fin_2)(1),
+    form_not_equal(f_infin_1, f_fin_2_dirac)(1)
+  )
+})
+
+test_that("form_not_equal returns appropriate pdqr class", {
+  expect_is(form_not_equal(as_p(f_fin_1), as_q(f_fin_2)), "p")
+})
+
+
 # boolean_pdqr ------------------------------------------------------------
 # Tested in `form_*()` comparisons
 
 
 # prob_geq ----------------------------------------------------------------
+# Tested in `form_*()` comparisons
+
+
+# prob_equal --------------------------------------------------------------
 # Tested in `form_*()` comparisons
 
 

@@ -148,6 +148,18 @@ test_that("Ops.pdqr works in case of comparison", {
   expect_equal_x_tbl(num < d_infin, form_less(num_d, d_infin))
   expect_equal_x_tbl(d_infin < d_infin_2, form_less(d_infin, d_infin_2))
   expect_equal_x_tbl(d_infin < d_dirac, form_less(d_infin, d_dirac))
+
+  # `==`
+  expect_equal_x_tbl(d_fin == num, form_equal(d_fin, num_d))
+  expect_equal_x_tbl(num == d_infin, form_equal(num_d, d_infin))
+  expect_equal_x_tbl(d_infin == d_infin_2, form_equal(d_infin, d_infin_2))
+  expect_equal_x_tbl(d_infin == d_dirac, form_equal(d_infin, d_dirac))
+
+  # `!=`
+  expect_equal_x_tbl(d_fin != num, form_not_equal(d_fin, num_d))
+  expect_equal_x_tbl(num != d_infin, form_not_equal(num_d, d_infin))
+  expect_equal_x_tbl(d_infin != d_infin_2, form_not_equal(d_infin, d_infin_2))
+  expect_equal_x_tbl(d_infin != d_dirac, form_not_equal(d_infin, d_dirac))
 })
 
 test_that("Ops.pdqr asserts bad input in case of linear operation", {
@@ -166,6 +178,7 @@ test_that("Ops.pdqr asserts bad input in case of comparison", {
   bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
   bad_pdqr_2 <- structure(function(x) {x+1}, class = c("p", "pdqr", "function"))
 
+  # `>=`
   expect_error(bad_pdqr >= 1, "`e1`")
   expect_error(1 >= bad_pdqr, "`e2`")
   expect_error(bad_pdqr >= bad_pdqr_2, "`e1`")
@@ -173,6 +186,7 @@ test_that("Ops.pdqr asserts bad input in case of comparison", {
   expect_error("a" >= d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin >= "a", "`e2`.*pdqr-function.*number")
 
+  `>`
   expect_error(bad_pdqr > 1, "`e1`")
   expect_error(1 > bad_pdqr, "`e2`")
   expect_error(bad_pdqr > bad_pdqr_2, "`e1`")
@@ -180,6 +194,7 @@ test_that("Ops.pdqr asserts bad input in case of comparison", {
   expect_error("a" > d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin > "a", "`e2`.*pdqr-function.*number")
 
+  `<=`
   expect_error(bad_pdqr <= 1, "`e1`")
   expect_error(1 <= bad_pdqr, "`e2`")
   expect_error(bad_pdqr <= bad_pdqr_2, "`e1`")
@@ -187,12 +202,29 @@ test_that("Ops.pdqr asserts bad input in case of comparison", {
   expect_error("a" <= d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin <= "a", "`e2`.*pdqr-function.*number")
 
+  `<`
   expect_error(bad_pdqr < 1, "`e1`")
   expect_error(1 < bad_pdqr, "`e2`")
   expect_error(bad_pdqr < bad_pdqr_2, "`e1`")
   expect_error(d_fin < bad_pdqr_2, "`e2`")
   expect_error("a" < d_fin, "`e1`.*pdqr-function.*number")
   expect_error(d_fin < "a", "`e2`.*pdqr-function.*number")
+
+  `==`
+  expect_error(bad_pdqr == 1, "`e1`")
+  expect_error(1 == bad_pdqr, "`e2`")
+  expect_error(bad_pdqr == bad_pdqr_2, "`e1`")
+  expect_error(d_fin == bad_pdqr_2, "`e2`")
+  expect_error("a" == d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin == "a", "`e2`.*pdqr-function.*number")
+
+  `!=`
+  expect_error(bad_pdqr != 1, "`e1`")
+  expect_error(1 != bad_pdqr, "`e2`")
+  expect_error(bad_pdqr != bad_pdqr_2, "`e1`")
+  expect_error(d_fin != bad_pdqr_2, "`e2`")
+  expect_error("a" != d_fin, "`e1`.*pdqr-function.*number")
+  expect_error(d_fin != "a", "`e2`.*pdqr-function.*number")
 })
 
 

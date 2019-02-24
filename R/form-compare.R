@@ -25,6 +25,20 @@ form_less <- function(f_1, f_2) {
   )
 }
 
+form_equal <- function(f_1, f_2) {
+  boolean_pdqr(
+    prob_true = prob_equal(f_1, f_2),
+    pdqr_class = get_pdqr_class(f_1)
+  )
+}
+
+form_not_equal <- function(f_1, f_2) {
+  boolean_pdqr(
+    prob_true = 1 - prob_equal(f_1, f_2),
+    pdqr_class = get_pdqr_class(f_1)
+  )
+}
+
 boolean_pdqr <- function(prob_true, pdqr_class) {
   x_tbl <- data.frame(x = c(0, 1), prob = c(1-prob_true, prob_true))
 
@@ -45,18 +59,20 @@ prob_geq <- function(f_1, f_2) {
   }
 }
 
-prob_greater <- function(f_1, f_2) {
+prob_equal <- function(f_1, f_2) {
   if ((meta_type(f_1) == "fin") && (meta_type(f_2) == "fin")) {
     x_1 <- meta_x_tbl(f_1)[["x"]]
 
-    equal_prob <- sum(as_d(f_1)(x_1) * as_d(f_2)(x_1))
+    sum(as_d(f_1)(x_1) * as_d(f_2)(x_1))
   } else {
     # If any of `f_1` or `f_2` is "infin" (i.e. "continuous") then probability
     # of generating two exactly equal values is 0
-    equal_prob <- 0
+    0
   }
+}
 
-  prob_geq(f_1, f_2) - equal_prob
+prob_greater <- function(f_1, f_2) {
+  prob_geq(f_1, f_2) - prob_equal(f_1, f_2)
 }
 
 prob_geq_fin_any <- function(f_1, f_2) {
