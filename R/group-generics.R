@@ -1,13 +1,22 @@
 Math.pdqr <- function(x, ...) {
+  assert_pdqr_fun(x)
+
+  switch(
+    .Generic,
+    abs = math_abs(x),
+    sign = math_sign(x),
+    math_pdqr_impl(.Generic, x, ...)
+  )
+}
+
+math_pdqr_impl <- function(gen, f, ...) {
   n_sample <- getOption("pdqr.transform.n_sample")
 
   gen_fun <- function(y) {
-    get(.Generic)(y, ...)
+    get(gen)(y, ...)
   }
 
-  assert_pdqr_fun(x)
-
-  form_trans(list(x), gen_fun, n_sample = n_sample)
+  form_trans(list(f), gen_fun, n_sample = n_sample)
 }
 
 Ops.pdqr <- function(e1, e2) {
@@ -57,6 +66,30 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
   }
 
   form_trans(list(...), gen_fun, n_sample = n_sample)
+}
+
+math_abs <- function(f) {
+  if (meta_type(f) == "fin") {
+    x_tbl <- meta_x_tbl(f)
+    x_tbl[["x"]] <- abs(x_tbl[["x"]])
+
+    new_pdqr_by_ref(f)(x_tbl, "fin")
+  } else {
+    f_mix <- form_mix(list(f, -f))
+
+    form_resupport(f_mix, c(0, NA), method = "trim")
+  }
+}
+
+math_sign <- function(f) {
+  d_f <- as_d(f)
+
+  x_tbl <- data.frame(
+    x    = c(          -1,             0,            1),
+    prob = c((d_f < 0)(1), (d_f == 0)(1), (d_f > 0)(1))
+  )
+
+  new_pdqr_by_ref(f)(x_tbl, "fin")
 }
 
 reflect_pdqr_around_zero <- function(f) {

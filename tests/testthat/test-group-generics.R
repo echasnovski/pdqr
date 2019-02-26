@@ -37,9 +37,80 @@ test_that("Math.pdqr works", {
   )
 })
 
+test_that("Math.pdqr method for `abs()` works", {
+  # Type "fin"
+  cur_d_fin <- new_d(
+    data.frame(
+      x    = c(-1.5,  -1,   0,    1, 1.25),
+      prob = c( 0.1, 0.2, 0.3, 0.25, 0.15)
+    ),
+    "fin"
+  )
+  expect_ref_x_tbl(
+    abs(cur_d_fin),
+    data.frame(x = c(0, 1, 1.25, 1.5), prob = c(0.3, 0.2+0.25, 0.15, 0.1))
+  )
+
+  # Type "infin"
+  d_abs_ref <- function(x) {
+    res <- numeric(length(x))
+    res[x >= 0] <- d_infin(x[x >= 0]) + d_infin(-x[x >= 0])
+
+    res
+  }
+  expect_close_f(abs(d_infin), d_abs_ref, c(x_infin_vec_ext, -x_infin_vec_ext))
+
+    # Case with discontinuity
+  d_unif <- new_d(data.frame(x = c(-3, 1), y = c(0.25, 0.25)), "infin")
+  expect_ref_x_tbl(
+    abs(d_unif),
+    data.frame(x = c(0, 1, 1+1e-8, 3), y = c(0.5, 0.5, 0.25, 0.25))
+  )
+})
+
+test_that("Math.pdqr method for `sign()` works", {
+  # Type "fin"
+  cur_d_fin <- new_d(
+    data.frame(
+      x    = c(-1.5,  -1,   0,    1, 1.25),
+      prob = c( 0.1, 0.2, 0.3, 0.25, 0.15)
+    ),
+    "fin"
+  )
+  expect_ref_x_tbl(
+    sign(cur_d_fin),
+    data.frame(x = c(-1, 0, 1), prob = c(0.1+0.2, 0.3, 0.25+0.15))
+  )
+
+  cur_d_fin_2 <- new_d(
+    data.frame(x = c(0, 0.5, 1), prob = c(0.1, 0.3, 0.6)), "fin"
+  )
+  expect_ref_x_tbl(
+    sign(cur_d_fin_2),
+    data.frame(x = c(-1, 0, 1), prob = c(0, 0.1, 0.3+0.6))
+  )
+
+  # Type "infin"
+  d_unif <- new_d(data.frame(x = c(-3, 1), y = c(0.25, 0.25)), "infin")
+  expect_ref_x_tbl(
+    sign(d_unif),
+    data.frame(x = c(-1, 0, 1), prob = c(0.75, 0, 0.25))
+  )
+
+  d_unif_2 <- new_d(data.frame(x = c(0.5, 1), y = c(2, 2)), "infin")
+  expect_ref_x_tbl(
+    sign(d_unif_2),
+    data.frame(x = c(-1, 0, 1), prob = c(0, 0, 1))
+  )
+})
+
 test_that("Math.pdqr asserts bad input", {
   expect_error(log(bad_pdqr), "`x`")
 })
+
+
+# math_pdqr_impl ----------------------------------------------------------
+# Tested in `Math.pdqr`
 
 
 # Ops.pdqr ----------------------------------------------------------------
@@ -299,6 +370,14 @@ test_that("Summary.pdqr works", {
 test_that("Summary.pdqr throws error on `range()`", {
   expect_error(range(p_fin, p_fin), "range.*two.*numbers")
 })
+
+
+# math_abs ----------------------------------------------------------------
+# Tested in `Math.pdqr`
+
+
+# math_sign ---------------------------------------------------------------
+# Tested in `Math.pdqr`
 
 
 # reflect_pdqr_around_zero ------------------------------------------------
