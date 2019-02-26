@@ -209,16 +209,19 @@ test_that("integrate_safely throws informative error", {
 })
 
 
-# dedupl_list -------------------------------------------------------------
-test_that("dedupl_list works", {
+# c_dedupl ----------------------------------------------------------------
+test_that("c_dedupl works", {
   input_1 <- list(1, 2)
-  expect_equal(dedupl_list(input_1), input_1)
+  expect_equal(c_dedupl(input_1), input_1)
 
   input_2 <- list(1, 2, c = 3)
-  expect_equal(dedupl_list(input_2), input_2)
+  expect_equal(c_dedupl(input_2), input_2)
 
   input_3 <- list(a = 1, 2, c = 3, a = 4)
-  expect_equal(dedupl_list(input_3), input_3[-4])
+  expect_equal(c_dedupl(input_3), input_3[-4])
+
+  expect_equal(c_dedupl(a = 2, input_2, c = 4), list(a = 2, 1, 2, c = 3))
+  expect_equal(c_dedupl(c = 2, list(a = 1, c = 3)), list(c = 2, a = 1))
 })
 
 

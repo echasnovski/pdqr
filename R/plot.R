@@ -11,10 +11,10 @@ plot.p <- function(x, y = NULL, n_grid = NULL, ...) {
 
   if (meta_type(x) == "fin") {
     # Create canvas
-    no_plot_dots <- dedupl_list(c(
+    no_plot_dots <- c_dedupl(
       list(x = meta_support(x), y = c(0, 1), type = "n"),
       dots
-    ))
+    )
 
     do.call(graphics::plot, no_plot_dots)
 
@@ -37,9 +37,7 @@ plot.d <- function(x, y = NULL, n_grid = NULL, ...) {
       type = "h", main = paste0("Probability mass function ", x_name),
       xlab = "x", ylab = "Probability", ylim = c(0, max(x_tbl[["prob"]]))
     )
-    plot_args <- dedupl_list(
-      c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]]), dots)
-    )
+    plot_args <- c_dedupl(list(x = x_tbl[["x"]], y = x_tbl[["prob"]]), dots)
 
     do.call(graphics::plot, plot_args)
   } else {
@@ -71,10 +69,10 @@ plot.q <- function(x, y = NULL, n_grid = NULL, ...) {
 
   if (meta_type(x) == "fin") {
     # Create canvas
-    no_plot_dots <- dedupl_list(c(
+    no_plot_dots <- c_dedupl(
       list(x = c(0, 1), y = meta_support(x), type = "n"),
       dots
-    ))
+    )
 
     do.call(graphics::plot, no_plot_dots)
 
@@ -103,7 +101,7 @@ plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
 }
 
 plot_impl_pdq <- function(f, grid, dots) {
-  plot_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
+  plot_args <- c_dedupl(list(x = grid, y = f(grid)), dots)
 
   do.call(graphics::plot, plot_args)
 }
@@ -191,17 +189,17 @@ compute_p_fin_dots <- function(x, dots) {
   # Remove supplied `type` argument as it will not work and throw warnings
   dots[["type"]] <- NULL
 
-  vertical_segments_dots <- dedupl_list(c(
+  vertical_segments_dots <- c_dedupl(
     dots,
     list(x0 = x, y0 = c(0, cumprob[-n]), x1 = x, y1 = cumprob, lty = 2)
-  ))
+  )
 
-  horizontal_segments_dots <- dedupl_list(c(
+  horizontal_segments_dots <- c_dedupl(
     dots,
     list(x0 = x[-n], y0 = cumprob[-n], x1 = x[-1], y1 = cumprob[-n])
-  ))
+  )
 
-  points_dots <- dedupl_list(c(dots, list(x = x, y = cumprob, pch = 16)))
+  points_dots <- c_dedupl(dots, list(x = x, y = cumprob, pch = 16))
 
   list(
     seg_ver = vertical_segments_dots,
@@ -211,7 +209,7 @@ compute_p_fin_dots <- function(x, dots) {
 }
 
 make_plot_dots <- function(...) {
-  dedupl_list(list(...))
+  c_dedupl(list(...))
 }
 
 
@@ -231,8 +229,8 @@ lines.d <- function(x, n_grid = NULL, ...) {
 
   if (meta_type(x) == "fin") {
     x_tbl <- meta_x_tbl(x)
-    lines_args <- dedupl_list(
-      c(list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...))
+    lines_args <- c_dedupl(
+      list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...)
     )
 
     do.call(graphics::lines, lines_args)
@@ -252,7 +250,7 @@ lines.q <- function(x, n_grid = NULL, ...) {
 }
 
 lines_impl_pdq <- function(f, grid, dots) {
-  lines_args <- dedupl_list(c(list(x = grid, y = f(grid)), dots))
+  lines_args <- c_dedupl(list(x = grid, y = f(grid)), dots)
 
   do.call(graphics::lines, lines_args)
 }

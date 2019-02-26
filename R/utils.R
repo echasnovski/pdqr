@@ -69,10 +69,10 @@ inversing <- function(f, interval, ..., n_grid = 10001,
   # Impute infinity `y` values by linear extrapolations
   y_grid <- impute_inf(x_grid, y_grid, "`y` grid during inversing")
 
-  call_args <- dedupl_list(c(
+  call_args <- c_dedupl(
     approxfun_args,
     list(x = y_grid, y = x_grid, method = "linear", rule = 2)
-  ))
+  )
   do.call(stats::approxfun, call_args)
 }
 
@@ -186,7 +186,9 @@ integrate_safely <- function(f, lower, upper, n_grid = 10001, ...) {
 
 
 # List manipulations ------------------------------------------------------
-dedupl_list <- function(l) {
+c_dedupl <- function(...) {
+  l <- c(...)
+
   l_names <- names(l)
 
   if (is.null(l_names)) {
