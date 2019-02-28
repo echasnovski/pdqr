@@ -3,13 +3,13 @@ as_r <- function(f, ...) {
 }
 
 as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
-                         n_sample = 10000, pdqr_args = list()) {
+                         n_sample = 10000, args_new = list()) {
   assert_as_def_args(f, support, n_grid)
   assert_type(
     n_sample, is_single_number,
     type_name = "single number more than 1", min_val = 2
   )
-  assert_type(pdqr_args, is.list)
+  assert_type(args_new, is.list)
 
   # Create sample
   smpl <- f(n_sample, ...)
@@ -18,7 +18,7 @@ as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
   support <- detect_support_r(smpl, format_support(support))
 
   # Create density function from sample
-  new_call_args <- c_dedupl(list(x = smpl, type = "infin"), pdqr_args)
+  new_call_args <- c_dedupl(list(x = smpl, type = "infin"), args_new)
   d_f <- do.call(new_d, new_call_args)
 
   # Adjust to supplied support

@@ -165,18 +165,18 @@ test_that("form_trans handles `n_sample` argument",  {
   expect_equal(nrow(meta_x_tbl(output_brute)), nrow(meta_x_tbl(p_fin)))
 })
 
-test_that("form_trans uses `pdqr_args` as arguments for `new_*()`",  {
+test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   output <- form_trans(
-    list(p_infin), sq, method = "random", pdqr_args = list(n = 3)
+    list(p_infin), sq, method = "random", args_new = list(n = 3)
   )
   expect_equal(nrow(meta_x_tbl(output)), 3)
 
-  # Currently there is no effect in using `pdqr_args` in case `method =
+  # Currently there is no effect in using `args_new` in case `method =
   # "bruteforce"` because in computes data frame input for `new_*()` functions,
-  # in which case extra arguments are currently not used. However, `pdqr_args`
+  # in which case extra arguments are currently not used. However, `args_new`
   # are passed to `new_*()` in the code.
   expect_equal(
-    form_trans(list(p_fin), sq, method = "bruteforce", pdqr_args = list(n = 3)),
+    form_trans(list(p_fin), sq, method = "bruteforce", args_new = list(n = 3)),
     form_trans(list(p_fin), sq, method = "bruteforce")
   )
 })
@@ -196,7 +196,7 @@ test_that("form_trans throws errors", {
     form_trans(list(p_fin), sq, n_sample = 1:2), "`n_sample`.*single number"
   )
   expect_error(
-    form_trans(list(p_fin), sq, pdqr_args = "a"), "`pdqr_args`.*list"
+    form_trans(list(p_fin), sq, args_new = "a"), "`args_new`.*list"
   )
 })
 

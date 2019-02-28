@@ -1,5 +1,5 @@
 form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
-                       pdqr_args = list()) {
+                       args_new = list()) {
   # Notes in docs about `method = "bruteforce"`:
   # - It is very memory consuming.
   # - It is usually useful when type of output function is "fin", i.e. when all
@@ -13,30 +13,30 @@ form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
   assert_type(method, is_string)
   assert_in_set(method, c("random", "bruteforce"))
   assert_type(n_sample, is_single_number, type_name = "single number")
-  assert_type(pdqr_args, is.list)
+  assert_type(args_new, is.list)
 
   switch(
     method,
     random = trans_random(
       f_list = f_list, trans = trans, ...,
-      n_sample = n_sample, pdqr_args = pdqr_args
+      n_sample = n_sample, args_new = args_new
     ),
     bruteforce = trans_bruteforce(
       f_list = f_list, trans = trans, ...,
-      pdqr_args = pdqr_args
+      args_new = args_new
     )
   )
 }
 
 form_trans_self <- function(f, trans, ..., method = "bruteforce",
-                            pdqr_args = list()) {
+                            args_new = list()) {
   form_trans(
     f_list = list(f), trans = trans, ...,
-    method = method, pdqr_args = pdqr_args
+    method = method, args_new = args_new
   )
 }
 
-trans_random <- function(f_list, trans, ..., n_sample, pdqr_args) {
+trans_random <- function(f_list, trans, ..., n_sample, args_new) {
   # Compute type and class of output function
   res_meta <- compute_f_list_meta(f_list)
 
@@ -63,13 +63,13 @@ trans_random <- function(f_list, trans, ..., n_sample, pdqr_args) {
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
   call_args <- c(
     list(x = as.numeric(smpl), type = res_meta[["type"]]),
-    pdqr_args
+    args_new
   )
 
   do.call(new_pdqr, args = call_args)
 }
 
-trans_bruteforce <- function(f_list, trans, ..., pdqr_args) {
+trans_bruteforce <- function(f_list, trans, ..., args_new) {
   # Compute type and class of output function
   res_meta <- compute_f_list_meta(f_list)
 
@@ -100,11 +100,11 @@ trans_bruteforce <- function(f_list, trans, ..., pdqr_args) {
 
   x_tbl <- data.frame(x = as.numeric(x_new), prob = prob_new)
 
-  # Create transformed "fin" pdqr-function. Usage of `pdqr_args` doesn't have
+  # Create transformed "fin" pdqr-function. Usage of `args_new` doesn't have
   # any effect for now (as input to `new_*()` is data frame), but might be
   # helpful if in future `new_*()` will have new arguments.
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
-  call_args <- c(list(x = x_tbl, type = "fin"), pdqr_args)
+  call_args <- c(list(x = x_tbl, type = "fin"), args_new)
   fin_res <- do.call(new_pdqr, args = call_args)
 
   # Retype back to input type
