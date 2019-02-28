@@ -179,6 +179,21 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
     form_trans(list(p_fin), sq, method = "bruteforce", args_new = list(n = 3)),
     form_trans(list(p_fin), sq, method = "bruteforce")
   )
+
+  # Supplying `x` or `type` doesn't affect the output
+  expect_equal(
+    form_trans(
+      list(p_infin), sq, method = "random", args_new = list(x = 1, type = "fin")
+    ),
+    form_trans(list(p_infin), sq, method = "random")
+  )
+  expect_equal(
+    form_trans(
+      list(p_fin), sq, method = "bruteforce",
+      args_new = list(x = 1, type = "infin")
+    ),
+    form_trans(list(p_fin), sq, method = "bruteforce")
+  )
 })
 
 test_that("form_trans throws errors", {

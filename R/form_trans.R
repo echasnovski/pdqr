@@ -61,7 +61,7 @@ trans_random <- function(f_list, trans, ..., n_sample, args_new) {
 
   # Produce output pdqr function
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
-  call_args <- c(
+  call_args <- c_dedupl(
     list(x = as.numeric(smpl), type = res_meta[["type"]]),
     args_new
   )
@@ -104,7 +104,7 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
   # any effect for now (as input to `new_*()` is data frame), but might be
   # helpful if in future `new_*()` will have new arguments.
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
-  call_args <- c(list(x = x_tbl, type = "fin"), args_new)
+  call_args <- c_dedupl(list(x = x_tbl, type = "fin"), args_new)
   fin_res <- do.call(new_pdqr, args = call_args)
 
   # Retype back to input type
