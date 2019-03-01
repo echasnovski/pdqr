@@ -10,7 +10,7 @@ Math.pdqr <- function(x, ...) {
 }
 
 math_pdqr_impl <- function(gen, f, ...) {
-  n_sample <- getOption("pdqr.transform.n_sample")
+  n_sample <- getOption("pdqr.group_gen.n_sample")
 
   gen_fun <- function(y) {
     get(gen)(y, ...)
@@ -20,7 +20,7 @@ math_pdqr_impl <- function(gen, f, ...) {
 }
 
 Ops.pdqr <- function(e1, e2) {
-  n_sample <- getOption("pdqr.transform.n_sample")
+  n_sample <- getOption("pdqr.group_gen.n_sample")
 
   if (missing(e2)) {
     assert_pdqr_fun(e1)
@@ -48,7 +48,7 @@ Ops.pdqr <- function(e1, e2) {
 }
 
 Summary.pdqr <- function(..., na.rm = FALSE) {
-  n_sample <- getOption("pdqr.transform.n_sample")
+  n_sample <- getOption("pdqr.group_gen.n_sample")
 
   if (.Generic == "range") {
     stop_collapse(
