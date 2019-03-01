@@ -43,6 +43,12 @@ test_that("Math.pdqr uses options", {
   sqrt_fin <- sqrt(d_fin)
   expect_true(nrow(meta_x_tbl(sqrt_fin)) == 1)
   options(op)
+
+  # Option for `args_new`
+  op <- options(pdqr.group_gen.args_new = list(n = 2))
+  sqrt_infin <- sqrt(new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"))
+  expect_true(nrow(meta_x_tbl(sqrt_infin)) == 2)
+  options(op)
 })
 
 test_that("Math.pdqr method for `abs()` works", {
@@ -145,6 +151,12 @@ test_that("Ops.pdqr uses options", {
   op <- options(pdqr.group_gen.n_sample = 1)
   plus_fin <- d_fin + d_fin
   expect_true(nrow(meta_x_tbl(plus_fin)) == 1)
+  options(op)
+
+  # Option for `args_new`
+  op <- options(pdqr.group_gen.args_new = list(n = 2))
+  plus_infin <- d_infin + d_infin
+  expect_true(nrow(meta_x_tbl(plus_infin)) == 2)
   options(op)
 })
 
@@ -388,6 +400,12 @@ test_that("Summary.pdqr uses options", {
   op <- options(pdqr.group_gen.n_sample = 1)
   min_fin <- min(d_fin, d_fin)
   expect_true(nrow(meta_x_tbl(min_fin)) == 1)
+  options(op)
+
+  # Option for `args_new`
+  op <- options(pdqr.group_gen.args_new = list(n = 2))
+  min_infin <- min(d_infin, d_infin)
+  expect_true(nrow(meta_x_tbl(min_infin)) == 2)
   options(op)
 })
 
