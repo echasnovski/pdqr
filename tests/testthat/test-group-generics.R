@@ -37,6 +37,14 @@ test_that("Math.pdqr works", {
   )
 })
 
+test_that("Math.pdqr uses options", {
+  # Option for `n_sample`
+  op <- options(pdqr.group_gen.n_sample = 1)
+  sqrt_fin <- sqrt(d_fin)
+  expect_true(nrow(meta_x_tbl(sqrt_fin)) == 1)
+  options(op)
+})
+
 test_that("Math.pdqr method for `abs()` works", {
   # Type "fin"
   cur_d_fin <- new_d(
@@ -130,6 +138,14 @@ test_that("Ops.pdqr works", {
     # Support and "x_tbl" shouldn't be the same as random sampling is done
     meta_not_check = c("x_tbl", "support")
   )
+})
+
+test_that("Ops.pdqr uses options", {
+  # Option for `n_sample`
+  op <- options(pdqr.group_gen.n_sample = 1)
+  plus_fin <- d_fin + d_fin
+  expect_true(nrow(meta_x_tbl(plus_fin)) == 1)
+  options(op)
 })
 
 test_that("Ops.pdqr works with generics which take one argument", {
@@ -365,6 +381,14 @@ test_that("Summary.pdqr works", {
   expect_distr_fun(max(p_fin, p_fin), "p", "fin")
   expect_distr_fun(sum(q_custom, q_infin, q_infin), "q", "infin")
   expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "infin")
+})
+
+test_that("Summary.pdqr uses options", {
+  # Option for `n_sample`
+  op <- options(pdqr.group_gen.n_sample = 1)
+  min_fin <- min(d_fin, d_fin)
+  expect_true(nrow(meta_x_tbl(min_fin)) == 1)
+  options(op)
 })
 
 test_that("Summary.pdqr throws error on `range()`", {
