@@ -225,11 +225,12 @@ test_that("form_trans_self works",  {
     form_trans(list(p_fin), sq, method = "bruteforce")
   )
 
+  # Default method should be "random"
   cur_fin <- new_d(data.frame(x = c(-2, 0, 1), prob = c(0.1, 0.7, 0.2)), "fin")
-  expect_ref_x_tbl(
-    form_trans_self(cur_fin, `-`),
-    data.frame(x = c(-1, 0, 2), prob = c(0.2, 0.7, 0.1))
-  )
+  output <- form_trans_self(cur_fin, `-`)
+  output_x_tbl <- meta_x_tbl(output)
+  expect_equal(output_x_tbl[["x"]], c(-1, 0, 2))
+  expect_true(max(abs(output_x_tbl[["prob"]] - c(0.2, 0.7, 0.1))) < 1e-2)
 })
 
 
