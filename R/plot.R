@@ -118,7 +118,7 @@ compute_d_infin_ylim <- function(f) {
   # Here `2e-8` is used instead of default `1e-8` to account for possible
   # numerical representation inaccuracies.
   y_non_dirac <- y[x_neigh_dist >= 2e-8]
-  if (max(y_non_dirac) == 0) {
+  if ((length(y_non_dirac) == 0) || (max(y_non_dirac) == 0)) {
     # The case when all entries seems to be dirac-like. So all points should be
     # used in computing `ylim`.
     range(y)

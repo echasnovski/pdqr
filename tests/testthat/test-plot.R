@@ -174,6 +174,11 @@ test_that("plot.d handles dirac-like entries in 'x_tbl'",  {
       plot(form_mix(list(d_fin, d_infin)))
     })
   )
+  vdiffr::expect_doppelganger(
+    "dirac-like-4", recordPlot({
+      plot(new_d(1, "infin"))
+    })
+  )
 })
 
 test_that("plot.d throws error with corrupt input", {
