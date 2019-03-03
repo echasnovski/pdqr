@@ -114,3 +114,16 @@ test_that("compute_f_list_meta works",  {
     list(type = "infin", class = "q")
   )
 })
+
+
+# common_x ----------------------------------------------------------------
+test_that("common_x works", {
+  d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "infin")
+  d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "fin")
+  d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "infin")
+
+  expect_equal(common_x(d_1, d_2, method = "union"), c(-1, 1, 2, 3, 4, 5))
+  expect_equal(common_x(d_1, d_2, method = "intersect"), c(1, 2, 3, 4))
+  expect_equal(common_x(d_1, d_3, method = "intersect"), numeric(0))
+  expect_equal(common_x(d_2, d_3, method = "intersect"), 5)
+})

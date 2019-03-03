@@ -92,92 +92,90 @@ prob_geq_fin_any <- function(f_1, f_2) {
   sum(d_f_1(x_1) * p_f_2(x_1))
 }
 
-prob_geq_infin_infin <- function(f_1, f_2, h = 1e-5) {
-  f_x_tbl_1 <- meta_x_tbl(f_1)
-  f_x_tbl_2 <- meta_x_tbl(f_2)
+prob_geq_infin_infin <- function(f_1, f_2) {
+  # Create common grid (with some helper grids) for `f_1` and `f_2`. It is
+  # created as union of `f_1` and `f_2` "x"s which lie in the intersection of
+  # both supports. This is done to workaround the assumption that vectors `x`
+  # and `y` during integral computation represent actual density points
+  # **between which there are lines**. This doesn't hold if common grid is
+  # created as simple union of grids (there will be distortion on the edge of
+  # some support). Example: `f_1` and `f_2` are "infin" uniform on (0, 1) and
+  # (0.5, 1.5). `f_1` on union grid (0, 0.5, 1, 1.5) would have "y" values
+  # (1, 1, 1, 0) which during computation of integrals will be treated as having
+  # line from (x=1, y=1) to (x=1.5, y=0), which is not true.
+  # Note that there will be at least 2 points in `comm_x` because this code will
+  # execute after early returns in `prob_geq()` didn't return.
+  comm_x <- common_x(f_1, f_2, method = "intersect")
 
-  # Create common grid (with accompanying grids) for `f_1` and `f_2`
-  comm_x <- sort(union(f_x_tbl_1[["x"]], f_x_tbl_2[["x"]]))
   n <- length(comm_x)
   comm_left <- comm_x[-n]
   comm_right <- comm_x[-1]
-  # This is later used as "indicator" of common grid interval
+  # This is used soon as "indicator" (that doesn't equal to any of `comm_x` and
+  # lies strictly inside intersection of supports) of common grid interval
   comm_mid <- (comm_left + comm_right) / 2
 
   # Compute coefficients of lines representing `f_1` and `f_2` densities at each
   # interval of common grid.
+  f_x_tbl_1 <- meta_x_tbl(f_1)
   coeffs_1 <- compute_piecelin_density_coeffs(
     x_tbl = f_x_tbl_1,
-    # Here `rightmost.closed = TRUE` is needed so that coefficients at the most
-    # right point will be from the "inside" of support and not from "outside"
-    ind_vec = findInterval(comm_mid, f_x_tbl_1[["x"]], rightmost.closed = TRUE)
+    ind_vec = findInterval(comm_mid, f_x_tbl_1[["x"]])
   )
+  f_x_tbl_2 <- meta_x_tbl(f_2)
   coeffs_2 <- compute_piecelin_density_coeffs(
     x_tbl = f_x_tbl_2,
-    ind_vec = findInterval(comm_mid, f_x_tbl_2[["x"]], rightmost.closed = TRUE)
+    ind_vec = findInterval(comm_mid, f_x_tbl_2[["x"]])
   )
 
-  # Output probability is equal to definite integral from `comm_x[1]` to
-  # `comm_x[n]` of `d_1(x) * p_2(x)` (`d_1` - PDF of `f_1`, `p_2` - CDF of
-  # `f_2`), which is a desired probability. Logic here is that for small
-  # interval the probability of `f_1 >= f_2` is equal to a product of two
+  # Output probability based on functions inside `(comm_x[1], comm_x[n])`
+  # interval (intersection of supports) is equal to definite integral from
+  # `comm_x[1]` to `comm_x[n]` of `d_1(x) * p_2(x)` (`d_1` - PDF of `f_1`, `p_2`
+  # - CDF of `f_2`), which is a desired probability. Logic here is that for
+  # small interval the probability of `f_1 >= f_2` is equal to a product of two
   # probabilities: 1) that `f_1` lies inside that interval and 2) that `f_2`
   # lies to the left of that interval. When interval width tends to zero, that
   # probability tends to `d_1(x) * p_2(x)`. Overall probability is equal to
-  # integral of that expression over combined support of `f_1` and `f_2`, which
-  # here is `[comm_x[1], comm_x[n]]`.
-  cumprob_2 <- as_p(f_2)(comm_x)
+  # integral of that expression over intersection of `f_1` and `f_2` supports,
+  # which here is `[comm_x[1], comm_x[n]]`.
+  cumprob_2_left <- as_p(f_2)(comm_left)
 
-  # Its computation can be devided into parts where both densities are strictly
-  # linear (here - intervals between consecutive `comm_x` values) and later
-  # adding them together.
-  res <- infin_geq_piece_integral(
-    slope_1 = coeffs_1[["slope"]], inter_1 = coeffs_1[["intercept"]],
-    slope_2 = coeffs_2[["slope"]], inter_2 = coeffs_2[["intercept"]],
-    x_left = comm_left, x_right = comm_right,
-    cumprob_2_left = cumprob_2[-n]
+  comm_res <- infin_geq_piece_integral(
+    diff_x = diff(comm_x),
+    y_1_left = as_d(f_1)(comm_left),
+    y_2_left = as_d(f_2)(comm_left),
+    slope_1 = coeffs_1[["slope"]],
+    slope_2 = coeffs_2[["slope"]],
+    cumprob_2_left = cumprob_2_left
   )
 
-  # However, this computation can be very inaccurate if interval width is very
-  # small (which happens at dirac-like approximations): this leads to very big
-  # numbers inside multiplications and additions: present numerical accuracy
-  # isn't enough. The solution to avoid this is to use trapezoidal approximation
-  # to those interval integrals. The integrated function is still `d_1(x) *
-  # p_2(x)` which at `comm_x` points is equal to `y_1 * cumprob_2`.
-  y_1 <- as_d(f_1)(comm_x)
-  approx_res <- trapez_piece_integral(comm_x, y_1 * cumprob_2)
+  # Probability of "f_1 >= f_2" outside of intersection sof supports is equal to
+  # total probability of `f_1` to the right of `f_2`'s support.
+  f_1_geq_outside <- 1 - as_p(f_1)(meta_support(f_2)[2])
 
-  # Here `h` is taken to be relatively high (1e-5) because at that level
-  # computation is still inaccurate.
-  x_is_close <- (comm_right - comm_left) < h
-  res[x_is_close] <- approx_res[x_is_close]
-
-  sum(res)
+  comm_res + f_1_geq_outside
 }
 
-infin_geq_piece_integral <- function(slope_1, inter_1, slope_2, inter_2,
-                                     x_left, x_right, cumprob_2_left) {
-  lpow <- four_powers(x_left)
-  rpow <- four_powers(x_right)
-
+infin_geq_piece_integral <- function(diff_x, y_1_left, y_2_left,
+                                     slope_1, slope_2, cumprob_2_left) {
   # Output probability is equal to definite integral of `d_1(x) * p_2(x)` over
-  # maximum support (on outside of which both densities equal to zero). On each
-  # interval, where both densities have linear nature, definite integral is
-  # equal to the output because `d_1` is equal to `slope_1 * x + inter_1` and
-  # `p_2` is `0.5*slope_2 * x^2 + inter_2 * x + c_2` where `c_2` is free
-  # coefficient of `p_2` computed as below.
-  c_2 <- cumprob_2_left - lpow$p2 * slope_2/2 - lpow$p1 * inter_2
+  # common support. On each interval, where both densities have linear nature,
+  # definite integral is over (x_left, x_right) interval of a function `(a*x +
+  # b) * (0.5*A*(x^2 - x_left^2) + B*(x - x_left) + G)`, where `a`/`A` - slopes
+  # of `f_1` and `f_2` in the interval (`slope_1` and `slope_2`), `b`/`B` -
+  # intercepts, `G` - cumulative probability of `f_2` at `x_left`. To overcome
+  # numerical issues variable replacement **helps very much**: `x = x_left + t`.
+  # Then this integral becomes over interval (0, x_right-x_left) of
+  # `(a*t+y_1_left) * (0.5*A*t^2 + y_2_left*t + G)`, which can be represented
+  # explicitly in the expression, assigned lower to `piece_integrals`.
 
-  (rpow$p4 - lpow$p4) * slope_1*slope_2 / 8 +
-    (rpow$p3 - lpow$p3) * (2*slope_1*inter_2 + inter_1*slope_2) / 6 +
-    (rpow$p2 - lpow$p2) * (slope_1*c_2 + inter_1*inter_2) / 2 +
-    (rpow$p1 - lpow$p1) * inter_1 * c_2
-}
+  h <- diff_x
 
-four_powers <- function(x) {
-  x_pow_2 <- x * x
-  x_pow_3 <- x_pow_2 * x
-  x_pow_4 <- x_pow_3 * x
+  # Having powers of `h` inside every term avoids issues with numerical
+  # representation accuracy when `h` is too small (as in dirac-like entries).
+  piece_integrals <- slope_1*slope_2*h^4 / 8 +
+    (2*slope_1*y_2_left*h^3 + slope_2*y_1_left*h^3) / 6 +
+    (slope_1*cumprob_2_left*h^2 + y_1_left*y_2_left*h^2) / 2 +
+    y_1_left*cumprob_2_left*h
 
-  list(p1 = x, p2 = x_pow_2, p3 = x_pow_3, p4 = x_pow_4)
+  sum(piece_integrals)
 }

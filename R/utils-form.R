@@ -85,3 +85,19 @@ compute_f_list_meta <- function(f_list) {
 
   list(type = res_type, class = res_class)
 }
+
+
+# Other -------------------------------------------------------------------
+common_x <- function(f, g, method = "intersect") {
+  f_x <- meta_x_tbl(f)[["x"]]
+  g_x <- meta_x_tbl(g)[["x"]]
+
+  if (method == "intersect") {
+    f_supp <- meta_support(f)
+    g_supp <- meta_support(g)
+    g_x <- g_x[(g_x >= f_supp[1]) & (g_x <= f_supp[2])]
+    f_x <- f_x[(f_x >= g_supp[1]) & (f_x <= g_supp[2])]
+  }
+
+  sort(union(f_x, g_x))
+}

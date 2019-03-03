@@ -7,12 +7,17 @@ set.seed(8888)
 f_fin_1 <- new_d(data.frame(x = 0:2, prob = c(0.2, 0.3, 0.5)), "fin")
 f_fin_2 <- new_d(data.frame(x = 1:3, prob = c(0.3, 0.2, 0.5)), "fin")
 f_fin_3 <- new_d(data.frame(x = 100:101, prob = c(0.5, 0.5)), "fin")
-f_infin_1 <- new_d(data.frame(x = 0:2, y = c(0, 1/3, 1/3)), "infin")
+f_infin_1 <- new_d(data.frame(x = 0:2, y = c(0, 2/3, 2/3)), "infin")
 f_infin_2 <- new_d(data.frame(x = 0:2 + 0.5, y = c(0, 1, 0)), "infin")
 f_infin_3 <- new_d(data.frame(x = 100:101, y = c(1, 1)), "infin")
 
 f_fin_1_dirac <- form_retype(f_fin_1, "infin", method = "dirac")
 f_fin_2_dirac <- form_retype(f_fin_2, "infin", method = "dirac")
+
+# Case of symmetrical dirac-like entry and asymmetrical one after winsorizing
+d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+dirac_winsor <- form_resupport(d_unif, c(0, 0.5), method = "winsor")
+dirac_single <- new_d(0.5, "infin")
 
 
 # Custom expectations -----------------------------------------------------
@@ -72,6 +77,10 @@ test_that("form_geq works with dirac-like functions", {
     form_geq(f_infin_1, f_fin_2_dirac)(1)
   )
   expect_equal(form_geq(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
+
+  # Case of symmetrical dirac-like entry and asymmetrical one after winsorizing
+  expect_equal(form_geq(dirac_winsor, dirac_single)(1), 0.125)
+  expect_equal(form_geq(dirac_single, dirac_winsor)(1), 0.875)
 })
 
 test_that("form_geq returns appropriate pdqr class", {
@@ -115,6 +124,10 @@ test_that("form_greater works with dirac-like functions", {
     form_greater(f_infin_1, f_fin_2_dirac)(1)
   )
   expect_equal(form_greater(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
+
+  # Case of symmetrical dirac-like entry and asymmetrical one after winsorizing
+  expect_equal(form_greater(dirac_winsor, dirac_single)(1), 0.125)
+  expect_equal(form_greater(dirac_single, dirac_winsor)(1), 0.875)
 })
 
 test_that("form_greater returns appropriate pdqr class", {
@@ -158,6 +171,10 @@ test_that("form_leq works with dirac-like functions", {
     form_leq(f_infin_1, f_fin_2_dirac)(1)
   )
   expect_equal(form_leq(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
+
+  # Case of symmetrical dirac-like entry and asymmetrical one after winsorizing
+  expect_equal(form_leq(dirac_winsor, dirac_single)(1), 0.875)
+  expect_equal(form_leq(dirac_single, dirac_winsor)(1), 0.125)
 })
 
 test_that("form_leq returns appropriate pdqr class", {
@@ -201,6 +218,10 @@ test_that("form_less works with dirac-like functions", {
     form_less(f_infin_1, f_fin_2_dirac)(1)
   )
   expect_equal(form_less(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
+
+  # Case of symmetrical dirac-like entry and asymmetrical one after winsorizing
+  expect_equal(form_less(dirac_winsor, dirac_single)(1), 0.875)
+  expect_equal(form_less(dirac_single, dirac_winsor)(1), 0.125)
 })
 
 test_that("form_less returns appropriate pdqr class", {
@@ -233,6 +254,8 @@ test_that("form_equal works with dirac-like functions", {
     form_equal(f_infin_1, f_fin_2)(1),
     form_equal(f_infin_1, f_fin_2_dirac)(1)
   )
+
+  expect_equal(form_equal(dirac_single, dirac_winsor)(1), 0)
 })
 
 test_that("form_equal returns appropriate pdqr class", {
@@ -265,6 +288,8 @@ test_that("form_not_equal works with dirac-like functions", {
     form_not_equal(f_infin_1, f_fin_2)(1),
     form_not_equal(f_infin_1, f_fin_2_dirac)(1)
   )
+
+  expect_equal(form_not_equal(dirac_single, dirac_winsor)(1), 1)
 })
 
 test_that("form_not_equal returns appropriate pdqr class", {
