@@ -6,8 +6,10 @@ set.seed(8888)
 # Input data --------------------------------------------------------------
 f_fin_1 <- new_d(data.frame(x = 0:2, prob = c(0.2, 0.3, 0.5)), "fin")
 f_fin_2 <- new_d(data.frame(x = 1:3, prob = c(0.3, 0.2, 0.5)), "fin")
+f_fin_3 <- new_d(data.frame(x = 100:101, prob = c(0.5, 0.5)), "fin")
 f_infin_1 <- new_d(data.frame(x = 0:2, y = c(0, 1/3, 1/3)), "infin")
 f_infin_2 <- new_d(data.frame(x = 0:2 + 0.5, y = c(0, 1, 0)), "infin")
+f_infin_3 <- new_d(data.frame(x = 100:101, y = c(1, 1)), "infin")
 
 f_fin_1_dirac <- form_retype(f_fin_1, "infin", method = "dirac")
 f_fin_2_dirac <- form_retype(f_fin_2, "infin", method = "dirac")
@@ -53,6 +55,13 @@ test_that("form_geq agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_geq, `>=`)
 })
 
+test_that("form_geq handles cases of clearly separated supports", {
+  expect_equal(form_geq(f_fin_1, f_fin_3)(1), 0)
+  expect_equal(form_geq(f_fin_3, f_fin_1)(1), 1)
+  expect_equal(form_geq(f_infin_1, f_infin_3)(1), 0)
+  expect_equal(form_geq(f_infin_3, f_infin_1)(1), 1)
+})
+
 test_that("form_geq works with dirac-like functions", {
   expect_equal(
     form_geq(f_fin_1, f_infin_2)(1),
@@ -87,6 +96,13 @@ test_that("form_greater agrees with simulation", {
   expect_equal_probs(f_fin_1, f_infin_2, form_greater, `>`)
   expect_equal_probs(f_infin_1, f_fin_2, form_greater, `>`)
   expect_equal_probs(f_infin_1, f_infin_2, form_greater, `>`)
+})
+
+test_that("form_greater handles cases of clearly separated supports", {
+  expect_equal(form_greater(f_fin_1, f_fin_3)(1), 0)
+  expect_equal(form_greater(f_fin_3, f_fin_1)(1), 1)
+  expect_equal(form_greater(f_infin_1, f_infin_3)(1), 0)
+  expect_equal(form_greater(f_infin_3, f_infin_1)(1), 1)
 })
 
 test_that("form_greater works with dirac-like functions", {
@@ -125,6 +141,13 @@ test_that("form_leq agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_leq, `<=`)
 })
 
+test_that("form_leq handles cases of clearly separated supports", {
+  expect_equal(form_leq(f_fin_1, f_fin_3)(1), 1)
+  expect_equal(form_leq(f_fin_3, f_fin_1)(1), 0)
+  expect_equal(form_leq(f_infin_1, f_infin_3)(1), 1)
+  expect_equal(form_leq(f_infin_3, f_infin_1)(1), 0)
+})
+
 test_that("form_leq works with dirac-like functions", {
   expect_equal(
     form_leq(f_fin_1, f_infin_2)(1),
@@ -159,6 +182,13 @@ test_that("form_less agrees with simulation", {
   expect_equal_probs(f_fin_1, f_infin_2, form_less, `<`)
   expect_equal_probs(f_infin_1, f_fin_2, form_less, `<`)
   expect_equal_probs(f_infin_1, f_infin_2, form_less, `<`)
+})
+
+test_that("form_less handles cases of clearly separated supports", {
+  expect_equal(form_less(f_fin_1, f_fin_3)(1), 1)
+  expect_equal(form_less(f_fin_3, f_fin_1)(1), 0)
+  expect_equal(form_less(f_infin_1, f_infin_3)(1), 1)
+  expect_equal(form_less(f_infin_3, f_infin_1)(1), 0)
 })
 
 test_that("form_less works with dirac-like functions", {

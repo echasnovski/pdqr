@@ -40,6 +40,17 @@ form_not_equal <- function(f_1, f_2) {
 }
 
 prob_geq <- function(f_1, f_2) {
+  # Early returns for edge cases
+  f_1_supp <- meta_support(f_1)
+  f_2_supp <- meta_support(f_2)
+  if (f_1_supp[1] >= f_2_supp[2]) {
+    return(1)
+  }
+  if (f_2_supp[1] >= f_1_supp[2]) {
+    return(0)
+  }
+
+  # Actual computations
   if (meta_type(f_1) == "fin") {
     prob_geq_fin_any(f_1, f_2)
   } else {
