@@ -19,6 +19,9 @@ d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
 dirac_winsor <- form_resupport(d_unif, c(0, 0.5), method = "winsor")
 dirac_single <- new_d(0.5, "infin")
 
+# Case of "long" "x"s
+dirac_single_fin <- form_retype(dirac_single, "fin")
+
 
 # Custom expectations -----------------------------------------------------
 mean_sim_prob <- function(f_1, f_2, op, n_rep = 10, n_sim = 1e4) {
@@ -46,6 +49,9 @@ test_that("form_geq works", {
   output <- form_geq(f_infin_1, f_fin_2)
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
+
+  # Inequality involving "fin" functions with "long" "x"s
+  expect_equal(form_geq(dirac_single_fin, dirac_single_fin)(1), 0.75)
 
   # Inequality with "infin" self returns 0.5
   expect_equal(form_geq(f_infin_1, f_infin_1)(1), 0.5)
@@ -94,6 +100,9 @@ test_that("form_greater works", {
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
+  # Inequality involving "fin" functions with "long" "x"s
+  expect_equal(form_greater(dirac_single_fin, dirac_single_fin)(1), 0.25)
+
   # Inequality with "infin" self returns 0.5
   expect_equal(form_greater(f_infin_1, f_infin_1)(1), 0.5)
 })
@@ -140,6 +149,9 @@ test_that("form_leq works", {
   output <- form_leq(f_infin_1, f_fin_2)
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
+
+  # Inequality involving "fin" functions with "long" "x"s
+  expect_equal(form_leq(dirac_single_fin, dirac_single_fin)(1), 0.75)
 
   # Inequality with "infin" self returns 0.5
   expect_equal(form_leq(f_infin_1, f_infin_1)(1), 0.5)
@@ -188,6 +200,9 @@ test_that("form_less works", {
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
+  # Inequality involving "fin" functions with "long" "x"s
+  expect_equal(form_less(dirac_single_fin, dirac_single_fin)(1), 0.25)
+
   # Inequality with "infin" self returns 0.5
   expect_equal(form_less(f_infin_1, f_infin_1)(1), 0.5)
 })
@@ -234,6 +249,9 @@ test_that("form_equal works", {
   output <- form_equal(f_infin_1, f_fin_2)
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
+
+  # Inequality involving "fin" functions with "long" "x"s
+  expect_equal(form_equal(dirac_single_fin, dirac_single_fin)(1), 0.5)
 })
 
 test_that("form_equal agrees with simulation", {
@@ -268,6 +286,9 @@ test_that("form_not_equal works", {
   output <- form_not_equal(f_infin_1, f_fin_2)
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
+
+  # Inequality involving "fin" functions with "long" "x"s
+  expect_equal(form_not_equal(dirac_single_fin, dirac_single_fin)(1), 0.5)
 })
 
 test_that("form_not_equal agrees with simulation", {

@@ -66,9 +66,22 @@ prob_geq <- function(f_1, f_2) {
 
 prob_equal <- function(f_1, f_2) {
   if ((meta_type(f_1) == "fin") && (meta_type(f_2) == "fin")) {
-    x_1 <- meta_x_tbl(f_1)[["x"]]
+    f_1_x_tbl <- meta_x_tbl(f_1)
+    f_2_x_tbl <- meta_x_tbl(f_2)
+    x_1 <- f_1_x_tbl[["x"]]
 
-    sum(as_d(f_1)(x_1) * as_d(f_2)(x_1))
+    # This is basically a copy of `new_d_fin()` output's body but without input
+    # rounding. This is done to ensure the following code is valid:
+    # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
+    # This should return 0.5 which it doesn't (because of rounding policy) if
+    # `d_2_at_x_1` is computed with `as_d(f_2)(x_1)`.
+    # prob_equal(dirac_single_fin, dirac_single_fin)
+    d_2_at_x_1 <- numeric(length(x_1))
+    inds <- match(x_1, f_2_x_tbl[["x"]], nomatch = NA)
+    good_inds <- !is.na(inds)
+    d_2_at_x_1[good_inds] <- f_2_x_tbl[["prob"]][inds[good_inds]]
+
+    sum(f_1_x_tbl[["prob"]] * d_2_at_x_1)
   } else {
     # If any of `f_1` or `f_2` is "infin" (i.e. "continuous") then probability
     # of generating two exactly equal values is 0
@@ -81,15 +94,33 @@ prob_greater <- function(f_1, f_2) {
 }
 
 prob_geq_fin_any <- function(f_1, f_2) {
-  x_1 <- meta_x_tbl(f_1)[["x"]]
-  d_f_1 <- as_d(f_1)
-  p_f_2 <- as_p(f_2)
+  f_1_x_tbl <- meta_x_tbl(f_1)
+  x_1 <- f_1_x_tbl[["x"]]
+
+  if (meta_type(f_2) == "fin") {
+    # This is basically a copy of `new_p_fin()` output's body but without input
+    # rounding. This is done to ensure that the following code is valid:
+    # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
+    # This should return 0.75 which it doesn't (because of rounding policy) if
+    # `cumprob_2` is computed with `as_p(f_2)(x_1)`.
+    # prob_geq_fin_any(dirac_single_fin, dirac_single_fin)
+
+    f_2_x_tbl <- meta_x_tbl(f_2)
+    cumprob_2 <- numeric(length(x_1))
+
+    inds <- findInterval(x_1, f_2_x_tbl[["x"]])
+    inds_isnt_zero <- inds != 0
+
+    cumprob_2[inds_isnt_zero] <- f_2_x_tbl[["cumprob"]][inds[inds_isnt_zero]]
+  } else {
+    cumprob_2 <- as_p(f_2)(x_1)
+  }
 
   # If `f_1` has known value `x`, then probability that `f_2` is less-or-equal
   # is CDF of `f_2` at `x`. The probability of that outcome is multiplication of
   # `x`'s probability and `f_2`'s CDF at `x` (due to independency assumption).
   # Result is a sum for all possible `f_1` values.
-  sum(d_f_1(x_1) * p_f_2(x_1))
+  sum(f_1_x_tbl[["prob"]] * cumprob_2)
 }
 
 prob_geq_infin_infin <- function(f_1, f_2) {
