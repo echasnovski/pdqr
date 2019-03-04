@@ -250,8 +250,11 @@ test_that("form_equal works", {
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
-  # Inequality involving "fin" functions with "long" "x"s
-  expect_equal(form_equal(dirac_single_fin, dirac_single_fin)(1), 0.5)
+  # Equality involving "fin" functions with "long" "x"s
+  expect_equal(
+    form_equal(dirac_single_fin, dirac_single_fin)(1),
+    sum(meta_x_tbl(dirac_single_fin)[["prob"]]^2)
+  )
 })
 
 test_that("form_equal agrees with simulation", {
@@ -287,8 +290,11 @@ test_that("form_not_equal works", {
   expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
-  # Inequality involving "fin" functions with "long" "x"s
-  expect_equal(form_not_equal(dirac_single_fin, dirac_single_fin)(1), 0.5)
+  # Not equality involving "fin" functions with "long" "x"s
+  expect_equal(
+    form_not_equal(dirac_single_fin, dirac_single_fin)(1),
+    1 - sum(meta_x_tbl(dirac_single_fin)[["prob"]]^2)
+  )
 })
 
 test_that("form_not_equal agrees with simulation", {
@@ -339,8 +345,4 @@ test_that("form_not_equal returns appropriate pdqr class", {
 
 
 # infin_geq_integral ------------------------------------------------------
-# Tested in `form_*()` comparisons
-
-
-# four_powers -------------------------------------------------------------
 # Tested in `form_*()` comparisons
