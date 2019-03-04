@@ -1,142 +1,142 @@
-form_geq <- function(f_1, f_2) {
-  boolean_pdqr(prob_true = prob_geq(f_1, f_2), pdqr_class = get_pdqr_class(f_1))
+form_geq <- function(f, g) {
+  boolean_pdqr(prob_true = prob_geq(f, g), pdqr_class = get_pdqr_class(f))
 }
 
-form_greater <- function(f_1, f_2) {
+form_greater <- function(f, g) {
   boolean_pdqr(
-    prob_true = prob_greater(f_1, f_2),
-    pdqr_class = get_pdqr_class(f_1)
+    prob_true = prob_greater(f, g),
+    pdqr_class = get_pdqr_class(f)
   )
 }
 
-form_leq <- function(f_1, f_2) {
+form_leq <- function(f, g) {
   boolean_pdqr(
-    # P(f_1 <= f_2) = 1 - P(f_1 > f_2)
-    prob_true = 1 - prob_greater(f_1, f_2),
-    pdqr_class = get_pdqr_class(f_1)
+    # P(f <= g) = 1 - P(f > g)
+    prob_true = 1 - prob_greater(f, g),
+    pdqr_class = get_pdqr_class(f)
   )
 }
 
-form_less <- function(f_1, f_2) {
+form_less <- function(f, g) {
   boolean_pdqr(
-    # P(f_1 < f_2) = 1 - P(f_1 >= f_2)
-    prob_true = 1 - prob_geq(f_1, f_2),
-    pdqr_class = get_pdqr_class(f_1)
+    # P(f < g) = 1 - P(f >= g)
+    prob_true = 1 - prob_geq(f, g),
+    pdqr_class = get_pdqr_class(f)
   )
 }
 
-form_equal <- function(f_1, f_2) {
+form_equal <- function(f, g) {
   boolean_pdqr(
-    prob_true = prob_equal(f_1, f_2),
-    pdqr_class = get_pdqr_class(f_1)
+    prob_true = prob_equal(f, g),
+    pdqr_class = get_pdqr_class(f)
   )
 }
 
-form_not_equal <- function(f_1, f_2) {
+form_not_equal <- function(f, g) {
   boolean_pdqr(
-    prob_true = 1 - prob_equal(f_1, f_2),
-    pdqr_class = get_pdqr_class(f_1)
+    prob_true = 1 - prob_equal(f, g),
+    pdqr_class = get_pdqr_class(f)
   )
 }
 
-prob_geq <- function(f_1, f_2) {
+prob_geq <- function(f, g) {
   # Early returns for edge cases
-  f_1_supp <- meta_support(f_1)
-  f_2_supp <- meta_support(f_2)
-  if (f_1_supp[1] >= f_2_supp[2]) {
+  f_supp <- meta_support(f)
+  g_supp <- meta_support(g)
+  if (f_supp[1] >= g_supp[2]) {
     return(1)
   }
-  if (f_2_supp[1] >= f_1_supp[2]) {
+  if (g_supp[1] >= f_supp[2]) {
     return(0)
   }
 
   # Actual computations
-  if (meta_type(f_1) == "fin") {
-    prob_geq_fin_any(f_1, f_2)
+  if (meta_type(f) == "fin") {
+    prob_geq_fin_any(f, g)
   } else {
-    if (meta_type(f_2) == "fin") {
-      # P(f_1 >= f_1) = 1 - P(f_1 < f_2) = [due to continuity of `f_1`] =
-      # 1 - P(f_1 <= f_2) = 1 - P(f_2 >= f_1)
-      1 - prob_geq_fin_any(f_2, f_1)
+    if (meta_type(g) == "fin") {
+      # P(f >= f) = 1 - P(f < g) = [due to continuity of `f`] = 1 - P(f <= g) =
+      # 1 - P(g >= f)
+      1 - prob_geq_fin_any(g, f)
     } else {
-      prob_geq_infin_infin(f_1, f_2)
+      prob_geq_infin_infin(f, g)
     }
   }
 }
 
-prob_equal <- function(f_1, f_2) {
-  if ((meta_type(f_1) == "fin") && (meta_type(f_2) == "fin")) {
-    f_1_x_tbl <- meta_x_tbl(f_1)
-    f_2_x_tbl <- meta_x_tbl(f_2)
-    x_1 <- f_1_x_tbl[["x"]]
+prob_equal <- function(f, g) {
+  if ((meta_type(f) == "fin") && (meta_type(g) == "fin")) {
+    f_x_tbl <- meta_x_tbl(f)
+    g_x_tbl <- meta_x_tbl(g)
+    x_f <- f_x_tbl[["x"]]
 
     # This is basically a copy of `new_d_fin()` output's body but without input
     # rounding. This is done to ensure the following code is valid:
     # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
-    # This should return 0.5 which it doesn't (because of rounding policy) if
-    # `d_2_at_x_1` is computed with `as_d(f_2)(x_1)`.
+    # # This should return 0.5 which it doesn't (because of rounding policy) if
+    # # `d_g_at_x_f` is computed with `as_d(g)(x_f)`.
     # prob_equal(dirac_single_fin, dirac_single_fin)
-    d_2_at_x_1 <- numeric(length(x_1))
-    inds <- match(x_1, f_2_x_tbl[["x"]], nomatch = NA)
+    d_g_at_x_f <- numeric(length(x_f))
+    inds <- match(x_f, g_x_tbl[["x"]], nomatch = NA)
     good_inds <- !is.na(inds)
-    d_2_at_x_1[good_inds] <- f_2_x_tbl[["prob"]][inds[good_inds]]
+    d_g_at_x_f[good_inds] <- g_x_tbl[["prob"]][inds[good_inds]]
 
-    sum(f_1_x_tbl[["prob"]] * d_2_at_x_1)
+    sum(f_x_tbl[["prob"]] * d_g_at_x_f)
   } else {
-    # If any of `f_1` or `f_2` is "infin" (i.e. "continuous") then probability
+    # If any of `f` or `g` is "infin" (i.e. "continuous") then probability
     # of generating two exactly equal values is 0
     0
   }
 }
 
-prob_greater <- function(f_1, f_2) {
-  prob_geq(f_1, f_2) - prob_equal(f_1, f_2)
+prob_greater <- function(f, g) {
+  prob_geq(f, g) - prob_equal(f, g)
 }
 
-prob_geq_fin_any <- function(f_1, f_2) {
-  f_1_x_tbl <- meta_x_tbl(f_1)
-  x_1 <- f_1_x_tbl[["x"]]
+prob_geq_fin_any <- function(f, g) {
+  f_x_tbl <- meta_x_tbl(f)
+  x_f <- f_x_tbl[["x"]]
 
-  if (meta_type(f_2) == "fin") {
+  if (meta_type(g) == "fin") {
     # This is basically a copy of `new_p_fin()` output's body but without input
     # rounding. This is done to ensure that the following code is valid:
     # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
-    # This should return 0.75 which it doesn't (because of rounding policy) if
-    # `cumprob_2` is computed with `as_p(f_2)(x_1)`.
+    # # This should return 0.75 which it doesn't (because of rounding policy) if
+    # # `cumprob_g` is computed with `as_p(g)(x_f)`.
     # prob_geq_fin_any(dirac_single_fin, dirac_single_fin)
 
-    f_2_x_tbl <- meta_x_tbl(f_2)
-    cumprob_2 <- numeric(length(x_1))
+    g_x_tbl <- meta_x_tbl(g)
+    cumprob_g <- numeric(length(x_f))
 
-    inds <- findInterval(x_1, f_2_x_tbl[["x"]])
+    inds <- findInterval(x_f, g_x_tbl[["x"]])
     inds_isnt_zero <- inds != 0
 
-    cumprob_2[inds_isnt_zero] <- f_2_x_tbl[["cumprob"]][inds[inds_isnt_zero]]
+    cumprob_g[inds_isnt_zero] <- g_x_tbl[["cumprob"]][inds[inds_isnt_zero]]
   } else {
-    cumprob_2 <- as_p(f_2)(x_1)
+    cumprob_g <- as_p(g)(x_f)
   }
 
-  # If `f_1` has known value `x`, then probability that `f_2` is less-or-equal
-  # is CDF of `f_2` at `x`. The probability of that outcome is multiplication of
-  # `x`'s probability and `f_2`'s CDF at `x` (due to independency assumption).
-  # Result is a sum for all possible `f_1` values.
-  sum(f_1_x_tbl[["prob"]] * cumprob_2)
+  # If `f` has known value `x`, then probability that `g` is less-or-equal is
+  # CDF of `g` at `x`. The probability of that outcome is multiplication of
+  # `x`'s probability and `g`'s CDF at `x` (due to independency assumption).
+  # Result is a sum for all possible `f` values.
+  sum(f_x_tbl[["prob"]] * cumprob_g)
 }
 
-prob_geq_infin_infin <- function(f_1, f_2) {
-  # Create common grid (with some helper grids) for `f_1` and `f_2`. It is
-  # created as union of `f_1` and `f_2` "x"s which lie in the intersection of
-  # both supports. This is done to workaround the assumption that vectors `x`
-  # and `y` during integral computation represent actual density points
-  # **between which there are lines**. This doesn't hold if common grid is
-  # created as simple union of grids (there will be distortion on the edge of
-  # some support). Example: `f_1` and `f_2` are "infin" uniform on (0, 1) and
-  # (0.5, 1.5). `f_1` on union grid (0, 0.5, 1, 1.5) would have "y" values
-  # (1, 1, 1, 0) which during computation of integrals will be treated as having
-  # line from (x=1, y=1) to (x=1.5, y=0), which is not true.
+prob_geq_infin_infin <- function(f, g) {
+  # Create common grid (with some helper grids) for `f` and `g`. It is created
+  # as union of `f` and `g` "x"s which lie in the intersection of both supports.
+  # This is done to workaround the assumption that vectors `x` and `y` during
+  # integral computation represent actual density points **between which there
+  # are lines**. This doesn't hold if common grid is created as simple union of
+  # grids (there will be distortion on the edge of some support). Example: `f`
+  # and `g` are "infin" uniform on (0, 1) and (0.5, 1.5). `f` on union grid (0,
+  # 0.5, 1, 1.5) would have "y" values (1, 1, 1, 0) which during computation of
+  # integrals will be treated as having line from (x=1, y=1) to (x=1.5, y=0),
+  # which is not true.
   # Note that there will be at least 2 points in `comm_x` because this code will
   # execute after early returns in `prob_geq()` didn't return.
-  comm_x <- common_x(f_1, f_2, method = "intersect")
+  comm_x <- common_x(f, g, method = "intersect")
 
   n <- length(comm_x)
   comm_left <- comm_x[-n]
@@ -145,68 +145,68 @@ prob_geq_infin_infin <- function(f_1, f_2) {
   # lies strictly inside intersection of supports) of common grid interval
   comm_mid <- (comm_left + comm_right) / 2
 
-  # Compute coefficients of lines representing `f_1` and `f_2` densities at each
+  # Compute coefficients of lines representing `f` and `g` densities at each
   # interval of common grid.
-  f_x_tbl_1 <- meta_x_tbl(f_1)
-  coeffs_1 <- compute_piecelin_density_coeffs(
-    x_tbl = f_x_tbl_1,
-    ind_vec = findInterval(comm_mid, f_x_tbl_1[["x"]])
+  f_x_tbl_f <- meta_x_tbl(f)
+  coeffs_f <- compute_piecelin_density_coeffs(
+    x_tbl = f_x_tbl_f,
+    ind_vec = findInterval(comm_mid, f_x_tbl_f[["x"]])
   )
-  f_x_tbl_2 <- meta_x_tbl(f_2)
-  coeffs_2 <- compute_piecelin_density_coeffs(
-    x_tbl = f_x_tbl_2,
-    ind_vec = findInterval(comm_mid, f_x_tbl_2[["x"]])
+  f_x_tbl_g <- meta_x_tbl(g)
+  coeffs_g <- compute_piecelin_density_coeffs(
+    x_tbl = f_x_tbl_g,
+    ind_vec = findInterval(comm_mid, f_x_tbl_g[["x"]])
   )
 
   # Output probability based on functions inside `(comm_x[1], comm_x[n])`
   # interval (intersection of supports) is equal to definite integral from
-  # `comm_x[1]` to `comm_x[n]` of `d_1(x) * p_2(x)` (`d_1` - PDF of `f_1`, `p_2`
-  # - CDF of `f_2`), which is a desired probability. Logic here is that for
-  # small interval the probability of `f_1 >= f_2` is equal to a product of two
-  # probabilities: 1) that `f_1` lies inside that interval and 2) that `f_2`
-  # lies to the left of that interval. When interval width tends to zero, that
-  # probability tends to `d_1(x) * p_2(x)`. Overall probability is equal to
-  # integral of that expression over intersection of `f_1` and `f_2` supports,
-  # which here is `[comm_x[1], comm_x[n]]`.
-  cumprob_2_left <- as_p(f_2)(comm_left)
+  # `comm_x[1]` to `comm_x[n]` of `d_f(x) * p_g(x)` (`d_f` - PDF of `f`, `p_g` -
+  # CDF of `g`), which is a desired probability. Logic here is that for small
+  # interval the probability of `f >= g` is equal to a product of two
+  # probabilities: 1) that `f` lies inside that interval and 2) that `g` lies to
+  # the left of that interval. When interval width tends to zero, that
+  # probability tends to `d_f(x) * p_g(x)`. Overall probability is equal to
+  # integral of that expression over intersection of `f` and `g` supports, which
+  # here is `[comm_x[1], comm_x[n]]`.
+  cumprob_g_left <- as_p(g)(comm_left)
 
   comm_res <- infin_geq_piece_integral(
     diff_x = diff(comm_x),
-    y_1_left = as_d(f_1)(comm_left),
-    y_2_left = as_d(f_2)(comm_left),
-    slope_1 = coeffs_1[["slope"]],
-    slope_2 = coeffs_2[["slope"]],
-    cumprob_2_left = cumprob_2_left
+    y_f_left = as_d(f)(comm_left),
+    y_g_left = as_d(g)(comm_left),
+    slope_f = coeffs_f[["slope"]],
+    slope_g = coeffs_g[["slope"]],
+    cumprob_g_left = cumprob_g_left
   )
 
-  # Probability of "f_1 >= f_2" outside of intersection sof supports is equal to
-  # total probability of `f_1` to the right of `f_2`'s support.
-  f_1_geq_outside <- 1 - as_p(f_1)(meta_support(f_2)[2])
+  # Probability of "f >= g" outside of intersection sof supports is equal to
+  # total probability of `f` to the right of `g`'s support.
+  f_geq_outside <- 1 - as_p(f)(meta_support(g)[2])
 
-  comm_res + f_1_geq_outside
+  comm_res + f_geq_outside
 }
 
-infin_geq_piece_integral <- function(diff_x, y_1_left, y_2_left,
-                                     slope_1, slope_2, cumprob_2_left) {
-  # Output probability is equal to definite integral of `d_1(x) * p_2(x)` over
+infin_geq_piece_integral <- function(diff_x, y_f_left, y_g_left,
+                                     slope_f, slope_g, cumprob_g_left) {
+  # Output probability is equal to definite integral of `d_f(x) * p_g(x)` over
   # common support. On each interval, where both densities have linear nature,
   # definite integral is over (x_left, x_right) interval of a function `(a*x +
   # b) * (0.5*A*(x^2 - x_left^2) + B*(x - x_left) + G)`, where `a`/`A` - slopes
-  # of `f_1` and `f_2` in the interval (`slope_1` and `slope_2`), `b`/`B` -
-  # intercepts, `G` - cumulative probability of `f_2` at `x_left`. To overcome
+  # of `f` and `g` in the interval (`slope_f` and `slope_g`), `b`/`B` -
+  # intercepts, `G` - cumulative probability of `g` at `x_left`. To overcome
   # numerical issues variable replacement **helps very much**: `x = x_left + t`.
   # Then this integral becomes over interval (0, x_right-x_left) of
-  # `(a*t+y_1_left) * (0.5*A*t^2 + y_2_left*t + G)`, which can be represented
+  # `(a*t+y_f_left) * (0.5*A*t^2 + y_g_left*t + G)`, which can be represented
   # explicitly in the expression, assigned lower to `piece_integrals`.
 
   h <- diff_x
 
   # Having powers of `h` inside every term avoids issues with numerical
   # representation accuracy when `h` is too small (as in dirac-like entries).
-  piece_integrals <- slope_1*slope_2*h^4 / 8 +
-    (2*slope_1*y_2_left*h^3 + slope_2*y_1_left*h^3) / 6 +
-    (slope_1*cumprob_2_left*h^2 + y_1_left*y_2_left*h^2) / 2 +
-    y_1_left*cumprob_2_left*h
+  piece_integrals <- slope_f*slope_g*h^4 / 8 +
+    (2*slope_f*y_g_left*h^3 + slope_g*y_f_left*h^3) / 6 +
+    (slope_f*cumprob_g_left*h^2 + y_f_left*y_g_left*h^2) / 2 +
+    y_f_left*cumprob_g_left*h
 
   sum(piece_integrals)
 }
