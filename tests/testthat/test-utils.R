@@ -256,6 +256,107 @@ test_that("copy_attrs works", {
 })
 
 
+# find_nearest_ind --------------------------------------------------------
+test_that("find_nearest_ind works", {
+  x <- c(1, -100, 10000, 1.5, 2.01, 1.99, 1)
+  set <- c(2, 1, 2, 2, 2.5, -1, 1000)
+
+  expect_equal(
+    find_nearest_ind(x, set),
+    c(2, 6, 7, 2, 4, 1, 2)
+  )
+
+  # If there are duplicate values in `set` then the first one is used for
+  # smaller `x` values and the last one for the bigger `x`.
+  expect_equal(find_nearest_ind(c(1.9, 2.1), c(2, 2)), c(1, 2))
+
+  # If there are two equidistant `set` points, then the smaller is returned
+  expect_equal(find_nearest_ind(1.5, c(1, 2)), 1)
+
+  # Case of length one `set`
+  expect_equal(find_nearest_ind(1:10, 3), rep(1, 10))
+})
+
+
+# find_nearest_match ------------------------------------------------------
+test_that("find_nearest_match works", {
+  expect_equal(
+    find_nearest_match(
+      x = c(1, 2, 3, 4, 5, 6),
+      set = c(-3, -2, -1, 1.5, 3.5, 5.5, 10, 20)
+    ),
+    # Match steps (in terms of elements, not indicies).
+    # Step 1: 1 <-> 1.5, 3 <-> 3.5, 5 <-> 5.5
+    # Step 2: 2 <-> -1, 6 <-> 10 (closest in `set` accept those "used" in
+    # previous step)
+    # Step 3: 4 <-> -2
+    c(4, 3, 5, 2, 6, 7)
+  )
+
+  expect_equal(
+    find_nearest_match(c(1, 10, 10, 10, 10), 1:10),
+    # Steps. Step 1: 1 <-> 1, 10 <-> 10. Step 2: 10 <-> 9. Step 3: 10 <-> 8.
+    # Step 4: 10 <-> 7.
+    c(1, 10, 9, 8, 7)
+  )
+
+  # Output should be equal to that from `find_nearest_ind()` if it is unique
+  x <- 1:6
+  set <- x + 0.1
+  expect_equal(find_nearest_match(x, set), find_nearest_ind(x, set))
+
+  # Example of more adequacy of nearest matching instead of "nearest subset":
+  # indicies from `set` with the least distances to `x` (as a set).
+  expect_equal(
+    find_nearest_match(
+      x = 1:3,
+      # Here "nearest subset" will produce `c(1, 2, 3)` which is not very good
+      # because it doesn't really capture a "structure" of a `set` (to be fair,
+      # this is an arguable statement).
+      set = c(0.98, 0.99, 1.01, 2.2, 3.1)
+    ),
+    c(2, 4, 5)
+  )
+  # Example of non-optimality of exact matching and more adequacy of
+  # nearest matching concept over nearest index concept (in terms of finding
+  # nearest match)
+  expect_equal(
+    find_nearest_match(x = 1:3, set = c(-2, 2, 6)),
+    # More optimal solution (in terms of minimizing sum of distances) would be
+    # c(1, 2, 3): it produces total distance of 6 instead of 8 here.
+    # Also, output of `find_nearest_ind(x, set)` produces `c(2, 2, 2)` which is
+    # not good because of non-unique values.
+    c(2, 1, 3)
+  )
+})
+
+test_that("find_nearest_match throws error if `set` is smaller than `x`", {
+  expect_error(find_nearest_match(1:10, 1:3), "`set`.*`x`")
+})
+
+
+# find_neigh_subset -------------------------------------------------------
+test_that("find_neigh_subset works", {
+  x <- c(0.98, 0.99, 1.01, 2.2, 3.1)
+  set <- 1:3
+
+  # Using `setequal()` because order doesn't matter
+  expect_true(setequal(find_neigh_subset(x, set, n_subset = 2), 2:3))
+  expect_true(setequal(find_neigh_subset(x, set, n_subset = 4), c(1:3, 5)))
+
+  expect_true(setequal(
+    find_neigh_subset(x, set, n_subset = 2, type = "max"), 4:5
+  ))
+  expect_true(setequal(
+    find_neigh_subset(x, set, n_subset = 4, type = "max"), c(1:2, 4:5)
+  ))
+})
+
+test_that("find_neigh_subset throws error if `n_subset` is incorrect", {
+  expect_error(find_neigh_subset(1:5, 1:10, n_subset = 10), "`n_subset`")
+})
+
+
 # stop_collapse -----------------------------------------------------------
 test_that("stop_collapse works", {
   expect_error(

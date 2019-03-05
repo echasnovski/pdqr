@@ -228,6 +228,84 @@ copy_attrs <- function(to, from) {
 }
 
 
+# Distance functions ------------------------------------------------------
+find_nearest_ind <- function(x, set) {
+  # Returns `length(x)` **indicies of `set`** which are closest to respective
+  # `x` elements.
+  if (length(set) == 1) {
+    return(rep(1, length(x)))
+  }
+
+  if (is.unsorted(set)) {
+    set_ord <- order(set)
+  } else {
+    set_ord <- seq_along(set)
+  }
+  set_sorted <- set[set_ord]
+
+  # Find index of the biggest set point to the left
+  x_ind <- findInterval(x, set_sorted, all.inside = TRUE)
+  # Possibly correct found index to represent the closest point
+  x_ind <- x_ind + (set_sorted[x_ind + 1] - x < x - set_sorted[x_ind])
+
+  set_ord[x_ind]
+}
+
+find_nearest_match <- function(x, set) {
+  # Returns `length(x)` **unique indicies of `set`** which are closest to
+  # respective `x` elements. Uses naive iterative greedy search. For this to
+  # work properly, `length(x)` should be not greater than `length(set)`.
+  if (length(set) < length(x)) {
+    stop_collapse(
+      "Can't find unique matching because `set` has fewer elements than `x`."
+    )
+  }
+
+  res <- integer(length(x))
+
+  x_to_match <- seq_along(x)
+  set_to_match <- seq_along(set)
+
+  # Use greedy search of "matching nearest" values. Note that this might result
+  # in very long distances between actual matches. That is why output should be
+  # viewed as an unordered set of unique indicies of `set` that are "closest" to
+  # `x`.
+  while(length(x_to_match) > 0) {
+    # Match "current" `x` and `set`
+    x_matches <- find_nearest_ind(x[x_to_match], set[set_to_match])
+
+    # Use only not duplicated matches, because output should be unique in terms
+    # of `set` indicies
+    good_match <- !duplicated(x_matches)
+    set_matched <- set_to_match[x_matches[good_match]]
+
+    # Update result (indicies of the nearest match) within "good matches"
+    res[x_to_match[good_match]] <- set_matched
+
+    # Update "current" `x` and `set` by removing already "used" elements
+    x_to_match <- x_to_match[!good_match]
+    set_to_match <- setdiff(set_to_match, set_matched)
+  }
+
+  res
+}
+
+find_neigh_subset <- function(x, set, n_subset, type = "min") {
+  # Returns `n_subset` **indicies of `x`** which are closest to the `set` (as a
+  # set).
+  if (n_subset > length(x)) {
+    stop_collapse(
+      "Can't find neighborhood subset because `n_subset` is bigger than ",
+      "length of `x`."
+    )
+  }
+
+  dist_x_set <- abs(x - set[find_nearest_ind(x, set)])
+
+  order(dist_x_set, decreasing = type == "max")[seq_len(n_subset)]
+}
+
+
 # Notifications -----------------------------------------------------------
 stop_collapse <- function(...) {
   stop(collapse_nullable(...), call. = FALSE)
