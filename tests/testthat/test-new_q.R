@@ -114,6 +114,11 @@ test_that("new_q uses `...` as arguments for `density()`", {
   )
 })
 
+test_that("new_q's output checks input", {
+  expect_error(q_fin("a"), "`p`.*numeric")
+  expect_error(q_infin("a"), "`p`.*numeric")
+})
+
 
 # new_q_fin ---------------------------------------------------------------
 # Tested in `new_q()`

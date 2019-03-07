@@ -58,6 +58,18 @@ test_that("new_r handles metadata", {
   expect_equal(meta_all(r_infin)["type"], list(type = "infin"))
 })
 
+test_that("new_r's output checks input", {
+  expect_error(r_fin("a"), "`n`.*number")
+  expect_error(r_fin(NA_real_), "`n`.*number")
+  expect_error(r_fin(1:10), "`n`.*single")
+  expect_error(r_fin(0), "`n`.*positive")
+
+  expect_error(r_infin("a"), "`n`.*number")
+  expect_error(r_infin(NA_real_), "`n`.*number")
+  expect_error(r_infin(1:10), "`n`.*single")
+  expect_error(r_infin(0), "`n`.*positive")
+})
+
 
 # new_r_fin ---------------------------------------------------------------
 # Tested in `new_r()`

@@ -11,6 +11,8 @@ new_p_fin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(q) {
+    assert_type(q, is.numeric)
+
     res <- numeric(length(q))
 
     q_ind <- findInterval(round(q, digits = 10), x_tbl[["x"]])
@@ -28,6 +30,8 @@ new_p_infin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(q) {
+    assert_type(q, is.numeric)
+
     x <- x_tbl[["x"]]
     y <- x_tbl[["y"]]
     p_grid <- x_tbl[["cumprob"]]

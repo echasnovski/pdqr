@@ -11,6 +11,8 @@ new_d_fin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(x) {
+    assert_type(x, is.numeric)
+
     res <- numeric(length(x))
 
     x_ind <- match(round(x, digits = 10), x_tbl[["x"]], nomatch = NA)
@@ -36,6 +38,8 @@ new_d_infin <- function(x_tbl) {
   #   )
   # }
   function(x) {
+    assert_type(x, is.numeric)
+
     res <- numeric(length(x))
     x_vec <- x_tbl[["x"]]
     y_vec <- x_tbl[["y"]]

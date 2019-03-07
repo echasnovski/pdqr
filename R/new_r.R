@@ -14,6 +14,11 @@ new_r_fin <- function(x_tbl) {
   x_tbl <- meta_x_tbl(q_fin)
 
   function(n) {
+    assert_type(
+      n, is_single_number,
+      type_name = "single positive number", min_val = 1
+    )
+
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
 
     q_fin(rand_q_vec)
@@ -28,6 +33,11 @@ new_r_infin <- function(x_tbl) {
   x_tbl <- meta_x_tbl(q_infin)
 
   function(n) {
+    assert_type(
+      n, is_single_number,
+      type_name = "single positive number", min_val = 1
+    )
+
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
 
     q_infin(rand_q_vec)

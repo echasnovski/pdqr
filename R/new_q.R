@@ -11,6 +11,8 @@ new_q_fin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(p) {
+    assert_type(p, is.numeric)
+
     out <- numeric(length(p))
 
     is_prob <- (p >= 0) & (p <= 1)
@@ -29,6 +31,8 @@ new_q_infin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(p) {
+    assert_type(p, is.numeric)
+
     x <- x_tbl[["x"]]
     y <- x_tbl[["y"]]
     p_grid <- x_tbl[["cumprob"]]
