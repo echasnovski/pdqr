@@ -13,16 +13,20 @@ new_q_fin <- function(x_tbl) {
   function(p) {
     assert_type(p, is.numeric)
 
-    out <- numeric(length(p))
+    res <- numeric(length(p))
+
+    p_not_na <- !is.na(p)
+    res[!p_not_na] <- NA
+    p <- p[p_not_na]
 
     is_prob <- (p >= 0) & (p <= 1)
     p_prob <- p[is_prob]
     p_ind <- findInterval(p_prob, x_tbl[["cumprob"]], left.open = TRUE) + 1
 
-    out[is_prob] <- x_tbl[["x"]][p_ind]
-    out[!is_prob] <- NaN
+    res[p_not_na][is_prob] <- x_tbl[["x"]][p_ind]
+    res[p_not_na][!is_prob] <- NaN
 
-    out
+    res
   }
 }
 
@@ -33,11 +37,15 @@ new_q_infin <- function(x_tbl) {
   function(p) {
     assert_type(p, is.numeric)
 
+    res <- numeric(length(p))
+
+    p_not_na <- !is.na(p)
+    res[!p_not_na] <- NA
+    p <- p[p_not_na]
+
     x <- x_tbl[["x"]]
     y <- x_tbl[["y"]]
     p_grid <- x_tbl[["cumprob"]]
-
-    out <- numeric(length(p))
 
     is_inside <- (p >= 0) & (p <= 1)
     p_prob <- p[is_inside]
@@ -50,7 +58,7 @@ new_q_infin <- function(x_tbl) {
 
     coeffs <- compute_piecelin_density_coeffs(x_tbl, p_ind)
 
-    out[is_inside] <- find_quant(
+    res[p_not_na][is_inside] <- find_quant(
       p = p_prob,
       cdf_start = p_grid[p_ind],
       x_start = x[p_ind],
@@ -58,9 +66,9 @@ new_q_infin <- function(x_tbl) {
       intercept = coeffs[["intercept"]]
     )
 
-    out[(p < 0) | (p > 1)] <- NaN
+    res[p_not_na][(p < 0) | (p > 1)] <- NaN
 
-    out
+    res
   }
 }
 

@@ -38,14 +38,31 @@ test_that("new_q imputes data frame input", {
   expect_x_tbl_imputation(new_q)
 })
 
-test_that("new_q behaves like inverse of ecdf() in case of `type` = 'fin'", {
+test_that("new_q's output works with 'edge case' inputs", {
+  expect_equal(q_fin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, NaN, NaN))
+  expect_equal(q_fin(numeric(0)), numeric(0))
+  expect_equal(q_fin(c(-0.1, 1.1)), c(NaN, NaN))
+  expect_equal(q_fin(c(0, 1)), x_fin_support)
+
+  expect_equal(q_infin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, NaN, NaN))
+  expect_equal(q_infin(numeric(0)), numeric(0))
+  expect_equal(q_infin(c(-0.1, 1.1)), c(NaN, NaN))
+  expect_equal(q_infin(c(0, 1)), x_infin_support)
+})
+
+test_that("new_q's output asserts bad input", {
+  expect_error(q_fin("a"), "`p`.*numeric")
+  expect_error(q_infin("a"), "`p`.*numeric")
+})
+
+test_that("new_q's output behaves like inverse of ecdf() if `type` = 'fin'", {
   inv_ecdf <- quantile(x_fin, probs = p_vec, type = 1)
   names(inv_ecdf) <- NULL
 
   expect_equal(q_fin(p_vec), inv_ecdf)
 })
 
-test_that("new_q output is inverse of new_p output", {
+test_that("new_q's output is inverse of new_p's output", {
   expect_equal(x_fin_vec, q_fin(p_fin(x_fin_vec)))
   # There is not test `p_vec == p_fin(q_fin(p_vec))` because it shouldn't be
   # true in "fin" case. This is tested in "behaves like inverse of ecdf()" test.
@@ -53,17 +70,7 @@ test_that("new_q output is inverse of new_p output", {
   expect_equal(p_vec, p_infin(q_infin(p_vec)))
 })
 
-test_that("new_q output works with extreme values", {
-  expect_equal(q_fin(c(0, 1)), x_fin_support)
-  expect_equal(q_infin(c(0, 1)), x_infin_support)
-})
-
-test_that("new_q returns `NaN` for out of range probabilities", {
-  expect_true(all(is.nan(q_fin(c(-1, 2)))))
-  expect_true(all(is.nan(q_infin(c(-1, 2)))))
-})
-
-test_that("new_q returns the smallest `x` with not exceeding `p`", {
+test_that("new_q's output returns the smallest `x` with not exceeding `p`", {
   # Here values 1 and 2 correspond to cumulative probability of 0 and
   # values 4, 5, and 6 - to 1. Quantile function should return the smallest from
   # those sets.
@@ -112,11 +119,6 @@ test_that("new_q uses `...` as arguments for `density()`", {
        0.903, 1.083,  1.286,  1.54,  2.476
     )
   )
-})
-
-test_that("new_q's output checks input", {
-  expect_error(q_fin("a"), "`p`.*numeric")
-  expect_error(q_infin("a"), "`p`.*numeric")
 })
 
 

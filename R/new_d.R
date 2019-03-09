@@ -15,9 +15,13 @@ new_d_fin <- function(x_tbl) {
 
     res <- numeric(length(x))
 
+    x_not_na <- !is.na(x)
+    res[!x_not_na] <- NA
+    x <- x[x_not_na]
+
     x_ind <- match(round(x, digits = 10), x_tbl[["x"]], nomatch = NA)
-    good_x_ind <- !is.na(x_ind)
-    res[good_x_ind] <- x_tbl[["prob"]][x_ind[good_x_ind]]
+    x_ind_matched <- !is.na(x_ind)
+    res[x_not_na][x_ind_matched] <- x_tbl[["prob"]][x_ind[x_ind_matched]]
 
     res
   }
@@ -41,15 +45,21 @@ new_d_infin <- function(x_tbl) {
     assert_type(x, is.numeric)
 
     res <- numeric(length(x))
+
+    x_not_na <- !is.na(x)
+    res[!x_not_na] <- NA
+    x <- x[x_not_na]
+
     x_vec <- x_tbl[["x"]]
     y_vec <- x_tbl[["y"]]
 
     is_inside <- (x >= support[1]) & (x <= support[2])
 
-    # `all.inside = TRUE` is needed to account for case `x` equals `support[2]`
-    x_ind <- findInterval(x[is_inside], x_vec, all.inside = TRUE)
+    # `rightmost.closed = TRUE` is to account for case `x` equals `support[2]`
+    x_ind <- findInterval(x[is_inside], x_vec, rightmost.closed = TRUE)
     slopes <- (y_vec[x_ind+1] - y_vec[x_ind]) / (x_vec[x_ind+1] - x_vec[x_ind])
-    res[is_inside] <- slopes * (x[is_inside] - x_vec[x_ind]) + y_vec[x_ind]
+    res[x_not_na][is_inside] <- slopes * (x[is_inside] - x_vec[x_ind]) +
+      y_vec[x_ind]
 
     res
   }

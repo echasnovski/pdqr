@@ -38,17 +38,38 @@ test_that("new_p imputes data frame input", {
   expect_x_tbl_imputation(new_p)
 })
 
-test_that("new_p rounds input in case of `type` = 'fin'", {
+test_that("new_p's output rounds input in case of `type` = 'fin'", {
   near_1 <- 1 - 10^c(-6, -11)
   expect_equal(p_fin(near_1), c(0, 0.1))
 })
 
-test_that("new_p behaves like ecdf() in case of `type` = 'fin'", {
+test_that("new_p's output works with 'edge case' inputs", {
+  expect_equal(p_fin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 1))
+  expect_equal(p_fin(numeric(0)), numeric(0))
+  expect_equal(p_fin(meta_support(p_fin)[1] - 1:2), c(0, 0))
+
+  expect_equal(p_infin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 1))
+  expect_equal(p_infin(numeric(0)), numeric(0))
+  expect_equal(p_infin(meta_support(p_infin)[1] - 1:2), c(0, 0))
+})
+
+test_that("new_p's output works with extreme values", {
+  extreme_vec <- c(-1, 1) * 10000
+  expect_equal(p_fin(extreme_vec), c(0, 1))
+  expect_equal(p_infin(extreme_vec), c(0, 1))
+})
+
+test_that("new_p's output asserts bad input", {
+  expect_error(p_fin("a"), "`q`.*numeric")
+  expect_error(p_infin("a"), "`q`.*numeric")
+})
+
+test_that("new_p's output behaves like ecdf() in case of `type` = 'fin'", {
   x_fin_grid <- seq(from = min(x_fin) - 1, to = max(x_fin) + 1, by = 0.01)
   expect_equal(p_fin(x_fin_grid), ecdf(x_fin)(x_fin_grid))
 })
 
-test_that("new_p output is integration of new_d in case of `type` = 'infin'", {
+test_that("new_p's output is integration of new_d's if `type` = 'infin'", {
   d_support <- meta_support(d_infin)
   x_infin_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
 
@@ -67,12 +88,6 @@ test_that("new_p output is integration of new_d in case of `type` = 'infin'", {
   expect_true(
     all(abs(p_infin_out - p_infin_int) <= 10^(-4))
   )
-})
-
-test_that("new_p output works with extreme values", {
-  extreme_vec <- c(-1, 1) * 10000
-  expect_equal(p_fin(extreme_vec), c(0, 1))
-  expect_equal(p_infin(extreme_vec), c(0, 1))
 })
 
 test_that("new_p asserts", {
@@ -108,11 +123,6 @@ test_that("new_p uses `...` as arguments for `density()`", {
       0.768, 0.799, 0.828
     )
   )
-})
-
-test_that("new_p's output checks input", {
-  expect_error(p_fin("a"), "`q`.*numeric")
-  expect_error(p_infin("a"), "`q`.*numeric")
 })
 
 

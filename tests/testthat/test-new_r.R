@@ -35,6 +35,22 @@ test_that("new_r imputes data frame input", {
   expect_x_tbl_imputation(new_r)
 })
 
+test_that("new_r's output asserts bad input", {
+  expect_error(r_fin("a"), "`n`.*number")
+  expect_error(r_fin(NA_real_), "`n`.*number")
+  expect_error(r_fin(NaN), "`n`.*number")
+  expect_error(r_fin(Inf), "`n`.*number")
+  expect_error(r_fin(1:10), "`n`.*single")
+  expect_error(r_fin(0), "`n`.*positive")
+
+  expect_error(r_infin("a"), "`n`.*number")
+  expect_error(r_infin(NA_real_), "`n`.*number")
+  expect_error(r_infin(NaN), "`n`.*number")
+  expect_error(r_infin(Inf), "`n`.*number")
+  expect_error(r_infin(1:10), "`n`.*single")
+  expect_error(r_infin(0), "`n`.*positive")
+})
+
 test_that("new_r asserts", {
   expect_warning(new_r(c(1, 0, NA)), "x.*NA.*removed")
   expect_warning(new_r(c(1, 0, NaN)), "x.*NaN.*removed")
@@ -56,18 +72,6 @@ test_that("new_r handles metadata", {
   expect_equal(meta_x_tbl(r_infin), x_infin_x_tbl)
   expect_equal(round(meta_support(r_infin), 2), round(x_infin_support, 2))
   expect_equal(meta_all(r_infin)["type"], list(type = "infin"))
-})
-
-test_that("new_r's output checks input", {
-  expect_error(r_fin("a"), "`n`.*number")
-  expect_error(r_fin(NA_real_), "`n`.*number")
-  expect_error(r_fin(1:10), "`n`.*single")
-  expect_error(r_fin(0), "`n`.*positive")
-
-  expect_error(r_infin("a"), "`n`.*number")
-  expect_error(r_infin(NA_real_), "`n`.*number")
-  expect_error(r_infin(1:10), "`n`.*single")
-  expect_error(r_infin(0), "`n`.*positive")
 })
 
 

@@ -15,11 +15,14 @@ new_p_fin <- function(x_tbl) {
 
     res <- numeric(length(q))
 
-    q_ind <- findInterval(round(q, digits = 10), x_tbl[["x"]])
-    q_ind_isnt_zero <- q_ind != 0
+    q_not_na <- !is.na(q)
+    res[!q_not_na] <- NA
+    q <- q[q_not_na]
 
-    res[q_ind_isnt_zero] <- x_tbl[["cumprob"]][q_ind[q_ind_isnt_zero]]
-    res[!q_ind_isnt_zero] <- 0
+    q_ind <- findInterval(round(q, digits = 10), x_tbl[["x"]])
+    # Among `q_ind` there might be `0`s, in which case `[q_ind]` subset returns
+    # vector for only non-zero elements. That is why `[q_ind != 0]` is needed.
+    res[q_not_na][q_ind != 0] <- x_tbl[["cumprob"]][q_ind]
 
     res
   }
@@ -32,18 +35,22 @@ new_p_infin <- function(x_tbl) {
   function(q) {
     assert_type(q, is.numeric)
 
+    res <- numeric(length(q))
+
+    q_not_na <- !is.na(q)
+    res[!q_not_na] <- NA
+    q <- q[q_not_na]
+
     x <- x_tbl[["x"]]
     y <- x_tbl[["y"]]
     p_grid <- x_tbl[["cumprob"]]
 
-    out <- numeric(length(q))
-
     q_ind <- findInterval(q, x)
 
     is_q_small <- q_ind == 0
-    out[is_q_small] <- 0
+    res[q_not_na][is_q_small] <- 0
     is_q_large <- q_ind == length(x)
-    out[is_q_large] <- 1
+    res[q_not_na][is_q_large] <- 1
 
     is_q_between <- !(is_q_small | is_q_large)
     q_ind_bet <- q_ind[is_q_between]
@@ -53,13 +60,13 @@ new_p_infin <- function(x_tbl) {
     # Exact integration of density linear interpolation
     coeffs <- compute_piecelin_density_coeffs(x_tbl, q_ind_bet)
 
-    out_between <- p_grid[q_ind_bet] +
+    res_between <- p_grid[q_ind_bet] +
       0.5 * coeffs[["slope"]] * (q_bet * q_bet - x_bet * x_bet) +
       coeffs[["intercept"]] * (q_bet - x_bet)
     # Extra cutoffs to respect floating point precision (~10^(-15))
-    out[is_q_between] <- pmin(pmax(out_between, 0), 1)
+    res[q_not_na][is_q_between] <- pmin(pmax(res_between, 0), 1)
 
-    out
+    res
   }
 }
 

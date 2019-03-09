@@ -37,21 +37,40 @@ test_that("new_d imputes data frame input", {
   expect_x_tbl_imputation(new_d)
 })
 
-test_that("new_d rounds input in case of `type` = 'fin'", {
+test_that("new_d's output rounds input in case of `type` = 'fin'", {
   near_1 <- 1 + 10^c(-6, -11)
   expect_equal(d_fin(near_1), c(0, 0.1))
 })
 
-test_that("new_d output integrates to 1 in case `type` = 'infin'", {
-  integral <- stats::integrate(d_infin, -3, 3)
-  output_range <- integral[["value"]] + c(-1, 1) * integral[["abs.error"]]
-  expect_true((output_range[1] <= 1) && (1 <= output_range[2]))
+test_that("new_d's output works with 'edge case' inputs", {
+  expect_equal(d_fin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 0))
+  expect_equal(d_fin(numeric(0)), numeric(0))
+  # Exact edges of support shouldn't be treated as "out of support"
+  expect_true(all(d_fin(meta_support(d_fin)) != 0))
+  expect_equal(d_fin(meta_support(d_fin) + c(-1, 1)), c(0, 0))
+
+  expect_equal(d_infin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 0))
+  expect_equal(d_infin(numeric(0)), numeric(0))
+  # Exact edges of support shouldn't be treated as "out of support"
+  expect_true(all(d_fin(meta_support(d_fin)) != 0))
+  expect_equal(d_fin(meta_support(d_infin) + c(-1, 1)), c(0, 0))
 })
 
-test_that("new_d output works with extreme values", {
+test_that("new_d's output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
   expect_equal(d_fin(extreme_vec), c(0, 0))
   expect_equal(d_infin(extreme_vec), c(0, 0))
+})
+
+test_that("new_d's output asserts bad input", {
+  expect_error(d_fin("a"), "`x`.*numeric")
+  expect_error(d_infin("a"), "`x`.*numeric")
+})
+
+test_that("new_d's output integrates to 1 in case `type` = 'infin'", {
+  integral <- stats::integrate(d_infin, -3, 3)
+  output_range <- integral[["value"]] + c(-1, 1) * integral[["abs.error"]]
+  expect_true((output_range[1] <= 1) && (1 <= output_range[2]))
 })
 
 test_that("new_d asserts", {
@@ -86,11 +105,6 @@ test_that("new_d uses `...` as arguments for `density()`", {
        0.5, 0.49, 0.47, 0.44,  0.4, 0.37, 0.34, 0.32,  0.3, 0.28
     )
   )
-})
-
-test_that("new_d's output checks input", {
-  expect_error(d_fin("a"), "`x`.*numeric")
-  expect_error(d_infin("a"), "`x`.*numeric")
 })
 
 
