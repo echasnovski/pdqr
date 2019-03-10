@@ -209,6 +209,22 @@ test_that("integrate_safely throws informative error", {
 })
 
 
+# inf_to_na ---------------------------------------------------------------
+test_that("inf_to_na works", {
+  expect_equal(inf_to_na(1:10), 1:10)
+  expect_equal(inf_to_na(c(Inf, NA, -Inf, 1)), c(NA, NA, NA, 1))
+})
+
+
+# all_same ----------------------------------------------------------------
+test_that("all_same works", {
+  expect_true(all_same(rep(pi, 3)))
+  expect_false(all_same(c(1, 2, 1)))
+  expect_false(all_same(1 + c(0, 1e-10)))
+  expect_true(all_same(1 + c(0, 1e-10), tolerance = 0.1))
+})
+
+
 # c_dedupl ----------------------------------------------------------------
 test_that("c_dedupl works", {
   input_1 <- list(1, 2)

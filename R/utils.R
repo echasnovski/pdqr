@@ -184,6 +184,14 @@ integrate_safely <- function(f, lower, upper, n_grid = 10001, ...) {
   )
 }
 
+inf_to_na <- function(x) {
+  ifelse(is.infinite(x), NA_real_, x)
+}
+
+all_same <- function(x, tolerance = 0) {
+  isTRUE(all.equal(x, rep(x[1], length(x)), tolerance = tolerance))
+}
+
 
 # List manipulations ------------------------------------------------------
 c_dedupl <- function(...) {
