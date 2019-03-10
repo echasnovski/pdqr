@@ -22,18 +22,34 @@ expect_prob_true <- function(f, val) {
 
 # Math.pdqr ---------------------------------------------------------------
 test_that("Math.pdqr works", {
+  # Test 1
   lnorm_x <- seq(0, 100, by = 0.001)
   d_lnorm <- new_d(data.frame(x = lnorm_x, y = dlnorm(lnorm_x)))
 
-  d_norm_ref <- new_d(data.frame(x = x_norm_seq, y = dnorm(x_norm_seq)))
+  d_norm_ref <- new_d(
+    data.frame(x = x_norm_seq, y = dnorm(x_norm_seq)), "infin"
+  )
   d_norm_out <- log(d_lnorm)
 
   expect_distr_fun(d_norm_out, "d", "infin")
-  expect_equal_distr(
+  expect_close_f(
     d_norm_out, d_norm_ref,
-    grid = x_norm_seq, thres = 0.05,
-    # Support and "x_tbl" shouldn't be the same as random sampling is done
-    meta_not_check = c("x_tbl", "support")
+    grid = x_norm_seq, thres = 0.05
+  )
+
+  # Test 2
+  x_chisq_seq <- seq(0.001, 20, by = 0.001)
+  d_chisq_ref <- new_d(
+    data.frame(x = x_chisq_seq, y = dchisq(x_chisq_seq, df = 1)), "infin"
+  )
+  d_chisq_out <- d_norm_ref^2
+
+  expect_distr_fun(d_chisq_out, "d", "infin")
+  expect_close_f(
+    d_chisq_out, d_chisq_ref,
+    # At the edge (here 0) output will differ because `dchisq` goes to infinity
+    # when `df = 1`.
+    grid = x_chisq_seq[x_chisq_seq > 0.4], thres = 0.05
   )
 })
 

@@ -41,14 +41,13 @@ Ops.pdqr <- function(e1, e2) {
     } else if (.Generic %in% c("&", "|")) {
       ops_logic(.Generic, e1, e2)
     } else {
-      assert_pdqr_fun(e1)
-      assert_pdqr_fun(e2)
+      e_list <- ensure_pdqr_functions(e1, e2)
 
       n_sample <- getOption("pdqr.group_gen.n_sample")
       args_new <- getOption("pdqr.group_gen.args_new")
 
       form_trans(
-        list(e1, e2), get(.Generic), method = "random",
+        e_list, get(.Generic), method = "random",
         n_sample = n_sample, args_new = args_new
       )
     }
