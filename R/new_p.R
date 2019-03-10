@@ -11,7 +11,10 @@ new_p_fin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(q) {
-    assert_type(q, is.numeric)
+    # Not using `assert_type()` for speed reasons
+    if (!is.numeric(q)) {
+      stop_collapse("`q` must be 'numeric', not '", get_type(q), "'.")
+    }
 
     res <- numeric(length(q))
 
@@ -33,7 +36,10 @@ new_p_infin <- function(x_tbl) {
   support <- range(x_tbl[["x"]])
 
   function(q) {
-    assert_type(q, is.numeric)
+    # Not using `assert_type()` for speed reasons
+    if (!is.numeric(q)) {
+      stop_collapse("`q` must be 'numeric', not '", get_type(q), "'.")
+    }
 
     res <- numeric(length(q))
 
