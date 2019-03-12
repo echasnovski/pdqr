@@ -2,7 +2,8 @@
   #nocov start
   default_options <- list(
     pdqr.group_gen.n_sample = 10000,
-    pdqr.group_gen.args_new = list()
+    pdqr.group_gen.args_new = list(),
+    pdqr.group_gen.repair_supp_method = "reflect"
   )
   op <- options()
   toset <- !(names(default_options) %in% names(op))

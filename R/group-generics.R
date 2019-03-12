@@ -1,3 +1,4 @@
+# Methods for group generics ----------------------------------------------
 Math.pdqr <- function(x, ...) {
   assert_pdqr_fun(x)
 
@@ -6,20 +7,6 @@ Math.pdqr <- function(x, ...) {
     abs = math_abs(x),
     sign = math_sign(x),
     math_pdqr_impl(.Generic, x, ...)
-  )
-}
-
-math_pdqr_impl <- function(gen, f, ...) {
-  n_sample <- getOption("pdqr.group_gen.n_sample")
-  args_new <- getOption("pdqr.group_gen.args_new")
-
-  gen_fun <- function(y) {
-    get(gen)(y, ...)
-  }
-
-  form_trans(
-    list(f), gen_fun, method = "random",
-    n_sample = n_sample, args_new = args_new
   )
 }
 
@@ -46,9 +33,14 @@ Ops.pdqr <- function(e1, e2) {
       n_sample <- getOption("pdqr.group_gen.n_sample")
       args_new <- getOption("pdqr.group_gen.args_new")
 
-      form_trans(
+      res <- form_trans(
         e_list, get(.Generic), method = "random",
         n_sample = n_sample, args_new = args_new
+      )
+
+      # Ensure that `res` doesn't have values outside of reasonable support
+      repair_group_gen_support(
+        res, .Generic, supp_list = lapply(e_list, meta_support)
       )
     }
   }
@@ -62,6 +54,8 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
     )
   }
 
+  dots <- list(...)
+
   gen_fun <- function(...) {
     g <- get(.Generic)
     f <- function(...) {g(..., na.rm = na.rm)}
@@ -73,10 +67,34 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
   n_sample <- getOption("pdqr.group_gen.n_sample")
   args_new <- getOption("pdqr.group_gen.args_new")
 
-  form_trans(
-    list(...), gen_fun, method = "random",
+  res <- form_trans(
+    dots, gen_fun, method = "random",
     n_sample = n_sample, args_new = args_new
   )
+
+  # Ensure that `res` doesn't have values outside of reasonable support
+  repair_group_gen_support(
+    res, .Generic, supp_list = lapply(dots, meta_support)
+  )
+}
+
+
+# Helper implementation functions -----------------------------------------
+math_pdqr_impl <- function(gen, f, ...) {
+  n_sample <- getOption("pdqr.group_gen.n_sample")
+  args_new <- getOption("pdqr.group_gen.args_new")
+
+  gen_fun <- function(y) {
+    get(gen)(y, ...)
+  }
+
+  res <- form_trans(
+    list(f), gen_fun, method = "random",
+    n_sample = n_sample, args_new = args_new
+  )
+
+  # Ensure that `res` doesn't have values outside of reasonable support
+  repair_group_gen_support(res, gen, supp_list = list(meta_support(f)))
 }
 
 math_abs <- function(f) {
@@ -208,4 +226,200 @@ ensure_pdqr_functions <- function(e1, e2) {
   }
 
   list(e1, e2)
+}
+
+
+# Functions for repairing support -----------------------------------------
+repair_group_gen_support <- function(f, gen, supp_list) {
+  repair_supp_method <- getOption("pdqr.group_gen.repair_supp_method")
+  if (is.null(repair_supp_method)) {
+    return(f)
+  }
+
+  new_f_supp <- switch(
+    gen,
+    sqrt     = sqrt(pmax(0, supp_list[[1]])),
+    floor    = floor(supp_list[[1]]),
+    ceiling  = ceiling(supp_list[[1]]),
+    trunc    = trunc(supp_list[[1]]),
+    round    = round(supp_list[[1]]),
+    signif   = signif(supp_list[[1]]),
+    exp      = exp(supp_list[[1]]),
+    log      = inf_to_na(log(supp_list[[1]])),
+    expm1    = expm1(supp_list[[1]]),
+    log1p    = inf_to_na(log1p(supp_list[[1]])),
+    cos      = repair_supp_periodic(
+      op = `cos`, supp = supp_list[[1]], ref_points = c(1, 2)*pi, period = 2*pi
+    ),
+    sin      = repair_supp_periodic(
+      op = `sin`, supp = supp_list[[1]], ref_points = c(-1, 1)*0.5*pi,
+      period = 2*pi
+    ),
+    tan      = repair_supp_periodic(
+      op = `tan`, supp = supp_list[[1]],
+      # Inside nudges are needed to explicitly state side of special points
+      ref_points = c(-1, 1)*0.5*pi + 1e-15*c(1, -1),
+      period = pi
+    ),
+    cospi    = repair_supp_periodic(
+      op = `cospi`, supp = supp_list[[1]], ref_points = c(1, 2), period = 2
+    ),
+    sinpi    = repair_supp_periodic(
+      op = `sinpi`, supp = supp_list[[1]], ref_points = c(-1, 1)*0.5, period = 2
+    ),
+    tanpi    = repair_supp_periodic(
+      op = `tanpi`, supp = supp_list[[1]],
+      # Inside nudges are needed to explicitly state side of special points
+      ref_points = c(-1, 1)*0.5 + 1e-15*c(1, -1), period = 1
+    ),
+    acos     = repair_supp_monotone(
+      op = `acos`, supp = supp_list[[1]], input_bounds = c(-1, 1),
+      increasing_op = FALSE
+    ),
+    asin     = repair_supp_monotone(
+      op = `asin`, supp = supp_list[[1]], input_bounds = c(-1, 1)
+    ),
+    atan     = atan(supp_list[[1]]),
+    cosh     = repair_supp_cosh(supp_list[[1]]),
+    sinh     = sinh(supp_list[[1]]),
+    tanh     = tanh(supp_list[[1]]),
+    acosh    = repair_supp_monotone(
+      op = `acosh`, supp = supp_list[[1]], input_bounds = c(1, Inf)
+    ),
+    asinh    = asinh(supp_list[[1]]),
+    atanh    = repair_supp_monotone(
+      op = `atanh`, supp = supp_list[[1]], input_bounds = c(-1, 1)
+    ),
+    lgamma   = simulate_repair_supp(`lgamma`, supp_list),
+    gamma    = simulate_repair_supp(`gamma`, supp_list),
+    digamma  = simulate_repair_supp(`digamma`, supp_list),
+    trigamma = simulate_repair_supp(`trigamma`, supp_list),
+    `+`      = supp_list[[1]] + supp_list[[2]],
+    `-`      = repair_supp_subtraction(supp_list[[1]], supp_list[[2]]),
+    `*`      = repair_supp_multiplication(supp_list[[1]], supp_list[[2]]),
+    `/`      = repair_supp_division(supp_list[[1]], supp_list[[2]]),
+    `^`      = simulate_repair_supp(`^`, supp_list),
+    `%%`     = simulate_repair_supp(`%%`, supp_list),
+    `%/%`    = floor(repair_supp_division(supp_list[[1]], supp_list[[2]])),
+    sum      = repair_supp_sum(supp_list),
+    prod     = repair_supp_prod(supp_list),
+    min      = repair_supp_min(supp_list),
+    max      = repair_supp_max(supp_list),
+    meta_support(f)
+  )
+
+  form_resupport(f, support = new_f_supp, method = repair_supp_method)
+}
+
+repair_supp_periodic <- function(op, supp, ref_points, period) {
+  op_supp <- op(supp)
+  ref_supp <- range(op(ref_points))
+
+  if (is_periodically_inside(ref_points[1], supp, period)) {
+    supp_left <- ref_supp[1]
+  } else {
+    supp_left <- min(op_supp)
+  }
+
+  if (is_periodically_inside(ref_points[2], supp, period)) {
+    supp_right <- ref_supp[2]
+  } else {
+    supp_right <- max(op_supp)
+  }
+
+  inf_to_na(c(supp_left, supp_right))
+}
+
+is_periodically_inside <- function(x, interval, period) {
+  k_left <- ceiling((interval[1] - x) / period)
+  k_right <- floor((interval[2] - x) / period)
+
+  k_left <= k_right
+}
+
+repair_supp_monotone <- function(op, supp, input_bounds = c(-Inf, Inf),
+                                 increasing_op = TRUE) {
+  supp <- c(max(supp[1], input_bounds[1]), min(supp[2], input_bounds[2]))
+  if (!increasing_op) {
+    supp <- supp[2:1]
+  }
+
+  inf_to_na(op(supp))
+}
+
+repair_supp_cosh <- function(supp) {
+  if ((supp[1] < 0) && (0 < supp[2])) {
+    c(1, max(cosh(supp)))
+  } else {
+    cosh(supp)
+  }
+}
+
+repair_supp_subtraction <- function(e1_supp, e2_supp) {
+  c(e1_supp[1] - e2_supp[2], e1_supp[2] - e2_supp[1])
+}
+
+repair_supp_multiplication <- function(e1_supp, e2_supp) {
+  # Here `na.rm = TRUE` is needed to avoid `NaN`s in case `0*Inf` when called
+  # inside `repair_supp_division()`
+  range(e1_supp[1]*e2_supp, e1_supp[2]*e2_supp, na.rm = TRUE)
+}
+
+repair_supp_division <- function(e1_supp, e2_supp) {
+  inf_to_na(repair_supp_multiplication(e1_supp, repair_supp_inverse(e2_supp)))
+}
+
+repair_supp_inverse <- function(supp) {
+  if ((supp[1] > 0) || (supp[2] < 0)) {
+    1 / supp[2:1]
+  } else if (supp[1] == 0) {
+    # In this case `supp[2]` can't be 0
+    c(1 / supp[2], Inf)
+  } else if (supp[2] == 0) {
+    # In this case `supp[1]` can't be 0
+    c(-Inf, 1 / supp[1])
+  } else {
+    # Case when 0 is strictly inside support
+    c(-Inf, Inf)
+  }
+}
+
+repair_supp_sum <- function(supp_list) {
+  supp_left <- sum(vapply(supp_list, `[`, FUN.VALUE = numeric(1), i = 1))
+  supp_right <- sum(vapply(supp_list, `[`, FUN.VALUE = numeric(1), i = 2))
+
+  c(supp_left, supp_right)
+}
+
+repair_supp_prod <- function(supp_list) {
+  if (length(supp_list) == 1) {
+    supp_list[[1]]
+  } else {
+    Reduce(repair_supp_multiplication, supp_list[-1], init = supp_list[[1]])
+  }
+}
+
+repair_supp_min <- function(supp_list) {
+  supp_left <- min(vapply(supp_list, `[`, FUN.VALUE = numeric(1), i = 1))
+  supp_right <- min(vapply(supp_list, `[`, FUN.VALUE = numeric(1), i = 2))
+
+  c(supp_left, supp_right)
+}
+
+repair_supp_max <- function(supp_list) {
+  supp_left <- max(vapply(supp_list, `[`, FUN.VALUE = numeric(1), i = 1))
+  supp_right <- max(vapply(supp_list, `[`, FUN.VALUE = numeric(1), i = 2))
+
+  c(supp_left, supp_right)
+}
+
+simulate_repair_supp <- function(op, supp_list, n = 1e4) {
+  smpl_list <- lapply(supp_list, function(supp) {
+    stats::runif(n, min = supp[1], max = supp[2])
+  })
+
+  smpl <- do.call(op, smpl_list)
+
+  # Replace `Inf` and `-Inf` with `NA` to be appropriate for `form_resupport()`
+  inf_to_na(range(smpl, na.rm = TRUE))
 }
