@@ -62,3 +62,46 @@ impute_weights <- function(weights, n) {
 
   weights / sum(weights)
 }
+
+
+# form_smooth -------------------------------------------------------------
+form_smooth <- function(f, n_sample = 10000, args_new = list()) {
+  assert_pdqr_fun(f)
+  assert_type(
+    n_sample, is_single_number,
+    type_name = "single number more than 1",
+    min_val = 2
+  )
+  assert_type(args_new, is.list)
+
+  f_x_tbl <- meta_x_tbl(f)
+  pdqr_fun <- new_pdqr_by_ref(f)
+
+  # Handle edge case of single point input (which is possible only if type of
+  # `f` is "fin")
+  if (nrow(f_x_tbl) == 1) {
+    return(pdqr_fun(f_x_tbl[["x"]][1], "fin"))
+  }
+
+  r_f <- as_r.pdqr(f)
+  smpl <- r_f(n_sample)
+
+  # Smooth with `density()`
+  call_args <- c_dedupl(list(x = smpl, type = "infin"), args_new)
+  infin_d <- do.call(new_d, call_args)
+
+  # Account for extra tails that appeared after using `density()`
+  infin_d <- form_resupport(
+    infin_d, support = meta_support(f), method = "reflect"
+  )
+
+  # Output probabilities (or densities) are proportional to smoothed "infin"
+  # density. The logic behind this is that "smoothing data" basically means
+  # reducing the amount of "jumps" between close data points. In other words,
+  # the closer the points the smaller should be difference in
+  # probabilities/densities. This also results into reducing variance of
+  # probabilities if "x"s are relatively dense.
+  f_x_tbl[[get_x_tbl_sec_col(f_x_tbl)]] <- infin_d(f_x_tbl[["x"]])
+
+  pdqr_fun(f_x_tbl, type = meta_type(f))
+}

@@ -1,5 +1,7 @@
 context("test-form-other")
 
+set.seed(9999)
+
 
 # Input data --------------------------------------------------------------
 cur_f_list <- list(
@@ -8,6 +10,19 @@ cur_f_list <- list(
   new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
   new_p(data.frame(x = c(0.5, 0.75), y = c(4, 4)), "infin")
 )
+
+bad_x_tbl_big <- data.frame(
+  x = sort(runif(100)), prob = runif(100), y = runif(100)
+)
+
+
+# Custom functions --------------------------------------------------------
+# Measure of "smoothness" of pdqr-function
+median_abs_deriv <- function(f) {
+  x_tbl <- meta_x_tbl(f)
+
+  median(abs(diff(x_tbl[[2]])) / diff(x_tbl[[1]]))
+}
 
 
 # form_mix ----------------------------------------------------------------
@@ -113,3 +128,65 @@ test_that("form_mix asserts bad input", {
 
 # impute_weights ----------------------------------------------------------
 # Tested in `form_mix()`
+
+
+# form_smooth -------------------------------------------------------------
+test_that("form_smooth works with `type` 'fin'", {
+  bad_fin <- new_d(bad_x_tbl_big[, c("x", "prob")], "fin")
+
+  output <- form_smooth(bad_fin)
+  expect_is(output, "d")
+  expect_equal(meta_x_tbl(output)[["x"]], meta_x_tbl(bad_fin)[["x"]])
+  expect_true(median_abs_deriv(output) < median_abs_deriv(bad_fin))
+
+  # Handling of one-point edge case
+  d_one_point <- new_d(0.37, "fin")
+  expect_equal(form_smooth(d_one_point), d_one_point)
+})
+
+test_that("form_smooth works with `type` 'infin'", {
+  bad_infin <- new_d(bad_x_tbl_big[, c("x", "y")], "infin")
+
+  output <- form_smooth(bad_infin)
+  expect_is(output, "d")
+  expect_equal(meta_x_tbl(output)[["x"]], meta_x_tbl(bad_infin)[["x"]])
+  expect_true(median_abs_deriv(output) < median_abs_deriv(bad_infin))
+})
+
+test_that("form_smooth uses `n_sample` argument", {
+  bad_fin <- new_d(data.frame(x = 0:2, prob = c(0.05, 0.9, 0.05)), "fin")
+
+  smooth_d_1 <- form_smooth(bad_fin, n_sample = 1e4)
+  smooth_d_2 <- form_smooth(bad_fin, n_sample = 2)
+
+  # Usage of extremely small `n_sample` should result here into "less spiked"
+  # `density()` output
+  expect_true(smooth_d_1(1) > smooth_d_2(1))
+})
+
+test_that("form_smooth uses `args_new` as arguments for `new_*()`", {
+  bad_infin <- new_d(bad_x_tbl_big[, c("x", "y")], "infin")
+
+  # Using more wide bandwidth results into smoother output
+  set.seed(333)
+  output_1 <- form_smooth(bad_infin)
+  output_2 <- form_smooth(bad_infin, args_new = list(adjust = 10))
+
+  expect_true(median_abs_deriv(output_2) < median_abs_deriv(output_1))
+
+  # Supplied `x` and `type` in `args_new` is ignored
+  set.seed(333)
+  output_3 <- form_smooth(bad_infin, args_new = list(x = 1:10, type = "fin"))
+
+  expect_equal_x_tbl(output_1, output_3)
+})
+
+d_fin <- new_d(data.frame(x = 0:1, prob = 0:1), "fin")
+
+test_that("form_smooth asserts bad input", {
+  expect_error(form_smooth("a"), "`f`.*function")
+  expect_error(form_smooth(function(x) {x}), "`f`.*pdqr")
+  expect_error(form_smooth(d_fin, n_sample = "a"), "`n_sample`.*single number")
+  expect_error(form_smooth(d_fin, n_sample = 1), "`n_sample`.*more than 1")
+  expect_error(form_smooth(d_fin, args_new = "a"), "`args_new`.*list")
+})
