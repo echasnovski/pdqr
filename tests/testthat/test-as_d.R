@@ -56,8 +56,11 @@ test_that("as_d.default honors special distributions", {
     meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
   )
 
-  # Distribution function of other type (not sure yet if this is a good idea)
-  out_beta <- as_d(rbeta, shape1 = 2, shape2 = 2)
+  # Distribution function of other "p-d-q-r" type is repaired with warning
+  expect_warning(
+    out_beta <- as_d(rbeta, shape1 = 2, shape2 = 2),
+    "r-function.*`rbeta`.*`as_d\\(\\)`.*d-function"
+  )
   out_beta_ref <- as_d(dbeta, shape1 = 2, shape2 = 2)
   expect_is(out_beta, "d")
   expect_equal_x_tbl(out_beta, out_beta_ref)

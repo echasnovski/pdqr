@@ -7,9 +7,11 @@ as_d.default <- function(f, support = NULL, ..., n_grid = 10001) {
 
   # Attempt to detect "honored" distribution
   f_name <- deparse(substitute(f))
-  honored_distr <- as_honored_distr(f_name, f, support, ..., n_grid = n_grid)
+  honored_distr <- as_honored_distr(
+    "d", f_name, f, support, ..., n_grid = n_grid
+  )
   if (!is.null(honored_distr)) {
-    return(as_d(honored_distr))
+    return(honored_distr)
   }
 
   # Treate `f` as unknown d-function

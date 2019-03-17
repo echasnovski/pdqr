@@ -1,8 +1,17 @@
 # Honored distributions ---------------------------------------------------
-as_honored_distr <- function(f_name, f, support, ..., n_grid) {
+as_honored_distr <- function(pdqr_class, f_name, f, support, ..., n_grid) {
   distr_info <- honored_distr_info(f_name, f)
   if (is.null(distr_info)) {
     return(NULL)
+  }
+
+  f_ftype <- distr_info[["ftype"]]
+  if (pdqr_class != f_ftype) {
+    warning_collapse(
+      "You supplied a ", f_ftype, "-function `", f_name, "` to `as_",
+      pdqr_class, "()`. ",
+      "A ", pdqr_class, "-function will be created."
+    )
   }
 
   distr_supp <- honored_distr_supp(
@@ -14,7 +23,11 @@ as_honored_distr <- function(f_name, f, support, ..., n_grid) {
   # there will be no match for honored distribtuion (there shouldn't be any name
   # `distr_info[["d_fun"]]` as distribution function) and there will be no
   # support detection as `supp` shouldn't have any `NA`s.
-  as_d.default(distr_info[["d_fun"]], support = supp, ..., n_grid = n_grid)
+  res <- as_d.default(
+    f = distr_info[["d_fun"]], support = supp, ..., n_grid = n_grid
+  )
+
+  as_pdqr_by_class(pdqr_class)(res)
 }
 
 honored_distr_info <- function(f_name, f) {
@@ -34,6 +47,7 @@ honored_distr_info <- function(f_name, f) {
 
   list(
     distr = honored_distrs[["distr"]][is_honored],
+    ftype = honored_distrs[["ftype"]][is_honored],
     d_fun = get(honored_distrs[["d_fun"]][is_honored], envir = f_env),
     q_fun = get(honored_distrs[["q_fun"]][is_honored], envir = f_env)
   )

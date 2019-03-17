@@ -3,10 +3,16 @@ context("test-utils-as")
 
 # as_honored_distr --------------------------------------------------------
 test_that("as_honored_distr works", {
-  out <- as_honored_distr("punif", stats::punif, c(0, 1), n_grid = 10000)
-  # `as_honored_distr()` always returns pdqr's d-function
-  expect_distr_fun(out, "d", "infin")
+  out <- as_honored_distr("p", "punif", stats::punif, c(0, 1), n_grid = 10000)
+  expect_distr_fun(out, "p", "infin")
   expect_equal(meta_support(out), c(0, 1))
+})
+
+test_that("as_honored_distr warns about mistyped function type", {
+  expect_warning(
+    as_honored_distr("d", "punif", stats::punif, c(0, 1), n_grid = 10000),
+    "p-function.*`punif`.*`as_d\\(\\)`.*d-function"
+  )
 })
 
 
