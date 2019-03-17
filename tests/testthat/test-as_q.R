@@ -38,6 +38,38 @@ q_list <- list(
 
 
 # as_q.default ------------------------------------------------------------
+test_that("as_q.default honors special distributions", {
+  # Standard uniform
+  out_unif <- as_q(qunif)
+  out_unif_ref <- as_q(function(x) {qunif(x)}, c(0, 1))
+  expect_equal_x_tbl(out_unif, out_unif_ref)
+
+  # Partially set support is used
+  out_unif_2 <- as_q(qunif, support = c(0.5, NA))
+  expect_equal(meta_support(out_unif_2), c(0.5, 1))
+  expect_true(all(meta_x_tbl(out_unif_2)[["y"]] == 2))
+
+  # Hard case of detecting support. Also test for allowing call with `package::`
+  # prefix.
+  out_norm <- as_q(stats::qnorm, mean = 100, sd = 0.1)
+  expect_equal(
+    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+  )
+
+  # Distribution function of other type (not sure yet if this is a good idea)
+  out_beta <- as_q(rbeta, shape1 = 2, shape2 = 2)
+  out_beta_ref <- as_q(qbeta, shape1 = 2, shape2 = 2)
+  expect_is(out_beta, "q")
+  expect_equal_x_tbl(out_beta, out_beta_ref)
+
+  # Function environment is used to not pick "honored" function when another
+  # object with the same name is found "earlier"
+  qgamma <- function(p) {qunif(p)}
+  out_bad_gamma <- as_q(qgamma)
+  out_bad_gamma_ref <- as_q(function(p) {qunif(p)})
+  expect_equal_x_tbl(out_bad_gamma, out_bad_gamma_ref)
+})
+
 test_that("as_q.default output approximates CDF after `as_p()`", {
   skip_on_cran()
 
@@ -219,9 +251,13 @@ test_that("as_q.default uses `n_grid` argument", {
 })
 
 test_that("as_q.default uses `...` to forward arguments to `f`", {
-  output_1 <- as_q(qunif, support = c(0, 10), max = 10)
+  # This function is used to workaround the "honored" special distribution
+  # functions
+  my_qunif <- function(p, ...) {qunif(p, ...)}
+
+  output_1 <- as_q(my_qunif, support = c(0, 10), max = 10)
   expect_true(output_1(0.95) > 9)
-  output_2 <- as_q(qunif, support = NULL, max = 10)
+  output_2 <- as_q(my_qunif, support = NULL, max = 10)
   expect_true(output_2(0.95) > 9)
 })
 

@@ -38,6 +38,38 @@ d_list <- list(
 
 
 # as_d.default ------------------------------------------------------------
+test_that("as_d.default honors special distributions", {
+  # Standard uniform
+  out_unif <- as_d(dunif)
+  out_unif_ref <- as_d(function(x) {dunif(x)}, c(0, 1))
+  expect_equal_x_tbl(out_unif, out_unif_ref)
+
+  # Partially set support is used
+  out_unif_2 <- as_d(dunif, support = c(0.5, NA))
+  expect_equal(meta_support(out_unif_2), c(0.5, 1))
+  expect_true(all(meta_x_tbl(out_unif_2)[["y"]] == 2))
+
+  # Hard case of detecting support. Also test for allowing call with `package::`
+  # prefix.
+  out_norm <- as_d(stats::dnorm, mean = 100, sd = 0.1)
+  expect_equal(
+    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+  )
+
+  # Distribution function of other type (not sure yet if this is a good idea)
+  out_beta <- as_d(rbeta, shape1 = 2, shape2 = 2)
+  out_beta_ref <- as_d(dbeta, shape1 = 2, shape2 = 2)
+  expect_is(out_beta, "d")
+  expect_equal_x_tbl(out_beta, out_beta_ref)
+
+  # Function environment is used to not pick "honored" function when another
+  # object with the same name is found "earlier"
+  dgamma <- function(x) {dunif(x)}
+  out_bad_gamma <- as_d(dgamma)
+  out_bad_gamma_ref <- as_d(function(x) {dunif(x)})
+  expect_equal_x_tbl(out_bad_gamma, out_bad_gamma_ref)
+})
+
 test_that("as_d.default output approximates CDF after `as_p()`", {
   skip_on_cran()
 
@@ -148,7 +180,7 @@ test_that("as_d.default output approximates random-gen-func after `as_r()`", {
   )
   expect_close_r_f(
     as_r(d_norm_2), fam_norm_2$r,
-    mean_thres = 1e-3, sd_thres = 5e-3
+    mean_thres = 2e-3, sd_thres = 5e-3
   )
   expect_close_r_f(
     as_r(d_exp), fam_exp$r,
@@ -156,7 +188,7 @@ test_that("as_d.default output approximates random-gen-func after `as_r()`", {
   )
   expect_close_r_f(
     as_r(d_exp_rev), fam_exp_rev$r,
-    mean_thres = 1e-2, sd_thres = 5e-2
+    mean_thres = 2e-2, sd_thres = 5e-2
   )
   expect_close_r_f(
     as_r(d_beta), fam_beta$r,
@@ -164,11 +196,11 @@ test_that("as_d.default output approximates random-gen-func after `as_r()`", {
   )
   expect_close_r_f(
     as_r(d_beta_inf), fam_beta_inf$r,
-    mean_thres = 5e-2, sd_thres = 5e-3
+    mean_thres = 5e-2, sd_thres = 7e-3
   )
   expect_close_r_f(
     as_r(d_beta_midinf), fam_beta_midinf$r,
-    mean_thres = 2e-3, sd_thres = 7e-3
+    mean_thres = 4e-3, sd_thres = 7e-3
   )
   expect_close_r_f(
     as_r(d_chisq), fam_chisq$r,
@@ -231,9 +263,13 @@ test_that("as_d.default uses `n_grid` argument", {
 })
 
 test_that("as_d.default uses `...` to forward arguments to `f`", {
-  output_1 <- as_d(dunif, support = c(0, 10), max = 10)
+  # This function is used to workaround the "honored" special distribution
+  # functions
+  my_dunif <- function(x, ...) {dunif(x, ...)}
+
+  output_1 <- as_d(my_dunif, support = c(0, 10), max = 10)
   expect_true(output_1(9) > 0)
-  output_2 <- as_d(dunif, support = NULL, max = 10)
+  output_2 <- as_d(my_dunif, support = NULL, max = 10)
   expect_true(output_2(9) > 0)
 })
 

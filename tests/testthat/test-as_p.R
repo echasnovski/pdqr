@@ -38,6 +38,38 @@ p_list <- list(
 
 
 # as_p.default ------------------------------------------------------------
+test_that("as_p.default honors special distributions", {
+  # Standard uniform
+  out_unif <- as_p(punif)
+  out_unif_ref <- as_p(function(x) {punif(x)}, c(0, 1))
+  expect_equal_x_tbl(out_unif, out_unif_ref)
+
+  # Partially set support is used
+  out_unif_2 <- as_p(punif, support = c(0.5, NA))
+  expect_equal(meta_support(out_unif_2), c(0.5, 1))
+  expect_true(all(meta_x_tbl(out_unif_2)[["y"]] == 2))
+
+  # Hard case of detecting support. Also test for allowing call with `package::`
+  # prefix.
+  out_norm <- as_p(stats::pnorm, mean = 100, sd = 0.1)
+  expect_equal(
+    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+  )
+
+  # Distribution function of other type (not sure yet if this is a good idea)
+  out_beta <- as_p(rbeta, shape1 = 2, shape2 = 2)
+  out_beta_ref <- as_p(pbeta, shape1 = 2, shape2 = 2)
+  expect_is(out_beta, "p")
+  expect_equal_x_tbl(out_beta, out_beta_ref)
+
+  # Function environment is used to not pick "honored" function when another
+  # object with the same name is found "earlier"
+  pgamma <- function(q) {punif(q)}
+  out_bad_gamma <- as_p(pgamma)
+  out_bad_gamma_ref <- as_p(function(q) {punif(q)})
+  expect_equal_x_tbl(out_bad_gamma, out_bad_gamma_ref)
+})
+
 test_that("as_p.default results in good approximations of input", {
   expect_close_f(p_norm, fam_norm$p, fam_norm$grid)
   expect_close_f(p_norm_2, fam_norm_2$p, fam_norm_2$grid)
@@ -207,9 +239,13 @@ test_that("as_p.default uses `n_grid` argument", {
 })
 
 test_that("as_p.default uses `...` to forward arguments to `f`", {
-  output_1 <- as_p(punif, support = c(0, 10), max = 10)
+  # This function is used to workaround the "honored" special distribution
+  # functions
+  my_punif <- function(q, ...) {punif(q, ...)}
+
+  output_1 <- as_p(my_punif, support = c(0, 10), max = 10)
   expect_true(output_1(9) > 0)
-  output_2 <- as_p(punif, support = NULL, max = 10)
+  output_2 <- as_p(my_punif, support = NULL, max = 10)
   expect_true(output_2(9) > 0)
 })
 

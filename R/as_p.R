@@ -5,6 +5,14 @@ as_p <- function(f, ...) {
 as_p.default <- function(f, support = NULL, ..., n_grid = 10001) {
   assert_as_def_args(f, support, n_grid)
 
+  # Attempt to detect "honored" distribution
+  f_name <- deparse(substitute(f))
+  honored_distr <- as_honored_distr(f_name, f, support, ..., n_grid = n_grid)
+  if (!is.null(honored_distr)) {
+    return(as_p(honored_distr))
+  }
+
+  # Treate `f` as unknown p-function
   p_f <- function(q) {f(q, ...)}
 
   # Format support as vector with length two where `NA` indicates value to be

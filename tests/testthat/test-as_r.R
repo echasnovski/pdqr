@@ -3,6 +3,12 @@ context("test-as_r")
 set.seed(4444)
 
 
+# Custom functions --------------------------------------------------------
+# This function is used to workaround the case of "honored" special distribution
+# functions
+my_runif <- function(n, ...) {runif(n, ...)}
+
+
 # Computation of r-functions ----------------------------------------------
 r_norm <-        as_r(fam_norm$r,        fam_norm$support)
 r_norm_2 <-      as_r(fam_norm_2$r,      fam_norm_2$support)
@@ -38,6 +44,38 @@ r_list <- list(
 
 
 # as_r.default ------------------------------------------------------------
+test_that("as_r.default honors special distributions", {
+  # Standard uniform
+  out_unif <- as_r(runif)
+  out_unif_ref <- as_r(as_d(dunif))
+  expect_equal_x_tbl(out_unif, out_unif_ref)
+
+  # Partially set support is used
+  out_unif_2 <- as_r(runif, support = c(0.5, NA))
+  expect_equal(meta_support(out_unif_2), c(0.5, 1))
+  expect_true(all(meta_x_tbl(out_unif_2)[["y"]] == 2))
+
+  # Hard case of detecting support. Also test for allowing call with `package::`
+  # prefix.
+  out_norm <- as_r(stats::rnorm, mean = 100, sd = 0.1)
+  expect_equal(
+    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+  )
+
+  # Distribution function of other type (not sure yet if this is a good idea)
+  out_beta <- as_r(dbeta, shape1 = 2, shape2 = 2)
+  out_beta_ref <- as_r(rbeta, shape1 = 2, shape2 = 2)
+  expect_is(out_beta, "r")
+  expect_equal_x_tbl(out_beta, out_beta_ref)
+
+  # Function environment is used to not pick "honored" function when another
+  # object with the same name is found "earlier"
+  rgamma <- function(n) {runif(n)}
+  out_bad_gamma <- as_r(rgamma)
+  out_bad_gamma_ref <- as_r(function(n) {runif(n)})
+  expect_close_r_f(out_bad_gamma, out_bad_gamma_ref)
+})
+
 test_that("as_r.default output approximates CDF after `as_p()`", {
   skip_on_cran()
 
@@ -217,7 +255,7 @@ test_that("as_r.default results in good approximations of input", {
   )
   expect_close_r_f(
     r_norm_2, fam_norm_2$r,
-    mean_thres = 3e-3, sd_thres = 5e-4
+    mean_thres = 3e-3, sd_thres = 2e-3
   )
   expect_close_r_f(
     r_exp, fam_exp$r,
@@ -229,7 +267,7 @@ test_that("as_r.default results in good approximations of input", {
   )
   expect_close_r_f(
     r_beta, fam_beta$r,
-    mean_thres = 1e-2, sd_thres = 4e-3
+    mean_thres = 1e-2, sd_thres = 6e-3
   )
   expect_close_r_f(
     r_beta_inf, fam_beta_inf$r,
@@ -237,12 +275,12 @@ test_that("as_r.default results in good approximations of input", {
   )
   expect_close_r_f(
     r_beta_midinf, fam_beta_midinf$r,
-    mean_thres = 7e-4, sd_thres = 7e-3
+    mean_thres = 5e-3, sd_thres = 7e-3
   )
   expect_close_r_f(r_chisq, fam_chisq$r, mean_thres = 11e-2, sd_thres = 8e-2)
   expect_close_r_f(
     r_chisq_inf, fam_chisq_inf$r,
-    mean_thres = 16e-2, sd_thres = 8e-2
+    mean_thres = 0.2, sd_thres = 8e-2
   )
   expect_close_r_f(
     r_mix_norm, fam_mix_norm$r,
@@ -272,15 +310,15 @@ test_that("as_r.default detects support", {
   # Much more tests are done in `detect_support_r`
   r_beta_both <- as_r(fam_beta$r)
   support_both <- meta_support(r_beta_both)
-  expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 3e-5)
+  expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 1e-4)
 
   r_beta_left <- as_r(fam_beta$r, support = c(NA, 0.7))
   support_left <- meta_support(r_beta_left)
-  expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 3e-5)
+  expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 1e-4)
 
   r_beta_right <- as_r(fam_beta$r, support = c(0.3, NA))
   support_right <- meta_support(r_beta_right)
-  expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 3e-5)
+  expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 1e-4)
 })
 
 test_that("as_r.default removes edge `y` with zero density", {
@@ -298,12 +336,12 @@ test_that("as_r.default uses `n_grid` and `n_sample` arguments", {
 })
 
 test_that("as_r.default uses `...` to forward arguments to `f`", {
-  output <- as_r(runif, support = c(0, 10), max = 10)
+  output <- as_r(my_runif, support = c(0, 10), max = 10)
   expect_true(mean(output(1000)) > 1)
 })
 
 test_that("as_r.default uses `args_new`", {
-  output <- as_r(runif, args_new = list(from = 0.5))
+  output <- as_r(my_runif, args_new = list(from = 0.5))
   expect_true(meta_x_tbl(output)[["x"]][1] > 0.45)
 })
 

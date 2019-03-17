@@ -11,6 +11,14 @@ as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
   )
   assert_type(args_new, is.list)
 
+  # Attempt to detect "honored" distribution
+  f_name <- deparse(substitute(f))
+  honored_distr <- as_honored_distr(f_name, f, support, ..., n_grid = n_grid)
+  if (!is.null(honored_distr)) {
+    return(as_r(honored_distr))
+  }
+
+  # Treate `f` as unknown r-function
   # Create sample
   smpl <- f(n_sample, ...)
 

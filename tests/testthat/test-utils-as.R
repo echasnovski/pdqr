@@ -1,6 +1,48 @@
 context("test-utils-as")
 
 
+# as_honored_distr --------------------------------------------------------
+test_that("as_honored_distr works", {
+  out <- as_honored_distr("punif", stats::punif, c(0, 1), n_grid = 10000)
+  # `as_honored_distr()` always returns pdqr's d-function
+  expect_distr_fun(out, "d", "infin")
+  expect_equal(meta_support(out), c(0, 1))
+})
+
+
+# honored_distr_info ------------------------------------------------------
+# Tested in `as_honored_distr()` and `as_*.default()`
+
+
+# honored_distr_supp ------------------------------------------------------
+test_that("honored_distr_supp supports all honored distributions", {
+  expect_honored <- function(distr, q_fun, supp_quans, ...) {
+    expect_equal(
+      honored_distr_supp(distr, q_fun, ...),
+      q_fun(supp_quans, ...)
+    )
+  }
+
+  p <- 1e-6
+  big_p <- 1e3 * p
+  expect_honored("beta", qbeta, c(0, 1), shape1 = 7, shape2 = 1)
+  expect_honored("cauchy", qcauchy, c(big_p, 1 - big_p), location = 100)
+  expect_honored("chisq", qchisq, c(p, 1 - p), df = 100)
+  expect_honored("exp", qexp, c(0, 1 - p), rate = 0.01)
+  expect_honored("f", qf, c(p, 1 - p), df1 = 100, df2 = 100)
+  expect_honored("gamma", qgamma, c(p, 1 - p), shape = 10)
+  expect_honored("lnorm", qlnorm, c(p, 1 - p))
+  expect_honored("norm", qnorm, c(p, 1 - p), mean = 100, sd = 0.1)
+  expect_honored("t", qt, c(p, 1 - p), df = 100)
+  expect_honored("unif", qunif, c(0, 1), min = -10, max = 100)
+  expect_honored("weibull", qweibull, c(p, 1 - p), shape = 10)
+})
+
+test_that("honored_distr_supp stops on not honored properly distribution", {
+  expect_error(honored_distr_supp("hello", qunif), '"hello".*not honored')
+})
+
+
 # y_from_p_grid -----------------------------------------------------------
 # Tested in `as_p.default()`
 

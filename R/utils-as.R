@@ -1,3 +1,74 @@
+# Honored distributions ---------------------------------------------------
+as_honored_distr <- function(f_name, f, support, ..., n_grid) {
+  distr_info <- honored_distr_info(f_name, f)
+  if (is.null(distr_info)) {
+    return(NULL)
+  }
+
+  distr_supp <- honored_distr_supp(
+    distr = distr_info[["distr"]], q_fun = distr_info[["q_fun"]], ...
+  )
+  supp <- coalesce_pair(format_support(support), distr_supp)
+
+  # This is a shallow recursion for `as_d.default()`. However, during this run
+  # there will be no match for honored distribtuion (there shouldn't be any name
+  # `distr_info[["d_fun"]]` as distribution function) and there will be no
+  # support detection as `supp` shouldn't have any `NA`s.
+  as_d.default(distr_info[["d_fun"]], support = supp, ..., n_grid = n_grid)
+}
+
+honored_distr_info <- function(f_name, f) {
+  # Allow call with `package::` prefix. Also using `[1]` indexing because input
+  # `f_name` can be a vector in case of anonymous function like
+  # `function(x) {dunif(x)}`.
+  f_name <- sub("^.*::", "", f_name[1])
+  f_env <- environment(f)
+  f_package <- environmentName(f_env)
+
+  is_honored <- (f_name == honored_distrs[["fun"]]) &
+    (f_package == honored_distrs[["package"]])
+
+  if (sum(is_honored) == 0) {
+    return(NULL)
+  }
+
+  list(
+    distr = honored_distrs[["distr"]][is_honored],
+    d_fun = get(honored_distrs[["d_fun"]][is_honored], envir = f_env),
+    q_fun = get(honored_distrs[["q_fun"]][is_honored], envir = f_env)
+  )
+}
+
+honored_distr_supp <- function(distr, q_fun, ..., p = 1e-6) {
+  if (distr %in% c("beta", "unif")) {
+    distr_edge_quantiles <- c(0, 1)
+  } else if (distr %in% c("exp")) {
+    distr_edge_quantiles <- c(0, 1 - p)
+  } else if (
+    distr %in% c(
+      "chisq", "f", "gamma", "lnorm", "norm", "t", "weibull"
+    )
+  ) {
+    # In cases of distributions "chisq", "f", "gamma", "lnorm", "weibull" `p` is
+    # used for the left edge quantile instead of zero because there are
+    # parameters with which most probability lies far away from zero.
+    distr_edge_quantiles <- c(p, 1 - p)
+  } else if (distr %in% c("cauchy")) {
+    # Cutting more tails from Cauchy distribution because they are long and
+    # heavy.
+    big_p <- 1e3*p
+    distr_edge_quantiles <- c(big_p, 1 - big_p)
+  } else {
+    stop_collapse('Distribution "', distr, '" is not honored properly.')
+  }
+
+  # `q_fun` represents quantile function of distribution. It should take
+  # quantiles as first argument and `...` as others
+  q_fun(distr_edge_quantiles, ...)
+}
+
+
+# Other -------------------------------------------------------------------
 y_from_p_grid <- function(x, p) {
   # It is assumed that `x` has no duplicates and sorted increasingly
   n <- length(x)
