@@ -19,6 +19,24 @@
 #
 # (my_mix >= 0.5 - 1e-4)(1)
 
+#' Construct mixture of distributions
+#'
+#' Based on a list of pdqr-functions and vector of weights construct a
+#' pdqr-function of corresponding mixture distribution.
+#'
+#' @param f_list List of pdqr-functions.
+#' @param weights Numeric vector of weights.
+#'
+#' @return A pdqr-function for mixture distribution.
+#'
+#' @examples
+#' d_unif <- as_d(dunif)
+#' p_norm <- as_p(pnorm)
+#'
+#' my_mix <- form_mix(list(d_unif, p_norm), weights = c(0.7, 0.3))
+#' plot(my_mix)
+#'
+#' @export
 form_mix <- function(f_list, weights = NULL) {
   assert_type(f_list, is.list)
   assert_f_list(f_list, allow_numbers = FALSE)
@@ -65,6 +83,32 @@ impute_weights <- function(weights, n) {
 
 
 # form_smooth -------------------------------------------------------------
+#' Smooth pdqr-function
+#'
+#' Smooth pdqr-function using random sampling and corresponding
+#' [new_*()][new_d()] function.
+#'
+#' @param f Pdqr-function.
+#' @inheritParams form_trans
+#'
+#' @return A smoothed version of `f`.
+#'
+#' @examples
+#' set.seed(101)
+#'
+#' # Pdqr-functions of type "infin"
+#' bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
+#' smoothed_infin <- form_smooth(bad_infin)
+#' plot(bad_infin)
+#' lines(smoothed_infin, col = "blue")
+#'
+#' # Pdqr-functions of type "fin"
+#' bad_fin <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "fin")
+#' smoothed_fin <- form_smooth(bad_fin)
+#' plot(bad_fin)
+#' lines(smoothed_fin, col = "blue")
+#'
+#' @export
 form_smooth <- function(f, n_sample = 10000, args_new = list()) {
   assert_pdqr_fun(f)
   assert_type(

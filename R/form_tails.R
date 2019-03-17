@@ -1,3 +1,33 @@
+#' Transform tails of distribution
+#'
+#' Modify tail(s) of distribution defined by certain cutoff level using method
+#' of choice.
+#'
+#' @param f A pdqr-function.
+#' @param level Cutoff level.
+#' @param method Transformation method. One of "trim" or "winsor".
+#' @param direction Information about which tail(s) to transform. One of "both",
+#'   "left", or "right".
+#'
+#' @return A pdqr-function with transformed tail(s).
+#'
+#' @examples
+#' d_norm <- as_d(dnorm)
+#' plot(d_norm)
+#' lines(form_tails(d_norm, level = 0.1), col = "blue")
+#' lines(
+#'   form_tails(d_norm, level = 0.1, method = "winsor", direction = "right"),
+#'   col = "green"
+#' )
+#'
+#' # Also works with pdqr-functions of type "fin"
+#' my_fin <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "fin")
+#' meta_x_tbl(form_tails(my_fin, level = 0.1))
+#' meta_x_tbl(
+#'   form_tails(my_fin, level = 0.35, method = "winsor", direction = "left")
+#' )
+#'
+#' @export
 form_tails <- function(f, level, method = "trim", direction = "both") {
   assert_form_tails_args(f, level, method, direction)
 

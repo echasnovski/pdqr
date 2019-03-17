@@ -1,3 +1,30 @@
+#' Change type of pdqr-function
+#'
+#' Modify type of pdqr-function ("infin" or "fin") using method of choice.
+#'
+#' @param f A pdqr-function.
+#' @param type A desired type of output.
+#' @param method Retyping method.
+#'
+#' @return A pdqr-function with type `type`.
+#'
+#' @examples
+#' my_infin <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "infin")
+#' my_fin <- form_retype(my_infin, "fin")
+#' meta_x_tbl(my_fin)
+#'
+#' my_dirac <- form_retype(my_fin, "infin", method = "dirac")
+#' meta_x_tbl(my_dirac)
+#'
+#' # Default retyping from "fin" to "infin" isn't very accurate for small number
+#' # of points/intervals
+#' my_infin_2 <- form_retype(my_fin, "infin")
+#' meta_x_tbl(my_infin_2)
+#'
+#' plot(my_infin)
+#' lines(my_infin_2, col = "blue")
+#'
+#' @export
 form_retype <- function(f, type, method = "piecelin") {
   assert_pdqr_fun(f)
   assert_distr_type(type)

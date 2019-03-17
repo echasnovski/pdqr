@@ -1,12 +1,53 @@
+# Notes in docs about `method = "bruteforce"`:
+# - It is very memory consuming.
+# - It is usually useful when type of output function is "fin", i.e. when all
+#   input functions are "fin" or when output of `trans` is logical. Also
+#   probabilities shouldn't be very small because they will be directly
+#   multiplied.
+
+#' Transform pdqr-function
+#'
+#' Perform a transformation of pdqr-function(s).
+#'
+#' @param f_list A list consisting from pdqr-function(s) and/or number(s).
+#'   Should have at least one pdqr-function (see Details).
+#' @param f A pdqr-function.
+#' @param trans Transformation function. Should take as many (vectorized)
+#'   arguments as there are elements in `f_list`.
+#' @param ... Extra arguments to `trans`.
+#' @param method Transformation method. One of "random" or "bruteforce".
+#' @param n_sample Number of elements to sample.
+#' @param args_new List of extra arguments for [new_*()][new_d()] to control
+#'   [density()].
+#'
+#' @return A pdqr-function for transformed random variable.
+#'
+#' @examples
+#' # Default "random" transformation
+#' d_norm <- as_d(dnorm)
+#' d_norm_2 <- form_trans(list(d_norm, d_norm), trans = `+`)
+#' plot(d_norm_2)
+#' lines(as_d(dnorm, sd = 2), col = "red")
+#'
+#' # Transformation with "bruteforce" method
+#' power <- function(x, n = 1) {x^n}
+#' p_fin <- new_p(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), type = "fin")
+#'
+#' p_fin_sq <- form_trans_self(
+#'   p_fin, trans = power, n = 2, method = "bruteforce"
+#' )
+#' meta_x_tbl(p_fin_sq)
+#'   # Compare with "random" method
+#' p_fin_sq_rand <- form_trans_self(p_fin, trans = power, n = 2)
+#' meta_x_tbl(p_fin_sq_rand)
+#'
+#' @name form_trans
+NULL
+
+#' @rdname form_trans
+#' @export
 form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
                        args_new = list()) {
-  # Notes in docs about `method = "bruteforce"`:
-  # - It is very memory consuming.
-  # - It is usually useful when type of output function is "fin", i.e. when all
-  #   input functions are "fin" or when output of `trans` is logical. Also
-  #   probabilities shouldn't be very small because they will be directly
-  #   multiplied.
-
   assert_type(f_list, is.list)
   assert_f_list(f_list, allow_numbers = TRUE)
   assert_type(trans, is.function)
@@ -28,6 +69,8 @@ form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
   )
 }
 
+#' @rdname form_trans
+#' @export
 form_trans_self <- function(f, trans, ..., method = "random",
                             args_new = list()) {
   form_trans(

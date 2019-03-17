@@ -1,4 +1,30 @@
 # form_resupport ----------------------------------------------------------
+#' Change support of pdqr-function
+#'
+#' Modify support of pdqr-function using method of choice.
+#'
+#' @param f A pdqr-function.
+#' @param support Support of the output.
+#' @param method Resupport method. One of "trim", "linear", "reflect", "winsor".
+#'
+#' @return A pdqr-function with modified support.
+#'
+#' @examples
+#' d_norm <- as_d(dnorm)
+#'
+#' plot(d_norm)
+#' lines(form_resupport(d_norm, c(-2, 1.5), "trim"), col = "blue")
+#'
+#' plot(d_norm)
+#' lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
+#'
+#' plot(d_norm)
+#' lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
+#'
+#' plot(d_norm)
+#' lines(form_resupport(d_norm, c(-2, 1.5), "winsor"), col = "blue")
+#'
+#' @export
 form_resupport <- function(f, support, method = "trim") {
   assert_pdqr_fun(f)
   assert_support(support, allow_na = TRUE)
