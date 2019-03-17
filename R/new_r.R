@@ -50,6 +50,7 @@ new_r_infin <- function(x_tbl) {
   }
 }
 
+#' @export
 print.r <- function(x, ...) {
   pdqr_print(x, "Random generation")
 }

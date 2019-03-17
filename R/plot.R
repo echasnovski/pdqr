@@ -1,4 +1,5 @@
 # plot() ------------------------------------------------------------------
+#' @export
 plot.p <- function(x, y = NULL, n_grid = NULL, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
@@ -25,6 +26,7 @@ plot.p <- function(x, y = NULL, n_grid = NULL, ...) {
   }
 }
 
+#' @export
 plot.d <- function(x, y = NULL, n_grid = NULL, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
@@ -57,6 +59,7 @@ plot.d <- function(x, y = NULL, n_grid = NULL, ...) {
   }
 }
 
+#' @export
 plot.q <- function(x, y = NULL, n_grid = NULL, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
@@ -83,6 +86,7 @@ plot.q <- function(x, y = NULL, n_grid = NULL, ...) {
   }
 }
 
+#' @export
 plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
@@ -214,6 +218,7 @@ make_plot_dots <- function(...) {
 
 
 # lines() -----------------------------------------------------------------
+#' @export
 lines.p <- function(x, n_grid = NULL, ...) {
   assert_pdqr_fun(x)
 
@@ -224,6 +229,7 @@ lines.p <- function(x, n_grid = NULL, ...) {
   }
 }
 
+#' @export
 lines.d <- function(x, n_grid = NULL, ...) {
   assert_pdqr_fun(x)
 
@@ -239,6 +245,7 @@ lines.d <- function(x, n_grid = NULL, ...) {
   }
 }
 
+#' @export
 lines.q <- function(x, n_grid = NULL, ...) {
   assert_pdqr_fun(x)
 

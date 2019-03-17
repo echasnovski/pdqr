@@ -78,6 +78,7 @@ new_p_infin <- function(x_tbl) {
   }
 }
 
+#' @export
 print.p <- function(x, ...) {
   pdqr_print(x, "Cumulative distribution")
 }

@@ -1,4 +1,5 @@
 # Methods for group generics ----------------------------------------------
+#' @export
 Math.pdqr <- function(x, ...) {
   assert_pdqr_fun(x)
 
@@ -10,6 +11,7 @@ Math.pdqr <- function(x, ...) {
   )
 }
 
+#' @export
 Ops.pdqr <- function(e1, e2) {
   if (missing(e2)) {
     assert_pdqr_fun(e1)
@@ -46,6 +48,7 @@ Ops.pdqr <- function(e1, e2) {
   }
 }
 
+#' @export
 Summary.pdqr <- function(..., na.rm = FALSE) {
   if (.Generic == "range") {
     stop_collapse(
