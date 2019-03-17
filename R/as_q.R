@@ -1,7 +1,11 @@
+#' @rdname as-pdqr
+#' @export
 as_q <- function(f, ...) {
   UseMethod("as_q")
 }
 
+#' @rdname as-pdqr
+#' @export
 as_q.default <- function(f, support = NULL, ..., n_grid = 10001) {
   assert_as_def_args(f, support, n_grid)
 
@@ -25,6 +29,8 @@ as_q.default <- function(f, support = NULL, ..., n_grid = 10001) {
   as_q(as_p(p_f, support, n_grid = n_grid))
 }
 
+#' @rdname as-pdqr
+#' @export
 as_q.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 

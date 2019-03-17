@@ -1,3 +1,33 @@
+# Documentation of `as_*()` -----------------------------------------------
+#' Convert to pdqr-function
+#'
+#' Convert some function to be a proper pdqr-function of type "infin".
+#'
+#' @param f Appropriate function to be converted (see Details).
+#' @param support Support of output. If `NULL` or any value is `NA`, it is
+#'   detected using specific algorithms (see Details).
+#' @param ... Extra arguments for `f`.
+#' @param n_grid Number of grid points at which `f` will be evaluated (see
+#'   Details).
+#'
+#' @return A pdqr-function of corresponding class.
+#'
+#' @examples
+#' # Convert existing "proper" pdqr-function
+#' set.seed(101)
+#' x <- rnorm(10)
+#' my_d <- new_d(x, "infin")
+#'
+#' my_p <- as_p(my_d)
+#'
+#' # Convert some other function to be a "proper" pdqr-function
+#' p_unif <- as_p(punif)
+#' r_beta <- as_r(rbeta, shape1 = 2, shape2 = 2)
+#'
+#' @name as-pdqr
+NULL
+
+
 # Honored distributions ---------------------------------------------------
 as_honored_distr <- function(pdqr_class, f_name, f, support, ..., n_grid) {
   distr_info <- honored_distr_info(f_name, f)

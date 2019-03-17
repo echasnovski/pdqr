@@ -1,7 +1,13 @@
+#' @rdname as-pdqr
+#' @export
 as_r <- function(f, ...) {
   UseMethod("as_r")
 }
 
+#' @param n_sample Number of points to sample from `f`.
+#' @param args_new List of extra arguments for [new_d()] to control [density()].
+#' @rdname as-pdqr
+#' @export
 as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
                          n_sample = 10000, args_new = list()) {
   assert_as_def_args(f, support, n_grid)
@@ -38,6 +44,8 @@ as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
   as_r(d_f)
 }
 
+#' @rdname as-pdqr
+#' @export
 as_r.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 

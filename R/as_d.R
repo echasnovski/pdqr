@@ -1,7 +1,12 @@
+#' @rdname as-pdqr
+#' @include as_p.R
+#' @export
 as_d <- function(f, ...) {
   UseMethod("as_d")
 }
 
+#' @rdname as-pdqr
+#' @export
 as_d.default <- function(f, support = NULL, ..., n_grid = 10001) {
   assert_as_def_args(f, support, n_grid)
 
@@ -38,6 +43,8 @@ as_d.default <- function(f, support = NULL, ..., n_grid = 10001) {
   new_d(x_tbl, "infin")
 }
 
+#' @rdname as-pdqr
+#' @export
 as_d.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
 
