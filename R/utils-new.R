@@ -1,3 +1,30 @@
+# Documentation of `new_*()` ----------------------------------------------
+#' Create new pdqr-function
+#'
+#' Main tools to create new distribution pdqr-functions based on numeric sample
+#' or data frame describing distribution.
+#'
+#' @param x Numeric vector or data frame with appropriate columns (see Details).
+#' @param type Type of pdqr-function. One of "fin" or "infin" (see Details).
+#' @param ... Extra arguments for [density()][stats::density()].
+#'
+#' @return A pdqr-function of corresponding class.
+#'
+#' @examples
+#' set.seed(101)
+#' x <- rnorm(10)
+#' my_d_infin <- new_d(x, "infin")
+#' my_d_fin <- new_d(x, "fin")
+#'
+#' my_p_fin <- new_p(data.frame(x = 1:10, prob = rep(1, 10)/10), "fin")
+#'
+#' # Using bigger bandwidth in `density()`
+#' my_d_infin_2 <- new_d(x, "infin", adjust = 2)
+#'
+#' @name new-pdqr
+NULL
+
+
 # Common functionality for `new_*()` --------------------------------------
 distr_impl <- function(fun_class, impl_funs, x, type, ...) {
   assert_distr_type(type)

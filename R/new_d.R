@@ -1,3 +1,6 @@
+#' @rdname new-pdqr
+#' @include new_p.R
+#' @export
 new_d <- function(x, type = "infin", ...) {
   distr_impl(
     fun_class = "d",
