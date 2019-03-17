@@ -1,3 +1,23 @@
+#' Get metadata of pdqr-functions
+#'
+#' @param f A "proper" pdqr-function.
+#'
+#' @return `meta_all()` returns a list of all metadata. `meta_type()`,
+#'   `meta_support`, and `meta_x_tbl()` return corresponding metadata.
+#'
+#' @examples
+#' d_unif <- as_d(dunif)
+#'
+#' meta_all(d_unif)
+#' meta_type(d_unif)
+#' meta_support(d_unif)
+#' head(meta_x_tbl(d_unif))
+#'
+#' @name meta
+NULL
+
+#' @rdname meta
+#' @export
 meta_all <- function(f) {
   check_f_envir(f)
 
@@ -11,18 +31,24 @@ meta_all <- function(f) {
   res
 }
 
+#' @rdname meta
+#' @export
 meta_type <- function(f) {
   check_f_envir(f)
 
   get0("type", envir = environment(f), inherits = FALSE)
 }
 
+#' @rdname meta
+#' @export
 meta_support <- function(f) {
   check_f_envir(f)
 
   get0("support", envir = environment(f), inherits = FALSE)
 }
 
+#' @rdname meta
+#' @export
 meta_x_tbl <- function(f) {
   check_f_envir(f)
 
