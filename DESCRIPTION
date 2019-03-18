@@ -21,7 +21,8 @@ Suggests:
     covr,
     grDevices,
     testthat,
-    vdiffr
+    vdiffr,
+    spelling
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
@@ -54,3 +55,4 @@ Collate:
     'utils.R'
     'x_tbl.R'
     'zzz.R'
+Language: en-US
