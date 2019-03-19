@@ -35,6 +35,7 @@ Collate:
     'assertions.R'
     'form-compare.R'
     'form-other.R'
+    'form_regrid.R'
     'form_resupport.R'
     'form_retype.R'
     'form_tails.R'
