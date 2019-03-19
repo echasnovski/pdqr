@@ -1,3 +1,37 @@
+#' Change grid of pdqr-function
+#'
+#' Modify grid of pdqr-function to increase or decrease granularity using method
+#' of choice.
+#'
+#' @param f A pdqr-function.
+#' @param n_grid A desired number of grid elements in output.
+#' @param method Regrid method. One of "x" or "q".
+#'
+#' @return A pdqr-function with modified grid.
+#'
+#' @examples
+#' # Pdqr-function with type "infin"
+#'   # Downgridding
+#' d_norm <- as_d(dnorm)
+#' plot(d_norm)
+#' lines(form_regrid(d_norm, n_grid = 10), col = "blue")
+#' lines(form_regrid(d_norm, n_grid = 10, method = "q"), col = "green")
+#'
+#'   # Upgridding
+#' d_infin <- new_d(data.frame(x = 1:3, y = rep(0.5, 3)), type = "infin")
+#' meta_x_tbl(form_regrid(d_infin, n_grid = 6))
+#'
+#' # Pdqr-function with type "fin"
+#' d_fin <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "fin")
+#'
+#'   # Downgridding
+#' meta_x_tbl(form_regrid(d_fin, n_grid = 4))
+#' meta_x_tbl(form_regrid(d_fin, n_grid = 4, method = "q"))
+#'
+#'   # Upgridding for "fin" type isn't possible. Input is returned
+#' identical(d_fin, form_regrid(d_fin, n_grid = 100))
+#'
+#' @export
 form_regrid <- function(f, n_grid, method = "x") {
   assert_pdqr_fun(f)
   assert_type(
