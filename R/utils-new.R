@@ -100,6 +100,10 @@ is_pdqr_class <- function(chr) {
   chr %in% c("p", "d", "q", "r")
 }
 
+is_boolean_pdqr_fun <- function(f) {
+  (meta_type(f) == "fin") && identical(meta_x_tbl(f)[["x"]], c(0, 1))
+}
+
 has_meta_type <- function(f) {
   has_meta(f, "type") && is_distr_type(meta_type(f))
 }

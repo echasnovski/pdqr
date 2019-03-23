@@ -273,6 +273,26 @@ test_that("is_pdqr_class works", {
 })
 
 
+# is_boolean_pdqr_fun -----------------------------------------------------
+test_that("is_boolean_pdqr_fun works", {
+  boolean_x_tbl_1 <- data.frame(x = c(0, 1), prob = c(0.3, 0.7))
+  expect_true(is_boolean_pdqr_fun(new_d(boolean_x_tbl_1, "fin")))
+  expect_true(is_boolean_pdqr_fun(new_r(boolean_x_tbl_1, "fin")))
+
+  boolean_x_tbl_2 <- data.frame(x = c(0, 1), prob = c(1, 0))
+  expect_true(is_boolean_pdqr_fun(new_d(boolean_x_tbl_2, "fin")))
+  boolean_x_tbl_3 <- data.frame(x = c(0, 1), prob = c(0, 1))
+  expect_true(is_boolean_pdqr_fun(new_d(boolean_x_tbl_3, "fin")))
+
+  not_boolean_x_tbl_1 <- data.frame(x = 0, prob = 1)
+  expect_false(is_boolean_pdqr_fun(new_d(not_boolean_x_tbl_1, "fin")))
+  not_boolean_x_tbl_2 <- data.frame(x = 1, prob = 1)
+  expect_false(is_boolean_pdqr_fun(new_d(not_boolean_x_tbl_2, "fin")))
+  not_boolean_x_tbl_3 <- data.frame(x = c(0, 1), y = c(1, 1))
+  expect_false(is_boolean_pdqr_fun(new_d(not_boolean_x_tbl_3, "infin")))
+})
+
+
 # has_meta_type -----------------------------------------------------------
 test_that("has_meta_type works", {
   expect_true(has_meta_type(p_fin))

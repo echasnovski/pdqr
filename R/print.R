@@ -38,7 +38,24 @@ n_x_tbl_info <- function(x) {
   n_x_tbl <- nrow(x_tbl)
 
   if (x_type == "fin") {
-    paste0(" (", n_x_tbl, " ", ngettext(n_x_tbl, "element", "elements"), ")")
+    # Add "probability of 1: " printing in case of a "boolean" pdqr
+    if (identical(x_tbl[["x"]], c(0, 1))) {
+      prob_one <- round(x_tbl[["prob"]][x_tbl[["x"]] == 1], digits = 5)
+      if (prob_one %in% c(0, 1)) {
+        prob_one_string <- paste0(prob_one, ".0")
+      } else {
+        prob_one_string <- as.character(prob_one)
+      }
+      prob_string <- paste0(
+        ", ", bold(paste0("probability of 1: ", prob_one_string))
+      )
+    } else {
+      prob_string <- ""
+    }
+    paste0(
+      " (", n_x_tbl, " ", ngettext(n_x_tbl, "element", "elements"),
+      prob_string, ")"
+    )
   } else if (x_type == "infin") {
     paste0(
       " (", n_x_tbl-1, " ", ngettext(n_x_tbl-1, "interval", "intervals"), ")"

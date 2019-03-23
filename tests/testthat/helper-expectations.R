@@ -141,7 +141,7 @@ expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
   n_fin <- length(unique(x_fin))
   expect_output(
     print(f_fin),
-    regex_scatter(fin_name, "finite number", supp_regex, n_fin, "element")
+    regex_scatter(fin_name, "finite number", supp_regex, n_fin, "elements")
   )
 
   f_infin <- f(x_infin, type = "infin")
@@ -151,6 +151,29 @@ expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
     regex_scatter(
       infin_name, "infinite number", supp_regex, n_infin-1, "intervals"
     )
+  )
+
+  # Special printing of "boolean" pdqr-functions
+  f_bool_1 <- f(data.frame(x = c(0, 1), prob = c(0.7, 0.3)), "fin")
+  expect_output(
+    print(f_bool_1),
+    regex_scatter(
+      fin_name, "finite number",
+      "Support: \\[0, 1\\] \\(2 elements, probability of 1: 0.3\\)"
+    )
+  )
+  f_bool_2 <- f(data.frame(x = c(0, 1), prob = c(1, 0)), "fin")
+  expect_output(
+    print(f_bool_2), "probability of 1: 0.0"
+  )
+  f_bool_3 <- f(data.frame(x = c(0, 1), prob = c(0, 1)), "fin")
+  expect_output(
+    print(f_bool_3), "probability of 1: 1.0"
+  )
+  # Rounding
+  f_bool_4 <- f(data.frame(x = c(0, 1), prob = c(1/3, 2/3)), "fin")
+  expect_output(
+    print(f_bool_4), "probability of 1: 0.66667"
   )
 }
 
