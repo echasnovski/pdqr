@@ -1,6 +1,6 @@
 #' @rdname new-pdqr
 #' @export
-new_p <- function(x, type = "infin", ...) {
+new_p <- function(x, type, ...) {
   distr_impl(
     fun_class = "p",
     impl_funs = list(fin = new_p_fin, infin = new_p_infin),

@@ -91,12 +91,12 @@ test_that("new_p's output is integration of new_d's if `type` = 'infin'", {
 })
 
 test_that("new_p asserts", {
-  expect_warning(new_p(c(1, 0, NA)), "x.*NA.*removed")
-  expect_warning(new_p(c(1, 0, NaN)), "x.*NaN.*removed")
-  expect_warning(new_p(c(1, 0, Inf)), "x.*infinite.*removed")
+  expect_warning(new_p(c(1, 0, NA), "infin"), "x.*NA.*removed")
+  expect_warning(new_p(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
+  expect_warning(new_p(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
 
-  expect_error(new_p("a"), "x.*numeric.*data.*frame")
-  expect_error(new_p(numeric(0)), "x.*empty")
+  expect_error(new_p("a", "infin"), "x.*numeric.*data.*frame")
+  expect_error(new_p(numeric(0), "infin"), "x.*empty")
   expect_error(new_p(x_fin, type = 1), "type.*string")
   expect_error(new_p(x_fin, type = "a"), "type.*fin.*infin")
 })

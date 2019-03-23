@@ -31,11 +31,11 @@ test_that("form_trans works with `method = 'random'`", {
   )
 
   # Normal distribution multiplied by 2
-  d_norm_input <- new_d(rnorm(10000, mean = 0, sd = 1))
+  d_norm_input <- new_d(rnorm(10000, mean = 0, sd = 1), "infin")
 
   norm_seq <- seq(-20, 20, by = 0.001)
   d_norm_ref <- new_d(
-    data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2))
+    data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2)), "infin"
   )
 
   output_norm <- form_trans(list(2, d_norm_input), `*`, method = "random")

@@ -74,12 +74,12 @@ test_that("new_d's output integrates to 1 in case `type` = 'infin'", {
 })
 
 test_that("new_d asserts", {
-  expect_warning(new_d(c(1, 0, NA)), "x.*NA.*removed")
-  expect_warning(new_d(c(1, 0, NaN)), "x.*NaN.*removed")
-  expect_warning(new_d(c(1, 0, Inf)), "x.*infinite.*removed")
+  expect_warning(new_d(c(1, 0, NA), "infin"), "x.*NA.*removed")
+  expect_warning(new_d(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
+  expect_warning(new_d(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
 
-  expect_error(new_d("a"), "x.*numeric.*data.*frame")
-  expect_error(new_d(numeric(0)), "x.*empty")
+  expect_error(new_d("a", "infin"), "x.*numeric.*data.*frame")
+  expect_error(new_d(numeric(0), "infin"), "x.*empty")
   expect_error(new_d(x_fin, type = 1), "type.*string")
   expect_error(new_d(x_fin, type = "a"), "type.*fin.*infin")
 })

@@ -87,12 +87,12 @@ test_that("new_q's output returns the smallest `x` with not exceeding `p`", {
 })
 
 test_that("new_q asserts", {
-  expect_warning(new_q(c(1, 0, NA)), "x.*NA.*removed")
-  expect_warning(new_q(c(1, 0, NaN)), "x.*NaN.*removed")
-  expect_warning(new_q(c(1, 0, Inf)), "x.*infinite.*removed")
+  expect_warning(new_q(c(1, 0, NA), "infin"), "x.*NA.*removed")
+  expect_warning(new_q(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
+  expect_warning(new_q(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
 
-  expect_error(new_q("a"), "x.*numeric.*data.*frame")
-  expect_error(new_q(numeric(0)), "x.*empty")
+  expect_error(new_q("a", "infin"), "x.*numeric.*data.*frame")
+  expect_error(new_q(numeric(0), "infin"), "x.*empty")
   expect_error(new_q(x_fin, type = 1), "type.*string")
   expect_error(new_q(x_fin, type = "a"), "type.*fin.*infin")
 })

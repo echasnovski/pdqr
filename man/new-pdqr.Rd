@@ -9,13 +9,13 @@
 \alias{new-pdqr}
 \title{Create new pdqr-function}
 \usage{
-new_p(x, type = "infin", ...)
+new_p(x, type, ...)
 
-new_d(x, type = "infin", ...)
+new_d(x, type, ...)
 
-new_q(x, type = "infin", ...)
+new_q(x, type, ...)
 
-new_r(x, type = "infin", ...)
+new_r(x, type, ...)
 }
 \arguments{
 \item{x}{Numeric vector or data frame with appropriate columns (see Details).}

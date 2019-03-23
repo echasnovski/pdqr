@@ -46,7 +46,7 @@ expect_close_op_support <- function(op, in_supp, ref_supp, thres) {
 test_that("Math.pdqr works", {
   # Test 1
   lnorm_x <- seq(0, 100, by = 0.001)
-  d_lnorm <- new_d(data.frame(x = lnorm_x, y = dlnorm(lnorm_x)))
+  d_lnorm <- new_d(data.frame(x = lnorm_x, y = dlnorm(lnorm_x)), "infin")
 
   d_norm_ref <- new_d(
     data.frame(x = x_norm_seq, y = dnorm(x_norm_seq)), "infin"
@@ -286,9 +286,11 @@ test_that("Math.pdqr asserts bad input", {
 # Ops.pdqr ----------------------------------------------------------------
 test_that("Ops.pdqr works", {
   unif_x <- seq(0, 1, by = 0.001)
-  p_unif <- new_p(data.frame(x = unif_x, y = dunif(unif_x)))
+  p_unif <- new_p(data.frame(x = unif_x, y = dunif(unif_x)), "infin")
 
-  p_norm_ref <- new_p(data.frame(x = x_norm_seq, y = dnorm(x_norm_seq)))
+  p_norm_ref <- new_p(
+    data.frame(x = x_norm_seq, y = dnorm(x_norm_seq)), "infin"
+  )
   # Approximation of standard normal as centered sum of 12 uniform
   p_norm_out <- p_unif + p_unif + p_unif + p_unif + p_unif + p_unif +
     p_unif + p_unif + p_unif + p_unif + p_unif + p_unif - 6

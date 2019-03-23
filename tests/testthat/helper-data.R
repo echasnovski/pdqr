@@ -72,22 +72,22 @@ create_user_pdqr <- function(custom_pdqr, ...) {
 p_fin <- new_p(x_fin, "fin")
 p_infin <- new_p(x_infin, "infin")
 user_p <- create_user_pdqr(pbeta, 1, 2)
-p_custom <- new_p(custom_x_tbl)
+p_custom <- new_p(custom_x_tbl, "infin")
 
 # d-functions
 d_fin <- new_d(x_fin, "fin")
 d_infin <- new_d(x_infin, "infin")
 user_d <- create_user_pdqr(dbeta, 1, 2)
-d_custom <- new_d(custom_x_tbl)
+d_custom <- new_d(custom_x_tbl, "infin")
 
 # q-functions
 q_fin <- new_q(x_fin, "fin")
 q_infin <- new_q(x_infin, "infin")
 user_q <- create_user_pdqr(qbeta, 1, 2)
-q_custom <- new_q(custom_x_tbl)
+q_custom <- new_q(custom_x_tbl, "infin")
 
 # r-functions
 r_fin <- new_r(x_fin, "fin")
 r_infin <- new_r(x_infin, "infin")
 user_r <- create_user_pdqr(rbeta, 1, 2)
-r_custom <- new_r(custom_x_tbl)
+r_custom <- new_r(custom_x_tbl, "infin")

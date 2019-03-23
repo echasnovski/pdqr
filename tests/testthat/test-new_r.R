@@ -62,12 +62,12 @@ test_that("new_r's output handles `n = 0`", {
 })
 
 test_that("new_r asserts", {
-  expect_warning(new_r(c(1, 0, NA)), "x.*NA.*removed")
-  expect_warning(new_r(c(1, 0, NaN)), "x.*NaN.*removed")
-  expect_warning(new_r(c(1, 0, Inf)), "x.*infinite.*removed")
+  expect_warning(new_r(c(1, 0, NA), "infin"), "x.*NA.*removed")
+  expect_warning(new_r(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
+  expect_warning(new_r(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
 
-  expect_error(new_r("a"), "x.*numeric.*data.*frame")
-  expect_error(new_r(numeric(0)), "x.*empty")
+  expect_error(new_r("a", "infin"), "x.*numeric.*data.*frame")
+  expect_error(new_r(numeric(0), "infin"), "x.*empty")
   expect_error(new_r(x_fin, type = 1), "type.*string")
   expect_error(new_r(x_fin, type = "a"), "type.*fin.*infin")
 })
