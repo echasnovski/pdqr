@@ -71,8 +71,12 @@ my_d <- new_d(x, "infin")
 
 my_p <- as_p(my_d)
 
-# Convert some other function to be a "proper" pdqr-function
+# Convert "honored" function to be a "proper" pdqr-function
 p_unif <- as_p(punif)
 r_beta <- as_r(rbeta, shape1 = 2, shape2 = 2)
+d_pois <- as_d(dpois, lambda = 5)
+
+# Convert some other function to be a "proper" pdqr-function
+my_d_quadr <- as_d(function(x) {0.75*(1 - x^2)}, support = c(-1, 1))
 
 }

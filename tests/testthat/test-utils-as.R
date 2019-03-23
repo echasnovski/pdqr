@@ -31,6 +31,15 @@ test_that("honored_distr_supp supports all honored distributions", {
 
   p <- 1e-6
   big_p <- 1e3 * p
+
+  # "fin"
+  expect_honored("binom", qbinom, c(0, 1), size = 10, prob = 0.1)
+  expect_honored("geom", qgeom, c(0, 1-p), prob = 0.1)
+  expect_honored("hyper", qhyper, c(0, 1), m = 3, n = 3, k = 2)
+  expect_honored("nbinom", qnbinom, c(p, 1 - p), size = 10, prob = 0.1)
+  expect_honored("pois", qpois, c(p, 1 - p), lambda = 5)
+
+  # "infin"
   expect_honored("beta", qbeta, c(p, 1 - p), shape1 = 7, shape2 = 1)
   expect_honored("cauchy", qcauchy, c(big_p, 1 - big_p), location = 100)
   expect_honored("chisq", qchisq, c(p, 1 - p), df = 100)

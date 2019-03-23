@@ -1,12 +1,17 @@
 # Honored distributions ---------------------------------------------------
 # These are all continuous distributions from 'stats' package
 stats_distrs <- c(
+  # "fin"
+  "binom", "geom", "hyper", "nbinom", "pois",
+  # "infin"
   "beta", "cauchy", "chisq", "exp", "f", "gamma", "lnorm", "norm", "t", "unif",
   "weibull"
 )
+stats_types <- c(rep("fin", 5), rep("infin", 11))
 
 stats_distrs_ftypes <- rep(c("p", "d", "q", "r"), times = length(stats_distrs))
 stats_distrs_vec <- rep(stats_distrs, each = 4)
+stats_types_vec <- rep(stats_types, each = 4)
 stats_distrs_funs <- paste0(stats_distrs_ftypes, stats_distrs_vec)
 
 stats_distrs_d_funs <- paste0("d", stats_distrs_vec)
@@ -32,6 +37,7 @@ stats_distrs_q_funs <- paste0("q", stats_distrs_vec)
 honored_distrs <- data.frame(
   package = "stats",
   distr   = stats_distrs_vec,
+  type    = stats_types_vec,
   ftype   = stats_distrs_ftypes,
   fun     = stats_distrs_funs,
   d_fun   = stats_distrs_d_funs,

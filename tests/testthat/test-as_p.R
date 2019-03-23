@@ -38,7 +38,26 @@ p_list <- list(
 
 
 # as_p.default ------------------------------------------------------------
-test_that("as_p.default honors special distributions", {
+test_that("as_p.default honors special 'fin' distributions", {
+  # Originally finite support
+  expect_ref_x_tbl(
+    as_p(pbinom, size = 10, prob = 0.1),
+    data.frame(x = 0:10, prob = dbinom(0:10, size = 10, prob = 0.1))
+  )
+
+  # Artificially finite support
+  p_pois <- as_p(ppois, lambda = 100)
+  pois_x_tbl <- meta_x_tbl(p_pois)
+  pois_supp <- qpois(c(1e-6, 1 - 1e-6), lambda = 100)
+  pois_x_vec <- pois_supp[1]:pois_supp[2]
+  expect_equal(pois_x_tbl[["x"]], pois_x_vec)
+  # Probability isn't exact because tail trimming is done
+  expect_equal(
+    pois_x_tbl[["prob"]], dpois(pois_x_vec, lambda = 100), tolerance = 1e-7
+  )
+})
+
+test_that("as_p.default honors special 'infin' distributions", {
   # Standard uniform
   out_unif <- as_p(punif)
   out_unif_ref <- as_p(function(x) {punif(x)}, c(0, 1))
