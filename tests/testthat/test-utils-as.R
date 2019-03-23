@@ -31,7 +31,7 @@ test_that("honored_distr_supp supports all honored distributions", {
 
   p <- 1e-6
   big_p <- 1e3 * p
-  expect_honored("beta", qbeta, c(0, 1), shape1 = 7, shape2 = 1)
+  expect_honored("beta", qbeta, c(p, 1 - p), shape1 = 7, shape2 = 1)
   expect_honored("cauchy", qcauchy, c(big_p, 1 - big_p), location = 100)
   expect_honored("chisq", qchisq, c(p, 1 - p), df = 100)
   expect_honored("exp", qexp, c(0, 1 - p), rate = 0.01)

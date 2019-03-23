@@ -84,15 +84,17 @@ honored_distr_info <- function(f_name, f) {
 }
 
 honored_distr_supp <- function(distr, q_fun, ..., p = 1e-6) {
-  if (distr %in% c("beta", "unif")) {
+  if (distr %in% c("unif")) {
     distr_edge_quantiles <- c(0, 1)
   } else if (distr %in% c("exp")) {
     distr_edge_quantiles <- c(0, 1 - p)
   } else if (
     distr %in% c(
-      "chisq", "f", "gamma", "lnorm", "norm", "t", "weibull"
+      "beta", "chisq", "f", "gamma", "lnorm", "norm", "t", "weibull"
     )
   ) {
+    # Putting "beta" distribution here because with large `shape1` and/or
+    # `shape2` parameters most probability lies far away from 0 and/or 1.
     # In cases of distributions "chisq", "f", "gamma", "lnorm", "weibull" `p` is
     # used for the left edge quantile instead of zero because there are
     # parameters with which most probability lies far away from zero.
