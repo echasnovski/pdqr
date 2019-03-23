@@ -17,7 +17,7 @@ new_r_fin <- function(x_tbl) {
 
   function(n) {
     # Not using `assert_type()` for speed reasons
-    if (!is_single_number(n, min_val = 0)) {
+    if (!(is_single_number(n, min_val = 0) || (length(n) == 0))) {
       stop_collapse(
         "`n` must be 'single non-negative number', not '", get_type(n), "'."
       )
@@ -38,7 +38,7 @@ new_r_infin <- function(x_tbl) {
 
   function(n) {
     # Not using `assert_type()` for speed reasons
-    if (!is_single_number(n, min_val = 0)) {
+    if (!(is_single_number(n, min_val = 0) || (length(n) == 0))) {
       stop_collapse(
         "`n` must be 'single non-negative number', not '", get_type(n), "'."
       )

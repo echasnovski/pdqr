@@ -35,6 +35,11 @@ test_that("new_r imputes data frame input", {
   expect_x_tbl_imputation(new_r)
 })
 
+test_that("new_r's output works with 'edge case' inputs", {
+  expect_equal(r_fin(numeric(0)), numeric(0))
+  expect_equal(r_infin(numeric(0)), numeric(0))
+})
+
 test_that("new_r's output asserts bad input", {
   expect_error(r_fin("a"), "`n`.*number")
   expect_error(r_fin(NA_real_), "`n`.*number")
