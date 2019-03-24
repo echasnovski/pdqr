@@ -53,6 +53,7 @@ Collate:
     'utils-as.R'
     'utils-form.R'
     'utils-new.R'
+    'utils-summ.R'
     'utils.R'
     'x_tbl.R'
     'zzz.R'

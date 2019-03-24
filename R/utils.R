@@ -154,6 +154,10 @@ seq_between <- function(seq_range, ...) {
   seq(from = seq_range[1], to = seq_range[2], ...)
 }
 
+dotprod <- function(x, y) {
+  sum(x*y, na.rm = TRUE)
+}
+
 coalesce_pair <- function(x, y) {
   res <- x
   x_is_na <- is.na(x)

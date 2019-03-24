@@ -189,6 +189,13 @@ test_that("seq_between works",  {
 })
 
 
+# dotprod -----------------------------------------------------------------
+test_that("dotprod works", {
+  expect_equal(dotprod(1:10, 10:1), sum((1:10) * (10:1)))
+  expect_equal(dotprod(c(1, NA, 3, NA), c(1, 2, NA, NA)), 1)
+})
+
+
 # coalesce_pair -----------------------------------------------------------
 test_that("coalesce_pair works", {
   expect_equal(
