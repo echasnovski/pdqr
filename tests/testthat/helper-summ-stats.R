@@ -3,9 +3,9 @@
 stat_binom <- list(
   d_fun = as_d(stats::dbinom, size = 10, prob = 0.3),
   mean = 3, median = 3, mode = 3,
-  var = 0.21, sd = sqrt(0.21),
-  skewness = 0.4/sqrt(0.21), ex_kurtosis = -0.26/0.21,
-  entropy = 0.5*log(2*pi*exp(1) * 0.21)
+  var = 2.1, sd = sqrt(2.1),
+  skewness = 0.4/sqrt(2.1), ex_kurtosis = -0.26/2.1,
+  entropy = 0.5*log(2*pi*exp(1) * 2.1)
 )
 
 stat_pois <- list(
