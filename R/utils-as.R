@@ -128,7 +128,24 @@ honored_distr_supp <- function(distr, q_fun, ..., p = 1e-6) {
 
   # `q_fun` represents quantile function of distribution. It should take
   # quantiles as first argument and `...` as others
-  q_fun(distr_edge_quantiles, ...)
+  supp <- q_fun(distr_edge_quantiles, ...)
+
+  # Stretching is needed for "beauty" purpose and to correctly handle density
+  # going to infinity. In latter case 'pdqr' "infinity imputation" works better
+  # than stepping a little bit aside from edge.
+  stretch_to_total_supp(supp, total_supp = q_fun(c(0, 1), ...))
+}
+
+stretch_to_total_supp <- function(supp, total_supp, h = 1e-6) {
+  delta <- h * diff(supp)
+  if (supp[1] - total_supp[1] <= delta) {
+    supp[1] <- total_supp[1]
+  }
+  if (total_supp[2] - supp[2] <= delta) {
+    supp[2] <- total_supp[2]
+  }
+
+  supp
 }
 
 

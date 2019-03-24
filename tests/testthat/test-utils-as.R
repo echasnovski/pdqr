@@ -40,22 +40,34 @@ test_that("honored_distr_supp supports all honored distributions", {
   expect_honored("pois", qpois, c(p, 1 - p), lambda = 5)
 
   # "infin"
-  expect_honored("beta", qbeta, c(p, 1 - p), shape1 = 7, shape2 = 1)
+  expect_honored("beta", qbeta, c(p, 1 - p), shape1 = 20, shape2 = 20)
   expect_honored("cauchy", qcauchy, c(big_p, 1 - big_p), location = 100)
   expect_honored("chisq", qchisq, c(p, 1 - p), df = 100)
   expect_honored("exp", qexp, c(0, 1 - p), rate = 0.01)
   expect_honored("f", qf, c(p, 1 - p), df1 = 100, df2 = 100)
   expect_honored("gamma", qgamma, c(p, 1 - p), shape = 10)
-  expect_honored("lnorm", qlnorm, c(p, 1 - p))
+  expect_honored("lnorm", qlnorm, c(p, 1 - p), meanlog = 2)
   expect_honored("norm", qnorm, c(p, 1 - p), mean = 100, sd = 0.1)
   expect_honored("t", qt, c(p, 1 - p), df = 100)
   expect_honored("unif", qunif, c(0, 1), min = -10, max = 100)
   expect_honored("weibull", qweibull, c(p, 1 - p), shape = 10)
 })
 
+test_that("honored_distr_supp stretches to total support", {
+  expect_identical(
+    honored_distr_supp("beta", qbeta, shape1 = 7, shape2 = 1)[2], 1
+  )
+  expect_identical(honored_distr_supp("chisq", qchisq, df = 1)[1], 0)
+  expect_identical(honored_distr_supp("gamma", qgamma, shape = 0.5)[1], 0)
+})
+
 test_that("honored_distr_supp stops on not honored properly distribution", {
   expect_error(honored_distr_supp("hello", qunif), '"hello".*not honored')
 })
+
+
+# stretch_to_total_supp ---------------------------------------------------
+# Tested in `honored_distr_supp()`
 
 
 # y_from_p_grid -----------------------------------------------------------
