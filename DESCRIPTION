@@ -49,6 +49,7 @@ Collate:
     'plot.R'
     'print.R'
     'summ_distr_tbl.R'
+    'summ_location.R'
     'summ_pval.R'
     'utils-as.R'
     'utils-form.R'

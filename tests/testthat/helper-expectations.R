@@ -54,6 +54,12 @@ expect_equal_r_distr <- function(f_1, f_2, n_sample = 10000,
   expect_equal_meta(f_1, f_2, meta_not_check)
 }
 
+expect_equal_stat <- function(summ_fun, stat_data, entry, thres = 1e-6, ...) {
+  summ_stat <- summ_fun(stat_data[["d_fun"]], ...)
+
+  expect_equal(summ_stat, stat_data[[entry]], tolerance = thres)
+}
+
 expect_equal_meta <- function(f_1, f_2, meta_not_check = character(0)) {
   expect_equal(class(f_1), class(f_2))
 
