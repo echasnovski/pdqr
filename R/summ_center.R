@@ -11,6 +11,12 @@ summ_mean <- function(f) {
   )
 }
 
+summ_median <- function(f) {
+  assert_pdqr_fun(f)
+
+  as_q(f)(0.5)
+}
+
 summ_mean_infin <- function(x_tbl) {
   n <- nrow(x_tbl)
   x_lag <- x_tbl[["x"]][-n]
