@@ -1,4 +1,4 @@
-context("test-summ_location")
+context("test-summ_center")
 
 
 # summ_mean ---------------------------------------------------------------
