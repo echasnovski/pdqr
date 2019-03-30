@@ -25,6 +25,31 @@ test_that("summ_mean works with common 'infin' functions", {
 test_that("summ_mean works with dirac-like 'infin' functions", {
   d_dirac <- new_d(2, "infin")
   expect_equal(summ_mean(d_dirac), 2)
+
+  d_dirac_2 <- form_mix(
+    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+  )
+  expect_equal(summ_mean(d_dirac_2), 1.3)
+})
+
+test_that("summ_mean works with winsorized 'infin' functions", {
+  d_wins <- form_resupport(
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    support = c(0.25, 0.85),
+    method = "winsor"
+  )
+  expect_equal(summ_mean(d_wins), 0.25*0.25 + 0.55*0.6 + 0.85*0.15)
+})
+
+test_that("summ_mean works with zero probability spaces in distribution", {
+  expect_equal(
+    summ_mean(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "fin")),
+    2.2
+  )
+  expect_equal(
+    summ_mean(new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "infin")),
+    3.5
+  )
 })
 
 test_that("summ_mean works with 'infin' functions with few intervals", {
@@ -74,6 +99,36 @@ test_that("summ_median works with common 'infin' functions", {
 test_that("summ_median works with dirac-like 'infin' functions", {
   d_dirac <- new_d(2, "infin")
   expect_equal(summ_median(d_dirac), 2)
+
+  # Using equal weights ends up with numerical accuracy representation of
+  # `cumprob` field in `meta_x_tbl(d_dirac_2)`. Therefore, output of
+  # `summ_median(d_dirac_2)` is 2.
+  d_dirac_2 <- form_mix(
+    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+  )
+  expect_equal(summ_median(d_dirac_2), 1)
+})
+
+test_that("summ_median works with winsorized 'infin' functions", {
+  d_wins <- form_resupport(
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    support = c(0.25, 0.85),
+    method = "winsor"
+  )
+  expect_equal(summ_median(d_wins), 0.5)
+})
+
+test_that("summ_median works with zero probability spaces in distribution", {
+  expect_equal(
+    summ_median(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "fin")),
+    1
+  )
+  expect_equal(
+    summ_median(
+      new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "infin")
+    ),
+    3
+  )
 })
 
 test_that("summ_median works with 'infin' functions with few intervals", {
