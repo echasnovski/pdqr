@@ -9,6 +9,28 @@ expect_local_mode_equals_global <- function(d_fun) {
 }
 
 
+# summ_center -------------------------------------------------------------
+# More thorough testing is done in other "center" `summ_*()` functions
+test_that("summ_center works", {
+  # "fin"
+  expect_equal(summ_center(d_fin, "mean"), summ_mean(d_fin))
+  expect_equal(summ_center(d_fin, "median"), summ_median(d_fin))
+  expect_equal(summ_center(d_fin, "mode"), summ_mode(d_fin))
+
+  # "infin"
+  expect_equal(summ_center(d_infin, "mean"), summ_mean(d_infin))
+  expect_equal(summ_center(d_infin, "median"), summ_median(d_infin))
+  expect_equal(summ_center(d_infin, "mode"), summ_mode(d_infin))
+})
+
+test_that("summ_center asserts bad input", {
+  expect_error(summ_center("a"), "`f`.*function")
+  expect_error(summ_center(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_center(d_fin, method = 1), "`method`.*string")
+  expect_error(summ_center(d_fin, method = "a"), "`method`.*one of")
+})
+
+
 # summ_mean ---------------------------------------------------------------
 test_that("summ_mean works with 'fin' functions", {
   expect_equal_stat(summ_mean, stat_list[["binom"]], "mean")

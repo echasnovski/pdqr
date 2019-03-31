@@ -1,3 +1,16 @@
+summ_center <- function(f, method = "mean") {
+  assert_pdqr_fun(f)
+  assert_type(method, is_string)
+  assert_in_set(method, c("mean", "median", "mode"))
+
+  switch(
+    method,
+    mean = summ_mean(f),
+    median = summ_median(f),
+    mode = summ_mode(f, method = "global")
+  )
+}
+
 summ_mean <- function(f) {
   assert_pdqr_fun(f)
 
