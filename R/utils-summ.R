@@ -1,11 +1,11 @@
-# Computes `E[X^level]`
-raw_moment <- function(f, level) {
+# Computes `E[X^order]`
+raw_moment <- function(f, order) {
   x_tbl <- meta_x_tbl(f)
 
   switch(
     meta_type(f),
-    fin = dotprod(x_tbl[["x"]]^level, x_tbl[["prob"]]),
-    infin = raw_moment_infin(x_tbl, level)
+    fin = dotprod(x_tbl[["x"]]^order, x_tbl[["prob"]]),
+    infin = raw_moment_infin(x_tbl, order)
   )
 }
 
