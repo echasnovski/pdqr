@@ -1,6 +1,28 @@
 context("test-summ_dispersion")
 
 
+# summ_dispersion ---------------------------------------------------------
+# More thorough testing is done in other "dispersion" `summ_*()` functions
+test_that("summ_dispersion works", {
+  # "fin"
+  expect_equal(summ_dispersion(d_fin, "var"), summ_var(d_fin))
+  expect_equal(summ_dispersion(d_fin, "sd"), summ_sd(d_fin))
+  expect_equal(summ_dispersion(d_fin, "iqr"), summ_iqr(d_fin))
+
+  # "infin"
+  expect_equal(summ_dispersion(d_infin, "var"), summ_var(d_infin))
+  expect_equal(summ_dispersion(d_infin, "sd"), summ_sd(d_infin))
+  expect_equal(summ_dispersion(d_infin, "iqr"), summ_iqr(d_infin))
+})
+
+test_that("summ_dispersion validates input", {
+  expect_error(summ_dispersion("a"), "`f`.*function")
+  expect_error(summ_dispersion(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_dispersion(d_fin, method = 1), "`method`.*string")
+  expect_error(summ_dispersion(d_fin, method = "a"), "`method`.*one of")
+})
+
+
 # summ_var ----------------------------------------------------------------
 test_that("summ_var works with 'fin' functions", {
   expect_equal_stat(summ_var, stat_list[["binom"]], "var")

@@ -1,3 +1,16 @@
+summ_dispersion <- function(f, method = "sd") {
+  # `f` is validated inside `summ_*()` calls
+  assert_type(method, is_string)
+  assert_in_set(method, c("var", "sd", "iqr"))
+
+  switch(
+    method,
+    var = summ_var(f),
+    sd = summ_sd(f),
+    iqr = summ_iqr(f)
+  )
+}
+
 summ_var <- function(f) {
   # `f` is validated inside `summ_mean()`
   # `max(*, 0)` is used to take into account numerical representation accuracy
