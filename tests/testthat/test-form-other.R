@@ -190,3 +190,99 @@ test_that("form_smooth validates input", {
   expect_error(form_smooth(d_fin, n_sample = 1), "`n_sample`.*more than 1")
   expect_error(form_smooth(d_fin, args_new = "a"), "`args_new`.*list")
 })
+
+
+# form_estimate -----------------------------------------------------------
+test_that("form_estimate works", {
+  # From Central limit theorem mean estimate of n points should have mean =
+  # `mean_input` and sd = `sd_input / sqrt(n)` (here `*_input` are moments of
+  # input distribution and `sqrt(n)` - square root of estimator's sample size).
+
+  # Type "fin"
+  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
+  mean_cur_d <- 0.4*1 + 0.3*2
+  sd_cur_d <- sqrt((0.4*1^2 + 0.3*2^2) - (mean_cur_d)^2)
+
+  fin_mean_est <- form_estimate(cur_d, mean, sample_size = 16, n_sample = 1000)
+  expect_is(fin_mean_est, "d")
+  expect_true(meta_type(fin_mean_est) == "fin")
+
+    # Testing Central limit theorem
+  expect_true(abs(summ_mean(fin_mean_est) - mean_cur_d) <= 2e-2)
+  expect_true(abs(summ_sd(fin_mean_est) - sd_cur_d / 4) <= 1e-3)
+
+  # Type "infin"
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  mean_d_unif <- 0.5
+  sd_d_unif <- 1 / sqrt(12)
+
+  infin_mean_est <- form_estimate(d_unif, mean, 16, n_sample = 1000)
+  expect_is(infin_mean_est, "d")
+  expect_true(meta_type(infin_mean_est) == "infin")
+
+    # Testing Central limit theorem
+  expect_true(abs(summ_mean(infin_mean_est) - mean_d_unif) <= 1e-2)
+  expect_true(abs(summ_sd(infin_mean_est) - sd_d_unif / 4) <= 4e-3)
+})
+
+test_that("form_estimate uses `...` as arguments to `estimate`", {
+  dummy_estimate <- function(x, y) {y}
+
+  est <- form_estimate(d_fin, dummy_estimate, 10, y = 10)
+  expect_ref_x_tbl(est, data.frame(x = 10, prob = 1))
+})
+
+test_that("form_estimate uses `n_sample` argument", {
+  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
+
+  mean_est <- form_estimate(cur_d, mean, 10, n_sample = 2)
+  expect_true(nrow(meta_x_tbl(mean_est)) <= 2)
+})
+
+test_that("form_estimate uses `args_new` as arguments to `new_*()`", {
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+
+  infin_mean_est <- form_estimate(
+    d_unif, mean, 16, n_sample = 100, args_new = list(n = 100)
+  )
+
+  expect_true(nrow(meta_x_tbl(infin_mean_est)) == 100)
+})
+
+test_that("form_estimate allows `type` in `args_new", {
+  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
+
+  mean_est <- form_estimate(
+    cur_d, estimate = mean, sample_size = 10,
+    n_sample = 10, args_new = list(type = "infin")
+  )
+  expect_equal(meta_type(mean_est), "infin")
+})
+
+test_that("form_estimate checks that `estimate` returns single number", {
+  expect_error(
+    form_estimate(d_fin, function(x) {"a"}, 10),
+    "output.*`estimate`.*single.*number"
+  )
+  expect_error(
+    form_estimate(d_fin, function(x) {1:3}, 10),
+    "output.*`estimate`.*single.*number"
+  )
+})
+
+test_that("form_estimate asserts bad input", {
+  expect_error(form_estimate("a", mean, 10), "`f`.*function")
+  expect_error(form_estimate(function(x) {x}, mean, 10), "`f`.*pdqr")
+  expect_error(form_estimate(d_fin, "a", 10), "`estimate`.*function")
+  expect_error(form_estimate(d_fin, mean, "a"), "`sample_size`.*single.*number")
+  expect_error(form_estimate(d_fin, mean, 0), "`sample_size`.*positive")
+  expect_error(
+    form_estimate(d_fin, mean, 10, n_sample = "a"), "`n_sample`.*single.*number"
+  )
+  expect_error(
+    form_estimate(d_fin, mean, 10, n_sample = 0), "`n_sample`.*positive"
+  )
+  expect_error(
+    form_estimate(d_fin, mean, 10, args_new = "a"), "`args_new`.*list"
+  )
+})
