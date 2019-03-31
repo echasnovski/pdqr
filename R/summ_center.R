@@ -1,5 +1,5 @@
 summ_center <- function(f, method = "mean") {
-  assert_pdqr_fun(f)
+  # `f` is validated inside `summ_*()` calls
   assert_type(method, is_string)
   assert_in_set(method, c("mean", "median", "mode"))
 
