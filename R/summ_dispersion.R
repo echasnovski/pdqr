@@ -8,3 +8,11 @@ summ_sd <- function(f) {
   # `f` is validated inside `summ_var()`
   sqrt(summ_var(f))
 }
+
+summ_iqr <- function(f) {
+  assert_pdqr_fun(f)
+
+  quarts <- as_q(f)(c(0.25, 0.75))
+
+  quarts[2] - quarts[1]
+}

@@ -113,3 +113,54 @@ test_that("summ_sd validates input", {
   expect_error(summ_sd(function(x) {x}), "`f`.*pdqr")
 })
 
+
+# summ_iqr ----------------------------------------------------------------
+test_that("summ_iqr works with 'fin' functions", {
+  expect_equal_stat(summ_iqr, stat_list[["binom"]], "iqr")
+  expect_equal_stat(summ_iqr, stat_list[["pois"]], "iqr")
+})
+
+test_that("summ_iqr works with common 'infin' functions", {
+  expect_equal_stat(summ_iqr, stat_list[["beta"]], "iqr")
+  # Big threshold because original density goes to infinity at edges
+  expect_equal_stat(summ_iqr, stat_list[["beta_inf"]], "iqr", thres = 2e-2)
+  expect_equal_stat(summ_iqr, stat_list[["chisq"]], "iqr", thres = 1e-5)
+  # Big threshold because original density goes to infinity at left edge
+  expect_equal_stat(summ_iqr, stat_list[["chisq_inf"]], "iqr", thres = 2e-2)
+  expect_equal_stat(summ_iqr, stat_list[["exp"]], "iqr", thres = 5e-6)
+  expect_equal_stat(summ_iqr, stat_list[["norm"]], "iqr", thres = 6e-6)
+  expect_equal_stat(summ_iqr, stat_list[["norm_2"]], "iqr")
+  expect_equal_stat(summ_iqr, stat_list[["unif"]], "iqr")
+})
+
+test_that("summ_iqr works with dirac-like 'infin' functions", {
+  d_dirac <- new_d(2, "infin")
+  expect_equal(summ_iqr(d_dirac), 0, tolerance = 5e-8)
+
+  d_dirac_2 <- form_mix(
+    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+  )
+  expect_equal(summ_iqr(d_dirac_2), 1)
+})
+
+test_that("summ_iqr works with winsorized 'infin' functions", {
+  d_wins <- form_resupport(
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    support = c(0.25, 0.85),
+    method = "winsor"
+  )
+  expect_equal(summ_iqr(d_wins), 0.5)
+})
+
+test_that("summ_iqr works with 'infin' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+  expect_equal(summ_iqr(d_unif_1), 0.5)
+
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  expect_equal(summ_iqr(d_unif_2), 1)
+})
+
+test_that("summ_iqr validates input", {
+  expect_error(summ_iqr("a"), "`f`.*function")
+  expect_error(summ_iqr(function(x) {x}), "`f`.*pdqr")
+})
