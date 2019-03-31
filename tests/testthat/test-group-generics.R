@@ -278,7 +278,7 @@ test_that("Math.pdqr method for `sign()` works", {
   )
 })
 
-test_that("Math.pdqr asserts bad input", {
+test_that("Math.pdqr validates input", {
   expect_error(log(bad_pdqr), "`x`")
 })
 
@@ -407,7 +407,7 @@ test_that("Ops.pdqr works with generics which take one argument", {
   expect_equal((!d_infin)(1), 0)
 })
 
-test_that("Ops.pdqr asserts bad input with generics which take one argument", {
+test_that("Ops.pdqr validates input with generics which take one argument", {
   expect_error(+bad_pdqr, "`e1`")
   expect_error(-bad_pdqr, "`e1`")
   expect_error(!bad_pdqr, "`e1`")
@@ -453,7 +453,7 @@ test_that("Ops.pdqr works in case of linear operation", {
   expect_lin_trans(d_dirac / 10, f_in = d_dirac, ref_supp = d_dirac_supp / 10)
 })
 
-test_that("Ops.pdqr asserts bad input in case of linear operation", {
+test_that("Ops.pdqr validates input in case of linear operation", {
   expect_error(bad_pdqr + 1, "`e1`")
   expect_error(1 + bad_pdqr, "`e2`")
   expect_error(bad_pdqr - 1, "`e1`")
@@ -506,7 +506,7 @@ test_that("Ops.pdqr works in case of comparison", {
   expect_equal_x_tbl(d_infin != d_dirac, form_not_equal(d_infin, d_dirac))
 })
 
-test_that("Ops.pdqr asserts bad input in case of comparison", {
+test_that("Ops.pdqr validates input in case of comparison", {
   # `>=`
   expect_error(bad_pdqr >= 1, "`e1`")
   expect_error(1 >= bad_pdqr, "`e2`")
@@ -584,7 +584,7 @@ test_that("Ops.pdqr works in case of logical AND/OR", {
   expect_prob_true(d_infin | d_infin, 1)
 })
 
-test_that("Ops.pdqr asserts bad input in case of logical AND/OR", {
+test_that("Ops.pdqr validates input in case of logical AND/OR", {
   # `&`
   expect_error(bad_pdqr & 1, "`e1`")
   expect_error(1 & bad_pdqr, "`e2`")
@@ -602,7 +602,7 @@ test_that("Ops.pdqr asserts bad input in case of logical AND/OR", {
   expect_error(d_fin | "a", "`e2`.*pdqr-function.*number")
 })
 
-test_that("Ops.pdqr asserts bad input", {
+test_that("Ops.pdqr validates input", {
   expect_error(bad_pdqr + d_fin, "`e1`")
   expect_error(d_fin - bad_pdqr_2, "`e2`")
   expect_error(bad_pdqr * bad_pdqr_2, "`e1`")

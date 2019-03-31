@@ -286,7 +286,7 @@ test_that("as_p.default throws error if total probability on support is zero", {
   expect_error(as_p(fam_beta$p, c(1.5, 2)), "probability.*positive")
 })
 
-test_that("as_p.default throws errors on bad input", {
+test_that("as_p.default validates input", {
   expect_error(as_p("a", c(0, 1)), "`f`.*function")
   expect_error(as_p(fam_norm$p, c(2, 1)), "`support`")
   expect_error(
@@ -324,7 +324,7 @@ test_that('as_p.pdqr works with "r"', {
   expect_equal_distr(as_p(r_infin), p_infin, grid = x_infin_vec_ext)
 })
 
-test_that("as_p.pdqr throws errors on bad input", {
+test_that("as_p.pdqr validates input", {
   expect_error(as_p(structure(user_p, class = c("d", "pdqr"))), "`f`")
 })
 

@@ -61,7 +61,7 @@ test_that("summ_pval adjusts multiple p-values", {
   expect_adjust(p_infin, obs_vec, "none")
 })
 
-test_that("summ_pval excepts not only objects of class 'p'", {
+test_that("summ_pval accepts not only objects of class 'p'", {
   expect_pval(q_fin, 5, c(0.55, 0.55, 0.5, 1))
 
   expect_pval(d_infin, 0, c(0.574, 0.574, 0.426, 0.852))
@@ -72,7 +72,7 @@ test_that("summ_pval excepts not only objects of class 'p'", {
   expect_pval(r_custom, 0.51, c(0.24, 0.24, 0.76, 0.48), digits = 2)
 })
 
-test_that("summ_pval throws errors", {
+test_that("summ_pval validates input", {
   expect_error(summ_pval(user_p, 1), "f.*pdqr")
   expect_error(
     summ_pval(structure(user_d, class = c("d", "pdqr")), 1),

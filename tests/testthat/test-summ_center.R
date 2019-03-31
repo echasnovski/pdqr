@@ -23,7 +23,7 @@ test_that("summ_center works", {
   expect_equal(summ_center(d_infin, "mode"), summ_mode(d_infin))
 })
 
-test_that("summ_center asserts bad input", {
+test_that("summ_center validates input", {
   expect_error(summ_center("a"), "`f`.*function")
   expect_error(summ_center(function(x) {x}), "`f`.*pdqr")
   expect_error(summ_center(d_fin, method = 1), "`method`.*string")
@@ -90,7 +90,7 @@ test_that("summ_mean works with 'infin' functions with few intervals", {
   expect_equal(summ_mean(d_unif_2), 1)
 })
 
-test_that("summ_mean asserts bad input", {
+test_that("summ_mean validates input", {
   expect_error(summ_mean("a"), "`f`.*function")
   expect_error(summ_mean(function(x) {x}), "`f`.*pdqr")
 })
@@ -169,7 +169,7 @@ test_that("summ_median works with 'infin' functions with few intervals", {
   expect_equal(summ_median(d_unif_2), 1)
 })
 
-test_that("summ_median asserts bad input", {
+test_that("summ_median validates input", {
   expect_error(summ_median("a"), "`f`.*function")
   expect_error(summ_median(function(x) {x}), "`f`.*pdqr")
 })
@@ -274,7 +274,7 @@ test_that("summ_mode works with plateaus in distribution", {
   expect_equal(summ_mode(d_plateau_infin_2, method = "local"), c(2, 3, 4))
 })
 
-test_that("summ_mode asserts bad input", {
+test_that("summ_mode validates input", {
   expect_error(summ_mode("a"), "`f`.*function")
   expect_error(summ_mode(function(x) {x}), "`f`.*pdqr")
   expect_error(summ_mode(d_fin, method = 1), "`method`.*string")

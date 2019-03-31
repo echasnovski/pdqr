@@ -40,7 +40,7 @@ test_that("new_r's output works with 'edge case' inputs", {
   expect_equal(r_infin(numeric(0)), numeric(0))
 })
 
-test_that("new_r's output asserts bad input", {
+test_that("new_r's output validates input", {
   expect_error(r_fin("a"), "`n`.*number")
   expect_error(r_fin(NA_real_), "`n`.*number")
   expect_error(r_fin(NaN), "`n`.*number")
@@ -61,11 +61,13 @@ test_that("new_r's output handles `n = 0`", {
   expect_equal(r_infin(0), numeric(0))
 })
 
-test_that("new_r asserts", {
+test_that("new_r warns about bad `x` elements", {
   expect_warning(new_r(c(1, 0, NA), "infin"), "x.*NA.*removed")
   expect_warning(new_r(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
   expect_warning(new_r(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
+})
 
+test_that("new_r validates input", {
   expect_error(new_r("a", "infin"), "x.*numeric.*data.*frame")
   expect_error(new_r(numeric(0), "infin"), "x.*empty")
   expect_error(new_r(x_fin, type = 1), "type.*string")

@@ -95,7 +95,7 @@ test_that("form_retype returns input when types match", {
   expect_identical(form_retype(d_infin, "infin", method = "dirac"), d_infin)
 })
 
-test_that("form_retype asserts bad input", {
+test_that("form_retype validates input", {
   expect_error(form_retype("a", "fin"), "`f`.*function")
   expect_error(form_retype(d_fin, "a"), '`type`.*"fin".*"infin"')
   expect_error(form_retype(d_fin, "infin", 1), '`method`.*string')

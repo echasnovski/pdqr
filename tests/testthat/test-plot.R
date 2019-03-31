@@ -79,7 +79,7 @@ test_that("plot.p and lines.p respect `n_grid` argument", {
   )
 })
 
-test_that("plot.p throws error with corrupt input", {
+test_that("plot.p validates input", {
   f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(plot(f_no_type, "x.*proper.*type"))
@@ -181,7 +181,7 @@ test_that("plot.d handles dirac-like entries in 'x_tbl'",  {
   )
 })
 
-test_that("plot.d throws error with corrupt input", {
+test_that("plot.d validates input", {
   expect_error(
     plot(structure(user_d, class = c("d", "pdqr"))), "x.*proper.*type"
   )
@@ -259,7 +259,7 @@ test_that("plot.q and lines.q respect `n_grid` argument", {
   )
 })
 
-test_that("plot.q throws error with corrupt input", {
+test_that("plot.q validates input", {
   expect_error(
     plot(structure(user_q, class = c("q", "pdqr"))), "x.*proper.*type"
   )
@@ -309,7 +309,7 @@ test_that("plot.r respects `n_sample` argument", {
   )
 })
 
-test_that("plot.r throws error with corrupt input", {
+test_that("plot.r validates input", {
   expect_error(
     plot(structure(user_r, class = c("r", "pdqr"))), "x.*proper.*type"
   )
@@ -346,7 +346,7 @@ test_that("plot.r throws error with corrupt input", {
 
 # lines.p -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
-test_that("lines.p throws error with corrupt input", {
+test_that("lines.p validates input", {
   f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(lines(f_no_type), "x.*proper.*type")
@@ -355,7 +355,7 @@ test_that("lines.p throws error with corrupt input", {
 
 # lines.d -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
-test_that("lines.d throws error with corrupt input", {
+test_that("lines.d validates input", {
   expect_error(
     lines(structure(user_d, class = c("d", "pdqr"))), "x.*proper.*type"
   )
@@ -364,7 +364,7 @@ test_that("lines.d throws error with corrupt input", {
 
 # lines.q -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
-test_that("lines.q throws error with corrupt input", {
+test_that("lines.q validates input", {
   expect_error(
     lines(structure(user_q, class = c("q", "pdqr"))), "x.*proper.*type"
   )

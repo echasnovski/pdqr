@@ -50,7 +50,7 @@ test_that("new_q's output works with 'edge case' inputs", {
   expect_equal(q_infin(c(0, 1)), x_infin_support)
 })
 
-test_that("new_q's output asserts bad input", {
+test_that("new_q's output validates input", {
   expect_error(q_fin("a"), "`p`.*numeric")
   expect_error(q_infin("a"), "`p`.*numeric")
 })
@@ -86,11 +86,13 @@ test_that("new_q's output returns the smallest `x` with not exceeding `p`", {
   expect_equal(cur_q_infin(c(0, 1)), c(1, 5))
 })
 
-test_that("new_q asserts", {
+test_that("new_q warns about bad `x` elements", {
   expect_warning(new_q(c(1, 0, NA), "infin"), "x.*NA.*removed")
   expect_warning(new_q(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
   expect_warning(new_q(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
+})
 
+test_that("new_q validates input", {
   expect_error(new_q("a", "infin"), "x.*numeric.*data.*frame")
   expect_error(new_q(numeric(0), "infin"), "x.*empty")
   expect_error(new_q(x_fin, type = 1), "type.*string")

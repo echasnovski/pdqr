@@ -344,7 +344,7 @@ test_that("as.d.default properly imputes infinity values", {
   )
 })
 
-test_that("as_d.default throws errors on bad input", {
+test_that("as_d.default validates input", {
   expect_error(as_d("a", c(0, 1)), "`f`.*function")
   expect_error(as_d(fam_norm$d, c(2, 1)), "`support`")
   expect_error(
@@ -382,7 +382,7 @@ test_that('as_d.pdqr works with "r"', {
   expect_equal_distr(as_d(r_infin), d_infin, grid = x_infin_vec_ext)
 })
 
-test_that("as_d.pdqr throws errors on bad input", {
+test_that("as_d.pdqr validates input", {
   expect_error(as_d(structure(user_d, class = c("p", "pdqr"))), "`f`")
 })
 

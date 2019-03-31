@@ -2,7 +2,7 @@ context("test-meta")
 
 
 # meta_all ----------------------------------------------------------------
-test_that("meta_all throws errors on bad input", {
+test_that("meta_all validates input", {
   expect_error(meta_all(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
@@ -18,7 +18,7 @@ test_that("meta_type works", {
   expect_equal(meta_type(input), "a")
 })
 
-test_that("meta_type throws errors on bad input", {
+test_that("meta_type validates input", {
   expect_error(meta_type(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
@@ -34,7 +34,7 @@ test_that("meta_support works", {
   expect_equal(meta_support(input), "a")
 })
 
-test_that("meta_support throws errors on bad input", {
+test_that("meta_support validates input", {
   expect_error(meta_support(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
@@ -50,7 +50,7 @@ test_that("meta_x_tbl works", {
   expect_equal(meta_x_tbl(input), "a")
 })
 
-test_that("meta_x_tbl throws errors on bad input", {
+test_that("meta_x_tbl validates input", {
   expect_error(meta_x_tbl(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}

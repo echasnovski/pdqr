@@ -59,7 +59,7 @@ test_that("new_p's output works with extreme values", {
   expect_equal(p_infin(extreme_vec), c(0, 1))
 })
 
-test_that("new_p's output asserts bad input", {
+test_that("new_p's output validates input", {
   expect_error(p_fin("a"), "`q`.*numeric")
   expect_error(p_infin("a"), "`q`.*numeric")
 })
@@ -90,11 +90,13 @@ test_that("new_p's output is integration of new_d's if `type` = 'infin'", {
   )
 })
 
-test_that("new_p asserts", {
+test_that("new_p warns about bad `x` elements", {
   expect_warning(new_p(c(1, 0, NA), "infin"), "x.*NA.*removed")
   expect_warning(new_p(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
   expect_warning(new_p(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
+})
 
+test_that("new_p validates input", {
   expect_error(new_p("a", "infin"), "x.*numeric.*data.*frame")
   expect_error(new_p(numeric(0), "infin"), "x.*empty")
   expect_error(new_p(x_fin, type = 1), "type.*string")

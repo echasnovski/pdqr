@@ -331,7 +331,7 @@ test_that("form_resupport returns self when appropriate", {
   }
 })
 
-test_that("form_resupport throws errors on bad input", {
+test_that("form_resupport validates input", {
   expect_error(form_resupport(1, c(0, 1), "trim"), "`f`.*function")
   expect_error(form_resupport(function(x) {x}, c(0, 1), "trim"), "`f`.*pdqr")
   expect_error(form_resupport(p_fin, "a", "trim"), "`support`.*numeric")

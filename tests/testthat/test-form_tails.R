@@ -196,7 +196,7 @@ test_that("form_tails returns dirac distribution at maximum level", {
   expect_dirac(cur_infin, c("both" = 0.5, "left" = 1, "right" = 0))
 })
 
-test_that("form_tails asserts bad input",  {
+test_that("form_tails validates input",  {
   expect_error(form_tails("a", 0.1), "`f`.*function")
   expect_error(form_tails(function(x) {x}, 0.1), "`f`.*pdqr")
   expect_error(form_tails(cur_fin, "a"), "`level`.*single number")

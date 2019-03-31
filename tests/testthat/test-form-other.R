@@ -108,7 +108,7 @@ test_that("form_mix returns pdqr-function of correct class", {
   expect_is(form_mix(cur_f_list[4:1]), get_pdqr_class(cur_f_list[[4]]))
 })
 
-test_that("form_mix asserts bad input", {
+test_that("form_mix validates input", {
   expect_error(form_mix("a"), "`f_list`.*list")
   expect_error(form_mix(list()), "`f_list`.*empty")
   expect_error(form_mix(list(1)), "`f_list`.*pdqr-functions")
@@ -183,7 +183,7 @@ test_that("form_smooth uses `args_new` as arguments for `new_*()`", {
 
 d_fin <- new_d(data.frame(x = 0:1, prob = 0:1), "fin")
 
-test_that("form_smooth asserts bad input", {
+test_that("form_smooth validates input", {
   expect_error(form_smooth("a"), "`f`.*function")
   expect_error(form_smooth(function(x) {x}), "`f`.*pdqr")
   expect_error(form_smooth(d_fin, n_sample = "a"), "`n_sample`.*single number")
