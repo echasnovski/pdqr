@@ -62,12 +62,15 @@ test_that("assert_in_set works",  {
   input <- "a"
   expect_error(
     assert_in_set(input, c("b", "c")),
-    '`input` should be one of: "b", "c" \\(supplied "a"\\)\\.'
+    '`input` should be one of: "b", "c" \\(instead of "a"\\)\\.'
   )
-  expect_error(assert_in_set(input, "b"), 'one of: "b" \\(supplied "a"\\)\\.')
-  expect_error(assert_in_set(1, 2:3), 'one of: "2", "3" \\(supplied "1"\\)\\.')
+  expect_error(assert_in_set(input, "b"), 'one of: "b" \\(instead of "a"\\)\\.')
   expect_error(
-    assert_in_set(1, 2:3, quote_set = FALSE), 'one of: 2, 3 \\(supplied 1\\)\\.'
+    assert_in_set(1, 2:3), 'one of: "2", "3" \\(instead of "1"\\)\\.'
+  )
+  expect_error(
+    assert_in_set(1, 2:3, quote_set = FALSE),
+    'one of: 2, 3 \\(instead of 1\\)\\.'
   )
 })
 

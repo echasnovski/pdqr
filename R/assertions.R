@@ -79,7 +79,7 @@ assert_in_set <- function(x, set, quote_set = TRUE) {
     }
 
     stop_collapse(
-      x_name, " should be one of: ", set_string, " (supplied ", x_string, ")."
+      x_name, " should be one of: ", set_string, " (instead of ", x_string, ")."
     )
   }
 
