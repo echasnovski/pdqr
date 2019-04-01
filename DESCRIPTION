@@ -48,6 +48,7 @@ Collate:
     'new_r.R'
     'plot.R'
     'print.R'
+    'summ-other.R'
     'summ_center.R'
     'summ_dispersion.R'
     'summ_distr_tbl.R'
