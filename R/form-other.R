@@ -152,6 +152,9 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 
 
 # form_estimate -----------------------------------------------------------
+# Mention in docs about the following bias correction technique: compute mean
+# value of estimate using big `sample_size` and then recenter distribution to
+# actually have that as a mean.
 form_estimate <- function(f, estimate, sample_size, ...,
                           n_sample = 10000, args_new = list()) {
   assert_pdqr_fun(f)
