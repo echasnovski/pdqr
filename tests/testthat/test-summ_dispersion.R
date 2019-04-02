@@ -8,11 +8,13 @@ test_that("summ_dispersion works", {
   expect_equal(summ_dispersion(d_fin, "var"), summ_var(d_fin))
   expect_equal(summ_dispersion(d_fin, "sd"), summ_sd(d_fin))
   expect_equal(summ_dispersion(d_fin, "iqr"), summ_iqr(d_fin))
+  expect_equal(summ_dispersion(d_fin, "mad"), summ_mad(d_fin))
 
   # "infin"
   expect_equal(summ_dispersion(d_infin, "var"), summ_var(d_infin))
   expect_equal(summ_dispersion(d_infin, "sd"), summ_sd(d_infin))
   expect_equal(summ_dispersion(d_infin, "iqr"), summ_iqr(d_infin))
+  expect_equal(summ_dispersion(d_infin, "mad"), summ_mad(d_infin))
 })
 
 test_that("summ_dispersion validates input", {
@@ -185,4 +187,56 @@ test_that("summ_iqr works with 'infin' functions with few intervals", {
 test_that("summ_iqr validates input", {
   expect_error(summ_iqr("a"), "`f`.*function")
   expect_error(summ_iqr(function(x) {x}), "`f`.*pdqr")
+})
+
+
+# summ_mad ----------------------------------------------------------------
+test_that("summ_mad works with 'fin' functions", {
+  expect_equal_stat(summ_mad, stat_list[["binom"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["pois"]], "mad")
+})
+
+test_that("summ_mad works with common 'infin' functions", {
+  # Many tests are "exact" because in `stat_list` reference was computed
+  # numerically
+  expect_equal_stat(summ_mad, stat_list[["beta"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["beta_inf"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["chisq"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["chisq_inf"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["exp"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["norm"]], "mad", thres = 4e-6)
+  expect_equal_stat(summ_mad, stat_list[["norm_2"]], "mad")
+  expect_equal_stat(summ_mad, stat_list[["unif"]], "mad")
+})
+
+test_that("summ_mad works with dirac-like 'infin' functions", {
+  d_dirac <- new_d(2, "infin")
+  expect_equal(summ_mad(d_dirac), 0)
+
+  d_dirac_2 <- form_mix(
+    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+  )
+  expect_equal(summ_mad(d_dirac_2), 0)
+})
+
+test_that("summ_mad works with winsorized 'infin' functions", {
+  d_wins <- form_resupport(
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    support = c(0.25, 0.85),
+    method = "winsor"
+  )
+  expect_equal(summ_mad(d_wins), 0.25)
+})
+
+test_that("summ_mad works with 'infin' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+  expect_equal(summ_mad(d_unif_1), 0.25)
+
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  expect_equal(summ_mad(d_unif_2), 0.5)
+})
+
+test_that("summ_mad validates input", {
+  expect_error(summ_mad("a"), "`f`.*function")
+  expect_error(summ_mad(function(x) {x}), "`f`.*pdqr")
 })
