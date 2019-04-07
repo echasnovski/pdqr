@@ -2,106 +2,6 @@ context("test-form_resupport")
 
 
 # form_resupport ----------------------------------------------------------
-test_that("form_resupport works with `method = 'trim'` and `type`='fin'", {
-  x_tbl <- data.frame(
-    x    = c(0,   1, 2,   3,   4,   5,   6, 7),
-    prob = c(0, 0.2, 0, 0.4, 0.1, 0.1, 0.2, 0)
-  )
-  p_f <- new_p(x_tbl, "fin")
-
-  expect_ref_x_tbl(
-    form_resupport(p_f, c(1.5, 4.5), "trim"),
-    data.frame(x = 2:4, prob = c(0, 0.8, 0.2))
-  )
-
-  expect_ref_x_tbl(
-    form_resupport(p_f, c(-1, 1), "trim"),
-    data.frame(x = 0:1, prob = c(0, 1))
-  )
-
-  expect_ref_x_tbl(form_resupport(p_f, c(-100, 100), "trim"), x_tbl)
-
-  expect_error(form_resupport(p_f, c(0.5, 0.75), "trim"), "not.*positive.*prob")
-  expect_error(form_resupport(p_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
-  expect_error(form_resupport(p_f, c(6.5, 7), "trim"), "not.*positive.*prob")
-})
-
-test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
-  x_tbl <- data.frame(
-    x = c(0, 1,   2, 3, 4, 5,   6, 7,   8),
-    y = c(0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.4)
-  )
-  d_f <- new_d(x_tbl, "infin")
-
-  expect_ref_x_tbl(
-    form_resupport(d_f, c(0.5, 3.5), "trim"),
-    data.frame(x = c(0.5, 1, 2, 3, 3.5), y = c(0, 0, 1, 0, 0))
-  )
-
-  expect_ref_x_tbl(
-    form_resupport(d_f, c(-1, 1.5), "trim"),
-    data.frame(x = c(0, 1, 1.5), y = c(0, 0, 4))
-  )
-
-  expect_ref_x_tbl(
-    form_resupport(d_f, c(6.5, 7.5), "trim"),
-    data.frame(x = c(6.5, 7, 7.5), y = c(2, 0, 2))
-  )
-
-  expect_ref_x_tbl(form_resupport(d_f, c(-100, 100), "trim"), x_tbl)
-
-  # Check that output doesn't increase support
-  expect_equal(
-    meta_support(d_f),
-    meta_support(form_resupport(d_f, c(-100, 100), "trim"))
-  )
-
-  # Single point support has total zero probability
-  expect_error(form_resupport(d_f, c(2, 2), "trim"), "not.*positive.*prob")
-  # Inside present support but with total zero probability
-  expect_error(form_resupport(d_f, c(3, 5), "trim"), "not.*positive.*prob")
-
-  expect_error(form_resupport(d_f, c(0.5, 0.75), "trim"), "not.*positive.*prob")
-  expect_error(form_resupport(d_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
-})
-
-test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
-  p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
-
-  expect_ref_x_tbl(
-    form_resupport(p_f, c(-0.5, 3), "linear"),
-    data.frame(x = c(-0.5, 0.375, 3), prob = meta_x_tbl(p_f)[["prob"]])
-  )
-
-  expect_equal_x_tbl(
-    form_resupport(p_f, c(15, 15), "linear"),
-    new_p(15, "fin")
-  )
-
-  # Can't resupport from single point support to interval one
-  expect_error(
-    form_resupport(new_p(1, "fin"), c(0, 1), "linear"), "single.*interval"
-  )
-})
-
-test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
-  x_tbl <- data.frame(
-    x = c(0, 1,   2, 5),
-    y = c(0, 0, 0.5, 0)
-  )
-  p_f <- new_p(x_tbl, "infin")
-
-  expect_ref_x_tbl(
-    form_resupport(p_f, c(1, 3.5), "linear"),
-    data.frame(x = c(1, 1.5, 2, 3.5), y = c(0, 0, 1, 0))
-  )
-
-  expect_equal_x_tbl(
-    form_resupport(p_f, c(15, 15), "linear"),
-    new_p(15, "infin")
-  )
-})
-
 test_that("form_resupport works with `method = 'reflect'` and `type`='fin'", {
   p_f <- new_p(data.frame(x = 1:4, prob = (1:4)/10), "fin")
   p_f_x_tbl <- meta_x_tbl(p_f)
@@ -172,6 +72,69 @@ test_that("form_resupport works with `method='reflect'` and `type`='infin'",  {
       y = c(  2,   2,        1,        1,   2,   2)
     )
   )
+})
+
+test_that("form_resupport works with `method = 'trim'` and `type`='fin'", {
+  x_tbl <- data.frame(
+    x    = c(0,   1, 2,   3,   4,   5,   6, 7),
+    prob = c(0, 0.2, 0, 0.4, 0.1, 0.1, 0.2, 0)
+  )
+  p_f <- new_p(x_tbl, "fin")
+
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1.5, 4.5), "trim"),
+    data.frame(x = 2:4, prob = c(0, 0.8, 0.2))
+  )
+
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(-1, 1), "trim"),
+    data.frame(x = 0:1, prob = c(0, 1))
+  )
+
+  expect_ref_x_tbl(form_resupport(p_f, c(-100, 100), "trim"), x_tbl)
+
+  expect_error(form_resupport(p_f, c(0.5, 0.75), "trim"), "not.*positive.*prob")
+  expect_error(form_resupport(p_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
+  expect_error(form_resupport(p_f, c(6.5, 7), "trim"), "not.*positive.*prob")
+})
+
+test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
+  x_tbl <- data.frame(
+    x = c(0, 1,   2, 3, 4, 5,   6, 7,   8),
+    y = c(0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.4)
+  )
+  d_f <- new_d(x_tbl, "infin")
+
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(0.5, 3.5), "trim"),
+    data.frame(x = c(0.5, 1, 2, 3, 3.5), y = c(0, 0, 1, 0, 0))
+  )
+
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(-1, 1.5), "trim"),
+    data.frame(x = c(0, 1, 1.5), y = c(0, 0, 4))
+  )
+
+  expect_ref_x_tbl(
+    form_resupport(d_f, c(6.5, 7.5), "trim"),
+    data.frame(x = c(6.5, 7, 7.5), y = c(2, 0, 2))
+  )
+
+  expect_ref_x_tbl(form_resupport(d_f, c(-100, 100), "trim"), x_tbl)
+
+  # Check that output doesn't increase support
+  expect_equal(
+    meta_support(d_f),
+    meta_support(form_resupport(d_f, c(-100, 100), "trim"))
+  )
+
+  # Single point support has total zero probability
+  expect_error(form_resupport(d_f, c(2, 2), "trim"), "not.*positive.*prob")
+  # Inside present support but with total zero probability
+  expect_error(form_resupport(d_f, c(3, 5), "trim"), "not.*positive.*prob")
+
+  expect_error(form_resupport(d_f, c(0.5, 0.75), "trim"), "not.*positive.*prob")
+  expect_error(form_resupport(d_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
 })
 
 test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
@@ -252,6 +215,43 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
       x = c(0.3, 0.3+1e-8, 0.7-1e-8, 0.7),
       y = c(6e7+1.03, 1, 1, 6e7+0.696)
     )
+  )
+})
+
+test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
+  p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
+
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(-0.5, 3), "linear"),
+    data.frame(x = c(-0.5, 0.375, 3), prob = meta_x_tbl(p_f)[["prob"]])
+  )
+
+  expect_equal_x_tbl(
+    form_resupport(p_f, c(15, 15), "linear"),
+    new_p(15, "fin")
+  )
+
+  # Can't resupport from single point support to interval one
+  expect_error(
+    form_resupport(new_p(1, "fin"), c(0, 1), "linear"), "single.*interval"
+  )
+})
+
+test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
+  x_tbl <- data.frame(
+    x = c(0, 1,   2, 5),
+    y = c(0, 0, 0.5, 0)
+  )
+  p_f <- new_p(x_tbl, "infin")
+
+  expect_ref_x_tbl(
+    form_resupport(p_f, c(1, 3.5), "linear"),
+    data.frame(x = c(1, 1.5, 2, 3.5), y = c(0, 0, 1, 0))
+  )
+
+  expect_equal_x_tbl(
+    form_resupport(p_f, c(15, 15), "linear"),
+    new_p(15, "infin")
   )
 })
 
@@ -345,6 +345,10 @@ test_that("form_resupport validates input", {
 })
 
 
+# resupport_reflect -------------------------------------------------------
+# Tested in `form_resupport()`
+
+
 # resupport_trim ----------------------------------------------------------
 # Tested in `form_resupport()`
 
@@ -355,14 +359,6 @@ test_that("form_resupport validates input", {
 
 # resupport_trim_infin ----------------------------------------------------
 # Tested in `resupport_trim()`
-
-
-# resupport_linear --------------------------------------------------------
-# Tested in `form_resupport()`
-
-
-# resupport_reflect -------------------------------------------------------
-# Tested in `form_resupport()`
 
 
 # resupport_winsor --------------------------------------------------------
@@ -378,6 +374,10 @@ test_that("form_resupport validates input", {
 
 
 # increase_tail_weight ----------------------------------------------------
+# Tested in `form_resupport()`
+
+
+# resupport_linear --------------------------------------------------------
 # Tested in `form_resupport()`
 
 

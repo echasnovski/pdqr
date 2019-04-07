@@ -4,14 +4,14 @@
 \alias{form_resupport}
 \title{Change support of pdqr-function}
 \usage{
-form_resupport(f, support, method = "trim")
+form_resupport(f, support, method = "reflect")
 }
 \arguments{
 \item{f}{A pdqr-function.}
 
 \item{support}{Support of the output.}
 
-\item{method}{Resupport method. One of "trim", "linear", "reflect", "winsor".}
+\item{method}{Resupport method. One of "reflect", "trim", "winsor", "linear".}
 }
 \value{
 A pdqr-function with modified support.
@@ -23,15 +23,15 @@ Modify support of pdqr-function using method of choice.
 d_norm <- as_d(dnorm)
 
 plot(d_norm)
-lines(form_resupport(d_norm, c(-2, 1.5), "trim"), col = "blue")
-
-plot(d_norm)
-lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
-
-plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
 
 plot(d_norm)
+lines(form_resupport(d_norm, c(-2, 1.5), "trim"), col = "blue")
+
+plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "winsor"), col = "blue")
+
+plot(d_norm)
+lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
 
 }

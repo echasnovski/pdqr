@@ -5,7 +5,7 @@
 #'
 #' @param f A pdqr-function.
 #' @param support Support of the output.
-#' @param method Resupport method. One of "trim", "linear", "reflect", "winsor".
+#' @param method Resupport method. One of "reflect", "trim", "winsor", "linear".
 #'
 #' @return A pdqr-function with modified support.
 #'
@@ -13,23 +13,23 @@
 #' d_norm <- as_d(dnorm)
 #'
 #' plot(d_norm)
-#' lines(form_resupport(d_norm, c(-2, 1.5), "trim"), col = "blue")
-#'
-#' plot(d_norm)
-#' lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
-#'
-#' plot(d_norm)
 #' lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
+#'
+#' plot(d_norm)
+#' lines(form_resupport(d_norm, c(-2, 1.5), "trim"), col = "blue")
 #'
 #' plot(d_norm)
 #' lines(form_resupport(d_norm, c(-2, 1.5), "winsor"), col = "blue")
 #'
+#' plot(d_norm)
+#' lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
+#'
 #' @export
-form_resupport <- function(f, support, method = "trim") {
+form_resupport <- function(f, support, method = "reflect") {
   assert_pdqr_fun(f)
   assert_support(support, allow_na = TRUE)
   assert_type(method, is_string)
-  assert_in_set(method, c("trim", "linear", "reflect", "winsor"))
+  assert_in_set(method, c("reflect", "trim", "winsor", "linear"))
 
   if (all(is.na(support))) {
     return(f)
@@ -45,11 +45,34 @@ form_resupport <- function(f, support, method = "trim") {
 
   switch(
     method,
-    trim = resupport_trim(f, supp),
-    linear = resupport_linear(f, supp),
     reflect = resupport_reflect(f, supp),
-    winsor = resupport_winsor(f, supp)
+    trim = resupport_trim(f, supp),
+    winsor = resupport_winsor(f, supp),
+    linear = resupport_linear(f, supp)
   )
+}
+
+
+# "reflect" ---------------------------------------------------------------
+resupport_reflect <- function(f, support) {
+  f_supp <- meta_support(f)
+  f_x_tbl <- meta_x_tbl(f)
+
+  # Sum up densities for possible reflections
+  x_tbl_list <- list(f_x_tbl)
+
+  if (support[1] > f_supp[1]) {
+    x_tbl_list <- c(x_tbl_list, list(reflect_x_tbl(f_x_tbl, support[1])))
+  }
+  if (support[2] < f_supp[2]) {
+    x_tbl_list <- c(x_tbl_list, list(reflect_x_tbl(f_x_tbl, support[2])))
+  }
+
+  x_tbl <- stack_x_tbl(x_tbl_list)
+  res <- new_pdqr_by_ref(f)(x_tbl, meta_type(f))
+
+  # Trim total sum to supplied support
+  form_resupport(res, support, "trim")
 }
 
 
@@ -91,55 +114,6 @@ resupport_trim_infin <- function(f, support) {
   }
 
   new_pdqr_by_ref(f)(res_x_tbl, "infin")
-}
-
-
-# "linear" ----------------------------------------------------------------
-resupport_linear <- function(f, support) {
-  if (support[1] == support[2]) {
-    # Return dirac-like function
-    return(new_pdqr_by_ref(f)(support[1], meta_type(f)))
-  }
-
-  f_supp <- meta_support(f)
-
-  if (f_supp[1] == f_supp[2]) {
-    stop_collapse(
-      "Can't resupport from single point support to interval one."
-    )
-  }
-
-  res_x_tbl <- meta_x_tbl(f)
-  res_x_tbl[["x"]] <- extrap_lin(
-    x_1 = f_supp[1], x_2 = f_supp[2],
-    y_1 = support[1], y_2 = support[2],
-    x_target = res_x_tbl[["x"]]
-  )
-
-  new_pdqr_by_ref(f)(res_x_tbl, meta_type(f))
-}
-
-
-# "reflect" ---------------------------------------------------------------
-resupport_reflect <- function(f, support) {
-  f_supp <- meta_support(f)
-  f_x_tbl <- meta_x_tbl(f)
-
-  # Sum up densities for possible reflections
-  x_tbl_list <- list(f_x_tbl)
-
-  if (support[1] > f_supp[1]) {
-    x_tbl_list <- c(x_tbl_list, list(reflect_x_tbl(f_x_tbl, support[1])))
-  }
-  if (support[2] < f_supp[2]) {
-    x_tbl_list <- c(x_tbl_list, list(reflect_x_tbl(f_x_tbl, support[2])))
-  }
-
-  x_tbl <- stack_x_tbl(x_tbl_list)
-  res <- new_pdqr_by_ref(f)(x_tbl, meta_type(f))
-
-  # Trim total sum to supplied support
-  form_resupport(res, support, "trim")
 }
 
 
@@ -216,6 +190,32 @@ increase_tail_weight <- function(x_tbl, by_prob, edge) {
   }
 
   data.frame(x = x, y = y)
+}
+
+
+# "linear" ----------------------------------------------------------------
+resupport_linear <- function(f, support) {
+  if (support[1] == support[2]) {
+    # Return dirac-like function
+    return(new_pdqr_by_ref(f)(support[1], meta_type(f)))
+  }
+
+  f_supp <- meta_support(f)
+
+  if (f_supp[1] == f_supp[2]) {
+    stop_collapse(
+      "Can't resupport from single point support to interval one."
+    )
+  }
+
+  res_x_tbl <- meta_x_tbl(f)
+  res_x_tbl[["x"]] <- extrap_lin(
+    x_1 = f_supp[1], x_2 = f_supp[2],
+    y_1 = support[1], y_2 = support[2],
+    x_target = res_x_tbl[["x"]]
+  )
+
+  new_pdqr_by_ref(f)(res_x_tbl, meta_type(f))
 }
 
 
