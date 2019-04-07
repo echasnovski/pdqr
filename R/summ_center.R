@@ -24,6 +24,8 @@
 #'   representing a center of distribution. `summ_mode(*, method = "local")` can
 #'   return a numeric vector with multiple values representing local maxima.
 #'
+#' @seealso [summ_dispersion()] for computing distribution's dispersion.
+#'
 #' @examples
 #' # Type "infin"
 #' d_norm <- as_d(dnorm)

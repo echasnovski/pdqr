@@ -67,3 +67,6 @@ my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "infin")
 summ_mode(my_d, method = "local")
 
 }
+\seealso{
+\code{\link[=summ_dispersion]{summ_dispersion()}} for computing distribution's dispersion.
+}
