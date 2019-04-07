@@ -1,3 +1,56 @@
+#' Summarize center of distribution
+#'
+#' Functions to compute center of distribution. `summ_center()` is a wrapper for
+#' respective `summ_*()` functions (from this page) with default arguments.
+#'
+#' @param f A pdqr-function representing distribution.
+#' @param method Method of center computation. For `summ_center()` is one of
+#'   "mean", "median", "mode". For `summ_mode()` is one of "global" or "local".
+#'
+#' @details `summ_mean()` computes distribution's mean.
+#'
+#' `summ_median()` computes a smallest `x` value for which cumulative
+#' probability is not less than 0.5. Essentially, it is a `as_q(f)(0.5)`. This
+#' also means that for pdqr-functions with type "fin" it always returns an entry
+#' of "x" column from `f`'s [`x_tbl`][meta_x_tbl()].
+#'
+#' `summ_mode(*, method = "global")` computes a smallest `x` (which is an entry
+#' of "x" column from `f`'s `x_tbl`) with the highest probability/density.
+#' `summ_mode(*, method = "local")` computes all `x` values which represent
+#' non-strict **local maxima** of probability mass/density function.
+#'
+#' @return `summ_center()`, `summ_mean()`, `summ_median()` and
+#'   `summ_mode(*, method = "global")` always return a single number
+#'   representing a center of distribution. `summ_mode(*, method = "local")` can
+#'   return a numeric vector with multiple values representing local maxima.
+#'
+#' @examples
+#' # Type "infin"
+#' d_norm <- as_d(dnorm)
+#'   # The same as `summ_center(d_norm, method = "mean")`
+#' summ_mean(d_norm)
+#' summ_median(d_norm)
+#' summ_mode(d_norm)
+#'
+#' # Type "fin"
+#' d_pois <- as_d(dpois, lambda = 10)
+#' summ_mean(d_pois)
+#' summ_median(d_pois)
+#'   # Returns the smallest `x` with highest probability
+#' summ_mode(d_pois)
+#'   # Returns all values which are non-strict local maxima
+#' summ_mode(d_pois, method = "local")
+#'
+#' # Details of computing local modes
+#' my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "infin")
+#'   # Several values, which are entries of `x_tbl`, are returned as local modes
+#' summ_mode(my_d, method = "local")
+#'
+#' @name summ_center
+NULL
+
+#' @rdname summ_center
+#' @export
 summ_center <- function(f, method = "mean") {
   # `f` is validated inside `summ_*()` calls
   assert_type(method, is_string)
@@ -11,6 +64,8 @@ summ_center <- function(f, method = "mean") {
   )
 }
 
+#' @rdname summ_center
+#' @export
 summ_mean <- function(f) {
   assert_pdqr_fun(f)
 
@@ -24,12 +79,16 @@ summ_mean <- function(f) {
   )
 }
 
+#' @rdname summ_center
+#' @export
 summ_median <- function(f) {
   assert_pdqr_fun(f)
 
   as_q(f)(0.5)
 }
 
+#' @rdname summ_center
+#' @export
 summ_mode <- function(f, method = "global") {
   assert_pdqr_fun(f)
   assert_type(method, is_string)
