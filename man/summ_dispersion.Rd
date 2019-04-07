@@ -2,17 +2,17 @@
 % Please edit documentation in R/summ_dispersion.R
 \name{summ_dispersion}
 \alias{summ_dispersion}
-\alias{summ_var}
 \alias{summ_sd}
+\alias{summ_var}
 \alias{summ_iqr}
 \alias{summ_mad}
 \title{Summarize dispersion of distribution}
 \usage{
 summ_dispersion(f, method = "sd")
 
-summ_var(f)
-
 summ_sd(f)
+
+summ_var(f)
 
 summ_iqr(f)
 
