@@ -1,3 +1,20 @@
+#' Compute quantiles of distribution
+#'
+#' Essentially, this is a more strict wrapper of `as_q(f)(probs)`. If any value
+#' in `probs` is outside of segment \\[0; 1\\], an error is thrown.
+#'
+#' @inheritParams summ_mean
+#' @param probs Vector of probabilities for which quantiles should be returned.
+#'
+#' @return A numeric vector of the same length as `probs` representing
+#'   corresponding quantiles.
+#'
+#' @examples
+#' d_norm <- as_d(dnorm)
+#' probs <- c(0.25, 0.5, 0.75)
+#' all.equal(summ_quantile(d_norm, probs), as_q(d_norm)(probs))
+#'
+#' @export
 summ_quantile <- function(f, probs) {
   assert_pdqr_fun(f)
   assert_type(probs, is.numeric)
