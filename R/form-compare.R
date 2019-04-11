@@ -147,15 +147,15 @@ prob_geq_infin_infin <- function(f, g) {
 
   # Compute coefficients of lines representing `f` and `g` densities at each
   # interval of common grid.
-  f_x_tbl_f <- meta_x_tbl(f)
+  f_x_tbl <- meta_x_tbl(f)
   coeffs_f <- compute_piecelin_density_coeffs(
-    x_tbl = f_x_tbl_f,
-    ind_vec = findInterval(comm_mid, f_x_tbl_f[["x"]])
+    x_tbl = f_x_tbl,
+    ind_vec = findInterval(comm_mid, f_x_tbl[["x"]])
   )
-  f_x_tbl_g <- meta_x_tbl(g)
+  g_x_tbl <- meta_x_tbl(g)
   coeffs_g <- compute_piecelin_density_coeffs(
-    x_tbl = f_x_tbl_g,
-    ind_vec = findInterval(comm_mid, f_x_tbl_g[["x"]])
+    x_tbl = g_x_tbl,
+    ind_vec = findInterval(comm_mid, g_x_tbl[["x"]])
   )
 
   # Output probability based on functions inside `(comm_x[1], comm_x[n])`
