@@ -14,7 +14,15 @@ context("test-x_tbl")
 
 
 # dirac_x_tbl -------------------------------------------------------------
-# Tested in `new_*()` functions
+# Main functionality is tested in `new_*()` functions
+test_that("dirac_x_tbl ensures that total integral is 1", {
+  d_dirac <- new_d(1e8, "infin")
+  x_tbl <- meta_x_tbl(d_dirac)
+  expect_equal(trapez_part_integral(x_tbl[["x"]], x_tbl[["y"]]), c(0, 0.5, 1))
+  # This was the indicator of problem: error was returned because total integral
+  # wasn't equal to 1.
+  expect_silent(assert_pdqr_fun(d_dirac))
+})
 
 
 # impute_x_tbl ------------------------------------------------------------

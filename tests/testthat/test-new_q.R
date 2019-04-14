@@ -27,6 +27,9 @@ test_that("new_q returns dirac-like function with length-one numeric input",  {
     new_q(0.1, "infin"),
     data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
   )
+
+  # With big center value there can be problems with total integral being 1
+  expect_silent(assert_pdqr_fun(new_q(1e8, "infin")))
 })
 
 test_that("new_q works with data frame input", {
