@@ -46,7 +46,7 @@ test_that("honored_distr_supp supports all honored distributions", {
   expect_honored("exp", qexp, c(0, 1 - p), rate = 0.01)
   expect_honored("f", qf, c(p, 1 - p), df1 = 100, df2 = 100)
   expect_honored("gamma", qgamma, c(p, 1 - p), shape = 10)
-  expect_honored("lnorm", qlnorm, c(p, 1 - p), meanlog = 2)
+  expect_honored("lnorm", qlnorm, c(p, 1 - p), meanlog = 2, sdlog = 0.1)
   expect_honored("norm", qnorm, c(p, 1 - p), mean = 100, sd = 0.1)
   expect_honored("t", qt, c(p, 1 - p), df = 100)
   expect_honored("unif", qunif, c(0, 1), min = -10, max = 100)
@@ -55,7 +55,7 @@ test_that("honored_distr_supp supports all honored distributions", {
 
 test_that("honored_distr_supp stretches to total support", {
   expect_identical(
-    honored_distr_supp("beta", qbeta, shape1 = 7, shape2 = 1)[2], 1
+    honored_distr_supp("beta", qbeta, shape1 = 1, shape2 = 1), c(0, 1)
   )
   expect_identical(honored_distr_supp("chisq", qchisq, df = 1)[1], 0)
   expect_identical(honored_distr_supp("gamma", qgamma, shape = 0.5)[1], 0)

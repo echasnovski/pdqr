@@ -136,7 +136,7 @@ honored_distr_supp <- function(distr, q_fun, ..., p = 1e-6) {
   stretch_to_total_supp(supp, total_supp = q_fun(c(0, 1), ...))
 }
 
-stretch_to_total_supp <- function(supp, total_supp, h = 1e-6) {
+stretch_to_total_supp <- function(supp, total_supp, h = 1e-2) {
   delta <- h * diff(supp)
   if (supp[1] - total_supp[1] <= delta) {
     supp[1] <- total_supp[1]
