@@ -37,6 +37,23 @@ test_that("new_d imputes data frame input", {
   expect_x_tbl_imputation(new_d)
 })
 
+test_that("new_d rounds input in case of `type` = 'fin'", {
+  # Some values in this sequence show numerical representation issues after
+  # `round(x_seq, digits = 10)` (see `dput(x_seq - round(x_seq, digits = 10))`).
+  # If input is not rounded during `x_tbl` creation/imputation then output
+  # function will behave incorrectly.
+  x_seq <- seq(5e-4, 1, by = 5e-4)
+  x_df <- data.frame(x = x_seq, prob = rep(1, length(x_seq)) / length(x_seq))
+
+  # Testing correctness of `compute_x_tbl()`
+  cur_d_1 <- new_d(x_seq, "fin")
+  expect_equal(cur_d_1(0.0045), 1 / length(x_seq))
+
+  # Testing correctness of `impute_x_tbl()`
+  cur_d_2 <- new_d(x_df, "fin")
+  expect_equal(cur_d_2(0.0045), 1 / length(x_seq))
+})
+
 test_that("new_d's output rounds input in case of `type` = 'fin'", {
   near_1 <- 1 + 10^c(-6, -11)
   expect_equal(d_fin(near_1), c(0, 0.1))

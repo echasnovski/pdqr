@@ -7,8 +7,10 @@ compute_x_tbl <- function(x, type, ...) {
   )
 }
 
-compute_x_tbl_fin <- function(x, vals = sort(unique(x))) {
+compute_x_tbl_fin <- function(x) {
   x <- x[!is.na(x)]
+  x <- round(x, digits = 10)
+  vals = sort(unique(x))
 
   x_val_id <- match(x, vals)
   prob <- tabulate(x_val_id) / length(x)
@@ -88,7 +90,7 @@ impute_x_tbl_impl_fin <- function(x_tbl) {
     data.frame(x = vals, prob = prob, cumprob = cumsum(prob))
   } else {
     res <- data.frame(
-      x = x_tbl[["x"]],
+      x = x,
       prob = impute_prob(x_tbl[["prob"]])
     )
     res[["cumprob"]] <- impute_vec(
