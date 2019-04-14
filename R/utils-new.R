@@ -8,6 +8,9 @@
 #' @param type Type of pdqr-function. One of "fin" or "infin" (see Details).
 #' @param ... Extra arguments for [density()][stats::density()].
 #'
+#' @details Symbol "~" in `print()` output indicates that printed value is an
+#' approximation to a true one.
+#'
 #' @return A pdqr-function of corresponding class.
 #'
 #' @examples

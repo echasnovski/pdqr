@@ -19,8 +19,11 @@ line_support <- function(x) {
   if (is.null(x_support) || !is_support(x_support)) {
     paste0("Support: ", bold("not proper"), "\n")
   } else {
-    x_supp_string <- paste0(round(x_support, digits = 5), collapse = ", ")
-    support_print <- bold(paste0("[", x_supp_string, "]"))
+    x_supp_round <- round(x_support, digits = 5)
+    approx_sign <- get_approx_sign(x_support, x_supp_round)
+
+    x_supp_string <- paste0(x_supp_round, collapse = ", ")
+    support_print <- bold(paste0(approx_sign, "[", x_supp_string, "]"))
 
     paste0("Support: ", support_print, n_x_tbl_info(x), "\n")
   }
@@ -40,12 +43,15 @@ n_x_tbl_info <- function(x) {
   if (x_type == "fin") {
     # Add "probability of 1: " printing in case of a "boolean" pdqr
     if (identical(x_tbl[["x"]], c(0, 1))) {
-      prob_one <- round(x_tbl[["prob"]][x_tbl[["x"]] == 1], digits = 5)
-      if (prob_one %in% c(0, 1)) {
-        prob_one_string <- paste0(prob_one, ".0")
-      } else {
-        prob_one_string <- as.character(prob_one)
+      prob_one <- x_tbl[["prob"]][x_tbl[["x"]] == 1]
+      prob_one_round <- round(prob_one, digits = 5)
+      approx_sign <- get_approx_sign(prob_one, prob_one_round)
+      prob_one_string <- paste0(approx_sign, prob_one_round)
+
+      if (prob_one_round %in% c(0, 1)) {
+        prob_one_string <- paste0(approx_sign, prob_one_round, ".0")
       }
+
       prob_string <- paste0(
         ", ", bold(paste0("probability of 1: ", prob_one_string))
       )
@@ -90,5 +96,15 @@ meta_type_print_name <- function(x) {
     "unknown"
   } else {
     switch(x_type, fin = "finite", infin = "infinite")
+  }
+}
+
+get_approx_sign <- function(x, x_round) {
+  x_is_rounded <- any(!is_near(x, x_round, tol = 1e-13))
+
+  if (x_is_rounded) {
+    "~"
+  } else {
+    ""
   }
 }

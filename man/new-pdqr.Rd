@@ -31,6 +31,10 @@ A pdqr-function of corresponding class.
 Main tools to create new distribution pdqr-functions based on numeric sample
 or data frame describing distribution.
 }
+\details{
+Symbol "~" in \code{print()} output indicates that printed value is an
+approximation to a true one.
+}
 \examples{
 set.seed(101)
 x <- rnorm(10)

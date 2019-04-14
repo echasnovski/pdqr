@@ -60,3 +60,7 @@ test_that("bold works", {
 
 # meta_type_print_name ----------------------------------------------------
 # Tested in `new_*()` functions
+
+
+# get_approx_sign ---------------------------------------------------------
+# Tested in `new_*()` functions

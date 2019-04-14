@@ -141,7 +141,7 @@ expect_equal_x_tbl <- function(f_1, f_2) {
 }
 
 expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
-  supp_regex <- "Support: \\[[-0-9\\.]+, [-0-9\\.]+\\]"
+  supp_regex <- "Support: ~*\\[[-0-9\\.]+, [-0-9\\.]+\\]"
 
   f_fin <- f(x_fin, type = "fin")
   n_fin <- length(unique(x_fin))
@@ -158,6 +158,21 @@ expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
       infin_name, "infinite number", supp_regex, n_infin-1, "intervals"
     )
   )
+
+  # Test of approximation sign in support printing
+  f_pi_1 <- f(data.frame(x = c(0, pi), y = c(1, 1)/pi), "infin")
+  expect_output(print(f_pi_1), "Support: ~\\[0, ")
+  f_pi_2 <- f(data.frame(x = c(pi, 4), y = c(1, 1)/(4-pi)), "infin")
+  expect_output(print(f_pi_2), "Support: ~\\[3\\.14159, ")
+  f_pi_3 <- f(data.frame(x = pi + 0:1, y = c(1, 1)), "infin")
+  expect_output(print(f_pi_3), "Support: ~\\[3\\.14159, ")
+
+  f_pi_4 <- f(c(0, pi), "fin")
+  expect_output(print(f_pi_4), "Support: ~\\[0, ")
+  f_pi_5 <- f(c(pi, 4), "fin")
+  expect_output(print(f_pi_5), "Support: ~\\[3\\.14159, ")
+  f_pi_6 <- f(pi + 0:1, "fin")
+  expect_output(print(f_pi_6), "Support: ~\\[3\\.14159, ")
 
   # Special printing of "boolean" pdqr-functions
   f_bool_1 <- f(data.frame(x = c(0, 1), prob = c(0.7, 0.3)), "fin")
@@ -179,7 +194,7 @@ expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
   # Rounding
   f_bool_4 <- f(data.frame(x = c(0, 1), prob = c(1/3, 2/3)), "fin")
   expect_output(
-    print(f_bool_4), "probability of 1: 0.66667"
+    print(f_bool_4), "probability of 1: ~0.66667"
   )
 }
 
