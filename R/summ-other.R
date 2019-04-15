@@ -25,6 +25,28 @@ summ_quantile <- function(f, probs) {
   as_q(f)(probs)
 }
 
+#' Extract probability from boolean pdqr-function
+#'
+#' Here `summ_prob_true()` returns a probability of 1 and `summ_prob_false()` -
+#' complementary probability (one minus `summ_prob_true()` output). Both of them
+#' check if their input is a **boolean** pdqr-function: type "fin" with `x` in
+#' `x_tbl` identical to `c(0, 1)`. If it is not, warning is thrown.
+#'
+#' @inheritParams summ_mean
+#'
+#' @return A single numeric value representing corresponding probability.
+#'
+#' @examples
+#' d_unif <- as_d(dunif)
+#' d_norm <- as_d(dnorm)
+#' summ_prob_true(d_unif > d_norm)
+#' summ_prob_false(2*d_norm > d_unif)
+#'
+#' @name summ-prob
+NULL
+
+#' @rdname summ-prob
+#' @export
 summ_prob_true <- function(f) {
   assert_pdqr_fun(f)
   if (!is_boolean_pdqr_fun(f)) {
@@ -39,6 +61,8 @@ summ_prob_true <- function(f) {
   x_tbl[["prob"]][x_tbl[["x"]] == 1]
 }
 
+#' @rdname summ-prob
+#' @export
 summ_prob_false <- function(f) {
   1 - summ_prob_true(f)
 }
