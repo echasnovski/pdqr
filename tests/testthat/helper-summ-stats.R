@@ -5,7 +5,7 @@ stat_binom <- list(
   mean = 3, median = 3, mode = 3,
   var = 2.1, sd = sqrt(2.1), iqr = 2, mad = 1,
   skewness = 0.4/sqrt(2.1), ex_kurtosis = -0.26/2.1,
-  entropy = 0.5*log(2*pi*exp(1) * 2.1)
+  entropy = -sum(stats::dbinom(0:10, 10, 0.3)*log(stats::dbinom(0:10, 10, 0.3)))
 )
 
 stat_pois <- list(
