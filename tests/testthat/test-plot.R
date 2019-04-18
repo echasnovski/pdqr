@@ -70,11 +70,17 @@ test_that("plot.p works", {
   )
 })
 
-test_that("plot.p and lines.p respect `n_grid` argument", {
+test_that("plot.p and lines.p respect `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-p-infin-n-grid", recordPlot({
-      plot(p_infin, n_grid = 6)
-      lines(p_custom, n_grid = 6)
+    "plot-p-infin-n-extra-grid", recordPlot({
+      plot(
+        new_p(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+        n_extra_grid = NULL, type = "b", main = "n_extra_grid check"
+      )
+      lines(
+        new_p(data.frame(x = c(0.2, 1), y = c(1, 1)), "infin"),
+        n_extra_grid = 3, type = "b", col = "blue"
+      )
     })
   )
 })
@@ -148,11 +154,17 @@ test_that("plot.d works", {
   )
 })
 
-test_that("plot.d and lines.d respect `n_grid` argument", {
+test_that("plot.d and lines.d respect `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-d-infin-n-grid", recordPlot({
-      plot(d_infin, n_grid = 6)
-      lines(d_custom, n_grid = 6)
+    "plot-d-infin-n-extra-grid", recordPlot({
+      plot(
+        new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+        n_extra_grid = NULL, type = "b", main = "n_extra_grid check"
+      )
+      lines(
+        new_d(data.frame(x = c(0.2, 1), y = c(1, 1)), "infin"),
+        n_extra_grid = 3, type = "b", col = "blue"
+      )
     })
   )
 })
@@ -160,7 +172,6 @@ test_that("plot.d and lines.d respect `n_grid` argument", {
 test_that("plot.d handles dirac-like entries in 'x_tbl'",  {
   vdiffr::expect_doppelganger(
     "dirac-like-1", recordPlot({
-      # Currently does a bad job because of numerical default `n_grid`
       plot(form_retype(d_fin, "infin", method = "dirac"))
     })
   )
@@ -250,11 +261,17 @@ test_that("plot.q works", {
   )
 })
 
-test_that("plot.q and lines.q respect `n_grid` argument", {
+test_that("plot.q and lines.q respect `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-q-infin-n-grid", recordPlot({
-      plot(q_infin, n_grid = 6)
-      lines(q_custom, n_grid = 6)
+    "plot-q-infin-n-extra-grid", recordPlot({
+      plot(
+        new_q(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+        n_extra_grid = NULL, type = "b", main = "n_extra_grid check"
+      )
+      lines(
+        new_q(data.frame(x = c(0.2, 1), y = c(1, 1)), "infin"),
+        n_extra_grid = 3, type = "b", col = "blue"
+      )
     })
   )
 })

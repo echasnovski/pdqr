@@ -1,6 +1,6 @@
 # plot() ------------------------------------------------------------------
 #' @export
-plot.p <- function(x, y = NULL, n_grid = NULL, ...) {
+plot.p <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -22,12 +22,12 @@ plot.p <- function(x, y = NULL, n_grid = NULL, ...) {
     # Add segments
     add_p_fin_segments(x, list(...))
   } else {
-    plot_impl_pdq(x, compute_plot_grid(x, n_grid), dots)
+    plot_impl_pdq(x, compute_plot_grid(x, n_extra_grid), dots)
   }
 }
 
 #' @export
-plot.d <- function(x, y = NULL, n_grid = NULL, ...) {
+plot.d <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -51,16 +51,16 @@ plot.d <- function(x, y = NULL, n_grid = NULL, ...) {
       # "x_tbl". Note, that this will compute `ylim` based on "x_tbl" in `x` and
       # not based on actually plotted points, so the output `ylim` can be an
       # overestimation (which is kind of a good indication of too small value
-      # of `n_grid`).
+      # of `n_extra_grid`).
       ylim = compute_d_infin_ylim(x)
     )
 
-    plot_impl_pdq(x, compute_plot_grid(x, n_grid), dots)
+    plot_impl_pdq(x, compute_plot_grid(x, n_extra_grid), dots)
   }
 }
 
 #' @export
-plot.q <- function(x, y = NULL, n_grid = NULL, ...) {
+plot.q <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -82,7 +82,7 @@ plot.q <- function(x, y = NULL, n_grid = NULL, ...) {
     # Add segments
     add_q_fin_segments(x, list(...))
   } else {
-    plot_impl_pdq(x, compute_plot_grid(x, n_grid), dots)
+    plot_impl_pdq(x, compute_plot_grid(x, n_extra_grid), dots)
   }
 }
 
@@ -133,23 +133,27 @@ compute_d_infin_ylim <- function(f) {
   }
 }
 
-compute_plot_grid <- function(f, n_grid) {
+compute_plot_grid <- function(f, n_extra_grid) {
   f_class <- get_pdqr_class(f)
   f_x_tbl <- meta_x_tbl(f)
   f_support <- meta_support(f)
 
-  if (is.null(n_grid)) {
-    switch(
-      f_class, p = f_x_tbl[["x"]], d = f_x_tbl[["x"]], q = f_x_tbl[["cumprob"]]
-    )
+  grid <- switch(
+    f_class, p = f_x_tbl[["x"]], d = f_x_tbl[["x"]], q = f_x_tbl[["cumprob"]]
+  )
+
+  if (is.null(n_extra_grid)) {
+    extra_grid <- numeric()
   } else {
-    switch(
+    extra_grid <- switch(
       f_class,
-      p = seq_between(f_support, length.out = n_grid),
-      d = seq_between(f_support, length.out = n_grid),
-      q = seq_between(c(0, 1), length.out = n_grid)
+      p = seq_between(f_support, length.out = n_extra_grid),
+      d = seq_between(f_support, length.out = n_extra_grid),
+      q = seq_between(c(0, 1), length.out = n_extra_grid)
     )
   }
+
+  sort(unique(c(grid, extra_grid)))
 }
 
 add_p_fin_segments <- function(x, dots) {
@@ -219,18 +223,18 @@ make_plot_dots <- function(...) {
 
 # lines() -----------------------------------------------------------------
 #' @export
-lines.p <- function(x, n_grid = NULL, ...) {
+lines.p <- function(x, n_extra_grid = 1000, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
     add_p_fin_segments(x, list(...))
   } else {
-    lines_impl_pdq(x, compute_plot_grid(x, n_grid), list(...))
+    lines_impl_pdq(x, compute_plot_grid(x, n_extra_grid), list(...))
   }
 }
 
 #' @export
-lines.d <- function(x, n_grid = NULL, ...) {
+lines.d <- function(x, n_extra_grid = 1000, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
@@ -241,18 +245,18 @@ lines.d <- function(x, n_grid = NULL, ...) {
 
     do.call(graphics::lines, lines_args)
   } else {
-    lines_impl_pdq(x, compute_plot_grid(x, n_grid), list(...))
+    lines_impl_pdq(x, compute_plot_grid(x, n_extra_grid), list(...))
   }
 }
 
 #' @export
-lines.q <- function(x, n_grid = NULL, ...) {
+lines.q <- function(x, n_extra_grid = 1000, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
     add_q_fin_segments(x, list(...))
   } else {
-    lines_impl_pdq(x, compute_plot_grid(x, n_grid), list(...))
+    lines_impl_pdq(x, compute_plot_grid(x, n_extra_grid), list(...))
   }
 }
 
