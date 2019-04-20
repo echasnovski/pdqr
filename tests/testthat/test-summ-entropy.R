@@ -6,6 +6,136 @@ def_clip <- exp(-20)
 max_entropy <- -log(def_clip)
 
 
+# Custom expectations -----------------------------------------------------
+expect_relative_summ_entropy2_works <- function(f, g) {
+  expect_equal(
+    summ_entropy2(f, g, method = "relative"),
+    summ_entropy2(f, g, method = "cross") - summ_entropy(f)
+  )
+  expect_equal(
+    summ_entropy2(g, f, method = "relative"),
+    summ_entropy2(g, f, method = "cross") - summ_entropy(g)
+  )
+}
+
+
+# summ_entropy ------------------------------------------------------------
+# There are also tests in `cross_entropy()`
+test_that("summ_entropy works with 'fin' functions", {
+  expect_equal_stat(summ_entropy, stat_list[["binom"]], "entropy")
+
+  # Output isn't exact because of tail trimming during `as_d()` and not exact
+  # value of entropy in `stat_list[["pois"]][["entropy"]]`
+  expect_equal_stat(summ_entropy, stat_list[["pois"]], "entropy", thres = 8e-4)
+})
+
+test_that("summ_entropy works with 'infin' functions", {
+  expect_equal_stat(summ_entropy, stat_list[["beta"]], "entropy", thres = 3e-5)
+  # Big threshold because original density goes to infinity at edges
+  expect_equal_stat(
+    summ_entropy, stat_list[["beta_inf"]], "entropy", thres = 0.25
+  )
+  expect_equal_stat(summ_entropy, stat_list[["chisq"]], "entropy", thres = 2e-5)
+  # Big threshold because original density goes to infinity at left edge
+  expect_equal_stat(
+    summ_entropy, stat_list[["chisq_inf"]], "entropy", thres = 8e-2
+  )
+  expect_equal_stat(summ_entropy, stat_list[["exp"]], "entropy", thres = 2e-5)
+  expect_equal_stat(summ_entropy, stat_list[["norm"]], "entropy", thres = 4e-5)
+  expect_equal_stat(
+    summ_entropy, stat_list[["norm_2"]], "entropy", thres = 4e-5
+  )
+  expect_equal_stat(summ_entropy, stat_list[["unif"]], "entropy")
+})
+
+test_that("summ_entropy works with dirac-like functions", {
+  expect_equal(summ_entropy(new_d(10, "fin")), 0)
+  # Entropy of dirac-like "infin" function is computed from symmetric triangular
+  # distribution with width 2*1e-8
+  expect_equal(summ_entropy(new_d(10, "infin")), 0.5 + log(1e-8))
+})
+
+test_that("summ_entropy handles zero probabilities/densities", {
+  cur_d_fin <- new_d(data.frame(x = 1:3, prob = c(0, 0.5, 0.5)), "fin")
+  expect_equal(summ_entropy(cur_d_fin), -2*0.5*log(0.5))
+
+  cur_d_infin <- new_d(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "infin")
+  ref_d_infin <- new_d(data.frame(x = 1:3, y = c(0, 1, 0)), "infin")
+  expect_equal(summ_entropy(cur_d_infin), summ_entropy(ref_d_infin))
+})
+
+test_that("summ_entropy validates input", {
+  expect_error(summ_entropy("a"), "`f`.*function")
+  expect_error(summ_entropy(function(x) {x}), "`f`.*pdqr")
+})
+
+
+# summ_entropy2 -----------------------------------------------------------
+# More tests in `cross_entropy()`
+test_that("summ_entropy2 works with 'fin' functions", {
+  f <- new_d(1:4, "fin")
+  g <- new_d(3:7, "fin")
+
+  # Method "relative"
+  expect_relative_summ_entropy2_works(f, g)
+
+  # Method "cross"
+  expect_equal(
+    summ_entropy2(f, g, method = "cross"), -2*0.25*log(0.2) + 2*0.25*max_entropy
+  )
+  expect_equal(
+    summ_entropy2(g, f, method = "cross"), -2*0.2*log(0.25) + 3*0.2*max_entropy
+  )
+})
+
+test_that("summ_entropy2 works with 'infin' functions", {
+  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "infin")
+  g <- new_d(data.frame(x = c(-1, 9), y = c(1, 1)/10), "infin")
+
+  # Method "relative"
+  expect_relative_summ_entropy2_works(f, g)
+
+  # Method "cross"
+  expect_equal(summ_entropy2(f, g, method = "cross"), -4*0.25*log(0.1))
+  expect_equal(
+    summ_entropy2(g, f, method = "cross"), -4*0.1*log(0.25) + 6*0.1*max_entropy
+  )
+})
+
+test_that("summ_entropy2 works with dirac-like functions", {
+  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "infin")
+  g_dirac <- new_d(2, "infin")
+
+  # Method "relative"
+  expect_relative_summ_entropy2_works(f, g_dirac)
+
+  # Method "cross"
+  expect_equal(summ_entropy2(f, g_dirac, method = "cross"), max_entropy)
+  expect_equal(summ_entropy2(g_dirac, f, method = "cross"), -log(0.25))
+})
+
+test_that("summ_entropy2 throws error on inputs of different types", {
+  expect_error(summ_entropy2(d_fin, d_infin), "`f`.*`g`.*same type")
+  expect_error(summ_entropy2(d_infin, d_fin), "`f`.*`g`.*same type")
+})
+
+test_that("summ_entropy2 uses `clip` argument", {
+  f <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+  g <- new_d(data.frame(x = 3:4, y = c(1, 1)), "infin")
+  expect_equal(summ_entropy2(f, g, method = "cross", clip = exp(-10)), 10)
+})
+
+test_that("summ_entropy2 validates input", {
+  expect_error(summ_entropy2("a", d_fin), "`f`.*function")
+  expect_error(summ_entropy2(function(x) {x}, d_fin), "`f`.*pdqr")
+  expect_error(summ_entropy2(d_fin, "a"), "`g`.*function")
+  expect_error(summ_entropy2(d_fin, function(x) {x}), "`g`.*pdqr")
+  expect_error(summ_entropy2(d_fin, d_fin, clip = "a"), "`clip`.*number")
+  expect_error(summ_entropy2(d_fin, d_fin, clip = 1:2), "`clip`.*single")
+  expect_error(summ_entropy2(d_fin, d_fin, clip = -1), "`clip`.*non-negative")
+})
+
+
 # cross_entropy -----------------------------------------------------------
 test_that("cross_entropy works with 'fin' functions", {
   # Simple uniform discrete distribution

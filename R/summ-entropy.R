@@ -1,3 +1,26 @@
+# Note in docs that pdqr approximation error can introduce rather big error in
+# entropy estimation in case original density goes to infinity
+summ_entropy <- function(f) {
+  assert_pdqr_fun(f)
+
+  cross_entropy(f, f)
+}
+
+# Note in docs that `method = "relative"` is Kullback–Leibler divergence
+summ_entropy2 <- function(f, g, method = "relative", clip = exp(-20)) {
+  assert_pdqr_fun(f)
+  assert_pdqr_fun(g)
+  assert_type(method, is_string)
+  assert_in_set(method, c("relative", "cross"))
+  assert_type(clip, is_single_number, "single non-negative number", min_val = 0)
+
+  switch(
+    method,
+    relative = cross_entropy(f, g, clip) - cross_entropy(f, f, clip),
+    cross = cross_entropy(f, g, clip)
+  )
+}
+
 cross_entropy <- function(f, g, clip = exp(-20)) {
   d_f <- as_d(f)
   d_g <- as_d(g)
