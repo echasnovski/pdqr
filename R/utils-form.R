@@ -87,8 +87,8 @@ compute_f_list_meta <- function(f_list) {
 }
 
 
-# Create `x` grid ---------------------------------------------------------
-common_x <- function(f, g) {
+# Create data from pdqr-pair ----------------------------------------------
+inters_x <- function(f, g) {
   f_x <- meta_x_tbl(f)[["x"]]
   g_x <- meta_x_tbl(g)[["x"]]
   f_supp <- meta_support(f)

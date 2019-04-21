@@ -124,56 +124,57 @@ prob_geq_fin_any <- function(f, g) {
 }
 
 prob_geq_infin_infin <- function(f, g) {
-  # Create common grid (with some helper grids) for `f` and `g`. It is created
-  # as union of `f` and `g` "x"s which lie in the intersection of both supports.
-  # This is done to workaround the assumption that vectors `x` and `y` during
-  # integral computation represent actual density points **between which there
-  # are lines**. This doesn't hold if common grid is created as simple union of
-  # grids (there will be distortion on the edge of some support). Example: `f`
-  # and `g` are "infin" uniform on (0, 1) and (0.5, 1.5). `f` on union grid (0,
-  # 0.5, 1, 1.5) would have "y" values (1, 1, 1, 0) which during computation of
-  # integrals will be treated as having line from (x=1, y=1) to (x=1.5, y=0),
-  # which is not true.
-  # Note that there will be at least 2 points in `comm_x` because this code will
-  # execute after early returns in `prob_geq()` didn't return.
-  comm_x <- common_x(f, g)
+  # Create intersection grid (with some helper grids) for `f` and `g`. It is
+  # created as union of `f` and `g` "x"s which lie in the intersection of both
+  # supports. This is done to workaround the assumption that vectors `x` and `y`
+  # during integral computation represent actual density points **between which
+  # there are lines**. This doesn't hold if grid is created as simple union of
+  # grids (there will be distortion on the edge of some support).
+  # Example: `f` and `g` are "infin" uniform on (0, 1) and (0.5, 1.5). `f` on
+  # union grid (0, 0.5, 1, 1.5) would have "y" values (1, 1, 1, 0) which during
+  # computation of integrals will be treated as having line from (x=1, y=1) to
+  # (x=1.5, y=0), which is not true.
+  # Note that there will be at least 2 points in `inters_x` because this code
+  # will execute after early returns in `prob_geq()` didn't return.
+  inters_x <- inters_x(f, g)
 
-  n <- length(comm_x)
-  comm_left <- comm_x[-n]
-  comm_right <- comm_x[-1]
-  # This is used soon as "indicator" (that doesn't equal to any of `comm_x` and
-  # lies strictly inside intersection of supports) of common grid interval
-  comm_mid <- (comm_left + comm_right) / 2
+  n <- length(inters_x)
+  inters_left <- inters_x[-n]
+  inters_right <- inters_x[-1]
+  # This is used soon as "indicator" (that doesn't equal to any of `inters_x`
+  # and lies strictly inside intersection of supports) of intersection grid
+  # interval
+  inters_mid <- (inters_left + inters_right) / 2
 
   # Compute coefficients of lines representing `f` and `g` densities at each
-  # interval of common grid.
+  # interval of intersection grid.
   f_x_tbl <- meta_x_tbl(f)
   coeffs_f <- compute_piecelin_density_coeffs(
     x_tbl = f_x_tbl,
-    ind_vec = findInterval(comm_mid, f_x_tbl[["x"]])
+    ind_vec = findInterval(inters_mid, f_x_tbl[["x"]])
   )
   g_x_tbl <- meta_x_tbl(g)
   coeffs_g <- compute_piecelin_density_coeffs(
     x_tbl = g_x_tbl,
-    ind_vec = findInterval(comm_mid, g_x_tbl[["x"]])
+    ind_vec = findInterval(inters_mid, g_x_tbl[["x"]])
   )
 
-  # Output probability based on functions inside `(comm_x[1], comm_x[n])`
+  # Output probability based on functions inside `(inters_x[1], inters_x[n])`
   # interval (intersection of supports) is equal to definite integral from
-  # `comm_x[1]` to `comm_x[n]` of `d_f(x) * p_g(x)` (`d_f` - PDF of `f`, `p_g` -
-  # CDF of `g`), which is a desired probability. Logic here is that for small
-  # interval the probability of `f >= g` is equal to a product of two
+  # `inters_x[1]` to `inters_x[n]` of `d_f(x) * p_g(x)` (`d_f` - PDF of `f`,
+  # `p_g` - CDF of `g`), which is a desired probability. Logic here is that for
+  # small interval the probability of `f >= g` is equal to a product of two
   # probabilities: 1) that `f` lies inside that interval and 2) that `g` lies to
   # the left of that interval. When interval width tends to zero, that
   # probability tends to `d_f(x) * p_g(x)`. Overall probability is equal to
   # integral of that expression over intersection of `f` and `g` supports, which
-  # here is `[comm_x[1], comm_x[n]]`.
-  cumprob_g_left <- as_p(g)(comm_left)
+  # here is `[inters_x[1], inters_x[n]]`.
+  cumprob_g_left <- as_p(g)(inters_left)
 
-  comm_res <- infin_geq_piece_integral(
-    diff_x = diff(comm_x),
-    y_f_left = as_d(f)(comm_left),
-    y_g_left = as_d(g)(comm_left),
+  inters_res <- infin_geq_piece_integral(
+    diff_x = diff(inters_x),
+    y_f_left = as_d(f)(inters_left),
+    y_g_left = as_d(g)(inters_left),
     slope_f = coeffs_f[["slope"]],
     slope_g = coeffs_g[["slope"]],
     cumprob_g_left = cumprob_g_left
@@ -183,16 +184,16 @@ prob_geq_infin_infin <- function(f, g) {
   # total probability of `f` to the right of `g`'s support.
   f_geq_outside <- 1 - as_p(f)(meta_support(g)[2])
 
-  comm_res + f_geq_outside
+  inters_res + f_geq_outside
 }
 
 infin_geq_piece_integral <- function(diff_x, y_f_left, y_g_left,
                                      slope_f, slope_g, cumprob_g_left) {
   # Output probability is equal to definite integral of `d_f(x) * p_g(x)` over
-  # common support. On each interval, where both densities have linear nature,
-  # definite integral is over (x_left, x_right) interval of a function `(a*x +
-  # b) * (0.5*A*(x^2 - x_left^2) + B*(x - x_left) + G)`, where `a`/`A` - slopes
-  # of `f` and `g` in the interval (`slope_f` and `slope_g`), `b`/`B` -
+  # intersection support. On each interval, where both densities have linear
+  # nature, definite integral is over (x_left, x_right) interval of a function
+  # `(a*x + b) * (0.5*A*(x^2 - x_left^2) + B*(x - x_left) + G)`, where `a`/`A` -
+  # slopes of `f` and `g` in the interval (`slope_f` and `slope_g`), `b`/`B` -
   # intercepts, `G` - cumulative probability of `g` at `x_left`. To overcome
   # numerical issues variable replacement **helps very much**: `x = x_left + t`.
   # Then this integral becomes over interval (0, x_right-x_left) of

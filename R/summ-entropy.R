@@ -91,42 +91,42 @@ cross_entropy_fin <- function(d_f, d_g, clip = exp(-20)) {
 # considering both numerical and speed reasons.
 cross_entropy_infin <- function(d_f, d_g, clip) {
   # Entropy will be computed over `d_f`'s support. However, computation is non
-  # trivial only on common support. Influence of intervals from exactly one
-  # support will be used at the end (`outside_entropy`).
-  comm_x <- common_x(d_f, d_g)
+  # trivial only on intersection support. Influence of intervals from exactly
+  # one support will be used at the end (`outside_entropy`).
+  inters_x <- inters_x(d_f, d_g)
 
-  # Handling case of no common support. In that case entropy is equal to
+  # Handling case of no intersection support. In that case entropy is equal to
   # `-integral{d_f(x) * log(clip)}dx` over `d_f`'s support (`clip` is constant)
-  if (length(comm_x) <= 1) {
+  if (length(inters_x) <= 1) {
     return(-log(clip))
   }
 
-  # Entropy on common support is computed as sum of piece integrals on intervals
-  # between consecutive `comm_x` elements. There integrals of interest have form
-  # `-integral{(a*x+b) * log(A*x+B)}dx` (`a`, `A` - slopes and `b`, `B` -
-  # intercepts of `d_f` and `d_g`). The way this integral is computed depends on
-  # whether `A` is zero. If yes, then it is straightforward integral because
-  # `log(B)` is a constant; if not - a complicated one.
+  # Entropy on intersection support is computed as sum of piece integrals on
+  # intervals between consecutive `inters_x` elements. There integrals of
+  # interest have form `-integral{(a*x+b) * log(A*x+B)}dx` (`a`, `A` - slopes
+  # and `b`, `B` - intercepts of `d_f` and `d_g`). The way this integral is
+  # computed depends on whether `A` is zero. If yes, then it is straightforward
+  # integral because `log(B)` is a constant; if not - a complicated one.
 
   # Prepare data for integrals
-  n <- length(comm_x)
-  comm_left <- comm_x[-n]
-  comm_right <- comm_x[-1]
-  d <- comm_right - comm_left
+  n <- length(inters_x)
+  inters_left <- inters_x[-n]
+  inters_right <- inters_x[-1]
+  d <- inters_right - inters_left
 
-  comm_mid <- (comm_left + comm_right)/2
+  inters_mid <- (inters_left + inters_right)/2
   f_x_tbl <- meta_x_tbl(d_f)
   sl_f <- compute_piecelin_density_coeffs(
-    x_tbl = f_x_tbl, ind_vec = findInterval(comm_mid, f_x_tbl[["x"]])
+    x_tbl = f_x_tbl, ind_vec = findInterval(inters_mid, f_x_tbl[["x"]])
   )[["slope"]]
   g_x_tbl <- meta_x_tbl(d_g)
   sl_g <- compute_piecelin_density_coeffs(
-    x_tbl = g_x_tbl, ind_vec = findInterval(comm_mid, g_x_tbl[["x"]])
+    x_tbl = g_x_tbl, ind_vec = findInterval(inters_mid, g_x_tbl[["x"]])
   )[["slope"]]
 
-  f_y_l <- d_f(comm_x)[-n]
+  f_y_l <- d_f(inters_x)[-n]
 
-  g_y <- d_g(comm_x)
+  g_y <- d_g(inters_x)
   g_y_l <- g_y[-n]
   g_y_l_clipped <- pmax(g_y_l, clip)
   g_y_r <- g_y[-1]
@@ -149,18 +149,18 @@ cross_entropy_infin <- function(d_f, d_g, clip) {
   piece_entropy[int_has_log] <- piece_entropy_with_log[int_has_log]
   piece_entropy[!int_has_log] <- piece_entropy_no_log[!int_has_log]
 
-  common_entropy <- sum(piece_entropy)
+  inters_entropy <- sum(piece_entropy)
 
-  # Handling outside of common support. There either `d_f` is zero (then
+  # Handling outside of intersection support. There either `d_f` is zero (then
   # probabilities will be zero) or `d_g` is zero (then it will be "replaced"
   # with constant `clip` value and integral will be just `d_f`'s probability of
   # outside region multiplied by `-log(clip)`.
   f_supp <- meta_support(d_f)
   p_f <- as_p(d_f)
   outside_entropy <- -log(clip) * (
-    (p_f(comm_x[1]) - p_f(f_supp[1])) + (p_f(f_supp[2]) - p_f(comm_x[n]))
+    (p_f(inters_x[1]) - p_f(f_supp[1])) + (p_f(f_supp[2]) - p_f(inters_x[n]))
   )
 
   # Using `sum(*, na.rm = TRUE)` to account for possible `NaN`
-  sum(common_entropy, outside_entropy, na.rm = TRUE)
+  sum(inters_entropy, outside_entropy, na.rm = TRUE)
 }
