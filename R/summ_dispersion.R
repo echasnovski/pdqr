@@ -21,7 +21,8 @@
 #' @return All functions return a single number representing a dispersion of
 #'   distribution.
 #'
-#' @seealso [summ_center()] for computing distribution's center.
+#' @seealso [summ_center()] for computing distribution's center, [summ_moment()]
+#'   for general moments.
 #'
 #' @examples
 #' # Type "infin"

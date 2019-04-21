@@ -62,5 +62,6 @@ summ_mad(d_pois)
 
 }
 \seealso{
-\code{\link[=summ_center]{summ_center()}} for computing distribution's center.
+\code{\link[=summ_center]{summ_center()}} for computing distribution's center, \code{\link[=summ_moment]{summ_moment()}}
+for general moments.
 }

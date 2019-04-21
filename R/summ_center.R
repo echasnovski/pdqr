@@ -24,7 +24,8 @@
 #'   representing a center of distribution. `summ_mode(*, method = "local")` can
 #'   return a numeric vector with multiple values representing local maxima.
 #'
-#' @seealso [summ_dispersion()] for computing distribution's dispersion.
+#' @seealso [summ_dispersion()] for computing distribution's dispersion,
+#'   [summ_moment()] for general moments.
 #'
 #' @examples
 #' # Type "infin"

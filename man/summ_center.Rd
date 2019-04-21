@@ -68,5 +68,6 @@ summ_mode(my_d, method = "local")
 
 }
 \seealso{
-\code{\link[=summ_dispersion]{summ_dispersion()}} for computing distribution's dispersion.
+\code{\link[=summ_dispersion]{summ_dispersion()}} for computing distribution's dispersion,
+\code{\link[=summ_moment]{summ_moment()}} for general moments.
 }
