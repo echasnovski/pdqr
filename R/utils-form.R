@@ -106,3 +106,22 @@ union_x <- function(f, g) {
 
   sort(union(f_x, g_x))
 }
+
+
+inters_support <- function(f, g) {
+  f_supp <- meta_support(f)
+  g_supp <- meta_support(g)
+
+  left <- max(f_supp[1], g_supp[1])
+  right <- min(f_supp[2], g_supp[2])
+
+  if (left > right) {
+    return(numeric(0))
+  } else {
+    c(left, right)
+  }
+}
+
+union_support <- function(f, g) {
+  range(meta_support(f), meta_support(g))
+}

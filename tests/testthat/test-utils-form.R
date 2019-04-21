@@ -138,3 +138,27 @@ test_that("union_x works", {
   expect_equal(union_x(d_1, d_3), c(1, 3, 4, 5, 6))
   expect_equal(union_x(d_2, d_3), c(-1, 1, 2, 4, 5, 6))
 })
+
+
+# inters_support ----------------------------------------------------------
+test_that("inters_support works", {
+  cur_d <- new_d(c(1, 10), "fin")
+  expect_equal(inters_support(cur_d, new_d(c(6, 11), "fin")), c(6, 10))
+  expect_equal(inters_support(cur_d, new_d(c(-1, 5), "fin")), c(1, 5))
+  expect_equal(inters_support(cur_d, new_d(c(2, 7), "fin")), c(2, 7))
+  expect_equal(inters_support(cur_d, new_d(c(1, 9), "fin")), c(1, 9))
+  expect_equal(inters_support(cur_d, new_d(c(11, 12), "fin")), numeric(0))
+  expect_equal(inters_support(cur_d, new_d(c(-12, -11), "fin")), numeric(0))
+})
+
+
+# union_support -----------------------------------------------------------
+test_that("union_support works", {
+  cur_d <- new_d(c(1, 10), "fin")
+  expect_equal(union_support(cur_d, new_d(c(6, 11), "fin")), c(1, 11))
+  expect_equal(union_support(cur_d, new_d(c(-1, 5), "fin")), c(-1, 10))
+  expect_equal(union_support(cur_d, new_d(c(2, 7), "fin")), c(1, 10))
+  expect_equal(union_support(cur_d, new_d(c(1, 9), "fin")), c(1, 10))
+  expect_equal(union_support(cur_d, new_d(c(11, 12), "fin")), c(1, 12))
+  expect_equal(union_support(cur_d, new_d(c(-12, -11), "fin")), c(-12, 10))
+})
