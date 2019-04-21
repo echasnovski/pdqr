@@ -53,6 +53,7 @@ Collate:
     'summ_center.R'
     'summ_dispersion.R'
     'summ_distr_tbl.R'
+    'summ_moment.R'
     'summ_pval.R'
     'utils-as.R'
     'utils-form.R'
