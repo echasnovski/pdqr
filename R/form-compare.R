@@ -136,7 +136,7 @@ prob_geq_infin_infin <- function(f, g) {
   # (x=1.5, y=0), which is not true.
   # Note that there will be at least 2 points in `inters_x` because this code
   # will execute after early returns in `prob_geq()` didn't return.
-  inters_x <- inters_x(f, g)
+  inters_x <- intersection_x(f, g)
 
   n <- length(inters_x)
   inters_left <- inters_x[-n]

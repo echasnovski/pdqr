@@ -93,7 +93,7 @@ cross_entropy_infin <- function(d_f, d_g, clip) {
   # Entropy will be computed over `d_f`'s support. However, computation is non
   # trivial only on intersection support. Influence of intervals from exactly
   # one support will be used at the end (`outside_entropy`).
-  inters_x <- inters_x(d_f, d_g)
+  inters_x <- intersection_x(d_f, d_g)
 
   # Handling case of no intersection support. In that case entropy is equal to
   # `-integral{d_f(x) * log(clip)}dx` over `d_f`'s support (`clip` is constant)
