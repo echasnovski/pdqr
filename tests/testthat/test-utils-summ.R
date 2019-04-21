@@ -146,3 +146,75 @@ test_that("compute_density_crossings handles real world examples", {
   d_unif <- as_d(dunif, min = 2, max = 5)
   expect_equal(compute_density_crossings(d_norm, d_unif), numeric(0))
 })
+
+
+# compute_cdf_crossings ---------------------------------------------------
+test_that("compute_cdf_crossings works", {
+  cur_p_1 <- new_p(data.frame(x = 1:2, y = c(1, 1)), "infin")
+  cur_p_2 <- new_p(data.frame(x = c(0, 4), y = c(1, 1)/4), "infin")
+  expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), 4/3)
+
+  # Acceptence of different pdqr-functions
+  expect_equal(
+    compute_density_crossings(cur_p_1, as_p(cur_p_2)),
+    compute_density_crossings(as_q(cur_p_1), as_r(cur_p_2))
+  )
+})
+
+test_that("compute_cdf_crossings handles 'intervals of identity'", {
+  # All consecutive intervals on which CDFs are identical should be treated as a
+  # single identity interval and be represented in output with its edges.
+
+  # "Partial" identity
+  cur_p_1 <- new_p(
+    data.frame(x = c(1, 1.5, 2, 3, 3.5, 4), y = c(1, 0, 1, 1, 0, 1)), "infin"
+  )
+  cur_p_2 <- new_p(data.frame(x = 1:4, y = c(0, 1, 1, 0)), "infin")
+  expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), c(1, 2, 3, 4))
+
+  # Total identity
+  expect_equal(compute_cdf_crossings(d_infin, d_infin), meta_support(d_infin))
+})
+
+test_that("compute_cdf_crossings handles no intersections", {
+  # No intersection support
+  cur_p_1 <- new_p(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  cur_p_2 <- new_p(data.frame(x = 11:12, y = c(1, 1)), "infin")
+  expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), numeric(0))
+  expect_equal(compute_cdf_crossings(cur_p_2, cur_p_1), numeric(0))
+
+  # Intersection support consists from one value
+  cur_p_3 <- new_p(data.frame(x = 1:2, y = c(1, 1)), "infin")
+  expect_equal(compute_cdf_crossings(cur_p_1, cur_p_3), numeric(0))
+})
+
+test_that("compute_cdf_crossings handles real world examples", {
+  # Case of crossing
+  p_norm <- as_p(pnorm)
+  p_norm_2 <- as_p(pnorm, mean = 1, sd = 0.1)
+  inters <- compute_cdf_crossings(p_norm, p_norm_2)
+  expect_true(length(inters) == 1)
+  expect_equal(p_norm(inters), p_norm_2(inters))
+
+  # Case of no crossing
+  p_unif <- as_p(punif, min = 2, max = 5)
+  expect_equal(compute_cdf_crossings(p_norm, p_unif), numeric(0))
+})
+
+
+# pair_cdf_data -----------------------------------------------------------
+# Tested in `compute_cdf_crossings()`
+
+
+# na_sqrt -----------------------------------------------------------------
+test_that("na_sqrt works", {
+  expect_equal(na_sqrt(c(-4, 0, 4)), c(NA, 0, 2))
+})
+
+
+# na_outside --------------------------------------------------------------
+test_that("na_outside works", {
+  expect_equal(na_outside(1:5, 2, 4), c(NA, 2:4, NA))
+  expect_equal(na_outside(1:5, 0, 6), 1:5)
+  expect_equal(na_outside(1:5, 2.5, 2.5), rep(NA_integer_, 5))
+})
