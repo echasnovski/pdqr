@@ -136,7 +136,7 @@ prob_geq_infin_infin <- function(f, g) {
   # which is not true.
   # Note that there will be at least 2 points in `comm_x` because this code will
   # execute after early returns in `prob_geq()` didn't return.
-  comm_x <- common_x(f, g, method = "intersect")
+  comm_x <- common_x(f, g)
 
   n <- length(comm_x)
   comm_left <- comm_x[-n]
