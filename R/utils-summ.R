@@ -1,3 +1,4 @@
+# Moments -----------------------------------------------------------------
 # Computes `E[X^order]`
 raw_moment <- function(f, order) {
   x_tbl <- meta_x_tbl(f)
@@ -41,4 +42,71 @@ raw_moment_infin <- function(x_tbl, k) {
   piece_moments[diff_x_is_small] <- approx_piece_moments[diff_x_is_small]
 
   sum(piece_moments)
+}
+
+
+# Density crossings -------------------------------------------------------
+# Returns `x` coordinates of density crossing (intersection) points in case of
+# `f` and `g` both being "infin" pdqr-functions
+compute_density_crossings <- function(f, g) {
+  # Early return in case of non-overlapping supports
+  inters_supp <- intersection_support(f, g)
+  if (length(inters_supp) == 0) {
+    return(numeric(0))
+  }
+
+  # Densities can cross only inside intersection support. It is non-trivial
+  # because there wasn't an early return at this point.
+  inters_x <- intersection_x(f, g)
+  n <- length(inters_x)
+
+  f_y <- as_d(f)(inters_x)
+  g_y <- as_d(g)(inters_x)
+
+  # Handling the case of single point in `inters_x`
+  if (n == 1) {
+    if (f_y == g_y) {
+      return(inters_x)
+    } else {
+      return(numeric(0))
+    }
+  }
+
+  # Determine which intervals have crossings
+  y_diff <- f_y - g_y
+
+  y_diff_sign <- sign(y_diff)
+  y_diff_sign_left <- y_diff_sign[-n]
+  y_diff_sign_right <- y_diff_sign[-1]
+
+  has_inters <- (y_diff_sign_left != y_diff_sign_right) |
+    (y_diff_sign_left == 0) | (y_diff_sign_right == 0)
+  inter_inds <- which(has_inters)
+  inter_inds_r <- inter_inds + 1
+
+  # Compute actual intersections
+  y_diff_l <- abs(y_diff[inter_inds])
+  y_diff_r <- abs(y_diff[inter_inds_r])
+  lambda <- y_diff_l / (y_diff_l + y_diff_r)
+
+  res <- (1 - lambda) * inters_x[inter_inds] + lambda * inters_x[inter_inds_r]
+  # Handle case when densities cross on both ends of interval. It means that
+  # they are identical on this interval (because of density piecewise
+  # linearity). In this case all consecutive "identity" intervals will be
+  # treated as one "identity" interval returning only its edges (which actually
+  # will be returned from "neighbor" intervals).
+  res <- res[!is.na(res)]
+
+  # Account for a possible crossings on the edges of intersection support.
+  if (f_y[1] == g_y[1]) {
+    res <- c(inters_x[1], res)
+  }
+  if (f_y[n] == g_y[n]) {
+    res <- c(res, inters_x[n])
+  }
+
+  # `unique()` is needed because densities can cross on some point in
+  # `inters_x`. In that case it will be returned as crossing point from both its
+  # "left" and "right" intervals.
+  unique(res)
 }
