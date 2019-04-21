@@ -1,5 +1,46 @@
+#' Compute entropy
+#'
+#' `summ_entropy()` computes entropy of single distribution while
+#' `summ_entropy2()` - for a pair of distributions. For "fin" pdqr-functions a
+#' classic formula `-sum(p * log(p))` (in nats) is used. In "infin" case a
+#' differential entropy is computed.
+#'
+#' @inheritParams summ_mean
+#' @param g A pdqr-function. Should be the same type as `f`.
+#' @param method Entropy method for pair of distributions. One of "relative"
+#'   (Kullback–Leibler divergence) or "cross" (for cross-entropy).
+#' @param clip Value to be used instead of 0 during `log()` computation.
+#'   `-log(clip)` represents the maximum value of output entropy.
+#'
+#' @return A single number representing entropy. If `clip` is strictly positive,
+#' then it will be finite.
+#'
+#' @examples
+#' d_norm <- as_d(dnorm)
+#' d_norm_2 <- as_d(dnorm, mean = 2, sd = 0.5)
+#'
+#' summ_entropy(d_norm)
+#' summ_entropy2(d_norm, d_norm_2)
+#' summ_entropy2(d_norm, d_norm_2, method = "cross")
+#'
+#' # Increasing `clip` leads to decreasing maximum output value
+#' d_1 <- new_d(1:10, "fin")
+#' d_2 <- new_d(20:21, "fin")
+#'
+#'   # Formally, output isn't clearly defined because functions don't have the
+#'   # same support. Direct use of entropy formulas gives infinity output, but
+#'   # here maximum value is `-log(clip)`.
+#' summ_entropy2(d_1, d_2, method = "cross")
+#' summ_entropy2(d_1, d_2, method = "cross", clip = exp(-10))
+#' summ_entropy2(d_1, d_2, method = "cross", clip = 0)
+#'
+#' @name entropy
+NULL
+
 # Note in docs that pdqr approximation error can introduce rather big error in
 # entropy estimation in case original density goes to infinity
+#' @rdname entropy
+#' @export
 summ_entropy <- function(f) {
   assert_pdqr_fun(f)
 
@@ -7,6 +48,8 @@ summ_entropy <- function(f) {
 }
 
 # Note in docs that `method = "relative"` is Kullback–Leibler divergence
+#' @rdname entropy
+#' @export
 summ_entropy2 <- function(f, g, method = "relative", clip = exp(-20)) {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
@@ -43,6 +86,9 @@ cross_entropy_fin <- function(d_f, d_g, clip = exp(-20)) {
   -sum(d_f(x) * log(prob_g))
 }
 
+# Not using `stats::integrate()` here because of possible dirac-like intervals
+# in `d_f` and/or `d_g`. Except these cases, `integrate()` works pretty good
+# considering both numerical and speed reasons.
 cross_entropy_infin <- function(d_f, d_g, clip) {
   # Entropy will be computed over `d_f`'s support. However, computation is non
   # trivial only on common support. Influence of intervals from exactly one
