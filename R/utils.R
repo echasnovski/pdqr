@@ -353,12 +353,6 @@ capture_null <- function(x) {
 
 
 # Pdqr approximation error ------------------------------------------------
-# Note in docs that quantile pdqr approximation of "fin" distribution with
-# infinite tale(s) can result into "all one" summary. This is because test grid
-# is chosen to be quantiles of pdqr-distribution which due to renormalization
-# can differ by one from reference ones. Example:
-#   summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))
-#   summary(pdqr_approx_error(as_q(qpois, lambda = 10), qpois, lambda = 10))
 pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
                               remove_infinity = TRUE) {
   assert_pdqr_fun(f)
@@ -378,14 +372,14 @@ pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
     infin = granulate_grid(f, gran = gran)
   )
 
-  error <- abs(f(grid) - ref_f(grid, ...))
+  error <- ref_f(grid, ...) - f(grid)
   if (remove_infinity) {
     error_isnt_infinite <- !is.infinite(error)
     grid <- grid[error_isnt_infinite]
     error <- error[error_isnt_infinite]
   }
 
-  data.frame(grid = grid, error = error)
+  data.frame(grid = grid, error = error, abserror = abs(error))
 }
 
 granulate_grid <- function(f, gran) {

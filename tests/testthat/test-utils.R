@@ -430,32 +430,41 @@ test_that("capture_null works", {
 test_that("pdqr_approx_error works", {
   d_unif <- as_d(dunif)
   approx_error_d <- pdqr_approx_error(d_unif, dunif, gran = 10)
-  expect_named(approx_error_d, c("grid", "error"))
+  expect_named(approx_error_d, c("grid", "error", "abserror"))
   expect_equal(
     approx_error_d[["grid"]],
     granulate_grid(d_unif, gran = 10)
   )
   expect_true(all(approx_error_d[["error"]] == 0))
+  expect_true(
+    all(approx_error_d[["abserror"]] == abs(approx_error_d[["error"]]))
+  )
 
   p_norm <- as_p(pnorm)
   approx_error_p <- pdqr_approx_error(p_norm, pnorm, gran = 10)
-  expect_named(approx_error_p, c("grid", "error"))
+  expect_named(approx_error_p, c("grid", "error", "abserror"))
   expect_equal(
     approx_error_p[["grid"]],
     granulate_grid(p_norm, gran = 10)
   )
-  expect_true(max(approx_error_p[["error"]]) < 1e-5)
+  expect_true(max(approx_error_p[["abserror"]]) < 1e-5)
+  expect_true(
+    all(approx_error_d[["abserror"]] == abs(approx_error_d[["error"]]))
+  )
 
   q_norm <- as_q(qnorm)
   approx_error_q <- pdqr_approx_error(
     q_norm, qnorm, gran = 10, remove_infinity = FALSE
   )
-  expect_named(approx_error_q, c("grid", "error"))
+  expect_named(approx_error_q, c("grid", "error", "abserror"))
   expect_equal(
     approx_error_q[["grid"]],
     granulate_grid(q_norm, gran = 10)
   )
-  expect_true(median(approx_error_q[["error"]]) < 1e-4)
+  expect_true(median(approx_error_q[["abserror"]]) < 1e-4)
+  expect_true(
+    all(approx_error_d[["abserror"]] == abs(approx_error_d[["error"]]))
+  )
 })
 
 test_that("pdqr_approx_error uses `...` as extra arguments for `ref_f`", {
@@ -475,11 +484,11 @@ test_that("pdqr_approx_error uses `remove_infinity` argument", {
   approx_error_d <- pdqr_approx_error(
     d_beta, dbeta, shape1 = 0.5, shape2 = 0.5, remove_infinity = FALSE
   )
-  expect_true(is.infinite(max(approx_error_d[["error"]])))
+  expect_true(is.infinite(max(approx_error_d[["abserror"]])))
 
   q_norm <- as_q(qnorm)
   approx_error_q <- pdqr_approx_error(q_norm, qnorm, remove_infinity = FALSE)
-  expect_true(is.infinite(max(approx_error_q[["error"]])))
+  expect_true(is.infinite(max(approx_error_q[["abserror"]])))
 })
 
 test_that("pdqr_approx_error validates input", {
