@@ -424,3 +424,90 @@ test_that("capture_null works", {
   expect_equal(capture_null(1), 1)
   expect_equal(capture_null("a"), "a")
 })
+
+
+# pdqr_approx_error -------------------------------------------------------
+test_that("pdqr_approx_error works", {
+  d_unif <- as_d(dunif)
+  approx_error_d <- pdqr_approx_error(d_unif, dunif, gran = 10)
+  expect_named(approx_error_d, c("grid", "error"))
+  expect_equal(
+    approx_error_d[["grid"]],
+    granulate_grid(d_unif, gran = 10)
+  )
+  expect_true(all(approx_error_d[["error"]] == 0))
+
+  p_norm <- as_p(pnorm)
+  approx_error_p <- pdqr_approx_error(p_norm, pnorm, gran = 10)
+  expect_named(approx_error_p, c("grid", "error"))
+  expect_equal(
+    approx_error_p[["grid"]],
+    granulate_grid(p_norm, gran = 10)
+  )
+  expect_true(max(approx_error_p[["error"]]) < 1e-5)
+
+  q_norm <- as_q(qnorm)
+  approx_error_q <- pdqr_approx_error(
+    q_norm, qnorm, gran = 10, remove_infinity = FALSE
+  )
+  expect_named(approx_error_q, c("grid", "error"))
+  expect_equal(
+    approx_error_q[["grid"]],
+    granulate_grid(q_norm, gran = 10)
+  )
+  expect_true(median(approx_error_q[["error"]]) < 1e-4)
+})
+
+test_that("pdqr_approx_error uses `...` as extra arguments for `ref_f`", {
+  d_unif <- as_d(dunif, min = 1, max = 11)
+  approx_error <- pdqr_approx_error(d_unif, dunif, min = 1, max = 11)
+  expect_true(all(approx_error[["error"]] == 0))
+})
+
+test_that("pdqr_approx_error uses `gran` argument", {
+  d_unif <- as_d(dunif)
+  approx_error <- pdqr_approx_error(d_unif, dunif, gran = 1)
+  expect_equal(approx_error[["grid"]], granulate_grid(d_unif, gran = 1))
+})
+
+test_that("pdqr_approx_error uses `remove_infinity` argument", {
+  d_beta <- as_d(dbeta, shape1 = 0.5, shape2 = 0.5)
+  approx_error_d <- pdqr_approx_error(
+    d_beta, dbeta, shape1 = 0.5, shape2 = 0.5, remove_infinity = FALSE
+  )
+  expect_true(is.infinite(max(approx_error_d[["error"]])))
+
+  q_norm <- as_q(qnorm)
+  approx_error_q <- pdqr_approx_error(q_norm, qnorm, remove_infinity = FALSE)
+  expect_true(is.infinite(max(approx_error_q[["error"]])))
+})
+
+test_that("pdqr_approx_error validates input", {
+  d_unif <- as_d(dunif)
+  expect_error(pdqr_approx_error("a", dunif), "`f`.*function")
+  expect_error(pdqr_approx_error(function(x) {x}, dunif), "`f`.*pdqr")
+  expect_error(pdqr_approx_error(d_unif, "a"), "`ref_f`.*function")
+  expect_error(pdqr_approx_error(d_unif, dunif, gran = "a"), "`gran`.*number")
+  expect_error(
+    pdqr_approx_error(d_unif, dunif, gran = 0.5), "`gran`.*more than 1"
+  )
+  expect_error(pdqr_approx_error(d_unif, dunif, gran = 1:2), "`gran`.*single")
+  expect_error(
+    pdqr_approx_error(d_unif, dunif, remove_infinity = "a"),
+    "`remove_infinity`.*TRUE.*FALSE"
+  )
+})
+
+
+# granulate_grid ----------------------------------------------------------
+test_that("granulate_grid works", {
+  cur_d <- new_d(data.frame(x = 1:3, y = c(1, 1, 1)/2), "infin")
+  expect_equal(granulate_grid(cur_d, 1), 1:3)
+  expect_equal(granulate_grid(cur_d, 10), seq(1, 3, length.out = 21))
+
+  expect_equal(granulate_grid(as_p(cur_d), 1), 1:3)
+  expect_equal(granulate_grid(as_p(cur_d), 10), seq(1, 3, length.out = 21))
+
+  expect_equal(granulate_grid(as_q(cur_d), 1), c(0, 0.5, 1))
+  expect_equal(granulate_grid(as_q(cur_d), 10), seq(0, 1, length.out = 21))
+})

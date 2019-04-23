@@ -350,3 +350,63 @@ capture_null <- function(x) {
     x
   }
 }
+
+
+# Pdqr approximation error ------------------------------------------------
+# Note in docs that quantile pdqr approximation of "fin" distribution with
+# infinite tale(s) can result into "all one" summary. This is because test grid
+# is chosen to be quantiles of pdqr-distribution which due to renormalization
+# can differ by one from reference ones. Example:
+#   summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))
+#   summary(pdqr_approx_error(as_q(qpois, lambda = 10), qpois, lambda = 10))
+pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
+                              remove_infinity = TRUE) {
+  assert_pdqr_fun(f)
+  assert_type(ref_f, is.function)
+  assert_type(
+    gran, is_single_number,
+    type_name = "single number more than 1", min_val = 1
+  )
+  assert_type(
+    remove_infinity, is_truefalse, type_name = "`TRUE` or `FALSE`"
+  )
+
+  gran <- ceiling(gran)
+  grid <- switch(
+    meta_type(f),
+    fin = granulate_grid(f, gran = 1),
+    infin = granulate_grid(f, gran = gran)
+  )
+
+  error <- abs(f(grid) - ref_f(grid, ...))
+  if (remove_infinity) {
+    error_isnt_infinite <- !is.infinite(error)
+    grid <- grid[error_isnt_infinite]
+    error <- error[error_isnt_infinite]
+  }
+
+  data.frame(grid = grid, error = error)
+}
+
+granulate_grid <- function(f, gran) {
+  x_tbl <- meta_x_tbl(f)
+  vec <- switch(
+    get_pdqr_class(f),
+    d = x_tbl[["x"]],
+    p = x_tbl[["x"]],
+    q = x_tbl[["cumprob"]]
+  )
+
+  if (gran == 1) {
+    return(vec)
+  }
+
+  n <- length(vec)
+  step <- (vec[-1] - vec[-n]) / gran
+
+  res <- rep(vec[-n], each = gran) +
+    rep(step, each = gran) * rep(0:(gran-1), times = n-1)
+
+  # Add missing last element
+  c(res, vec[n])
+}
