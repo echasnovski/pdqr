@@ -353,6 +353,67 @@ capture_null <- function(x) {
 
 
 # Pdqr approximation error ------------------------------------------------
+#' Diagnose pdqr approximation
+#'
+#' `pdqr_approx_error()` computes errors that are results of 'pdqr'
+#' approximation, which occurs because of possible tail trimming and assuming
+#' piecewise linearity of density function in case of "infin" type. For an easy
+#' view summary, use [summary()][base::summary()].
+#'
+#' @param f A pdqr-function to diagnose. Usually the output of one of [as_p()],
+#'   [as_d()], or [as_q()] default methods.
+#' @param ref_f A "true" distribution function of the same class as `f`. Usually
+#'   the input to the aforementioned `as_*()` function.
+#' @param ... Other arguments to `ref_f`. If they were supplied to `as_*()`
+#'   function, then the exact same values must be supplied here.
+#' @param gran Degree of grid "granularity" in case of "infin" type: number of
+#'   subintervals to be produced inside every interval of density linearity.
+#'   Should be not less than 1 (indicator that original column from
+#'   ["x_tbl"][meta_x_tbl()] will be used, see details).
+#' @param remove_infinity Whether to remove rows corresponding to infinite
+#'   error.
+#'
+#' @details Errors are computed as difference between "true" value (output of
+#' `ref_f`) and output of pdqr-function `f`. They are computed at "granulated"
+#' `gran` times grid (which is an "x" column of "x_tbl" in case `f` is p- or
+#' d-function and "cumprob" column if q-function). They are usually negative
+#' because of possible tail trimming of reference distribution.
+#'
+#' **Notes**:
+#' - `gran` argument for "fin" type is always 1.
+#' - Quantile pdqr approximation of "fin" distribution with infinite tale(s) can
+#' result into "all one" summary of error. This is expected output and is
+#' because test grid is chosen to be quantiles of pdqr-distribution which due to
+#' renormalization can differ by one from reference ones. For example:
+#' `summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))`.
+#'
+#' @return A data frame with the following columns:
+#' - **grid** <dbl> : A grid at which errors are computed.
+#' - **error** <dbl> : Errors which are computed as `ref_f(grid, ...) -
+#' f(grid)`.
+#' - **abserror** <dbl> : Absolute value of "error" column.
+#'
+#' @examples
+#' d_norm <- as_d(dnorm)
+#' error_norm <- pdqr_approx_error(d_norm, dnorm)
+#' summary(error_norm)
+#'
+#' # Setting `gran` results into different number of rows in output
+#' error_norm_2 <- pdqr_approx_error(d_norm, dnorm, gran = 1)
+#' nrow(meta_x_tbl(d_norm)) == nrow(error_norm_2)
+#'
+#' # By default infinity errors are removed
+#' d_beta <- as_d(dbeta, shape1 = 0.3, shape2 = 0.7)
+#' error_beta_1 <- pdqr_approx_error(d_beta, dbeta, shape1 = 0.3, shape2 = 0.7)
+#' summary(error_beta_1)
+#'
+#' # To not remove them, set `remove_infinity` to `FALSE`
+#' error_beta_2 <- pdqr_approx_error(
+#'   d_beta, dbeta, shape1 = 0.3, shape2 = 0.7, remove_infinity = FALSE
+#' )
+#' summary(error_beta_2)
+#'
+#' @export
 pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
                               remove_infinity = TRUE) {
   assert_pdqr_fun(f)
