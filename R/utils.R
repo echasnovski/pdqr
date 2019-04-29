@@ -360,8 +360,8 @@ capture_null <- function(x) {
 #' piecewise linearity of density function in case of "infin" type. For an easy
 #' view summary, use [summary()][base::summary()].
 #'
-#' @param f A pdqr-function to diagnose. Usually the output of one of [as_p()],
-#'   [as_d()], or [as_q()] default methods.
+#' @param f A p-, d-, or q-function to diagnose. Usually the output of one of
+#'   [as_p()], [as_d()], or [as_q()] default methods.
 #' @param ref_f A "true" distribution function of the same class as `f`. Usually
 #'   the input to the aforementioned `as_*()` function.
 #' @param ... Other arguments to `ref_f`. If they were supplied to `as_*()`
@@ -417,6 +417,9 @@ capture_null <- function(x) {
 pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
                               remove_infinity = TRUE) {
   assert_pdqr_fun(f)
+  if (!(get_pdqr_class(f) %in% c("p", "d", "q"))) {
+    stop_collapse("`f` should be p-, d-, or q-function.")
+  }
   assert_type(ref_f, is.function)
   assert_type(
     gran, is_single_number,

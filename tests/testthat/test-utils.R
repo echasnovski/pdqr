@@ -495,6 +495,9 @@ test_that("pdqr_approx_error validates input", {
   d_unif <- as_d(dunif)
   expect_error(pdqr_approx_error("a", dunif), "`f`.*function")
   expect_error(pdqr_approx_error(function(x) {x}, dunif), "`f`.*pdqr")
+  expect_error(
+    pdqr_approx_error(as_r(runif), runif), "`f`.*p-, d-, or q-function"
+  )
   expect_error(pdqr_approx_error(d_unif, "a"), "`ref_f`.*function")
   expect_error(pdqr_approx_error(d_unif, dunif, gran = "a"), "`gran`.*number")
   expect_error(

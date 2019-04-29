@@ -7,8 +7,8 @@
 pdqr_approx_error(f, ref_f, ..., gran = 10, remove_infinity = TRUE)
 }
 \arguments{
-\item{f}{A pdqr-function to diagnose. Usually the output of one of \code{\link[=as_p]{as_p()}},
-\code{\link[=as_d]{as_d()}}, or \code{\link[=as_q]{as_q()}} default methods.}
+\item{f}{A p-, d-, or q-function to diagnose. Usually the output of one of
+\code{\link[=as_p]{as_p()}}, \code{\link[=as_d]{as_d()}}, or \code{\link[=as_q]{as_q()}} default methods.}
 
 \item{ref_f}{A "true" distribution function of the same class as \code{f}. Usually
 the input to the aforementioned \code{as_*()} function.}
