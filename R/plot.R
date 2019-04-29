@@ -110,29 +110,6 @@ plot_impl_pdq <- function(f, grid, dots) {
   do.call(graphics::plot, plot_args)
 }
 
-compute_d_infin_ylim <- function(f) {
-  # This is an euristic for a nice plotting in presence of dirac-like entries in
-  # "x_tbl"
-  f_x_tbl <- meta_x_tbl(f)
-  x <- f_x_tbl[["x"]]
-  y <- f_x_tbl[["y"]]
-
-  x_neigh_dist <- neigh_dist(x, neigh_type = "max")
-
-  # Here `2e-8` is used instead of default `1e-8` to account for possible
-  # numerical representation inaccuracies.
-  y_non_dirac <- y[x_neigh_dist >= 2e-8]
-  if ((length(y_non_dirac) == 0) || (max(y_non_dirac) == 0)) {
-    # The case when all entries seems to be dirac-like. So all points should be
-    # used in computing `ylim`.
-    range(y)
-  } else {
-    # The case when only some entries are dirac-like and the respective "y"s
-    # should be removed.
-    range(y_non_dirac)
-  }
-}
-
 compute_plot_grid <- function(f, n_extra_grid) {
   f_class <- get_pdqr_class(f)
   f_x_tbl <- meta_x_tbl(f)

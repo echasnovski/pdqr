@@ -337,10 +337,6 @@ test_that("plot.r validates input", {
 # Tested in `plot()` methods
 
 
-# compute_d_infin_ylim ----------------------------------------------------
-# Tested in `plot.d()`
-
-
 # compute_plot_grid -------------------------------------------------------
 # Tested in `plot()` methods
 

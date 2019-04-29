@@ -81,6 +81,10 @@ test_that("neigh_dist works",  {
 })
 
 
+# compute_d_infin_ylim ----------------------------------------------------
+# Tested in `plot.d()`
+
+
 # recycle_vec -------------------------------------------------------------
 test_that("recycle_vec works", {
   expect_equal(recycle_vec(1:2, 2), 1:2)
