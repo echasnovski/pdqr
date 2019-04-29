@@ -1,3 +1,28 @@
+compute_hdr_intervals <- function(f, height) {
+  f_supp <- meta_support(f)
+  # `x_height` has edges of intervals **with positive width** inside which
+  # `as_d(f)` is either `>= height` or `<= height`. Here `unique()` removes
+  # possible zero width intervals.
+  x_height <- unique(
+    c(f_supp[1], compute_density_height_points(f, height), f_supp[2])
+  )
+  n <- length(x_height)
+
+  # Determining which intervals are `>= height`
+  intervals_center <- 0.5*(x_height[-1] + x_height[-n])
+  interval_is_high <- f(intervals_center) >= height
+  high_inds <- which(interval_is_high)
+  x_l <- x_height[high_inds]
+  x_r <- x_height[high_inds + 1]
+
+  # Collapsing consecutive interval edges
+  is_consec <- x_r[-length(x_r)] == x_l[-1]
+  x_l[c(FALSE, is_consec)] <- NA
+  x_r[c(is_consec, FALSE)] <- NA
+
+  data.frame(left = x_l[!is.na(x_l)], right = x_r[!is.na(x_r)])
+}
+
 compute_density_height_points <- function(f, height) {
   x_tbl <- meta_x_tbl(f)
   x <- x_tbl[["x"]]
