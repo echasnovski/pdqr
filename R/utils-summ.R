@@ -212,3 +212,51 @@ na_outside <- function(x, left, right) {
 
   x
 }
+
+
+# Region utilities --------------------------------------------------------
+assert_region <- function(df) {
+  df_name <- paste0("`", deparse(substitute(df)), "`")
+
+  if (!is.data.frame(df)) {
+    stop_collapse(df_name, " should be a data frame.")
+  }
+  if (!(("left" %in% names(df)) && is.numeric(df[["left"]]) &&
+        all(is.finite(df[["left"]])))) {
+    stop_collapse(
+      df_name, ' should have numeric column "left" with finite values.'
+    )
+  }
+  if (!(("right" %in% names(df)) && is.numeric(df[["right"]]) &&
+        all(is.finite(df[["right"]])))) {
+    stop_collapse(
+      df_name, ' should have numeric column "right" with finite values.'
+    )
+  }
+  if (!all(df[["right"]] >= df[["left"]])) {
+    stop_collapse(
+      'In ', df_name, ' all elements of column "right" should be not less ',
+      'than corresponding elements from column "left".'
+    )
+  }
+  if (!is_region_ordered(df)) {
+    stop_collapse(
+      'In ', df_name, ' columns "left" and "right" should represent ordered ',
+      'set of distinct intervals: left[1] <= right[1] <= left[2] <= rihgt[2] ',
+      '<= ..., and there should not be duplicated intervals.'
+    )
+  }
+
+  TRUE
+}
+
+is_region_ordered <- function(df) {
+  # Values in "left" (`l`) and "right" (`r`) column should be ordered
+  # (weakly) increasingly as: l[1] <= r[1] <= l[2] <= r[2] <= ... <= r[nrow(df)]
+  comb <- alternate(df[["left"]], df[["right"]])
+
+  # Order condition
+  all(order(comb) == seq_len(2*nrow(df))) &&
+    # Uniqueness condition
+    !any(duplicated(df[, c("left", "right")]))
+}

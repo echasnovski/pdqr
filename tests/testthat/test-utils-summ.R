@@ -218,3 +218,74 @@ test_that("na_outside works", {
   expect_equal(na_outside(1:5, 0, 6), 1:5)
   expect_equal(na_outside(1:5, 2.5, 2.5), rep(NA_integer_, 5))
 })
+
+
+# assert_region -----------------------------------------------------------
+test_that("assert_region works", {
+  expect_silent(assert_region(data.frame(left = 1, right = 1)))
+  expect_silent(assert_region(data.frame(left = 1:2, right = 1:2)))
+  expect_silent(assert_region(data.frame(left = 1:2, right = 1:2+0.5)))
+  expect_silent(assert_region(data.frame(left = 1:2, right = 1:2, c = -1:0)))
+
+  input <- "a"
+  expect_error(assert_region(input), "`input`.*data frame")
+
+  # Presence and contents of "left" and "right" columns
+  expect_error(assert_region(data.frame(right = 2:3)), 'have.*column.*"left"')
+  expect_error(
+    assert_region(data.frame(left = c("a", "b"), right = 2:3)),
+    'have.*numeric.*"left"'
+  )
+  expect_error(
+    assert_region(data.frame(left = c(-Inf, 2), right = 2:3)), 'finite'
+  )
+  expect_error(assert_region(data.frame(left = 1:2)), 'have.*column.*"right"')
+  expect_error(
+    assert_region(data.frame(left = 1:2, right = c("a", "b"))),
+    'have.*numeric.*"right"'
+  )
+  expect_error(
+    assert_region(data.frame(left = 1:2, right = c(2, Inf))), 'finite'
+  )
+
+  expect_error(assert_region(data.frame(left = 1, right = -1)), "all.*not less")
+  expect_error(
+    assert_region(data.frame(left = 1:2, right = c(-1, 3))), "all.*not less"
+  )
+
+  # Orderliness and uniqueness of intervals
+  expect_silent(assert_region(data.frame(left = 1, right = 1)))
+  expect_silent(assert_region(data.frame(left = 1, right = 2)))
+  expect_silent(assert_region(data.frame(left = 1:2, right = 1:2)))
+  expect_silent(assert_region(data.frame(left = 1:2, right = 2:3)))
+
+  expect_error(
+    assert_region(data.frame(left = c(1, 1), right = c(1, 1))), "distinct"
+  )
+  expect_error(
+    assert_region(data.frame(left = c(1, 1), right = c(2, 2))), "distinct"
+  )
+  expect_error(
+    assert_region(data.frame(left = c(1, 1), right = c(2, 3))), "ordered"
+  )
+  expect_error(
+    assert_region(data.frame(left = c(1, 2, -1), right = c(1.5, 2.5, 3))),
+    "ordered"
+  )
+})
+
+
+# is_region_ordered -------------------------------------------------------
+test_that("is_region_ordered works", {
+  expect_true(is_region_ordered(data.frame(left = 1, right = 1)))
+  expect_true(is_region_ordered(data.frame(left = 1, right = 2)))
+  expect_true(is_region_ordered(data.frame(left = 1:2, right = 1:2)))
+  expect_true(is_region_ordered(data.frame(left = 1:2, right = 2:3)))
+
+  expect_false(is_region_ordered(data.frame(left = c(1, 1), right = c(1, 1))))
+  expect_false(is_region_ordered(data.frame(left = c(1, 1), right = c(2, 2))))
+  expect_false(is_region_ordered(data.frame(left = c(1, 1), right = c(2, 3))))
+  expect_false(
+    is_region_ordered(data.frame(left = c(1, 2, -1), right = c(1.5, 2.5, 3)))
+  )
+})

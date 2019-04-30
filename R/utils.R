@@ -220,6 +220,15 @@ all_same <- function(x, tolerance = 0) {
   isTRUE(all.equal(x, rep(x[1], length(x)), tolerance = tolerance))
 }
 
+alternate <- function(x, y) {
+  # It is assumed that `x` and `y` have the same lengths
+  n <- length(x)
+  comb <- c(x, y)
+  inds <- rep(seq_len(n), each = 2) + rep(c(0, n), times = n)
+
+  comb[inds]
+}
+
 
 # List manipulations ------------------------------------------------------
 c_dedupl <- function(...) {

@@ -236,6 +236,16 @@ test_that("all_same works", {
 })
 
 
+# alternate ---------------------------------------------------------------
+test_that("alternate works", {
+  expect_equal(alternate(1:3, (-3):(-1)), c(1, -3, 2, -2, 3, -1))
+  expect_equal(alternate(numeric(0), numeric(0)), numeric(0))
+  expect_equal(
+    alternate(c(NA_real_, 2), c(1L, NA_integer_)), c(NA_real_, 1, 2, NA_real_)
+  )
+})
+
+
 # c_dedupl ----------------------------------------------------------------
 test_that("c_dedupl works", {
   input_1 <- list(1, 2)
