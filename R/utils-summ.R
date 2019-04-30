@@ -241,6 +241,33 @@ region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
   is_inside | is_in_left | is_in_right
 }
 
+# Notes in docs: for type "fin" if interval has zero width (consists from one
+# point), one of `left_closed` or `right_closed` being `TRUE` is enough for
+# point to contribute to output total probability.
+region_prob <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
+  assert_region(region)
+  assert_pdqr_fun(f)
+  assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
+  assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
+
+  if (meta_type(f) == "fin") {
+    x_tbl <- meta_x_tbl(f)
+
+    x_is_in_region <- region_is_in(
+      region = region, x = x_tbl[["x"]],
+      left_closed = left_closed, right_closed = right_closed
+    )
+
+    sum(x_tbl[["prob"]][x_is_in_region])
+  } else {
+    p_f <- as_p(f)
+
+    # Formally, this returns probability of (left, right], which is equal to
+    # probability of all other three edge configurations
+    sum(p_f(region[["right"]]) - p_f(region[["left"]]))
+  }
+}
+
 assert_region <- function(df) {
   df_name <- paste0("`", deparse(substitute(df)), "`")
 

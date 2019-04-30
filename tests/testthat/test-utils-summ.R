@@ -306,6 +306,180 @@ test_that("region_is_in validates input", {
 })
 
 
+# region_prob -------------------------------------------------------------
+test_that("region_prob works with 'fin' type", {
+  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+
+  region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
+  expect_equal(region_prob(region_1, cur_d), 0.1 + 0.3)
+
+  region_2 <- data.frame(left = c(1, 3.25), right = c(3, 4.5))
+  expect_equal(
+    region_prob(region_2, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0.1 + 0.2 + 0.3 + 0.4
+  )
+  expect_equal(
+    region_prob(region_2, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0.2 + 0.3 + 0.4
+  )
+  expect_equal(
+    region_prob(region_2, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0.1 + 0.2 + 0.4
+  )
+  expect_equal(
+    region_prob(region_2, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0.2 + 0.4
+  )
+
+  region_3 <- data.frame(left = c(1, 3), right = c(2, 4))
+  expect_equal(
+    region_prob(region_3, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0.1 + 0.2 + 0.3 + 0.4
+  )
+  expect_equal(
+    region_prob(region_3, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0.2 + 0.4
+  )
+  expect_equal(
+    region_prob(region_3, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0.1 + 0.3
+  )
+  expect_equal(
+    region_prob(region_3, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0
+  )
+
+  region_4 <- data.frame(left = 1, right = 1)
+  expect_equal(
+    region_prob(region_4, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0.1
+  )
+  expect_equal(
+    region_prob(region_4, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0.1
+  )
+  expect_equal(
+    region_prob(region_4, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0.1
+  )
+  expect_equal(
+    region_prob(region_4, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0
+  )
+
+  region_5 <- data.frame(left = -10, right = -9)
+  expect_equal(
+    region_prob(region_5, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0
+  )
+  expect_equal(
+    region_prob(region_5, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0
+  )
+  expect_equal(
+    region_prob(region_5, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0
+  )
+  expect_equal(
+    region_prob(region_5, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0
+  )
+})
+
+test_that("region_prob works with 'infin' type", {
+  expect_region_prob_works_with_infin <- function(region, f, ref_output) {
+    expect_equal(
+      region_prob(region, f, left_closed = TRUE, right_closed = TRUE),
+      ref_output
+    )
+    expect_equal(
+      region_prob(region, f, left_closed = FALSE, right_closed = TRUE),
+      ref_output
+    )
+    expect_equal(
+      region_prob(region, f, left_closed = TRUE, right_closed = FALSE),
+      ref_output
+    )
+    expect_equal(
+      region_prob(region, f, left_closed = FALSE, right_closed = FALSE),
+      ref_output
+    )
+  }
+
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+
+  expect_region_prob_works_with_infin(
+    region = data.frame(left = c(0.1, 0.5), right = c(0.2, 0.7)),
+    f = d_unif,
+    ref_output = (0.2 - 0.1) + (0.7 - 0.5)
+  )
+  expect_region_prob_works_with_infin(
+    region = data.frame(left = c(0.5, 0.7), right = c(0.6, 0.7)),
+    f = d_unif,
+    ref_output = 0.6 - 0.5
+  )
+  expect_region_prob_works_with_infin(
+    region = data.frame(left = c(-1, 0.5, 0.7), right = c(-1, 0.5, 0.7)),
+    f = d_unif,
+    ref_output = 0
+  )
+  expect_region_prob_works_with_infin(
+    region = data.frame(left = -1, right = -0.5),
+    f = d_unif,
+    ref_output = 0
+  )
+})
+
+test_that("region_prob works with dirac-like 'infin' functions", {
+  d_dirac_1 <- new_d(1, "infin")
+  expect_equal(region_prob(data.frame(left = 0, right = 1), d_dirac_1), 0.5)
+  expect_equal(region_prob(data.frame(left = 0, right = 1.5), d_dirac_1), 1)
+
+  d_dirac_2 <- form_mix(list(new_d(1, "infin"), new_d(2, "infin")))
+  expect_equal(region_prob(data.frame(left = 0, right = 1), d_dirac_2), 0.25)
+  expect_equal(region_prob(data.frame(left = 0, right = 1.5), d_dirac_2), 0.5)
+  expect_equal(
+    region_prob(data.frame(left = c(0, 1.5), right = c(1, 2)), d_dirac_2),
+    0.5
+  )
+  expect_equal(
+    region_prob(data.frame(left = c(0, 1), right = c(1, 2)), d_dirac_2),
+    0.75
+  )
+  expect_equal(
+    region_prob(data.frame(left = c(0, 1), right = c(1, 2.5)), d_dirac_2),
+    1
+  )
+})
+
+test_that("region_prob handles real world examples", {
+  d_unif <- as_d(dunif)
+  expect_equal(region_prob(data.frame(left = -1, right = 0.5), d_unif), 0.5)
+
+  d_norm <- as_d(dnorm)
+  p_norm <- as_p(d_norm)
+  expect_equal(
+    region_prob(data.frame(left = -1, right = 0.5), d_norm),
+    p_norm(0.5) - p_norm(-1)
+  )
+})
+
+test_that("region_prob validates input", {
+  region <- data.frame(left = 1, right = 2)
+  expect_error(region_prob("a", d_fin), "`region`.*data frame")
+  expect_error(region_prob(data.frame(a = 1), d_fin), '`region`.*"left"')
+  expect_error(region_prob(region, "a"), "`f`.*function")
+  expect_error(region_prob(region, function(x) {x}), "`f`.*pdqr")
+  expect_error(
+    region_prob(region, d_fin, left_closed = "a"), "`left_closed`.*TRUE.*FALSE"
+  )
+  expect_error(
+    region_prob(region, d_fin, right_closed = "a"),
+    "`right_closed`.*TRUE.*FALSE"
+  )
+})
+
+
 # assert_region -----------------------------------------------------------
 test_that("assert_region works", {
   expect_silent(assert_region(data.frame(left = 1, right = 1)))
