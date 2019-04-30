@@ -220,6 +220,92 @@ test_that("na_outside works", {
 })
 
 
+# region_is_in ------------------------------------------------------------
+test_that("region_is_in works", {
+  region_1 <- data.frame(left = 1:2, right = 1:2 + 0.5)
+  x_test_1 <- c(0, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 3, -Inf, Inf)
+  # Intervals are [1; 1.5] and [2; 2.5]
+  expect_equal(
+    region_is_in(region_1, x_test_1, left_closed = TRUE, right_closed = TRUE),
+    c(FALSE, TRUE, TRUE, TRUE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  )
+  # Intervals are (1; 1.5] and (2; 2.5]
+  expect_equal(
+    region_is_in(region_1, x_test_1, left_closed = FALSE, right_closed = TRUE),
+    c(FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE)
+  )
+  # Intervals are [1; 1.5) and [2; 2.5)
+  expect_equal(
+    region_is_in(region_1, x_test_1, left_closed = TRUE, right_closed = FALSE),
+    c(FALSE, TRUE, TRUE, FALSE, FALSE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE)
+  )
+  # Intervals are (1; 1.5) and (2; 2.5)
+  expect_equal(
+    region_is_in(region_1, x_test_1, left_closed = FALSE, right_closed = FALSE),
+    c(FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, TRUE, FALSE, FALSE, FALSE, FALSE)
+  )
+
+  region_2 <- data.frame(left = 1:2, right = 2:3)
+  x_test_2 <- 2
+  # Intervals are [1; 2] and [2; 3]
+  expect_equal(
+    region_is_in(region_2, x_test_2, left_closed = TRUE, right_closed = TRUE),
+    TRUE
+  )
+  # Intervals are (1; 2] and (2; 3]
+  expect_equal(
+    region_is_in(region_2, x_test_2, left_closed = FALSE, right_closed = TRUE),
+    TRUE
+  )
+  # Intervals are [1; 2) and [2; 3)
+  expect_equal(
+    region_is_in(region_2, x_test_2, left_closed = TRUE, right_closed = FALSE),
+    TRUE
+  )
+  # Intervals are (1; 2) and (2; 3)
+  expect_equal(
+    region_is_in(region_2, x_test_2, left_closed = FALSE, right_closed = FALSE),
+    FALSE
+  )
+
+  region_3 <- data.frame(left = c(-1, 1, 2), right = c(0, 1, 3))
+  x_test_3 <- 1
+  # In case of zero-width interval one of `left_closed` or `right_closed` should
+  # be `TRUE` in order to accept that point as "in region"
+  expect_equal(
+    region_is_in(region_3, x_test_3, left_closed = TRUE, right_closed = TRUE),
+    TRUE
+  )
+  expect_equal(
+    region_is_in(region_3, x_test_3, left_closed = FALSE, right_closed = TRUE),
+    TRUE
+  )
+  # Intervals are [1; 2) and [2; 3)
+  expect_equal(
+    region_is_in(region_3, x_test_3, left_closed = TRUE, right_closed = FALSE),
+    TRUE
+  )
+  # Intervals are (1; 2) and (2; 3)
+  expect_equal(
+    region_is_in(region_3, x_test_3, left_closed = FALSE, right_closed = FALSE),
+    FALSE
+  )
+})
+
+test_that("region_is_in validates input", {
+  region <- data.frame(left = 1, right = 2)
+  expect_error(region_is_in("a", 1), "`region`.*data frame")
+  expect_error(region_is_in(data.frame(a = 1), 1), '`region`.*"left"')
+  expect_error(region_is_in(region, "a"), "`x`.*numeric")
+  expect_error(
+    region_is_in(region, 1, left_closed = "a"), "`left_closed`.*TRUE.*FALSE"
+  )
+  expect_error(
+    region_is_in(region, 1, right_closed = "a"), "`right_closed`.*TRUE.*FALSE"
+  )
+})
+
+
 # assert_region -----------------------------------------------------------
 test_that("assert_region works", {
   expect_silent(assert_region(data.frame(left = 1, right = 1)))

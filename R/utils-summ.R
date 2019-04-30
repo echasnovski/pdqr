@@ -215,6 +215,32 @@ na_outside <- function(x, left, right) {
 
 
 # Region utilities --------------------------------------------------------
+# Notes in docs: for zero-width intervals one of `left_closed` or `right_closed`
+# being `TRUE` is enough to recognize accept that point as "in region"
+region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
+  assert_region(region)
+  assert_type(x, is.numeric)
+  assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
+  assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
+
+  # Using `findInterval()` is safe because `region` should represent ordered
+  # distinct intervals
+  left_ind <- findInterval(x, region[["left"]], left.open = !left_closed)
+  right_ind <- findInterval(x, region[["right"]], left.open = right_closed)
+
+  # Inside intervals left index should be bigger than right by 1 because `x`
+  # element should be more than left and less than right.
+  is_inside <- left_ind == right_ind + 1
+
+  # There are corner cases when consecutive intervals have common edge and `x`
+  # has element equal to that edge. For example, for region [1; 2], [2; 3] and
+  # `x` being 2 `left_ind` is 2 and `right_ind` is 0.
+  is_in_left <- left_closed & (x %in% region[["left"]])
+  is_in_right <- right_closed & (x %in% region[["right"]])
+
+  is_inside | is_in_left | is_in_right
+}
+
 assert_region <- function(df) {
   df_name <- paste0("`", deparse(substitute(df)), "`")
 
