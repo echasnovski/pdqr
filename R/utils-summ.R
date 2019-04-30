@@ -268,6 +268,36 @@ region_prob <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   }
 }
 
+# Notes in docs: "height" of region is minimum probability/density on that
+# region.
+region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
+  assert_region(region)
+  assert_pdqr_fun(f)
+  assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
+  assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
+
+  x <- meta_x_tbl(f)[["x"]]
+  x_is_in_region <- region_is_in(
+    region, x, left_closed = left_closed, right_closed = right_closed
+  )
+
+  # `x_probe` contains all points of interest on which minimum
+  # probability/density inside region might occure
+  if (meta_type(f) == "fin") {
+    x_probe <- x[x_is_in_region]
+  } else {
+    x_probe <- c(region[["left"]], region[["right"]], x[x_is_in_region])
+  }
+
+  if (length(x_probe) == 0) {
+    return(0)
+  } else {
+    d_vec <- as_d(f)(x_probe)
+
+    min(d_vec)
+  }
+}
+
 assert_region <- function(df) {
   df_name <- paste0("`", deparse(substitute(df)), "`")
 

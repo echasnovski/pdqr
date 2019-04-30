@@ -480,6 +480,155 @@ test_that("region_prob validates input", {
 })
 
 
+# region_height -----------------------------------------------------------
+test_that("region_height works with 'fin' type", {
+  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+
+  region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
+  expect_equal(region_height(region_1, cur_d), 0.1)
+
+  region_2 <- data.frame(left = c(1, 3.25), right = c(3, 4.5))
+  expect_equal(
+    region_height(region_2, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_2, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0.2
+  )
+  expect_equal(
+    region_height(region_2, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_2, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0.2
+  )
+
+  region_3 <- data.frame(left = c(1, 3), right = c(2, 4))
+  expect_equal(
+    region_height(region_3, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_3, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0.2
+  )
+  expect_equal(
+    region_height(region_3, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_3, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0
+  )
+
+  region_4 <- data.frame(left = 1, right = 1)
+  expect_equal(
+    region_height(region_4, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_4, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_4, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0.1
+  )
+  expect_equal(
+    region_height(region_4, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0
+  )
+
+  region_5 <- data.frame(left = -10, right = -9)
+  expect_equal(
+    region_height(region_5, cur_d, left_closed = TRUE, right_closed = TRUE),
+    0
+  )
+  expect_equal(
+    region_height(region_5, cur_d, left_closed = FALSE, right_closed = TRUE),
+    0
+  )
+  expect_equal(
+    region_height(region_5, cur_d, left_closed = TRUE, right_closed = FALSE),
+    0
+  )
+  expect_equal(
+    region_height(region_5, cur_d, left_closed = FALSE, right_closed = FALSE),
+    0
+  )
+})
+
+test_that("region_height works with 'infin' type", {
+  cur_d <- new_d(data.frame(x = 1:5, y = c(0, 2, 1, 2, 0)/5), "infin")
+
+  expect_equal(
+    region_height(data.frame(left = 1.5, right = 2.5), cur_d), cur_d(1.5)
+  )
+  expect_equal(
+    region_height(data.frame(left = c(1.5, 3.5), right = c(2.5, 4.5)), cur_d),
+    cur_d(1.5)
+  )
+  expect_equal(
+    region_height(data.frame(left = 2, right = 4), cur_d), cur_d(3)
+  )
+  expect_equal(
+    region_height(data.frame(left = c(2, 3), right = c(3, 4)), cur_d),
+    cur_d(3)
+  )
+  expect_equal(
+    region_height(data.frame(left = c(2.5, 3.5), right = c(2.5, 3.5)), cur_d),
+    min(cur_d(c(2.5, 3.5)))
+  )
+  expect_equal(
+    region_height(data.frame(left = -1, right = -0.5), cur_d), 0
+  )
+  expect_equal(
+    region_height(data.frame(left = -1, right = 10), cur_d), 0
+  )
+  expect_equal(
+    region_height(data.frame(left = 1, right = 5), cur_d), 0
+  )
+})
+
+test_that("region_height works with dirac-like 'infin' functions", {
+  d_dirac_1 <- new_d(1, "infin")
+  expect_equal(region_height(data.frame(left = 0, right = 1), d_dirac_1), 0)
+  expect_equal(
+    region_height(data.frame(left = 1, right = 1), d_dirac_1), d_dirac_1(1)
+  )
+
+  d_dirac_2 <- form_mix(
+    list(new_d(1, "infin"), new_d(2, "infin")), weights = c(0.25, 0.75)
+  )
+  expect_equal(region_height(data.frame(left = 0, right = 1), d_dirac_2), 0)
+  expect_equal(
+    region_height(data.frame(left = 1, right = 1), d_dirac_2), d_dirac_2(1)
+  )
+  expect_equal(
+    region_height(data.frame(left = c(1, 2), right = c(1, 2)), d_dirac_2),
+    min(d_dirac_2(c(1, 2)))
+  )
+})
+
+test_that("region_height validates input", {
+  region <- data.frame(left = 1, right = 2)
+  expect_error(region_height("a", d_fin), "`region`.*data frame")
+  expect_error(region_height(data.frame(a = 1), d_fin), '`region`.*"left"')
+  expect_error(region_height(region, "a"), "`f`.*function")
+  expect_error(region_height(region, function(x) {x}), "`f`.*pdqr")
+  expect_error(
+    region_height(region, d_fin, left_closed = "a"),
+    "`left_closed`.*TRUE.*FALSE"
+  )
+  expect_error(
+    region_height(region, d_fin, right_closed = "a"),
+    "`right_closed`.*TRUE.*FALSE"
+  )
+})
+
+
 # assert_region -----------------------------------------------------------
 test_that("assert_region works", {
   expect_silent(assert_region(data.frame(left = 1, right = 1)))
