@@ -23,6 +23,23 @@ test_that("is_string works", {
 })
 
 
+# is_single_color ---------------------------------------------------------
+test_that("is_single_color works", {
+  expect_true(is_single_color("black"))
+  expect_true(is_single_color("#000000"))
+  expect_true(is_single_color("#00000033"))
+  # Number in palette
+  expect_true(is_single_color(1))
+  # Seems to be the same as previous one
+  expect_true(is_single_color("01"))
+  # `col2rgb()` accepts `NA`s
+  expect_true(is_single_color(NA_character_))
+
+  expect_false(is_single_color(c("black", "red")))
+  expect_false(is_single_color("a"))
+})
+
+
 # is_single_number --------------------------------------------------------
 test_that("is_single_number works", {
   expect_true(is_single_number(1))

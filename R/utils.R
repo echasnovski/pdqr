@@ -7,6 +7,17 @@ is_string <- function(x) {
   is.character(x) && (length(x) == 1)
 }
 
+is_single_color <- function(x) {
+    tryCatch(
+      {
+        col <- grDevices::col2rgb(x)
+
+        is.matrix(col) && (ncol(col) == 1)
+      },
+      error = function(e) {FALSE}
+    )
+}
+
 is_single_number <- function(x, min_val = NULL, max_val = NULL) {
   res <- is.numeric(x) && (length(x) == 1) && is.finite(x)
   is_geq <- if (is.null(min_val)) {TRUE} else {x >= min_val}

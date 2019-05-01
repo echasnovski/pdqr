@@ -181,6 +181,36 @@ region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   }
 }
 
+region_draw <- function(region, col = "blue", alpha = 0.2) {
+  assert_region(region)
+  assert_type(col, is_single_color, "single color")
+  assert_type(alpha, is_single_number, "single number")
+
+  # This function doesn't use more convinient `rect()` because there were
+  # problems with what seemed like overflow: when setting too big `ytop`
+  # rectangles were drawn downward and not upward.
+  n <- nrow(region)
+  x <- numeric(5*n)
+  y <- numeric(5*n)
+  rect_id_start <- 5*seq_len(n) - 4
+
+  x[rect_id_start] <- region[["left"]]
+  x[rect_id_start+1] <- region[["left"]]
+  x[rect_id_start+2] <- region[["right"]]
+  x[rect_id_start+3] <- region[["right"]]
+  x[rect_id_start+4] <- NA
+
+  y[rect_id_start] <- 0
+  y[rect_id_start+1] <- 2e8
+  y[rect_id_start+2] <- 2e8
+  y[rect_id_start+3] <- 0
+  y[rect_id_start+4] <- NA
+
+  graphics::polygon(
+    x, y, border = NA, col = grDevices::adjustcolor(col, alpha.f = alpha)
+  )
+}
+
 assert_region <- function(df) {
   df_name <- paste0("`", deparse(substitute(df)), "`")
 

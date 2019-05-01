@@ -1,5 +1,12 @@
 context("test-region")
 
+library(grDevices)
+
+# All tested plot calls are wrapped in `grDevices::recordPlot` to avoid printing
+# of the result of their calls (`NULL`). This is a result of {vdiffr} approach:
+# it `print()`s its input (resulting here with `NULL`), unless wrapped in
+# function.
+
 
 # region_is_in ------------------------------------------------------------
 test_that("region_is_in works", {
@@ -407,6 +414,57 @@ test_that("region_height validates input", {
     region_height(region, d_fin, right_closed = "a"),
     "`right_closed`.*TRUE.*FALSE"
   )
+})
+
+
+# region_draw -------------------------------------------------------------
+test_that("region_draw works", {
+  cur_d <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "infin")
+  region <- data.frame(
+    left = c(-100, 3.5, 5.5, 7.5),
+    right = c(2.5,   5, 6.5, 100)
+  )
+
+  # Basic usage. Also if `region_draw()` is implemented with
+  # `rect(*, ytop = 2e8, *)`, will give incorrect output
+  vdiffr::expect_doppelganger(
+    "region_draw-basic", recordPlot({
+      plot(cur_d)
+      region_draw(region)
+    })
+  )
+
+  # Setting different color
+  vdiffr::expect_doppelganger(
+    "region_draw-col-1", recordPlot({
+      plot(cur_d)
+      region_draw(region, col = "green")
+    })
+  )
+  vdiffr::expect_doppelganger(
+    "region_draw-col-2", recordPlot({
+      plot(cur_d)
+      region_draw(region, col = 2)
+    })
+  )
+
+  # Setting different `alpha`
+  vdiffr::expect_doppelganger(
+    "region_draw-alpha", recordPlot({
+      plot(cur_d)
+      region_draw(region, alpha = 0.7)
+    })
+  )
+})
+
+test_that("region_draw validates input", {
+  region <- data.frame(left = 1, right = 2)
+  expect_error(region_draw("a"), "`region`.*data frame")
+  expect_error(region_draw(data.frame(a = 1)), '`region`.*"left"')
+  expect_error(region_draw(region, col = "a"), "`col`.*color")
+  expect_error(region_draw(region, col = c("black", "red")), "`col`.*single")
+  expect_error(region_draw(region, alpha = "a"), "`alpha`.*number")
+  expect_error(region_draw(region, alpha = 0:1), "`alpha`.*single")
 })
 
 
