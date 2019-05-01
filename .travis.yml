@@ -10,5 +10,9 @@ r:
 - release
 - devel
 
+branches:
+  only:
+  - master
+
 after_success:
   - echo 'covr::codecov()' | R --vanilla
