@@ -215,8 +215,109 @@ na_outside <- function(x, left, right) {
 
 
 # Region utilities --------------------------------------------------------
-# Notes in docs: for zero-width intervals one of `left_closed` or `right_closed`
-# being `TRUE` is enough to recognize accept that point as "in region"
+#' Utilities for computing on region
+#'
+#' These functions provide ways of extracting different information based on a
+#' **region**: a data frame with numeric "left" and "right" columns, each row of
+#' which represents a unique finite interval (open, either type of half-open, or
+#' closed). Values of "left" and "right" columns should create a "ordered" set
+#' of intervals: `left[1] <= right[1] <= left[2] <= right[2] <= ...` (intervals
+#' with zero width are accepted). Originally, `region_*()` functions were
+#' designed to work with output of [summ_hdr()], but can be used for any data
+#' frame which satisfies the definition of a region.
+#'
+#' @param region A data frame representing region.
+#' @param x Numeric vector to be tested for being inside region.
+#' @param left_closed A single logical value representing whether to treat left
+#'   ends of intervals as their parts.
+#' @param right_closed A single logical value representing whether to treat
+#'   right ends of intervals as their parts.
+#' @param f A pdqr-function.
+#'
+#' @details `region_is_in()` tests each value of `x` for being inside interval.
+#' In other words, if there is a row for which element of `x` is between "left"
+#' and "right" value (respecting `left_closed` and `right_closed` options),
+#' output for that element will be `TRUE`. **Note** that for zero-width
+#' intervals one of `left_closed` or `right_closed` being `TRUE` is enough to
+#' accept that point as "in region".
+#'
+#' `region_prob()` computes total probability of region according to
+#' pdqr-function `f`. If `f` has "fin" [type][meta_type()], output is computed
+#' as sum of probabilities for all "x" values from ["x_tbl"
+#' metadata][meta_x_tbl()] which lie inside a region (respecting `left_closed`
+#' and `right_closed` options while using `region_is_in()`). If `f` has "infin"
+#' type, output is computed as integral of density over a region (`*_closed`
+#' options having any effect).
+#'
+#' `region_height()` computes "height" of a region (with respect to `f`):
+#' minimum value of corresponding to `f` d-function can return based on relevant
+#' points inside a region. If `f` has "fin" type, those relevant points are
+#' computed as "x" values from "x_tbl" metadata which lie inside a region (if
+#' there are no such points, output is 0). If `f` has "infin" type, the whole
+#' intervals are used as relevant points. The notion of "height" comes from
+#' [summ_hdr()] function: if `region` is `summ_hdr(f, level)` for some `level`,
+#' then `region_height(region, f)` is what is called in `summ_hdr()`'s docs as
+#' "target height" of HDR. That is, a maximum value of d-function for which a
+#' set consisting from points at which d-function has values not less than
+#' target height and total probability of the set being not less than `level`.
+#'
+#' @return `region_is_in()` returns a logical vector (with length equal to
+#' length of `x`) representing whether certain element of `x` is inside a
+#' region.
+#'
+#' `region_prob()` returns a single number between 0 and 1 representing total
+#' probability of region.
+#'
+#' `region_height()` returns a single number representing a height of a region
+#' with respect to `f`, i.e. minimum value that corresponding d-function can
+#' return based on relevant points inside a region.
+#'
+#' @seealso [summ_hdr()] for computing of Highest Density Region.
+#'
+#' @examples
+#' # Type "fin"
+#' d_binom <- as_d(dbinom, size = 10, prob = 0.7)
+#' hdr_fin <- summ_hdr(d_binom, level = 0.6)
+#' region_is_in(hdr_fin, 0:10)
+#'   # This should be not less than 0.6
+#' region_prob(hdr_fin, d_binom)
+#' region_height(hdr_fin, d_binom)
+#'
+#' # Type "infin"
+#' d_norm <- as_d(dnorm)
+#' hdr_infin <- summ_hdr(d_norm, level = 0.95)
+#' region_is_in(hdr_infin, c(-Inf, -2, 0, 2, Inf))
+#'   # This should be approximately equal to 0.95
+#' region_prob(hdr_infin, d_norm)
+#'   # This should be equal to `d_norm(hdr_infin[["left"]][1])`
+#' region_height(hdr_infin, d_norm)
+#'
+#' # Usage of `*_closed` options
+#' region <- data.frame(left = 1, right = 3)
+#'   # Closed intervals
+#' region_is_in(region, 1:3)
+#'   # Open from left, closed from right
+#' region_is_in(region, 1:3, left_closed = FALSE)
+#'   # Closed from left, open from right
+#' region_is_in(region, 1:3, right_closed = FALSE)
+#'   # Open intervals
+#' region_is_in(region, 1:3, left_closed = FALSE, right_closed = FALSE)
+#'
+#' # Handling of intervals with zero width
+#' region <- data.frame(left = 1, right = 1)
+#'   # If at least one of `*_closed` options is `TRUE`, 1 will be considered as
+#'   # "in a region"
+#' region_is_in(region, 1)
+#' region_is_in(region, 1, left_closed = FALSE)
+#' region_is_in(region, 1, right_closed = FALSE)
+#'   # Only this will return `FALSE`
+#' region_is_in(region, 1, left_closed = FALSE, right_closed = FALSE)
+#'
+#' @name region
+NULL
+
+#' @rdname region
+#' @export
 region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
   assert_region(region)
   assert_type(x, is.numeric)
@@ -241,9 +342,8 @@ region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
   is_inside | is_in_left | is_in_right
 }
 
-# Notes in docs: for type "fin" if interval has zero width (consists from one
-# point), one of `left_closed` or `right_closed` being `TRUE` is enough for
-# point to contribute to output total probability.
+#' @rdname region
+#' @export
 region_prob <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   assert_region(region)
   assert_pdqr_fun(f)
@@ -268,8 +368,8 @@ region_prob <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   }
 }
 
-# Notes in docs: "height" of region is minimum probability/density on that
-# region.
+#' @rdname region
+#' @export
 region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   assert_region(region)
   assert_pdqr_fun(f)

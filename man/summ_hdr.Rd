@@ -95,3 +95,7 @@ d_unif <- as_d(dunif)
 summ_hdr(d_unif, 0.1)
 
 }
+\seealso{
+\code{\link[=region]{region_*()}} family of functions for computing extra
+information based on output HDR.
+}

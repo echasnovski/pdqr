@@ -54,6 +54,9 @@
 #' - **left** <dbl> : Left end of intervals.
 #' - **right** <dbl> : Right end of intervals.
 #'
+#' @seealso [`region_*()`][region] family of functions for computing extra
+#'   information based on output HDR.
+#'
 #' @examples
 #' # "fin" functions
 #' d_fin <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "fin")
