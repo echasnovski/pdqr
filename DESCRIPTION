@@ -55,6 +55,7 @@ Collate:
     'summ_dispersion.R'
     'summ_distr_tbl.R'
     'summ_hdr.R'
+    'summ_interval.R'
     'summ_moment.R'
     'summ_pval.R'
     'utils-as.R'
