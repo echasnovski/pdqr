@@ -131,7 +131,7 @@ hdr_fin <- function(f, level) {
   is_interval_left <- c(TRUE, ind_is_jump)
   is_interval_right <- c(ind_is_jump, TRUE)
 
-  data.frame(left = x_high[is_interval_left], right = x_high[is_interval_right])
+  region_new(left = x_high[is_interval_left], right = x_high[is_interval_right])
 }
 
 hdr_infin <- function(f, level) {
@@ -246,7 +246,7 @@ compute_hdr_intervals <- function(f, height) {
   x_l[c(FALSE, is_consec)] <- NA
   x_r[c(is_consec, FALSE)] <- NA
 
-  data.frame(left = x_l[!is.na(x_l)], right = x_r[!is.na(x_r)])
+  region_new(left = x_l[!is.na(x_l)], right = x_r[!is.na(x_r)])
 }
 
 compute_density_height_points <- function(f, height) {

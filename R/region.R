@@ -228,6 +228,13 @@ region_draw <- function(region, col = "blue", alpha = 0.2) {
   )
 }
 
+region_new <- function(left, right) {
+  output_region <- data.frame(left = left, right = right)
+  assert_region(output_region)
+
+  output_region
+}
+
 assert_region <- function(df) {
   df_name <- paste0("`", deparse(substitute(df)), "`")
 

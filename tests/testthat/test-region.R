@@ -468,6 +468,18 @@ test_that("region_draw validates input", {
 })
 
 
+# region_new --------------------------------------------------------------
+test_that("region_new works", {
+  expect_equal(region_new(1, 2), data.frame(left = 1, right = 2))
+  expect_equal(
+    region_new(c(1, 2), c(1.5, 2)),
+    data.frame(left = c(1, 2), right = c(1.5, 2))
+  )
+
+  expect_error(region_new(1, -1), "not less")
+})
+
+
 # assert_region -----------------------------------------------------------
 test_that("assert_region works", {
   expect_silent(assert_region(data.frame(left = 1, right = 1)))
