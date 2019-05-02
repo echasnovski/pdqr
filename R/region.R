@@ -198,6 +198,12 @@ region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   }
 }
 
+region_width <- function(region) {
+  assert_region(region)
+
+  sum(region[["right"]] - region[["left"]])
+}
+
 #' @rdname region
 #' @export
 region_draw <- function(region, col = "blue", alpha = 0.2) {

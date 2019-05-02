@@ -417,6 +417,24 @@ test_that("region_height validates input", {
 })
 
 
+# region_width ------------------------------------------------------------
+test_that("region_width works", {
+  expect_equal(
+    region_width(data.frame(left = c(-1, 2), right = c(1, 2.5))),
+    (1 - (-1)) + (2.5 - 2)
+  )
+  expect_equal(
+    region_width(data.frame(left = c(-1, 2), right = c(-1, 2))),
+    0
+  )
+})
+
+test_that("region_width validates input", {
+  expect_error(region_width("a"), "`region`.*data frame")
+  expect_error(region_width(data.frame(a = 1)), '`region`.*"left"')
+})
+
+
 # region_draw -------------------------------------------------------------
 test_that("region_draw works", {
   cur_d <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "infin")
