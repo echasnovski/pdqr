@@ -54,8 +54,8 @@
 #' - **left** <dbl> : Left end of intervals.
 #' - **right** <dbl> : Right end of intervals.
 #'
-#' @seealso [`region_*()`][region] family of functions for computing extra
-#'   information based on output HDR.
+#' @seealso [`region_*()`][region] family of functions for working with output
+#'   HDR.
 #'
 #' @examples
 #' # "fin" functions
@@ -80,6 +80,10 @@
 #' d_unif <- as_d(dunif)
 #'   # Returns all support because of density "plateau"
 #' summ_hdr(d_unif, 0.1)
+#'
+#' # Draw HDR
+#' plot(d_mix)
+#' region_draw(summ_hdr(d_mix, 0.95))
 #'
 #' @export
 summ_hdr <- function(f, level = 0.95) {

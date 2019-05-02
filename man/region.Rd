@@ -5,13 +5,16 @@
 \alias{region_is_in}
 \alias{region_prob}
 \alias{region_height}
-\title{Utilities for computing on region}
+\alias{region_draw}
+\title{Work with regions}
 \usage{
 region_is_in(region, x, left_closed = TRUE, right_closed = TRUE)
 
 region_prob(region, f, left_closed = TRUE, right_closed = TRUE)
 
 region_height(region, f, left_closed = TRUE, right_closed = TRUE)
+
+region_draw(region, col = "blue", alpha = 0.2)
 }
 \arguments{
 \item{region}{A data frame representing region.}
@@ -25,6 +28,12 @@ ends of intervals as their parts.}
 right ends of intervals as their parts.}
 
 \item{f}{A pdqr-function.}
+
+\item{col}{Single color of rectangles to be used. Should be appropriate for
+\code{col} argument of \link[grDevices:col2rgb]{col2rgb()}.}
+
+\item{alpha}{Single number representing factor modifying the opacity alpha;
+typically in [0; 1].}
 }
 \value{
 \code{region_is_in()} returns a logical vector (with length equal to
@@ -37,16 +46,18 @@ probability of region.
 \code{region_height()} returns a single number representing a height of a region
 with respect to \code{f}, i.e. minimum value that corresponding d-function can
 return based on relevant points inside a region.
+
+\code{region_draw()} draws colored rectangles filling \code{region} intervals.
 }
 \description{
-These functions provide ways of extracting different information based on a
-\strong{region}: a data frame with numeric "left" and "right" columns, each row of
-which represents a unique finite interval (open, either type of half-open, or
-closed). Values of "left" and "right" columns should create a "ordered" set
-of intervals: \code{left[1] <= right[1] <= left[2] <= right[2] <= ...} (intervals
-with zero width are accepted). Originally, \code{region_*()} functions were
-designed to work with output of \code{\link[=summ_hdr]{summ_hdr()}}, but can be used for any data
-frame which satisfies the definition of a region.
+These functions provide ways of working with a \strong{region}: a data frame with
+numeric "left" and "right" columns, each row of which represents a unique
+finite interval (open, either type of half-open, or closed). Values of "left"
+and "right" columns should create an "ordered" set of intervals:
+\code{left[1] <= right[1] <= left[2] <= right[2] <= ...} (intervals with zero
+width are accepted). Originally, \code{region_*()} functions were designed to work
+with output of \code{\link[=summ_hdr]{summ_hdr()}}, but can be used for any data frame which
+satisfies the definition of a region.
 }
 \details{
 \code{region_is_in()} tests each value of \code{x} for being inside interval.
@@ -74,6 +85,10 @@ then \code{region_height(region, f)} is what is called in \code{summ_hdr()}'s do
 "target height" of HDR. That is, a maximum value of d-function for which a
 set consisting from points at which d-function has values not less than
 target height and total probability of the set being not less than \code{level}.
+
+\code{region_draw()} draws (on current plot) intervals stored in \code{region} as
+colored rectangles vertically starting from zero and ending in the top of the
+plot (technically, at "y" value of \code{2e8}).
 }
 \examples{
 # Type "fin"
@@ -113,6 +128,11 @@ region_is_in(region, 1, left_closed = FALSE)
 region_is_in(region, 1, right_closed = FALSE)
   # Only this will return `FALSE`
 region_is_in(region, 1, left_closed = FALSE, right_closed = FALSE)
+
+# Drawing
+d_mix <- form_mix(list(as_d(dnorm), as_d(dnorm, mean = 5)))
+plot(d_mix)
+region_draw(summ_hdr(d_mix, 0.95))
 
 }
 \seealso{

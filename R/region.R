@@ -1,13 +1,13 @@
-#' Utilities for computing on region
+#' Work with regions
 #'
-#' These functions provide ways of extracting different information based on a
-#' **region**: a data frame with numeric "left" and "right" columns, each row of
-#' which represents a unique finite interval (open, either type of half-open, or
-#' closed). Values of "left" and "right" columns should create a "ordered" set
-#' of intervals: `left[1] <= right[1] <= left[2] <= right[2] <= ...` (intervals
-#' with zero width are accepted). Originally, `region_*()` functions were
-#' designed to work with output of [summ_hdr()], but can be used for any data
-#' frame which satisfies the definition of a region.
+#' These functions provide ways of working with a **region**: a data frame with
+#' numeric "left" and "right" columns, each row of which represents a unique
+#' finite interval (open, either type of half-open, or closed). Values of "left"
+#' and "right" columns should create an "ordered" set of intervals:
+#' `left[1] <= right[1] <= left[2] <= right[2] <= ...` (intervals with zero
+#' width are accepted). Originally, `region_*()` functions were designed to work
+#' with output of [summ_hdr()], but can be used for any data frame which
+#' satisfies the definition of a region.
 #'
 #' @param region A data frame representing region.
 #' @param x Numeric vector to be tested for being inside region.
@@ -16,6 +16,10 @@
 #' @param right_closed A single logical value representing whether to treat
 #'   right ends of intervals as their parts.
 #' @param f A pdqr-function.
+#' @param col Single color of rectangles to be used. Should be appropriate for
+#'   `col` argument of [col2rgb()][grDevices::col2rgb()].
+#' @param alpha Single number representing factor modifying the opacity alpha;
+#'   typically in \[0; 1\].
 #'
 #' @details `region_is_in()` tests each value of `x` for being inside interval.
 #' In other words, if there is a row for which element of `x` is between "left"
@@ -44,6 +48,10 @@
 #' set consisting from points at which d-function has values not less than
 #' target height and total probability of the set being not less than `level`.
 #'
+#' `region_draw()` draws (on current plot) intervals stored in `region` as
+#' colored rectangles vertically starting from zero and ending in the top of the
+#' plot (technically, at "y" value of `2e8`).
+#'
 #' @return `region_is_in()` returns a logical vector (with length equal to
 #' length of `x`) representing whether certain element of `x` is inside a
 #' region.
@@ -54,6 +62,8 @@
 #' `region_height()` returns a single number representing a height of a region
 #' with respect to `f`, i.e. minimum value that corresponding d-function can
 #' return based on relevant points inside a region.
+#'
+#' `region_draw()` draws colored rectangles filling `region` intervals.
 #'
 #' @seealso [summ_hdr()] for computing of Highest Density Region.
 #'
@@ -95,6 +105,11 @@
 #' region_is_in(region, 1, right_closed = FALSE)
 #'   # Only this will return `FALSE`
 #' region_is_in(region, 1, left_closed = FALSE, right_closed = FALSE)
+#'
+#' # Drawing
+#' d_mix <- form_mix(list(as_d(dnorm), as_d(dnorm, mean = 5)))
+#' plot(d_mix)
+#' region_draw(summ_hdr(d_mix, 0.95))
 #'
 #' @name region
 NULL
@@ -181,6 +196,8 @@ region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   }
 }
 
+#' @rdname region
+#' @export
 region_draw <- function(region, col = "blue", alpha = 0.2) {
   assert_region(region)
   assert_type(col, is_single_color, "single color")

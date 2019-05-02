@@ -94,8 +94,12 @@ d_unif <- as_d(dunif)
   # Returns all support because of density "plateau"
 summ_hdr(d_unif, 0.1)
 
+# Draw HDR
+plot(d_mix)
+region_draw(summ_hdr(d_mix, 0.95))
+
 }
 \seealso{
-\code{\link[=region]{region_*()}} family of functions for computing extra
-information based on output HDR.
+\code{\link[=region]{region_*()}} family of functions for working with output
+HDR.
 }
