@@ -102,4 +102,6 @@ region_draw(summ_hdr(d_mix, 0.95))
 \seealso{
 \code{\link[=region]{region_*()}} family of functions for working with output
 HDR.
+
+\code{\link[=summ_interval]{summ_interval()}} for computing of single interval summary of distribution.
 }

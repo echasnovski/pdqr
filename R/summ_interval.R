@@ -1,3 +1,94 @@
+#' Compute interval summary of distribution
+#'
+#' These functions summarize distribution with one interval based on method of
+#' choice.
+#'
+#' @inheritParams summ_mean
+#' @param level A number between 0 and 1 representing a coverage degree of
+#'   interval. Interpretation depends on `method` but the bigger is number, the
+#'   wider is interval.
+#' @param method Method of interval computation. Should be on of "minwidth",
+#'   "percentile", "sigma".
+#' @param n_grid Number of grid elements to be used for "minwidth" method (see
+#'   Details).
+#'
+#' @details Method "minwidth" searches for an interval with total probability of
+#' `level` that has minimum width. This is done with grid search: `n_grid`
+#' possible intervals with `level` total probability are computed and the one
+#' with minimum width is returned (if there are several, the one with the
+#' smallest left end). Left ends of computed set of intervals are created as a
+#' grid from `0` to `1-level` quantiles with `n_grid` number of elements. Right
+#' ends are computed so that intervals have `level` total probability.
+#'
+#' Method "percentile" returns an interval with edges being `0.5*(1-level)` and
+#' `1 - 0.5*(1-level)` quantiles. Output has total probability equal to `level`.
+#'
+#' Method "sigma" computes an interval symmetrically centered at
+#' [mean][summ_mean()] of distribution. Left and right edges are distant from
+#' center by the amount of [standard deviation][summ_sd()] multiplied by
+#' `level`'s critical value. Critical value is computed using [normal
+#' distribution][stats::qnorm()] as `qnorm(1 - 0.5*(1-level))`, which
+#' corresponds to a way of computing sample confidence interval with known
+#' standard deviation. The final output interval is possibly cut so that not to
+#' be out of `f`'s [support][meta_support()].
+#'
+#' **Note** that supported methods correspond to different ways of computing
+#' [distribution's center][summ_center()]. This idea is supported by the fact
+#' that when `level` is 0, "minwidth" method returns zero width interval at
+#' distribution's [global mode][summ_mode()], "percentile" method -
+#' [median][summ_median()], "sigma" - [mean][summ_mean()].
+#'
+#' @return A [region][region] with one row. That is a data frame with one row
+#'   and the following columns:
+#' - **left** <dbl> : Left end of interval.
+#' - **right** <dbl> : Right end of interval.
+#'
+#' To return a simple numeric vector, call [unlist()][base::unlist()] on
+#' `summ_interval()`'s output (see Examples).
+#'
+#' @seealso [summ_hdr()] for computing of Highest Density Region, which can
+#'   summarize distribution with multiple intervals.
+#'
+#' [region_*()][region] family of functions for working with `summ_interval()`
+#' output.
+#'
+#' @examples
+#' # Type "fin"
+#' d_fin <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2)/9), "fin")
+#' summ_interval(d_fin, level = 0.5, method = "minwidth")
+#' summ_interval(d_fin, level = 0.5, method = "percentile")
+#' summ_interval(d_fin, level = 0.5, method = "sigma")
+#'
+#'   # Visual difference between methods
+#' plot(d_fin)
+#' region_draw(summ_interval(d_fin, 0.5, method = "minwidth"), col = "blue")
+#' region_draw(summ_interval(d_fin, 0.5, method = "percentile"), col = "red")
+#' region_draw(summ_interval(d_fin, 0.5, method = "sigma"), col = "green")
+#'
+#' # Type "infin"
+#' d_infin <- form_mix(
+#'   list(as_d(dnorm), as_d(dnorm, mean = 5)),
+#'   weights = c(0.25, 0.75)
+#' )
+#' summ_interval(d_infin, level = 0.5, method = "minwidth")
+#' summ_interval(d_infin, level = 0.5, method = "percentile")
+#' summ_interval(d_infin, level = 0.5, method = "sigma")
+#'
+#'   # Visual difference between methods
+#' plot(d_infin)
+#' region_draw(summ_interval(d_infin, 0.5, method = "minwidth"), col = "blue")
+#' region_draw(summ_interval(d_infin, 0.5, method = "percentile"), col = "red")
+#' region_draw(summ_interval(d_infin, 0.5, method = "sigma"), col = "green")
+#'
+#' # Output interval is always inside input's support. Formally, next code
+#' # should return interval from `-Inf` to `Inf`, but output is cut to be inside
+#' # support.
+#' summ_interval(d_infin, level = 1, method = "sigma")
+#'
+#' # To get vector output, use `unlist()`
+#' unlist(summ_interval(d_infin))
+#'
+#' @export
 summ_interval <- function(f, level = 0.95, method = "minwidth",
                           n_grid = 10001) {
   assert_pdqr_fun(f)

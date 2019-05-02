@@ -6,8 +6,8 @@
 #' and "right" columns should create an "ordered" set of intervals:
 #' `left[1] <= right[1] <= left[2] <= right[2] <= ...` (intervals with zero
 #' width are accepted). Originally, `region_*()` functions were designed to work
-#' with output of [summ_hdr()], but can be used for any data frame which
-#' satisfies the definition of a region.
+#' with output of [summ_hdr()] and [summ_interval()], but can be used for any
+#' data frame which satisfies the definition of a region.
 #'
 #' @param region A data frame representing region.
 #' @param x Numeric vector to be tested for being inside region.
@@ -66,6 +66,8 @@
 #' `region_draw()` draws colored rectangles filling `region` intervals.
 #'
 #' @seealso [summ_hdr()] for computing of Highest Density Region.
+#'
+#' [summ_interval()] for computing of single interval summary of distribution.
 #'
 #' @examples
 #' # Type "fin"

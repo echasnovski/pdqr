@@ -56,8 +56,8 @@ finite interval (open, either type of half-open, or closed). Values of "left"
 and "right" columns should create an "ordered" set of intervals:
 \code{left[1] <= right[1] <= left[2] <= right[2] <= ...} (intervals with zero
 width are accepted). Originally, \code{region_*()} functions were designed to work
-with output of \code{\link[=summ_hdr]{summ_hdr()}}, but can be used for any data frame which
-satisfies the definition of a region.
+with output of \code{\link[=summ_hdr]{summ_hdr()}} and \code{\link[=summ_interval]{summ_interval()}}, but can be used for any
+data frame which satisfies the definition of a region.
 }
 \details{
 \code{region_is_in()} tests each value of \code{x} for being inside interval.
@@ -137,4 +137,6 @@ region_draw(summ_hdr(d_mix, 0.95))
 }
 \seealso{
 \code{\link[=summ_hdr]{summ_hdr()}} for computing of Highest Density Region.
+
+\code{\link[=summ_interval]{summ_interval()}} for computing of single interval summary of distribution.
 }
