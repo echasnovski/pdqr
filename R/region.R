@@ -48,6 +48,9 @@
 #' set consisting from points at which d-function has values not less than
 #' target height and total probability of the set being not less than `level`.
 #'
+#' `region_width()` computes total width of a region, i.e. sum of differences
+#' between "right" and "left" columns.
+#'
 #' `region_draw()` draws (on current plot) intervals stored in `region` as
 #' colored rectangles vertically starting from zero and ending in the top of the
 #' plot (technically, at "y" value of `2e8`).
@@ -63,6 +66,9 @@
 #' with respect to `f`, i.e. minimum value that corresponding d-function can
 #' return based on relevant points inside a region.
 #'
+#' `region_width()` returns a single number representing total width of a
+#' region.
+#'
 #' `region_draw()` draws colored rectangles filling `region` intervals.
 #'
 #' @seealso [summ_hdr()] for computing of Highest Density Region.
@@ -77,6 +83,7 @@
 #'   # This should be not less than 0.6
 #' region_prob(hdr_fin, d_binom)
 #' region_height(hdr_fin, d_binom)
+#' region_width(hdr_fin)
 #'
 #' # Type "infin"
 #' d_norm <- as_d(dnorm)
@@ -86,6 +93,7 @@
 #' region_prob(hdr_infin, d_norm)
 #'   # This should be equal to `d_norm(hdr_infin[["left"]][1])`
 #' region_height(hdr_infin, d_norm)
+#' region_width(hdr_infin)
 #'
 #' # Usage of `*_closed` options
 #' region <- data.frame(left = 1, right = 3)
@@ -198,6 +206,8 @@ region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   }
 }
 
+#' @rdname region
+#' @export
 region_width <- function(region) {
   assert_region(region)
 
