@@ -1,4 +1,4 @@
-#' Compute Highest Density Region
+#' Summarize distribution with Highest Density Region
 #'
 #' `summ_hdr()` computes a Highest Density Region (HDR) of some pdqr-function
 #' for a supplied `level`: a union of (closed) intervals total probability of

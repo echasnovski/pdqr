@@ -1,4 +1,4 @@
-#' Summarize dispersion of distribution
+#' Summarize distribution with dispersion
 #'
 #' Functions to compute dispersion of distribution (i.e. "how wide it is
 #' spread"). `summ_dispersion()` is a wrapper for respective `summ_*()`

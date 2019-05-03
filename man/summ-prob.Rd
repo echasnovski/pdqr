@@ -4,7 +4,7 @@
 \alias{summ-prob}
 \alias{summ_prob_true}
 \alias{summ_prob_false}
-\title{Extract probability from boolean pdqr-function}
+\title{Summarize boolean distribution with probability}
 \usage{
 summ_prob_true(f)
 

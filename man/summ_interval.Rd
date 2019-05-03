@@ -2,7 +2,7 @@
 % Please edit documentation in R/summ_interval.R
 \name{summ_interval}
 \alias{summ_interval}
-\title{Compute interval summary of distribution}
+\title{Summarize distribution with interval}
 \usage{
 summ_interval(f, level = 0.95, method = "minwidth", n_grid = 10001)
 }

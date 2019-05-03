@@ -1,4 +1,4 @@
-#' Compute quantiles of distribution
+#' Summarize distribution with quantiles
 #'
 #' Essentially, this is a more strict wrapper of `as_q(f)(probs)`. If any value
 #' in `probs` is outside of segment \\[0; 1\\], an error is thrown.
@@ -25,7 +25,7 @@ summ_quantile <- function(f, probs) {
   as_q(f)(probs)
 }
 
-#' Extract probability from boolean pdqr-function
+#' Summarize boolean distribution with probability
 #'
 #' Here `summ_prob_true()` returns a probability of 1 and `summ_prob_false()` -
 #' complementary probability (one minus `summ_prob_true()` output). Both of them

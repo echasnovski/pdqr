@@ -1,4 +1,4 @@
-#' Compute interval summary of distribution
+#' Summarize distribution with interval
 #'
 #' These functions summarize distribution with one interval based on method of
 #' choice.

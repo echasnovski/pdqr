@@ -4,7 +4,7 @@
 \alias{entropy}
 \alias{summ_entropy}
 \alias{summ_entropy2}
-\title{Compute entropy}
+\title{Summarize distribution with entropy}
 \usage{
 summ_entropy(f)
 

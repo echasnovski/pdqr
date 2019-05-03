@@ -1,4 +1,4 @@
-#' Summarize center of distribution
+#' Summarize distribution with center
 #'
 #' Functions to compute center of distribution. `summ_center()` is a wrapper for
 #' respective `summ_*()` functions (from this page) with default arguments.

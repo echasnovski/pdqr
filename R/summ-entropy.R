@@ -1,4 +1,4 @@
-#' Compute entropy
+#' Summarize distribution with entropy
 #'
 #' `summ_entropy()` computes entropy of single distribution while
 #' `summ_entropy2()` - for a pair of distributions. For "fin" pdqr-functions a

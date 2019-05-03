@@ -5,7 +5,7 @@
 \alias{summ_mean}
 \alias{summ_median}
 \alias{summ_mode}
-\title{Summarize center of distribution}
+\title{Summarize distribution with center}
 \usage{
 summ_center(f, method = "mean")
 

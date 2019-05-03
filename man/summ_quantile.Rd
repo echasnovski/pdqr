@@ -2,7 +2,7 @@
 % Please edit documentation in R/summ-other.R
 \name{summ_quantile}
 \alias{summ_quantile}
-\title{Compute quantiles of distribution}
+\title{Summarize distribution with quantiles}
 \usage{
 summ_quantile(f, probs)
 }

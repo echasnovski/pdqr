@@ -4,7 +4,7 @@
 \alias{summ_moment}
 \alias{summ_skewness}
 \alias{summ_kurtosis}
-\title{Compute moments of distribution}
+\title{Summarize distribution with moment}
 \usage{
 summ_moment(f, order, central = FALSE, standard = FALSE,
   absolute = FALSE)

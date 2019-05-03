@@ -1,4 +1,4 @@
-#' Compute moments of distribution
+#' Summarize distribution with moment
 #'
 #' `summ_moment()` computes a moment of distribution. It can be one of eight
 #' kinds determined by the combination of `central`, `standard`, and `absolute`

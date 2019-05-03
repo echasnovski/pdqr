@@ -2,7 +2,7 @@
 % Please edit documentation in R/summ_hdr.R
 \name{summ_hdr}
 \alias{summ_hdr}
-\title{Compute Highest Density Region}
+\title{Summarize distribution with Highest Density Region}
 \usage{
 summ_hdr(f, level = 0.95)
 }

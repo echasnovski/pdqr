@@ -6,7 +6,7 @@
 \alias{summ_var}
 \alias{summ_iqr}
 \alias{summ_mad}
-\title{Summarize dispersion of distribution}
+\title{Summarize distribution with dispersion}
 \usage{
 summ_dispersion(f, method = "sd")
 
