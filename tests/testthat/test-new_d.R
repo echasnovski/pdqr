@@ -40,7 +40,7 @@ test_that("new_d imputes data frame input", {
   expect_x_tbl_imputation(new_d)
 })
 
-test_that("new_d rounds input in case of `type` = 'fin'", {
+test_that("new_d rounds input in case of `type = 'fin'`", {
   # Some values in this sequence show numerical representation issues after
   # `round(x_seq, digits = 10)` (see `dput(x_seq - round(x_seq, digits = 10))`).
   # If input is not rounded during `x_tbl` creation/imputation then output
@@ -87,7 +87,7 @@ test_that("new_d's output validates input", {
   expect_error(d_infin("a"), "`x`.*numeric")
 })
 
-test_that("new_d's output integrates to 1 in case `type` = 'infin'", {
+test_that("new_d's output integrates to 1 in case `type = 'infin'`", {
   integral <- stats::integrate(d_infin, -3, 3)
   output_range <- integral[["value"]] + c(-1, 1) * integral[["abs.error"]]
   expect_true((output_range[1] <= 1) && (1 <= output_range[2]))

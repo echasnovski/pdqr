@@ -73,14 +73,14 @@ test_that("form_geq handles cases of clearly separated supports", {
   expect_equal(form_geq(f_infin_3, f_infin_1)(1), 1)
 })
 
-test_that("form_geq works with dirac-like functions", {
+test_that("form_geq works with dirac-like 'infin' functions", {
   expect_equal(
-    form_geq(f_fin_1, f_infin_2)(1),
-    form_geq(f_fin_1_dirac, f_infin_2)(1)
+    form_geq(f_fin_1_dirac, f_infin_2)(1),
+    form_geq(f_fin_1, f_infin_2)(1)
   )
   expect_equal(
-    form_geq(f_infin_1, f_fin_2)(1),
-    form_geq(f_infin_1, f_fin_2_dirac)(1)
+    form_geq(f_infin_1, f_fin_2_dirac)(1),
+    form_geq(f_infin_1, f_fin_2)(1)
   )
   expect_equal(form_geq(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -123,14 +123,14 @@ test_that("form_greater handles cases of clearly separated supports", {
   expect_equal(form_greater(f_infin_3, f_infin_1)(1), 1)
 })
 
-test_that("form_greater works with dirac-like functions", {
+test_that("form_greater works with dirac-like 'infin' functions", {
   expect_equal(
-    form_greater(f_fin_1, f_infin_2)(1),
-    form_greater(f_fin_1_dirac, f_infin_2)(1)
+    form_greater(f_fin_1_dirac, f_infin_2)(1),
+    form_greater(f_fin_1, f_infin_2)(1)
   )
   expect_equal(
-    form_greater(f_infin_1, f_fin_2)(1),
-    form_greater(f_infin_1, f_fin_2_dirac)(1)
+    form_greater(f_infin_1, f_fin_2_dirac)(1),
+    form_greater(f_infin_1, f_fin_2)(1)
   )
   expect_equal(form_greater(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -173,14 +173,14 @@ test_that("form_leq handles cases of clearly separated supports", {
   expect_equal(form_leq(f_infin_3, f_infin_1)(1), 0)
 })
 
-test_that("form_leq works with dirac-like functions", {
+test_that("form_leq works with dirac-like 'infin' functions", {
   expect_equal(
-    form_leq(f_fin_1, f_infin_2)(1),
-    form_leq(f_fin_1_dirac, f_infin_2)(1)
+    form_leq(f_fin_1_dirac, f_infin_2)(1),
+    form_leq(f_fin_1, f_infin_2)(1)
   )
   expect_equal(
-    form_leq(f_infin_1, f_fin_2)(1),
-    form_leq(f_infin_1, f_fin_2_dirac)(1)
+    form_leq(f_infin_1, f_fin_2_dirac)(1),
+    form_leq(f_infin_1, f_fin_2)(1)
   )
   expect_equal(form_leq(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -223,14 +223,14 @@ test_that("form_less handles cases of clearly separated supports", {
   expect_equal(form_less(f_infin_3, f_infin_1)(1), 0)
 })
 
-test_that("form_less works with dirac-like functions", {
+test_that("form_less works with dirac-like 'infin' functions", {
   expect_equal(
-    form_less(f_fin_1, f_infin_2)(1),
-    form_less(f_fin_1_dirac, f_infin_2)(1)
+    form_less(f_fin_1_dirac, f_infin_2)(1),
+    form_less(f_fin_1, f_infin_2)(1)
   )
   expect_equal(
-    form_less(f_infin_1, f_fin_2)(1),
-    form_less(f_infin_1, f_fin_2_dirac)(1)
+    form_less(f_infin_1, f_fin_2_dirac)(1),
+    form_less(f_infin_1, f_fin_2)(1)
   )
   expect_equal(form_less(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -266,14 +266,14 @@ test_that("form_equal agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_equal, `==`)
 })
 
-test_that("form_equal works with dirac-like functions", {
+test_that("form_equal works with dirac-like 'infin' functions", {
   expect_equal(
-    form_equal(f_fin_1, f_infin_2)(1),
-    form_equal(f_fin_1_dirac, f_infin_2)(1)
+    form_equal(f_fin_1_dirac, f_infin_2)(1),
+    form_equal(f_fin_1, f_infin_2)(1)
   )
   expect_equal(
-    form_equal(f_infin_1, f_fin_2)(1),
-    form_equal(f_infin_1, f_fin_2_dirac)(1)
+    form_equal(f_infin_1, f_fin_2_dirac)(1),
+    form_equal(f_infin_1, f_fin_2)(1)
   )
 
   expect_equal(form_equal(dirac_single, dirac_winsor)(1), 0)
@@ -306,14 +306,14 @@ test_that("form_not_equal agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_not_equal, `!=`)
 })
 
-test_that("form_not_equal works with dirac-like functions", {
+test_that("form_not_equal works with dirac-like 'infin' functions", {
   expect_equal(
-    form_not_equal(f_fin_1, f_infin_2)(1),
-    form_not_equal(f_fin_1_dirac, f_infin_2)(1)
+    form_not_equal(f_fin_1_dirac, f_infin_2)(1),
+    form_not_equal(f_fin_1, f_infin_2)(1)
   )
   expect_equal(
-    form_not_equal(f_infin_1, f_fin_2)(1),
-    form_not_equal(f_infin_1, f_fin_2_dirac)(1)
+    form_not_equal(f_infin_1, f_fin_2_dirac)(1),
+    form_not_equal(f_infin_1, f_fin_2)(1)
   )
 
   expect_equal(form_not_equal(dirac_single, dirac_winsor)(1), 1)

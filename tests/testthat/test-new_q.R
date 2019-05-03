@@ -58,7 +58,7 @@ test_that("new_q's output validates input", {
   expect_error(q_infin("a"), "`p`.*numeric")
 })
 
-test_that("new_q's output behaves like inverse of ecdf() if `type` = 'fin'", {
+test_that("new_q's output behaves like inverse of ecdf() if `type = 'fin'`", {
   inv_ecdf <- quantile(x_fin, probs = p_vec, type = 1)
   names(inv_ecdf) <- NULL
 

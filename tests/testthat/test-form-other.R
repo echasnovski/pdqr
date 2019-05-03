@@ -131,7 +131,7 @@ test_that("form_mix validates input", {
 
 
 # form_smooth -------------------------------------------------------------
-test_that("form_smooth works with `type` 'fin'", {
+test_that("form_smooth works with 'fin' functions", {
   bad_fin <- new_d(bad_x_tbl_big[, c("x", "prob")], "fin")
 
   output <- form_smooth(bad_fin)
@@ -144,7 +144,7 @@ test_that("form_smooth works with `type` 'fin'", {
   expect_equal(form_smooth(d_one_point), d_one_point)
 })
 
-test_that("form_smooth works with `type` 'infin'", {
+test_that("form_smooth works with 'infin' functions", {
   bad_infin <- new_d(bad_x_tbl_big[, c("x", "y")], "infin")
 
   output <- form_smooth(bad_infin)
@@ -249,7 +249,7 @@ test_that("form_estimate uses `args_new` as arguments to `new_*()`", {
   expect_true(nrow(meta_x_tbl(infin_mean_est)) == 100)
 })
 
-test_that("form_estimate allows `type` in `args_new", {
+test_that("form_estimate allows `type` in `args_new`", {
   cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
 
   mean_est <- form_estimate(
@@ -270,7 +270,7 @@ test_that("form_estimate checks that `estimate` returns single number", {
   )
 })
 
-test_that("form_estimate asserts bad input", {
+test_that("form_estimate validates input", {
   expect_error(form_estimate("a", mean, 10), "`f`.*function")
   expect_error(form_estimate(function(x) {x}, mean, 10), "`f`.*pdqr")
   expect_error(form_estimate(d_fin, "a", 10), "`estimate`.*function")

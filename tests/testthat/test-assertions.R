@@ -219,7 +219,7 @@ test_that("assert_support works", {
 
 
 # assert_x_tbl ------------------------------------------------------------
-test_that("assert_x_tbl works with `type = 'fin'`", {
+test_that("assert_x_tbl works with 'fin' type", {
   expect_silent(assert_x_tbl(x_fin_x_tbl, type = "fin"))
   expect_silent(
     assert_x_tbl(data.frame(x = 1:3, prob = c(0, 1, 0)), type = "fin")
@@ -270,7 +270,7 @@ test_that("assert_x_tbl works with `type = 'fin'`", {
   )
 })
 
-test_that("assert_x_tbl works with `type = 'infin'`", {
+test_that("assert_x_tbl works with 'infin' type", {
   expect_silent(assert_x_tbl(x_infin_x_tbl, type = "infin"))
 
   # Input type

@@ -41,7 +41,7 @@ expect_pdqr_commute <- function(f, n_grid, method) {
 
 
 # form_regrid -------------------------------------------------------------
-test_that("form_regrid downgrids when `type` 'fin'", {
+test_that("form_regrid downgrids 'fin' functions", {
   # Output `x` are edges with probabilities collapsed according to smallest
   # ordinary distance. Probabilities are sum of respective nearest input `x`.
   expect_ref_x_tbl(
@@ -87,7 +87,7 @@ test_that("form_regrid returns self when upgridding 'fin' function", {
   expect_equal(form_regrid(cur_fin, 10, method = "q"), cur_fin)
 })
 
-test_that("form_regrid downgrids when `type` 'infin'", {
+test_that("form_regrid downgrids 'infin' functions", {
   # Output `x` are edges of input "x_tbl" in case `n_grid = 2`
   expect_ref_x_tbl(
     form_regrid(cur_infin, n_grid = 2, method = "x"),
@@ -121,7 +121,7 @@ test_that("form_regrid downgrids when `type` 'infin'", {
   )
 })
 
-test_that("form_regrid upgrids when `type` 'infin'", {
+test_that("form_regrid upgrids 'infin' functions", {
   # Output `x` are combination of input rows and new points with `y` values
   # from input density (which are renormalized). `x` values of new points are
   # taken from elements of method grid that are the most distant from input `x`
@@ -146,7 +146,7 @@ test_that("form_regrid upgrids when `type` 'infin'", {
   )
 })
 
-test_that("form_regrid errors if `n_grid=2`, zero edges, `type='infin'`", {
+test_that("form_regrid errors if `n_grid=2`, zero edges, 'infin' function", {
   # Output `x` in case of `n_grid = 2` are edges of input "x_tbl". So if they
   # are 0s then there should be an error.
   infin_zero_edges <- new_d(data.frame(x = 0:2, y = c(0, 1, 0)), "infin")

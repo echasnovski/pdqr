@@ -95,7 +95,7 @@ test_that("region_is_in validates input", {
 
 
 # region_prob -------------------------------------------------------------
-test_that("region_prob works with 'fin' type", {
+test_that("region_prob works with 'fin' functions", {
   cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
 
   region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
@@ -174,7 +174,7 @@ test_that("region_prob works with 'fin' type", {
   )
 })
 
-test_that("region_prob works with 'infin' type", {
+test_that("region_prob works with 'infin' functions", {
   expect_region_prob_works_with_infin <- function(region, f, ref_output) {
     expect_equal(
       region_prob(region, f, left_closed = TRUE, right_closed = TRUE),
@@ -240,7 +240,7 @@ test_that("region_prob works with dirac-like 'infin' functions", {
   )
 })
 
-test_that("region_prob handles real world examples", {
+test_that("region_prob works with real world cases", {
   d_unif <- as_d(dunif)
   expect_equal(region_prob(data.frame(left = -1, right = 0.5), d_unif), 0.5)
 
@@ -269,7 +269,7 @@ test_that("region_prob validates input", {
 
 
 # region_height -----------------------------------------------------------
-test_that("region_height works with 'fin' type", {
+test_that("region_height works with 'fin' functions", {
   cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
 
   region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
@@ -348,7 +348,7 @@ test_that("region_height works with 'fin' type", {
   )
 })
 
-test_that("region_height works with 'infin' type", {
+test_that("region_height works with 'infin' functions", {
   cur_d <- new_d(data.frame(x = 1:5, y = c(0, 2, 1, 2, 0)/5), "infin")
 
   expect_equal(

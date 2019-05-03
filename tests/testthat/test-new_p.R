@@ -41,7 +41,7 @@ test_that("new_p imputes data frame input", {
   expect_x_tbl_imputation(new_p)
 })
 
-test_that("new_p rounds input in case of `type` = 'fin'", {
+test_that("new_p rounds input in case of `type = 'fin'`", {
   # Some values in this sequence show numerical representation issues after
   # `round(x_seq, digits = 10)` (see `dput(x_seq - round(x_seq, digits = 10))`).
   # If input is not rounded during `x_tbl` creation/imputation then output
@@ -58,7 +58,7 @@ test_that("new_p rounds input in case of `type` = 'fin'", {
   expect_equal(cur_p_2(0.0045), 0.0045)
 })
 
-test_that("new_p's output rounds input in case of `type` = 'fin'", {
+test_that("new_p's output rounds input in case of `type = 'fin'`", {
   near_1 <- 1 - 10^c(-6, -11)
   expect_equal(p_fin(near_1), c(0, 0.1))
 })
@@ -84,12 +84,12 @@ test_that("new_p's output validates input", {
   expect_error(p_infin("a"), "`q`.*numeric")
 })
 
-test_that("new_p's output behaves like ecdf() in case of `type` = 'fin'", {
+test_that("new_p's output behaves like ecdf() in case of `type = 'fin'`", {
   x_fin_grid <- seq(from = min(x_fin) - 1, to = max(x_fin) + 1, by = 0.01)
   expect_equal(p_fin(x_fin_grid), ecdf(x_fin)(x_fin_grid))
 })
 
-test_that("new_p's output is integration of new_d's if `type` = 'infin'", {
+test_that("new_p's output is integration of new_d's if `type = 'infin'`", {
   d_support <- meta_support(d_infin)
   x_infin_grid <- seq(d_support[1] - 1, d_support[2] + 1, by = 0.01)
 

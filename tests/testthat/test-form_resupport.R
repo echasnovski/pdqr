@@ -2,7 +2,7 @@ context("test-form_resupport")
 
 
 # form_resupport ----------------------------------------------------------
-test_that("form_resupport works with `method = 'reflect'` and `type`='fin'", {
+test_that("form_resupport works with `method='reflect'` and 'fin' type", {
   p_f <- new_p(data.frame(x = 1:4, prob = (1:4)/10), "fin")
   p_f_x_tbl <- meta_x_tbl(p_f)
 
@@ -44,7 +44,7 @@ test_that("form_resupport works with `method = 'reflect'` and `type`='fin'", {
   )
 })
 
-test_that("form_resupport works with `method='reflect'` and `type`='infin'",  {
+test_that("form_resupport works with `method='reflect'` and 'infin' type",  {
   p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
   p_f_x_tbl <- meta_x_tbl(p_f)
 
@@ -74,7 +74,7 @@ test_that("form_resupport works with `method='reflect'` and `type`='infin'",  {
   )
 })
 
-test_that("form_resupport works with `method = 'trim'` and `type`='fin'", {
+test_that("form_resupport works with `method = 'trim'` and 'fin' type", {
   x_tbl <- data.frame(
     x    = c(0,   1, 2,   3,   4,   5,   6, 7),
     prob = c(0, 0.2, 0, 0.4, 0.1, 0.1, 0.2, 0)
@@ -98,7 +98,7 @@ test_that("form_resupport works with `method = 'trim'` and `type`='fin'", {
   expect_error(form_resupport(p_f, c(6.5, 7), "trim"), "not.*positive.*prob")
 })
 
-test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
+test_that("form_resupport works with `method = 'trim'` and 'infin' type", {
   x_tbl <- data.frame(
     x = c(0, 1,   2, 3, 4, 5,   6, 7,   8),
     y = c(0, 0, 0.4, 0, 0, 0, 0.4, 0, 0.4)
@@ -137,7 +137,7 @@ test_that("form_resupport works with `method = 'trim'` and `type`='infin'", {
   expect_error(form_resupport(d_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
 })
 
-test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
+test_that("form_resupport works with `method = 'winsor'` and 'fin' type",  {
   d_f <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "fin")
 
   # Collapsing into single element
@@ -173,7 +173,7 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='fin'",  {
   )
 })
 
-test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
+test_that("form_resupport works with `method = 'winsor'` and 'infin' type",  {
   d_f <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
 
   # Collapsing into single element
@@ -218,7 +218,7 @@ test_that("form_resupport works with `method = 'winsor'` and `type`='infin'",  {
   )
 })
 
-test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
+test_that("form_resupport works with `method = 'linear'` and 'fin' type", {
   p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
 
   expect_ref_x_tbl(
@@ -237,7 +237,7 @@ test_that("form_resupport works with `method = 'linear'` and `type`='fin'", {
   )
 })
 
-test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
+test_that("form_resupport works with `method = 'linear'` and 'infin' type", {
   x_tbl <- data.frame(
     x = c(0, 1,   2, 5),
     y = c(0, 0, 0.5, 0)
@@ -255,7 +255,7 @@ test_that("form_resupport works with `method = 'linear'` and `type`='infin'", {
   )
 })
 
-test_that("form_resupport returns correct pdqr-function", {
+test_that("form_resupport returns correct class of pdqr-function", {
   p_f_fin <- new_p(data.frame(x = 1:2, prob = c(0.3, 0.7)), "fin")
   p_f_infin <- new_p(data.frame(x = 1:3, y = c(0, 1, 0)), "infin")
 

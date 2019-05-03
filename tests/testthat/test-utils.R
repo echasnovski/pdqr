@@ -66,7 +66,7 @@ test_that("is_single_number checks value bounds", {
 
 
 # is_truefalse ------------------------------------------------------------
-test_that("is_truefalse worksq", {
+test_that("is_truefalse works", {
   expect_true(is_truefalse(TRUE))
   expect_true(is_truefalse(FALSE))
   expect_false(is_truefalse(NA))
@@ -384,7 +384,7 @@ test_that("find_nearest_match works", {
   )
 })
 
-test_that("find_nearest_match throws error if `set` is smaller than `x`", {
+test_that("find_nearest_match throws error if `set` is shorter than `x`", {
   expect_error(find_nearest_match(1:10, 1:3), "`set`.*`x`")
 })
 

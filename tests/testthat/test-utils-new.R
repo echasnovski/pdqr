@@ -167,7 +167,7 @@ test_that("is_support works", {
 
 
 # is_x_tbl ----------------------------------------------------------------
-test_that("is_x_tbl works with `type = 'fin'`", {
+test_that("is_x_tbl works with 'fin' type", {
   expect_true(is_x_tbl(x_fin_x_tbl, type = "fin"))
 
   # Input type
@@ -192,7 +192,7 @@ test_that("is_x_tbl works with `type = 'fin'`", {
   )
 })
 
-test_that("is_x_tbl works with `type = 'infin'`", {
+test_that("is_x_tbl works with 'infin' type", {
   expect_true(is_x_tbl(x_infin_x_tbl, type = "infin"))
 
   # Input type

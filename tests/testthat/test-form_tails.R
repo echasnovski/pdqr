@@ -41,7 +41,7 @@ cur_infin <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
 
 
 # form_tails --------------------------------------------------------------
-test_that("form_tails works with `type='fin'` and `method='trim'`", {
+test_that("form_tails works with `method='trim'` and 'fin' functions", {
   # `direction = "both"`
   # This should remove first row (not leave it with value 0 at "prob" column)
   expect_ref_x_tbl(
@@ -84,7 +84,7 @@ test_that("form_tails works with `type='fin'` and `method='trim'`", {
   )
 })
 
-test_that("form_tails works with `type='infin'` and `method='trim'`", {
+test_that("form_tails works with `method='trim'` and 'infin' functions", {
   # `direction = "both"`
   expect_ref_x_tbl(
     form_tails(cur_infin, 0.05, "trim", "both"),
@@ -116,7 +116,7 @@ test_that("form_tails works with `type='infin'` and `method='trim'`", {
   )
 })
 
-test_that("form_tails works with `type='fin'` and `method='winsor'`", {
+test_that("form_tails works with `method='winsor'` and 'fin' functions", {
   # `direction = "both"`
   # Here first row ISN'T removed (unlike with "trim") because 10% quantile is 1
   expect_ref_x_tbl(
@@ -151,7 +151,7 @@ test_that("form_tails works with `type='fin'` and `method='winsor'`", {
   )
 })
 
-test_that("form_tails works with `type='infin'` and `method='winsor'`", {
+test_that("form_tails works with `method='winsor'` and 'infin' functions", {
   # `direction = "both"`
   expect_ref_x_tbl(
     form_tails(cur_infin, 0.1, "winsor", "both"),
@@ -191,7 +191,7 @@ test_that("form_tails returns self when `level = 0`", {
   expect_self_x_tbl(cur_infin)
 })
 
-test_that("form_tails returns dirac distribution at maximum level", {
+test_that("form_tails returns dirac-like distribution at maximum level", {
   expect_dirac(cur_fin, c("both" = 3, "left" = 4, "right" = 1))
   expect_dirac(cur_infin, c("both" = 0.5, "left" = 1, "right" = 0))
 })

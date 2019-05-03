@@ -101,7 +101,26 @@ test_that("summ_interval works with 'infin' functions", {
 })
 
 test_that("summ_interval works with dirac-like functions", {
-  # Single dirac-like peak
+  # Type "fin"
+  d_dirac_fin <- new_d(10, "fin")
+  expect_equal(
+    summ_interval(d_dirac_fin, 0.95, method = "minwidth"),
+    data.frame(left = 10, right = 10),
+    tolerance = 1e-12
+  )
+  expect_equal(
+    summ_interval(d_dirac_fin, 0.95, method = "percentile"),
+    data.frame(left = 10, right = 10),
+    tolerance = 1e-12
+  )
+  expect_equal(
+    summ_interval(d_dirac_fin, 0.95, method = "sigma"),
+    data.frame(left = 10, right = 10),
+    tolerance = 1e-12
+  )
+
+  # Type "infin"
+    # Single dirac-like peak
   d_dirac_1 <- new_d(1, "infin")
   expect_equal(
     summ_interval(d_dirac_1, 0.95, method = "minwidth"),
@@ -119,7 +138,7 @@ test_that("summ_interval works with dirac-like functions", {
     tolerance = 1e-7
   )
 
-  # Two dirac-like peaks
+    # Two dirac-like peaks
   d_dirac_2 <- form_mix(
     list(new_d(1, "infin"), new_d(2, "infin")), weights = c(0.25, 0.75)
   )

@@ -61,7 +61,7 @@ test_that("summ_pval adjusts multiple p-values", {
   expect_adjust(p_infin, obs_vec, "none")
 })
 
-test_that("summ_pval accepts not only objects of class 'p'", {
+test_that("summ_pval accepts any pdqr class", {
   expect_pval(q_fin, 5, c(0.55, 0.55, 0.5, 1))
 
   expect_pval(d_infin, 0, c(0.574, 0.574, 0.426, 0.852))

@@ -4,7 +4,7 @@ set.seed(12321)
 
 
 # form_retype -------------------------------------------------------------
-test_that("form_retype converts to `type` 'fin' with `method` 'piecelin'", {
+test_that("form_retype converts to 'fin' type with `method='piecelin'`", {
   output <- form_retype(p_infin, "fin", method = "piecelin")
   expect_distr_fun(output, "p", "fin")
 
@@ -12,7 +12,7 @@ test_that("form_retype converts to `type` 'fin' with `method` 'piecelin'", {
   expect_equal(nrow(meta_x_tbl(p_infin)) - 1, nrow(meta_x_tbl(output)))
 })
 
-test_that("form_retype converts to `type` 'infin' with `method` 'piecelin'", {
+test_that("form_retype converts to 'infin' type with `method='piecelin'`", {
   output <- form_retype(d_fin, "infin", method = "piecelin")
   expect_distr_fun(output, "d", "infin")
 
@@ -20,7 +20,7 @@ test_that("form_retype converts to `type` 'infin' with `method` 'piecelin'", {
   expect_equal(nrow(meta_x_tbl(d_fin)), nrow(meta_x_tbl(output)) - 1)
 })
 
-test_that("form_retype handles adjacent 0 densities with `method`='piecelin'", {
+test_that("form_retype handles adjacent 0 densities with `method='piecelin'`", {
   input_infin <- new_d(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
   output_fin <- form_retype(input_infin, "fin", method = "piecelin")
 
@@ -28,7 +28,7 @@ test_that("form_retype handles adjacent 0 densities with `method`='piecelin'", {
   expect_equal(meta_x_tbl(output_fin)[["x"]][2], 2.5)
 })
 
-test_that("form_retype works with `method` 'dirac'", {
+test_that("form_retype works with `method='dirac'`", {
   d_fin <- new_d(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), "fin")
   d_infin_dirac <- form_retype(d_fin, "infin", method = "dirac")
 

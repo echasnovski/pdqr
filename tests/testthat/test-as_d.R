@@ -362,22 +362,22 @@ test_that("as_d.default throws error if detected support isn't proper", {
 
 
 # as_d.pdqr ---------------------------------------------------------------
-test_that('as_d.pdqr works with "p"', {
+test_that("as_d.pdqr works with 'p'", {
   expect_equal_distr(as_d(p_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_d(p_infin), d_infin, x_infin_vec_ext)
 })
 
-test_that('as_d.pdqr works with "d"', {
+test_that("as_d.pdqr works with 'd'", {
   expect_equal_distr(as_d(d_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_d(d_infin), d_infin, x_infin_vec_ext)
 })
 
-test_that('as_d.pdqr works with "q"', {
+test_that("as_d.pdqr works with 'q'", {
   expect_equal_distr(as_d(q_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_d(q_infin), d_infin, grid = x_infin_vec_ext)
 })
 
-test_that('as_d.pdqr works with "r"', {
+test_that("as_d.pdqr works with 'r'", {
   expect_equal_distr(as_d(r_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
   expect_equal_distr(as_d(r_infin), d_infin, grid = x_infin_vec_ext)
 })

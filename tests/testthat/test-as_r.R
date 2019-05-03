@@ -406,22 +406,22 @@ test_that("as_r.default throws error if detected support isn't proper", {
 })
 
 # as_r.pdqr ---------------------------------------------------------------
-test_that('as_r works with "p"', {
+test_that("as_r works with 'p'", {
   expect_equal_r_distr(as_r(p_fin), r_fin)
   expect_equal_r_distr(as_r(p_infin), r_infin)
 })
 
-test_that('as_r works with "d"', {
+test_that("as_r works with 'd'", {
   expect_equal_r_distr(as_r(d_fin), r_fin)
   expect_equal_r_distr(as_r(d_infin), r_infin)
 })
 
-test_that('as_r works with "q"', {
+test_that("as_r works with 'q'", {
   expect_equal_r_distr(as_r(q_fin), r_fin, mean_thres = 0.12)
   expect_equal_r_distr(as_r(q_infin), r_infin)
 })
 
-test_that('as_r works with "r"', {
+test_that("as_r works with 'r'", {
   expect_equal_r_distr(as_r(r_fin), r_fin)
   expect_equal_r_distr(as_r(r_infin), r_infin)
 })

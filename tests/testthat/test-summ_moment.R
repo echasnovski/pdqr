@@ -82,6 +82,12 @@ test_that("summ_moment works with 'infin' functions", {
 })
 
 test_that("summ_moment works with dirac-like functions", {
+  # Type "fin"
+  d_dirac_fin <- new_d(2, "fin")
+  expect_equal(summ_moment(d_dirac_fin, 1), 2)
+  expect_equal(summ_moment(d_dirac_fin, 10), 2^10)
+
+  # Type "infin"
   d_dirac <- new_d(2, "infin")
   expect_equal(summ_moment(d_dirac, 1), 2)
   expect_equal(summ_moment(d_dirac, 10), 2^10)
@@ -160,6 +166,11 @@ test_that("summ_skewness works with 'infin' functions", {
 })
 
 test_that("summ_skewness works with dirac-like functions", {
+  # Type "fin"
+  d_dirac_fin <- new_d(2, "fin")
+  expect_equal(summ_skewness(d_dirac_fin), Inf)
+
+  # Type "infin"
   d_dirac <- new_d(2, "infin")
   expect_equal(summ_skewness(d_dirac), Inf)
 
@@ -216,6 +227,11 @@ test_that("summ_kurtosis works with 'infin' functions", {
 })
 
 test_that("summ_kurtosis works with dirac-like functions", {
+  # Type "fin"
+  d_dirac_fin <- new_d(2, "fin")
+  expect_equal(summ_kurtosis(d_dirac_fin), Inf)
+
+  # Type "infin"
   d_dirac <- new_d(2, "infin")
   expect_equal(summ_kurtosis(d_dirac), Inf)
 

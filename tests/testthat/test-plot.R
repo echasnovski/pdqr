@@ -169,7 +169,7 @@ test_that("plot.d and lines.d respect `n_extra_grid` argument", {
   )
 })
 
-test_that("plot.d handles dirac-like entries in 'x_tbl'",  {
+test_that("plot.d handles dirac-like 'infin' functions",  {
   vdiffr::expect_doppelganger(
     "dirac-like-1", recordPlot({
       plot(form_retype(d_fin, "infin", method = "dirac"))

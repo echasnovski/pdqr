@@ -134,7 +134,7 @@ test_that("compute_density_crossings handles no intersections", {
   expect_equal(compute_density_crossings(cur_d_1, cur_d_4), numeric(0))
 })
 
-test_that("compute_density_crossings handles real world examples", {
+test_that("compute_density_crossings works with real world cases", {
   # Case of crossing
   d_norm <- as_d(dnorm)
   d_norm_2 <- as_d(dnorm, mean = 1, sd = 0.1)
@@ -188,7 +188,7 @@ test_that("compute_cdf_crossings handles no intersections", {
   expect_equal(compute_cdf_crossings(cur_p_1, cur_p_3), numeric(0))
 })
 
-test_that("compute_cdf_crossings handles real world examples", {
+test_that("compute_cdf_crossings works with real world cases", {
   # Case of crossing
   p_norm <- as_p(pnorm)
   p_norm_2 <- as_p(pnorm, mean = 1, sd = 0.1)

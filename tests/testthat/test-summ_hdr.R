@@ -112,7 +112,7 @@ test_that("summ_hdr works with dirac-like functions", {
   )
 })
 
-test_that("summ_hdr works with winsorized functions", {
+test_that("summ_hdr works with winsorized 'infin' functions", {
   # Generally, errors in HDRs of winsorized functions are big. Current
   # hypothesis is that this happens because of numerical precision issues at
   # dirac-like intervals.

@@ -113,7 +113,7 @@ test_that("union_inside_x_tbl works", {
 
 
 # reflect_x_tbl -----------------------------------------------------------
-test_that("reflect_x_tbl works when `type` 'fin'", {
+test_that("reflect_x_tbl works with 'fin' type", {
   x_tbl_fin <- data.frame(
     x = c(1, 2, 4), prob = c(0.1, 0, 0.9), cumprob = c(0.1, 0.1, 1)
   )
@@ -131,7 +131,7 @@ test_that("reflect_x_tbl works when `type` 'fin'", {
   )
 })
 
-test_that("reflect_x_tbl works when `type` 'infin'", {
+test_that("reflect_x_tbl works with 'infin' type", {
   x_tbl_infin <- data.frame(
     x = c( -2, -1, 0, 0.5, 4),
     y = c(0.5,  0, 1,   0, 0),

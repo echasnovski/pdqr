@@ -102,7 +102,7 @@ test_that("summ_entropy2 works with 'infin' functions", {
   )
 })
 
-test_that("summ_entropy2 works with dirac-like functions", {
+test_that("summ_entropy2 works with dirac-like 'infin' functions", {
   f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "infin")
   g_dirac <- new_d(2, "infin")
 
@@ -180,7 +180,7 @@ test_that("cross_entropy handles zero plateaus in 'infin' functions", {
   expect_equal(cross_entropy(g, f), max_entropy)
 })
 
-test_that("cross_entropy works with dirac-like functions", {
+test_that("cross_entropy works with dirac-like 'infin' functions", {
   f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "infin")
   g_dirac <- new_d(2, "infin")
   expect_equal(cross_entropy(f, g_dirac), max_entropy)

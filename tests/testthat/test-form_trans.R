@@ -196,7 +196,7 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   )
 })
 
-test_that("form_trans throws errors", {
+test_that("form_trans validates input", {
   expect_error(form_trans(p_fin, sq), "`f_list`.*list")
   expect_error(form_trans(list(), sq), "`f_list`.*empty")
   expect_error(form_trans(list("a"), sq), "`f_list`.*pdqr-function.*number")
