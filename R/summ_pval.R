@@ -1,9 +1,9 @@
-summ_pval <- function(f, obs, direction = "right", adjust = "holm") {
+summ_pval <- function(f, obs, method = "both", adjust = "holm") {
   assert_pdqr_fun(f)
   assert_type(obs, is.numeric)
 
-  assert_type(direction, is_string)
-  assert_in_set(direction, c("left", "right", "both"))
+  assert_type(method, is_string)
+  assert_in_set(method, c("both", "right", "left"))
 
   assert_type(adjust, is_string)
   assert_in_set(adjust, stats::p.adjust.methods)
@@ -11,17 +11,19 @@ summ_pval <- function(f, obs, direction = "right", adjust = "holm") {
   f <- as_p(f)
 
   res <- switch(
-    direction,
+    method,
+    both = both_pval(f, obs),
     left = left_pval(f, obs),
-    right = right_pval(f, obs),
-    both = both_pval(f, obs)
+    right = right_pval(f, obs)
   )
 
   stats::p.adjust(res, method = adjust)
 }
 
-left_pval <- function(p_f, obs) {
-  p_f(obs)
+both_pval <- function(p_f, obs) {
+  res <- 2 * pmin(right_pval(p_f, obs), left_pval(p_f, obs))
+
+  pmin(res, 1)
 }
 
 right_pval <- function(p_f, obs) {
@@ -38,8 +40,6 @@ right_pval <- function(p_f, obs) {
   }
 }
 
-both_pval <- function(p_f, obs) {
-  res <- 2 * pmin(left_pval(p_f, obs), right_pval(p_f, obs))
-
-  pmin(res, 1)
+left_pval <- function(p_f, obs) {
+  p_f(obs)
 }

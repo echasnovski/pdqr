@@ -1,50 +1,48 @@
 context("test-summ_pval")
 
-set.seed(6666)
-
 
 # Custom expectations -----------------------------------------------------
-expect_equal_r <- function(x, y, digits = 3) {
-  expect_equal(round(x, digits), round(y, digits))
+expect_pval <- function(f, obs, out) {
+  # `out` should be for methods: default, "both",  "right", "left"
+  expect_equal(summ_pval(f, obs), out[1])
+  expect_equal(summ_pval(f, obs, method = "both"), out[2])
+  expect_equal(summ_pval(f, obs, method = "right"), out[3])
+  expect_equal(summ_pval(f, obs, method = "left"), out[4])
 }
 
-expect_pval <- function(f, obs, out, digits = 3) {
-  # `out` should be for directions: default, "right", "left", "both"
-  expect_equal_r(summ_pval(f, obs), out[1], digits)
-  expect_equal_r(summ_pval(f, obs, direction = "right"), out[2], digits)
-  expect_equal_r(summ_pval(f, obs, direction = "left"), out[3], digits)
-  expect_equal_r(summ_pval(f, obs, direction = "both"), out[4], digits)
-}
-
-expect_adjust <- function(p_f, obs, adjust, digits = 3) {
+expect_adjust <- function(p_f, obs, adjust) {
+  output_none <- summ_pval(p_f, obs, adjust = "none")
   output <- summ_pval(p_f, obs, adjust = adjust)
 
-  expect_equal_r(output, stats::p.adjust(output, method = adjust), digits)
+  expect_equal(output, stats::p.adjust(output_none, method = adjust))
 }
 
 
 # summ_pval ---------------------------------------------------------------
 test_that("summ_pval works", {
-  expect_pval(p_fin, 0.9,   c(1,    1,    0,   0))
-  expect_pval(p_fin, 1,     c(1,    1,    0.1, 0.2))
-  expect_pval(p_fin, 5,     c(0.55, 0.55, 0.5, 1))
-  expect_pval(p_fin, 9.001, c(0,    0,    1,   0))
+  # Type "fin"
+  cur_fin <- new_d(data.frame(x = 1:5, prob = c(2, 2, 3, 2, 1)/10), "fin")
+  expect_pval(cur_fin,    -1, c(     0,      0,    1,    0))
+  expect_pval(cur_fin, 2.999, c(2*4/10, 2*4/10, 6/10, 4/10))
+  expect_pval(cur_fin,     3, c(     1,      1, 6/10, 7/10))
+  expect_pval(cur_fin,   4.5, c(2*1/10, 2*1/10, 1/10, 9/10))
+  expect_pval(cur_fin,   100, c(     0,      0,    0,    1))
 
-  expect_pval(p_infin,          -100, c(1,     1,     0,     0))
-  expect_pval(p_infin,  min(x_infin), c(0.957, 0.957, 0.043, 0.087))
-  expect_pval(p_infin,             0, c(0.574, 0.574, 0.426, 0.852))
-  expect_pval(p_infin,  max(x_infin), c(0.061, 0.061, 0.939, 0.122))
-
-  expect_pval(p_custom, 0,    c(1,    1,    0,    0))
-  expect_pval(p_custom, 0.01, c(0.98, 0.98, 0.02, 0.04))
-  expect_pval(p_custom, 0.51, c(0.24, 0.24, 0.76, 0.48))
-  expect_pval(p_custom, 1,    c(0,    0,    1,    0))
+  # Type "infin"
+  cur_infin <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "infin")
+  expect_pval(cur_infin,  -1, c(    0,     0,   1,   0))
+  expect_pval(cur_infin,   3, c(2*0.2, 2*0.2, 0.8, 0.2))
+  expect_pval(cur_infin,   6, c(2*0.5, 2*0.5, 0.5, 0.5))
+  expect_pval(cur_infin,  10, c(2*0.1, 2*0.1, 0.1, 0.9))
+  expect_pval(cur_infin, 100, c(    0,     0,   0,   1))
 })
 
 test_that("summ_pval works with vector observations", {
+  # This is also test for `summ_pval()` not adjusting if `adjust='none'`
+  cur_infin <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "infin")
   expect_equal(
-    summ_pval(p_fin, c(0.9, 1, 5, 9.001), adjust = "none"),
-    c(1, 1, 0.55, 0)
+    summ_pval(cur_infin, c(-1, 3, 6, 10, 100), adjust = "none"),
+    c(0, 0.4, 1, 0.2, 0)
   )
 })
 
@@ -58,45 +56,27 @@ test_that("summ_pval adjusts multiple p-values", {
   expect_adjust(p_infin, obs_vec, "BH")
   expect_adjust(p_infin, obs_vec, "BY")
   expect_adjust(p_infin, obs_vec, "fdr")
-  expect_adjust(p_infin, obs_vec, "none")
 })
 
 test_that("summ_pval accepts any pdqr class", {
-  expect_pval(q_fin, 5, c(0.55, 0.55, 0.5, 1))
-
-  expect_pval(d_infin, 0, c(0.574, 0.574, 0.426, 0.852))
-  expect_pval(r_infin, 0, c(0.574, 0.574, 0.426, 0.852), digits = 2)
-
-  # First two values differ because there is some randomness involved during
-  # conversion from r-function to p-function inside `summ_pval()`.
-  expect_pval(r_custom, 0.51, c(0.24, 0.24, 0.76, 0.48), digits = 2)
+  obs_vec <- seq(0, 0.1, by = 0.01)
+  expect_equal(summ_pval(d_infin, obs_vec), summ_pval(p_infin, obs_vec))
+  expect_equal(summ_pval(q_infin, obs_vec), summ_pval(p_infin, obs_vec))
+  expect_equal(summ_pval(r_infin, obs_vec), summ_pval(p_infin, obs_vec))
 })
 
 test_that("summ_pval validates input", {
-  expect_error(summ_pval(user_p, 1), "f.*pdqr")
-  expect_error(
-    summ_pval(structure(user_d, class = c("d", "pdqr")), 1),
-    "f.*proper.*type"
-  )
-
-  expect_error(summ_pval(p_fin, "a"), "obs.*numeric")
-  expect_error(summ_pval(p_fin, 1, direction = 1), "direction.*string")
-  expect_error(
-    summ_pval(p_fin, 1, direction = "a"),
-    '`direction`.*one of.*"left".*"right".*"both"'
-  )
-  expect_error(summ_pval(p_fin, 1, adjust = 1), "adjust.*string")
-
-  expect_error(
-    summ_pval(p_fin, 1, adjust = "b"),
-    paste0(
-      c("`adjust`", stats::p.adjust.methods), collapse = ".*"
-    )
-  )
+  expect_error(summ_pval("a", 1), "`f`.*function")
+  expect_error(summ_pval(function(x) {x}, 1), "`f`.*pdqr")
+  expect_error(summ_pval(p_fin, "a"), "`obs`.*numeric")
+  expect_error(summ_pval(p_fin, 1, method = 1), "`method`.*string")
+  expect_error(summ_pval(p_fin, 1, method = "a"), "`method`.*one of")
+  expect_error(summ_pval(p_fin, 1, adjust = 1), "`adjust`.*string")
+  expect_error(summ_pval(p_fin, 1, adjust = "b"), "`adjust`.*one of")
 })
 
 
-# left_pval ---------------------------------------------------------------
+# both_pval ---------------------------------------------------------------
 # Tested in `summ_pval()`
 
 
@@ -104,5 +84,5 @@ test_that("summ_pval validates input", {
 # Tested in `summ_pval()`
 
 
-# both_pval ---------------------------------------------------------------
+# left_pval ---------------------------------------------------------------
 # Tested in `summ_pval()`
