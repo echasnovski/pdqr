@@ -45,14 +45,6 @@ test_that("as_pdqr_by_ref works", {
 })
 
 
-# get_pdqr_class ----------------------------------------------------------
-test_that("get_pdqr_class works", {
-  expect_equal(get_pdqr_class(structure("a", class = "p")), "p")
-  expect_equal(get_pdqr_class(structure("a", class = c("p", "d"))), "p")
-  expect_equal(get_pdqr_class(structure("a", class = "bbb")), NA_character_)
-})
-
-
 # boolean_pdqr ------------------------------------------------------------
 test_that("boolean_pdqr works", {
   output_1 <- boolean_pdqr(0.61, "p")

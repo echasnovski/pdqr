@@ -461,7 +461,7 @@ capture_null <- function(x) {
 pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
                               remove_infinity = TRUE) {
   assert_pdqr_fun(f)
-  if (!(get_pdqr_class(f) %in% c("p", "d", "q"))) {
+  if (!(meta_class(f) %in% c("p", "d", "q"))) {
     stop_collapse("`f` should be p-, d-, or q-function.")
   }
   assert_type(ref_f, is.function)
@@ -493,7 +493,7 @@ pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
 granulate_grid <- function(f, gran) {
   x_tbl <- meta_x_tbl(f)
   vec <- switch(
-    get_pdqr_class(f),
+    meta_class(f),
     d = x_tbl[["x"]],
     p = x_tbl[["x"]],
     q = x_tbl[["cumprob"]]

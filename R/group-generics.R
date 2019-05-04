@@ -201,7 +201,7 @@ ops_logic <- function(gen, e1, e2) {
   zero_prob_1 <- prob_equal(e1, d_zero)
   zero_prob_2 <- prob_equal(e2, d_zero)
 
-  out_class <- get_pdqr_class(e1)
+  out_class <- meta_class(e1)
 
   switch(
     gen,

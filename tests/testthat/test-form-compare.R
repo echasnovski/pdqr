@@ -47,7 +47,7 @@ expect_equal_probs <- function(f_1, f_2, form_f, sign_f, thres = 1e-2) {
 # form_geq ----------------------------------------------------------------
 test_that("form_geq works", {
   output <- form_geq(f_infin_1, f_fin_2)
-  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_distr_fun(output, meta_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
@@ -97,7 +97,7 @@ test_that("form_geq returns appropriate pdqr class", {
 # form_greater ------------------------------------------------------------
 test_that("form_greater works", {
   output <- form_greater(f_infin_1, f_fin_2)
-  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_distr_fun(output, meta_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
@@ -147,7 +147,7 @@ test_that("form_greater returns appropriate pdqr class", {
 # form_leq ----------------------------------------------------------------
 test_that("form_leq works", {
   output <- form_leq(f_infin_1, f_fin_2)
-  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_distr_fun(output, meta_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
@@ -197,7 +197,7 @@ test_that("form_leq returns appropriate pdqr class", {
 # form_less ---------------------------------------------------------------
 test_that("form_less works", {
   output <- form_less(f_infin_1, f_fin_2)
-  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_distr_fun(output, meta_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
@@ -247,7 +247,7 @@ test_that("form_less returns appropriate pdqr class", {
 # form_equal --------------------------------------------------------------
 test_that("form_equal works", {
   output <- form_equal(f_infin_1, f_fin_2)
-  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_distr_fun(output, meta_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Equality involving "fin" functions with "long" "x"s
@@ -287,7 +287,7 @@ test_that("form_equal returns appropriate pdqr class", {
 # form_not_equal ----------------------------------------------------------
 test_that("form_not_equal works", {
   output <- form_not_equal(f_infin_1, f_fin_2)
-  expect_distr_fun(output, get_pdqr_class(f_infin_1), "fin")
+  expect_distr_fun(output, meta_class(f_infin_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Not equality involving "fin" functions with "long" "x"s

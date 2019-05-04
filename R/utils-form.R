@@ -8,7 +8,7 @@ new_pdqr_by_class <- function(pdqr_class) {
 }
 
 new_pdqr_by_ref <- function(f) {
-  new_pdqr_by_class(get_pdqr_class(f))
+  new_pdqr_by_class(meta_class(f))
 }
 
 as_pdqr_by_class <- function(pdqr_class) {
@@ -20,14 +20,7 @@ as_pdqr_by_class <- function(pdqr_class) {
 }
 
 as_pdqr_by_ref <- function(f) {
-  as_pdqr_by_class(get_pdqr_class(f))
-}
-
-get_pdqr_class <- function(f) {
-  pdqr_classes <- c("p", "d", "q", "r")
-  f_type <- pdqr_classes[match(class(f), pdqr_classes)]
-
-  f_type[!is.na(f_type)][1]
+  as_pdqr_by_class(meta_class(f))
 }
 
 
@@ -81,7 +74,7 @@ compute_f_list_meta <- function(f_list) {
   # Combined class is the class of first pdqr-function (which should be present
   # due to call to `assert_f_list()`)
   first_pdqr <- f_list[[which(is_elem_pdqr)[1]]]
-  res_class <- get_pdqr_class(first_pdqr)
+  res_class <- meta_class(first_pdqr)
 
   list(type = res_type, class = res_class)
 }

@@ -31,6 +31,13 @@ meta_all <- function(f) {
   res
 }
 
+meta_class <- function(f) {
+  pdqr_classes <- c("p", "d", "q", "r")
+  f_class <- pdqr_classes[match(class(f), pdqr_classes)]
+
+  f_class[!is.na(f_class)][1]
+}
+
 #' @rdname meta
 #' @export
 meta_type <- function(f) {

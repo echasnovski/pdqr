@@ -103,9 +103,9 @@ test_that("form_mix handles length-one list", {
 })
 
 test_that("form_mix returns pdqr-function of correct class", {
-  expect_is(form_mix(cur_f_list[3:4]), get_pdqr_class(cur_f_list[[1]]))
-  expect_is(form_mix(cur_f_list[2:1]), get_pdqr_class(cur_f_list[[2]]))
-  expect_is(form_mix(cur_f_list[4:1]), get_pdqr_class(cur_f_list[[4]]))
+  expect_is(form_mix(cur_f_list[3:4]), meta_class(cur_f_list[[1]]))
+  expect_is(form_mix(cur_f_list[2:1]), meta_class(cur_f_list[[2]]))
+  expect_is(form_mix(cur_f_list[4:1]), meta_class(cur_f_list[[4]]))
 })
 
 test_that("form_mix validates input", {

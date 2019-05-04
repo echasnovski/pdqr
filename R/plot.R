@@ -111,7 +111,7 @@ plot_impl_pdq <- function(f, grid, dots) {
 }
 
 compute_plot_grid <- function(f, n_extra_grid) {
-  f_class <- get_pdqr_class(f)
+  f_class <- meta_class(f)
   f_x_tbl <- meta_x_tbl(f)
   f_support <- meta_support(f)
 

@@ -1,11 +1,11 @@
 form_geq <- function(f, g) {
-  boolean_pdqr(prob_true = prob_geq(f, g), pdqr_class = get_pdqr_class(f))
+  boolean_pdqr(prob_true = prob_geq(f, g), pdqr_class = meta_class(f))
 }
 
 form_greater <- function(f, g) {
   boolean_pdqr(
     prob_true = prob_greater(f, g),
-    pdqr_class = get_pdqr_class(f)
+    pdqr_class = meta_class(f)
   )
 }
 
@@ -13,7 +13,7 @@ form_leq <- function(f, g) {
   boolean_pdqr(
     # P(f <= g) = 1 - P(f > g)
     prob_true = 1 - prob_greater(f, g),
-    pdqr_class = get_pdqr_class(f)
+    pdqr_class = meta_class(f)
   )
 }
 
@@ -21,21 +21,21 @@ form_less <- function(f, g) {
   boolean_pdqr(
     # P(f < g) = 1 - P(f >= g)
     prob_true = 1 - prob_geq(f, g),
-    pdqr_class = get_pdqr_class(f)
+    pdqr_class = meta_class(f)
   )
 }
 
 form_equal <- function(f, g) {
   boolean_pdqr(
     prob_true = prob_equal(f, g),
-    pdqr_class = get_pdqr_class(f)
+    pdqr_class = meta_class(f)
   )
 }
 
 form_not_equal <- function(f, g) {
   boolean_pdqr(
     prob_true = 1 - prob_equal(f, g),
-    pdqr_class = get_pdqr_class(f)
+    pdqr_class = meta_class(f)
   )
 }
 
