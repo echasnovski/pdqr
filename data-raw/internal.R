@@ -9,10 +9,10 @@ stats_distrs <- c(
 )
 stats_types <- c(rep("fin", 5), rep("infin", 11))
 
-stats_distrs_ftypes <- rep(c("p", "d", "q", "r"), times = length(stats_distrs))
+stats_distrs_class <- rep(c("p", "d", "q", "r"), times = length(stats_distrs))
 stats_distrs_vec <- rep(stats_distrs, each = 4)
 stats_types_vec <- rep(stats_types, each = 4)
-stats_distrs_funs <- paste0(stats_distrs_ftypes, stats_distrs_vec)
+stats_distrs_funs <- paste0(stats_distrs_class, stats_distrs_vec)
 
 stats_distrs_d_funs <- paste0("d", stats_distrs_vec)
 stats_distrs_q_funs <- paste0("q", stats_distrs_vec)
@@ -28,7 +28,8 @@ stats_distrs_q_funs <- paste0("q", stats_distrs_vec)
 #' stored.
 #' - **distr** <chr> - Name of distribution. Usually, it is a function name
 #' without "pdqr" prefix.
-#' - **ftype** <chr> - Type of distribution. One of "p", "d", "q", "r".
+#' - **class** <chr> - Class of distribution function. One of "p", "d", "q",
+#' "r".
 #' - **fun** <chr> - Name of distribution function.
 #' - **d_fun** <chr> - Name of d-function of the distribution.
 #' - **q_fun** <chr> - Name of q-function of the distribution.
@@ -38,7 +39,7 @@ honored_distrs <- data.frame(
   package = "stats",
   distr   = stats_distrs_vec,
   type    = stats_types_vec,
-  ftype   = stats_distrs_ftypes,
+  class   = stats_distrs_class,
   fun     = stats_distrs_funs,
   d_fun   = stats_distrs_d_funs,
   q_fun   = stats_distrs_q_funs,

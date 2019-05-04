@@ -3,7 +3,7 @@
 #' @export
 new_d <- function(x, type, ...) {
   distr_impl(
-    fun_class = "d",
+    pdqr_class = "d",
     impl_funs = list(fin = new_d_fin, infin = new_d_infin),
     x = x, type = type, ...
   )

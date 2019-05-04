@@ -1,8 +1,9 @@
-expect_distr_fun <- function(input, distr_type, type) {
+expect_distr_fun <- function(input, pdqr_class, type) {
   expect_true(is.function(input))
-  expect_is(input, distr_type)
+  expect_is(input, pdqr_class)
   expect_is(input, "pdqr")
-  expect_named(meta_all(input), c("type", "support", "x_tbl"))
+  expect_named(meta_all(input), c("class", "type", "support", "x_tbl"))
+  expect_equal(meta_class(input), pdqr_class)
   expect_equal(meta_type(input), type)
   expect_true(is_support(meta_support(input)))
   expect_true(is_x_tbl(meta_x_tbl(input), type = meta_type(input)))

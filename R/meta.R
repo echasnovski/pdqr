@@ -21,12 +21,18 @@ NULL
 meta_all <- function(f) {
   check_f_envir(f)
 
-  meta_names <- c("type", "support", "x_tbl")
+  env_meta_names <- c("type", "support", "x_tbl")
+
+  res <- vector(mode = "list", length = 4)
+  names(res) <- c("class", env_meta_names)
+
+  res[["class"]] <- meta_class(f)
 
   # Usage of `get0()` ensures that `NULL` is returned if (for some reason) an
   # object isn't found in environement
-  res <- lapply(meta_names, get0, envir = environment(f), inherits = FALSE)
-  names(res) <- meta_names
+  res[env_meta_names] <- lapply(
+    env_meta_names, get0, envir = environment(f), inherits = FALSE
+  )
 
   res
 }

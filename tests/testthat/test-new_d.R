@@ -109,10 +109,12 @@ test_that("new_d validates input", {
 test_that("new_d handles metadata", {
   expect_equal(
     meta_all(d_fin),
-    list(type = "fin", support = x_fin_support, x_tbl = x_fin_x_tbl)
+    list(
+      class = "d", type = "fin", support = x_fin_support, x_tbl = x_fin_x_tbl
+    )
   )
 
-  expect_named(meta_all(d_infin), c("type", "support", "x_tbl"))
+  expect_named(meta_all(d_infin), c("class", "type", "support", "x_tbl"))
   expect_equal(meta_x_tbl(d_infin), x_infin_x_tbl)
   expect_equal(round(meta_support(d_infin), 2), round(x_infin_support, 2))
   expect_equal(meta_all(d_infin)["type"], list(type = "infin"))

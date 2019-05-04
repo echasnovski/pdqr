@@ -29,7 +29,7 @@ NULL
 
 
 # Common functionality for `new_*()` --------------------------------------
-distr_impl <- function(fun_class, impl_funs, x, type, ...) {
+distr_impl <- function(pdqr_class, impl_funs, x, type, ...) {
   assert_distr_type(type)
 
   x_tbl <- impute_x_tbl(x, type, ...)
@@ -43,11 +43,11 @@ distr_impl <- function(fun_class, impl_funs, x, type, ...) {
     infin = impl_funs[["infin"]](x_tbl)
   )
 
-  add_pdqr_class(res, fun_class)
+  add_pdqr_class(res, pdqr_class)
 }
 
-add_pdqr_class <- function(f, subclass) {
-  add_class(f, c(subclass, "pdqr"))
+add_pdqr_class <- function(f, pdqr_class) {
+  add_class(f, c(pdqr_class, "pdqr"))
 }
 
 unpdqr <- function(f) {

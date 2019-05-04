@@ -2,6 +2,17 @@ context("test-meta")
 
 
 # meta_all ----------------------------------------------------------------
+test_that("meta_all works", {
+  expect_equal(
+    meta_all(d_fin),
+    list(
+      class = meta_class(d_fin),
+      type = meta_type(d_fin),
+      support = meta_support(d_fin),
+      x_tbl = meta_x_tbl(d_fin))
+  )
+})
+
 test_that("meta_all validates input", {
   expect_error(meta_all(1), "`f`.*environment")
 

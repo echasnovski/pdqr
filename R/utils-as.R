@@ -39,10 +39,10 @@ as_honored_distr <- function(pdqr_class, f_name, f, support, ..., n_grid) {
     return(NULL)
   }
 
-  f_ftype <- distr_info[["ftype"]]
-  if (pdqr_class != f_ftype) {
+  f_class <- distr_info[["class"]]
+  if (pdqr_class != f_class) {
     warning_collapse(
-      "You supplied a ", f_ftype, "-function `", f_name, "` to `as_",
+      "You supplied a ", f_class, "-function `", f_name, "` to `as_",
       pdqr_class, "()`. ",
       "A ", pdqr_class, "-function will be created."
     )
@@ -92,7 +92,7 @@ honored_distr_info <- function(f_name, f) {
   list(
     distr = honored_distrs[["distr"]][is_honored],
     type  = honored_distrs[["type"]][is_honored],
-    ftype = honored_distrs[["ftype"]][is_honored],
+    class = honored_distrs[["class"]][is_honored],
     d_fun = get(honored_distrs[["d_fun"]][is_honored], envir = f_env),
     q_fun = get(honored_distrs[["q_fun"]][is_honored], envir = f_env)
   )

@@ -2,7 +2,7 @@
 #' @export
 new_r <- function(x, type, ...) {
   distr_impl(
-    fun_class = "r",
+    pdqr_class = "r",
     impl_funs = list(fin = new_r_fin, infin = new_r_infin),
     x = x, type = type, ...
   )
