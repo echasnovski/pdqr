@@ -2,27 +2,82 @@
 % Please edit documentation in R/form-other.R
 \name{form_mix}
 \alias{form_mix}
-\title{Construct mixture of distributions}
+\title{Form mixture of distributions}
 \usage{
 form_mix(f_list, weights = NULL)
 }
 \arguments{
-\item{f_list}{List of pdqr-functions.}
+\item{f_list}{List of pdqr-functions. Can have different classes and types
+(see Details).}
 
-\item{weights}{Numeric vector of weights.}
+\item{weights}{Numeric vector of weights or \code{NULL} (default; corresponds to
+equal weights). Should be non-negative numbers with positive sum.}
 }
 \value{
-A pdqr-function for mixture distribution.
+A pdqr-function for mixture distribution of certain type and class
+(see Details).
 }
 \description{
-Based on a list of pdqr-functions and vector of weights construct a
-pdqr-function of corresponding mixture distribution.
+Based on a list of pdqr-functions and vector of weights form a pdqr-function
+for corresponding mixture distribution.
+}
+\details{
+\strong{Type of output mixture} is determined by the following algorithm:
+\itemize{
+\item If \code{f_list} consists only from pdqr-functions of "fin" type, then output
+will have "fin" type.
+\item If \code{f_list} has at least one pdqr-function of type "infin", then output
+will have "infin" type. In this case all "fin" pdqr-functions in \code{f_list} are
+approximated with corresponding dirac-like "infin" functions (with
+\link[=form_retype]{form_retype(*, method = "dirac")}). \strong{Note} that this
+approximation has consequences during computation of comparisons. For
+example, if original "fin" function \code{f} is for distribution with one element
+\code{x}, then probability of \code{f >= x} being true is 1. After retyping to
+dirac-like function, this probability will be 0.5, because of symmetrical
+dirac-like approximation. Using a little nudge to \code{x} of \code{1e-7} magnitude in
+the correct direction (\code{f >= x - 1e-7} in this case) will have expected
+output.
+}
+
+\strong{Class of output mixture} is determined by the class of the first element
+of \code{f_list}. To change output class, use one of \code{as_*()} functions to change
+class of first element in \code{f_list} or class of output.
+
+\strong{Note} that if output "infin" pdqr-function for mixture distribution (in
+theory) should have discontinuous density, it is approximated continuously:
+discontinuities are represented as intervals in \link[=meta_x_tbl]{"x_tbl"} with
+extreme slopes (see Examples).
 }
 \examples{
-d_unif <- as_d(dunif)
-p_norm <- as_p(pnorm)
+# All "fin"
+d_binom <- as_d(dbinom, size = 10, prob = 0.5)
+r_pois <- as_r(rpois, lambda = 1)
+fin_mix <- form_mix(list(d_binom, r_pois))
+plot(fin_mix)
 
-my_mix <- form_mix(list(d_unif, p_norm), weights = c(0.7, 0.3))
-plot(my_mix)
+# All "infin"
+p_norm <- as_p(pnorm)
+d_unif <- as_d(dunif)
+
+infin_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
+  # Output is a p-function, as is first element of `f_list`
+infin_mix
+plot(infin_mix)
+
+  # Use `as_*()` functions to change class
+d_infin_mix <- as_d(infin_mix)
+
+  # Theoretical output density should be discontinuous, but here it is
+  # approximated with continuous function
+infin_x_tbl <- meta_x_tbl(infin_mix)
+infin_x_tbl[(infin_x_tbl$x >= -1e-4) & (infin_x_tbl$x <= 1e-4), ]
+
+# Some "fin", some "infin"
+all_mix <- form_mix(list(d_binom, d_unif))
+plot(all_mix)
+all_x_tbl <- meta_x_tbl(all_mix)
+
+  # What dirac-like approximation looks like
+all_x_tbl[(all_x_tbl$x >= 1.5) & (all_x_tbl$x <= 2.5), ]
 
 }

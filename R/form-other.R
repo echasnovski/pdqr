@@ -1,40 +1,72 @@
 # form_mix ----------------------------------------------------------------
-# Notes in docs. If `f_list` has both "infin" and "fin" pdqr-functions, then
-# "fin" ones are **approximated** with "infin" ones in dirac-like fashion. This
-# has some major consequences during computation of comparisons with mix of
-# distributions. See example:
-#
-# my_mix <- form_mix(
-#   list(new_d(0.5, "fin"), new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"))
-# )
-#
-# Output of the next code block should be equal to the sum of `0.5 * 1` (share
-# of probability from first function) and `0.5 * 0.5` (share from second). Total
-# is 0.75. However, because of "simmetrical" dirac-like approximation, only half
-# of first probability is used (`0.5 * 0.5`) and the output is 0.5
-#
-# (my_mix >= 0.5)(1)
-#
-# However, little nudges help in this situation (note approximation):
-#
-# (my_mix >= 0.5 - 1e-4)(1)
-
-#' Construct mixture of distributions
+#' Form mixture of distributions
 #'
-#' Based on a list of pdqr-functions and vector of weights construct a
-#' pdqr-function of corresponding mixture distribution.
+#' Based on a list of pdqr-functions and vector of weights form a pdqr-function
+#' for corresponding mixture distribution.
 #'
-#' @param f_list List of pdqr-functions.
-#' @param weights Numeric vector of weights.
+#' @param f_list List of pdqr-functions. Can have different classes and types
+#'   (see Details).
+#' @param weights Numeric vector of weights or `NULL` (default; corresponds to
+#'   equal weights). Should be non-negative numbers with positive sum.
 #'
-#' @return A pdqr-function for mixture distribution.
+#' @details **Type of output mixture** is determined by the following algorithm:
+#' - If `f_list` consists only from pdqr-functions of "fin" type, then output
+#' will have "fin" type.
+#' - If `f_list` has at least one pdqr-function of type "infin", then output
+#' will have "infin" type. In this case all "fin" pdqr-functions in `f_list` are
+#' approximated with corresponding dirac-like "infin" functions (with
+#' [form_retype(*, method = "dirac")][form_retype()]). **Note** that this
+#' approximation has consequences during computation of comparisons. For
+#' example, if original "fin" function `f` is for distribution with one element
+#' `x`, then probability of `f >= x` being true is 1. After retyping to
+#' dirac-like function, this probability will be 0.5, because of symmetrical
+#' dirac-like approximation. Using a little nudge to `x` of `1e-7` magnitude in
+#' the correct direction (`f >= x - 1e-7` in this case) will have expected
+#' output.
+#'
+#' **Class of output mixture** is determined by the class of the first element
+#' of `f_list`. To change output class, use one of `as_*()` functions to change
+#' class of first element in `f_list` or class of output.
+#'
+#' **Note** that if output "infin" pdqr-function for mixture distribution (in
+#' theory) should have discontinuous density, it is approximated continuously:
+#' discontinuities are represented as intervals in ["x_tbl"][meta_x_tbl()] with
+#' extreme slopes (see Examples).
+#'
+#' @return A pdqr-function for mixture distribution of certain type and class
+#'   (see Details).
 #'
 #' @examples
-#' d_unif <- as_d(dunif)
-#' p_norm <- as_p(pnorm)
+#' # All "fin"
+#' d_binom <- as_d(dbinom, size = 10, prob = 0.5)
+#' r_pois <- as_r(rpois, lambda = 1)
+#' fin_mix <- form_mix(list(d_binom, r_pois))
+#' plot(fin_mix)
 #'
-#' my_mix <- form_mix(list(d_unif, p_norm), weights = c(0.7, 0.3))
-#' plot(my_mix)
+#' # All "infin"
+#' p_norm <- as_p(pnorm)
+#' d_unif <- as_d(dunif)
+#'
+#' infin_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
+#'   # Output is a p-function, as is first element of `f_list`
+#' infin_mix
+#' plot(infin_mix)
+#'
+#'   # Use `as_*()` functions to change class
+#' d_infin_mix <- as_d(infin_mix)
+#'
+#'   # Theoretical output density should be discontinuous, but here it is
+#'   # approximated with continuous function
+#' infin_x_tbl <- meta_x_tbl(infin_mix)
+#' infin_x_tbl[(infin_x_tbl$x >= -1e-4) & (infin_x_tbl$x <= 1e-4), ]
+#'
+#' # Some "fin", some "infin"
+#' all_mix <- form_mix(list(d_binom, d_unif))
+#' plot(all_mix)
+#' all_x_tbl <- meta_x_tbl(all_mix)
+#'
+#'   # What dirac-like approximation looks like
+#' all_x_tbl[(all_x_tbl$x >= 1.5) & (all_x_tbl$x <= 2.5), ]
 #'
 #' @export
 form_mix <- function(f_list, weights = NULL) {
