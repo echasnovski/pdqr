@@ -58,7 +58,7 @@ Details).}
 \item{args_new}{List of extra arguments for \code{\link[=new_d]{new_d()}} to control \code{\link[=density]{density()}}.}
 }
 \value{
-A pdqr-function of corresponding class.
+A pdqr-function of corresponding \link[=meta_class]{class}.
 }
 \description{
 Convert some function to be a proper pdqr-function of type "infin".

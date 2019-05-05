@@ -10,7 +10,7 @@
 #' @param n_grid Number of grid points at which `f` will be evaluated (see
 #'   Details).
 #'
-#' @return A pdqr-function of corresponding class.
+#' @return A pdqr-function of corresponding [class][meta_class()].
 #'
 #' @examples
 #' # Convert existing "proper" pdqr-function

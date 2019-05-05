@@ -406,8 +406,8 @@ capture_null <- function(x) {
 #'
 #' @param f A p-, d-, or q-function to diagnose. Usually the output of one of
 #'   [as_p()], [as_d()], or [as_q()] default methods.
-#' @param ref_f A "true" distribution function of the same class as `f`. Usually
-#'   the input to the aforementioned `as_*()` function.
+#' @param ref_f A "true" distribution function of the same [class][meta_class()]
+#'   as `f`. Usually the input to the aforementioned `as_*()` function.
 #' @param ... Other arguments to `ref_f`. If they were supplied to `as_*()`
 #'   function, then the exact same values must be supplied here.
 #' @param gran Degree of grid "granularity" in case of "infin" type: number of

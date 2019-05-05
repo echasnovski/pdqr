@@ -25,7 +25,8 @@ new_r(x, type, ...)
 \item{...}{Extra arguments for \link[stats:density]{density()}.}
 }
 \value{
-A pdqr-function of corresponding class.
+A pdqr-function of corresponding \link[=meta_class]{class} and
+\link[=meta_type]{type}.
 }
 \description{
 Main tools to create new distribution pdqr-functions based on numeric sample

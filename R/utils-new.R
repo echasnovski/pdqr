@@ -11,7 +11,8 @@
 #' @details Symbol "~" in `print()` output indicates that printed value is an
 #' approximation to a true one.
 #'
-#' @return A pdqr-function of corresponding class.
+#' @return A pdqr-function of corresponding [class][meta_class()] and
+#'   [type][meta_type()].
 #'
 #' @examples
 #' set.seed(101)

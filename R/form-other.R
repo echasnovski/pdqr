@@ -4,8 +4,8 @@
 #' Based on a list of pdqr-functions and vector of weights form a pdqr-function
 #' for corresponding mixture distribution.
 #'
-#' @param f_list List of pdqr-functions. Can have different classes and types
-#'   (see Details).
+#' @param f_list List of pdqr-functions. Can have different
+#'   [classes][meta_class()] and [types][meta_type()] (see Details).
 #' @param weights Numeric vector of weights or `NULL` (default; corresponds to
 #'   equal weights). Should be non-negative numbers with positive sum.
 #'
@@ -33,8 +33,8 @@
 #' discontinuities are represented as intervals in ["x_tbl"][meta_x_tbl()] with
 #' extreme slopes (see Examples).
 #'
-#' @return A pdqr-function for mixture distribution of certain type and class
-#'   (see Details).
+#' @return A pdqr-function for mixture distribution of certain
+#'   [type][meta_type()] and [class][meta_class()] (see Details).
 #'
 #' @examples
 #' # All "fin"

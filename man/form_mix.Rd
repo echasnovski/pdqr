@@ -7,15 +7,15 @@
 form_mix(f_list, weights = NULL)
 }
 \arguments{
-\item{f_list}{List of pdqr-functions. Can have different classes and types
-(see Details).}
+\item{f_list}{List of pdqr-functions. Can have different
+\link[=meta_class]{classes} and \link[=meta_type]{types} (see Details).}
 
 \item{weights}{Numeric vector of weights or \code{NULL} (default; corresponds to
 equal weights). Should be non-negative numbers with positive sum.}
 }
 \value{
-A pdqr-function for mixture distribution of certain type and class
-(see Details).
+A pdqr-function for mixture distribution of certain
+\link[=meta_type]{type} and \link[=meta_class]{class} (see Details).
 }
 \description{
 Based on a list of pdqr-functions and vector of weights form a pdqr-function

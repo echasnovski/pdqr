@@ -3,12 +3,15 @@
 \name{meta}
 \alias{meta}
 \alias{meta_all}
+\alias{meta_class}
 \alias{meta_type}
 \alias{meta_support}
 \alias{meta_x_tbl}
-\title{Get metadata of pdqr-functions}
+\title{Get metadata of pdqr-function}
 \usage{
 meta_all(f)
+
+meta_class(f)
 
 meta_type(f)
 
@@ -17,19 +20,140 @@ meta_support(f)
 meta_x_tbl(f)
 }
 \arguments{
-\item{f}{A "proper" pdqr-function.}
+\item{f}{A pdqr-function.}
 }
 \value{
-\code{meta_all()} returns a list of all metadata. \code{meta_type()},
-\code{meta_support}, and \code{meta_x_tbl()} return corresponding metadata.
+\code{meta_all()} returns a list of all metadata. \code{meta_class()},
+\code{meta_type()}, \code{meta_support}, and \code{meta_x_tbl()} return corresponding
+metadata.
 }
 \description{
-Get metadata of pdqr-functions
+Tools for getting metadata of \strong{pdqr-function}: a function which represents
+distribution with finite support and finite values of probability/density.
+The key metadata which defines underline distribution is \strong{"x_tbl"}. If two
+pdqr-functions have the same "x_tbl" metadata, they represent the same
+distribution and can be converted to one another with \code{as_*()} family of
+functions.
 }
+\details{
+Internally storage of metadata is implemented as follows:
+\itemize{
+\item Pdqr class is a first "appropriate" ("p", "d", "q", or "r") S3 class of
+pdqr-function. All "proper" pdqr-functions have full S3 class of the form:
+\code{c(cl, "pdqr", "function")}, where \code{cl} is pdqr class.
+\item Pdqr type, support, and "x_tbl" are stored into function's
+\link[=environment]{environment}.
+}
+}
+\section{Pdqr class}{
+
+
+Pdqr class is returned by \code{meta_class()}. This can be one of "p", "d", "q",
+"r". Represents \strong{how pdqr-function describes underlying distribution}:
+\itemize{
+\item P-function (i.e. of class "p") returns value of cumulative distribution
+function (probability of random variable being not more than certain value).
+Internally it is implemented as direct integration of corresponding (with the
+same "x_tbl" metadata) d-function.
+\item D-function returns value of probability mass or density function (depending
+on pdqr type). Internally it is implemented by directly using "x_tbl"
+metadata (see section '"x_tbl" metadata' for more details).
+\item Q-function returns value of quantile function. Internally it is implemented
+as inverse of corresponding p-function (returns the smallest "x" value which
+has cumulative probability not less than input).
+\item R-function generates random sample from distribution. Internally it is
+implemented using inverse transform sampling: certain amount of points from
+\link[stats:runif]{standard uniform distribution} is generated, and the output
+is values of corresponding q-function at generated points.
+}
+}
+
+\section{Pdqr type}{
+
+
+Pdqr type is returned by \code{meta_type()}. This can be one of "fin" (short for
+"finite") or "infin" (short for "infinite"). Represents \strong{type of underlying
+distribution}:
+\itemize{
+\item Type "fin" is used for distributions with finite number of outcomes.
+Functions with "fin" type has a fixed set of "x" values ("x" column in
+"x_tbl" metadata) on which d-function returns possibly non-zero output
+(values from "prob" column in "x_tbl" metadata). It is not called "discrete",
+because discrete distributions can (in theory) have infinite number of
+possible outcomes.
+\item Type "infin" is used for distribution with potentially infinite number of
+outcomes (not accounting for "finite nature" of computer simulation).
+Functions with "infin" type have piecewise-linear density which goes through
+points defined by "x" and "y" columns in "x_tbl" metadata. It is not called
+"continuous" (although it has continuous, on its support, density) because
+"infin" pdqr-functions can be used to approximate mixture of discrete and
+continuous distributions.
+}
+}
+
+\section{Pdqr support}{
+
+Pdqr support is returned by \code{meta_support()}. This is a numeric vector with
+two finite values. Represents \strong{support of underlying distribution}: closed
+interval, outside of which d-function is equal to zero. \strong{Note} that inside
+of support d-function can also be zero, which especially true for "fin"
+functions.
+
+Technically, pdqr support is range of values from "x" column of "x_tbl"
+metadata.
+}
+
+\section{"x_tbl" metadata}{
+
+
+Metadata "x_tbl" is returned by \code{meta_x_tbl()}. This is a key metadata which
+\strong{completely defines distribution}. It is a data frame with three numeric
+columns, content of which partially depends on pdqr type.
+
+Type "fin" functions have "x_tbl" with columns "x", "prob", "cumprob".
+D-functions return a value from "prob" column for input which is very near
+(should be equal up to ten digits, defined by \link[=round]{round(*, digits = 10)}) to corresponding value of "x" column. Rounding is done to
+account for issues with representation of numerical values (see Note section
+of \code{\link{==}}'s help page). For any other input, d-functions return
+zero.
+
+Type "infin" functions have "x_tbl" with columns "x", "y", "cumprob".
+D-functions return a value of piecewise-linear function passing through
+points that have "x" and "y" coordinates. For any value outside support (i.e.
+strictly less than minimum "x" and strictly more than maximum "x") output is
+zero.
+
+Column "cumprob" always represents the probability of underlying random
+variable being not more than corresponding value in "x" column.
+}
+
+\section{Change of metadata}{
+
+
+All metadata of pdqr-functions are not meant to be changed directly. Also
+change of pdqr type, support, and "x_tbl" metadata will lead to a complete
+change of underlying distribution.
+
+To change \strong{pdqr class}, for example to convert p-function to d-function,
+use \code{as_*()} family of functions: \code{\link[=as_p]{as_p()}}, \code{\link[=as_d]{as_d()}}, \code{\link[=as_q]{as_q()}}, \code{\link[=as_r]{as_r()}}.
+
+To change \strong{pdqr type}, use \code{\link[=form_retype]{form_retype()}}. It changes underlying
+distribution in the most suitable for user way.
+
+To change \strong{pdqr support}, use \code{\link[=form_resupport]{form_resupport()}} or \code{\link[=form_tails]{form_tails()}}.
+
+Change of \strong{"x_tbl" metadata} is not possible, because basically it means
+creating completely new pdqr-function. To do that, supply data frame with
+"x_tbl" format suitable for desired "type" to appropriate \code{new_*()} function:
+\code{\link[=new_p]{new_p()}}, \code{\link[=new_d]{new_d()}}, \code{\link[=new_q]{new_q()}}, \code{\link[=new_r]{new_r()}}. Also, there is a \code{\link[=form_regrid]{form_regrid()}}
+function which will increase or decrease granularity of pdqr-function.
+}
+
 \examples{
 d_unif <- as_d(dunif)
 
 meta_all(d_unif)
+meta_class(d_unif)
 meta_type(d_unif)
 meta_support(d_unif)
 head(meta_x_tbl(d_unif))
