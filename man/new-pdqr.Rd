@@ -18,33 +18,117 @@ new_q(x, type, ...)
 new_r(x, type, ...)
 }
 \arguments{
-\item{x}{Numeric vector or data frame with appropriate columns (see Details).}
+\item{x}{Numeric vector or data frame with appropriate columns (see "Data
+frame input" section).}
 
-\item{type}{Type of pdqr-function. One of "fin" or "infin" (see Details).}
+\item{type}{\link[=meta_type]{Type} of pdqr-function. Should be one of "fin" or
+"infin".}
 
 \item{...}{Extra arguments for \link[stats:density]{density()}.}
 }
 \value{
-A pdqr-function of corresponding \link[=meta_class]{class} and
-\link[=meta_type]{type}.
+A pdqr-function of corresponding \link[=meta_class]{class} ("p" for
+\code{new_p()}, etc.) and \link[=meta_type]{type}.
 }
 \description{
-Main tools to create new distribution pdqr-functions based on numeric sample
-or data frame describing distribution.
+Functions for creating new pdqr-functions based on numeric sample or data
+frame describing distribution. They construct appropriate \link[=meta_x_tbl]{"x_tbl" metadata} based on the input and then create pdqr-function (of
+corresponding class) defined by that "x_tbl".
 }
 \details{
-Symbol "~" in \code{print()} output indicates that printed value is an
-approximation to a true one.
+Symbol "~" in \code{print()} output indicates that printed value or
+support is an approximation to a true one (for readability purpose).
 }
+\section{Numeric input}{
+
+
+If \code{x} is a numeric vector, it is transformed into a data frame which is then
+used as \link[=meta_x_tbl]{"x_tbl" metadata} to create pdqr-function of
+corresponding class.
+
+First, all \code{NaN}, \code{NA}, and infinite values are removed with warnings. If
+there are no elements left, error is thrown. Then data frame is created in
+the way which depends on the \code{type} argument.
+
+\strong{For "fin" type} elements of filtered \code{x} are:
+\itemize{
+\item Rounded to 10th digit to avoid numerical representation issues (see Note
+in \code{\link{==}}'s help page).
+\item Tabulated (all unique values are counted). Output data frame has three
+columns: "x" with unique values, "prob" with normalized (divided by sum)
+counts, "cumprob" with cumulative sum of "prob" column.
+}
+
+\strong{For "infin" type} output data frame has columns "x", "y", "cumprob".
+Choice of algorithm depends on the number of \code{x} elements:
+\itemize{
+\item If \code{x} has 1 element, an "x_tbl" metadata describes \strong{dirac-like} "infin"
+pdqr-function. It is implemented as triangular peak with center at \code{x}'s
+value and width of \code{2e-8} (see Examples). This is an approximation of
+singular dirac distribution. Data frame has columns "x" with value
+\code{c(x-1e-8, x, x+1e-8)}, "y" with value \code{c(0, 1e8, 0)} normalized to have
+total integral of "x"-"y" points of 1, "cumprob" \code{c(0, 0.5, 1)}.
+\item If \code{x} has more than 1 element, it serves as input to
+\link[stats:density]{density(x, ...)} for density estimation (here arguments in
+\code{...} of \code{new_*()} serve as extra arguments to \code{density()}). The output's "x"
+element is used as "x" column in output data frame. Column "y" is taken as
+"y" element of \code{density()} output, normalized so that piecewise-linear
+function passing through "x"-"y" points has total integral of 1. Column
+"cumprob" has cumulative probability of piecewise-linear d-function.
+}
+}
+
+\section{Data frame input}{
+
+
+If \code{x} is a data frame, it should have numeric columns appropriate for
+\link[=meta_x_tbl]{"x_tbl" metadata} of input \code{type}: "x", "prob" for "fin"
+\code{type} and "x", "y" for "infin" type ("cumprob" column will be computed
+inside \code{new_*()}). To become an appropriate "x_tbl" metadata, input data
+frame is ordered in increasing order of "x" column and then \strong{imputed} in
+the way which depends on the \code{type} argument.
+
+\strong{For "fin" type}:
+\itemize{
+\item Values in column "x" are rounded to 10th digit to avoid numerical
+representation issues (see Note in \code{\link{==}}'s help page).
+\item If there are duplicate values in "x" column, they are "squashed" into one
+having sum of their probability in "prob" column.
+\item Column "prob" is normalized by its sum to have total sum of 1.
+\item Column "cumprob" is computed as cumulative sum of "prob" column.
+}
+
+\strong{For "infin" type} column "y" is normalized so that piecewise-linear
+function passing through "x"-"y" points has total integral of 1. Column
+"cumprob" has cumulative probability of piecewise-linear d-function.
+}
+
 \examples{
 set.seed(101)
 x <- rnorm(10)
-my_d_infin <- new_d(x, "infin")
-my_d_fin <- new_d(x, "fin")
 
-my_p_fin <- new_p(data.frame(x = 1:10, prob = rep(1, 10)/10), "fin")
+# Type "fin": `x` values are directly tabulated
+my_d_fin <- new_d(x, "fin")
+meta_x_tbl(my_d_fin)
+plot(my_d_fin)
+
+# Type "infin": `x` serves as input to `density()`
+my_d_infin <- new_d(x, "infin")
+head(meta_x_tbl(my_d_infin))
+plot(my_d_infin)
+
+# Data frame input
+  # Values in "prob" column will be normalized automatically
+my_p_fin <- new_p(data.frame(x = 1:4, prob = 1:4), "fin")
+  # As are values in "y" column
+my_p_infin <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "infin")
 
 # Using bigger bandwidth in `density()`
 my_d_infin_2 <- new_d(x, "infin", adjust = 2)
+plot(my_d_infin, main = "Comparison of density bandwidths")
+lines(my_d_infin_2, col = "red")
+
+# Dirac-like "infin" pdqr-function is created if `x` is a single number
+meta_x_tbl(new_d(1, "infin"))
 
 }
