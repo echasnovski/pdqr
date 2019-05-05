@@ -10,7 +10,7 @@ compute_x_tbl <- function(x, type, ...) {
 compute_x_tbl_fin <- function(x) {
   x <- x[!is.na(x)]
   x <- round(x, digits = 10)
-  vals = sort(unique(x))
+  vals <- sort(unique(x))
 
   x_val_id <- match(x, vals)
   prob <- tabulate(x_val_id) / length(x)
