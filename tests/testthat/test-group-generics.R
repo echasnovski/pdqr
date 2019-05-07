@@ -562,26 +562,26 @@ test_that("Ops.pdqr works in case of logical AND/OR", {
   )
 
   # `&`
-  expect_prob_true(cur_d_fin & cur_d_fin, (1-0.2)*(1-0.2))
-  expect_prob_true(cur_d_fin & 1, 1-0.2)
-  expect_prob_true(2 & cur_d_fin, 1-0.2)
+  expect_prob_true(cur_d_fin & cur_d_fin, 0.5*0.5)
+  expect_prob_true(cur_d_fin & 1, 0.5)
+  expect_prob_true(2 & cur_d_fin, 0)
   expect_prob_true(cur_d_fin & 0, 0)
 
-    # Probability of `d_infin` being 0 is always 0 (i.e. it is always "`TRUE`"),
-    # so presence of "infin" terms is irrelevant
-  expect_prob_true(d_infin & cur_d_fin, 1-0.2)
-  expect_prob_true(d_infin & d_infin, 1)
+    # Probability of `d_infin` being 1 is always 0 (i.e. it is always
+    # "`FALSE`"), so presence of "infin" terms always results into 0
+  expect_prob_true(d_infin & cur_d_fin, 0)
+  expect_prob_true(d_infin & d_infin, 0)
 
   # `|`
-  expect_prob_true(cur_d_fin | cur_d_fin, 1-0.2*0.2)
-  expect_prob_true(cur_d_fin | 0, 1-0.2)
-  expect_prob_true(0 | cur_d_fin, 1-0.2)
-  expect_prob_true(cur_d_fin | 2, 1)
+  expect_prob_true(cur_d_fin | cur_d_fin, 1 - (1-0.5)*(1-0.5))
+  expect_prob_true(cur_d_fin | 0, 0.5)
+  expect_prob_true(0 | cur_d_fin, 0.5)
+  expect_prob_true(cur_d_fin | 2, 0.5)
 
-    # Probability of `d_infin` being 0 is always 0 (i.e. it is always "`TRUE`"),
-    # so presence of "infin" terms means output is always 1
-  expect_prob_true(d_infin | cur_d_fin, 1)
-  expect_prob_true(d_infin | d_infin, 1)
+    # Probability of `d_infin` being 1 is always 0 (i.e. it is always
+    # "`FALSE`"), so presence of "infin" terms is irrelevant
+  expect_prob_true(d_infin | cur_d_fin, 0.5)
+  expect_prob_true(d_infin | d_infin, 0)
 })
 
 test_that("Ops.pdqr validates input in case of logical AND/OR", {

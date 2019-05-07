@@ -196,17 +196,17 @@ ops_logic <- function(gen, e1, e2) {
   e1 <- input[[1]]
   e2 <- input[[2]]
 
-  d_zero <- new_d(0, "fin")
+  d_one <- new_d(1, "fin")
 
-  zero_prob_1 <- prob_equal(e1, d_zero)
-  zero_prob_2 <- prob_equal(e2, d_zero)
+  prob_true_1 <- prob_equal(e1, d_one)
+  prob_true_2 <- prob_equal(e2, d_one)
 
   out_class <- meta_class(e1)
 
   switch(
     gen,
-    `&` = boolean_pdqr((1 - zero_prob_1) * (1 - zero_prob_2), out_class),
-    `|` = boolean_pdqr(1 - zero_prob_1*zero_prob_2, out_class)
+    `&` = boolean_pdqr(prob_true_1*prob_true_2, out_class),
+    `|` = boolean_pdqr(1 - (1-prob_true_1)*(1-prob_true_2), out_class)
   )
 }
 
