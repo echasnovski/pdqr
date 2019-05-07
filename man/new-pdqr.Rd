@@ -36,8 +36,25 @@ frame describing distribution. They construct appropriate \link[=meta_x_tbl]{"x_
 corresponding class) defined by that "x_tbl".
 }
 \details{
-Symbol "~" in \code{print()} output indicates that printed value or
-support is an approximation to a true one (for readability purpose).
+Data frame input \code{x} is treated as having enough information for
+creating (including normalization of "y" column) an "x_tbl" metadata. For
+more details see "Data frame input" section.
+
+Numeric input is transformed into data frame which is then used as "x_tbl"
+metadata (for more details see "Numeric input" section):
+\itemize{
+\item If \code{type} is \code{"fin"} then \code{x} is viewed as sample from distribution that
+can produce only values from \code{x}. Input is tabulated and normalized to form
+"x_tbl" metadata.
+\item If \code{type} is \code{"infin"} then:
+\itemize{
+\item If \code{x} has 1 element, output distribution represents a \strong{dirac-like}
+distribution which is an approximation to singular dirac distribution.
+\item If \code{x} has more than 1 element, output distribution represents a
+\strong{density estimation} with \link[stats:density]{density()} treating \code{x} as
+sample.
+}
+}
 }
 \section{Numeric input}{
 

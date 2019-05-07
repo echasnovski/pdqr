@@ -12,8 +12,21 @@
 #'   "infin".
 #' @param ... Extra arguments for [density()][stats::density()].
 #'
-#' @details Symbol "~" in `print()` output indicates that printed value or
-#' support is an approximation to a true one (for readability purpose).
+#' @details Data frame input `x` is treated as having enough information for
+#' creating (including normalization of "y" column) an "x_tbl" metadata. For
+#' more details see "Data frame input" section.
+#'
+#' Numeric input is transformed into data frame which is then used as "x_tbl"
+#' metadata (for more details see "Numeric input" section):
+#' - If `type` is `"fin"` then `x` is viewed as sample from distribution that
+#' can produce only values from `x`. Input is tabulated and normalized to form
+#' "x_tbl" metadata.
+#' - If `type` is `"infin"` then:
+#'     - If `x` has 1 element, output distribution represents a **dirac-like**
+#'     distribution which is an approximation to singular dirac distribution.
+#'     - If `x` has more than 1 element, output distribution represents a
+#'     **density estimation** with [density()][stats::density()] treating `x` as
+#'     sample.
 #'
 #' @section Numeric input:
 #'
