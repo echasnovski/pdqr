@@ -1,3 +1,51 @@
+# Documentation -----------------------------------------------------------
+#' Pdqr methods for print function
+#'
+#' Pdqr-functions have their own methods for [print()] which displays function's
+#' [metadata][meta_all()] in readable and concise form.
+#'
+#' @param x Pdqr-function to print.
+#' @param ... Further arguments passed to or from other methods.
+#'
+#' @details Print output of pdqr-function describes the following information:
+#' - Full name of function [class][meta_class()]:
+#'     - P-function is "Cumulative distribution function".
+#'     - D-function is "Probability mass function" for "fin" type and
+#'     "Probability density function" for "infin".
+#'     - Q-function is "Quantile function".
+#'     - R-function is "Random generation function".
+#' - [Type][meta_type()] of function in the form "with * number of values" where
+#' "\*" is "finite" for "fin" type and "infinite" for "infin".
+#' - [Support][meta_support()] of function.
+#' - Number of elements in distribution for "fin" type or number of intervals of
+#' piecewise-linear density for "infin" type.
+#' - If pdqr-function has "fin" type and exactly two possible values 0 and 1, it
+#' is treated as "boolean" pdqr-function and probability of 1 is shown. This is
+#' done to simplify interactive work with output of comparing functions like
+#' `>=`, etc. (see [description of methods for S3 group generic
+#' functions][methods-group-generic]). To extract probabilities from "boolean"
+#' pdqr-function, use [summ_prob_true()] and [summ_prob_false()].
+#'
+#' Symbol "~" in `print()` output indicates that printed value or support is an
+#' approximation to a true one (for readability purpose).
+#'
+#' @seealso [Pdqr methods for S3 group generic
+#'   functions][methods-group-generic].
+#'
+#' @examples
+#' print(new_d(1:10, "fin"))
+#'
+#' r_unif <- as_r(runif, n_grid = 251)
+#' print(r_unif)
+#'
+#' # Printing of boolean pdqr-function
+#' print(r_unif >= 0.3)
+#'
+#' @name methods-print
+NULL
+
+
+# Functions ---------------------------------------------------------------
 pdqr_print <- function(x, fun_name) {
   cat(line_title(x, fun_name))
   cat(line_support(x))

@@ -108,6 +108,7 @@ find_quant <- function(p, cdf_start, x_start, slope, intercept) {
   res
 }
 
+#' @rdname methods-print
 #' @export
 print.q <- function(x, ...) {
   pdqr_print(x, "Quantile")

@@ -74,6 +74,7 @@ new_d_infin <- function(x_tbl) {
   }
 }
 
+#' @rdname methods-print
 #' @export
 print.d <- function(x, ...) {
   x_type <- meta_type(x)
