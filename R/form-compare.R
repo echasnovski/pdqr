@@ -55,7 +55,7 @@ prob_geq <- function(f, g) {
     prob_geq_fin_any(f, g)
   } else {
     if (meta_type(g) == "fin") {
-      # P(f >= f) = 1 - P(f < g) = [due to continuity of `f`] = 1 - P(f <= g) =
+      # P(f >= g) = 1 - P(f < g) = [due to continuity of `f`] = 1 - P(f <= g) =
       # 1 - P(g >= f)
       1 - prob_geq_fin_any(g, f)
     } else {
@@ -73,8 +73,8 @@ prob_equal <- function(f, g) {
     # This is basically a copy of `new_d_fin()` output's body but without input
     # rounding. This is done to ensure the following code is valid:
     # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
-    # # This should return 0.5 which it doesn't (because of rounding policy) if
-    # # `d_g_at_x_f` is computed with `as_d(g)(x_f)`.
+    # This should return 0.5 which it doesn't (because of rounding policy) if
+    # `d_g_at_x_f` is computed with `as_d(g)(x_f)`:
     # prob_equal(dirac_single_fin, dirac_single_fin)
     d_g_at_x_f <- numeric(length(x_f))
     inds <- match(x_f, g_x_tbl[["x"]], nomatch = NA)
