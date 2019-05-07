@@ -19,11 +19,11 @@
 
 \method{plot}{r}(x, y = NULL, n_sample = 1000, ...)
 
-\method{lines}{p}(x, n_extra_grid = 1000, ...)
+\method{lines}{p}(x, n_extra_grid = 1001, ...)
 
-\method{lines}{d}(x, n_extra_grid = 1000, ...)
+\method{lines}{d}(x, n_extra_grid = 1001, ...)
 
-\method{lines}{q}(x, n_extra_grid = 1000, ...)
+\method{lines}{q}(x, n_extra_grid = 1001, ...)
 }
 \arguments{
 \item{x}{Pdqr-function to plot.}
