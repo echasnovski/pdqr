@@ -28,4 +28,9 @@ d_norm <- as_d(dnorm)
 summ_prob_true(d_unif > d_norm)
 summ_prob_false(2*d_norm > d_unif)
 
+# When input is "infin" function or doesn't have 1 as distribution element,
+# probability of being true is returned as 0.
+summ_prob_true(d_unif)
+summ_prob_false(new_d(2, "fin"))
+
 }

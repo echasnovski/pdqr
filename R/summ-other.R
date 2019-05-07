@@ -42,6 +42,11 @@ summ_quantile <- function(f, probs) {
 #' summ_prob_true(d_unif > d_norm)
 #' summ_prob_false(2*d_norm > d_unif)
 #'
+#' # When input is "infin" function or doesn't have 1 as distribution element,
+#' # probability of being true is returned as 0.
+#' summ_prob_true(d_unif)
+#' summ_prob_false(new_d(2, "fin"))
+#'
 #' @name summ-prob
 NULL
 
@@ -58,7 +63,12 @@ summ_prob_true <- function(f) {
 
   x_tbl <- meta_x_tbl(f)
 
-  x_tbl[["prob"]][x_tbl[["x"]] == 1]
+  res <- x_tbl[["prob"]][x_tbl[["x"]] == 1]
+  if (length(res) == 0) {
+    res <- 0
+  }
+
+  res
 }
 
 #' @rdname summ-prob
