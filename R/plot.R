@@ -69,7 +69,7 @@ NULL
 # plot() ------------------------------------------------------------------
 #' @rdname methods-plot
 #' @export
-plot.p <- function(x, y = NULL, n_extra_grid = 1000, ...) {
+plot.p <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -97,7 +97,7 @@ plot.p <- function(x, y = NULL, n_extra_grid = 1000, ...) {
 
 #' @rdname methods-plot
 #' @export
-plot.d <- function(x, y = NULL, n_extra_grid = 1000, ...) {
+plot.d <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -131,7 +131,7 @@ plot.d <- function(x, y = NULL, n_extra_grid = 1000, ...) {
 
 #' @rdname methods-plot
 #' @export
-plot.q <- function(x, y = NULL, n_extra_grid = 1000, ...) {
+plot.q <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -159,7 +159,7 @@ plot.q <- function(x, y = NULL, n_extra_grid = 1000, ...) {
 
 #' @rdname methods-plot
 #' @export
-plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
+plot.r <- function(x, y = NULL, n_sample = 1000, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
@@ -273,7 +273,7 @@ make_plot_dots <- function(...) {
 # lines() -----------------------------------------------------------------
 #' @rdname methods-plot
 #' @export
-lines.p <- function(x, n_extra_grid = 1000, ...) {
+lines.p <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
@@ -285,7 +285,7 @@ lines.p <- function(x, n_extra_grid = 1000, ...) {
 
 #' @rdname methods-plot
 #' @export
-lines.d <- function(x, n_extra_grid = 1000, ...) {
+lines.d <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {
@@ -302,7 +302,7 @@ lines.d <- function(x, n_extra_grid = 1000, ...) {
 
 #' @rdname methods-plot
 #' @export
-lines.q <- function(x, n_extra_grid = 1000, ...) {
+lines.q <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
   if (meta_type(x) == "fin") {

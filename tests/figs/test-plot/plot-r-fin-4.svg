@@ -26,19 +26,19 @@
 <text x='366.06' y='528.48' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='16.67px' lengthAdjust='spacingAndGlyphs'>1.0</text>
 <text x='512.06' y='528.48' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='16.67px' lengthAdjust='spacingAndGlyphs'>1.5</text>
 <text x='658.06' y='528.48' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='16.67px' lengthAdjust='spacingAndGlyphs'>2.0</text>
-<line x1='59.04' y1='486.13' x2='59.04' y2='126.80' style='stroke-width: 0.75;' />
+<line x1='59.04' y1='486.13' x2='59.04' y2='127.16' style='stroke-width: 0.75;' />
 <line x1='59.04' y1='486.13' x2='51.84' y2='486.13' style='stroke-width: 0.75;' />
-<line x1='59.04' y1='414.27' x2='51.84' y2='414.27' style='stroke-width: 0.75;' />
-<line x1='59.04' y1='342.40' x2='51.84' y2='342.40' style='stroke-width: 0.75;' />
-<line x1='59.04' y1='270.53' x2='51.84' y2='270.53' style='stroke-width: 0.75;' />
-<line x1='59.04' y1='198.67' x2='51.84' y2='198.67' style='stroke-width: 0.75;' />
-<line x1='59.04' y1='126.80' x2='51.84' y2='126.80' style='stroke-width: 0.75;' />
+<line x1='59.04' y1='414.34' x2='51.84' y2='414.34' style='stroke-width: 0.75;' />
+<line x1='59.04' y1='342.54' x2='51.84' y2='342.54' style='stroke-width: 0.75;' />
+<line x1='59.04' y1='270.75' x2='51.84' y2='270.75' style='stroke-width: 0.75;' />
+<line x1='59.04' y1='198.95' x2='51.84' y2='198.95' style='stroke-width: 0.75;' />
+<line x1='59.04' y1='127.16' x2='51.84' y2='127.16' style='stroke-width: 0.75;' />
 <text transform='translate(41.76,497.81) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.00</text>
-<text transform='translate(41.76,425.94) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.05</text>
-<text transform='translate(41.76,354.07) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.10</text>
-<text transform='translate(41.76,282.21) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.15</text>
-<text transform='translate(41.76,210.34) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.20</text>
-<text transform='translate(41.76,138.47) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.25</text>
+<text transform='translate(41.76,426.01) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.05</text>
+<text transform='translate(41.76,354.22) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.10</text>
+<text transform='translate(41.76,282.42) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.15</text>
+<text transform='translate(41.76,210.63) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.20</text>
+<text transform='translate(41.76,138.83) rotate(-90)' style='font-size: 12.00px; font-family: Liberation Sans;' textLength='23.34px' lengthAdjust='spacingAndGlyphs'>0.25</text>
 <defs>
   <clipPath id='cpNTkuMDR8Njg5Ljc2fDUwMi41Nnw1OS4wNA=='>
     <rect x='59.04' y='59.04' width='630.72' height='443.52' />

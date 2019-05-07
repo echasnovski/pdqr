@@ -11,13 +11,13 @@
 \alias{lines.q}
 \title{Pdqr methods for base plotting functions}
 \usage{
-\method{plot}{p}(x, y = NULL, n_extra_grid = 1000, ...)
+\method{plot}{p}(x, y = NULL, n_extra_grid = 1001, ...)
 
-\method{plot}{d}(x, y = NULL, n_extra_grid = 1000, ...)
+\method{plot}{d}(x, y = NULL, n_extra_grid = 1001, ...)
 
-\method{plot}{q}(x, y = NULL, n_extra_grid = 1000, ...)
+\method{plot}{q}(x, y = NULL, n_extra_grid = 1001, ...)
 
-\method{plot}{r}(x, y = NULL, n_sample = 1001, ...)
+\method{plot}{r}(x, y = NULL, n_sample = 1000, ...)
 
 \method{lines}{p}(x, n_extra_grid = 1000, ...)
 
