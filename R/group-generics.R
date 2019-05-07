@@ -57,6 +57,10 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
     )
   }
 
+  if (.Generic %in% c("all", "any")) {
+    return(summary_allany(gen = .Generic, ...))
+  }
+
   dots <- list(...)
 
   gen_fun <- function(...) {
@@ -229,6 +233,26 @@ ensure_pdqr_functions <- function(e1, e2) {
   }
 
   list(e1, e2)
+}
+
+summary_allany <- function(gen, ...) {
+  dots <- list(...)
+  all_pdqr <- all(vapply(dots, is_pdqr_fun, logical(1)))
+  if (!all_pdqr) {
+    stop_collapse("All input to `all()` or `any()` should be pdqr-functions.")
+  }
+
+  d_one <- new_d(1, "fin")
+
+  prob_true <- vapply(dots, function(f) {prob_equal(f, d_one)}, numeric(1))
+
+  out_class <- meta_class(dots[[1]])
+
+  switch(
+    gen,
+    all = boolean_pdqr(prod(prob_true), out_class),
+    any = boolean_pdqr(1 - prod(1 - prob_true), out_class)
+  )
 }
 
 

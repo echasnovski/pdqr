@@ -618,6 +618,39 @@ test_that("Summary.pdqr works", {
   expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "infin")
 })
 
+test_that("Summary.pdqr works in case of `all()` and `any()`", {
+  bool_d_1 <- new_d(data.frame(x = c(0, 1), prob = c(0.2, 0.8)), "fin")
+  bool_p_2 <- new_p(data.frame(x = c(0, 1), prob = c(0.3, 0.7)), "fin")
+  bool_q_3 <- new_q(data.frame(x = c(0, 1), prob = c(0, 1)), "fin")
+
+  # all()
+  expect_prob_true(all(bool_d_1), 0.8)
+  expect_prob_true(all(bool_d_1, bool_p_2), 0.8*0.7)
+  expect_prob_true(all(bool_d_1, bool_p_2, bool_q_3), 0.8*0.7*1)
+    # Works when 1 is not present in input's 'x' levels
+  expect_prob_true(all(new_d(0, "fin")), 0)
+    # Works for "infin" functions
+  expect_prob_true(all(d_infin), 0)
+    # Class of output is taken from the first input
+  expect_is(all(bool_p_2, bool_q_3), "p")
+
+  # any()
+  expect_prob_true(any(bool_d_1), 0.8)
+  expect_prob_true(any(bool_d_1, bool_p_2), 1 - (1-0.8)*(1-0.7))
+  expect_prob_true(any(bool_d_1, bool_p_2, bool_q_3), 1 - (1-0.8)*(1-0.7)*(1-1))
+    # Works when 1 is not present in input's 'x' levels
+  expect_prob_true(any(new_d(0, "fin")), 0)
+    # Works for "infin" functions
+  expect_prob_true(any(d_infin), 0)
+    # Class of output is taken from the first input
+  expect_is(any(bool_p_2, bool_q_3), "p")
+})
+
+test_that("Summary.pdqr validates input in case of `all()` and `any()`", {
+  expect_error(all(d_fin, "a"), "All.*pdqr")
+  expect_error(all(d_infin >= 1, 1), "All.*pdqr")
+})
+
 test_that("Summary.pdqr uses options", {
   # Option for `n_sample`
   op <- options(pdqr.group_gen.n_sample = 1)
@@ -659,6 +692,10 @@ test_that("Summary.pdqr throws error on `range()`", {
   expect_error(range(p_fin, p_fin), "range.*two.*numbers")
 })
 
+test_that("Summary.pdqr validates input in general cases", {
+  expect_error(min(d_fin, "a"), "contain.*pdqr.*number")
+})
+
 
 # math_pdqr_impl ----------------------------------------------------------
 # Tested in `Math.pdqr`
@@ -694,6 +731,10 @@ test_that("Summary.pdqr throws error on `range()`", {
 
 # ensure_pdqr_functions ---------------------------------------------------
 # Tested in `Ops.pdqr`
+
+
+# summary_allany ----------------------------------------------------------
+# Tested in `Summary.pdqr`
 
 
 # repair_group_gen_support ------------------------------------------------
