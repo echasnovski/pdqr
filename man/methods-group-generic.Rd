@@ -203,7 +203,7 @@ form_trans(list(d_unif, d_unif), `+`)
 \seealso{
 \link[=methods-print]{Pdqr methods for print function}.
 
-Methods for \code{\link[=plot]{plot()}} and \code{\link[=lines]{lines()}}.
+\link[=methods-plot]{Pdqr methods for base plotting functions}.
 
 \code{\link[=summ_prob_true]{summ_prob_true()}} and \code{\link[=summ_prob_false]{summ_prob_false()}} for extracting probability from
 boolean pdqr-functions.

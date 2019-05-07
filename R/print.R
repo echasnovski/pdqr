@@ -32,6 +32,8 @@
 #' @seealso [Pdqr methods for S3 group generic
 #'   functions][methods-group-generic].
 #'
+#' [Pdqr methods for base plotting functions][methods-plot].
+#'
 #' @examples
 #' print(new_d(1:10, "fin"))
 #'

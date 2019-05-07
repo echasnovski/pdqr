@@ -1,4 +1,73 @@
+# Documentation -----------------------------------------------------------
+#' Pdqr methods for base plotting functions
+#'
+#' Pdqr-functions have their own methods for [plot()] and [lines()] (except
+#' r-functions, see Details).
+#'
+#' @param x Pdqr-function to plot.
+#' @param y Argument for compatibility with `plot()` signature. Doesn't used.
+#' @param n_extra_grid Number of extra grid points at which to evaluate
+#'   pdqr-function (see Details). Supply `NULL` or `0` to not use extra grid.
+#' @param ... Other arguments for `plot()` or [hist()][graphics::hist()] (in
+#'   case of plotting r-function).
+#' @param n_sample Size of a sample to be generated for plotting histogram in
+#'   case of an r-function.
+#'
+#' @details Main idea of plotting pdqr-functions is to use plotting mechanisms
+#' for appropriate numerical data.
+#'
+#' Plotting of [type][meta_type()] **fin** functions:
+#' - P-functions are plotted as step-line with jumps at points of "x" column of
+#' ["x_tbl" metadata][meta_x_tbl()].
+#' - D-functions are plotted with vertical lines at points of "x" column of
+#' "x_tbl" with height equal to values from "prob" column.
+#' - Q-functions are plotted as step-line with jumps at points of "cumprob"
+#' column of "x_tbl".
+#' - R-functions are plotted by generating sample of size `n_sample` and calling
+#' [hist()][graphics::hist()] function.
+#'
+#' Plotting of type **infin** functions:
+#' - P-functions are plotted in piecewise-linear fashion at their values on
+#' compound grid: sorted union of "x" column from "x_tbl" metadata and sequence
+#' of length `n_extra_grid` consisting from equidistant points between edges of
+#' support. Here extra grid is needed to show curvature of lines between "x"
+#' points from "x_tbl" (see Examples).
+#' - D-functions are plotted in the same way as p-functions.
+#' - Q-functions are plotted similarly as p- and d-functions but grid consists
+#' from union of "cumprob" column of "x_tbl" metadata and equidistant grid of
+#' length `n_extra_grid` from 0 to 1.
+#' - R-functions are plotted the same way as type "fin" ones: as histogram of
+#' generated sample of size `n_sample`.
+#'
+#' @return Output of [invisible()][base::invisible()] without arguments, i.e.
+#'   `NULL` without printing.
+#'
+#' @seealso [Pdqr methods for S3 group generic
+#'   functions][methods-group-generic].
+#'
+#' [Pdqr methods for print function][methods-print].
+#'
+#' @examples
+#' d_norm_1 <- as_d(dnorm)
+#' d_norm_2 <- as_d(dnorm, mean = 1)
+#'
+#' plot(d_norm_1)
+#' lines(d_norm_2, col = "red")
+#'
+#' # Usage of `n_extra_grid` is important in case of "infin" p- and q-functions
+#' simple_p <- new_p(data.frame(x = c(0, 1), y = c(0, 1)), "infin")
+#' plot(simple_p, main = "Case study of n_extra_grid argument")
+#' lines(simple_p, n_extra_grid = 0, col = "red")
+#'
+#' # R-functions are plotted with histogram
+#' plot(as_r(d_norm_1))
+#'
+#' @name methods-plot
+NULL
+
+
 # plot() ------------------------------------------------------------------
+#' @rdname methods-plot
 #' @export
 plot.p <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   x_name <- deparse(substitute(x))
@@ -26,6 +95,7 @@ plot.p <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   }
 }
 
+#' @rdname methods-plot
 #' @export
 plot.d <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   x_name <- deparse(substitute(x))
@@ -59,6 +129,7 @@ plot.d <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   }
 }
 
+#' @rdname methods-plot
 #' @export
 plot.q <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   x_name <- deparse(substitute(x))
@@ -86,6 +157,7 @@ plot.q <- function(x, y = NULL, n_extra_grid = 1000, ...) {
   }
 }
 
+#' @rdname methods-plot
 #' @export
 plot.r <- function(x, y = NULL, n_sample = 1001, ...) {
   x_name <- deparse(substitute(x))
@@ -199,6 +271,7 @@ make_plot_dots <- function(...) {
 
 
 # lines() -----------------------------------------------------------------
+#' @rdname methods-plot
 #' @export
 lines.p <- function(x, n_extra_grid = 1000, ...) {
   assert_pdqr_fun(x)
@@ -210,6 +283,7 @@ lines.p <- function(x, n_extra_grid = 1000, ...) {
   }
 }
 
+#' @rdname methods-plot
 #' @export
 lines.d <- function(x, n_extra_grid = 1000, ...) {
   assert_pdqr_fun(x)
@@ -226,6 +300,7 @@ lines.d <- function(x, n_extra_grid = 1000, ...) {
   }
 }
 
+#' @rdname methods-plot
 #' @export
 lines.q <- function(x, n_extra_grid = 1000, ...) {
   assert_pdqr_fun(x)

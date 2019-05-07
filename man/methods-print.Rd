@@ -64,4 +64,6 @@ print(r_unif >= 0.3)
 }
 \seealso{
 \link[=methods-group-generic]{Pdqr methods for S3 group generic functions}.
+
+\link[=methods-plot]{Pdqr methods for base plotting functions}.
 }
