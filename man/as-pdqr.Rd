@@ -45,24 +45,152 @@ as_r(f, ...)
 \arguments{
 \item{f}{Appropriate function to be converted (see Details).}
 
-\item{...}{Extra arguments for \code{f}.}
+\item{...}{Extra arguments to \code{f}.}
 
-\item{support}{Support of output. If \code{NULL} or any value is \code{NA}, it is
-detected using specific algorithms (see Details).}
+\item{support}{Numeric vector with two increasing elements describing desired
+support of output. If \code{NULL} or any its value is \code{NA}, detection is done
+using specific algorithms (see Details).}
 
 \item{n_grid}{Number of grid points at which \code{f} will be evaluated (see
 Details).}
 
-\item{n_sample}{Number of points to sample from \code{f}.}
+\item{n_sample}{Number of points to sample from \code{f} inside \code{as_r()}.}
 
-\item{args_new}{List of extra arguments for \code{\link[=new_d]{new_d()}} to control \code{\link[=density]{density()}}.}
+\item{args_new}{List of extra arguments for \code{\link[=new_d]{new_d()}} to control \code{\link[=density]{density()}}
+inside \code{as_r()}.}
 }
 \value{
 A pdqr-function of corresponding \link[=meta_class]{class}.
 }
 \description{
-Convert some function to be a proper pdqr-function of type "infin".
+Convert some function to be a proper pdqr-function of specific
+\link[=meta_class]{class}, i.e. a function describing distribution with finite
+support and finite values of probability/density.
 }
+\details{
+General purpose of \code{as_*()} functions is to create a proper
+pdqr-function of desired class from input which doesn't satisfy these
+conditions. Here is described sequence of steps which are taken to achieve
+that goal.
+
+If \strong{\code{f} is already a pdqr-function}, \code{as_*()} functions properly update it
+to have specific class. They take input's \link[=meta_x_tbl]{"x_tbl" metadata}
+and \link[=meta_type]{type} to use at with corresponding \link[=new-pdqr]{new_*()}
+function. For example, \code{as_p(f)} in case of pdqr-function \code{f} is essentially
+the same as \code{new_p(x = meta_x_tbl(f), type = meta_type(f))}.
+
+If \strong{\code{f} is a function describing "honored" distribution}, it is detected
+and output is created in predefined way taking into account extra arguments
+in \code{...}. For more details see "Honored distributions" section.
+
+If \strong{\code{f} is some other unknown function}, \code{as_*()} functions use heuristics
+for approximating input distribution with a "proper" pdqr-function. Outputs
+of \code{as_*()} can be only pdqr-functions of type "infin" (because of issues
+with support detection). It is assumed that \code{f} returns values appropriate
+for desired output class of \code{as_*()} function and output type "infin". For
+example, input for \code{as_p()} should return values of some continuous
+cumulative distribution function (monotonically non-increasing values from 0
+to 1). To manually create function of type "fin", supply data frame input
+describing it to appropriate \code{new_*()} function.
+
+General algorithm of how \code{as_*()} functions work for unknown function is as
+follows:
+\itemize{
+\item \strong{Detect support}. See "Support detection" section for more details.
+\item \strong{Create data frame input for \code{new_*()}}. The exact process differs:
+\itemize{
+\item In \code{as_p()} equidistant grid of \code{n_grid} points is created inside
+detected support. After that, input's values at the grid is taken as
+reference points of cumulative distribution function used to
+\emph{approximate} density at that same grid. This method showed to work more
+reliably in case density goes to infinity. That grid and density values
+are used as "x" and "y" columns of data frame input for \code{new_p()}.
+\item In \code{as_d()} "x" column of data frame is the same equidistant grid is
+taken as in \code{as_p()}. "y" column is taken as input's values at this grid
+after possibly imputing infinity values. This imputation is done by
+taking maximum from left and right linear extrapolations on mentioned
+grid.
+\item In \code{as_q()}, at first inverse of input \code{f} function is computed on [0;
+1] interval. It is done by approximating it with piecewise-linear
+function on [0; 1] equidistant grid with \code{n_grid} points, imputing
+infinity values (which ensures finite support), and computing inverse of
+approximation. This inverse of \code{f} is used to create data frame input
+with \code{as_p()}.
+\item In \code{as_r()} at first d-function with \code{new_d()} is created based on the
+same sample used for support detection and extra arguments supplied as
+list in \code{args_new} argument. In other words, density estimation is done
+based on sample, generated from input \code{f}. After that, its values are
+used to create data frame with \code{as_d()}.
+}
+\item \strong{Use appropriate \code{new_*()} function} with data frame from previous step
+and \code{type = "infin"}. This step implies that all tails outside detected
+support are trimmed and data frame is normalized to represent proper
+piecewise-linear density.
+}
+}
+\section{Honored distributions}{
+
+
+For efficient workflow, some commonly used distributions are recognized as
+special ("honored"). Those receive different treatment in \code{as_*()} functions.
+
+Basically, there is a manually selected list of "honored" distributions with
+all their information enough to detect them. Currently that list has all
+common univariate distributions \link[stats:Distributions]{from 'stats' package},
+i.e. all except multinomial and "less common distributions of test
+statistics".
+
+"Honored" distribution is \strong{recognized only if \code{f} is one of \code{p*()}, \code{d*()},
+\code{q*()}, or \code{r*()} function describing honored distribution and is supplied as
+variable with original name}. For example, \code{as_d(dunif)} will be treated as
+"honored" distribution but \code{as_d(function(x) {dunif(x)})} will not.
+
+After it is recognized that input \code{f} represents "honored" distribution,
+\strong{its support is computed based on predefined rules}. Those take into
+account special features of distribution (like infinite support or infinite
+density values) and supplied extra arguments in \code{...}. Usually output support
+"loses" only around \code{1e-6} probability on each infinite tail.
+
+After that, for "fin" type output \code{new_d()} is used for appropriate data
+frame input and for "infin" - \code{as_d()} with appropriate \code{d*()} function and
+support. D-function is then converted to desired class with \code{as_*()}.
+}
+
+\section{Support detection}{
+
+
+In case input is a function without any extra information, \code{as_*()} functions
+must know which finite support its output should have. User can supply
+desired support directly with \code{support} argument, which can also be \code{NULL}
+(mean automatic detection of both edges) or have \code{NA} to detect only those
+edges.
+
+Support is detected in order to preserve as much information as practically
+reasonable. Exact methods differ:
+\itemize{
+\item In \code{as_p()} support is detected as values at which input function is equal
+to \code{1e-6} (left edge detection) and \code{1 - 1e-6} (right edge), which means
+"losing" \code{1e-6} probability on each tail. \strong{Note} that those values are
+searched inside [-10^100; 10^100] interval.
+\item In \code{as_d()}, at first an attempt at finding one point of non-zero density
+is made by probing 10000 points spread across wide range of real line
+(approximately from \code{-1e7} to \code{1e7}). If input's value at all of them is
+zero, error is thrown. After finding such point, cumulative distribution
+function is made by integrating input with \link[stats:integrate]{integrate()}
+using found point as reference (without this there will be poor accuracy of
+\code{integrate()}). Created CDF function is used to find \code{1e-6} and \code{1 - 1e-6}
+quantiles as in \code{as_p()}, which serve as detected support.
+\item In \code{as_q()} quantiles for 0 and 1 are probed for being infinite. If they
+are, \code{1e-6} and \code{1 - 1e-6} quantiles are used respectively instead of
+infinite values to form detected support.
+\item In \code{as_r()} sample of size \code{n_sample} is generated and detected support is
+its range stretched by mean difference of sorted points (to account for
+possible tails at which points were not generated). \strong{Note} that this means
+that original input \code{f} "demonstrates its randomness" ones inside \code{as_r()},
+which output is then used as approximation to "original randomness".
+}
+}
+
 \examples{
 # Convert existing "proper" pdqr-function
 set.seed(101)
@@ -71,12 +199,36 @@ my_d <- new_d(x, "infin")
 
 my_p <- as_p(my_d)
 
-# Convert "honored" function to be a "proper" pdqr-function
+# Convert "honored" function to be a proper pdqr-function. To use this
+# option, supply originally named function.
 p_unif <- as_p(punif)
 r_beta <- as_r(rbeta, shape1 = 2, shape2 = 2)
 d_pois <- as_d(dpois, lambda = 5)
 
+  # This will work as if input is unkonw function because of unsupported
+  # variable name
+my_runif <- function(n) {runif(n)}
+r_unif_2 <- as_r(my_runif)
+plot(as_d(r_unif_2))
+
 # Convert some other function to be a "proper" pdqr-function
 my_d_quadr <- as_d(function(x) {0.75*(1 - x^2)}, support = c(-1, 1))
+
+# Support detection
+unknown <- function(x) {dnorm(x, mean = 1)}
+  # Completely automatic support detection
+as_d(unknown)
+  # Semi-automatic support detection
+as_d(unknown, support = c(-4, NA))
+as_d(unknown, support = c(NA, 5))
+
+  # If support is very small and very distant from zero, it probably won't
+  # get detected in `as_d()`
+\dontrun{
+as_d(function(x) {dnorm(x, mean = 1000, sd = 0.1)})
+}
+
+# Using different level of granularity
+as_d(unknown, n_grid = 1001)
 
 }

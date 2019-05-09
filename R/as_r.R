@@ -4,8 +4,6 @@ as_r <- function(f, ...) {
   UseMethod("as_r")
 }
 
-#' @param n_sample Number of points to sample from `f`.
-#' @param args_new List of extra arguments for [new_d()] to control [density()].
 #' @rdname as-pdqr
 #' @export
 as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
