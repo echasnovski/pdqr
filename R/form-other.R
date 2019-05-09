@@ -200,9 +200,68 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 
 
 # form_estimate -----------------------------------------------------------
-# Mention in docs about the following bias correction technique: compute mean
-# value of estimate using big `sample_size` and then recenter distribution to
-# actually have that as a mean.
+#' Create a pdqr-function for distribution of sample estimate
+#'
+#' Based on pdqr-function, estimate function, and sample size describe the
+#' distribution of sample estimate. This might be useful for statistical
+#' inference.
+#'
+#' @param f A pdqr-function.
+#' @param estimate Estimate function. Should be able to accept numeric vector of
+#'   size `sample_size` and return single numeric output.
+#' @param sample_size Size of sample for which distribution of sample estimate
+#'   is needed.
+#' @param ... Other arguments for `estimate`.
+#' @param n_sample Number of elements to generate from distribution of sample
+#'   estimate.
+#' @param args_new List of extra arguments for [new_*()][new-pdqr] function to
+#'   control [density()].
+#'
+#' @details General idea is to create a sample from target distribution by
+#' generating `n_sample` samples of size `sample_size` and compute for each of
+#' them its estimate by calling input `estimate` function. Created sample from
+#' target distribution is used as input to `new_*()` of appropriate class with
+#' `type` equal to type of `f` (if not forced otherwise in `args_new`).
+#'
+#' **Notes**:
+#' - This function may be very time consuming for large values of `n_sample` and
+#' `sample_size`, as total of `n_sample*sample_size` numbers are generated and
+#' `estimate` function is called `n_sample` times.
+#' - Output distribution might have a bias compared to true distribution of
+#' sample estimate. One useful technique for bias correction: compute mean value
+#' of estimate using big `sample_size` (with `mean(as_r(f)(sample_size))`) and
+#' then recenter distribution to actually have that as a mean.
+#'
+#' @return A pdqr-function of the same [class][meta_class()] and
+#'   [type][meta_type()] (if not forced otherwise in `args_new`) as `f`.
+#'
+#' @examples
+#' set.seed(101)
+#'
+#' # Type "fin"
+#' d_fin <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+#'   # Estimate of distribution of mean
+#' form_estimate(d_fin, estimate = mean, sample_size = 10)
+#'   # To change type of output, supply it in `args_new`
+#' form_estimate(
+#'   d_fin, estimate = mean, sample_size = 10,
+#'   args_new = list(type = "infin")
+#' )
+#'
+#' # Type "infin"
+#' d_unif <- as_d(dunif)
+#'   # Supply extra named arguments for `estimate` in `...`
+#' plot(form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.1))
+#' lines(
+#'   form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.3),
+#'   col = "red"
+#' )
+#' lines(
+#'   form_estimate(d_unif, estimate = median, sample_size = 10),
+#'   col = "blue"
+#' )
+#'
+#' @export
 form_estimate <- function(f, estimate, sample_size, ...,
                           n_sample = 10000, args_new = list()) {
   assert_pdqr_fun(f)
