@@ -9,29 +9,90 @@ form_resupport(f, support, method = "reflect")
 \arguments{
 \item{f}{A pdqr-function.}
 
-\item{support}{Support of the output.}
+\item{support}{Numeric vector with two increasing (or non-decreasing, see
+Details) elements describing support of the output. Values can be \code{NA}, in
+which case corresponding edge(s) are taken from \code{f}'s support.}
 
 \item{method}{Resupport method. One of "reflect", "trim", "winsor", "linear".}
 }
 \value{
-A pdqr-function with modified support.
+A pdqr-function with modified support and the same
+\link[=meta_class]{class} and \link[=meta_type]{type} as \code{f}.
 }
 \description{
 Modify support of pdqr-function using method of choice.
 }
-\examples{
-d_norm <- as_d(dnorm)
+\details{
+Method "reflect" takes a density "tails" to the left of \code{support[1]}
+and to the right of \code{support[2]} and reflects them inside \code{support}. It means
+that values of density inside and outside of supplied \code{support} are added
+together in "symmetric fashion":
+\code{d(x) = d_f(x) + d_f(l - (x-l)) + d_f(r + (r-x))}, where \code{d_f} is density of
+input, \code{d} is density of output, \code{l} and \code{r} are left and right edges of
+input \code{support}. This option is useful for repairing support of
+\link[=new-pdqr]{new_*()}'s output, as by default kernel density estimation in
+\code{density()} adds tails to the range of input \code{x} values. For example, if
+there is a need to ensure that distribution has only positive values, one can
+do \code{form_resupport(f, c(0, NA), method = "reflect")}. \strong{Notes}:
+\itemize{
+\item For "fin" pdqr-functions that might result into creating new "x" values of
+distribution.
+\item Reflection over \code{support[1]} is done only if it is strictly greater than
+\code{f}'s left edge of support. Reflection over \code{support[2]} - if \code{f}'s right
+edge is strictly smaller.
+}
 
+Method "trim" removes density "tails" outside of \code{support}, normalizes the
+rest and creates appropriate pdqr-function.
+
+Method "winsor" makes all density "tails" outside of input \code{support}
+"squashed" inside it in "dirac-like" fashion. It means that probability from
+both tails is moved inside \code{support} and becomes concentrated in \code{1e-8}
+neighborhood of nearest edge. This models a singular dirac distributions at
+the edges of \code{support}. \strong{Note} that \code{support} can represent single point,
+in which case output has single element if \code{f}'s type is "fin" or is a
+dirac-like distribution in case of "infin" type.
+
+Method "linear" transforms \code{f}'s support linearly to be input \code{support}. For
+example, if \code{f}'s support is [0; 1] and \code{support} is \code{c(-1, 1)}, linear
+resupport is equivalent to \code{2*f - 1}. \strong{Note} that \code{support} can represent
+single point with the same effect as in "winsor" method.
+}
+\examples{
+set.seed(101)
+d_norm <- as_d(dnorm)
+d_fin <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+
+# Method "reflect"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
 
+  # For "fin" functions it might create new values
+meta_x_tbl(form_resupport(d_fin, c(NA, 2.25), "reflect"))
+
+  # This is often useful to ensure constraints after `new_()`
+x <- runif(1e4)
+d_x <- new_d(x, "infin")
+plot(d_x)
+lines(form_resupport(d_x, c(0, NA), "reflect"), col = "red")
+lines(form_resupport(d_x, c(0, 1), "reflect"), col = "blue")
+
+# Method "trim"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "trim"), col = "blue")
 
+# Method "winsor"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "winsor"), col = "blue")
 
+# Method "linear"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
 
+}
+\seealso{
+\code{\link[=form_regrid]{form_regrid()}} for changing grid (rows of "x_tbl" metadata) of
+pdqr-function.
+
+\code{\link[=form_retype]{form_retype()}} for changing type of pdqr-function.
 }
