@@ -56,10 +56,10 @@ as_p.pdqr <- function(f, ...) {
 
 detect_support_p <- function(p_f, supp) {
   if (is.na(supp[1])) {
-    supp[1] <- solve_for_quan(p_f, 1e-8)
+    supp[1] <- solve_for_quan(p_f, 1e-6)
   }
   if (is.na(supp[2])) {
-    supp[2] <- solve_for_quan(p_f, 1 - 1e-8)
+    supp[2] <- solve_for_quan(p_f, 1 - 1e-6)
   }
 
   if (!is_support(supp)) {

@@ -43,7 +43,7 @@ detect_support_q <- function(q_f, supp) {
     if (is.finite(q_f_0)) {
       supp[1] <- q_f_0
     } else {
-      supp[1] <- q_f(1e-8)
+      supp[1] <- q_f(1e-6)
     }
   }
 
@@ -52,7 +52,7 @@ detect_support_q <- function(q_f, supp) {
     if (is.finite(q_f_1)) {
       supp[2] <- q_f_1
     } else {
-      supp[2] <- q_f(1 - 1e-8)
+      supp[2] <- q_f(1 - 1e-6)
     }
   }
 

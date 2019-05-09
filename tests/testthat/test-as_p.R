@@ -236,15 +236,15 @@ test_that("as_p.default detects support", {
   # Much more tests are done in `detect_support_p`
   p_beta_both <- as_p(fam_beta$p)
   support_both <- meta_support(p_beta_both)
-  expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 1e-7)
+  expect_equal(fam_beta$p(support_both), c(0, 1), tolerance = 2e-6)
 
   p_beta_left <- as_p(fam_beta$p, support = c(NA, 0.7))
   support_left <- meta_support(p_beta_left)
-  expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 1e-7)
+  expect_equal(fam_beta$p(support_left[1]), 0, tolerance = 2e-6)
 
   p_beta_right <- as_p(fam_beta$p, support = c(0.3, NA))
   support_right <- meta_support(p_beta_right)
-  expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 1e-7)
+  expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 2e-6)
 })
 
 test_that("as_p.default removes edge `y` with zero density", {
@@ -337,7 +337,7 @@ test_that("detect_support_p detects both edges of support", {
     supp <- detect_support_p(fam$p, c(NA_real_, NA_real_))
     p_on_supp <- fam$p(supp)
 
-    (p_on_supp[1] <= 1e-7) && (p_on_supp[2] >= 1 - 1e-7)
+    (p_on_supp[1] <= 2e-6) && (p_on_supp[2] >= 1 - 2e-6)
   }, logical(1))
 
   expect_true(all(edges_are_detected))
@@ -350,7 +350,7 @@ test_that("detect_support_p detects left edge of support", {
     supp <- detect_support_p(fam$p, c(NA, fam$support[2]))
     p_on_supp <- fam$p(supp)
 
-    p_on_supp[1] <= 1e-7
+    p_on_supp[1] <= 2e-6
   }, logical(1))
 
   expect_true(all(left_edge_is_detected))
@@ -363,7 +363,7 @@ test_that("detect_support_p detects right edge of support", {
     supp <- detect_support_p(fam$p, c(fam$support[1], NA))
     p_on_supp <- fam$p(supp)
 
-    p_on_supp[2] >= 1 - 1e-7
+    p_on_supp[2] >= 1 - 2e-6
   }, logical(1))
 
   expect_true(all(right_edge_is_detected))
