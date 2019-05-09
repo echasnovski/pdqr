@@ -9,21 +9,43 @@ form_tails(f, level, method = "trim", direction = "both")
 \arguments{
 \item{f}{A pdqr-function.}
 
-\item{level}{Cutoff level.}
+\item{level}{Cutoff level. For direction "both" should be between 0 and 0.5;
+for "left" and "right" - between 0 and 1.}
 
-\item{method}{Transformation method. One of "trim" or "winsor".}
+\item{method}{Modification method. One of "trim" or "winsor".}
 
-\item{direction}{Information about which tail(s) to transform. One of "both",
-"left", or "right".}
+\item{direction}{Information about which tail(s) to modify. One of "both",
+"left", "right".}
 }
 \value{
 A pdqr-function with transformed tail(s).
 }
 \description{
 Modify tail(s) of distribution defined by certain cutoff level using method
-of choice.
+of choice. This function is useful for doing robust analysis in presence of
+possible outliers.
+}
+\details{
+Edges for left and right tails are computed as \code{level} and \code{1 - level} quantiles respectively. The left tail is interval to the left of
+left edge, and right tail - to the right of right edge.
+
+Method "trim" removes tail(s) while normalizing "center part". Method
+"winsor" "squashes" tails inside center of distribution in dirac-like
+fashion, i.e. probability of tail(s) is moved inside and becomes concentrated
+in \code{1e-8} neighborhood of nearest edge.
+
+Direction "both" affect both tails. Directions "left" and "right" affect only
+left and right tail respectively.
 }
 \examples{
+# Type "fin"
+my_fin <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "fin")
+meta_x_tbl(form_tails(my_fin, level = 0.1))
+meta_x_tbl(
+  form_tails(my_fin, level = 0.35, method = "winsor", direction = "left")
+)
+
+# Type "infin"
 d_norm <- as_d(dnorm)
 plot(d_norm)
 lines(form_tails(d_norm, level = 0.1), col = "blue")
@@ -32,11 +54,21 @@ lines(
   col = "green"
 )
 
-# Also works with pdqr-functions of type "fin"
-my_fin <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "fin")
-meta_x_tbl(form_tails(my_fin, level = 0.1))
-meta_x_tbl(
-  form_tails(my_fin, level = 0.35, method = "winsor", direction = "left")
-)
+# Examples of robust mean
+set.seed(101)
+x <- rcauchy(1000)
+d_x <- new_d(x, "infin")
+summ_mean(d_x)
+  # Trimmed mean
+summ_mean(form_tails(d_x, level = 0.1, method = "trim"))
+  # Winsorized mean
+summ_mean(form_tails(d_x, level = 0.1, method = "winsor"))
 
+}
+\seealso{
+\code{\link[=form_resupport]{form_resupport()}} for changing \link[=meta_support]{support} to some
+known interval.
+
+\code{\link[=summ_center]{summ_center()}} and \code{\link[=summ_dispersion]{summ_dispersion()}} for computing summaries of
+distributions.
 }
