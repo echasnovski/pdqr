@@ -118,27 +118,44 @@ impute_weights <- function(weights, n) {
 #' Smooth pdqr-function
 #'
 #' Smooth pdqr-function using random sampling and corresponding
-#' [new_*()][new_d()] function.
+#' [new_*()][new-pdqr] function.
 #'
-#' @param f Pdqr-function.
-#' @inheritParams form_trans
+#' @inheritParams form_trans_self
 #'
-#' @return A smoothed version of `f`.
+#' @details General idea of smoothing is to preserve "sampling randomness" as
+#' much as reasonably possible while creating more "smooth" probability mass or
+#' density function.
+#'
+#' At first step, sample of size `n_sample` is generated from distribution
+#' represented by `f`. Then, based on the sample, "infin" d-function is created
+#' with `new_d()` and arguments from `args_new` list. To account for
+#' [density()][stats::density()]'s default behavior of "stretching range" by
+#' adding small tails, [support][meta_support()] of d-function is forced to be
+#' equal to `f`'s support (this is done with [form_resupport()] and method
+#' "reflect"). Output represents a "smooth" version of `f` as d-function.
+#'
+#' Final output is computed by modifying "y" or "prob" column of `f`'s ["x_tbl"
+#' metadata][meta_x_tbl()] to be proportional to values of "smooth" output at
+#' corresponding points from "x" column. This way output distribution has
+#' exactly the same "x" grid as `f` but "more smooth" nature.
+#'
+#' @return A smoothed version of `f` with the same [class][meta_class()] and
+#'   [type][meta_type()].
 #'
 #' @examples
 #' set.seed(101)
 #'
-#' # Pdqr-functions of type "infin"
-#' bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
-#' smoothed_infin <- form_smooth(bad_infin)
-#' plot(bad_infin)
-#' lines(smoothed_infin, col = "blue")
-#'
-#' # Pdqr-functions of type "fin"
+#' # Type "fin"
 #' bad_fin <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "fin")
 #' smoothed_fin <- form_smooth(bad_fin)
 #' plot(bad_fin)
 #' lines(smoothed_fin, col = "blue")
+#'
+#' # Type "infin"
+#' bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
+#' smoothed_infin <- form_smooth(bad_infin)
+#' plot(bad_infin)
+#' lines(smoothed_infin, col = "blue")
 #'
 #' @export
 form_smooth <- function(f, n_sample = 10000, args_new = list()) {
@@ -159,8 +176,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
     return(pdqr_fun(f_x_tbl[["x"]][1], "fin"))
   }
 
-  r_f <- as_r.pdqr(f)
-  smpl <- r_f(n_sample)
+  smpl <- as_r(f)(n_sample)
 
   # Smooth with `density()`
   call_args <- c_dedupl(list(x = smpl, type = "infin"), args_new)

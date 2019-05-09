@@ -7,7 +7,7 @@
 form_smooth(f, n_sample = 10000, args_new = list())
 }
 \arguments{
-\item{f}{Pdqr-function.}
+\item{f}{A pdqr-function.}
 
 \item{n_sample}{Number of elements to sample.}
 
@@ -15,25 +15,43 @@ form_smooth(f, n_sample = 10000, args_new = list())
 \code{\link[=density]{density()}}.}
 }
 \value{
-A smoothed version of \code{f}.
+A smoothed version of \code{f} with the same \link[=meta_class]{class} and
+\link[=meta_type]{type}.
 }
 \description{
 Smooth pdqr-function using random sampling and corresponding
-\link[=new_d]{new_*()} function.
+\link[=new-pdqr]{new_*()} function.
+}
+\details{
+General idea of smoothing is to preserve "sampling randomness" as
+much as reasonably possible while creating more "smooth" probability mass or
+density function.
+
+At first step, sample of size \code{n_sample} is generated from distribution
+represented by \code{f}. Then, based on the sample, "infin" d-function is created
+with \code{new_d()} and arguments from \code{args_new} list. To account for
+\link[stats:density]{density()}'s default behavior of "stretching range" by
+adding small tails, \link[=meta_support]{support} of d-function is forced to be
+equal to \code{f}'s support (this is done with \code{\link[=form_resupport]{form_resupport()}} and method
+"reflect"). Output represents a "smooth" version of \code{f} as d-function.
+
+Final output is computed by modifying "y" or "prob" column of \code{f}'s \link[=meta_x_tbl]{"x_tbl" metadata} to be proportional to values of "smooth" output at
+corresponding points from "x" column. This way output distribution has
+exactly the same "x" grid as \code{f} but "more smooth" nature.
 }
 \examples{
 set.seed(101)
 
-# Pdqr-functions of type "infin"
-bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
-smoothed_infin <- form_smooth(bad_infin)
-plot(bad_infin)
-lines(smoothed_infin, col = "blue")
-
-# Pdqr-functions of type "fin"
+# Type "fin"
 bad_fin <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "fin")
 smoothed_fin <- form_smooth(bad_fin)
 plot(bad_fin)
 lines(smoothed_fin, col = "blue")
+
+# Type "infin"
+bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
+smoothed_infin <- form_smooth(bad_infin)
+plot(bad_infin)
+lines(smoothed_infin, col = "blue")
 
 }
