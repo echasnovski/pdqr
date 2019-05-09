@@ -2,6 +2,10 @@ abserror
 bruteforce
 cumprob
 dirac
+downgrid
+downgridding
+Downgridding
+DOWNgridding
 HDR
 infin
 iqr
@@ -11,6 +15,7 @@ minwidth
 nats
 piecelin
 Regrid
+regridding
 renormalization
 resupport
 Resupport
@@ -18,5 +23,9 @@ rgb
 sd
 tbl
 th
+upgrid
+upgridding
+Upgridding
+UPgridding
 vectorized
 winsor
