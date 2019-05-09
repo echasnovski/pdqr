@@ -79,6 +79,14 @@ test_that("form_trans works with `method = 'bruteforce'`", {
   expect_true(all(abs(output_support - (x_infin_support+1)) < 1e-3))
 })
 
+test_that("form_trans returns boolean pdqr-function for 'lgl' `trans` output", {
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  bool_random <- form_trans(list(d_unif, 100), `>`, method = "random")
+  expect_true(is_boolean_pdqr_fun(bool_random))
+  bool_brute <- form_trans(list(d_unif, 100), `>`, method = "bruteforce")
+  expect_true(is_boolean_pdqr_fun(bool_brute))
+})
+
 test_that("form_trans produces correct 'pdqr' class", {
   expect_is(form_trans(list(1, p_fin), `+`, method = "random"), "p")
   expect_is(form_trans(list(p_fin, 1), `+`, method = "random"), "p")
@@ -153,7 +161,7 @@ test_that("form_trans uses `...` as `trans` arguments",  {
   expect_true(meta_support(p_fin)[1] == meta_support(output_brute)[1] - 100)
 })
 
-test_that("form_trans handles `n_sample` argument",  {
+test_that("form_trans uses `n_sample` argument",  {
   # It is used with "random" method
   output_random <- form_trans(list(p_fin), sq, method = "random", n_sample = 1)
   expect_equal(nrow(meta_x_tbl(output_random)), 1)
@@ -230,7 +238,7 @@ test_that("form_trans_self works",  {
   output <- form_trans_self(cur_fin, `-`)
   output_x_tbl <- meta_x_tbl(output)
   expect_equal(output_x_tbl[["x"]], c(-1, 0, 2))
-  expect_true(max(abs(output_x_tbl[["prob"]] - c(0.2, 0.7, 0.1))) < 1e-2)
+  expect_true(max(abs(output_x_tbl[["prob"]] - c(0.2, 0.7, 0.1))) < 2e-2)
 })
 
 
@@ -247,8 +255,4 @@ test_that("form_trans_self works",  {
 
 
 # assert_trans_output -----------------------------------------------------
-# Tested in `form_trans()`
-
-
-# update_f_list_meta ------------------------------------------------------
 # Tested in `form_trans()`

@@ -100,14 +100,16 @@ trans_random <- function(f_list, trans, ..., n_sample, args_new) {
   # distribution. Use `...` as additional arguments to `trans`.
   smpl <- do.call(trans, args = c(smpl_list, list(...)))
   assert_trans_output(smpl)
-  res_meta <- update_f_list_meta(res_meta, smpl)
+
+  # Return boolean pdqr-function in case output of `trans` is logical
+  if (is.logical(smpl)) {
+    prob_true <- mean(smpl)
+    return(boolean_pdqr(prob_true, res_meta[["class"]]))
+  }
 
   # Produce output pdqr function
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
-  call_args <- c_dedupl(
-    list(x = as.numeric(smpl), type = res_meta[["type"]]),
-    args_new
-  )
+  call_args <- c_dedupl(list(x = smpl, type = res_meta[["type"]]), args_new)
 
   do.call(new_pdqr, args = call_args)
 }
@@ -137,15 +139,19 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
   # Compute "x_tbl" for output "fin" function
   x_new <- do.call(trans, args = c(x_grid, list(...)))
   assert_trans_output(x_new)
-  res_meta <- update_f_list_meta(res_meta, x_new)
-
   prob_new <- Reduce(f = `*`, x = prob_grid[-1], init = prob_grid[[1]])
 
-  x_tbl <- data.frame(x = as.numeric(x_new), prob = prob_new)
+  # Return boolean pdqr-function in case output of `trans` is logical
+  if (is.logical(x_new)) {
+    prob_true <- sum(prob_new[x_new])
+
+    return(boolean_pdqr(prob_true, res_meta[["class"]]))
+  }
 
   # Create transformed "fin" pdqr-function. Usage of `args_new` doesn't have
   # any effect for now (as input to `new_*()` is data frame), but might be
   # helpful if in future `new_*()` will have new arguments.
+  x_tbl <- data.frame(x = x_new, prob = prob_new)
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
   call_args <- c_dedupl(list(x = x_tbl, type = "fin"), args_new)
   fin_res <- do.call(new_pdqr, args = call_args)
@@ -168,12 +174,4 @@ assert_trans_output <- function(vec) {
   }
 
   TRUE
-}
-
-update_f_list_meta <- function(f_list_meta, x_vec) {
-  if (is.logical(x_vec)) {
-    f_list_meta[["type"]] <- "fin"
-  }
-
-  f_list_meta
 }
