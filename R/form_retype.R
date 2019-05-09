@@ -1,12 +1,44 @@
 #' Change type of pdqr-function
 #'
-#' Modify type of pdqr-function ("infin" or "fin") using method of choice.
+#' Modify [type][meta_type()] of pdqr-function using method of choice.
 #'
 #' @param f A pdqr-function.
-#' @param type A desired type of output.
-#' @param method Retyping method.
+#' @param type A desired type of output. Should be one of "fin" or "infin".
+#' @param method Retyping method. Should be one of "piecelin" or "dirac".
 #'
-#' @return A pdqr-function with type `type`.
+#' @details If type of `f` is equal to input `type` then `f` is returned.
+#'
+#' Method "piecelin" (default) should be used mostly for converting from "infin"
+#' to "fin" type. It uses the fact that 'pdqr' densities are piecewise-linear
+#' (linear in intervals between values of "x" column of ["x_tbl"
+#' metadata][meta_x_tbl()]) on their [support][meta_support()]:
+#' - Retyping from "infin" to `type` "fin" is done by computing "x" values as
+#' centers of interval masses with probabilities equal to interval total
+#' probabilities.
+#' - Retyping from "fin" to `type` "infin" is made approximately by trying to
+#' compute "x" grid, for which "x" values of input distribution are going to be
+#' centers of mass. Algorithm is approximate and might result into a big errors
+#' in case of small number of "x" values or if they are not "suitable" for this
+#' kind of transformation.
+#'
+#' Method "dirac" is used mostly for converting from "fin" to "infin" type (for
+#' example, in `form_mix()` in case different types of input pdqr-functions). It
+#' works in the following way:
+#' - Retyping from "infin" to `type` "fin" works only if "x_tbl" metadata
+#' represents a mixture of dirac-like distributions. In that case it is
+#' transformed to have "x" values from centers of those dirac-like distributions
+#' with corresponding probabilities.
+#' - Retyping from "fin" to `type` "infin" works by transforming each "x" value
+#' from "x_tbl" metadata into dirac-like distribution with total probability
+#' taken from corresponding value of "prob" column. Output essentially
+#' represents a mixture of dirac-like distributions.
+#'
+#' @return A pdqr-function with type equal to input `type`.
+#'
+#' @seealso [form_regrid()] for changing grid (rows of "x_tbl" metadata) of
+#'   pdqr-function.
+#'
+#' [form_resupport()] for changing support of pdqr-function.
 #'
 #' @examples
 #' my_infin <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "infin")
@@ -60,7 +92,7 @@ retype_fin_piecelin <- function(f) {
   y_lead <- x_tbl[["y"]][-1]
   y_sum <- y_lag + y_lead
 
-  # Output `x` values are computed as intervals' centres of mass
+  # Output `x` values are computed as intervals' centers of mass
   x_mass <- (x_lag * (y_lag + y_sum) + x_lead * (y_lead + y_sum)) / (3 * y_sum)
     # If interval has zero probability then its centre is set to the middle
   x_mass_bad <- !is.finite(x_mass)
@@ -137,7 +169,7 @@ retype_infin_piecelin <- function(f) {
   prob <- x_tbl[["prob"]]
 
   # Values of `x` grid (except first and last elements) of "infin" output is
-  # approximated as convex combination of nearest "centres of mass":
+  # approximated as convex combination of nearest "centers of mass":
   # `x_mid = (1-alpha)*x_mass_left + alpha*x_mass_right`. Here `alpha` is
   # approximated based on two separate assumptions:
   # *Assumption 1*: if locally `y_left` (`y` value in "true" `x` to the left of
