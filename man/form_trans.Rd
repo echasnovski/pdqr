@@ -11,11 +11,12 @@ form_trans(f_list, trans, ..., method = "random", n_sample = 10000,
 form_trans_self(f, trans, ..., method = "random", args_new = list())
 }
 \arguments{
-\item{f_list}{A list consisting from pdqr-function(s) and/or number(s).
-Should have at least one pdqr-function (see Details).}
+\item{f_list}{A list consisting from pdqr-function(s) and/or single
+number(s). Should have at least one pdqr-function (see Details).}
 
 \item{trans}{Transformation function. Should take as many (vectorized)
-arguments as there are elements in \code{f_list}.}
+arguments as there are elements in \code{f_list} or a single argument for
+\code{form_trans_self()}. Should return numeric or logical values.}
 
 \item{...}{Extra arguments to \code{trans}.}
 
@@ -32,14 +33,69 @@ arguments as there are elements in \code{f_list}.}
 A pdqr-function for transformed random variable.
 }
 \description{
-Perform a transformation of pdqr-function(s).
+Perform a transformation of pdqr-function(s) (which assumed to be
+independent).
+}
+\details{
+\code{form_trans_self()} is a thin wrapper for \code{form_trans()} that
+accepts a single pdqr-function instead of a list of them.
+
+\link[=meta_class]{Class} of output is chosen as class of first pdqr-function in
+\code{f_list}. \link[=meta_type]{Type} of output is chosen to be "fin" in case all
+input pdqr-functions have "fin" type, and "infin" otherwise.
+
+Method "random" performs transformation using random generation of samples:
+\itemize{
+\item \strong{Generates a sample of size \code{n_sample} from every element of \code{f_list}}
+(if element is single number, it is repeated \code{n_sample} times).
+\item \strong{Calls \code{trans}} with all generated samples (in order aligned with
+\code{f_list}). \strong{Note} that output should be either numeric or logical and have
+\code{n_sample} elements (one for each combination of input values in "vectorized"
+fashion). So, for example, using \code{sum} directly is not possible as it returns
+only single number.
+\item \strong{Creates output pdqr-function}. If output is logical, probability of
+being true is estimated as share of \code{TRUE} in output, and boolean
+pdqr-function is created (type "fin" with "x" values equal to 0 and 1, and
+probabilities of being false and true respectively). If output is numeric,
+one of \code{new_*()} (suitable for output class) is called with arguments from
+\code{args_new} list.
+}
+
+Method "bruteforce":
+\itemize{
+\item \strong{\link[=form_retype]{Retypes} input} pdqr-function to "fin"
+type (using "piecelin" method).
+\item \strong{Computes output for every combination of "x" values} (probability of
+which will be a product of corresponding probabilities).
+\item \strong{Creates pdqr-function of type "fin"} with suitable \code{new_*()} function.
+\item \strong{Possibly retypes to "infin" type} if output should have it (also with
+"piecelin" method).
+}
+
+\strong{Notes} about "bruteforce" method:
+\itemize{
+\item Its main advantage is that it is not random.
+\item It may start to be very memory consuming very quickly.
+\item It is usually useful when type of output function is "fin". In case of
+"infin" type, retyping from "fin" to "infin" might introduce big errors.
+\item Used "fin" probabilities shouldn't be very small because they will be
+directly multiplied, which might cause numerical accuracy issues.
+}
 }
 \examples{
 # Default "random" transformation
 d_norm <- as_d(dnorm)
+  # More accurate result would give use of `+` directly with: d_norm + d_norm
 d_norm_2 <- form_trans(list(d_norm, d_norm), trans = `+`)
 plot(d_norm_2)
-lines(as_d(dnorm, sd = 2), col = "red")
+lines(as_d(dnorm, sd = sqrt(2)), col = "red")
+
+  # Input list can have single numbers
+form_trans(list(d_norm, 100), trans = `+`)
+
+  # Output of `trans` can be logical. Next example is random version of
+  # `d_norm >= 0`.
+form_trans(list(d_norm, 0), trans = `>=`)
 
 # Transformation with "bruteforce" method
 power <- function(x, n = 1) {x^n}
@@ -53,4 +109,15 @@ meta_x_tbl(p_fin_sq)
 p_fin_sq_rand <- form_trans_self(p_fin, trans = power, n = 2)
 meta_x_tbl(p_fin_sq_rand)
 
+# `form_trans_self()` is a wrapper for `form_trans()`
+form_trans_self(d_norm, trans = function(x) {2*x})
+
+}
+\seealso{
+\link[=methods-group-generic]{Pdqr methods for S3 group generic functions} for more accurate implementations of most
+commonly used functions. Some of them are direct (without randomness) and
+some of them use \code{form_trans()} with "random" method.
+
+\code{\link[=form_regrid]{form_regrid()}} to increase/decrease granularity of pdqr-functions for method
+"bruteforce".
 }
