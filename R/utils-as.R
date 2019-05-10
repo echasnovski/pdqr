@@ -131,6 +131,9 @@
 #'
 #' @return A pdqr-function of corresponding [class][meta_class()].
 #'
+#' @seealso [pdqr_approx_error()] for computing approximation errors compared to
+#' some reference function (usually input to `as_*()` family).
+#'
 #' @examples
 #' # Convert existing "proper" pdqr-function
 #' set.seed(101)
@@ -144,6 +147,9 @@
 #' p_unif <- as_p(punif)
 #' r_beta <- as_r(rbeta, shape1 = 2, shape2 = 2)
 #' d_pois <- as_d(dpois, lambda = 5)
+#'
+#'   # `pdqr_approx_error()` computes pdqr approximation error
+#' summary(pdqr_approx_error(as_d(dnorm), dnorm))
 #'
 #'   # This will work as if input is unkonw function because of unsupported
 #'   # variable name

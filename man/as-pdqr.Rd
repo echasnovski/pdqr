@@ -205,6 +205,9 @@ p_unif <- as_p(punif)
 r_beta <- as_r(rbeta, shape1 = 2, shape2 = 2)
 d_pois <- as_d(dpois, lambda = 5)
 
+  # `pdqr_approx_error()` computes pdqr approximation error
+summary(pdqr_approx_error(as_d(dnorm), dnorm))
+
   # This will work as if input is unkonw function because of unsupported
   # variable name
 my_runif <- function(n) {runif(n)}
@@ -231,4 +234,8 @@ as_d(function(x) {dnorm(x, mean = 1000, sd = 0.1)})
 # Using different level of granularity
 as_d(unknown, n_grid = 1001)
 
+}
+\seealso{
+\code{\link[=pdqr_approx_error]{pdqr_approx_error()}} for computing approximation errors compared to
+some reference function (usually input to \code{as_*()} family).
 }
