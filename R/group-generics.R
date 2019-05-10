@@ -76,7 +76,7 @@
 #' probability of being true is a product of those probabilities from input `e1`
 #' and `e2`. `|`'s probability of being false is a product of those
 #' probabilities from input `e1` and `e2`. **Note** that probability of being
-#' true is a probability of being equal to 1; of being false - complementary to
+#' false is a probability of being equal to 0; of being true - complementary to
 #' that.
 #'
 #' All other methods are **random**. For example, `f + f`, `f^g` are random.
@@ -86,11 +86,11 @@
 #' Methods for `all()` and `any()` have **non-random nature**. They return a
 #' boolean pdqr-function with the following probability of being true:
 #' - In `all()` - probability of *all* input function being true, i.e. product
-#' of probabilities of being true (implemented as probability of being equal to
-#' 1).
+#' of probabilities of being true (implemented as complementary to probability
+#' of being equal to 0).
 #' - In `any()` - probability of *any* input function being true, i.e.
 #' complementary probability to product of all functions being false
-#' (implemented as complementary probability to being true).
+#' (implemented as probability of being equal to 0).
 #'
 #' Methods for `sum()`, `prod()`, `min()`, `max()` have **random nature**. They
 #' are implemented to use vectorized version of certain generic, because
@@ -384,17 +384,17 @@ ops_logic <- function(gen, e1, e2) {
   e1 <- input[[1]]
   e2 <- input[[2]]
 
-  d_one <- new_d(1, "fin")
+  d_zero <- new_d(0, "fin")
 
-  prob_true_1 <- prob_equal(e1, d_one)
-  prob_true_2 <- prob_equal(e2, d_one)
+  prob_false_1 <- prob_equal(e1, d_zero)
+  prob_false_2 <- prob_equal(e2, d_zero)
 
   out_class <- meta_class(e1)
 
   switch(
     gen,
-    `&` = boolean_pdqr(prob_true_1*prob_true_2, out_class),
-    `|` = boolean_pdqr(1 - (1-prob_true_1)*(1-prob_true_2), out_class)
+    `&` = boolean_pdqr((1-prob_false_1)*(1-prob_false_2), out_class),
+    `|` = boolean_pdqr(1 - prob_false_1*prob_false_2, out_class)
   )
 }
 
@@ -426,16 +426,16 @@ summary_allany <- function(gen, ...) {
     stop_collapse("All input to `all()` or `any()` should be pdqr-functions.")
   }
 
-  d_one <- new_d(1, "fin")
+  d_zero <- new_d(0, "fin")
 
-  prob_true <- vapply(dots, function(f) {prob_equal(f, d_one)}, numeric(1))
+  prob_false <- vapply(dots, function(f) {prob_equal(f, d_zero)}, numeric(1))
 
   out_class <- meta_class(dots[[1]])
 
   switch(
     gen,
-    all = boolean_pdqr(prod(prob_true), out_class),
-    any = boolean_pdqr(1 - prod(1 - prob_true), out_class)
+    all = boolean_pdqr(prod(1 - prob_false), out_class),
+    any = boolean_pdqr(1 - prod(prob_false), out_class)
   )
 }
 

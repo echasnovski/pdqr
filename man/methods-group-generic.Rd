@@ -106,7 +106,7 @@ pdqr-functions (see description of functions for comparing). \code{&}'s
 probability of being true is a product of those probabilities from input \code{e1}
 and \code{e2}. \code{|}'s probability of being false is a product of those
 probabilities from input \code{e1} and \code{e2}. \strong{Note} that probability of being
-true is a probability of being equal to 1; of being false - complementary to
+false is a probability of being equal to 0; of being true - complementary to
 that.
 }
 
@@ -120,11 +120,11 @@ Methods for \code{all()} and \code{any()} have \strong{non-random nature}. They 
 boolean pdqr-function with the following probability of being true:
 \itemize{
 \item In \code{all()} - probability of \emph{all} input function being true, i.e. product
-of probabilities of being true (implemented as probability of being equal to
-1).
+of probabilities of being true (implemented as complementary to probability
+of being equal to 0).
 \item In \code{any()} - probability of \emph{any} input function being true, i.e.
 complementary probability to product of all functions being false
-(implemented as complementary probability to being true).
+(implemented as probability of being equal to 0).
 }
 
 Methods for \code{sum()}, \code{prod()}, \code{min()}, \code{max()} have \strong{random nature}. They

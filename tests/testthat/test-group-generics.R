@@ -562,26 +562,26 @@ test_that("Ops.pdqr works in case of logical AND/OR", {
   )
 
   # `&`
-  expect_prob_true(cur_d_fin & cur_d_fin, 0.5*0.5)
-  expect_prob_true(cur_d_fin & 1, 0.5)
-  expect_prob_true(2 & cur_d_fin, 0)
+  expect_prob_true(cur_d_fin & cur_d_fin, (1-0.2)*(1-0.2))
+  expect_prob_true(cur_d_fin & 1, 1-0.2)
+  expect_prob_true(2 & cur_d_fin, 1-0.2)
   expect_prob_true(cur_d_fin & 0, 0)
 
-    # Probability of `d_infin` being 1 is always 0 (i.e. it is always
-    # "`FALSE`"), so presence of "infin" terms always results into 0
-  expect_prob_true(d_infin & cur_d_fin, 0)
-  expect_prob_true(d_infin & d_infin, 0)
+    # Probability of `d_infin` being 0 is always 0 (i.e. it is always
+    # "`TRUE`"), so presence of "infin" terms is irrelevant
+  expect_prob_true(d_infin & cur_d_fin, 1-0.2)
+  expect_prob_true(d_infin & d_infin, 1)
 
   # `|`
-  expect_prob_true(cur_d_fin | cur_d_fin, 1 - (1-0.5)*(1-0.5))
-  expect_prob_true(cur_d_fin | 0, 0.5)
-  expect_prob_true(0 | cur_d_fin, 0.5)
-  expect_prob_true(cur_d_fin | 2, 0.5)
+  expect_prob_true(cur_d_fin | cur_d_fin, 1 - 0.2*0.2)
+  expect_prob_true(cur_d_fin | 0, 1-0.2)
+  expect_prob_true(0 | cur_d_fin, 1-0.2)
+  expect_prob_true(cur_d_fin | 2, 1)
 
-    # Probability of `d_infin` being 1 is always 0 (i.e. it is always
-    # "`FALSE`"), so presence of "infin" terms is irrelevant
-  expect_prob_true(d_infin | cur_d_fin, 0.5)
-  expect_prob_true(d_infin | d_infin, 0)
+    # Probability of `d_infin` being 0 is always 0 (i.e. it is always
+    # "`TRUE`"), so presence of "infin" terms  always results into 1
+  expect_prob_true(d_infin | cur_d_fin, 1)
+  expect_prob_true(d_infin | d_infin, 1)
 })
 
 test_that("Ops.pdqr validates input in case of logical AND/OR", {
@@ -629,8 +629,8 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
   expect_prob_true(all(bool_d_1, bool_p_2, bool_q_3), 0.8*0.7*1)
     # Works when 1 is not present in input's 'x' levels
   expect_prob_true(all(new_d(0, "fin")), 0)
-    # Works for "infin" functions
-  expect_prob_true(all(d_infin), 0)
+    # Works for "infin" functions, which are always `TRUE`
+  expect_prob_true(all(d_infin), 1)
     # Class of output is taken from the first input
   expect_is(all(bool_p_2, bool_q_3), "p")
 
@@ -640,8 +640,8 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
   expect_prob_true(any(bool_d_1, bool_p_2, bool_q_3), 1 - (1-0.8)*(1-0.7)*(1-1))
     # Works when 1 is not present in input's 'x' levels
   expect_prob_true(any(new_d(0, "fin")), 0)
-    # Works for "infin" functions
-  expect_prob_true(any(d_infin), 0)
+    # Works for "infin" functions, which are always `TRUE`
+  expect_prob_true(any(d_infin), 1)
     # Class of output is taken from the first input
   expect_is(any(bool_p_2, bool_q_3), "p")
 })

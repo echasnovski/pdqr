@@ -37,12 +37,12 @@ test_that("summ_prob_true warns about non-boolean pdqr-function", {
   expect_warning(summ_prob_true(new_d(1, "fin")), "not.*boolean")
 })
 
-test_that("summ_prob_true handles absence of 1 in 'x' column of 'x_tbl'", {
-  cur_fin <- new_d(data.frame(x = c(-1, 0), prob = c(1, 1)/2), "fin")
-  expect_equal(expect_warning(summ_prob_true(cur_fin)), 0)
+test_that("summ_prob_true handles absence of 0 in 'x' column of 'x_tbl'", {
+  cur_fin <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1)/2), "fin")
+  expect_equal(expect_warning(summ_prob_true(cur_fin)), 1)
 
-  cur_infin <- new_d(data.frame(x = c(-1, 0), y = c(1, 1)), "infin")
-  expect_equal(expect_warning(summ_prob_true(cur_infin)), 0)
+  cur_infin <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "infin")
+  expect_equal(expect_warning(summ_prob_true(cur_infin)), 1)
 })
 
 test_that("summ_prob_true validates input", {
@@ -67,12 +67,12 @@ test_that("summ_prob_false warns about non-boolean pdqr-function", {
   expect_warning(summ_prob_false(new_d(1, "fin")), "not.*boolean")
 })
 
-test_that("summ_prob_false handles absence of 1 in 'x' column of 'x_tbl'", {
-  cur_fin <- new_d(data.frame(x = c(-1, 0), prob = c(1, 1)/2), "fin")
-  expect_equal(expect_warning(summ_prob_false(cur_fin)), 1)
+test_that("summ_prob_false handles absence of 0 in 'x' column of 'x_tbl'", {
+  cur_fin <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1)/2), "fin")
+  expect_equal(expect_warning(summ_prob_false(cur_fin)), 0)
 
-  cur_infin <- new_d(data.frame(x = c(-1, 0), y = c(1, 1)), "infin")
-  expect_equal(expect_warning(summ_prob_false(cur_infin)), 1)
+  cur_infin <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "infin")
+  expect_equal(expect_warning(summ_prob_false(cur_infin)), 0)
 })
 
 test_that("summ_prob_false validates input", {

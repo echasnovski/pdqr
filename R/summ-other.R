@@ -27,10 +27,10 @@ summ_quantile <- function(f, probs) {
 
 #' Summarize boolean distribution with probability
 #'
-#' Here `summ_prob_true()` returns a probability of 1 and `summ_prob_false()` -
-#' complementary probability (one minus `summ_prob_true()` output). Both of them
-#' check if their input is a **boolean** pdqr-function: type "fin" with `x` in
-#' `x_tbl` identical to `c(0, 1)`. If it is not, warning is thrown.
+#' Here `summ_prob_false()` returns a probability of 0 and `summ_prob_true()` -
+#' complementary probability (one minus `summ_prob_false()` output). Both of
+#' them check if their input is a **boolean** pdqr-function: type "fin" with `x`
+#' in `x_tbl` identical to `c(0, 1)`. If it is not, warning is thrown.
 #'
 #' @inheritParams summ_mean
 #'
@@ -42,17 +42,17 @@ summ_quantile <- function(f, probs) {
 #' summ_prob_true(d_unif > d_norm)
 #' summ_prob_false(2*d_norm > d_unif)
 #'
-#' # When input is "infin" function or doesn't have 1 as distribution element,
-#' # probability of being true is returned as 0.
-#' summ_prob_true(d_unif)
-#' summ_prob_false(new_d(2, "fin"))
+#' # When input is "infin" function or doesn't have 0 as distribution element,
+#' # probability of being false is returned as 0.
+#' summ_prob_false(d_unif)
+#' summ_prob_true(new_d(2, "fin"))
 #'
 #' @name summ-prob
 NULL
 
 #' @rdname summ-prob
 #' @export
-summ_prob_true <- function(f) {
+summ_prob_false <- function(f) {
   assert_pdqr_fun(f)
   if (!is_boolean_pdqr_fun(f)) {
     warning_collapse(
@@ -63,7 +63,7 @@ summ_prob_true <- function(f) {
 
   x_tbl <- meta_x_tbl(f)
 
-  res <- x_tbl[["prob"]][x_tbl[["x"]] == 1]
+  res <- x_tbl[["prob"]][x_tbl[["x"]] == 0]
   if (length(res) == 0) {
     res <- 0
   }
@@ -73,6 +73,6 @@ summ_prob_true <- function(f) {
 
 #' @rdname summ-prob
 #' @export
-summ_prob_false <- function(f) {
-  1 - summ_prob_true(f)
+summ_prob_true <- function(f) {
+  1 - summ_prob_false(f)
 }
