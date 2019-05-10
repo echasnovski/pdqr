@@ -11,7 +11,7 @@ form_estimate(f, estimate, sample_size, ..., n_sample = 10000,
 \item{f}{A pdqr-function.}
 
 \item{estimate}{Estimate function. Should be able to accept numeric vector of
-size \code{sample_size} and return single numeric output.}
+size \code{sample_size} and return single numeric or logical output.}
 
 \item{sample_size}{Size of sample for which distribution of sample estimate
 is needed.}
@@ -36,9 +36,12 @@ inference.
 \details{
 General idea is to create a sample from target distribution by
 generating \code{n_sample} samples of size \code{sample_size} and compute for each of
-them its estimate by calling input \code{estimate} function. Created sample from
-target distribution is used as input to \code{new_*()} of appropriate class with
-\code{type} equal to type of \code{f} (if not forced otherwise in \code{args_new}).
+them its estimate by calling input \code{estimate} function. If created sample is
+logical, \strong{boolean} pdqr-function (type "fin" with elements being exactly 0
+and 1) is created with probability of being true estimated as share of \code{TRUE}
+values (after removing possible \code{NA}). If sample is numeric, it is used as
+input to \code{new_*()} of appropriate class with \code{type} equal to type of \code{f} (if
+not forced otherwise in \code{args_new}).
 
 \strong{Notes}:
 \itemize{
@@ -76,5 +79,11 @@ lines(
   form_estimate(d_unif, estimate = median, sample_size = 10),
   col = "blue"
 )
+
+# Estimate can return single logical value
+d_norm <- as_d(dnorm)
+all_positive <- function(x) {all(x > 0)}
+  # Probability of being true should be around 0.5^5
+form_estimate(d_norm, estimate = all_positive, sample_size = 5)
 
 }

@@ -208,7 +208,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'
 #' @param f A pdqr-function.
 #' @param estimate Estimate function. Should be able to accept numeric vector of
-#'   size `sample_size` and return single numeric output.
+#'   size `sample_size` and return single numeric or logical output.
 #' @param sample_size Size of sample for which distribution of sample estimate
 #'   is needed.
 #' @param ... Other arguments for `estimate`.
@@ -219,9 +219,12 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'
 #' @details General idea is to create a sample from target distribution by
 #' generating `n_sample` samples of size `sample_size` and compute for each of
-#' them its estimate by calling input `estimate` function. Created sample from
-#' target distribution is used as input to `new_*()` of appropriate class with
-#' `type` equal to type of `f` (if not forced otherwise in `args_new`).
+#' them its estimate by calling input `estimate` function. If created sample is
+#' logical, **boolean** pdqr-function (type "fin" with elements being exactly 0
+#' and 1) is created with probability of being true estimated as share of `TRUE`
+#' values (after removing possible `NA`). If sample is numeric, it is used as
+#' input to `new_*()` of appropriate class with `type` equal to type of `f` (if
+#' not forced otherwise in `args_new`).
 #'
 #' **Notes**:
 #' - This function may be very time consuming for large values of `n_sample` and
@@ -261,6 +264,12 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'   col = "blue"
 #' )
 #'
+#' # Estimate can return single logical value
+#' d_norm <- as_d(dnorm)
+#' all_positive <- function(x) {all(x > 0)}
+#'   # Probability of being true should be around 0.5^5
+#' form_estimate(d_norm, estimate = all_positive, sample_size = 5)
+#'
 #' @export
 form_estimate <- function(f, estimate, sample_size, ...,
                           n_sample = 10000, args_new = list()) {
@@ -284,12 +293,25 @@ form_estimate <- function(f, estimate, sample_size, ...,
 
   # Check outputs of `estimate`
   est_smpl_is_number <- vapply(est_smpl, is_single_number, logical(1))
-  if (!all(est_smpl_is_number)) {
-    stop_collapse("All outputs of `estimate` should be single numbers.")
+  est_smpl_is_bool <- vapply(
+    # Not using `is_truefalse()` here because `NA` output is allowed
+    est_smpl, function(x) {is.logical(x) && (length(x) == 1)}, logical(1)
+  )
+  if (!all(est_smpl_is_number | est_smpl_is_bool)) {
+    stop_collapse(
+      "All outputs of `estimate` should be single numeric or logical values."
+    )
   }
   est_smpl <- unlist(est_smpl)
 
-  # Creating output pdqr-function for estimate distribution
+  # Return boolean pdqr-function if all outputs are logical
+  if (is.logical(est_smpl)) {
+    prob_true <- mean(est_smpl, na.rm = TRUE)
+
+    return(boolean_pdqr(prob_true, meta_class(f)))
+  }
+
+  # Creating output pdqr-function for numeric estimate distribution
   call_args <- c_dedupl(
     list(x = est_smpl), args_new, list(type = meta_type(f))
   )

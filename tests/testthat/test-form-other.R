@@ -225,6 +225,32 @@ test_that("form_estimate works", {
   expect_true(abs(summ_sd(infin_mean_est) - sd_d_unif / 4) <= 4e-3)
 })
 
+test_that("form_estimate works with logical output of `estimate`", {
+  d_unif <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)/2), "infin")
+
+  all_positive <- function(x) {all(x > 0)}
+  estim <- form_estimate(d_unif, all_positive, sample_size = 3, n_sample = 1000)
+  expect_true(is_boolean_pdqr_fun(estim))
+  expect_equal(summ_prob_true(estim), 0.5^3, tolerance = 1e-2)
+
+  # Handles `NA`s in logical output
+  na_lgl_estimate <- function(x) {
+    if (any(x < 0.5)) {
+      NA
+    } else {
+      all(x > 0)
+    }
+  }
+  na_estim <- form_estimate(
+    d_unif, na_lgl_estimate, sample_size = 3, n_sample = 1000
+  )
+  expect_true(is_boolean_pdqr_fun(na_estim))
+  # Output here is 1 because probability is estimated using those values which
+  # are not `NA`. Not `NA` is returned only if `all(x >= 0.5)`. The exact
+  # logical value is then computed as `all(x > 0)` which is now always true.
+  expect_equal(summ_prob_true(na_estim), 1)
+})
+
 test_that("form_estimate uses `...` as arguments to `estimate`", {
   dummy_estimate <- function(x, y) {y}
 
@@ -259,14 +285,14 @@ test_that("form_estimate allows `type` in `args_new`", {
   expect_equal(meta_type(mean_est), "infin")
 })
 
-test_that("form_estimate checks that `estimate` returns single number", {
+test_that("form_estimate checks that `estimate` returns single num or lgl", {
   expect_error(
     form_estimate(d_fin, function(x) {"a"}, 10),
-    "output.*`estimate`.*single.*number"
+    "output.*`estimate`.*single.*numeric.*logical"
   )
   expect_error(
     form_estimate(d_fin, function(x) {1:3}, 10),
-    "output.*`estimate`.*single.*number"
+    "output.*`estimate`.*single.*numeric.*logical"
   )
 })
 
