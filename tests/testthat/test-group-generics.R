@@ -15,6 +15,10 @@ make_unif <- function(min, max) {
   new_d(data.frame(x = c(min, max), y = c(1, 1) / c(max - min)), "infin")
 }
 
+validate_error <- function(op) {
+  paste0("All inputs.*`", op, "`.*pdqr-function.*number")
+}
+
 
 # Custom expactations -----------------------------------------------------
 expect_lin_trans <- function(f_out, f_in, ref_supp) {
@@ -279,7 +283,7 @@ test_that("Math.pdqr method for `sign()` works", {
 })
 
 test_that("Math.pdqr validates input", {
-  expect_error(log(bad_pdqr), "`x`")
+  expect_error(log(bad_pdqr), "Input to `log`.*pdqr-function")
 })
 
 
@@ -408,9 +412,9 @@ test_that("Ops.pdqr works with generics which take one argument", {
 })
 
 test_that("Ops.pdqr validates input with generics which take one argument", {
-  expect_error(+bad_pdqr, "`e1`")
-  expect_error(-bad_pdqr, "`e1`")
-  expect_error(!bad_pdqr, "`e1`")
+  expect_error(+bad_pdqr, "Input to `\\+`.*pdqr-function")
+  expect_error(-bad_pdqr, "Input to `\\-`.*pdqr-function")
+  expect_error(!bad_pdqr, "Input to `\\!`.*pdqr-function")
 })
 
 test_that("Ops.pdqr works in case of linear operation", {
@@ -454,13 +458,13 @@ test_that("Ops.pdqr works in case of linear operation", {
 })
 
 test_that("Ops.pdqr validates input in case of linear operation", {
-  expect_error(bad_pdqr + 1, "`e1`")
-  expect_error(1 + bad_pdqr, "`e2`")
-  expect_error(bad_pdqr - 1, "`e1`")
-  expect_error(1 - bad_pdqr, "`e2`")
-  expect_error(bad_pdqr * 1, "`e1`")
-  expect_error(1 * bad_pdqr, "`e2`")
-  expect_error(bad_pdqr / 1, "`e1`")
+  expect_error(bad_pdqr + 1, "First argument.*`\\+`.*pdqr-function")
+  expect_error(1 + bad_pdqr, "Second argument.*`\\+`.*pdqr-function")
+  expect_error(bad_pdqr - 1, "First argument.*`\\-`.*pdqr-function")
+  expect_error(1 - bad_pdqr, "Second argument.*`\\-`.*pdqr-function")
+  expect_error(bad_pdqr * 1, "First argument.*`\\*`.*pdqr-function")
+  expect_error(1 * bad_pdqr, "Second argument.*`\\*`.*pdqr-function")
+  expect_error(bad_pdqr / 1, "First argument.*`\\/`.*pdqr-function")
 })
 
 test_that("Ops.pdqr works in case of comparison", {
@@ -508,52 +512,58 @@ test_that("Ops.pdqr works in case of comparison", {
 
 test_that("Ops.pdqr validates input in case of comparison", {
   # `>=`
-  expect_error(bad_pdqr >= 1, "`e1`")
-  expect_error(1 >= bad_pdqr, "`e2`")
-  expect_error(bad_pdqr >= bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin >= bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" >= d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin >= "a", "`e2`.*pdqr-function.*number")
+  geq_err <- validate_error(">=")
+  expect_error(bad_pdqr >= 1, geq_err)
+  expect_error(1 >= bad_pdqr, geq_err)
+  expect_error(bad_pdqr >= bad_pdqr_2, geq_err)
+  expect_error(d_fin >= bad_pdqr_2, geq_err)
+  expect_error("a" >= d_fin, geq_err)
+  expect_error(d_fin >= "a", geq_err)
 
   `>`
-  expect_error(bad_pdqr > 1, "`e1`")
-  expect_error(1 > bad_pdqr, "`e2`")
-  expect_error(bad_pdqr > bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin > bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" > d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin > "a", "`e2`.*pdqr-function.*number")
+  gre_err <- validate_error(">")
+  expect_error(bad_pdqr > 1, gre_err)
+  expect_error(1 > bad_pdqr, gre_err)
+  expect_error(bad_pdqr > bad_pdqr_2, gre_err)
+  expect_error(d_fin > bad_pdqr_2, gre_err)
+  expect_error("a" > d_fin, gre_err)
+  expect_error(d_fin > "a", gre_err)
 
   `<=`
-  expect_error(bad_pdqr <= 1, "`e1`")
-  expect_error(1 <= bad_pdqr, "`e2`")
-  expect_error(bad_pdqr <= bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin <= bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" <= d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin <= "a", "`e2`.*pdqr-function.*number")
+  leq_err <- validate_error("<=")
+  expect_error(bad_pdqr <= 1, leq_err)
+  expect_error(1 <= bad_pdqr, leq_err)
+  expect_error(bad_pdqr <= bad_pdqr_2, leq_err)
+  expect_error(d_fin <= bad_pdqr_2, leq_err)
+  expect_error("a" <= d_fin, leq_err)
+  expect_error(d_fin <= "a", leq_err)
 
   `<`
-  expect_error(bad_pdqr < 1, "`e1`")
-  expect_error(1 < bad_pdqr, "`e2`")
-  expect_error(bad_pdqr < bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin < bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" < d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin < "a", "`e2`.*pdqr-function.*number")
+  less_err <- validate_error("<")
+  expect_error(bad_pdqr < 1, less_err)
+  expect_error(1 < bad_pdqr, less_err)
+  expect_error(bad_pdqr < bad_pdqr_2, less_err)
+  expect_error(d_fin < bad_pdqr_2, less_err)
+  expect_error("a" < d_fin, less_err)
+  expect_error(d_fin < "a", less_err)
 
   `==`
-  expect_error(bad_pdqr == 1, "`e1`")
-  expect_error(1 == bad_pdqr, "`e2`")
-  expect_error(bad_pdqr == bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin == bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" == d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin == "a", "`e2`.*pdqr-function.*number")
+  eq_err <- validate_error("==")
+  expect_error(bad_pdqr == 1, eq_err)
+  expect_error(1 == bad_pdqr, eq_err)
+  expect_error(bad_pdqr == bad_pdqr_2, eq_err)
+  expect_error(d_fin == bad_pdqr_2, eq_err)
+  expect_error("a" == d_fin, eq_err)
+  expect_error(d_fin == "a", eq_err)
 
   `!=`
-  expect_error(bad_pdqr != 1, "`e1`")
-  expect_error(1 != bad_pdqr, "`e2`")
-  expect_error(bad_pdqr != bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin != bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" != d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin != "a", "`e2`.*pdqr-function.*number")
+  not_eq_err <- validate_error("!=")
+  expect_error(bad_pdqr != 1, not_eq_err)
+  expect_error(1 != bad_pdqr, not_eq_err)
+  expect_error(bad_pdqr != bad_pdqr_2, not_eq_err)
+  expect_error(d_fin != bad_pdqr_2, not_eq_err)
+  expect_error("a" != d_fin, not_eq_err)
+  expect_error(d_fin != "a", not_eq_err)
 })
 
 test_that("Ops.pdqr works in case of logical AND/OR", {
@@ -618,10 +628,10 @@ test_that("Ops.pdqr validates input in case of logical AND/OR", {
 })
 
 test_that("Ops.pdqr validates input", {
-  expect_error(bad_pdqr + d_fin, "`e1`")
-  expect_error(d_fin - bad_pdqr_2, "`e2`")
-  expect_error(bad_pdqr * bad_pdqr_2, "`e1`")
-  expect_error(bad_pdqr %% bad_pdqr_2, "`e1`")
+  expect_error(bad_pdqr + d_fin, validate_error("\\+"))
+  expect_error(d_fin - bad_pdqr_2, validate_error("\\-"))
+  expect_error(bad_pdqr * bad_pdqr_2, validate_error("\\*"))
+  expect_error(bad_pdqr %% bad_pdqr_2, validate_error("%%"))
 })
 
 
@@ -631,6 +641,10 @@ test_that("Summary.pdqr works", {
   expect_distr_fun(max(p_fin, p_fin), "p", "fin")
   expect_distr_fun(sum(q_custom, q_infin, q_infin), "q", "infin")
   expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "infin")
+})
+
+test_that("Summary.pdqr accepts single numbers in general case", {
+  expect_true(meta_support(min(p_infin, 0))[2] == 0)
 })
 
 test_that("Summary.pdqr works in case of `all()` and `any()`", {
@@ -723,7 +737,7 @@ test_that("Summary.pdqr throws error on `range()`", {
 })
 
 test_that("Summary.pdqr validates input in general cases", {
-  expect_error(min(d_fin, "a"), "contain.*pdqr.*number")
+  expect_error(min(d_fin, "a"), validate_error("min"))
 })
 
 
@@ -755,16 +769,24 @@ test_that("Summary.pdqr validates input in general cases", {
 # Tested in `Ops.pdqr`
 
 
+# ops_logic ---------------------------------------------------------------
+# Tested in `Ops.pdqr`
+
+
 # ops_compare -------------------------------------------------------------
 # Tested in `Ops.pdqr`
+
+
+# summary_allany ----------------------------------------------------------
+# Tested in `Summary.pdqr`
 
 
 # ensure_pdqr_functions ---------------------------------------------------
 # Tested in `Ops.pdqr`
 
 
-# summary_allany ----------------------------------------------------------
-# Tested in `Summary.pdqr`
+# assert_gen_single_input -------------------------------------------------
+# Tested in `Math.pdqr` and `Ops.pdqr`
 
 
 # repair_group_gen_support ------------------------------------------------

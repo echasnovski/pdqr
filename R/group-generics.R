@@ -187,7 +187,7 @@ NULL
 #' @rdname methods-group-generic
 #' @export
 Math.pdqr <- function(x, ...) {
-  assert_pdqr_fun(x)
+  assert_gen_single_input(gen = .Generic, x)
 
   switch(
     .Generic,
@@ -201,7 +201,7 @@ Math.pdqr <- function(x, ...) {
 #' @export
 Ops.pdqr <- function(e1, e2) {
   if (missing(e2)) {
-    assert_pdqr_fun(e1)
+    assert_gen_single_input(gen = .Generic, e1)
 
     switch(
       .Generic,
@@ -211,14 +211,18 @@ Ops.pdqr <- function(e1, e2) {
     )
   } else {
     if (is_ops_linear(.Generic, e1, e2)) {
-      ops_linear(.Generic, e1, e2)
-    } else if (.Generic %in% c(">=", ">", "<=", "<", "==", "!=")) {
-      ops_compare(.Generic, e1, e2)
+      return(ops_linear(.Generic, e1, e2))
     } else if (.Generic %in% c("&", "|")) {
-      ops_logic(.Generic, e1, e2)
-    } else {
-      e_list <- ensure_pdqr_functions(e1, e2)
+      return(ops_logic(.Generic, e1, e2))
+    }
 
+    e_list <- ensure_pdqr_functions(gen = .Generic, e1, e2)
+    e1 <- e_list[[1]]
+    e2 <- e_list[[2]]
+
+    if (.Generic %in% c(">=", ">", "<=", "<", "==", "!=")) {
+      ops_compare(.Generic, e1, e2)
+    } else {
       n_sample <- getOption("pdqr.group_gen.n_sample")
       args_new <- getOption("pdqr.group_gen.args_new")
 
@@ -249,7 +253,7 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
     return(summary_allany(gen = .Generic, ...))
   }
 
-  dots <- list(...)
+  dots <- ensure_pdqr_functions(gen = .Generic, ...)
 
   gen_fun <- function(...) {
     g <- get(.Generic)
@@ -345,11 +349,15 @@ ops_linear <- function(gen, e1, e2) {
 
   # `e1` and `e2` should be exactly one single number and one pdqr-function
   if (e1_is_number) {
-    assert_pdqr_fun(e2)
+    if (!is_pdqr_fun(e2)) {
+      stop_collapse("Second argument of `", gen, "` should be pdqr-function.")
+    }
 
     ops_meta <- list(e1_num = e1, e2_num = meta_support(e2), pdqr = e2)
   } else {
-    assert_pdqr_fun(e1)
+    if (!is_pdqr_fun(e1)) {
+      stop_collapse("First argument of `", gen, "` should be pdqr-function.")
+    }
 
     ops_meta <- list(e1_num = meta_support(e1), e2_num = e2, pdqr = e1)
   }
@@ -365,22 +373,6 @@ ops_linear <- function(gen, e1, e2) {
 
     form_resupport(ops_meta[["pdqr"]], res_supp, method = "linear")
   }
-}
-
-ops_compare <- function(gen, e1, e2) {
-  input <- ensure_pdqr_functions(e1, e2)
-  e1 <- input[[1]]
-  e2 <- input[[2]]
-
-  switch(
-    gen,
-    `>=` = form_geq(e1, e2),
-    `>`  = form_greater(e1, e2),
-    `<=` = form_leq(e1, e2),
-    `<`  = form_less(e1, e2),
-    `==` = form_equal(e1, e2),
-    `!=` = form_not_equal(e1, e2)
-  )
 }
 
 ops_logic <- function(gen, e1, e2) {
@@ -405,25 +397,16 @@ ops_logic <- function(gen, e1, e2) {
   )
 }
 
-ensure_pdqr_functions <- function(e1, e2) {
-  if (is_single_number(e1)) {
-    assert_pdqr_fun(e2)
-
-    e1 <- new_pdqr_by_ref(e2)(e1, "fin")
-  } else if (is_single_number(e2)) {
-    assert_pdqr_fun(e1)
-
-    e2 <- new_pdqr_by_ref(e1)(e2, "fin")
-  } else {
-    if (!is_pdqr_fun(e1)) {
-      stop_collapse("`e1` should be pdqr-function or single number.")
-    }
-    if (!is_pdqr_fun(e2)) {
-      stop_collapse("`e2` should be pdqr-function or single number.")
-    }
-  }
-
-  list(e1, e2)
+ops_compare <- function(gen, e1, e2) {
+  switch(
+    gen,
+    `>=` = form_geq(e1, e2),
+    `>`  = form_greater(e1, e2),
+    `<=` = form_leq(e1, e2),
+    `<`  = form_less(e1, e2),
+    `==` = form_equal(e1, e2),
+    `!=` = form_not_equal(e1, e2)
+  )
 }
 
 summary_allany <- function(gen, ...) {
@@ -448,6 +431,37 @@ summary_allany <- function(gen, ...) {
     all = boolean_pdqr(prod(1 - prob_false), out_class),
     any = boolean_pdqr(1 - prod(prob_false), out_class)
   )
+}
+
+ensure_pdqr_functions <- function(gen, ...) {
+  dots <- list(...)
+  gen_name <- paste0("`", gen, "`")
+
+  is_pdqr <- vapply(dots, is_pdqr_fun, logical(1))
+  is_number <- vapply(dots, is_single_number, logical(1))
+
+  if (!all(is_pdqr | is_number)) {
+    stop_collapse(
+      "All inputs to ", gen_name, " should be pdqr-function or single number."
+    )
+  }
+
+  f_class <- compute_f_list_meta(dots)[["class"]]
+  res <- vector(mode = "list", length = length(dots))
+  res[is_pdqr] <- dots[is_pdqr]
+  res[is_number] <- lapply(
+    dots[is_number], new_pdqr_by_class(f_class), type = "fin"
+  )
+
+  res
+}
+
+assert_gen_single_input <- function(gen, input) {
+  if (!is_pdqr_fun(input)) {
+    stop_collapse("Input to `", gen, "` should be pdqr-function.")
+  }
+
+  TRUE
 }
 
 
