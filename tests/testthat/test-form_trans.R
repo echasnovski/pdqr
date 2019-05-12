@@ -87,6 +87,30 @@ test_that("form_trans returns boolean pdqr-function for 'lgl' `trans` output", {
   expect_true(is_boolean_pdqr_fun(bool_brute))
 })
 
+test_that("form_trans handles `NA` in case of logical `trans` output", {
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  na_geq <- function(x) {
+    res <- x >= 0.25
+    res[x < 0.75] <- NA
+
+    res
+  }
+
+  bool_random <- form_trans(list(d_unif), na_geq, method = "random")
+  expect_true(is_boolean_pdqr_fun(bool_random))
+  # Probability of being true is 1 here because it is estimated only on non-`NA`
+  # logical values. Here they are not `NA` if `x >= 0.75` it true. Exact logical
+  # value is then computed as `x >= 0.25` which is always `TRUE`.
+  expect_equal(summ_prob_true(bool_random), 1)
+
+  bool_brute <- form_trans(list(d_unif), na_geq, method = "bruteforce")
+  expect_true(is_boolean_pdqr_fun(bool_brute))
+  # Here probability of being true is 0 becuase it is estimated only on center
+  # of single interval, whcih is 0.5. For it `na_geq()` returns `NA`, which
+  # means that output probability is `mean(NA, na.rm = TRUE)` which is zero.
+  expect_equal(summ_prob_true(bool_brute), 0)
+})
+
 test_that("form_trans produces correct 'pdqr' class", {
   expect_is(form_trans(list(1, p_fin), `+`, method = "random"), "p")
   expect_is(form_trans(list(p_fin, 1), `+`, method = "random"), "p")

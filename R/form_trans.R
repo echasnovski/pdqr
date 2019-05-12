@@ -156,7 +156,8 @@ trans_random <- function(f_list, trans, ..., n_sample, args_new) {
 
   # Return boolean pdqr-function in case output of `trans` is logical
   if (is.logical(smpl)) {
-    prob_true <- mean(smpl)
+    prob_true <- mean(smpl, na.rm = TRUE)
+
     return(boolean_pdqr(prob_true, res_meta[["class"]]))
   }
 
@@ -196,7 +197,7 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
 
   # Return boolean pdqr-function in case output of `trans` is logical
   if (is.logical(x_new)) {
-    prob_true <- sum(prob_new[x_new])
+    prob_true <- sum(prob_new[x_new], na.rm = TRUE)
 
     return(boolean_pdqr(prob_true, res_meta[["class"]]))
   }
