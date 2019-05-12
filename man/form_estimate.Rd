@@ -55,6 +55,8 @@ then recenter distribution to actually have that as a mean.
 }
 }
 \examples{
+# These examples take some time to run, so be cautious
+\dontrun{
 set.seed(101)
 
 # Type "fin"
@@ -85,5 +87,6 @@ d_norm <- as_d(dnorm)
 all_positive <- function(x) {all(x > 0)}
   # Probability of being true should be around 0.5^5
 form_estimate(d_norm, estimate = all_positive, sample_size = 5)
+}
 
 }

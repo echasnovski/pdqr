@@ -239,6 +239,8 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'   [type][meta_type()] (if not forced otherwise in `args_new`) as `f`.
 #'
 #' @examples
+#' # These examples take some time to run, so be cautious
+#' \dontrun{
 #' set.seed(101)
 #'
 #' # Type "fin"
@@ -269,6 +271,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #' all_positive <- function(x) {all(x > 0)}
 #'   # Probability of being true should be around 0.5^5
 #' form_estimate(d_norm, estimate = all_positive, sample_size = 5)
+#' }
 #'
 #' @export
 form_estimate <- function(f, estimate, sample_size, ...,
