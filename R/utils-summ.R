@@ -144,7 +144,7 @@ compute_cdf_crossings <- function(f, g) {
   x_quadr_2 <- pair[["x_left"]] + na_outside(t_quadr_2, 0, pair[["x_diff"]])
 
   # Linear case
-  is_lin <- (a == 0) & (b != 0)
+  is_lin <- is_zero(a) & !is_zero(b)
   t_lin <- -c[is_lin] / b[is_lin]
   x_lin <- pair[["x_left"]][is_lin] +
     na_outside(t_lin, 0, pair[["x_diff"]][is_lin])

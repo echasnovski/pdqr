@@ -218,8 +218,8 @@ ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
   y <- x_tbl[["y"]]
   n <- nrow(x_tbl)
 
-  add_left <- (dir %in% c("left", "both")) && (y[1] != 0)
-  add_right <- (dir %in% c("right", "both")) && (y[n] != 0)
+  add_left <- (dir %in% c("left", "both")) && !is_zero(y[1])
+  add_right <- (dir %in% c("right", "both")) && !is_zero(y[n])
 
   if (add_left) {
     if (add_right) {

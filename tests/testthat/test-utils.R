@@ -15,6 +15,15 @@ test_that("is_near works", {
 })
 
 
+# is_zero -----------------------------------------------------------------
+test_that("is_zero works", {
+  expect_equal(
+    is_zero(c(-1, -1e-11, -1e-13, 0, 1e-13, 1e-11, 1)),
+    c(FALSE, FALSE, TRUE, TRUE, TRUE, FALSE, FALSE)
+  )
+})
+
+
 # is_string ---------------------------------------------------------------
 test_that("is_string works", {
   expect_true(is_string("a"))

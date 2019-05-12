@@ -117,7 +117,7 @@ retype_fin_dirac <- function(f) {
   # x_1 and x_2 are used to compute first "fin" value; x_3 and x_4 - second, and
   # so on. Probability of "fin" value is computed as difference in cumulative
   # probabilities between corresponding right and left "x" values.
-  y_is_zero <- x_tbl[["y"]] == 0
+  y_is_zero <- is_zero(x_tbl[["y"]])
   n_y_zero <- sum(y_is_zero)
   fin_groups <- rep(seq_len(n_y_zero), each = 2, length.out = n_y_zero)
 

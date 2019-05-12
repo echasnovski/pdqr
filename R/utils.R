@@ -3,6 +3,10 @@ is_near <- function (x, y, tol = 10^(-8)) {
   abs(x - y) < tol
 }
 
+is_zero <- function(x) {
+  is_near(x, 0, tol = 1e-12)
+}
+
 is_string <- function(x) {
   is.character(x) && (length(x) == 1)
 }

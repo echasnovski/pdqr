@@ -64,7 +64,7 @@ summ_moment <- function(f, order, central = FALSE, standard = FALSE,
 
   if (standard) {
     f_sd <- summ_sd(f)
-    if (f_sd == 0) {
+    if (is_zero(f_sd)) {
       return(Inf)
     }
 

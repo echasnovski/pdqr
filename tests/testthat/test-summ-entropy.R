@@ -114,6 +114,14 @@ test_that("summ_entropy2 works with dirac-like 'infin' functions", {
   expect_equal(summ_entropy2(g_dirac, f, method = "cross"), -log(0.25))
 })
 
+test_that("summ_entropy2 handles numerical representation accuracy", {
+  # More info in corresponding `cross_entropy()` test
+  approx_unif <- new_d(data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "infin")
+  beta <- as_d(dbeta, shape1 = 1, shape2 = 2)
+
+  expect_equal(summ_entropy2(beta, approx_unif, method = "cross"), 0)
+})
+
 test_that("summ_entropy2 throws error on inputs of different types", {
   expect_error(summ_entropy2(d_fin, d_infin), "`f`.*`g`.*same type")
   expect_error(summ_entropy2(d_infin, d_fin), "`f`.*`g`.*same type")
@@ -211,6 +219,22 @@ test_that("cross_entropy returns maximum value with non-overlapping supports", {
   expect_equal(cross_entropy(h_infin, f_infin, clip = exp(-20)), 20)
 
   expect_equal(cross_entropy(f_infin, g_infin, clip = exp(-10)), 10)
+})
+
+test_that("cross_entropy handles numerical representation accuracy", {
+  # Here `y` values are not **exactly** equal but differ by ~1.38e-17 (on most
+  # platforms, according to "Note" from `==`'s help page).
+  approx_unif <- new_d(data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "infin")
+  beta <- as_d(dbeta, shape1 = 1, shape2 = 2)
+
+  # When this type of issue is in place, one of the previous implementations
+  # checked for slope of second function being equal to 0 as `sl_g != 0`. This
+  # returned `FALSE` and proceeded with great errors because `sl_g` is used in
+  # fraction denominator several times. This was fixed by using
+  # `!is_near(sl_g, 0, tol = 1e-10)` instead.
+
+  # Here output should be equal to 0 because `log(1)` is zero
+  expect_equal(cross_entropy(beta, approx_unif), 0)
 })
 
 test_that("cross_entropy throws error on inputs of different types", {

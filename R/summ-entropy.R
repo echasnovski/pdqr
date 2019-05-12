@@ -145,7 +145,10 @@ cross_entropy_infin <- function(d_f, d_g, clip) {
   piece_entropy_no_log <- -log(g_y_l_clipped) * (0.5*sl_f*d^2 + f_y_l*d)
 
   piece_entropy <- numeric(n - 1)
-  int_has_log <- sl_g != 0
+  # Usage of `is_zero()` instead of `sl_g != 0` is crucial as latter introduced
+  # severe errors because `sl_g` could end up being ~1e-17 because of numeric
+  # representation issues
+  int_has_log <- !is_zero(sl_g)
   piece_entropy[int_has_log] <- piece_entropy_with_log[int_has_log]
   piece_entropy[!int_has_log] <- piece_entropy_no_log[!int_has_log]
 
