@@ -104,9 +104,22 @@
 #' samples). This way `min(f, g)` can be read as "random variable
 #' representing minimum of `f` and `g`", etc.
 #'
-#' `range()` function doesn't make sense here because it returns 2 numbers per
+#' **Notes**:
+#' - `range()` function doesn't make sense here because it returns 2 numbers per
 #' input and therefore can't be made vectorized. Error is thrown if it is
 #' applied to pdqr-function.
+#' - Although all `sum()`, `prod()`, `min()`, `max()` accept pdqr-functions or
+#' single numbers, using numbers and "infin" functions simultaneously is not a
+#' great idea. This is because output will be automatically smoothed (as
+#' `form_trans()` will use some `new_*()` function) which will give a misleading
+#' picture. For a more realistic output:
+#'     - Instead of `min(f, num)` use
+#'     `form_resupport(f, c(num, NA), method = "winsor")` (see
+#'     [form_resupport()]).
+#'     - Instead of `max(f, num)` use
+#'     `form_resupport(f, c(NA, num), method = "winsor")`.
+#'     - Instead of `sum(f, num)` use `f + num`.
+#'     - Instead of `prod(f, num)` use `f * num`.
 #'
 #' @return All methods return pdqr-function which represents the result of
 #'   applying certain function to random variable(s) described with input
@@ -162,6 +175,11 @@
 #'
 #' plot(d_norm + d_norm + d_norm)
 #' lines(sum(d_norm, d_norm, d_norm), col = "red")
+#'
+#'   # Using single numbers is allowed, but gives misleading output in case of
+#'   # "infin" functions. Use other functions instead (see documentation).
+#' plot(min(d_unif, 0.5))
+#' lines(form_resupport(d_unif, c(NA, 0.5), method = "winsor"), col = "blue")
 #'
 #' # Use `options()` to control methods
 #' plot(d_unif + d_unif)

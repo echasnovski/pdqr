@@ -139,9 +139,26 @@ each element is a transformation output for corresponding elements from input
 samples). This way \code{min(f, g)} can be read as "random variable
 representing minimum of \code{f} and \code{g}", etc.
 
-\code{range()} function doesn't make sense here because it returns 2 numbers per
+\strong{Notes}:
+\itemize{
+\item \code{range()} function doesn't make sense here because it returns 2 numbers per
 input and therefore can't be made vectorized. Error is thrown if it is
 applied to pdqr-function.
+\item Although all \code{sum()}, \code{prod()}, \code{min()}, \code{max()} accept pdqr-functions or
+single numbers, using numbers and "infin" functions simultaneously is not a
+great idea. This is because output will be automatically smoothed (as
+\code{form_trans()} will use some \code{new_*()} function) which will give a misleading
+picture. For a more realistic output:
+\itemize{
+\item Instead of \code{min(f, num)} use
+\code{form_resupport(f, c(num, NA), method = "winsor")} (see
+\code{\link[=form_resupport]{form_resupport()}}).
+\item Instead of \code{max(f, num)} use
+\code{form_resupport(f, c(NA, num), method = "winsor")}.
+\item Instead of \code{sum(f, num)} use \code{f + num}.
+\item Instead of \code{prod(f, num)} use \code{f * num}.
+}
+}
 }
 
 \examples{
@@ -186,6 +203,11 @@ plot(max(d_norm, d_norm, d_norm))
 
 plot(d_norm + d_norm + d_norm)
 lines(sum(d_norm, d_norm, d_norm), col = "red")
+
+  # Using single numbers is allowed, but gives misleading output in case of
+  # "infin" functions. Use other functions instead (see documentation).
+plot(min(d_unif, 0.5))
+lines(form_resupport(d_unif, c(NA, 0.5), method = "winsor"), col = "blue")
 
 # Use `options()` to control methods
 plot(d_unif + d_unif)
