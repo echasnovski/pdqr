@@ -45,8 +45,8 @@
 #'
 #' @section Ops:
 #'
-#' This family of S3 generics represents common operators. Their input might be
-#' a pdqr-function or single number.
+#' This family of S3 generics represents common operators. For all functions
+#' (except `&` and `|`) input can be a pdqr-function or single number.
 #'
 #' A list of methods with **non-random nature**:
 #' - `!`, `+`, `-` in case of single input, i.e. `!f` or `-f`.
@@ -61,9 +61,9 @@
 #' **limit of empirical estimation from simulations** (as size of samples grows
 #' to infinity). In other words, output is an exact number which might be
 #' approximated by simulating two big samples of same size from input `e1` and
-#' `e2` (one of which might be a single number), and estimating probability as
-#' share of those pairs from samples for which comparison is true. **Note**
-#' that if at least one input has "infin" type then:
+#' `e2` (one of which can be a single number), and estimating probability as
+#' share of those pairs from samples for which comparison is true. **Note** that
+#' if at least one input has "infin" type, then:
 #'     - `==` will always have probability 0 of being true because probability
 #'     of generating a certain exact one or two numbers from continuous random
 #'     variable is zero.
@@ -71,13 +71,15 @@
 #'     as above.
 #'     - Pairs `>=` and `>`, `<=` and `<` will return the same input because
 #'     probability of being equal is always zero.
-#' - Logical functions `&` and `|`. They are most useful for applying to boolean
-#' pdqr-functions (see description of functions for comparing). `&`'s
-#' probability of being true is a product of those probabilities from input `e1`
-#' and `e2`. `|`'s probability of being false is a product of those
-#' probabilities from input `e1` and `e2`. **Note** that probability of being
-#' false is a probability of being equal to 0; of being true - complementary to
-#' that.
+#' - Logical functions `&` and `|`. Their input can be only pdqr-functions
+#' (because single number input doesn't make much sense). They are most useful
+#' for applying to boolean pdqr-functions (see description of functions for
+#' comparing), and warning is thrown in case any input is not a boolean
+#' pdqr-function. `&`'s probability of being true is a product of those
+#' probabilities from input `e1` and `e2`. `|`'s probability of being false is a
+#' product of those probabilities from input `e1` and `e2`. **Note** that
+#' probability of being false is a probability of being equal to 0; of being
+#' true - complementary to that.
 #'
 #' All other methods are **random**. For example, `f + f`, `f^g` are random.
 #'
@@ -380,9 +382,12 @@ ops_compare <- function(gen, e1, e2) {
 }
 
 ops_logic <- function(gen, e1, e2) {
-  input <- ensure_pdqr_functions(e1, e2)
-  e1 <- input[[1]]
-  e2 <- input[[2]]
+  if (!is_pdqr_fun(e1) || !is_pdqr_fun(e2)) {
+    stop_collapse("Both of `", gen, "` input should be pdqr-functions.")
+  }
+  if (!is_boolean_pdqr_fun(e1) || !is_boolean_pdqr_fun(e2)) {
+    warning_boolean_pdqr_fun(f_name = paste0("One of `", gen, "` input"))
+  }
 
   d_zero <- new_d(0, "fin")
 

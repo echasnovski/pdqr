@@ -72,8 +72,8 @@ a sample, generated from input pdqr-function.
 \section{Ops}{
 
 
-This family of S3 generics represents common operators. Their input might be
-a pdqr-function or single number.
+This family of S3 generics represents common operators. For all functions
+(except \code{&} and \code{|}) input can be a pdqr-function or single number.
 
 A list of methods with \strong{non-random nature}:
 \itemize{
@@ -89,9 +89,9 @@ false, and 1 - being true. Probability of being true is computed directly as
 \strong{limit of empirical estimation from simulations} (as size of samples grows
 to infinity). In other words, output is an exact number which might be
 approximated by simulating two big samples of same size from input \code{e1} and
-\code{e2} (one of which might be a single number), and estimating probability as
-share of those pairs from samples for which comparison is true. \strong{Note}
-that if at least one input has "infin" type then:
+\code{e2} (one of which can be a single number), and estimating probability as
+share of those pairs from samples for which comparison is true. \strong{Note} that
+if at least one input has "infin" type, then:
 \itemize{
 \item \code{==} will always have probability 0 of being true because probability
 of generating a certain exact one or two numbers from continuous random
@@ -101,13 +101,15 @@ as above.
 \item Pairs \code{>=} and \code{>}, \code{<=} and \code{<} will return the same input because
 probability of being equal is always zero.
 }
-\item Logical functions \code{&} and \code{|}. They are most useful for applying to boolean
-pdqr-functions (see description of functions for comparing). \code{&}'s
-probability of being true is a product of those probabilities from input \code{e1}
-and \code{e2}. \code{|}'s probability of being false is a product of those
-probabilities from input \code{e1} and \code{e2}. \strong{Note} that probability of being
-false is a probability of being equal to 0; of being true - complementary to
-that.
+\item Logical functions \code{&} and \code{|}. Their input can be only pdqr-functions
+(because single number input doesn't make much sense). They are most useful
+for applying to boolean pdqr-functions (see description of functions for
+comparing), and warning is thrown in case any input is not a boolean
+pdqr-function. \code{&}'s probability of being true is a product of those
+probabilities from input \code{e1} and \code{e2}. \code{|}'s probability of being false is a
+product of those probabilities from input \code{e1} and \code{e2}. \strong{Note} that
+probability of being false is a probability of being equal to 0; of being
+true - complementary to that.
 }
 
 All other methods are \strong{random}. For example, \code{f + f}, \code{f^g} are random.

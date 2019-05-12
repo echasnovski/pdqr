@@ -562,44 +562,59 @@ test_that("Ops.pdqr works in case of logical AND/OR", {
   )
 
   # `&`
-  expect_prob_true(cur_d_fin & cur_d_fin, (1-0.2)*(1-0.2))
-  expect_prob_true(cur_d_fin & 1, 1-0.2)
-  expect_prob_true(2 & cur_d_fin, 1-0.2)
-  expect_prob_true(cur_d_fin & 0, 0)
+  expect_prob_true(expect_warning(cur_d_fin & cur_d_fin), (1-0.2)*(1-0.2))
+  expect_prob_true(expect_warning(cur_d_fin & new_d(1, "fin")), 1-0.2)
+  expect_prob_true(expect_warning(new_d(2, "fin") & cur_d_fin), 1-0.2)
+  expect_prob_true(expect_warning(cur_d_fin & new_d(0, "fin")), 0)
 
     # Probability of `d_infin` being 0 is always 0 (i.e. it is always
     # "`TRUE`"), so presence of "infin" terms is irrelevant
-  expect_prob_true(d_infin & cur_d_fin, 1-0.2)
-  expect_prob_true(d_infin & d_infin, 1)
+  expect_prob_true(expect_warning(d_infin & cur_d_fin), 1-0.2)
+  expect_prob_true(expect_warning(d_infin & d_infin), 1)
 
   # `|`
-  expect_prob_true(cur_d_fin | cur_d_fin, 1 - 0.2*0.2)
-  expect_prob_true(cur_d_fin | 0, 1-0.2)
-  expect_prob_true(0 | cur_d_fin, 1-0.2)
-  expect_prob_true(cur_d_fin | 2, 1)
+  expect_prob_true(expect_warning(cur_d_fin | cur_d_fin), 1 - 0.2*0.2)
+  expect_prob_true(expect_warning(cur_d_fin | new_d(0, "fin")), 1-0.2)
+  expect_prob_true(expect_warning(new_d(0, "fin") | cur_d_fin), 1-0.2)
+  expect_prob_true(expect_warning(cur_d_fin | new_d(2, "fin")), 1)
 
     # Probability of `d_infin` being 0 is always 0 (i.e. it is always
     # "`TRUE`"), so presence of "infin" terms  always results into 1
-  expect_prob_true(d_infin | cur_d_fin, 1)
-  expect_prob_true(d_infin | d_infin, 1)
+  expect_prob_true(expect_warning(d_infin | cur_d_fin), 1)
+  expect_prob_true(expect_warning(d_infin | d_infin), 1)
+})
+
+test_that("Ops.pdqr warns about 'non-booleanness' in case of logical AND/OR", {
+  not_bool <- new_d(
+    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "fin"
+  )
+  bool <- new_d(data.frame(x = 0:1, prob = c(0.3, 0.7)), "fin")
+
+  expect_warning(not_bool & bool, "One of `&` input.*boolean")
+  expect_warning(bool & not_bool, "One of `&` input.*boolean")
+  expect_warning(not_bool & not_bool, "One of `&` input.*boolean")
+
+  expect_warning(not_bool | bool, "One of `|` input.*boolean")
+  expect_warning(bool | not_bool, "One of `|` input.*boolean")
+  expect_warning(not_bool | not_bool, "One of `|` input.*boolean")
 })
 
 test_that("Ops.pdqr validates input in case of logical AND/OR", {
   # `&`
-  expect_error(bad_pdqr & 1, "`e1`")
-  expect_error(1 & bad_pdqr, "`e2`")
-  expect_error(bad_pdqr & bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin & bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" & d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin & "a", "`e2`.*pdqr-function.*number")
+  expect_error(bad_pdqr & 1, "Both.*`&`.*pdqr")
+  expect_error(1 & bad_pdqr, "Both.*`&`.*pdqr")
+  expect_error(bad_pdqr & bad_pdqr_2, "Both.*`&`.*pdqr")
+  expect_error(d_fin & bad_pdqr_2, "Both.*`&`.*pdqr")
+  expect_error("a" & d_fin, "Both.*`&`.*pdqr")
+  expect_error(d_fin & "a", "Both.*`&`.*pdqr")
 
   # `|`
-  expect_error(bad_pdqr | 1, "`e1`")
-  expect_error(1 | bad_pdqr, "`e2`")
-  expect_error(bad_pdqr | bad_pdqr_2, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin | bad_pdqr_2, "`e2`.*pdqr-function.*number")
-  expect_error("a" | d_fin, "`e1`.*pdqr-function.*number")
-  expect_error(d_fin | "a", "`e2`.*pdqr-function.*number")
+  expect_error(bad_pdqr | 1, "Both.*`|`.*pdqr")
+  expect_error(1 | bad_pdqr, "Both.*`|`.*pdqr")
+  expect_error(bad_pdqr | bad_pdqr_2, "Both.*`|`.*pdqr")
+  expect_error(d_fin | bad_pdqr_2, "Both.*`|`.*pdqr")
+  expect_error("a" | d_fin, "Both.*`|`.*pdqr")
+  expect_error(d_fin | "a", "Both.*`|`.*pdqr")
 })
 
 test_that("Ops.pdqr validates input", {

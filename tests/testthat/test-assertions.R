@@ -342,3 +342,17 @@ test_that("assert_x_tbl works with 'infin' type", {
 
 # assert_num_col ----------------------------------------------------------
 # Tested in `assert_x_tbl()`
+
+
+# warning_boolean_pdqr_fun ------------------------------------------------
+test_that("warning_boolean_pdqr_fun works", {
+  my_f <- new_d(data.frame(x = c(-1, 0, 1), prob = 1:3/6), "fin")
+  expect_warning(warning_boolean_pdqr_fun(my_f), "`my_f`.*not.*boolean")
+
+  bool_f <- boolean_pdqr(0.5, "d")
+  # This still throws warning because there is no check for "booleanness"
+  expect_warning(
+    warning_boolean_pdqr_fun(bool_f, f_name = "my_bool"),
+    "my_bool.*not.*boolean"
+  )
+})

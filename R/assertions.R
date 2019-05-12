@@ -103,7 +103,7 @@ assert_missing_args <- function(f_name, ...) {
 }
 
 
-# Assertions for "pdqr" functions -----------------------------------------
+# Assertions for pdqr-functions -------------------------------------------
 assert_pdqr_fun <- function(f) {
   f_name <- paste0("`", deparse(substitute(f)), "`")
 
@@ -304,4 +304,17 @@ assert_num_col <- function(vec, col_name, x_tbl_name) {
   }
 
   TRUE
+}
+
+
+# Warnings for pdqr-functions ---------------------------------------------
+warning_boolean_pdqr_fun <- function(f = NULL, f_name = NULL) {
+  if (is.null(f_name)) {
+    f_name <- paste0("`", deparse(substitute(f)), "`")
+  }
+
+  warning_collapse(
+    f_name, ' is not a "boolean" pdqr-function (type "fin" with "x" values ',
+    'equal to 0 and 1). Proceed with caution.'
+  )
 }

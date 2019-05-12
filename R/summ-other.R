@@ -55,10 +55,7 @@ NULL
 summ_prob_false <- function(f) {
   assert_pdqr_fun(f)
   if (!is_boolean_pdqr_fun(f)) {
-    warning_collapse(
-      '`f` is not a "boolean" pdqr-function (type "fin" with `x` in "x_tbl" ',
-      'identical to c(0, 1)). Proceed with caution.'
-    )
+    warning_boolean_pdqr_fun(f)
   }
 
   x_tbl <- meta_x_tbl(f)
