@@ -85,7 +85,9 @@
 #'
 #' @section Summary:
 #'
-#' Methods for `all()` and `any()` have **non-random nature**. They return a
+#' Methods for `all()` and `any()` have **non-random nature**. Their input can
+#' be only pdqr-functions, and if any of them is not boolean, a warning is
+#' thrown (because otherwise output doesn't make much sense). They return a
 #' boolean pdqr-function with the following probability of being true:
 #' - In `all()` - probability of *all* input function being true, i.e. product
 #' of probabilities of being true (implemented as complementary to probability
@@ -428,7 +430,11 @@ summary_allany <- function(gen, ...) {
   dots <- list(...)
   all_pdqr <- all(vapply(dots, is_pdqr_fun, logical(1)))
   if (!all_pdqr) {
-    stop_collapse("All input to `all()` or `any()` should be pdqr-functions.")
+    stop_collapse("All input to `", gen, "()` should be pdqr-functions.")
+  }
+  any_non_boolean <- any(!vapply(dots, is_boolean_pdqr_fun, logical(1)))
+  if (any_non_boolean) {
+    warning_boolean_pdqr_fun(f_name = paste0("Some input to `", gen, "()`"))
   }
 
   d_zero <- new_d(0, "fin")

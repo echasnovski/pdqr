@@ -643,9 +643,9 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
   expect_prob_true(all(bool_d_1, bool_p_2), 0.8*0.7)
   expect_prob_true(all(bool_d_1, bool_p_2, bool_q_3), 0.8*0.7*1)
     # Works when 1 is not present in input's 'x' levels
-  expect_prob_true(all(new_d(0, "fin")), 0)
+  expect_prob_true(expect_warning(all(new_d(0, "fin"))), 0)
     # Works for "infin" functions, which are always `TRUE`
-  expect_prob_true(all(d_infin), 1)
+  expect_prob_true(expect_warning(all(d_infin)), 1)
     # Class of output is taken from the first input
   expect_is(all(bool_p_2, bool_q_3), "p")
 
@@ -654,16 +654,31 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
   expect_prob_true(any(bool_d_1, bool_p_2), 1 - (1-0.8)*(1-0.7))
   expect_prob_true(any(bool_d_1, bool_p_2, bool_q_3), 1 - (1-0.8)*(1-0.7)*(1-1))
     # Works when 1 is not present in input's 'x' levels
-  expect_prob_true(any(new_d(0, "fin")), 0)
+  expect_prob_true(expect_warning(any(new_d(0, "fin"))), 0)
     # Works for "infin" functions, which are always `TRUE`
-  expect_prob_true(any(d_infin), 1)
+  expect_prob_true(expect_warning(any(d_infin)), 1)
     # Class of output is taken from the first input
   expect_is(any(bool_p_2, bool_q_3), "p")
 })
 
+test_that("Summary.pdqr warns about 'non-booleanness' in `all()` and `any()`", {
+  not_bool <- new_d(
+    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "fin"
+  )
+  bool <- new_d(data.frame(x = 0:1, prob = c(0.3, 0.7)), "fin")
+
+  expect_warning(all(not_bool, bool), "Some.*`all\\(\\)`.*boolean")
+  expect_warning(all(bool, not_bool), "Some.*`all\\(\\)`.*boolean")
+  expect_warning(all(not_bool, not_bool), "Some.*`all\\(\\)`.*boolean")
+
+  expect_warning(any(not_bool, bool), "Some.*`any\\(\\)`.*boolean")
+  expect_warning(any(bool, not_bool), "Some.*`any\\(\\)`.*boolean")
+  expect_warning(any(not_bool, not_bool), "Some.*`any\\(\\)`.*boolean")
+})
+
 test_that("Summary.pdqr validates input in case of `all()` and `any()`", {
-  expect_error(all(d_fin, "a"), "All.*pdqr")
-  expect_error(all(d_infin >= 1, 1), "All.*pdqr")
+  expect_error(all(d_fin, "a"), "All.*`all\\(\\)`.*pdqr")
+  expect_error(any(d_infin >= 1, 1), "All.*`any\\(\\)`.*pdqr")
 })
 
 test_that("Summary.pdqr uses options", {

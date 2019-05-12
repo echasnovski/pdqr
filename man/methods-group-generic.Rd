@@ -118,7 +118,9 @@ All other methods are \strong{random}. For example, \code{f + f}, \code{f^g} are
 \section{Summary}{
 
 
-Methods for \code{all()} and \code{any()} have \strong{non-random nature}. They return a
+Methods for \code{all()} and \code{any()} have \strong{non-random nature}. Their input can
+be only pdqr-functions, and if any of them is not boolean, a warning is
+thrown (because otherwise output doesn't make much sense). They return a
 boolean pdqr-function with the following probability of being true:
 \itemize{
 \item In \code{all()} - probability of \emph{all} input function being true, i.e. product
