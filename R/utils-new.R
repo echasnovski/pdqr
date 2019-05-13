@@ -4,7 +4,7 @@
 #' Functions for creating new pdqr-functions based on numeric sample or data
 #' frame describing distribution. They construct appropriate ["x_tbl"
 #' metadata][meta_x_tbl()] based on the input and then create pdqr-function (of
-#' corresponding class) defined by that "x_tbl".
+#' corresponding [pdqr class][meta_class()]) defined by that "x_tbl".
 #'
 #' @param x Numeric vector or data frame with appropriate columns (see "Data
 #'   frame input" section).

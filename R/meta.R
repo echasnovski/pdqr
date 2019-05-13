@@ -21,19 +21,35 @@
 #' Pdqr class is returned by `meta_class()`. This can be one of "p", "d", "q",
 #' "r". Represents **how pdqr-function describes underlying distribution**:
 #' - P-function (i.e. of class "p") returns value of cumulative distribution
-#' function (probability of random variable being not more than certain value).
-#' Internally it is implemented as direct integration of corresponding (with the
-#' same "x_tbl" metadata) d-function.
+#' function (probability of random variable being not more than certain value)
+#' at points `q` (its numeric vector input). Internally it is implemented as
+#' direct integration of corresponding (with the same "x_tbl" metadata)
+#' d-function.
 #' - D-function returns value of probability mass or density function (depending
-#' on pdqr type). Internally it is implemented by directly using "x_tbl"
-#' metadata (see section '"x_tbl" metadata' for more details).
-#' - Q-function returns value of quantile function. Internally it is implemented
-#' as inverse of corresponding p-function (returns the smallest "x" value which
-#' has cumulative probability not less than input).
-#' - R-function generates random sample from distribution. Internally it is
-#' implemented using inverse transform sampling: certain amount of points from
-#' [standard uniform distribution][stats::runif()] is generated, and the output
-#' is values of corresponding q-function at generated points.
+#' on pdqr type) at points `x` (its numeric vector input). Internally it is
+#' implemented by directly using "x_tbl" metadata (see section '"x_tbl"
+#' metadata' for more details).
+#' - Q-function returns value of quantile function at points `p` (its numeric
+#' vector input). Internally it is implemented as inverse of corresponding
+#' p-function (returns the smallest "x" value which has cumulative probability
+#' not less than input).
+#' - R-function generates random sample of size `n` (its single number input)
+#' from distribution. Internally it is implemented using inverse transform
+#' sampling: certain amount of points from [standard uniform
+#' distribution][stats::runif()] is generated, and the output is values of
+#' corresponding q-function at generated points.
+#'
+#' These names are chosen so as to follow [base R
+#' convention][stats::Distributions] of naming distribution functions. All
+#' pdqr-functions take only one argument with the same meaning as the first ones
+#' in base R. It has no other arguments specific to some parameters of
+#' distribution family. To emulate their other common arguments, use the
+#' following transformations (here `d_f` means a function of class "d", etc.):
+#' - For `d_f(x, log = TRUE)` use `log(d_f(x))`.
+#' - For `p_f(q, lower.tail = FALSE)` use `1 - p_f(q)`.
+#' - For `p_f(q, log.p = TRUE)` use `log(p_f(q))`.
+#' - For `q_f(p, lower.tail = FALSE)` use `q_f(1 - p)`.
+#' - For `q_f(p, log.p = TRUE)` use `q_f(exp(p))`.
 #'
 #' @section Pdqr type:
 #'

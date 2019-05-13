@@ -52,19 +52,35 @@ Pdqr class is returned by \code{meta_class()}. This can be one of "p", "d", "q",
 "r". Represents \strong{how pdqr-function describes underlying distribution}:
 \itemize{
 \item P-function (i.e. of class "p") returns value of cumulative distribution
-function (probability of random variable being not more than certain value).
-Internally it is implemented as direct integration of corresponding (with the
-same "x_tbl" metadata) d-function.
+function (probability of random variable being not more than certain value)
+at points \code{q} (its numeric vector input). Internally it is implemented as
+direct integration of corresponding (with the same "x_tbl" metadata)
+d-function.
 \item D-function returns value of probability mass or density function (depending
-on pdqr type). Internally it is implemented by directly using "x_tbl"
-metadata (see section '"x_tbl" metadata' for more details).
-\item Q-function returns value of quantile function. Internally it is implemented
-as inverse of corresponding p-function (returns the smallest "x" value which
-has cumulative probability not less than input).
-\item R-function generates random sample from distribution. Internally it is
-implemented using inverse transform sampling: certain amount of points from
-\link[stats:runif]{standard uniform distribution} is generated, and the output
-is values of corresponding q-function at generated points.
+on pdqr type) at points \code{x} (its numeric vector input). Internally it is
+implemented by directly using "x_tbl" metadata (see section '"x_tbl"
+metadata' for more details).
+\item Q-function returns value of quantile function at points \code{p} (its numeric
+vector input). Internally it is implemented as inverse of corresponding
+p-function (returns the smallest "x" value which has cumulative probability
+not less than input).
+\item R-function generates random sample of size \code{n} (its single number input)
+from distribution. Internally it is implemented using inverse transform
+sampling: certain amount of points from \link[stats:runif]{standard uniform distribution} is generated, and the output is values of
+corresponding q-function at generated points.
+}
+
+These names are chosen so as to follow \link[stats:Distributions]{base R convention} of naming distribution functions. All
+pdqr-functions take only one argument with the same meaning as the first ones
+in base R. It has no other arguments specific to some parameters of
+distribution family. To emulate their other common arguments, use the
+following transformations (here \code{d_f} means a function of class "d", etc.):
+\itemize{
+\item For \code{d_f(x, log = TRUE)} use \code{log(d_f(x))}.
+\item For \code{p_f(q, lower.tail = FALSE)} use \code{1 - p_f(q)}.
+\item For \code{p_f(q, log.p = TRUE)} use \code{log(p_f(q))}.
+\item For \code{q_f(p, lower.tail = FALSE)} use \code{q_f(1 - p)}.
+\item For \code{q_f(p, log.p = TRUE)} use \code{q_f(exp(p))}.
 }
 }
 

@@ -33,7 +33,7 @@ A pdqr-function of corresponding \link[=meta_class]{class} ("p" for
 \description{
 Functions for creating new pdqr-functions based on numeric sample or data
 frame describing distribution. They construct appropriate \link[=meta_x_tbl]{"x_tbl" metadata} based on the input and then create pdqr-function (of
-corresponding class) defined by that "x_tbl".
+corresponding \link[=meta_class]{pdqr class}) defined by that "x_tbl".
 }
 \details{
 Data frame input \code{x} is treated as having enough information for
