@@ -95,46 +95,52 @@ test_that("assert_pdqr_fun works", {
 
   # Function type
   input <- 1
-  expect_error(assert_pdqr_fun(input), "`input`.*function")
+  expect_error(assert_pdqr_fun(input), "`input`.*not pdqr-function.*function")
 
   # Classes
-  expect_error(assert_pdqr_fun(user_p), "inherit.*pdqr")
+  expect_error(assert_pdqr_fun(user_p), "not pdqr-function.*inherit.*pdqr")
   expect_error(
     assert_pdqr_fun(structure(user_p, class = "pdqr")),
-    "inherit.*p.*d.*q.*r"
+    "not pdqr-function.*inherit.*p.*d.*q.*r"
   )
 
   # "type" metadata
   f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
-  expect_error(assert_pdqr_fun(f_no_type), "proper.*type")
+  expect_error(assert_pdqr_fun(f_no_type), "not pdqr-function.*proper.*type")
 
   f_bad_type <- f_no_type
   assign("type", "a", environment(f_bad_type))
   expect_error(
     assert_pdqr_fun(structure(f_bad_type, type = "a")),
-    "proper.*type"
+    "not pdqr-function.*proper.*type"
   )
 
   # "support" metadata
   f_no_support <- f_no_type
   assign("type", "infin", environment(f_no_support))
-  expect_error(assert_pdqr_fun(f_no_support), "proper.*support")
+  expect_error(
+    assert_pdqr_fun(f_no_support), "not pdqr-function.*proper.*support"
+  )
 
   f_bad_support <- f_no_support
   assign("support", c(2, 1), environment(f_bad_support))
-  expect_error(assert_pdqr_fun(f_bad_support), "proper.*support")
+  expect_error(
+    assert_pdqr_fun(f_bad_support), "not pdqr-function.*proper.*support"
+  )
 
   # "x_tbl" metadata
     # "x_tbl" is completely missing
   f_no_x_tbl <- as_p(p_infin)
   rm("x_tbl", envir = environment(f_no_x_tbl))
-  expect_error(assert_pdqr_fun(f_no_x_tbl), "have.*x_tbl")
+  expect_error(assert_pdqr_fun(f_no_x_tbl), "not pdqr-function.*have.*x_tbl")
 
     # "x_tbl" has not proper structure
   f_bad_x_tbl <- as_p(p_fin)
   assign("x_tbl", "a", environment(f_bad_x_tbl))
-  expect_error(assert_pdqr_fun(f_bad_x_tbl), 'x_tbl.*data.*frame')
+  expect_error(
+    assert_pdqr_fun(f_bad_x_tbl), 'not pdqr-function.*x_tbl.*data.*frame'
+  )
 })
 
 test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {

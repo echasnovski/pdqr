@@ -106,41 +106,42 @@ assert_missing_args <- function(f_name, ...) {
 # Assertions for pdqr-functions -------------------------------------------
 assert_pdqr_fun <- function(f) {
   f_name <- paste0("`", deparse(substitute(f)), "`")
+  err_header <- paste0(f_name, " is not pdqr-function. ")
 
   if (!is.function(f)) {
-    stop_collapse(f_name, " should be function.")
+    stop_collapse(err_header, "It should be function.")
   }
 
   if (!inherits(f, "pdqr")) {
-    stop_collapse(f_name, ' should inherit from "pdqr".')
+    stop_collapse(err_header, 'It should inherit from "pdqr".')
   }
   if (!inherits(f, c("p", "d", "q", "r"))) {
     stop_collapse(
-      f_name, ' should inherit from one of classes: "p", "d", "q", "r".'
+      err_header, 'It should inherit from one of classes: "p", "d", "q", "r".'
     )
   }
 
   if (!has_meta_type(f)) {
     stop_collapse(
-      f_name, ' should have proper "type" metadata ("fin" or "infin").'
+      err_header, 'It should have proper "type" metadata ("fin" or "infin").'
     )
   }
 
   if (!has_meta_support(f)) {
     stop_collapse(
-      f_name, ' should have proper "support" metadata (numeric vector ',
+      err_header, 'It should have proper "support" metadata (numeric vector ',
       'of length 2 with non-decreasing finite elements).'
     )
   }
 
   if (is.null(meta_x_tbl(f))) {
-    stop_collapse(f_name, ' should have "x_tbl" metadata.')
+    stop_collapse(err_header, 'It should have "x_tbl" metadata.')
   }
 
-  assert_x_tbl(meta_x_tbl(f), type = meta_type(f))
+  assert_x_tbl(meta_x_tbl(f), type = meta_type(f), err_header = err_header)
 
   # Extra properties for "good" "x_tbl" metadata
-  assert_x_tbl_meta(meta_x_tbl(f), type = meta_type(f))
+  assert_x_tbl_meta(meta_x_tbl(f), type = meta_type(f), err_header = err_header)
 
   TRUE
 }
@@ -184,93 +185,102 @@ assert_support <- function(support, allow_na = FALSE) {
   TRUE
 }
 
-assert_x_tbl <- function(x_tbl, type) {
+assert_x_tbl <- function(x_tbl, type, err_header = "") {
   x_tbl_name <- paste0("`", deparse(substitute(x_tbl)), "`")
 
   if (!is.data.frame(x_tbl)) {
-    stop_collapse(x_tbl_name, " should be a data frame.")
+    stop_collapse(err_header, x_tbl_name, " should be a data frame.")
   }
 
-  assert_num_col(x_tbl[["x"]], '"x"', x_tbl_name)
+  assert_num_col(x_tbl[["x"]], '"x"', x_tbl_name, err_header = err_header)
 
   switch(
     type,
-    fin = assert_x_tbl_fin(x_tbl, x_tbl_name),
-    infin = assert_x_tbl_infin(x_tbl, x_tbl_name)
+    fin = assert_x_tbl_fin(x_tbl, x_tbl_name, err_header = err_header),
+    infin = assert_x_tbl_infin(x_tbl, x_tbl_name, err_header = err_header)
   )
 }
 
-assert_x_tbl_fin <- function(x_tbl, x_tbl_name) {
+assert_x_tbl_fin <- function(x_tbl, x_tbl_name, err_header = "") {
   if (!("prob" %in% names(x_tbl))) {
-    stop_collapse(x_tbl_name, ' should have "prob" column.')
+    stop_collapse(err_header, x_tbl_name, ' should have "prob" column.')
   }
 
   prob <- x_tbl[["prob"]]
-  assert_num_col(prob, '"prob"', x_tbl_name)
+  assert_num_col(prob, '"prob"', x_tbl_name, err_header = err_header)
 
   if (any(prob < 0)) {
     stop_collapse(
-      '"prob" column in ', x_tbl_name, " should not have negative values."
+      err_header, '"prob" column in ', x_tbl_name, " should not have negative ",
+      "values."
     )
   }
   if (sum(prob) <= 0) {
-    stop_collapse('"prob" column in ', x_tbl_name, " should have positive sum.")
+    stop_collapse(
+      err_header, '"prob" column in ', x_tbl_name, " should have positive sum."
+    )
   }
 
   TRUE
 }
 
-assert_x_tbl_infin <- function(x_tbl, x_tbl_name) {
+assert_x_tbl_infin <- function(x_tbl, x_tbl_name, err_header = "") {
   if (nrow(x_tbl) < 2) {
-    stop_collapse(x_tbl_name, " should have at least 2 rows.")
+    stop_collapse(err_header, x_tbl_name, " should have at least 2 rows.")
   }
 
   if (anyDuplicated(x_tbl[["x"]]) != 0) {
     stop_collapse(
-      '"x" column in ', x_tbl_name, ' should not have duplicate values.'
+      err_header, '"x" column in ', x_tbl_name, ' should not have duplicate ",
+      "values.'
     )
   }
 
-  assert_num_col(x_tbl[["y"]], '"y"', x_tbl_name)
+  assert_num_col(x_tbl[["y"]], '"y"', x_tbl_name, err_header = err_header)
 
   if (any(x_tbl[["y"]] < 0)) {
     stop_collapse(
-      '"y" column in ', x_tbl_name, ' should not have negative values.'
+      err_header, '"y" column in ', x_tbl_name, ' should not have negative ",
+      "values.'
     )
   }
   if (!any(x_tbl[["y"]] > 0)) {
     stop_collapse(
-      '"y" column in ', x_tbl_name, ' should have at least one positive value.'
+      err_header, '"y" column in ', x_tbl_name, ' should have at least one ",
+      "positive value.'
     )
   }
 
   TRUE
 }
 
-assert_x_tbl_meta <- function(x_tbl, type) {
+assert_x_tbl_meta <- function(x_tbl, type, err_header = "") {
   if (is.unsorted(x_tbl[["x"]])) {
     stop_collapse(
-      '"x" column in "x_tbl" metadata should be sorted increasingly.'
+      err_header, '"x" column in "x_tbl" metadata should be sorted ",
+      "increasingly.'
     )
   }
   if (!("cumprob" %in% names(x_tbl))) {
-    stop_collapse('"x_tbl" metadata should have "cumprob" column.')
+    stop_collapse(err_header, '"x_tbl" metadata should have "cumprob" column.')
   }
 
   if (type == "fin") {
     if (!("prob" %in% names(x_tbl))) {
       stop_collapse(
-        '"x_tbl" metadata should have "prob" column if `type` is "fin".'
+        err_header, '"x_tbl" metadata should have "prob" column if `type` is ',
+        '"fin".'
       )
     }
     if (!is_near(sum(x_tbl[["prob"]]), 1)) {
       stop_collapse(
-        '"prob" column in "x_tbl" metadata should sum to 1.'
+        err_header, '"prob" column in "x_tbl" metadata should sum to 1.'
       )
     }
     if (anyDuplicated(x_tbl[["x"]]) != 0) {
       stop_collapse(
-        '"x" column in "x_tbl" metadata should not have duplicate values.'
+        err_header, '"x" column in "x_tbl" metadata should not have duplicate ',
+        'values.'
       )
     }
   }
@@ -278,8 +288,8 @@ assert_x_tbl_meta <- function(x_tbl, type) {
   if (type == "infin") {
     if (!is_near(trapez_integral(x_tbl[["x"]], x_tbl[["y"]]), 1)) {
       stop_collapse(
-        'Total integral from "x_tbl" metadata columns should be 1 if ',
-        '`type` is "infin".'
+        err_header, 'Total integral from "x_tbl" metadata columns should be 1 ',
+        'if `type` is "infin".'
       )
     }
   }
@@ -287,19 +297,20 @@ assert_x_tbl_meta <- function(x_tbl, type) {
   TRUE
 }
 
-assert_num_col <- function(vec, col_name, x_tbl_name) {
+assert_num_col <- function(vec, col_name, x_tbl_name, err_header = "") {
   if (is.null(vec)) {
-    stop_collapse(x_tbl_name, " should have column ", col_name, ".")
+    stop_collapse(err_header, x_tbl_name, " should have column ", col_name, ".")
   }
 
   stop_start_chr <- paste0(col_name, " column in ", x_tbl_name)
 
   if (!is.numeric(vec)) {
-    stop_collapse(stop_start_chr, " should be numeric.")
+    stop_collapse(err_header, stop_start_chr, " should be numeric.")
   }
   if (!all(is.finite(vec))) {
     stop_collapse(
-      stop_start_chr, " should have only finite values and no `NA`s."
+      err_header, stop_start_chr, " should have only finite values and no ",
+      "`NA`s."
     )
   }
 
