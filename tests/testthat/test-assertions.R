@@ -4,7 +4,7 @@ context("test-assertions")
 # Notes -------------------------------------------------------------------
 # Usage of `as_*()` functions withoub seamingly apparent reason (for example,
 # `as_p(p_infin)`) ensures that output object has different enclosing
-# environement. This is needed for caregul test behavior with "bad" metadat.
+# environement. This is needed for careful test behavior with "bad" metadat.
 
 
 # assert_type -------------------------------------------------------------

@@ -23,7 +23,7 @@
 #'
 #' If **`f` is already a pdqr-function**, `as_*()` functions properly update it
 #' to have specific class. They take input's ["x_tbl" metadata][meta_x_tbl()]
-#' and [type][meta_type()] to use at with corresponding [new_*()][new-pdqr]
+#' and [type][meta_type()] to use with corresponding [new_*()][new-pdqr]
 #' function. For example, `as_p(f)` in case of pdqr-function `f` is essentially
 #' the same as `new_p(x = meta_x_tbl(f), type = meta_type(f))`.
 #'

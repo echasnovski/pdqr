@@ -75,7 +75,7 @@ that goal.
 
 If \strong{\code{f} is already a pdqr-function}, \code{as_*()} functions properly update it
 to have specific class. They take input's \link[=meta_x_tbl]{"x_tbl" metadata}
-and \link[=meta_type]{type} to use at with corresponding \link[=new-pdqr]{new_*()}
+and \link[=meta_type]{type} to use with corresponding \link[=new-pdqr]{new_*()}
 function. For example, \code{as_p(f)} in case of pdqr-function \code{f} is essentially
 the same as \code{new_p(x = meta_x_tbl(f), type = meta_type(f))}.
 
