@@ -265,6 +265,11 @@ test_that("form_trans_self works",  {
   expect_true(max(abs(output_x_tbl[["prob"]] - c(0.2, 0.7, 0.1))) < 2e-2)
 })
 
+test_that("form_trans_self validates input", {
+  expect_error(form_trans_self("a"), "f.*not pdqr-function")
+  # Validation of other arguments is tested in `form_trans()`
+})
+
 
 # trans_random ------------------------------------------------------------
 # Tested in `form_trans()`

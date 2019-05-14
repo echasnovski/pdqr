@@ -126,6 +126,8 @@ form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
 #' @export
 form_trans_self <- function(f, trans, ..., method = "random",
                             args_new = list()) {
+  assert_pdqr_fun(f)
+
   form_trans(
     f_list = list(f), trans = trans, ...,
     method = method, args_new = args_new
