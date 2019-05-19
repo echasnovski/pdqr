@@ -214,8 +214,7 @@ test_that("summ_hdr works with special values of `level`", {
 })
 
 test_that("summ_hdr validates input", {
-  expect_error(summ_hdr("a"), "`f`.*function")
-  expect_error(summ_hdr(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_hdr("a"), "`f`.*not pdqr-function")
   expect_error(summ_hdr(d_fin, level = "a"), "`level`.*number")
   expect_error(summ_hdr(d_fin, level = c(0.05, 0.1)), "`level`.*single")
   expect_error(summ_hdr(d_fin, level = 1.1), "`level`.*between 0 and 1")

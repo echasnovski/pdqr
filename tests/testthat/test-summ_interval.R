@@ -272,8 +272,7 @@ test_that("summ_interval uses `n_grid` argument", {
 })
 
 test_that("summ_interval validates input", {
-  expect_error(summ_interval("a"), "`f`.*function")
-  expect_error(summ_interval(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_interval("a"), "`f`.*not pdqr-function")
   expect_error(summ_interval(d_fin, level = "a"), "`level`.*number")
   expect_error(summ_interval(d_fin, level = c(0.05, 0.1)), "`level`.*single")
   expect_error(summ_interval(d_fin, level = 1.1), "`level`.*between 0 and 1")

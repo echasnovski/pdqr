@@ -184,8 +184,7 @@ test_that("form_smooth uses `args_new` as arguments for `new_*()`", {
 d_fin <- new_d(data.frame(x = 0:1, prob = 0:1), "fin")
 
 test_that("form_smooth validates input", {
-  expect_error(form_smooth("a"), "`f`.*function")
-  expect_error(form_smooth(function(x) {x}), "`f`.*pdqr")
+  expect_error(form_smooth("a"), "`f`.*not pdqr-function")
   expect_error(form_smooth(d_fin, n_sample = "a"), "`n_sample`.*single number")
   expect_error(form_smooth(d_fin, n_sample = 1), "`n_sample`.*more than 1")
   expect_error(form_smooth(d_fin, args_new = "a"), "`args_new`.*list")
@@ -297,8 +296,7 @@ test_that("form_estimate checks that `estimate` returns single num or lgl", {
 })
 
 test_that("form_estimate validates input", {
-  expect_error(form_estimate("a", mean, 10), "`f`.*function")
-  expect_error(form_estimate(function(x) {x}, mean, 10), "`f`.*pdqr")
+  expect_error(form_estimate("a", mean, 10), "`f`.*not pdqr-function")
   expect_error(form_estimate(d_fin, "a", 10), "`estimate`.*function")
   expect_error(form_estimate(d_fin, mean, "a"), "`sample_size`.*single.*number")
   expect_error(form_estimate(d_fin, mean, 0), "`sample_size`.*positive")

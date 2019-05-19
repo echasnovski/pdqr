@@ -18,8 +18,7 @@ test_that("summ_dispersion works", {
 })
 
 test_that("summ_dispersion validates input", {
-  expect_error(summ_dispersion("a"), "`f`.*function")
-  expect_error(summ_dispersion(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_dispersion("a"), "`f`.*not pdqr-function")
   expect_error(summ_dispersion(d_fin, method = 1), "`method`.*string")
   expect_error(summ_dispersion(d_fin, method = "a"), "`method`.*one of")
 })
@@ -73,8 +72,7 @@ test_that("summ_sd works with 'infin' functions with few intervals", {
 })
 
 test_that("summ_sd validates input", {
-  expect_error(summ_sd("a"), "`f`.*function")
-  expect_error(summ_sd(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_sd("a"), "`f`.*not pdqr-function")
 })
 
 
@@ -133,8 +131,7 @@ test_that("summ_var works with 'infin' functions with few intervals", {
 })
 
 test_that("summ_var validates input", {
-  expect_error(summ_var("a"), "`f`.*function")
-  expect_error(summ_var(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_var("a"), "`f`.*not pdqr-function")
 })
 
 
@@ -185,8 +182,7 @@ test_that("summ_iqr works with 'infin' functions with few intervals", {
 })
 
 test_that("summ_iqr validates input", {
-  expect_error(summ_iqr("a"), "`f`.*function")
-  expect_error(summ_iqr(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_iqr("a"), "`f`.*not pdqr-function")
 })
 
 
@@ -237,6 +233,5 @@ test_that("summ_mad works with 'infin' functions with few intervals", {
 })
 
 test_that("summ_mad validates input", {
-  expect_error(summ_mad("a"), "`f`.*function")
-  expect_error(summ_mad(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_mad("a"), "`f`.*not pdqr-function")
 })

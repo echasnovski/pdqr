@@ -66,8 +66,7 @@ test_that("summ_pval accepts any pdqr class", {
 })
 
 test_that("summ_pval validates input", {
-  expect_error(summ_pval("a", 1), "`f`.*function")
-  expect_error(summ_pval(function(x) {x}, 1), "`f`.*pdqr")
+  expect_error(summ_pval("a", 1), "`f`.*not pdqr-function")
   expect_error(summ_pval(p_fin, "a"), "`obs`.*numeric")
   expect_error(summ_pval(p_fin, 1, method = 1), "`method`.*string")
   expect_error(summ_pval(p_fin, 1, method = "a"), "`method`.*one of")

@@ -96,7 +96,7 @@ test_that("form_retype returns input when types match", {
 })
 
 test_that("form_retype validates input", {
-  expect_error(form_retype("a", "fin"), "`f`.*function")
+  expect_error(form_retype("a", "fin"), "`f`.*not pdqr-function")
   expect_error(form_retype(d_fin, "a"), '`type`.*"fin".*"infin"')
   expect_error(form_retype(d_fin, "infin", 1), '`method`.*string')
   expect_error(

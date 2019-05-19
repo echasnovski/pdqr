@@ -533,8 +533,7 @@ test_that("pdqr_approx_error uses `remove_infinity` argument", {
 
 test_that("pdqr_approx_error validates input", {
   d_unif <- as_d(dunif)
-  expect_error(pdqr_approx_error("a", dunif), "`f`.*function")
-  expect_error(pdqr_approx_error(function(x) {x}, dunif), "`f`.*pdqr")
+  expect_error(pdqr_approx_error("a", dunif), "`f`.*not pdqr-function")
   expect_error(
     pdqr_approx_error(as_r(runif), runif), "`f`.*p-, d-, or q-function"
   )

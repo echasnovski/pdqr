@@ -65,8 +65,7 @@ test_that("summ_entropy handles zero probabilities/densities", {
 })
 
 test_that("summ_entropy validates input", {
-  expect_error(summ_entropy("a"), "`f`.*function")
-  expect_error(summ_entropy(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_entropy("a"), "`f`.*not pdqr-function")
 })
 
 
@@ -134,10 +133,8 @@ test_that("summ_entropy2 uses `clip` argument", {
 })
 
 test_that("summ_entropy2 validates input", {
-  expect_error(summ_entropy2("a", d_fin), "`f`.*function")
-  expect_error(summ_entropy2(function(x) {x}, d_fin), "`f`.*pdqr")
-  expect_error(summ_entropy2(d_fin, "a"), "`g`.*function")
-  expect_error(summ_entropy2(d_fin, function(x) {x}), "`g`.*pdqr")
+  expect_error(summ_entropy2("a", d_fin), "`f`.*not pdqr-function")
+  expect_error(summ_entropy2(d_fin, "a"), "`g`.*not pdqr-function")
   expect_error(summ_entropy2(d_fin, d_fin, clip = "a"), "`clip`.*number")
   expect_error(summ_entropy2(d_fin, d_fin, clip = 1:2), "`clip`.*single")
   expect_error(summ_entropy2(d_fin, d_fin, clip = -1), "`clip`.*non-negative")

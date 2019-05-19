@@ -197,8 +197,7 @@ test_that("form_tails returns dirac-like distribution at maximum level", {
 })
 
 test_that("form_tails validates input",  {
-  expect_error(form_tails("a", 0.1), "`f`.*function")
-  expect_error(form_tails(function(x) {x}, 0.1), "`f`.*pdqr")
+  expect_error(form_tails("a", 0.1), "`f`.*not pdqr-function")
   expect_error(form_tails(cur_fin, "a"), "`level`.*single number")
   expect_error(form_tails(cur_fin, 0.1, method = 1), "`method`.*string")
   expect_error(form_tails(cur_fin, 0.1, method = "a"), "`method`.*one of")

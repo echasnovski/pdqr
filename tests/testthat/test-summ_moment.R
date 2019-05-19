@@ -123,8 +123,7 @@ test_that("summ_moment computes infinite standard moment", {
 })
 
 test_that("summ_moment validates input", {
-  expect_error(summ_moment("a", 1), "`f`.*function")
-  expect_error(summ_moment(function(x) {x}, 1), "`f`.*pdqr")
+  expect_error(summ_moment("a", 1), "`f`.*not pdqr-function")
   expect_error(summ_moment(d_fin, "a"), "`order`.*number")
   expect_error(summ_moment(d_fin, -1), "`order`.*non-negative")
   expect_error(summ_moment(d_fin, 1:2), "`order`.*single")
@@ -184,8 +183,7 @@ test_that("summ_skewness works with dirac-like functions", {
 })
 
 test_that("summ_skewness validates input", {
-  expect_error(summ_skewness("a"), "`f`.*function")
-  expect_error(summ_skewness(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_skewness("a"), "`f`.*not pdqr-function")
 })
 
 
@@ -252,7 +250,6 @@ test_that("summ_kurtosis uses `excess` argument", {
 })
 
 test_that("summ_kurtosis validates input", {
-  expect_error(summ_kurtosis("a"), "`f`.*function")
-  expect_error(summ_kurtosis(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_kurtosis("a"), "`f`.*not pdqr-function")
   expect_error(summ_kurtosis(d_fin, excess = "a"), "`excess`.*TRUE.*FALSE")
 })

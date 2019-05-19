@@ -335,7 +335,9 @@ test_that("as_q.pdqr works with 'r'", {
 })
 
 test_that("as_q.pdqr validates input", {
-  expect_error(as_q(structure(user_q, class = c("p", "pdqr"))), "`f`")
+  expect_error(
+    as_q(structure(user_q, class = c("p", "pdqr"))), "`f`.*not pdqr-function"
+  )
 })
 
 

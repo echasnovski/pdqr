@@ -256,8 +256,7 @@ test_that("region_prob validates input", {
   region <- data.frame(left = 1, right = 2)
   expect_error(region_prob("a", d_fin), "`region`.*data frame")
   expect_error(region_prob(data.frame(a = 1), d_fin), '`region`.*"left"')
-  expect_error(region_prob(region, "a"), "`f`.*function")
-  expect_error(region_prob(region, function(x) {x}), "`f`.*pdqr")
+  expect_error(region_prob(region, "a"), "`f`.*not pdqr-function")
   expect_error(
     region_prob(region, d_fin, left_closed = "a"), "`left_closed`.*TRUE.*FALSE"
   )
@@ -404,8 +403,7 @@ test_that("region_height validates input", {
   region <- data.frame(left = 1, right = 2)
   expect_error(region_height("a", d_fin), "`region`.*data frame")
   expect_error(region_height(data.frame(a = 1), d_fin), '`region`.*"left"')
-  expect_error(region_height(region, "a"), "`f`.*function")
-  expect_error(region_height(region, function(x) {x}), "`f`.*pdqr")
+  expect_error(region_height(region, "a"), "`f`.*not pdqr-function")
   expect_error(
     region_height(region, d_fin, left_closed = "a"),
     "`left_closed`.*TRUE.*FALSE"

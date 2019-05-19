@@ -185,8 +185,7 @@ test_that("form_regrid returns self when `n_grid` = number of present points", {
 })
 
 test_that("form_regrid validates input", {
-  expect_error(form_regrid("a", 10), "`f`.*function")
-  expect_error(form_regrid(function(x) {x}, 10), "`f`.*pdqr")
+  expect_error(form_regrid("a", 10), "`f`.*not pdqr-function")
   expect_error(form_regrid(cur_fin, "a"), "`n_grid`.*single.*number")
   expect_error(form_regrid(cur_fin, 0), "`n_grid`.*positive")
   expect_error(form_regrid(cur_fin, 10, method = 1), "`method`.*string")

@@ -13,8 +13,7 @@ test_that("summ_quantile works", {
 })
 
 test_that("summ_quantile validates input", {
-  expect_error(summ_quantile("a", c(0, 1)), "`f`.*function")
-  expect_error(summ_quantile(function(x) {x}, c(0, 1)), "`f`.*pdqr")
+  expect_error(summ_quantile("a", c(0, 1)), "`f`.*not pdqr-function")
   expect_error(summ_quantile(d_fin, "a"), "`probs`.*numeric")
   expect_error(summ_quantile(d_fin, c(-1e-6, 0)), "`probs`.*\\[0; 1\\]")
   expect_error(summ_quantile(d_fin, c(1, 1+1e-6)), "`probs`.*\\[0; 1\\]")
@@ -46,8 +45,7 @@ test_that("summ_prob_true handles absence of 0 in 'x' column of 'x_tbl'", {
 })
 
 test_that("summ_prob_true validates input", {
-  expect_error(summ_prob_true("a"), "`f`.*function")
-  expect_error(summ_prob_true(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_prob_true("a"), "`f`.*not pdqr-function")
 })
 
 
@@ -76,6 +74,5 @@ test_that("summ_prob_false handles absence of 0 in 'x' column of 'x_tbl'", {
 })
 
 test_that("summ_prob_false validates input", {
-  expect_error(summ_prob_false("a"), "`f`.*function")
-  expect_error(summ_prob_false(function(x) {x}), "`f`.*pdqr")
+  expect_error(summ_prob_false("a"), "`f`.*not pdqr-function")
 })
