@@ -25,6 +25,8 @@
 #' @seealso [summ_center()] for computing distribution's center,
 #'   [summ_dispersion()] for dispersion.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' d_beta <- as_d(dbeta, shape1 = 2, shape2 = 1)
 #'

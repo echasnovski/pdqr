@@ -104,4 +104,11 @@ region_draw(summ_hdr(d_mix, 0.95))
 HDR.
 
 \code{\link[=summ_interval]{summ_interval()}} for computing of single interval summary of distribution.
+
+Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_dispersion}},
+  \code{\link{summ_entropy}}, \code{\link{summ_interval}},
+  \code{\link{summ_moment}}, \code{\link{summ_prob_true}},
+  \code{\link{summ_pval}}, \code{\link{summ_quantile}}
 }
+\concept{summary functions}

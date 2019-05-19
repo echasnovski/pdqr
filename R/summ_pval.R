@@ -32,6 +32,8 @@
 #' @return A numeric vector with the same length as `obs` representing
 #' corresponding p-values after possible adjustment for multiple comparisons.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' # Type "fin"
 #' d_fin <- new_d(data.frame(x = 1:5, prob = c(1, 2, 3, 2, 1) / 9), "fin")

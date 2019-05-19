@@ -52,6 +52,8 @@
 #' [region_*()][region] family of functions for working with `summ_interval()`
 #' output.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' # Type "fin"
 #' d_fin <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2)/9), "fin")

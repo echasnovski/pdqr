@@ -59,6 +59,8 @@
 #'
 #' [summ_interval()] for computing of single interval summary of distribution.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' # "fin" functions
 #' d_fin <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "fin")

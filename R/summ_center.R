@@ -27,6 +27,8 @@
 #' @seealso [summ_dispersion()] for computing distribution's dispersion,
 #'   [summ_moment()] for general moments.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' # Type "infin"
 #' d_norm <- as_d(dnorm)

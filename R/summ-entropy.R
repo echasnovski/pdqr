@@ -19,6 +19,8 @@
 #' @return A single number representing entropy. If `clip` is strictly positive,
 #' then it will be finite.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' d_norm <- as_d(dnorm)
 #' d_norm_2 <- as_d(dnorm, mean = 2, sd = 0.5)

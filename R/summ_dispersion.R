@@ -24,6 +24,8 @@
 #' @seealso [summ_center()] for computing distribution's center, [summ_moment()]
 #'   for general moments.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' # Type "infin"
 #' d_norm <- as_d(dnorm)

@@ -55,3 +55,11 @@ summ_entropy2(d_1, d_2, method = "cross", clip = exp(-10))
 summ_entropy2(d_1, d_2, method = "cross", clip = 0)
 
 }
+\seealso{
+Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_dispersion}}, \code{\link{summ_hdr}},
+  \code{\link{summ_interval}}, \code{\link{summ_moment}},
+  \code{\link{summ_prob_true}}, \code{\link{summ_pval}},
+  \code{\link{summ_quantile}}
+}
+\concept{summary functions}

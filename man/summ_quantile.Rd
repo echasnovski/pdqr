@@ -25,3 +25,11 @@ probs <- c(0.25, 0.5, 0.75)
 all.equal(summ_quantile(d_norm, probs), as_q(d_norm)(probs))
 
 }
+\seealso{
+Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_dispersion}},
+  \code{\link{summ_entropy}}, \code{\link{summ_hdr}},
+  \code{\link{summ_interval}}, \code{\link{summ_moment}},
+  \code{\link{summ_prob_true}}, \code{\link{summ_pval}}
+}
+\concept{summary functions}

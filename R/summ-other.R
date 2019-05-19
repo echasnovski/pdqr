@@ -9,6 +9,8 @@
 #' @return A numeric vector of the same length as `probs` representing
 #'   corresponding quantiles.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' d_norm <- as_d(dnorm)
 #' probs <- c(0.25, 0.5, 0.75)
@@ -35,6 +37,8 @@ summ_quantile <- function(f, probs) {
 #' @inheritParams summ_mean
 #'
 #' @return A single numeric value representing corresponding probability.
+#'
+#' @family summary functions
 #'
 #' @examples
 #' d_unif <- as_d(dunif)
