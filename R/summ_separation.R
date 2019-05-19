@@ -1,3 +1,52 @@
+#' Summarize distributions with separation threshold
+#'
+#' Compute for pair of pdqr-functions the optimal threshold that separates
+#' distributions they represent. In other words, `summ_separation()` solves a
+#' classification problem with two classes (represented by pdqr-functions) with
+#' a one-dimensional linear classifier: values more than the output threshold
+#' are declared to have one class, and not less than threshold - second class.
+#'
+#' @param f A pdqr-function of any [type][meta_type()] and
+#'   [class][meta_class()].
+#' @param g A pdqr-function of any type and class.
+#' @param method Separation method. Should be one of "KS" (Kolmogorov-Smirnov).
+#'
+#' @details All methods in case of several optimal solutions return the smallest
+#' one.
+#'
+#' Method "KS" computes "x" value at which corresponding p-functions of `f` and
+#' `g` achieve supremum of their absolute difference. If input pdqr-functions
+#' have the same [type][meta_type()], then result is a point of maximum absolute
+#' difference. If inputs have different types, then absolute difference of
+#' p-functions at the result point can be not the biggest. In that case output
+#' represents a left limit of points at which target supremum is reached (see
+#' Examples).
+#'
+#' @return A single number representing optimal separation threshold.
+#'
+#' @family summary functions
+#'
+#' @examples
+#' d_norm_1 <- as_d(dnorm)
+#' d_norm_2 <- as_d(dnorm, mean = 2)
+#' d_pois <- as_d(dpois, lambda = 2)
+#' summ_separation(d_norm_1, d_norm_2, method = "KS")
+#' summ_separation(d_norm_2, d_pois, method = "KS")
+#'
+#' # Mixed types for "KS" method
+#' p_fin <- new_p(1, "fin")
+#' p_unif <- as_p(punif)
+#' thres <- summ_separation(p_fin, p_unif)
+#' abs(p_fin(thres) - p_unif(thres))
+#'   # Actual difference at `thres` is 0. However, supremum (equal to 1) as
+#'   # limit value is # reached there.
+#' x_grid <- seq(0, 1, by = 1e-3)
+#' plot(x_grid, abs(p_fin(x_grid) - p_unif(x_grid)), type = "b")
+#'
+#' # The smallest "x" value is returned in case of several optimal thresholds
+#' summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
+#'
+#' @export
 summ_separation <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)

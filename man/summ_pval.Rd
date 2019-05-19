@@ -68,6 +68,8 @@ Other summary functions: \code{\link{summ_center}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_entropy}}, \code{\link{summ_hdr}},
   \code{\link{summ_interval}}, \code{\link{summ_moment}},
-  \code{\link{summ_prob_true}}, \code{\link{summ_quantile}}
+  \code{\link{summ_prob_true}},
+  \code{\link{summ_quantile}},
+  \code{\link{summ_separation}}
 }
 \concept{summary functions}
