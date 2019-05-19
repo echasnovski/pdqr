@@ -42,10 +42,7 @@
 #' @return Output of [invisible()][base::invisible()] without arguments, i.e.
 #'   `NULL` without printing.
 #'
-#' @seealso [Pdqr methods for S3 group generic
-#'   functions][methods-group-generic].
-#'
-#' [Pdqr methods for print function][methods-print].
+#' @family pdqr methods for generic functions
 #'
 #' @examples
 #' d_norm_1 <- as_d(dnorm)

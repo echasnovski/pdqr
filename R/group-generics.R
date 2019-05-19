@@ -126,12 +126,10 @@
 #'   pdqr-function(s). **Note** that independence of input random variables is
 #'   assumed, i.e. `f + f` is not the same as `2*f` (see Examples).
 #'
-#' @seealso [Pdqr methods for print function][methods-print].
+#' @seealso [summ_prob_true()] and [summ_prob_false()] for extracting
+#'   probability from boolean pdqr-functions.
 #'
-#' [Pdqr methods for base plotting functions][methods-plot].
-#'
-#' [summ_prob_true()] and [summ_prob_false()] for extracting probability from
-#' boolean pdqr-functions.
+#' @family pdqr methods for generic functions
 #'
 #' @examples
 #' d_norm <- as_d(dnorm)

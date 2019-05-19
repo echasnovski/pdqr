@@ -95,7 +95,7 @@ plot(as_r(d_norm_1))
 
 }
 \seealso{
-\link[=methods-group-generic]{Pdqr methods for S3 group generic functions}.
-
-\link[=methods-print]{Pdqr methods for print function}.
+Other pdqr methods for generic functions: \code{\link{methods-group-generic}},
+  \code{\link{methods-print}}
 }
+\concept{pdqr methods for generic functions}

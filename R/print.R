@@ -29,10 +29,7 @@
 #' Symbol "~" in `print()` output indicates that printed value or support is an
 #' approximation to a true one (for readability purpose).
 #'
-#' @seealso [Pdqr methods for S3 group generic
-#'   functions][methods-group-generic].
-#'
-#' [Pdqr methods for base plotting functions][methods-plot].
+#' @family pdqr methods for generic functions
 #'
 #' @examples
 #' print(new_d(1:10, "fin"))
