@@ -47,10 +47,10 @@ summ_quantile <- function(f, probs) {
 #' summ_prob_false(d_unif)
 #' summ_prob_true(new_d(2, "fin"))
 #'
-#' @name summ-prob
+#' @name summ_prob_true
 NULL
 
-#' @rdname summ-prob
+#' @rdname summ_prob_true
 #' @export
 summ_prob_false <- function(f) {
   assert_pdqr_fun(f)
@@ -68,7 +68,7 @@ summ_prob_false <- function(f) {
   res
 }
 
-#' @rdname summ-prob
+#' @rdname summ_prob_true
 #' @export
 summ_prob_true <- function(f) {
   1 - summ_prob_false(f)

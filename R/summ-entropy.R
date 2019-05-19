@@ -12,6 +12,10 @@
 #' @param clip Value to be used instead of 0 during `log()` computation.
 #'   `-log(clip)` represents the maximum value of output entropy.
 #'
+#' @details **Note** that due to [pdqr approximation error][pdqr_approx_error()]
+#' there can be a rather big error in entropy estimation in case original
+#' density goes to infinity.
+#'
 #' @return A single number representing entropy. If `clip` is strictly positive,
 #' then it will be finite.
 #'
@@ -34,12 +38,10 @@
 #' summ_entropy2(d_1, d_2, method = "cross", clip = exp(-10))
 #' summ_entropy2(d_1, d_2, method = "cross", clip = 0)
 #'
-#' @name entropy
+#' @name summ_entropy
 NULL
 
-# Note in docs that pdqr approximation error can introduce rather big error in
-# entropy estimation in case original density goes to infinity
-#' @rdname entropy
+#' @rdname summ_entropy
 #' @export
 summ_entropy <- function(f) {
   assert_pdqr_fun(f)
@@ -47,8 +49,7 @@ summ_entropy <- function(f) {
   cross_entropy(f, f)
 }
 
-# Note in docs that `method = "relative"` is Kullback–Leibler divergence
-#' @rdname entropy
+#' @rdname summ_entropy
 #' @export
 summ_entropy2 <- function(f, g, method = "relative", clip = exp(-20)) {
   assert_pdqr_fun(f)
