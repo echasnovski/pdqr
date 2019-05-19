@@ -58,6 +58,7 @@ Collate:
     'summ_interval.R'
     'summ_moment.R'
     'summ_pval.R'
+    'summ_separation.R'
     'utils-as.R'
     'utils-form.R'
     'utils-new.R'
