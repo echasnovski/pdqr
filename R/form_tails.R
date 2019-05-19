@@ -31,6 +31,8 @@
 #' [summ_center()] and [summ_dispersion()] for computing summaries of
 #' distributions.
 #'
+#' @family form functions
+#'
 #' @examples
 #' # Type "fin"
 #' my_fin <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "fin")

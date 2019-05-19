@@ -59,6 +59,8 @@
 #'
 #' [form_retype()] for changing type of pdqr-function.
 #'
+#' @family form functions
+#'
 #' @examples
 #' # Type "fin"
 #' d_fin <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "fin")

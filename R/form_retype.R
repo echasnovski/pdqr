@@ -40,6 +40,8 @@
 #'
 #' [form_resupport()] for changing support of pdqr-function.
 #'
+#' @family form functions
+#'
 #' @examples
 #' my_infin <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "infin")
 #' my_fin <- form_retype(my_infin, "fin")

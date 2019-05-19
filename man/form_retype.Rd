@@ -72,4 +72,10 @@ lines(my_infin_2, col = "blue")
 pdqr-function.
 
 \code{\link[=form_resupport]{form_resupport()}} for changing support of pdqr-function.
+
+Other form functions: \code{\link{form_estimate}},
+  \code{\link{form_mix}}, \code{\link{form_regrid}},
+  \code{\link{form_resupport}}, \code{\link{form_smooth}},
+  \code{\link{form_tails}}, \code{\link{form_trans}}
 }
+\concept{form functions}

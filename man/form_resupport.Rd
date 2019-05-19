@@ -95,4 +95,10 @@ lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
 pdqr-function.
 
 \code{\link[=form_retype]{form_retype()}} for changing type of pdqr-function.
+
+Other form functions: \code{\link{form_estimate}},
+  \code{\link{form_mix}}, \code{\link{form_regrid}},
+  \code{\link{form_retype}}, \code{\link{form_smooth}},
+  \code{\link{form_tails}}, \code{\link{form_trans}}
 }
+\concept{form functions}

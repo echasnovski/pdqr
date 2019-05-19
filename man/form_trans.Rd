@@ -120,4 +120,10 @@ some of them use \code{form_trans()} with "random" method.
 
 \code{\link[=form_regrid]{form_regrid()}} to increase/decrease granularity of pdqr-functions for method
 "bruteforce".
+
+Other form functions: \code{\link{form_estimate}},
+  \code{\link{form_mix}}, \code{\link{form_regrid}},
+  \code{\link{form_resupport}}, \code{\link{form_retype}},
+  \code{\link{form_smooth}}, \code{\link{form_tails}}
 }
+\concept{form functions}

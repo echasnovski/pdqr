@@ -36,6 +36,8 @@
 #' @return A pdqr-function for mixture distribution of certain
 #'   [type][meta_type()] and [class][meta_class()] (see Details).
 #'
+#' @family form functions
+#'
 #' @examples
 #' # All "fin"
 #' d_binom <- as_d(dbinom, size = 10, prob = 0.5)
@@ -142,6 +144,8 @@ impute_weights <- function(weights, n) {
 #' @return A smoothed version of `f` with the same [class][meta_class()] and
 #'   [type][meta_type()].
 #'
+#' @family form functions
+#'
 #' @examples
 #' set.seed(101)
 #'
@@ -237,6 +241,8 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'
 #' @return A pdqr-function of the same [class][meta_class()] and
 #'   [type][meta_type()] (if not forced otherwise in `args_new`) as `f`.
+#'
+#' @family form functions
 #'
 #' @examples
 #' # These examples take some time to run, so be cautious

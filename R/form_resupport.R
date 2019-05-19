@@ -50,6 +50,8 @@
 #'
 #' [form_retype()] for changing type of pdqr-function.
 #'
+#' @family form functions
+#'
 #' @examples
 #' set.seed(101)
 #' d_norm <- as_d(dnorm)

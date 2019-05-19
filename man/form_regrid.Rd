@@ -109,4 +109,10 @@ form_regrid(d_infin, n_grid = 1)
 \code{\link[=form_resupport]{form_resupport()}} for changing support of pdqr-function.
 
 \code{\link[=form_retype]{form_retype()}} for changing type of pdqr-function.
+
+Other form functions: \code{\link{form_estimate}},
+  \code{\link{form_mix}}, \code{\link{form_resupport}},
+  \code{\link{form_retype}}, \code{\link{form_smooth}},
+  \code{\link{form_tails}}, \code{\link{form_trans}}
 }
+\concept{form functions}

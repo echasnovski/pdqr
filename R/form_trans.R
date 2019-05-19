@@ -64,6 +64,8 @@
 #' [form_regrid()] to increase/decrease granularity of pdqr-functions for method
 #' "bruteforce".
 #'
+#' @family form functions
+#'
 #' @examples
 #' # Default "random" transformation
 #' d_norm <- as_d(dnorm)

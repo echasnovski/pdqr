@@ -90,3 +90,10 @@ form_estimate(d_norm, estimate = all_positive, sample_size = 5)
 }
 
 }
+\seealso{
+Other form functions: \code{\link{form_mix}},
+  \code{\link{form_regrid}}, \code{\link{form_resupport}},
+  \code{\link{form_retype}}, \code{\link{form_smooth}},
+  \code{\link{form_tails}}, \code{\link{form_trans}}
+}
+\concept{form functions}

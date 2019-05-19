@@ -81,3 +81,10 @@ all_x_tbl <- meta_x_tbl(all_mix)
 all_x_tbl[(all_x_tbl$x >= 1.5) & (all_x_tbl$x <= 2.5), ]
 
 }
+\seealso{
+Other form functions: \code{\link{form_estimate}},
+  \code{\link{form_regrid}}, \code{\link{form_resupport}},
+  \code{\link{form_retype}}, \code{\link{form_smooth}},
+  \code{\link{form_tails}}, \code{\link{form_trans}}
+}
+\concept{form functions}
