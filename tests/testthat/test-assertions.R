@@ -74,6 +74,17 @@ test_that("assert_in_set works",  {
   )
 })
 
+test_that("assert_in_set suggests correct value for character values", {
+  expect_error(
+    assert_in_set("ks", c("KS", "PPV", "FPV")), 'Did you mean "KS"\\?'
+  )
+  expect_error(
+    assert_in_set("pPV", c("KS", "PPV", "FPV")), 'Did you mean "PPV"\\?'
+  )
+  expect_error(
+    assert_in_set("medin", c("mean", "median")), 'Did you mean "median"\\?'
+  )
+})
 
 # assert_missing_args -----------------------------------------------------
 test_that("assert_missing_args works", {

@@ -71,15 +71,24 @@ assert_in_set <- function(x, set, quote_set = TRUE) {
 
   if (!(x %in% set)) {
     if (quote_set) {
-      set_string <- paste0('"', set, '"', collapse = ", ")
-      x_string <- paste0('"', x, '"')
+      set_str <- paste0('"', set, '"', collapse = ", ")
+      x_str <- paste0('"', x, '"')
     } else {
-      set_string <- paste0(set, collapse = ", ")
-      x_string <- as.character(x)
+      set_str <- paste0(set, collapse = ", ")
+      x_str <- as.character(x)
+    }
+
+    if (is.character(set) && is.character(x)) {
+      string_dist <- utils::adist(tolower(x), tolower(set))[1, ]
+      suggested_elem <- set[which.min(string_dist)]
+      suggestion_str <- paste0(' Did you mean "', suggested_elem, '"?')
+    } else {
+      suggestion_str <- ""
     }
 
     stop_collapse(
-      x_name, " should be one of: ", set_string, " (instead of ", x_string, ")."
+      x_name, " should be one of: ", set_str, " (instead of ", x_str, ").",
+      suggestion_str
     )
   }
 
