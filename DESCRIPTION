@@ -53,6 +53,7 @@ Collate:
     'summ-other.R'
     'summ_center.R'
     'summ_dispersion.R'
+    'summ_distance.R'
     'summ_distr_tbl.R'
     'summ_hdr.R'
     'summ_interval.R'
