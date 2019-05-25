@@ -516,3 +516,62 @@ granulate_grid <- function(f, gran) {
   # Add missing last element
   c(res, vec[n])
 }
+
+
+# Represent pdqr-function as set of points --------------------------------
+enpoint <- function(f, n_points = 1001) {
+  assert_pdqr_fun(f)
+  assert_type(
+    n_points, is_single_number,
+    type_name = "single number more than 1",
+    min_val = 1
+  )
+
+  switch(
+    meta_class(f),
+    p = enpoint_p(f, n_points),
+    d = enpoint_d(f, n_points),
+    q = enpoint_q(f, n_points),
+    r = enpoint_r(f, n_points)
+  )
+}
+
+enpoint_p <- function(f, n_points) {
+  if (meta_type(f) == "fin") {
+    x_tbl <- meta_x_tbl(f)
+
+    data.frame(x = x_tbl[["x"]], p = x_tbl[["cumprob"]])
+  } else {
+    q <- seq_between(meta_support(f), length.out = n_points)
+
+    data.frame(x = q, p = f(q))
+  }
+}
+
+enpoint_d <- function(f, n_points) {
+  if (meta_type(f) == "fin") {
+    x_tbl <- meta_x_tbl(f)
+
+    data.frame(x = x_tbl[["x"]], prob = x_tbl[["prob"]])
+  } else {
+    x <- seq_between(meta_support(f), length.out = n_points)
+
+    data.frame(x = x, y = f(x))
+  }
+}
+
+enpoint_q <- function(f, n_points) {
+  if (meta_type(f) == "fin") {
+    x_tbl <- meta_x_tbl(f)
+
+    data.frame(p = x_tbl[["cumprob"]], x = x_tbl[["x"]])
+  } else {
+    p <- seq_between(c(0, 1), length.out = n_points)
+
+    data.frame(p = p, x = f(p))
+  }
+}
+
+enpoint_r <- function(f, n_points) {
+  data.frame(n = seq_len(n_points), x = f(n_points))
+}

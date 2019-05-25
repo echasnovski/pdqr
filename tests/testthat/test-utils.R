@@ -562,3 +562,91 @@ test_that("granulate_grid works", {
   expect_equal(granulate_grid(as_q(cur_d), 1), c(0, 0.5, 1))
   expect_equal(granulate_grid(as_q(cur_d), 10), seq(0, 1, length.out = 21))
 })
+
+
+# enpoint -----------------------------------------------------------------
+test_that("enpoint works with p-functions", {
+  # Type "fin"
+  x_tbl <- meta_x_tbl(p_fin)
+  expect_equal(enpoint(p_fin), data.frame(x = x_tbl$x, p = x_tbl$cumprob))
+
+  # Type "infin"
+  x_seq <- seq_between(meta_support(p_infin), length.out = 3)
+  expect_equal(
+    enpoint(p_infin, n_points = 3),
+    data.frame(x = x_seq, p = p_infin(x_seq))
+  )
+})
+
+test_that("enpoint works with d-functions", {
+  # Type "fin"
+  x_tbl <- meta_x_tbl(d_fin)
+  expect_equal(enpoint(d_fin), data.frame(x = x_tbl$x, prob = x_tbl$prob))
+
+  # Type "infin"
+  x_seq <- seq_between(meta_support(d_infin), length.out = 3)
+  expect_equal(
+    enpoint(d_infin, n_points = 3),
+    data.frame(x = x_seq, y = d_infin(x_seq))
+  )
+})
+
+test_that("enpoint works with q-functions", {
+  # Type "fin"
+  x_tbl <- meta_x_tbl(q_fin)
+  expect_equal(enpoint(q_fin), data.frame(p = x_tbl$cumprob, x = x_tbl$x))
+
+  # Type "infin"
+  p_seq <- seq_between(c(0, 1), length.out = 3)
+  expect_equal(
+    enpoint(q_infin, n_points = 3),
+    data.frame(p = p_seq, x = q_infin(p_seq))
+  )
+})
+
+test_that("enpoint works with r-functions", {
+  set.seed(101)
+
+  # Type "fin"
+  output <- enpoint(r_fin, n_points = 10)
+  expect_named(output, c("n", "x"))
+  expect_equal(output[["n"]], seq_len(10))
+  expect_equal(mean(output[["x"]]), summ_mean(r_fin), tolerance = 0.9)
+
+  # Type "infin"
+  output <- enpoint(r_infin, n_points = 10)
+  expect_named(output, c("n", "x"))
+  expect_equal(output[["n"]], seq_len(10))
+  expect_equal(mean(output[["x"]]), summ_mean(r_infin), tolerance = 0.5)
+})
+
+test_that("enpoint uses `n_points` argument", {
+  expect_equal(nrow(enpoint(p_infin, n_points = 3)), 3)
+  expect_equal(nrow(enpoint(d_infin, n_points = 14)), 14)
+  expect_equal(nrow(enpoint(q_infin, n_points = 15)), 15)
+  expect_equal(nrow(enpoint(r_fin,   n_points = 92)), 92)
+  expect_equal(nrow(enpoint(r_infin, n_points = 6)), 6)
+})
+
+test_that("enpoint validates input", {
+  expect_error(enpoint("a"), "`f`.*not pdqr-function")
+  expect_error(enpoint(d_fin, n_points = "a"), "`n_points`.*number")
+  expect_error(enpoint(d_fin, n_points = 10:11), "`n_points`.*single")
+  expect_error(enpoint(d_fin, n_points = 0.5), "`n_points`.*more than 1")
+})
+
+
+# enpoint_p ---------------------------------------------------------------
+# Tested in `enpoint()`
+
+
+# enpoint_d ---------------------------------------------------------------
+# Tested in `enpoint()`
+
+
+# enpoint_q ---------------------------------------------------------------
+# Tested in `enpoint()`
+
+
+# enpoint_r ---------------------------------------------------------------
+# Tested in `enpoint()`
