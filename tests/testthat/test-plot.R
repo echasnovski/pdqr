@@ -70,7 +70,7 @@ test_that("plot.p works", {
   )
 })
 
-test_that("plot.p and lines.p respect `n_extra_grid` argument", {
+test_that("plot.p and lines.p use `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
     "plot-p-infin-n-extra-grid", recordPlot({
       plot(
@@ -154,7 +154,7 @@ test_that("plot.d works", {
   )
 })
 
-test_that("plot.d and lines.d respect `n_extra_grid` argument", {
+test_that("plot.d and lines.d use `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
     "plot-d-infin-n-extra-grid", recordPlot({
       plot(
@@ -261,7 +261,7 @@ test_that("plot.q works", {
   )
 })
 
-test_that("plot.q and lines.q respect `n_extra_grid` argument", {
+test_that("plot.q and lines.q use `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
     "plot-q-infin-n-extra-grid", recordPlot({
       plot(
@@ -320,7 +320,7 @@ test_that("plot.r works", {
   )
 })
 
-test_that("plot.r respects `n_sample` argument", {
+test_that("plot.r uses `n_sample` argument", {
   vdiffr::expect_doppelganger(
     "plot-r-n-sample", recordPlot(plot(r_infin, n_sample = 10))
   )
