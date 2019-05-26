@@ -8,9 +8,10 @@ summ_separation(f, g, method = "KS")
 }
 \arguments{
 \item{f}{A pdqr-function of any \link[=meta_type]{type} and
-\link[=meta_class]{class}.}
+\link[=meta_class]{class}. Represents "true" distribution of "negative" values.}
 
-\item{g}{A pdqr-function of any type and class.}
+\item{g}{A pdqr-function of any type and class. Represents "true"
+distribution of "positive" values.}
 
 \item{method}{Separation method. Should be one of "KS" (Kolmogorov-Smirnov).}
 }
@@ -20,21 +21,21 @@ A single number representing optimal separation threshold.
 \description{
 Compute for pair of pdqr-functions the optimal threshold that separates
 distributions they represent. In other words, \code{summ_separation()} solves a
-classification problem with two classes (represented by pdqr-functions) with
-a one-dimensional linear classifier: values more than the output threshold
-are declared to have one class, and not less than threshold - second class.
+classification problem with two classes (represented by pdqr-functions) and
+one-dimensional linear classifier: values not more than some threshold are
+classified as "negative", and more than threshold - as "positive".
 }
 \details{
 All methods in case of several optimal solutions return the smallest
 one.
 
 Method "KS" computes "x" value at which corresponding p-functions of \code{f} and
-\code{g} achieve supremum of their absolute difference. If input pdqr-functions
-have the same \link[=meta_type]{type}, then result is a point of maximum absolute
-difference. If inputs have different types, then absolute difference of
-p-functions at the result point can be not the biggest. In that case output
-represents a left limit of points at which target supremum is reached (see
-Examples).
+\code{g} achieve supremum of their absolute difference (so input order of \code{f} and
+\code{g} doesn't matter). If input pdqr-functions have the same
+\link[=meta_type]{type}, then result is a point of maximum absolute difference.
+If inputs have different types, then absolute difference of p-functions at
+the result point can be not the biggest. In that case output represents a
+left limit of points at which target supremum is reached (see Examples).
 }
 \examples{
 d_norm_1 <- as_d(dnorm)
