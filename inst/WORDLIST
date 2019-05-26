@@ -1,4 +1,5 @@
 abserror
+AUROC
 bruteforce
 cumprob
 dirac
@@ -6,6 +7,8 @@ downgrid
 downgridding
 Downgridding
 DOWNgridding
+fpr
+FPR
 HDR
 infin
 iqr
@@ -23,6 +26,8 @@ rgb
 sd
 tbl
 th
+tpr
+TPR
 upgrid
 upgridding
 Upgridding

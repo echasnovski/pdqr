@@ -25,6 +25,8 @@
 #'
 #' @return A single number representing optimal separation threshold.
 #'
+#' @seealso [summ_roc()] for computing ROC curve related summaries.
+#'
 #' @family summary functions
 #'
 #' @examples

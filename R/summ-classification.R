@@ -1,3 +1,74 @@
+#' Summarize distributions with ROC curve
+#'
+#' These functions help you perform a ROC ("Receiver Operating Characteristic")
+#' analysis for one-dimensional linear classifier: values not more than some
+#' threshold are classified as "negative", and more than threshold -
+#' as "positive". Here input pair of pdqr-functions represent "true"
+#' distributions of values with "negative" (`f`) and "positive" (`g`) labels.
+#'
+#' @inheritParams summ_separation
+#' @param n_grid Number of points of ROC curve to be computed.
+#' @param roc A data frame representing ROC curve. Typically an output of
+#'   `summ_roc()`.
+#' @param ... Other arguments to be passed to `plot()` or `lines()`.
+#' @param add_bisector If `TRUE` (default), `roc_plot()` adds bisector line as
+#'   reference for "random guess" classifier.
+#'
+#' @details ROC curve describes how good classifier performs under different
+#' thresholds. For all possible thresholds two classification metrics are
+#' computed which later form x and y coordinates of a curve:
+#' - **False positive rate (FPR)**: proportion of "negative" distribution which
+#' was (incorrectly) classified as "positive". This is the same as one minus
+#' "specificity" (proportion of "negative" values classified as "negative").
+#' - **True positive rate (TPR)**: proportion of "positive" distribution which
+#' was (correctly) classified as "positive". This is also called "sensitivity".
+#'
+#' `summ_roc()` creates a uniform grid of `n_grid` values covering range of all
+#' meaningful thresholds. This range is computed as slightly extended range of
+#' `f` and `g` supports (extension is needed to achieve extreme values of
+#' "fpr" in presence of "fin" type). Then FPR and TPR are computed for every
+#' threshold.
+#'
+#' `summ_rocauc()` computes a common general (without any particular threshold
+#' in mind) diagnostic value of classifier, **area under ROC curve** ("ROC AUC"
+#' or "AUROC"). Numerically it is equal to a probability of random variable with
+#' distribution `g` being strictly greater than `f`. See [pdqr methods for
+#' comparing functions][methods-group-generic] (in "Ops" family) for more
+#' details.
+#'
+#' `roc_plot()` and `roc_lines()` perform plotting (with
+#' [plot()][graphics::plot()]) and adding (with [lines()][graphics::lines()])
+#' ROC curves respectively.
+#'
+#' @return `summ_roc()` returns a data frame with `n_grid` rows and columns
+#' "threshold" (grid of classification thresholds), "fpr", and "tpr"
+#' (corresponding false and true positive rates).
+#'
+#' `summ_rocauc()` returns single number representing area under the ROC curve.
+#'
+#' `roc_plot()` and `roc_lines()` create plotting side effects.
+#'
+#' @seealso [summ_separation()] for computing optimal separation threshold.
+#'
+#' @examples
+#' d_norm_1 <- as_d(dnorm)
+#' d_norm_2 <- as_d(dnorm, mean = 1)
+#' roc <- summ_roc(d_norm_1, d_norm_2)
+#' head(roc)
+#'
+#' # `summ_rocauc()` is equivalent to probability of `g > f`
+#' summ_rocauc(d_norm_1, d_norm_2)
+#' summ_prob_true(d_norm_2 > d_norm_1)
+#'
+#' # Plotting
+#' roc_plot(roc)
+#' roc_lines(summ_roc(d_norm_2, d_norm_1), col = "blue")
+#'
+#' @name summ_roc
+NULL
+
+#' @rdname summ_roc
+#' @export
 summ_roc <- function(f, g, n_grid = 1001) {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
@@ -18,6 +89,8 @@ summ_roc <- function(f, g, n_grid = 1001) {
   data.frame(threshold = t_grid, fpr = fpr, tpr = tpr)
 }
 
+#' @rdname summ_roc
+#' @export
 summ_rocauc <- function(f, g) {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
@@ -25,6 +98,8 @@ summ_rocauc <- function(f, g) {
   prob_greater(g, f)
 }
 
+#' @rdname summ_roc
+#' @export
 roc_plot <- function(roc, ..., add_bisector = TRUE) {
   assert_roc(roc)
   assert_type(add_bisector, is_truefalse, type_name = "`TRUE` or `FALSE`")
@@ -55,6 +130,8 @@ roc_plot <- function(roc, ..., add_bisector = TRUE) {
   invisible()
 }
 
+#' @rdname summ_roc
+#' @export
 roc_lines <- function(roc, ...) {
   assert_roc(roc)
 
