@@ -25,11 +25,16 @@ summ_rocauc <- function(f, g) {
   prob_greater(g, f)
 }
 
-roc_plot <- function(roc, ..., plot_bisector = TRUE) {
+roc_plot <- function(roc, ..., add_bisector = TRUE) {
   assert_roc(roc)
-  assert_type(plot_bisector, is_truefalse, type_name = "`TRUE` or `FALSE`")
+  assert_type(add_bisector, is_truefalse, type_name = "`TRUE` or `FALSE`")
 
   roc_name <- deparse(substitute(roc))
+
+  # Order points from left to right with respect to "fpr" using inverse
+  # relationship between "threshold" and "fpr". This is needed for correct
+  # "horizontal-vertical" ordering of curve "steps".
+  roc <- roc[order(roc[["threshold"]], decreasing = TRUE), ]
 
   plot_args <- c_dedupl(
     list(x = roc[["fpr"]], y = roc[["tpr"]]),
@@ -43,7 +48,7 @@ roc_plot <- function(roc, ..., plot_bisector = TRUE) {
   )
   do.call(graphics::plot, plot_args)
 
-  if (plot_bisector) {
+  if (add_bisector) {
     graphics::lines(c(0, 1), c(0, 1), lty = "dotted")
   }
 
@@ -53,13 +58,25 @@ roc_plot <- function(roc, ..., plot_bisector = TRUE) {
 roc_lines <- function(roc, ...) {
   assert_roc(roc)
 
-  graphics::lines(x = roc[["fpr"]], y = roc[["tpr"]], ...)
+  # Order points from left to right with respect to "fpr" using inverse
+  # relationship between "threshold" and "fpr". This is needed for correct
+  # "horizontal-vertical" ordering of curve "steps".
+  roc <- roc[order(roc[["threshold"]], decreasing = TRUE), ]
+
+  lines_args <- c_dedupl(
+    list(x = roc[["fpr"]], y = roc[["tpr"]]),
+    ...,
+    list(type = "s")
+  )
+
+  do.call(graphics::lines, lines_args)
 }
 
 is_roc <- function(roc) {
   is.data.frame(roc) &&
-    all(c("fpr", "tpr") %in% names(roc)) &&
-    is.numeric(roc[["fpr"]]) && is.numeric(roc[["tpr"]])
+    all(c("threshold", "fpr", "tpr") %in% names(roc)) &&
+    is.numeric(roc[["fpr"]]) && is.numeric(roc[["tpr"]]) &&
+    is.numeric(roc[["threshold"]])
 }
 
 assert_roc <- function(roc) {

@@ -47,7 +47,11 @@ test_that("summ_roc validates input", {
 
 # summ_rocauc -------------------------------------------------------------
 test_that("summ_rocauc works", {
-  expect_equal(summ_rocauc(new_d(1:2, "fin"), new_d(2:3, "fin")), 0.75)
+  cur_fin_1 <- new_d(1:2, "fin")
+  cur_fin_2 <- new_d(2:3, "fin")
+  expect_equal(summ_rocauc(cur_fin_1, cur_fin_2), 0.75)
+  expect_equal(summ_rocauc(cur_fin_2, cur_fin_1), 0)
+
   expect_equal(summ_rocauc(d_fin, d_infin), summ_prob_true(d_infin > d_fin))
 
   g <- q_infin + 1
@@ -67,9 +71,18 @@ test_that("roc_plot works", {
 
   # Basic usage of `roc_plot()` and `roc_lines()`
   vdiffr::expect_doppelganger(
-    "roc-basic", recordPlot({
+    "roc-basic-1", recordPlot({
       roc_plot(roc_1)
       roc_lines(roc_2, col = "blue")
+    })
+  )
+
+  vdiffr::expect_doppelganger(
+    "roc-basic-2", recordPlot({
+      cur_fin_1 <- new_d(1:2, "fin")
+      cur_fin_2 <- new_d(2:3, "fin")
+      roc_plot(summ_roc(cur_fin_1, cur_fin_2))
+      roc_lines(summ_roc(cur_fin_2, cur_fin_1), col = "blue")
     })
   )
 
@@ -84,10 +97,10 @@ test_that("roc_plot works", {
     })
   )
 
-  # Usage of `plot_bisector` argument
+  # Usage of `add_bisector` argument
   vdiffr::expect_doppelganger(
     "roc-bisector", recordPlot({
-      roc_plot(roc_1, plot_bisector = FALSE)
+      roc_plot(roc_1, add_bisector = FALSE)
     })
   )
 })
@@ -95,8 +108,8 @@ test_that("roc_plot works", {
 test_that("roc_plot validates input", {
   expect_error(roc_plot(list(fpr = 1, tpr = 1)), "`roc`.*ROC")
   expect_error(
-    roc_plot(data.frame(fpr = 1, tpr = 1), plot_bisector = "a"),
-    "`plot_bisector`.*`TRUE` or `FALSE`"
+    roc_plot(data.frame(threshold = 1, fpr = 1, tpr = 1), add_bisector = "a"),
+    "`add_bisector`.*`TRUE` or `FALSE`"
   )
 })
 
