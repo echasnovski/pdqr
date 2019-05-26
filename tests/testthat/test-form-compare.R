@@ -66,11 +66,15 @@ test_that("form_geq agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_geq, `>=`)
 })
 
-test_that("form_geq handles cases of clearly separated supports", {
+test_that("form_geq handles cases of separated supports", {
+  # Clear separation
   expect_equal(form_geq(f_fin_1, f_fin_3)(1), 0)
   expect_equal(form_geq(f_fin_3, f_fin_1)(1), 1)
   expect_equal(form_geq(f_infin_1, f_infin_3)(1), 0)
   expect_equal(form_geq(f_infin_3, f_infin_1)(1), 1)
+
+  # "Touching" supports
+  expect_equal(form_geq(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 0.25)
 })
 
 test_that("form_geq works with dirac-like 'infin' functions", {
@@ -116,11 +120,15 @@ test_that("form_greater agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_greater, `>`)
 })
 
-test_that("form_greater handles cases of clearly separated supports", {
+test_that("form_greater handles cases of separated supports", {
+  # Clear separation
   expect_equal(form_greater(f_fin_1, f_fin_3)(1), 0)
   expect_equal(form_greater(f_fin_3, f_fin_1)(1), 1)
   expect_equal(form_greater(f_infin_1, f_infin_3)(1), 0)
   expect_equal(form_greater(f_infin_3, f_infin_1)(1), 1)
+
+  # "Touching" supports
+  expect_equal(form_greater(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 0)
 })
 
 test_that("form_greater works with dirac-like 'infin' functions", {
@@ -166,11 +174,15 @@ test_that("form_leq agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_leq, `<=`)
 })
 
-test_that("form_leq handles cases of clearly separated supports", {
+test_that("form_leq handles cases of separated supports", {
+  # Clear separation
   expect_equal(form_leq(f_fin_1, f_fin_3)(1), 1)
   expect_equal(form_leq(f_fin_3, f_fin_1)(1), 0)
   expect_equal(form_leq(f_infin_1, f_infin_3)(1), 1)
   expect_equal(form_leq(f_infin_3, f_infin_1)(1), 0)
+
+  # "Touching" supports
+  expect_equal(form_leq(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 1)
 })
 
 test_that("form_leq works with dirac-like 'infin' functions", {
@@ -216,11 +228,15 @@ test_that("form_less agrees with simulation", {
   expect_equal_probs(f_infin_1, f_infin_2, form_less, `<`)
 })
 
-test_that("form_less handles cases of clearly separated supports", {
+test_that("form_less handles cases of separated supports", {
+  # Clear separation
   expect_equal(form_less(f_fin_1, f_fin_3)(1), 1)
   expect_equal(form_less(f_fin_3, f_fin_1)(1), 0)
   expect_equal(form_less(f_infin_1, f_infin_3)(1), 1)
   expect_equal(form_less(f_infin_3, f_infin_1)(1), 0)
+
+  # "Touching" supports
+  expect_equal(form_less(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 0.75)
 })
 
 test_that("form_less works with dirac-like 'infin' functions", {

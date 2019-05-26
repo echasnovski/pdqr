@@ -43,10 +43,10 @@ prob_geq <- function(f, g) {
   # Early returns for edge cases
   f_supp <- meta_support(f)
   g_supp <- meta_support(g)
-  if (f_supp[1] >= g_supp[2]) {
+  if (f_supp[1] > g_supp[2]) {
     return(1)
   }
-  if (g_supp[1] >= f_supp[2]) {
+  if (g_supp[1] > f_supp[2]) {
     return(0)
   }
 
