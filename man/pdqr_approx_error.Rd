@@ -76,3 +76,7 @@ error_beta_2 <- pdqr_approx_error(
 summary(error_beta_2)
 
 }
+\seealso{
+\code{\link[=enpoint]{enpoint()}} for representing pdqr-function as a set of points with
+desirable number of rows.
+}

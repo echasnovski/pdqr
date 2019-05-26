@@ -441,6 +441,9 @@ capture_null <- function(x) {
 #' f(grid)`.
 #' - **abserror** <dbl> : Absolute value of "error" column.
 #'
+#' @seealso [enpoint()] for representing pdqr-function as a set of points with
+#'   desirable number of rows.
+#'
 #' @examples
 #' d_norm <- as_d(dnorm)
 #' error_norm <- pdqr_approx_error(d_norm, dnorm)
@@ -518,7 +521,82 @@ granulate_grid <- function(f, gran) {
 }
 
 
-# Represent pdqr-function as set of points --------------------------------
+# Represent pdqr-function as a set of points ------------------------------
+#' Represent pdqr-function as a set of points
+#'
+#' Function `enpoint()` suggests a reasonable default ways of converting
+#' pdqr-function into a data frame of numerical values (points) with desirable
+#' number of rows. Representation of pdqr-function as a set of numbers helps to
+#' conduct analysis using approaches outside of 'pdqr' package. For example, one
+#' can visually display pdqr-function with some other plotting functionality.
+#'
+#' @param f A pdqr-function.
+#' @param n_points Desired number of points in the output. Not used in case of
+#'   "fin" type p-, d-, and q-function `f`.
+#'
+#' @details Structure of output depends on [class][meta_class()] and
+#' [type][meta_type()] of input pdqr-function `f`:
+#' - **P-functions** are represented with "x" (for "x" values) and "p" (for
+#' cumulative probability at "x" points) columns:
+#'     - For "infin" type, "x" is taken as an equidistant grid (with `n_points`
+#'     elements) on input's [support][meta_support()].
+#'     - For "fin" type, "x" is taken directly from ["x_tbl"
+#'     metadata][meta_x_tbl()] without using `n_points` argument.
+#' - **D-functions** are represented with "x" column and one more (for values of
+#' d-function at "x" points):
+#'     - For "infin" type, second column is named "y" and is computed as values
+#'     of `f` at elements of "x" column (which is the same grid as in p-function
+#'     case).
+#'     - For "fin" it is named "prob". Both "x" and "prob" columns are taken
+#'     from "x_tbl" metadata.
+#' - **Q-functions** are represented almost as p-functions but in inverse
+#' fashion. Output data frame has "p" (probabilities) and "x" (values of
+#' q-function `f` at "p" elements) columns.
+#'     - For "infin" type, "p" is computed as equidistant grid (with `n_points`
+#'     elements) between 0 and 1.
+#'     - For "fin" type, "p" is taken from "cumprob" column of "x_tbl" metadata.
+#' - **R-functions** are represented by generating `n_points` elements from
+#' distribution. Output data frame has columns "n" (consecutive point number,
+#' basically a row number) and "x" (generated elements).
+#'
+#' **Note** that the other way to produce points for p-, d-, and q-functions is
+#' to manually construct them with [form_regrid()] and [meta_x_tbl()]. However,
+#' this method may slightly change function values due to possible
+#' renormalization inside `form_regrid()`.
+#'
+#' @return A data frame with `n_points` (or less, for "fin" type p-, d-, or
+#'   q-function `f`) rows and two columns with names depending on `f`'s class
+#'   and type.
+#'
+#' @seealso [pdqr_approx_error()] for diagnostics of pdqr-function approximation
+#' accuracy.
+#'
+#' [Pdqr methods for `plot()`][methods-plot] for a direct plotting of
+#' pdqr-functions.
+#'
+#' [form_regrid()] to change underlying grid of pdqr-function.
+#'
+#' @examples
+#' d_norm <- as_d(dnorm)
+#' enpoint(d_norm)
+#'
+#' # Control number of points with `n_points` argument
+#' enpoint(d_norm, n_points = 5)
+#'
+#' # Different pdqr classes and types produce different column names in output
+#' colnames(enpoint(new_p(1:2, "fin")))
+#' colnames(enpoint(new_d(1:2, "fin")))
+#' colnames(enpoint(new_d(1:2, "infin")))
+#' colnames(enpoint(new_q(1:2, "infin")))
+#' colnames(enpoint(new_r(1:2, "infin")))
+#'
+#' # Manual way with different output structure
+#' df <- meta_x_tbl(form_regrid(d_norm, 5))
+#'   # Difference in values due to `form_regrid()` renormalization
+#' plot(enpoint(d_norm, 5), type = "l")
+#' lines(df[["x"]], df[["y"]], col = "blue")
+#'
+#' @export
 enpoint <- function(f, n_points = 1001) {
   assert_pdqr_fun(f)
   assert_type(
