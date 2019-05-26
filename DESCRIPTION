@@ -49,6 +49,7 @@ Collate:
     'new_r.R'
     'plot.R'
     'region.R'
+    'summ-classification.R'
     'summ-entropy.R'
     'summ-other.R'
     'summ_center.R'
