@@ -24,3 +24,48 @@ summ_rocauc <- function(f, g) {
 
   prob_greater(g, f)
 }
+
+roc_plot <- function(roc, ..., plot_bisector = TRUE) {
+  assert_roc(roc)
+  assert_type(plot_bisector, is_truefalse, type_name = "`TRUE` or `FALSE`")
+
+  roc_name <- deparse(substitute(roc))
+
+  plot_args <- c_dedupl(
+    list(x = roc[["fpr"]], y = roc[["tpr"]]),
+    ...,
+    list(
+      type = "s",
+      xlim = c(0, 1), ylim = c(0, 1),
+      xlab = "FPR or (1 - specificity)", ylab = "TPR or sensitivity",
+      main = paste0("ROC curve for ", roc_name)
+    )
+  )
+  do.call(graphics::plot, plot_args)
+
+  if (plot_bisector) {
+    graphics::lines(c(0, 1), c(0, 1), lty = "dotted")
+  }
+
+  invisible()
+}
+
+roc_lines <- function(roc, ...) {
+  assert_roc(roc)
+
+  graphics::lines(x = roc[["fpr"]], y = roc[["tpr"]], ...)
+}
+
+is_roc <- function(roc) {
+  is.data.frame(roc) &&
+    all(c("fpr", "tpr") %in% names(roc)) &&
+    is.numeric(roc[["fpr"]]) && is.numeric(roc[["tpr"]])
+}
+
+assert_roc <- function(roc) {
+  if (!is_roc(roc)) {
+    stop_collapse("`roc` should represent ROC curve. See `summ_roc()`.")
+  }
+
+  TRUE
+}
