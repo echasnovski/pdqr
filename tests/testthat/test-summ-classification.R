@@ -36,3 +36,18 @@ test_that("summ_roc validates input", {
   expect_error(summ_roc(d_fin, d_infin, n_grid = 10:11), "`n_grid`.*single")
   expect_error(summ_roc(d_fin, d_infin, n_grid = 0.5), "`n_grid`.*more than 1")
 })
+
+
+# summ_rocauc -------------------------------------------------------------
+test_that("summ_rocauc works", {
+  expect_equal(summ_rocauc(new_d(1:2, "fin"), new_d(2:3, "fin")), 0.75)
+  expect_equal(summ_rocauc(d_fin, d_infin), summ_prob_true(d_infin > d_fin))
+
+  g <- q_infin + 1
+  expect_equal(summ_rocauc(p_infin, g), summ_prob_true(g > p_infin))
+})
+
+test_that("summ_rocauc validates input", {
+  expect_error(summ_rocauc("a", d_fin), "`f`.*not pdqr-function")
+  expect_error(summ_rocauc(d_fin, "a"), "`g`.*not pdqr-function")
+})

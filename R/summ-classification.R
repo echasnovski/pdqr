@@ -17,3 +17,10 @@ summ_roc <- function(f, g, n_grid = 1001) {
 
   data.frame(threshold = t_grid, fpr = fpr, tpr = tpr)
 }
+
+summ_rocauc <- function(f, g) {
+  assert_pdqr_fun(f)
+  assert_pdqr_fun(g)
+
+  prob_greater(g, f)
+}
