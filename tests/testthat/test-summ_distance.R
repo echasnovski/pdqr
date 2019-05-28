@@ -16,13 +16,28 @@ test_that("summ_distance works", {
     summ_distance(new_d(1:2, "fin"), new_d(1:2, "infin"), method = "totvar"),
     1
   )
+
+  # Method "wass"
+  expect_equal(
+    # Output isn't exact because `stats::integrate()` is used
+    summ_distance(p_f, p_f + 10, method = "wass"), 10, tolerance = 1e-5
+  )
 })
 
 test_that("summ_distance returns 0 for identical inputs", {
+  d_dirac <- new_d(2, "infin")
+
   expect_equal(summ_distance(d_fin, d_fin, method = "KS"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "KS"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "KS"), 0)
+
   expect_equal(summ_distance(d_fin, d_fin, method = "totvar"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "totvar"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "totvar"), 0)
+
+  expect_equal(summ_distance(d_fin, d_fin, method = "wass"), 0)
+  expect_equal(summ_distance(d_infin, d_infin, method = "wass"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "wass"), 0)
 })
 
 test_that("summ_distance validates input", {
@@ -293,3 +308,153 @@ test_that("distance_totvar works with different pdqr classes", {
 
 # distance_totvar_two_fin -------------------------------------------------
 # Tested in `distance_totvar()`
+
+
+# distance_wass -----------------------------------------------------------
+test_that("distance_wass works with two 'fin' functions", {
+  p_f <- new_p(1:3, "fin")
+  p_g <- new_p(1:3+1.5, "fin")
+  expect_equal(distance_wass(p_f, p_g), 1.5)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_wass(p_g, p_f), 1.5)
+
+  p_f <- new_p(data.frame(x = 1:4, prob = 1:4/10), "fin")
+  p_g <- new_p(data.frame(x = 1:4, prob = 4:1/10), "fin")
+  expect_equal(distance_wass(p_f, p_g), 0.3*3 + 0.1*1)
+
+  p_f <- new_p(1:10, "fin")
+  p_g <- new_p(6:10, "fin")
+  expect_equal(distance_wass(p_f, p_g), 0.1*5*5)
+})
+
+test_that("distance_wass works with mixed-type functions", {
+  cur_fin <- new_p(1:10, "fin")
+  cur_infin <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "infin")
+  # Total integral is multiple of squares of "triangles"
+  expect_equal(distance_wass(cur_fin, cur_infin), 10*(1*0.1)/2)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_wass(cur_infin, cur_fin), 10*(1*0.1)/2)
+
+  expect_equal(
+    distance_wass(
+      new_p(data.frame(x = 1:2, y = c(1, 1)), "infin"), new_p(2, "fin")
+    ),
+    1*1/2
+  )
+
+  # Case of common CDF plateau (zero density plateau)
+  p_fin_2 <- new_p(data.frame(x = 2:3, prob = c(0.5, 0.5)), "fin")
+  p_infin_2 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
+  # Result is twice the integral of `-0.5*x^2 + 2*x - 1.5` (equation of first
+  # third of CDF) from 1 to 2
+  expect_equal(distance_wass(p_fin_2, p_infin_2), 2/3)
+
+  p_fin_3 <- new_p(2.5, "fin")
+  p_infin_3 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
+  # Result is equal to previous plus square of "infin" CDF from 2 to 3
+  expect_equal(
+    distance_wass(p_fin_3, p_infin_3), 2/3 + 0.5,
+    tolerance = 4e-7
+  )
+})
+
+test_that("distance_wass works with two 'infin' functions", {
+  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "infin")
+  p_g <- p_f + 0.5
+  expect_equal(distance_wass(p_f, p_g), 0.5, tolerance = 5e-7)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_wass(p_g, p_f), 0.5, tolerance = 5e-7)
+
+  p_f <- as_p(punif)
+  p_g <- as_p(punif, max = 0.5)
+  # Result is sum of squares of two triangles
+  expect_equal(distance_wass(p_f, p_g), (0.5*1/2-0.5*0.5/2) + 0.5*0.5/2)
+
+  # Common y-zero density plateau #1
+  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
+  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "infin")
+  expect_equal(distance_wass(p_f, p_g), 1/3, tolerance = 4e-8)
+
+  # Common y-zero density plateau #2
+  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "infin")
+  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "infin")
+  # Result can be reasoned as distance at which "density triangle" should be
+  # moved
+  expect_equal(distance_wass(p_f, p_g), 3, tolerance = 7e-8)
+})
+
+test_that("distance_wass works with non-overlapping supports", {
+  cur_fin_1 <- new_p(1:4, "fin")
+  cur_fin_2 <- new_p(5:6, "fin")
+  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
+  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
+  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+
+  # "Two fin"
+  # Result is square of 12 1x0.25 blocks
+  expect_equal(distance_wass(cur_fin_1, cur_fin_2), 12*1*0.25)
+  expect_equal(distance_wass(cur_fin_2, cur_fin_1), 12*1*0.25)
+
+  # "Mixed-typed"
+  expect_equal(
+    distance_wass(cur_fin_1, cur_infin_2), 6/4+1+0.5,
+    tolerance = 4e-6
+  )
+  expect_equal(
+    distance_wass(cur_infin_2, cur_fin_1), 6/4+1+0.5,
+    tolerance = 4e-6
+  )
+  # "Touching" supports
+  expect_equal(distance_wass(cur_fin_1, cur_infin_3), 6/4+0.5)
+  expect_equal(distance_wass(cur_infin_3, cur_fin_1), 6/4+0.5)
+
+  # "Two infin"
+  expect_equal(
+    distance_wass(cur_infin_1, cur_infin_2), 3*1/2 + 1 + 0.5,
+    tolerance = 4e-6
+  )
+  expect_equal(
+    distance_wass(cur_infin_2, cur_infin_1), 3*1/2 + 1 + 0.5,
+    tolerance = 4e-6
+  )
+  # "Touching" supports
+  expect_equal(distance_wass(cur_infin_1, cur_infin_3), 3*1/2 + 0.5)
+  expect_equal(distance_wass(cur_infin_3, cur_infin_1), 3*1/2 + 0.5)
+})
+
+test_that("distance_wass works for very distant distributions", {
+  p_f <- as_p(punif, max = 1e4)
+  p_g <- as_p(punif)
+  expect_equal(
+    distance_wass(p_f, p_g), (1-0.5e-4) + (1e4-1)*(1-1e-4)/2
+  )
+  # A correct result is 1e5 but seems like 1 is added due to
+  # `stats::integrate()` behavior on wide intervals. In this situation it
+  # happens on distance around 500 (more like around 460)
+  expect_equal(distance_wass(p_g, p_g + 1e4), 1e4 + 1)
+})
+
+test_that("distance_wass works with dirac-like functions", {
+  # Wasserstein distance when "dirac" function is involved should be essentially
+  # (but not exactly) the same as if it is replaced with corresponding "fin"
+  # (except the case when the other one is "fin" with one of points lying inside
+  # "dirac" support)
+  d_dirac <- new_d(2, "infin")
+  d_dirac_fin <- new_d(2, "fin")
+
+  # "Two infin" case
+  expect_equal(
+    distance_wass(d_infin, d_dirac),
+    distance_wass(d_infin, d_dirac_fin)
+  )
+  # Non-overlapping dirac-like functions
+  expect_equal(distance_wass(d_dirac, new_d(3, "infin")), 1 + 1e-8)
+})
+
+test_that("distance_wass works with different pdqr classes", {
+  expect_equal(distance_wass(d_fin, d_infin), distance_wass(p_fin, q_infin))
+})
+
+
+# integrate_cdf_absdiff ---------------------------------------------------
+# Tested in `distance_wass()`
