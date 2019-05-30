@@ -49,18 +49,27 @@ test_that("summ_roc validates input", {
 test_that("summ_rocauc works", {
   cur_fin_1 <- new_d(1:2, "fin")
   cur_fin_2 <- new_d(2:3, "fin")
-  expect_equal(summ_rocauc(cur_fin_1, cur_fin_2), 0.75)
-  expect_equal(summ_rocauc(cur_fin_2, cur_fin_1), 0)
+  expect_equal(summ_rocauc(cur_fin_1, cur_fin_2, method = "expected"), 0.875)
+  expect_equal(summ_rocauc(cur_fin_1, cur_fin_2, method = "pessimistic"), 0.75)
+  expect_equal(summ_rocauc(cur_fin_1, cur_fin_2, method = "optimistic"), 1)
 
-  expect_equal(summ_rocauc(d_fin, d_infin), summ_prob_true(d_infin > d_fin))
+  mixed_out <- summ_prob_true(d_infin > d_fin)
+  expect_equal(summ_rocauc(d_fin, d_infin, method = "expected"), mixed_out)
+  expect_equal(summ_rocauc(d_fin, d_infin, method = "pessimistic"), mixed_out)
+  expect_equal(summ_rocauc(d_fin, d_infin, method = "optimistic"), mixed_out)
 
   g <- q_infin + 1
-  expect_equal(summ_rocauc(p_infin, g), summ_prob_true(g > p_infin))
+  infin_out <- summ_prob_true(g > p_infin)
+  expect_equal(summ_rocauc(p_infin, g, method = "expected"), infin_out)
+  expect_equal(summ_rocauc(p_infin, g, method = "pessimistic"), infin_out)
+  expect_equal(summ_rocauc(p_infin, g, method = "optimistic"), infin_out)
 })
 
 test_that("summ_rocauc validates input", {
   expect_error(summ_rocauc("a", d_fin), "`f`.*not pdqr-function")
   expect_error(summ_rocauc(d_fin, "a"), "`g`.*not pdqr-function")
+  expect_error(summ_rocauc(d_fin, d_infin, method = 1), "`method`.*string")
+  expect_error(summ_rocauc(d_fin, d_infin, method = "a"), "`method`.*one of")
 })
 
 

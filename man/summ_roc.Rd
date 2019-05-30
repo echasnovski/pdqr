@@ -9,7 +9,7 @@
 \usage{
 summ_roc(f, g, n_grid = 1001)
 
-summ_rocauc(f, g)
+summ_rocauc(f, g, method = "expected")
 
 roc_plot(roc, ..., add_bisector = TRUE)
 
@@ -23,6 +23,9 @@ roc_lines(roc, ...)
 distribution of "positive" values.}
 
 \item{n_grid}{Number of points of ROC curve to be computed.}
+
+\item{method}{Method of computing ROC AUC. Should be one of "expected",
+"pessimistic", "optimistic" (see Details).}
 
 \item{roc}{A data frame representing ROC curve. Typically an output of
 \code{summ_roc()}.}
@@ -69,8 +72,13 @@ threshold.
 \code{summ_rocauc()} computes a common general (without any particular threshold
 in mind) diagnostic value of classifier, \strong{area under ROC curve} ("ROC AUC"
 or "AUROC"). Numerically it is equal to a probability of random variable with
-distribution \code{g} being strictly greater than \code{f}. See \link[=methods-group-generic]{pdqr methods for comparing functions} (in "Ops" family) for more
-details.
+distribution \emph{\code{g} being strictly greater than \code{f}} plus \emph{possible correction
+for functions being equal}, with multiple ways to account for it. Method
+"pessimistic" doesn't add correction, "expected" adds half of probability of
+\code{f} and \code{g} being equal (which is default), "optimistic" adds full
+probability. \strong{Note} that this means that correction might be done only if
+both input pdqr-functions have "fin" type. See \link[=methods-group-generic]{pdqr methods for "Ops" group generic family} for more details on comparing
+functions.
 
 \code{roc_plot()} and \code{roc_lines()} perform plotting (with
 \link[graphics:plot]{plot()}) and adding (with \link[graphics:lines]{lines()})
@@ -89,6 +97,21 @@ summ_prob_true(d_norm_2 > d_norm_1)
 # Plotting
 roc_plot(roc)
 roc_lines(summ_roc(d_norm_2, d_norm_1), col = "blue")
+
+# For "fin" functions `summ_rocauc()` can produce different outputs
+d_fin_1 <- new_d(1:2, "fin")
+d_fin_2 <- new_d(2:3, "fin")
+summ_rocauc(d_fin_1, d_fin_2)
+summ_rocauc(d_fin_1, d_fin_2, method = "pessimistic")
+summ_rocauc(d_fin_1, d_fin_2, method = "optimistic")
+  # These methods correspond to different ways of plotting ROC curves
+roc <- summ_roc(d_fin_1, d_fin_2)
+  # Default line plot for "expected" method
+roc_plot(roc, main = "Different type of plotting ROC curve")
+  # Method "pessimistic"
+roc_lines(roc, type = "s", col = "blue")
+  # Method "optimistic"
+roc_lines(roc, type = "S", col = "green")
 
 }
 \seealso{

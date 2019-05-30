@@ -8,6 +8,8 @@
 #'
 #' @inheritParams summ_separation
 #' @param n_grid Number of points of ROC curve to be computed.
+#' @param method Method of computing ROC AUC. Should be one of "expected",
+#'   "pessimistic", "optimistic" (see Details).
 #' @param roc A data frame representing ROC curve. Typically an output of
 #'   `summ_roc()`.
 #' @param ... Other arguments to be passed to `plot()` or `lines()`.
@@ -32,9 +34,14 @@
 #' `summ_rocauc()` computes a common general (without any particular threshold
 #' in mind) diagnostic value of classifier, **area under ROC curve** ("ROC AUC"
 #' or "AUROC"). Numerically it is equal to a probability of random variable with
-#' distribution `g` being strictly greater than `f`. See [pdqr methods for
-#' comparing functions][methods-group-generic] (in "Ops" family) for more
-#' details.
+#' distribution *`g` being strictly greater than `f`* plus *possible correction
+#' for functions being equal*, with multiple ways to account for it. Method
+#' "pessimistic" doesn't add correction, "expected" adds half of probability of
+#' `f` and `g` being equal (which is default), "optimistic" adds full
+#' probability. **Note** that this means that correction might be done only if
+#' both input pdqr-functions have "fin" type. See [pdqr methods for "Ops" group
+#' generic family][methods-group-generic] for more details on comparing
+#' functions.
 #'
 #' `roc_plot()` and `roc_lines()` perform plotting (with
 #' [plot()][graphics::plot()]) and adding (with [lines()][graphics::lines()])
@@ -64,6 +71,21 @@
 #' roc_plot(roc)
 #' roc_lines(summ_roc(d_norm_2, d_norm_1), col = "blue")
 #'
+#' # For "fin" functions `summ_rocauc()` can produce different outputs
+#' d_fin_1 <- new_d(1:2, "fin")
+#' d_fin_2 <- new_d(2:3, "fin")
+#' summ_rocauc(d_fin_1, d_fin_2)
+#' summ_rocauc(d_fin_1, d_fin_2, method = "pessimistic")
+#' summ_rocauc(d_fin_1, d_fin_2, method = "optimistic")
+#'   # These methods correspond to different ways of plotting ROC curves
+#' roc <- summ_roc(d_fin_1, d_fin_2)
+#'   # Default line plot for "expected" method
+#' roc_plot(roc, main = "Different type of plotting ROC curve")
+#'   # Method "pessimistic"
+#' roc_lines(roc, type = "s", col = "blue")
+#'   # Method "optimistic"
+#' roc_lines(roc, type = "S", col = "green")
+#'
 #' @name summ_roc
 NULL
 
@@ -91,11 +113,15 @@ summ_roc <- function(f, g, n_grid = 1001) {
 
 #' @rdname summ_roc
 #' @export
-summ_rocauc <- function(f, g) {
+summ_rocauc <- function(f, g, method = "expected") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
+  assert_type(method, is_string)
+  assert_in_set(method, c("expected", "pessimistic", "optimistic"))
 
-  prob_greater(g, f)
+  method_coef <- switch(method, expected = 0.5, pessimistic = 0, optimistic = 1)
+
+  prob_greater(g, f) + method_coef * prob_equal(g, f)
 }
 
 #' @rdname summ_roc
