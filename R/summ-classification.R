@@ -141,7 +141,7 @@ roc_plot <- function(roc, ..., add_bisector = TRUE) {
     list(x = roc[["fpr"]], y = roc[["tpr"]]),
     ...,
     list(
-      type = "s",
+      type = "l",
       xlim = c(0, 1), ylim = c(0, 1),
       xlab = "FPR or (1 - specificity)", ylab = "TPR or sensitivity",
       main = paste0("ROC curve for ", roc_name)
@@ -169,7 +169,7 @@ roc_lines <- function(roc, ...) {
   lines_args <- c_dedupl(
     list(x = roc[["fpr"]], y = roc[["tpr"]]),
     ...,
-    list(type = "s")
+    list(type = "l")
   )
 
   do.call(graphics::lines, lines_args)
