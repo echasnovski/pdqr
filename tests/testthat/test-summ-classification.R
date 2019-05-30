@@ -13,13 +13,14 @@ test_that("summ_roc works", {
   output <- summ_roc(d_fin, d_infin)
   expect_named(output, c("threshold", "fpr", "tpr"))
 
-  expect_sorted <- function(x) {expect_false(is.unsorted(x))}
-  expect_sorted(output[["threshold"]])
+  expect_decreasing <- function(x) {expect_false(is.unsorted(-x))}
+  expect_decreasing(output[["threshold"]])
+
+  # "fpr" column should be sorted non-decreasingly
+  expect_decreasing(-output[["fpr"]])
   expect_equal(range(output[["fpr"]]), c(0, 1))
+
   expect_equal(range(output[["tpr"]]), c(0, 1))
-    # "fpr" and "tpr" columns should be sorted decreasingly
-  expect_sorted(-output[["fpr"]])
-  expect_sorted(-output[["tpr"]])
 })
 
 test_that("summm_roc covers [0; 1] range on both axis in case of 'fin' input", {
@@ -110,6 +111,17 @@ test_that("roc_plot works", {
   vdiffr::expect_doppelganger(
     "roc-bisector", recordPlot({
       roc_plot(roc_1, add_bisector = FALSE)
+    })
+  )
+
+  # Ordering of ROC curve points
+  vdiffr::expect_doppelganger(
+    "roc-ordering", recordPlot({
+      roc_1_reordered <- roc_1[sample(seq_len(nrow(roc_1))), ]
+      roc_2_reordered <- roc_2[sample(seq_len(nrow(roc_1))), ]
+
+      roc_plot(roc_1_reordered, main = "Reordered ROC data frames")
+      roc_lines(roc_2_reordered, col = "blue")
     })
   )
 })

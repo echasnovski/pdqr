@@ -37,8 +37,9 @@ reference for "random guess" classifier.}
 }
 \value{
 \code{summ_roc()} returns a data frame with \code{n_grid} rows and columns
-"threshold" (grid of classification thresholds), "fpr", and "tpr"
-(corresponding false and true positive rates).
+"threshold" (grid of classification thresholds, ordered decreasingly), "fpr",
+and "tpr" (corresponding false and true positive rates, ordered
+non-decreasingly by "fpr").
 
 \code{summ_rocauc()} returns single number representing area under the ROC curve.
 
@@ -52,7 +53,7 @@ as "positive". Here input pair of pdqr-functions represent "true"
 distributions of values with "negative" (\code{f}) and "positive" (\code{g}) labels.
 }
 \details{
-ROC curve describes how good classifier performs under different
+ROC curve describes how well classifier performs under different
 thresholds. For all possible thresholds two classification metrics are
 computed which later form x and y coordinates of a curve:
 \itemize{
@@ -63,9 +64,10 @@ was (incorrectly) classified as "positive". This is the same as one minus
 was (correctly) classified as "positive". This is also called "sensitivity".
 }
 
-\code{summ_roc()} creates a uniform grid of \code{n_grid} values covering range of all
-meaningful thresholds. This range is computed as slightly extended range of
-\code{f} and \code{g} supports (extension is needed to achieve extreme values of
+\code{summ_roc()} creates a uniform grid of decreasing \code{n_grid} values (so that
+output points of ROC curve are ordered from left to right) covering range of
+all meaningful thresholds. This range is computed as slightly extended range
+of \code{f} and \code{g} supports (extension is needed to achieve extreme values of
 "fpr" in presence of "fin" type). Then FPR and TPR are computed for every
 threshold.
 
