@@ -3,13 +3,14 @@ summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
   assert_type(method, is_string)
-  assert_in_set(method, c("KS", "totvar", "wass"))
+  assert_in_set(method, c("KS", "totvar", "wass", "cramer"))
 
   switch(
     method,
     KS = distance_ks(f, g),
     totvar = distance_totvar(f, g),
-    wass = distance_wass(f, g)
+    wass = distance_wass(f, g),
+    cramer = distance_cramer(f, g)
   )
 }
 
@@ -140,11 +141,21 @@ distance_totvar_two_fin <- function(d_f, d_g) {
 }
 
 
-# distance_wass() ---------------------------------------------------------
+# Method "wass" -----------------------------------------------------------
 # **Notes in docs**. "Minimum cost of 'moving' one density into another". Here
 # 1-Wasserstein distance is computed as integral of |F - G| over union support.
 distance_wass <- function(f, g) {
   integrate_cdf_absdiff(p_f = as_p(f), p_g = as_p(g), power = 1)
+}
+
+
+# Method "cramer" ---------------------------------------------------------
+# **Notes in docs**. Integral of (F - G)^2 over union support. Roughly, this
+# is related to 1-Wasserstein distance in the same way as mean absolute
+# deviation around the mean (absolute central first moment) is related to
+# variance (central second moment).
+distance_cramer <- function(f, g) {
+  integrate_cdf_absdiff(p_f = as_p(f), p_g = as_p(g), power = 2)
 }
 
 

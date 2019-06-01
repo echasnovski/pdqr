@@ -22,6 +22,10 @@ test_that("summ_distance works", {
     # Output isn't exact because `stats::integrate()` is used
     summ_distance(p_f, p_f + 10, method = "wass"), 10, tolerance = 1e-5
   )
+
+  # Method "cramer"
+    # Result is sum of squares of two triangles
+  expect_equal(summ_distance(p_f, p_g, method = "cramer"), 1/12)
 })
 
 test_that("summ_distance returns 0 for identical inputs", {
@@ -38,6 +42,10 @@ test_that("summ_distance returns 0 for identical inputs", {
   expect_equal(summ_distance(d_fin, d_fin, method = "wass"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "wass"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "wass"), 0)
+
+  expect_equal(summ_distance(d_fin, d_fin, method = "cramer"), 0)
+  expect_equal(summ_distance(d_infin, d_infin, method = "cramer"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "cramer"), 0)
 })
 
 test_that("summ_distance validates input", {
@@ -428,7 +436,7 @@ test_that("distance_wass works for very distant distributions", {
   expect_equal(
     distance_wass(p_f, p_g), (1-0.5e-4) + (1e4-1)*(1-1e-4)/2
   )
-  # A correct result is 1e5 but seems like 1 is added due to
+  # A correct result is 1e4 but seems like 1 is added due to
   # `stats::integrate()` behavior on wide intervals. In this situation it
   # happens on distance around 500 (more like around 460)
   expect_equal(distance_wass(p_g, p_g + 1e4), 1e4 + 1)
@@ -456,5 +464,112 @@ test_that("distance_wass works with different pdqr classes", {
 })
 
 
+# distance_cramer ---------------------------------------------------------
+test_that("distance_cramer works with two 'fin' functions", {
+  p_f <- new_p(1:3, "fin")
+  p_g <- new_p(1:3+1.5, "fin")
+  expect_equal(distance_cramer(p_f, p_g), 5*0.5/9 + 2*0.5*4/9)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_cramer(p_g, p_f), 5*0.5/9 + 2*0.5*4/9)
+})
+
+test_that("distance_cramer works with mixed-type functions", {
+  cur_fin <- new_p(1:10, "fin")
+  cur_infin <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "infin")
+  # Total integral is multiple of squares of "triangles"
+  expect_equal(distance_cramer(cur_fin, cur_infin), 10/300)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_cramer(cur_infin, cur_fin), 10/300)
+})
+
+test_that("distance_cramer works with two 'infin' functions", {
+  p_f <- as_p(punif)
+  p_g <- as_p(punif, max = 0.5)
+  # Result is sum of squares of two triangles
+  expect_equal(distance_cramer(p_f, p_g), 1/12)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_cramer(p_g, p_f), 1/12)
+})
+
+test_that("distance_cramer works with non-overlapping supports", {
+  cur_fin_1 <- new_p(1:4, "fin")
+  cur_fin_2 <- new_p(5:6, "fin")
+  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
+  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
+  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+
+  # "Two fin"
+  # Here 2.125 = 0.25^2 + 0.5^2 + 0.75^2 + 1^2 + 0.5^2
+  expect_equal(distance_cramer(cur_fin_1, cur_fin_2), 2.125)
+  expect_equal(distance_cramer(cur_fin_2, cur_fin_1), 2.125)
+
+  # "Mixed-typed"
+  # Here
+  expect_equal(
+    distance_cramer(cur_fin_1, cur_infin_2), 0.25^2+0.5^2+0.75^2+1^2 + 1/3,
+    tolerance = 1e-7
+  )
+  expect_equal(
+    distance_cramer(cur_infin_2, cur_fin_1), 0.25^2+0.5^2+0.75^2+1^2 + 1/3,
+    tolerance = 1e-7
+  )
+  # "Touching" supports
+  expect_equal(
+    distance_cramer(cur_fin_1, cur_infin_3), 0.25^2+0.5^2+0.75^2 + 1/3
+  )
+  expect_equal(
+    distance_cramer(cur_infin_3, cur_fin_1), 0.25^2+0.5^2+0.75^2 + 1/3
+  )
+
+  # "Two infin"
+  expect_equal(
+    distance_cramer(cur_infin_1, cur_infin_2), 1 + 1 + 1/3,
+    tolerance = 1e-6
+  )
+  expect_equal(
+    distance_cramer(cur_infin_2, cur_infin_1), 1 + 1 + 1/3,
+    tolerance = 1e-6
+  )
+  # "Touching" supports
+  expect_equal(distance_cramer(cur_infin_1, cur_infin_3), 1 + 1/3)
+  expect_equal(distance_cramer(cur_infin_3, cur_infin_1), 1 + 1/3)
+})
+
+test_that("distance_cramer works for very distant distributions", {
+  p_f <- as_p(punif, max = 1e4)
+  p_g <- as_p(punif)
+  # Accuracy is not very good probably because of second power
+  expect_equal(
+    distance_cramer(p_f, p_g), (1-1e-4)^2 * (1 + 10^4*(1-1e-4)) / 3,
+    tolerance = 0.7
+  )
+  # A correct result is 1e4-1/3 but seems like 4/3 is added due to
+  # `stats::integrate()` behavior on wide intervals. In this situation it
+  # happens on distance around 500 (more like around 460)
+  expect_equal(distance_cramer(p_g, p_g + 1e4), 1e4 + 1)
+})
+
+test_that("distance_cramer works with dirac-like functions", {
+  # Cramer distance when "dirac" function is involved should be essentially
+  # (but not exactly) the same as if it is replaced with corresponding "fin"
+  # (except the case when the other one is "fin" with one of points lying inside
+  # "dirac" support)
+  d_dirac <- new_d(2, "infin")
+  d_dirac_fin <- new_d(2, "fin")
+
+  # "Two infin" case
+  expect_equal(
+    distance_cramer(d_infin, d_dirac),
+    distance_cramer(d_infin, d_dirac_fin)
+  )
+  # Non-overlapping dirac-like functions
+  expect_equal(distance_cramer(d_dirac, new_d(3, "infin")), 1 + 2e-8)
+})
+
+test_that("distance_cramer works with different pdqr classes", {
+  expect_equal(distance_cramer(d_fin, d_infin), distance_cramer(p_fin, q_infin))
+})
+
+
 # integrate_cdf_absdiff ---------------------------------------------------
-# Tested in `distance_wass()`
+# Tested in `distance_wass()` and `distance_cramer()`
