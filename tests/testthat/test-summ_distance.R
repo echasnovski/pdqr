@@ -1,6 +1,16 @@
 context("test-summ_distance")
 
 
+# Custom expectations -----------------------------------------------------
+expect_dist_entropy <- function(f, g) {
+  expect_equal(
+    distance_entropy(f, g),
+    summ_entropy2(f, g, method = "relative") +
+      summ_entropy2(g, f, method = "relative")
+  )
+}
+
+
 # summ_distance -----------------------------------------------------------
 # More thorough tests are done in `distance_*()` functions
 test_that("summ_distance works", {
@@ -26,6 +36,13 @@ test_that("summ_distance works", {
   # Method "cramer"
     # Result is sum of squares of two triangles
   expect_equal(summ_distance(p_f, p_g, method = "cramer"), 1/12)
+
+  # Method "entropy"
+  expect_equal(
+    summ_distance(p_f, p_g, method = "entropy"),
+    summ_entropy2(p_f, p_g, method = "relative") +
+      summ_entropy2(p_g, p_f, method = "relative")
+  )
 })
 
 test_that("summ_distance returns 0 for identical inputs", {
@@ -46,6 +63,10 @@ test_that("summ_distance returns 0 for identical inputs", {
   expect_equal(summ_distance(d_fin, d_fin, method = "cramer"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "cramer"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "cramer"), 0)
+
+  expect_equal(summ_distance(d_fin, d_fin, method = "entropy"), 0)
+  expect_equal(summ_distance(d_infin, d_infin, method = "entropy"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "entropy"), 0)
 })
 
 test_that("summ_distance validates input", {
@@ -568,6 +589,38 @@ test_that("distance_cramer works with dirac-like functions", {
 
 test_that("distance_cramer works with different pdqr classes", {
   expect_equal(distance_cramer(d_fin, d_infin), distance_cramer(p_fin, q_infin))
+})
+
+
+# distance_entropy --------------------------------------------------------
+test_that("distance_entropy works with 'fin' functions", {
+  expect_dist_entropy(new_d(1:10, "fin"), new_d(5:12, "fin"))
+  expect_dist_entropy(
+    as_d(dbinom, size = 10, prob = 0.4), as_d(dbinom, size = 10, prob = 0.7)
+  )
+})
+
+test_that("distance_entropy works with 'infin' functions", {
+  expect_dist_entropy(as_d(dunif, max = 0.5), as_d(dunif))
+  expect_dist_entropy(as_d(dnorm), as_d(dnorm, sd = 0.1))
+})
+
+test_that("distance_entropy works with dirac-like functions", {
+  expect_dist_entropy(d_infin, new_d(1, "infin"))
+  d_winsor <- form_resupport(
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"), c(0.1, 0.7)
+  )
+  expect_dist_entropy(d_infin, d_winsor)
+})
+
+test_that("distance_entropy throws error functions with different types", {
+  expect_error(distance_entropy(d_fin, d_infin), "`f`.*`g`.*type")
+})
+
+test_that("distance_entropy works with different pdqr classes", {
+  expect_equal(
+    distance_entropy(d_infin, d_infin-1), distance_entropy(p_infin, q_infin-1)
+  )
 })
 
 

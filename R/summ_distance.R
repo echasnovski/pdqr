@@ -3,14 +3,15 @@ summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
   assert_type(method, is_string)
-  assert_in_set(method, c("KS", "totvar", "wass", "cramer"))
+  assert_in_set(method, c("KS", "totvar", "wass", "cramer", "entropy"))
 
   switch(
     method,
     KS = distance_ks(f, g),
     totvar = distance_totvar(f, g),
     wass = distance_wass(f, g),
-    cramer = distance_cramer(f, g)
+    cramer = distance_cramer(f, g),
+    entropy = distance_entropy(f, g)
   )
 }
 
@@ -156,6 +157,19 @@ distance_wass <- function(f, g) {
 # variance (central second moment).
 distance_cramer <- function(f, g) {
   integrate_cdf_absdiff(p_f = as_p(f), p_g = as_p(g), power = 2)
+}
+
+
+# Method "entropy" --------------------------------------------------------
+distance_entropy <- function(f, g) {
+  # This is mostly the same as sum of `summ_entropy2(*, *, method = "relative")`
+  # but without extra `assert_*()` checks. **Note** that default value of `clip`
+  # argument here should be the same as default value of `summ_entropy2()`.
+  res <- cross_entropy(f, g) - cross_entropy(f, f) +
+    cross_entropy(g, f) - cross_entropy(g, g)
+
+  # Account for numerical representation issues
+  max(res, 0)
 }
 
 
