@@ -50,6 +50,9 @@ test_that("summ_distance works", {
     # Result is sum of squares of two triangles
   expect_equal(summ_distance(p_f, p_g, method = "cramer"), 1/12)
 
+  # Method "align"
+  expect_equal(summ_distance(p_f, p_g, method = "align"), 0.25)
+
   # Method "entropy"
   expect_equal(
     summ_distance(p_f, p_g, method = "entropy"),
@@ -80,6 +83,10 @@ test_that("summ_distance returns 0 for identical inputs", {
   expect_equal(summ_distance(d_fin, d_fin, method = "cramer"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "cramer"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "cramer"), 0)
+
+  expect_equal(summ_distance(d_fin, d_fin, method = "align"), 0)
+  expect_equal(summ_distance(d_infin, d_infin, method = "align"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "align"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "entropy"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "entropy"), 0)
@@ -629,6 +636,62 @@ test_that("distance_cramer works with dirac-like functions", {
 
 test_that("distance_cramer works with different pdqr classes", {
   expect_equal(distance_cramer(d_fin, d_infin), distance_cramer(p_fin, q_infin))
+})
+
+
+# distance_align ----------------------------------------------------------
+test_that("distance_align works with two 'fin' functions", {
+  d_fin_2 <- d_fin + 2.7
+  expect_equal(distance_align(d_fin, d_fin_2), 2.7, tolerance = 1e-4)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_align(d_fin_2, d_fin), 2.7, tolerance = 1e-4)
+
+  # Case when there is no exact value `d` to achieve `P(f+d >= g) = 0.5`
+  cur_f <- new_d(1:2, "fin")
+  cur_g <- new_d(1:2 + 7.2, "fin")
+  expect_equal(distance_align(cur_f, cur_g), 7.2, tolerance = 1e-4)
+})
+
+test_that("distance_align works with mixed-type functions", {
+  f_fin <- new_d(1:4, "fin")
+  g_infin <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
+  expect_equal(distance_align(f_fin, g_infin), 2)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_align(g_infin, f_fin), 2)
+})
+
+test_that("distance_align works with two 'infin' functions", {
+  f_infin <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
+  g_infin <- new_d(data.frame(x = c(0, 1)+5.5, y = c(1, 1)), "infin")
+  expect_equal(distance_align(f_infin, g_infin), 5.5, tolerance = 1e-5)
+  # Checking twice to test independence of argument order
+  expect_equal(distance_align(g_infin, f_infin), 5.5, tolerance = 1e-5)
+})
+
+test_that("distance_align works for very distant distributions", {
+  p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
+  p_g <- new_p(data.frame(x = c(0, 1) + 1e4, y = c(1, 1)), "infin")
+  expect_equal(distance_align(p_f, p_g), 1e4)
+})
+
+test_that("distance_align works with dirac-like functions", {
+  # "Align" distance when "dirac" function is involved should be essentially
+  # (but not exactly) the same as if it is replaced with corresponding "fin"
+  # (except the case when the other one is "fin" with one of points lying inside
+  # "dirac" support)
+  d_dirac <- new_d(1, "infin")
+  expect_equal(
+    distance_align(d_infin, d_dirac), distance_align(d_infin, new_d(1, "fin"))
+  )
+
+  d_dirac_2 <- new_d(2, "infin")
+  expect_equal(distance_align(d_dirac, d_dirac_2), 1, tolerance = 1e-4)
+})
+
+test_that("distance_align works with different pdqr classes", {
+  expect_equal(
+    distance_align(d_fin, d_infin), distance_align(p_fin, q_infin)
+  )
 })
 
 

@@ -4,7 +4,7 @@ summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(g)
   assert_type(method, is_string)
   assert_in_set(
-    method, c("KS", "totvar", "compare", "wass", "cramer", "entropy")
+    method, c("KS", "totvar", "compare", "wass", "cramer", "align", "entropy")
   )
 
   switch(
@@ -14,6 +14,7 @@ summ_distance <- function(f, g, method = "KS") {
     compare = distance_compare(f, g),
     wass = distance_wass(f, g),
     cramer = distance_cramer(f, g),
+    align = distance_align(f, g),
     entropy = distance_entropy(f, g)
   )
 }
@@ -176,6 +177,43 @@ distance_wass <- function(f, g) {
 # variance (central second moment).
 distance_cramer <- function(f, g) {
   integrate_cdf_absdiff(p_f = as_p(f), p_g = as_p(g), power = 2)
+}
+
+
+# distance_align() --------------------------------------------------------
+# Note in docs. Output represents the absolute value of `d` that should be added
+# to `f` to achieve both `P(f+d >= g) >= 0.5` and `P(f+d <= g) >= 0.5` as close
+# as reasonably possible. **Note** that solution is found numerically, which
+# introduces some numerical error to result.
+distance_align <- function(f, g) {
+  f_supp <- meta_support(f)
+  g_supp <- meta_support(g)
+
+  f_geq_g <- prob_geq(f, g) >= 0.5
+  g_geq_f <- prob_geq(g, f) >= 0.5
+
+  # Handle edge case of identical "fin" pdqr-functions
+  if (f_geq_g && g_geq_f) {
+    return(0)
+  }
+
+  if (f_geq_g) {
+    # Moving `f` to the left
+    search_interval <- c(g_supp[1] - f_supp[2], 0)
+  } else {
+    # Moving `f` to the right
+    search_interval <- c(0, g_supp[2] - f_supp[1])
+  }
+
+  target_fun <- function(delta) {
+    prob_geq(f + delta, g) - 0.5
+  }
+
+  res <- stats::uniroot(
+    target_fun, interval = search_interval, extendInt = "yes"
+  )[["root"]]
+
+  abs(res)
 }
 
 
