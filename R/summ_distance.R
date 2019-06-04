@@ -3,12 +3,15 @@ summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
   assert_type(method, is_string)
-  assert_in_set(method, c("KS", "totvar", "wass", "cramer", "entropy"))
+  assert_in_set(
+    method, c("KS", "totvar", "compare", "wass", "cramer", "entropy")
+  )
 
   switch(
     method,
     KS = distance_ks(f, g),
     totvar = distance_totvar(f, g),
+    compare = distance_compare(f, g),
     wass = distance_wass(f, g),
     cramer = distance_cramer(f, g),
     entropy = distance_entropy(f, g)
@@ -139,6 +142,22 @@ distance_totvar_two_fin <- function(d_f, d_g) {
   prob_diff <- d_f(union_x) - d_g(union_x)
 
   sum(prob_diff[prob_diff > 0])
+}
+
+
+# Method "compare" --------------------------------------------------------
+# This is basically `max(P(f > g) + 0.5*P(f == g), P(g > f) + 0.5*P(f == g))`,
+# normalized to return values from 0 to 1 (`P(x)` is `summ_prob_true(x)`).
+# Addition of `0.5*P(f == g)` is to ensure that 0.5 is returned when `f` and `g`
+# are identical (useful to think about this as maximum between two "symmetric"
+# ROCAUCs computed with "expected" method). This also means zero distance for
+# identical inputs.
+# Here equation `prob_geq()` is used for performance reasons and based on the
+# following equation: `max(P(f>g), P(f<g)) + 0.5*P(f==g) =
+# max(P(f>=g), P(f<=g)) - P(f==g) + 0.5*P(f==g)`. After `y = 2*x-1`
+# normalization, this is the output.
+distance_compare <- function(f, g) {
+  2 * max(prob_geq(f, g), prob_geq(g, f)) - prob_equal(f, g) - 1
 }
 
 

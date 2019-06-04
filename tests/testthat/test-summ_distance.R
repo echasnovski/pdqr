@@ -2,6 +2,13 @@ context("test-summ_distance")
 
 
 # Custom expectations -----------------------------------------------------
+expect_dist_compare <- function(f, g) {
+  ref_output <- 2 * max(summ_prob_true(f > g), summ_prob_true(g > f)) +
+    summ_prob_true(f == g) -  1
+  expect_equal(distance_compare(f, g), ref_output)
+  expect_equal(distance_compare(g, f), ref_output)
+}
+
 expect_dist_entropy <- function(f, g) {
   expect_equal(
     distance_entropy(f, g),
@@ -26,6 +33,12 @@ test_that("summ_distance works", {
     summ_distance(new_d(1:2, "fin"), new_d(1:2, "infin"), method = "totvar"),
     1
   )
+
+  # Method "compare"
+  expect_equal(summ_distance(p_f, p_f + 0.7, method = "compare"), 0.91)
+  f_fin <- new_d(1:2, "fin")
+  g_fin <- new_d(2:3, "fin")
+  expect_equal(summ_distance(f_fin, g_fin, method = "compare"), 0.75)
 
   # Method "wass"
   expect_equal(
@@ -55,6 +68,10 @@ test_that("summ_distance returns 0 for identical inputs", {
   expect_equal(summ_distance(d_fin, d_fin, method = "totvar"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "totvar"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "totvar"), 0)
+
+  expect_equal(summ_distance(d_fin, d_fin, method = "compare"), 0)
+  expect_equal(summ_distance(d_infin, d_infin, method = "compare"), 0)
+  expect_equal(summ_distance(d_dirac, d_dirac, method = "compare"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "wass"), 0)
   expect_equal(summ_distance(d_infin, d_infin, method = "wass"), 0)
@@ -337,6 +354,29 @@ test_that("distance_totvar works with different pdqr classes", {
 
 # distance_totvar_two_fin -------------------------------------------------
 # Tested in `distance_totvar()`
+
+
+# distance_compare --------------------------------------------------------
+test_that("distance_compare works", {
+  expect_dist_compare(d_fin, d_fin + 1)
+  expect_dist_compare(d_fin, d_infin)
+  expect_dist_compare(d_infin-2, d_infin)
+})
+
+test_that("distance_compare works with dirac-like functions", {
+  expect_dist_compare(d_infin, new_d(1, "infin"))
+
+  d_winsor <- form_resupport(
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"), c(0.1, 0.7)
+  )
+  expect_dist_compare(d_infin, d_winsor)
+})
+
+test_that("distance_compare works with different pdqr classes", {
+  expect_equal(
+    distance_compare(d_fin, d_infin), distance_compare(p_fin, q_infin)
+  )
+})
 
 
 # distance_wass -----------------------------------------------------------
