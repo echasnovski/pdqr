@@ -1,6 +1,8 @@
 abserror
 AUROC
 bruteforce
+cramer
+Cramer
 cumprob
 dirac
 downgrid
@@ -26,6 +28,7 @@ rgb
 sd
 tbl
 th
+totvar
 tpr
 TPR
 upgrid
@@ -33,4 +36,6 @@ upgridding
 Upgridding
 UPgridding
 vectorized
+wass
+Wasserstein
 winsor

@@ -66,9 +66,9 @@ summ_pval(d_norm, seq(0, 2, by = 0.1), adjust = "none")
 \seealso{
 Other summary functions: \code{\link{summ_center}},
   \code{\link{summ_dispersion}},
-  \code{\link{summ_entropy}}, \code{\link{summ_hdr}},
-  \code{\link{summ_interval}}, \code{\link{summ_moment}},
-  \code{\link{summ_prob_true}},
+  \code{\link{summ_distance}}, \code{\link{summ_entropy}},
+  \code{\link{summ_hdr}}, \code{\link{summ_interval}},
+  \code{\link{summ_moment}}, \code{\link{summ_prob_true}},
   \code{\link{summ_quantile}},
   \code{\link{summ_separation}}
 }

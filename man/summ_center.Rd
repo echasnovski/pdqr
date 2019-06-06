@@ -72,10 +72,10 @@ summ_mode(my_d, method = "local")
 \code{\link[=summ_moment]{summ_moment()}} for general moments.
 
 Other summary functions: \code{\link{summ_dispersion}},
-  \code{\link{summ_entropy}}, \code{\link{summ_hdr}},
-  \code{\link{summ_interval}}, \code{\link{summ_moment}},
-  \code{\link{summ_prob_true}}, \code{\link{summ_pval}},
-  \code{\link{summ_quantile}},
+  \code{\link{summ_distance}}, \code{\link{summ_entropy}},
+  \code{\link{summ_hdr}}, \code{\link{summ_interval}},
+  \code{\link{summ_moment}}, \code{\link{summ_prob_true}},
+  \code{\link{summ_pval}}, \code{\link{summ_quantile}},
   \code{\link{summ_separation}}
 }
 \concept{summary functions}

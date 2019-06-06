@@ -1,4 +1,102 @@
 # summ_distance() ---------------------------------------------------------
+#' Summarize pair of distributions with distance
+#'
+#' This function computes distance between two distributions represented by
+#' pdqr-functions. Here "distance" is used in a broad sense: a single
+#' non-negative number representing how much two distributions differ from one
+#' another. Bigger values indicate bigger difference. Zero value means that
+#' input distributions are equivalent based on the method used. The notion of
+#' "distance" is useful for doing statistical inference about similarity of two
+#' groups of numbers.
+#'
+#' @param f A pdqr-function of any [type][meta_type()] and
+#'   [class][meta_class()].
+#' @param g A pdqr-function of any type and class.
+#' @param method Method for computing distance. Should be one of "KS", "totvar",
+#'   "compare", "wass", "cramer", "align", "entropy".
+#'
+#' @details Methods can be separated into three categories: probability based,
+#' metric based, and entropy based.
+#'
+#' **Probability based** methods return a number between 0 and 1 which is
+#' computed in the way that mostly based on probability:
+#' - *Method "KS"* (short for Kolmogorov-Smirnov) computes the supremum of
+#' absolute difference between p-functions corresponding to `f` and `g` (`|F -
+#' G|`). Here "supremum" is meant to describe the fact that if input functions
+#' have different [types][meta_type()], there can be no point at which "KS"
+#' distance is achieved. Instead, there might be a sequence of points from left
+#' to right with `|F - G|` values tending to the result (see Examples).
+#' - *Method "totvar"* (short for "total variation") computes a biggest absolute
+#' difference of probabilities for any subset of real line. In other words,
+#' there is a set of points for "fin" type and intervals for "infin", total
+#' probability of which under `f` and `g` differs the most. **Note** that if
+#' `f` and `g` have different types, output is always 1. The set of interest
+#' consists from all "x" values of "fin" pdqr-function: probability under "fin"
+#' distribution is 1 and under "infin" is 0.
+#' - *Method "compare"* represents a value computed based on probabilities of
+#' one distribution being bigger than the other (see [pdqr methods for "Ops"
+#' group generic family][methods-group-generic] for more details on comparing
+#' pdqr-functions). It is computed as
+#' `2*max(P(F > G), P(F < G)) + 0.5*P(F = G) - 1` (here `P(F > G)` is basically
+#' `summ_prob_true(f > g)`). This is maximum of two values (`P(F > G) + 0.5*P(F
+#' = G)` and `P(F < G) + 0.5*P(F = G)`), normalized to return values from 0
+#' to 1. Other way to look at this measure is that it computes (before
+#' normalization) two [ROC AUC][summ_rocauc()] values with method `"expected"`
+#' for two possible ordering (`f, g`, and `g, f`) and takes their maximum.
+#'
+#' **Metric based** methods compute "how far" two distributions are apart on the
+#' real line:
+#' - *Method "wass"* (short for "Wasserstein") computes a 1-Wasserstein
+#' distance: "minimum cost of 'moving' one density into another", or "average
+#' path density point should go while transforming from one into another". It is
+#' computed as integral of `|F - G|` (absolute difference between p-functions).
+#' If any of `f` and `g` has "infin" type, [stats::integrate()] is used, so
+#' relatively small numerical errors can happen.
+#' - *Method "cramer"* computes Cramer distance: integral of `(F - G)^2`. This
+#' somewhat relates to "wass" method as [first central absolute
+#' moment][summ_moment()] relates to [variance][summ_var()]. Relatively small
+#' numerical errors can happen.
+#' - *Method "align"* computes an absolute value of shift `d` (possibly
+#' negative) that should be added to `f` to achieve both `P(f+d >= g) >= 0.5`
+#' and `P(f+d <= g) >= 0.5` (in other words, align `f+d` and `g`) as close as
+#' reasonably possible. Solution is found numerically with [stats::uniroot()],
+#' so relatively small numerical errors can happen. Also **note** that this
+#' method is somewhat slow (compared to all others).
+#'
+#' **Entropy based** methods compute output based on entropy characteristics:
+#' - *Method "entropy"* computes sum of two Kullback-Leibler divergences:
+#' `KL(f, g) + KL(g, f)`, which are outputs of [summ_entropy2()] with method
+#' "relative". **Notes**:
+#'     - If `f` and `g` don't have the same support, distance can be very high.
+#'     - Error is thrown if `f` and `g` have different types (the same as in
+#'     `summ_entropy2()`).
+#'
+#' @return A single non-negative number representing distance between pair of
+#'   distributions. For methods "KS", "totvar", and "compare" it is not bigger
+#'   than 1.
+#'
+#' @seealso [summ_separation()] for computation of optimal threshold separating
+#'   pair of distributions.
+#'
+#' @family summary functions
+#'
+#' @examples
+#' d_unif <- as_d(dunif, max = 2)
+#' d_norm <- as_d(dnorm, mean = 1)
+#'
+#' vapply(
+#'   c("KS", "totvar", "compare", "wass", "cramer", "align", "entropy"),
+#'   function(meth) {summ_distance(d_unif, d_norm, method = meth)},
+#'   numeric(1)
+#' )
+#'
+#' # "Supremum" quality of "KS" distance
+#' d_fin <- new_d(2, "fin")
+#'   # Distance is 1, which is a limit of |F - G| at points which tend to 2 from
+#'   # left
+#' summ_distance(d_fin, d_unif, method = "KS")
+#'
+#' @export
 summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
