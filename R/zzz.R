@@ -20,16 +20,6 @@
   invisible()
 }
 
-# Pretty printing of pdqr-functions as elements of list-columns in tibble
-# (tidyverse package).
-# Only one method for "pdqr" class is implemented (instead of four more quick
-# methods for every class separately) because of possible collision with classes
-# "p", "d", "q", "r" from some other package. This implmementation has not very
-# big overhead (around 4 microseconds).
-type_sum.pdqr <- function(x) {
-  paste0(meta_class(x), "-fun")
-}
-
 # Adapted from github.com/tidyverse/googledrive ('dplyr-compat.R')
 register_s3_method <- function(pkg, generic, class, fun) {
   envir <- asNamespace(pkg)
