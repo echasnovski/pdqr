@@ -59,6 +59,8 @@
 #'
 #' @seealso [summ_separation()] for computing optimal separation threshold.
 #'
+#' @family summary functions
+#'
 #' @examples
 #' d_norm_1 <- as_d(dnorm)
 #' d_norm_2 <- as_d(dnorm, mean = 1)
