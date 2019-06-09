@@ -180,14 +180,6 @@ test_that("distance_ks works with two 'infin' functions", {
   expect_equal(distance_ks(p_f, p_g), 1)
 })
 
-test_that("distance_ks returns zero with identical inputs", {
-  expect_equal(distance_ks(d_fin, d_fin), 0)
-  expect_equal(distance_ks(d_infin, d_infin), 0)
-
-  d_dirac <- new_d(2, "infin")
-  expect_equal(distance_ks(d_dirac, d_dirac), 0)
-})
-
 test_that("distance_ks works with non-overlapping supports", {
   cur_fin_1 <- new_p(1:4, "fin")
   cur_fin_2 <- new_p(5:6, "fin")
@@ -305,14 +297,6 @@ test_that("distance_totvar works with two 'infin' functions", {
   p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "infin")
   p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "infin")
   expect_equal(distance_totvar(p_f, p_g), 1)
-})
-
-test_that("distance_totvar returns zero with identical inputs", {
-  expect_equal(distance_totvar(d_fin, d_fin), 0)
-  expect_equal(distance_totvar(d_infin, d_infin), 0)
-
-  d_dirac <- new_d(2, "infin")
-  expect_equal(distance_totvar(d_dirac, d_dirac), 0)
 })
 
 test_that("distance_totvar works with non-overlapping supports", {
