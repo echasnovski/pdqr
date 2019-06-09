@@ -1,4 +1,4 @@
-context("test-summ-classification")
+context("test-summ_roc")
 
 library(grDevices)
 
