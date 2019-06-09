@@ -127,6 +127,7 @@ test_that("roc_plot works", {
 })
 
 test_that("roc_plot validates input", {
+  expect_error(roc_plot(), "`roc`.*missing.*data frame for ROC curve")
   expect_error(roc_plot(list(fpr = 1, tpr = 1)), "`roc`.*ROC")
   expect_error(
     roc_plot(data.frame(threshold = 1, fpr = 1, tpr = 1), add_bisector = "a"),
@@ -138,6 +139,7 @@ test_that("roc_plot validates input", {
 # roc_lines ---------------------------------------------------------------
 # Main functionality is tested in `roc_plot()`
 test_that("roc_lines validates input", {
+  expect_error(roc_lines(), "`roc`.*missing.*data frame for ROC curve")
   expect_error(roc_lines(list(fpr = 1, tpr = 1)), "`roc`.*ROC")
 })
 

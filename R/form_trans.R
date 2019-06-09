@@ -103,8 +103,8 @@ NULL
 #' @export
 form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
                        args_new = list()) {
-  assert_type(f_list, is.list)
   assert_f_list(f_list, allow_numbers = TRUE)
+  assert_missing(trans, "transformation function")
   assert_type(trans, is.function)
   assert_type(method, is_string)
   assert_in_set(method, c("random", "bruteforce"))

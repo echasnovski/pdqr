@@ -14,6 +14,7 @@ test_that("summ_quantile works", {
 
 test_that("summ_quantile validates input", {
   expect_error(summ_quantile("a", c(0, 1)), "`f`.*not pdqr-function")
+  expect_error(summ_quantile(d_fin), "`probs`.*quantile probabilities")
   expect_error(summ_quantile(d_fin, "a"), "`probs`.*numeric")
   expect_error(summ_quantile(d_fin, c(-1e-6, 0)), "`probs`.*\\[0; 1\\]")
   expect_error(summ_quantile(d_fin, c(1, 1+1e-6)), "`probs`.*\\[0; 1\\]")

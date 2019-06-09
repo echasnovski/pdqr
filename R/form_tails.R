@@ -131,6 +131,7 @@ tails_trim_infin <- function(f, level, direction) {
 
 assert_form_tails_args <- function(f, level, method, direction) {
   assert_pdqr_fun(f)
+  assert_missing(level, "tail level to modify")
   assert_type(level, is_single_number, "single number")
   if (level < 0) {
     stop_collapse("`level` should not be negative.")

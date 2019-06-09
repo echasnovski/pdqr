@@ -86,15 +86,18 @@ test_that("assert_in_set suggests correct value for character values", {
   )
 })
 
-# assert_missing_args -----------------------------------------------------
-test_that("assert_missing_args works", {
-  expect_silent(assert_missing_args("d"))
-  expect_silent(assert_missing_args("d", support = FALSE))
-  expect_error(
-    assert_missing_args("p", type = TRUE, support = FALSE),
-    'p-function.*supply.*`type`'
-  )
+
+# assert_missing ----------------------------------------------------------
+test_that("assert_missing works", {
+  f <- function(y) {
+    assert_missing(y, value_name = "aaa")
+  }
+  expect_error(f(), "^Argument `y` is missing. Supply aaa.$")
 })
+
+
+# error_missing -----------------------------------------------------------
+# Tested in `assert_missing()` and some other `assert_*()` functions
 
 
 # assert_pdqr_fun ---------------------------------------------------------
@@ -103,6 +106,9 @@ test_that("assert_pdqr_fun works", {
   expect_silent(assert_pdqr_fun(d_fin))
   expect_silent(assert_pdqr_fun(q_fin))
   expect_silent(assert_pdqr_fun(r_fin))
+
+  # Missing argument
+  expect_error(assert_pdqr_fun(), "missing. Supply pdqr-function.")
 
   # Function type
   input <- 1

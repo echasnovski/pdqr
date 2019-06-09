@@ -55,6 +55,7 @@
 #' @export
 summ_pval <- function(f, obs, method = "both", adjust = "holm") {
   assert_pdqr_fun(f)
+  assert_missing(obs, "numeric vector of observation(s)")
   assert_type(obs, is.numeric)
 
   assert_type(method, is_string)

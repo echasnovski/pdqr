@@ -124,6 +124,7 @@ test_that("summ_moment computes infinite standard moment", {
 
 test_that("summ_moment validates input", {
   expect_error(summ_moment("a", 1), "`f`.*not pdqr-function")
+  expect_error(summ_moment(d_fin), "`order`.*missing.*order of moment")
   expect_error(summ_moment(d_fin, "a"), "`order`.*number")
   expect_error(summ_moment(d_fin, -1), "`order`.*non-negative")
   expect_error(summ_moment(d_fin, 1:2), "`order`.*single")

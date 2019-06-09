@@ -191,6 +191,9 @@ is_roc <- function(roc) {
 }
 
 assert_roc <- function(roc) {
+  if (missing(roc)) {
+    error_missing("`roc`", "data frame for ROC curve")
+  }
   if (!is_roc(roc)) {
     stop_collapse("`roc` should represent ROC curve. See `summ_roc()`.")
   }

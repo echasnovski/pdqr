@@ -100,8 +100,10 @@ test_that("new_d warns about bad `x` elements", {
 })
 
 test_that("new_d validates input", {
+  expect_error(new_d(type = "infin"), "`x`.*missing.*numeric.*data frame")
   expect_error(new_d("a", "infin"), "x.*numeric.*data.*frame")
   expect_error(new_d(numeric(0), "infin"), "x.*empty")
+  expect_error(new_d(x_fin), "`type`.*missing.*pdqr type")
   expect_error(new_d(x_fin, type = 1), "type.*string")
   expect_error(new_d(x_fin, type = "a"), "type.*fin.*infin")
 })

@@ -52,6 +52,7 @@ NULL
 summ_moment <- function(f, order, central = FALSE, standard = FALSE,
                         absolute = FALSE) {
   assert_pdqr_fun(f)
+  assert_missing(order, "order of moment")
   assert_type(
     order, is_single_number,
     type_name = "single non-negative number", min_val = 0

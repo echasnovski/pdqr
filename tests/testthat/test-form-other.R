@@ -109,6 +109,7 @@ test_that("form_mix returns pdqr-function of correct class", {
 })
 
 test_that("form_mix validates input", {
+  expect_error(form_mix(), "`f_list`.*missing.*list of")
   expect_error(form_mix("a"), "`f_list`.*list")
   expect_error(form_mix(list()), "`f_list`.*empty")
   expect_error(form_mix(list(1)), "`f_list`.*pdqr-functions")
@@ -297,7 +298,14 @@ test_that("form_estimate checks that `estimate` returns single num or lgl", {
 
 test_that("form_estimate validates input", {
   expect_error(form_estimate("a", mean, 10), "`f`.*not pdqr-function")
+  expect_error(
+    form_estimate(d_fin, sample_size = 10),
+    "`estimate`.*missing.*estimate function"
+  )
   expect_error(form_estimate(d_fin, "a", 10), "`estimate`.*function")
+  expect_error(
+    form_estimate(d_fin, mean), "`sample_size`.*missing.*size of sample"
+  )
   expect_error(form_estimate(d_fin, mean, "a"), "`sample_size`.*single.*number")
   expect_error(form_estimate(d_fin, mean, 0), "`sample_size`.*positive")
   expect_error(

@@ -91,6 +91,7 @@
 #' @export
 form_regrid <- function(f, n_grid, method = "x") {
   assert_pdqr_fun(f)
+  assert_missing(n_grid, "grid size")
   assert_type(
     n_grid, is_single_number,
     type_name = "single positive number",

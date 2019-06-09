@@ -128,6 +128,7 @@ NULL
 #' @export
 region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
   assert_region(region)
+  assert_missing(x, "numeric vector")
   assert_type(x, is.numeric)
   assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
   assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
@@ -255,6 +256,10 @@ region_new <- function(left, right) {
 
 assert_region <- function(df) {
   df_name <- paste0("`", deparse(substitute(df)), "`")
+
+  if (missing(df)) {
+    error_missing(df_name, "region data frame")
+  }
 
   if (!is.data.frame(df)) {
     stop_collapse(df_name, " should be a data frame.")

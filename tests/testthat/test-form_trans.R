@@ -229,10 +229,12 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
 })
 
 test_that("form_trans validates input", {
+  expect_error(form_trans(trans = sq), "`f_list`.*missing.*list of")
   expect_error(form_trans(p_fin, sq), "`f_list`.*list")
   expect_error(form_trans(list(), sq), "`f_list`.*empty")
   expect_error(form_trans(list("a"), sq), "`f_list`.*pdqr-function.*number")
   expect_error(form_trans(list(1), sq), "`f_list`.*one.*pdqr-function")
+  expect_error(form_trans(list(p_fin)), "`trans`.*missing.*transformation")
   expect_error(form_trans(list(p_fin), 1), "`trans`.*function")
   expect_error(form_trans(list(p_fin), sq, method = 1), "`method`.*string")
   expect_error(form_trans(list(p_fin), sq, method = "a"), "`method`.*one of")
@@ -266,7 +268,10 @@ test_that("form_trans_self works",  {
 })
 
 test_that("form_trans_self validates input", {
-  expect_error(form_trans_self("a"), "f.*not pdqr-function")
+  expect_error(form_trans_self("a", sq), "f.*not pdqr-function")
+  expect_error(
+    form_trans_self(d_fin), "`trans`.*missing.*transformation function"
+  )
   # Validation of other arguments is tested in `form_trans()`
 })
 

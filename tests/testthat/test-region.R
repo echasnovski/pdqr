@@ -82,8 +82,10 @@ test_that("region_is_in works", {
 
 test_that("region_is_in validates input", {
   region <- data.frame(left = 1, right = 2)
+  expect_error(region_is_in(x = 1), "`region`.*missing.*region data frame")
   expect_error(region_is_in("a", 1), "`region`.*data frame")
   expect_error(region_is_in(data.frame(a = 1), 1), '`region`.*"left"')
+  expect_error(region_is_in(region), "`x`.*missing.*numeric vector")
   expect_error(region_is_in(region, "a"), "`x`.*numeric")
   expect_error(
     region_is_in(region, 1, left_closed = "a"), "`left_closed`.*TRUE.*FALSE"
@@ -254,6 +256,7 @@ test_that("region_prob works with real world cases", {
 
 test_that("region_prob validates input", {
   region <- data.frame(left = 1, right = 2)
+  expect_error(region_prob(f = d_fin), "`region`.*missing.*region data frame")
   expect_error(region_prob("a", d_fin), "`region`.*data frame")
   expect_error(region_prob(data.frame(a = 1), d_fin), '`region`.*"left"')
   expect_error(region_prob(region, "a"), "`f`.*not pdqr-function")
@@ -401,6 +404,7 @@ test_that("region_height works with dirac-like 'infin' functions", {
 
 test_that("region_height validates input", {
   region <- data.frame(left = 1, right = 2)
+  expect_error(region_height(f = d_fin), "`region`.*missing.*region data frame")
   expect_error(region_height("a", d_fin), "`region`.*data frame")
   expect_error(region_height(data.frame(a = 1), d_fin), '`region`.*"left"')
   expect_error(region_height(region, "a"), "`f`.*not pdqr-function")
@@ -428,6 +432,7 @@ test_that("region_width works", {
 })
 
 test_that("region_width validates input", {
+  expect_error(region_width(), "`region`.*missing.*region data frame")
   expect_error(region_width("a"), "`region`.*data frame")
   expect_error(region_width(data.frame(a = 1)), '`region`.*"left"')
 })
@@ -475,6 +480,7 @@ test_that("region_draw works", {
 
 test_that("region_draw validates input", {
   region <- data.frame(left = 1, right = 2)
+  expect_error(region_draw(), "`region`.*missing.*region data frame")
   expect_error(region_draw("a"), "`region`.*data frame")
   expect_error(region_draw(data.frame(a = 1)), '`region`.*"left"')
   expect_error(region_draw(region, col = "a"), "`col`.*color")

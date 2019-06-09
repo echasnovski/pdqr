@@ -471,6 +471,7 @@ pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
   if (!(meta_class(f) %in% c("p", "d", "q"))) {
     stop_collapse("`f` should be p-, d-, or q-function.")
   }
+  assert_missing(ref_f, "reference distribution function")
   assert_type(ref_f, is.function)
   assert_type(
     gran, is_single_number,

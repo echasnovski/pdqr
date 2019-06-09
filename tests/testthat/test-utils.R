@@ -537,6 +537,10 @@ test_that("pdqr_approx_error validates input", {
   expect_error(
     pdqr_approx_error(as_r(runif), runif), "`f`.*p-, d-, or q-function"
   )
+  expect_error(
+    pdqr_approx_error(d_unif),
+    "`ref_f`.*missing.*reference distribution function"
+  )
   expect_error(pdqr_approx_error(d_unif, "a"), "`ref_f`.*function")
   expect_error(pdqr_approx_error(d_unif, dunif, gran = "a"), "`gran`.*number")
   expect_error(

@@ -36,6 +36,20 @@ boolean_pdqr <- function(prob_true, pdqr_class) {
 assert_f_list <- function(f_list, allow_numbers = FALSE) {
   f_list_name <- paste0("`", deparse(substitute(f_list)), "`")
 
+  if (missing(f_list)) {
+    if (allow_numbers) {
+      value_name <- "list of pdqr-function(s) (with possible numbers)"
+    } else {
+      value_name <- "list of pdqr-function(s)"
+    }
+
+    error_missing(var_name = f_list_name, value_name = value_name)
+  }
+
+  if (!is.list(f_list)) {
+    stop_collapse(f_list_name, " must be 'list', not '", get_type(f_list), "'.")
+  }
+
   if (length(f_list) == 0) {
     stop_collapse(f_list_name, " shouldn't be empty.")
   }

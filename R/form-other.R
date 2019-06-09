@@ -72,7 +72,6 @@
 #'
 #' @export
 form_mix <- function(f_list, weights = NULL) {
-  assert_type(f_list, is.list)
   assert_f_list(f_list, allow_numbers = FALSE)
 
   assert_type(weights, is.numeric, allow_null = TRUE)
@@ -283,7 +282,9 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 form_estimate <- function(f, estimate, sample_size, ...,
                           n_sample = 10000, args_new = list()) {
   assert_pdqr_fun(f)
+  assert_missing(estimate, "estimate function")
   assert_type(estimate, is.function)
+  assert_missing(sample_size, "size of sample")
   assert_type(
     sample_size, is_single_number,
     type_name = "single positive number", min_val = 1

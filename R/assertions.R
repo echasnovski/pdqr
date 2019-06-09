@@ -97,24 +97,29 @@ assert_in_set <- function(x, set, quote_set = TRUE) {
 
 
 # Assert missing arguments ------------------------------------------------
-assert_missing_args <- function(f_name, ...) {
-  dots <- list(...)
-  missing_args <- names(Filter(isTRUE, dots))
+assert_missing <- function(x, value_name) {
+  if (missing(x)) {
+    x_name <- paste0("`", deparse(substitute(x)), "`")
 
-  if (length(missing_args) > 0) {
-    stop_collapse(
-      'To define ', f_name, '-function supply the following arguments: ',
-      paste0('`', missing_args, '`', collapse = ", "), '.'
-    )
+    error_missing(var_name = x_name, value_name = value_name)
   }
 
   TRUE
+}
+
+error_missing <- function(var_name, value_name) {
+  stop_collapse("Argument ", var_name, " is missing. Supply ", value_name, ".")
 }
 
 
 # Assertions for pdqr-functions -------------------------------------------
 assert_pdqr_fun <- function(f) {
   f_name <- paste0("`", deparse(substitute(f)), "`")
+
+  if (missing(f)) {
+    error_missing(var_name = f_name, value_name = "pdqr-function")
+  }
+
   err_header <- paste0(f_name, " is not pdqr-function. ")
 
   if (!is.function(f)) {

@@ -119,6 +119,8 @@ NULL
 
 # Common functionality for `new_*()` --------------------------------------
 distr_impl <- function(pdqr_class, impl_funs, x, type, ...) {
+  assert_missing(x, "numeric vector or appropriate data frame")
+  assert_missing(type, 'pdqr type ("fin" or "infin")')
   assert_distr_type(type)
 
   x_tbl <- impute_x_tbl(x, type, ...)

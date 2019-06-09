@@ -381,6 +381,7 @@ test_that("as_r.default throws error if total probability on support is zero", {
 })
 
 test_that("as_r.default validates input", {
+  expect_error(as_r(), "`f`.*missing.*distribution function")
   expect_error(as_r("a", c(0, 1)), "`f`.*function")
   expect_error(as_r(fam_norm$r, c(2, 1)), "`support`")
   expect_error(

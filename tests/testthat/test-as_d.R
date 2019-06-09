@@ -345,6 +345,7 @@ test_that("as.d.default properly imputes infinity values", {
 })
 
 test_that("as_d.default validates input", {
+  expect_error(as_d(), "`f`.*missing.*distribution function")
   expect_error(as_d("a", c(0, 1)), "`f`.*function")
   expect_error(as_d(fam_norm$d, c(2, 1)), "`support`")
   expect_error(
