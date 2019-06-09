@@ -50,6 +50,12 @@
 #'   col = "green"
 #' )
 #'
+#' # Use `form_resupport()` and `as_q()` to remove different levels from both
+#' # directions. Here 0.1 level tail from left is removed, and 0.05 level from
+#' # right
+#' new_supp <- as_q(d_norm)(c(0.1, 1-0.05))
+#' form_resupport(d_norm, support = new_supp)
+#'
 #' # Examples of robust mean
 #' set.seed(101)
 #' x <- rcauchy(1000)
