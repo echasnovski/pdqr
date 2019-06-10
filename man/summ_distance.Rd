@@ -112,6 +112,7 @@ summ_distance(d_fin, d_unif, method = "KS")
 pair of distributions.
 
 Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_classmetric}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_entropy}}, \code{\link{summ_hdr}},
   \code{\link{summ_interval}}, \code{\link{summ_moment}},

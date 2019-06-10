@@ -65,6 +65,7 @@ summ_kurtosis(d_beta, excess = FALSE)
 \code{\link[=summ_dispersion]{summ_dispersion()}} for dispersion.
 
 Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_classmetric}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_distance}}, \code{\link{summ_entropy}},
   \code{\link{summ_hdr}}, \code{\link{summ_interval}},

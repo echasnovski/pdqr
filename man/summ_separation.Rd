@@ -62,6 +62,7 @@ summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
 \code{\link[=summ_roc]{summ_roc()}} for computing ROC curve related summaries.
 
 Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_classmetric}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_distance}}, \code{\link{summ_entropy}},
   \code{\link{summ_hdr}}, \code{\link{summ_interval}},

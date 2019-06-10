@@ -120,6 +120,7 @@ roc_lines(roc, type = "S", col = "green")
 \code{\link[=summ_separation]{summ_separation()}} for computing optimal separation threshold.
 
 Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_classmetric}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_distance}}, \code{\link{summ_entropy}},
   \code{\link{summ_hdr}}, \code{\link{summ_interval}},

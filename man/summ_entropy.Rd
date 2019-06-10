@@ -57,6 +57,7 @@ summ_entropy2(d_1, d_2, method = "cross", clip = 0)
 }
 \seealso{
 Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_classmetric}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_distance}}, \code{\link{summ_hdr}},
   \code{\link{summ_interval}}, \code{\link{summ_moment}},

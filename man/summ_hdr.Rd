@@ -106,6 +106,7 @@ HDR.
 \code{\link[=summ_interval]{summ_interval()}} for computing of single interval summary of distribution.
 
 Other summary functions: \code{\link{summ_center}},
+  \code{\link{summ_classmetric}},
   \code{\link{summ_dispersion}},
   \code{\link{summ_distance}}, \code{\link{summ_entropy}},
   \code{\link{summ_interval}}, \code{\link{summ_moment}},
