@@ -144,7 +144,7 @@ test_that("as_d.default results in good approximations of input", {
     stat_f = quan90, thres = 4e-2
   )
   expect_not_close_f(
-    d_beta_inf, fam_beta_inf$d, fam_beta_inf$grid,
+    d_beta_midinf, fam_beta_midinf$d, fam_beta_midinf$grid,
     stat_f = min, thres = 1e-2
   )
 
