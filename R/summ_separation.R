@@ -12,8 +12,10 @@
 #'   distribution of "positive" values.
 #' @param method Separation method. Should be one of "KS" (Kolmogorov-Smirnov).
 #'
-#' @details All methods in case of several optimal solutions return the smallest
-#' one.
+#' @details All methods:
+#' - In case of non-overlapping or "touching" supports of `f` and `g` return
+#' middle points of nearest support edges.
+#' - In case of several optimal solutions return the smallest one.
 #'
 #' Method "KS" computes "x" value at which corresponding p-functions of `f` and
 #' `g` achieve supremum of their absolute difference (so input order of `f` and
@@ -46,6 +48,9 @@
 #' x_grid <- seq(0, 1, by = 1e-3)
 #' plot(x_grid, abs(p_fin(x_grid) - p_unif(x_grid)), type = "b")
 #'
+#' # Handling of non-overlapping supports
+#' summ_separation(new_d(2, "fin"), new_d(3, "fin"))
+#'
 #' # The smallest "x" value is returned in case of several optimal thresholds
 #' summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
 #'
@@ -56,6 +61,18 @@ summ_separation <- function(f, g, method = "KS") {
   assert_type(method, is_string)
   assert_in_set(method, "KS")
 
+  # Early returns in cases of non-overlapping supports
+  f_supp <- meta_support(f)
+  g_supp <- meta_support(g)
+
+  if (g_supp[1] > f_supp[2]) {
+    return((g_supp[1] + f_supp[2]) / 2)
+  }
+  if (f_supp[1] > g_supp[2]) {
+    return((f_supp[1] + g_supp[2]) / 2)
+  }
+
+  # Main cases
   switch(
     method,
     KS = separation_ks(f, g)
@@ -63,18 +80,6 @@ summ_separation <- function(f, g, method = "KS") {
 }
 
 separation_ks <- function(f, g) {
-  # Early returns in cases of non-overlapping supports
-  f_supp <- meta_support(f)
-  g_supp <- meta_support(g)
-
-  if (f_supp[1] > g_supp[2]) {
-    return((f_supp[1] + g_supp[2]) / 2)
-  }
-  if (g_supp[1] > f_supp[2]) {
-    return((g_supp[1] + f_supp[2]) / 2)
-  }
-
-  # Main case
   p_f <- as_p(f)
   p_g <- as_p(g)
 

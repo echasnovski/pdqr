@@ -25,6 +25,38 @@ test_that("summ_separation works with method 'KS'", {
   expect_equal(summ_separation(p_g, p_f, method = "KS"), 0.5)
 })
 
+test_that("summ_separation works with non-overlapping supports", {
+  cur_fin_1 <- new_p(1:4, "fin")
+  cur_fin_2 <- new_p(5:6, "fin")
+  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
+  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
+  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+  cur_dirac_1 <- new_d(1, "infin")
+  cur_dirac_2 <- new_d(2, "infin")
+
+  # "Two fin"
+  expect_equal(summ_separation(cur_fin_1, cur_fin_2), 4.5)
+  expect_equal(summ_separation(cur_fin_2, cur_fin_1), 4.5)
+
+  # "Mixed-typed"
+  expect_equal(summ_separation(cur_fin_1, cur_infin_2), 4.5)
+  expect_equal(summ_separation(cur_infin_2, cur_fin_1), 4.5)
+    # "Touching" supports
+  expect_equal(summ_separation(cur_fin_1, cur_infin_3), 4)
+  expect_equal(summ_separation(cur_infin_3, cur_fin_1), 4)
+
+  # "Two infin"
+  expect_equal(summ_separation(cur_infin_1, cur_infin_2), 4.5)
+  expect_equal(summ_separation(cur_infin_2, cur_infin_1), 4.5)
+    # "Touching" supports
+  expect_equal(summ_separation(cur_infin_1, cur_infin_3), 4)
+  expect_equal(summ_separation(cur_infin_3, cur_infin_1), 4)
+
+  # Dirac-like functions
+  expect_equal(summ_separation(cur_dirac_1, cur_dirac_2), 1.5)
+  expect_equal(summ_separation(cur_dirac_2, cur_dirac_1), 1.5)
+})
+
 test_that("summ_separation validates input", {
   expect_error(summ_separation("a", d_fin), "`f`.*not pdqr-function")
   expect_error(summ_separation(d_fin, "a"), "`g`.*not pdqr-function")
@@ -128,32 +160,6 @@ test_that("separation_ks works with identical inputs", {
   )
 })
 
-test_that("separation_ks works with non-overlapping supports", {
-  cur_fin_1 <- new_p(1:4, "fin")
-  cur_fin_2 <- new_p(5:6, "fin")
-  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
-  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
-  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
-
-  # "Two fin"
-  expect_equal(separation_ks(cur_fin_1, cur_fin_2), 4.5)
-  expect_equal(separation_ks(cur_fin_2, cur_fin_1), 4.5)
-
-  # "Mixed-typed"
-  expect_equal(separation_ks(cur_fin_1, cur_infin_2), 4.5)
-  expect_equal(separation_ks(cur_infin_2, cur_fin_1), 4.5)
-    # "Touching" supports
-  expect_equal(separation_ks(cur_fin_1, cur_infin_3), 4)
-  expect_equal(separation_ks(cur_infin_3, cur_fin_1), 4)
-
-  # "Two infin"
-  expect_equal(separation_ks(cur_infin_1, cur_infin_2), 4.5)
-  expect_equal(separation_ks(cur_infin_2, cur_infin_1), 4.5)
-    # "Touching" supports
-  expect_equal(separation_ks(cur_infin_1, cur_infin_3), 4)
-  expect_equal(separation_ks(cur_infin_3, cur_infin_1), 4)
-})
-
 test_that("separation_ks works with dirac-like functions", {
   # K-S distance when "dirac" function is involved should be essentially (but
   # not exactly) the same as if it is replaced with corresponding "fin" (except
@@ -170,8 +176,6 @@ test_that("separation_ks works with dirac-like functions", {
   expect_equal(
     separation_ks(d_infin, d_dirac), separation_ks(d_infin, d_dirac_fin)
   )
-  # Non-overlapping dirac-like functions
-  expect_equal(separation_ks(d_dirac, new_d(3, "infin")), 2.5)
 })
 
 

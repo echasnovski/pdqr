@@ -26,8 +26,12 @@ one-dimensional linear classifier: values not more than some threshold are
 classified as "negative", and more than threshold - as "positive".
 }
 \details{
-All methods in case of several optimal solutions return the smallest
-one.
+All methods:
+\itemize{
+\item In case of non-overlapping or "touching" supports of \code{f} and \code{g} return
+middle points of nearest support edges.
+\item In case of several optimal solutions return the smallest one.
+}
 
 Method "KS" computes "x" value at which corresponding p-functions of \code{f} and
 \code{g} achieve supremum of their absolute difference (so input order of \code{f} and
@@ -53,6 +57,9 @@ abs(p_fin(thres) - p_unif(thres))
   # limit value is # reached there.
 x_grid <- seq(0, 1, by = 1e-3)
 plot(x_grid, abs(p_fin(x_grid) - p_unif(x_grid)), type = "b")
+
+# Handling of non-overlapping supports
+summ_separation(new_d(2, "fin"), new_d(3, "fin"))
 
 # The smallest "x" value is returned in case of several optimal thresholds
 summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
