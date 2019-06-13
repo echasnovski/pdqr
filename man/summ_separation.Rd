@@ -4,7 +4,7 @@
 \alias{summ_separation}
 \title{Summarize distributions with separation threshold}
 \usage{
-summ_separation(f, g, method = "KS")
+summ_separation(f, g, method = "KS", n_grid = 10001)
 }
 \arguments{
 \item{f}{A pdqr-function of any \link[=meta_type]{type} and
@@ -13,7 +13,11 @@ summ_separation(f, g, method = "KS")
 \item{g}{A pdqr-function of any type and class. Represents "true"
 distribution of "positive" values.}
 
-\item{method}{Separation method. Should be one of "KS" (Kolmogorov-Smirnov).}
+\item{method}{Separation method. Should be one of "KS" (Kolmogorov-Smirnov),
+"GM", "OP", "F1", "MCC" (all four are methods for computing classification
+metric in \code{\link[=summ_classmetric]{summ_classmetric()}}).}
+
+\item{n_grid}{Number of grid points to be used during optimization.}
 }
 \value{
 A single number representing optimal separation threshold.
@@ -21,9 +25,9 @@ A single number representing optimal separation threshold.
 \description{
 Compute for pair of pdqr-functions the optimal threshold that separates
 distributions they represent. In other words, \code{summ_separation()} solves a
-classification problem with two classes (represented by pdqr-functions) and
-one-dimensional linear classifier: values not more than some threshold are
-classified as "negative", and more than threshold - as "positive".
+binary classification problem with one-dimensional linear classifier: values
+not more than some threshold are classified as one class, and more than
+threshold - as another. Order of input functions doesn't matter.
 }
 \details{
 All methods:
@@ -40,13 +44,21 @@ Method "KS" computes "x" value at which corresponding p-functions of \code{f} an
 If inputs have different types, then absolute difference of p-functions at
 the result point can be not the biggest. In that case output represents a
 left limit of points at which target supremum is reached (see Examples).
+
+Methods "GM", "OP", "F1", "MCC" compute threshold which maximizes
+corresponding \link[=summ_classmetric]{classification metric} for best suited
+classification setup. They evaluate metrics at equidistant grid (with
+\code{n_grid} elements) for both directions (\code{summ_classmetric(f, g, *)} and
+\code{summ_classmetric(g, f, *)}) and return threshold which results into maximum
+of both setups. \strong{Note} that other \code{summ_classmetric()} methods are either
+useless here (always return one of the edges) or are equivalent to ones
+already present.
 }
 \examples{
 d_norm_1 <- as_d(dnorm)
-d_norm_2 <- as_d(dnorm, mean = 2)
-d_pois <- as_d(dpois, lambda = 2)
-summ_separation(d_norm_1, d_norm_2, method = "KS")
-summ_separation(d_norm_2, d_pois, method = "KS")
+d_unif <- as_d(dunif)
+summ_separation(d_norm_1, d_unif, method = "KS")
+summ_separation(d_norm_1, d_unif, method = "OP")
 
 # Mixed types for "KS" method
 p_fin <- new_p(1, "fin")
@@ -67,6 +79,9 @@ summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
 }
 \seealso{
 \code{\link[=summ_roc]{summ_roc()}} for computing ROC curve related summaries.
+
+\code{\link[=summ_classmetric]{summ_classmetric()}} for computing of classification metric for ordered
+classification setup.
 
 Other summary functions: \code{\link{summ_center}},
   \code{\link{summ_classmetric}},

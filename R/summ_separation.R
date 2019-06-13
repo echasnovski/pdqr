@@ -2,15 +2,18 @@
 #'
 #' Compute for pair of pdqr-functions the optimal threshold that separates
 #' distributions they represent. In other words, `summ_separation()` solves a
-#' classification problem with two classes (represented by pdqr-functions) and
-#' one-dimensional linear classifier: values not more than some threshold are
-#' classified as "negative", and more than threshold - as "positive".
+#' binary classification problem with one-dimensional linear classifier: values
+#' not more than some threshold are classified as one class, and more than
+#' threshold - as another. Order of input functions doesn't matter.
 #'
 #' @param f A pdqr-function of any [type][meta_type()] and
 #'   [class][meta_class()]. Represents "true" distribution of "negative" values.
 #' @param g A pdqr-function of any type and class. Represents "true"
 #'   distribution of "positive" values.
-#' @param method Separation method. Should be one of "KS" (Kolmogorov-Smirnov).
+#' @param method Separation method. Should be one of "KS" (Kolmogorov-Smirnov),
+#'   "GM", "OP", "F1", "MCC" (all four are methods for computing classification
+#'   metric in [summ_classmetric()]).
+#' @param n_grid Number of grid points to be used during optimization.
 #'
 #' @details All methods:
 #' - In case of non-overlapping or "touching" supports of `f` and `g` return
@@ -25,18 +28,29 @@
 #' the result point can be not the biggest. In that case output represents a
 #' left limit of points at which target supremum is reached (see Examples).
 #'
+#' Methods "GM", "OP", "F1", "MCC" compute threshold which maximizes
+#' corresponding [classification metric][summ_classmetric()] for best suited
+#' classification setup. They evaluate metrics at equidistant grid (with
+#' `n_grid` elements) for both directions (`summ_classmetric(f, g, *)` and
+#' `summ_classmetric(g, f, *)`) and return threshold which results into maximum
+#' of both setups. **Note** that other `summ_classmetric()` methods are either
+#' useless here (always return one of the edges) or are equivalent to ones
+#' already present.
+#'
 #' @return A single number representing optimal separation threshold.
 #'
 #' @seealso [summ_roc()] for computing ROC curve related summaries.
+#'
+#' [summ_classmetric()] for computing of classification metric for ordered
+#' classification setup.
 #'
 #' @family summary functions
 #'
 #' @examples
 #' d_norm_1 <- as_d(dnorm)
-#' d_norm_2 <- as_d(dnorm, mean = 2)
-#' d_pois <- as_d(dpois, lambda = 2)
-#' summ_separation(d_norm_1, d_norm_2, method = "KS")
-#' summ_separation(d_norm_2, d_pois, method = "KS")
+#' d_unif <- as_d(dunif)
+#' summ_separation(d_norm_1, d_unif, method = "KS")
+#' summ_separation(d_norm_1, d_unif, method = "OP")
 #'
 #' # Mixed types for "KS" method
 #' p_fin <- new_p(1, "fin")
@@ -55,11 +69,12 @@
 #' summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
 #'
 #' @export
-summ_separation <- function(f, g, method = "KS") {
+summ_separation <- function(f, g, method = "KS", n_grid = 10001) {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
   assert_type(method, is_string)
-  assert_in_set(method, "KS")
+  assert_in_set(method, c("KS", "GM", "OP", "F1", "MCC"))
+  assert_type(n_grid, is_single_number, type_name = "single number")
 
   # Early returns in cases of non-overlapping supports
   f_supp <- meta_support(f)
@@ -75,7 +90,8 @@ summ_separation <- function(f, g, method = "KS") {
   # Main cases
   switch(
     method,
-    KS = separation_ks(f, g)
+    KS = separation_ks(f, g),
+    separation_classmetric(f, g, method, n_grid)
   )
 }
 
@@ -189,4 +205,31 @@ separation_ks_two_infin <- function(p_f, p_g) {
   max_ind <- which.max(abs(p_f(x_test) - p_g(x_test)))
 
   x_test[max_ind]
+}
+
+#' **Notes** about method choice:
+#' - "Acc" and "YI"  are equivalent to "KS" separation in terms of output.
+#' - Minimizing "ER" is equivalent to maximizing "Acc", which is equivalent to
+#' "KS" separation.
+#' - "DOR" and "Simple" metrics are useless because always return edge of some
+#' support.
+#' - "Jaccard" seems to be equivalent to "F1" (although, not exactly sure why).
+#' - "MK" seems to demonstrate poor fit to the "separation" task.
+#'
+#' @noRd
+separation_classmetric <- function(f, g, method, n_grid = 10001) {
+  t_grid <- seq_between(union_support(f, g), length.out = n_grid)
+
+  p_f_t <- as_p(f)(t_grid)
+  p_g_t <- as_p(g)(t_grid)
+  classmetric_vals_1 <- classmetric(p_f_t, p_g_t, method = method)
+  classmetric_vals_2 <- classmetric(p_g_t, p_f_t, method = method)
+
+  # `alternate()` is used to ensure that the smallest value is returned in case
+  # of several alternatives
+  metric <- alternate(classmetric_vals_1, classmetric_vals_2)
+
+  target_ind <- which.max(metric)
+
+  t_grid[ceiling(target_ind / 2)]
 }
