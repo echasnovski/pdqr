@@ -52,7 +52,8 @@ support of output. If \code{NULL} or any its value is \code{NA}, detection is do
 using specific algorithms (see Details).}
 
 \item{n_grid}{Number of grid points at which \code{f} will be evaluated (see
-Details).}
+Details). Bigger values lead to better approximation precision, but worse
+memory usage and evaluation speed (direct and in \code{summ_*()} functions).}
 
 \item{n_sample}{Number of points to sample from \code{f} inside \code{as_r()}.}
 

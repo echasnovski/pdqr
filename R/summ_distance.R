@@ -61,7 +61,9 @@
 #' and `P(f+d <= g) >= 0.5` (in other words, align `f+d` and `g`) as close as
 #' reasonably possible. Solution is found numerically with [stats::uniroot()],
 #' so relatively small numerical errors can happen. Also **note** that this
-#' method is somewhat slow (compared to all others).
+#' method is somewhat slow (compared to all others). To increase speed, use less
+#' elements in ["x_tbl" metadata][meta_x_tbl()]. For example, with
+#' [form_retype()] or smaller `n_grid` argument in [as_*()][as_p()] functions.
 #'
 #' **Entropy based** methods compute output based on entropy characteristics:
 #' - *Method "entropy"* computes sum of two Kullback-Leibler divergences:

@@ -75,7 +75,9 @@ negative) that should be added to \code{f} to achieve both \code{P(f+d >= g) >= 
 and \code{P(f+d <= g) >= 0.5} (in other words, align \code{f+d} and \code{g}) as close as
 reasonably possible. Solution is found numerically with \code{\link[stats:uniroot]{stats::uniroot()}},
 so relatively small numerical errors can happen. Also \strong{note} that this
-method is somewhat slow (compared to all others).
+method is somewhat slow (compared to all others). To increase speed, use less
+elements in \link[=meta_x_tbl]{"x_tbl" metadata}. For example, with
+\code{\link[=form_retype]{form_retype()}} or smaller \code{n_grid} argument in \link[=as_p]{as_*()} functions.
 }
 
 \strong{Entropy based} methods compute output based on entropy characteristics:

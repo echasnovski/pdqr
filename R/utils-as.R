@@ -11,7 +11,8 @@
 #'   using specific algorithms (see Details).
 #' @param ... Extra arguments to `f`.
 #' @param n_grid Number of grid points at which `f` will be evaluated (see
-#'   Details).
+#'   Details). Bigger values lead to better approximation precision, but worse
+#'   memory usage and evaluation speed (direct and in `summ_*()` functions).
 #' @param n_sample Number of points to sample from `f` inside `as_r()`.
 #' @param args_new List of extra arguments for [new_d()] to control [density()]
 #'   inside `as_r()`.
