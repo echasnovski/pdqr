@@ -258,7 +258,11 @@ distance_totvar_two_fin <- function(d_f, d_g) {
 # max(P(f>=g), P(f<=g)) - P(f==g) + 0.5*P(f==g)`. After `y = 2*x-1`
 # normalization, this is the output.
 distance_compare <- function(f, g) {
-  2 * max(prob_geq(f, g), prob_geq(g, f)) - prob_equal(f, g) - 1
+  f_eq_g <- prob_equal(f, g)
+  f_geq_g <- prob_geq(f, g)
+
+  # prob_geq(g, f) = 1 - prob_geq(f, g) + prob_equal(f, g)
+  2 * max(f_geq_g, 1 - f_geq_g + f_eq_g) - prob_equal(f, g) - 1
 }
 
 
