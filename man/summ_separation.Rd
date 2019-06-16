@@ -32,9 +32,9 @@ threshold - as another. Order of input functions doesn't matter.
 \details{
 All methods:
 \itemize{
-\item In case of non-overlapping or "touching" supports of \code{f} and \code{g} return
-middle points of nearest support edges.
-\item In case of several optimal solutions return the smallest one.
+\item Return middle point of nearest support edges in case of non-overlapping or
+"touching" supports of \code{f} and \code{g}.
+\item Return the smallest optimal solution in case of several candidates.
 }
 
 Method "KS" computes "x" value at which corresponding p-functions of \code{f} and

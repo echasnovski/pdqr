@@ -16,9 +16,9 @@
 #' @param n_grid Number of grid points to be used during optimization.
 #'
 #' @details All methods:
-#' - In case of non-overlapping or "touching" supports of `f` and `g` return
-#' middle points of nearest support edges.
-#' - In case of several optimal solutions return the smallest one.
+#' - Return middle point of nearest support edges in case of non-overlapping or
+#' "touching" supports of `f` and `g`.
+#' - Return the smallest optimal solution in case of several candidates.
 #'
 #' Method "KS" computes "x" value at which corresponding p-functions of `f` and
 #' `g` achieve supremum of their absolute difference (so input order of `f` and
@@ -80,10 +80,10 @@ summ_separation <- function(f, g, method = "KS", n_grid = 10001) {
   f_supp <- meta_support(f)
   g_supp <- meta_support(g)
 
-  if (g_supp[1] > f_supp[2]) {
+  if (g_supp[1] >= f_supp[2]) {
     return((g_supp[1] + f_supp[2]) / 2)
   }
-  if (f_supp[1] > g_supp[2]) {
+  if (f_supp[1] >= g_supp[2]) {
     return((f_supp[1] + g_supp[2]) / 2)
   }
 

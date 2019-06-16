@@ -84,6 +84,9 @@ test_that("summ_separation works with non-overlapping supports", {
   # "Two fin"
   expect_equal(summ_separation(cur_fin_1, cur_fin_2), 4.5)
   expect_equal(summ_separation(cur_fin_2, cur_fin_1), 4.5)
+    # "Touching" supports
+  expect_equal(summ_separation(new_p(1:2, "fin"), new_p(2:3, "fin")), 2)
+  expect_equal(summ_separation(new_p(2:3, "fin"), new_p(1:2, "fin")), 2)
 
   # "Mixed-typed"
   expect_equal(summ_separation(cur_fin_1, cur_infin_2), 4.5)
