@@ -31,8 +31,10 @@ MCC
 minwidth
 nats
 NPV
+pdqr’
 piecelin
 PPV
+README
 Regrid
 regridding
 renormalization
@@ -40,6 +42,7 @@ resupport
 Resupport
 rgb
 sd
+stats’
 tbl
 th
 TNR
@@ -55,6 +58,7 @@ vectorized
 wass
 Wasserstein
 winsor
+winsorized
 YI
 youden
 Youden’s
