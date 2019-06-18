@@ -20,11 +20,14 @@ Imports:
 Suggests: 
     covr,
     grDevices,
+    pillar,
+    spelling,
     testthat,
     vdiffr,
-    spelling,
-    pillar
+    knitr,
+    rmarkdown
 Encoding: UTF-8
+Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1
@@ -71,4 +74,4 @@ Collate:
     'utils.R'
     'x_tbl.R'
     'zzz.R'
-Language: en-US
+VignetteBuilder: knitr
