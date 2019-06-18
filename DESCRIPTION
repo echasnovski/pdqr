@@ -1,14 +1,21 @@
 Package: pdqr
-Title: Create Custom Distribution Functions
+Title: Work with Custom Distribution Functions
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Evgeni",
            family = "Chasnovski",
            role = c("aut", "cre"),
            email = "evgeni.chasnovski@gmail.com")
-Description: Create distribution functions (p*(), d*(), q*(),
-    r*()) based on the numerical sample. Also convert existing
-    distribution functions to another type.
+Description: Create, transform, and summarize custom random
+    variables with distribution functions (analogues of 'p*()', 'd*()',
+    'q*()', and 'r*()' functions from base R). Two types of distributions
+    are supported: "fin" (random variable has finite number of output
+    values) and "infin" (infinite number of values in the form of
+    continuous random variable). Functions for distribution
+    transformations and summaries are available. Implemented approaches
+    often emphasize approximate and numerical solutions: all distributions
+    assume finite support and finite values of density function; some
+    methods implemented with simulation techniques.
 License: MIT + file LICENSE
 URL: https://github.com/echasnovski/pdqr
 BugReports: https://github.com/echasnovski/pdqr/issues
@@ -20,12 +27,14 @@ Imports:
 Suggests: 
     covr,
     grDevices,
+    knitr,
     pillar,
+    rmarkdown,
     spelling,
     testthat,
-    vdiffr,
-    knitr,
-    rmarkdown
+    vdiffr
+VignetteBuilder: 
+    knitr
 Encoding: UTF-8
 Language: en-US
 LazyData: true
@@ -74,4 +83,3 @@ Collate:
     'utils.R'
     'x_tbl.R'
     'zzz.R'
-VignetteBuilder: knitr
