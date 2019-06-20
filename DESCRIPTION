@@ -73,6 +73,7 @@ Collate:
     'summ_hdr.R'
     'summ_interval.R'
     'summ_moment.R'
+    'summ_order.R'
     'summ_pval.R'
     'summ_roc.R'
     'summ_separation.R'
