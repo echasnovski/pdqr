@@ -15,7 +15,7 @@ expect_raw_moment_works <- function(stat_data, thres_1 = 1e-6, thres_2 = 1e-6) {
 
 
 # raw_moment --------------------------------------------------------------
-test_that("raw_moment works with 'fin' functions", {
+test_that("raw_moment works with 'discrete' functions", {
   # Small thresholds because in case of finite support moments should be exact
   expect_raw_moment_works(
     stat_list[["binom"]], thres_1 = 1e-12, thres_2 = 1e-12

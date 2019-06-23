@@ -82,8 +82,8 @@ test_that("Math.pdqr works", {
 test_that("Math.pdqr uses options", {
   # Option for `n_sample`
   op <- options(pdqr.group_gen.n_sample = 1)
-  sqrt_fin <- sqrt(d_fin)
-  expect_true(nrow(meta_x_tbl(sqrt_fin)) == 1)
+  sqrt_dis <- sqrt(d_dis)
+  expect_true(nrow(meta_x_tbl(sqrt_dis)) == 1)
   options(op)
 
   # Options for `args_new` and support repair method
@@ -216,16 +216,16 @@ test_that("Math.pdqr repairs support in general cases", {
 })
 
 test_that("Math.pdqr method for `abs()` works", {
-  # Type "fin"
-  cur_d_fin <- new_d(
+  # Type "discrete"
+  cur_d_dis <- new_d(
     data.frame(
       x    = c(-1.5,  -1,   0,    1, 1.25),
       prob = c( 0.1, 0.2, 0.3, 0.25, 0.15)
     ),
-    "fin"
+    "discrete"
   )
   expect_ref_x_tbl(
-    abs(cur_d_fin),
+    abs(cur_d_dis),
     data.frame(x = c(0, 1, 1.25, 1.5), prob = c(0.3, 0.2+0.25, 0.15, 0.1))
   )
 
@@ -247,24 +247,24 @@ test_that("Math.pdqr method for `abs()` works", {
 })
 
 test_that("Math.pdqr method for `sign()` works", {
-  # Type "fin"
-  cur_d_fin <- new_d(
+  # Type "discrete"
+  cur_d_dis <- new_d(
     data.frame(
       x    = c(-1.5,  -1,   0,    1, 1.25),
       prob = c( 0.1, 0.2, 0.3, 0.25, 0.15)
     ),
-    "fin"
+    "discrete"
   )
   expect_ref_x_tbl(
-    sign(cur_d_fin),
+    sign(cur_d_dis),
     data.frame(x = c(-1, 0, 1), prob = c(0.1+0.2, 0.3, 0.25+0.15))
   )
 
-  cur_d_fin_2 <- new_d(
-    data.frame(x = c(0, 0.5, 1), prob = c(0.1, 0.3, 0.6)), "fin"
+  cur_d_dis_2 <- new_d(
+    data.frame(x = c(0, 0.5, 1), prob = c(0.1, 0.3, 0.6)), "discrete"
   )
   expect_ref_x_tbl(
-    sign(cur_d_fin_2),
+    sign(cur_d_dis_2),
     data.frame(x = c(-1, 0, 1), prob = c(0, 0.1, 0.3+0.6))
   )
 
@@ -311,8 +311,8 @@ test_that("Ops.pdqr works", {
 test_that("Ops.pdqr uses options", {
   # Option for `n_sample`
   op <- options(pdqr.group_gen.n_sample = 1)
-  plus_fin <- d_fin + d_fin
-  expect_true(nrow(meta_x_tbl(plus_fin)) == 1)
+  plus_dis <- d_dis + d_dis
+  expect_true(nrow(meta_x_tbl(plus_dis)) == 1)
   options(op)
 
   # Options for `args_new` and support repair method
@@ -389,13 +389,13 @@ test_that("Ops.pdqr repairs support in general cases", {
 
 test_that("Ops.pdqr works with generics which take one argument", {
   # `+`
-  expect_equal(+d_fin, d_fin)
+  expect_equal(+d_dis, d_dis)
   expect_equal(+d_con, d_con)
 
   # `-`
-  d_fin_minus <- -d_fin
-  expect_equal(-meta_support(d_fin)[2:1], meta_support(d_fin_minus))
-  expect_equal(d_fin(x_fin_vec_ext), d_fin_minus(-x_fin_vec_ext))
+  d_dis_minus <- -d_dis
+  expect_equal(-meta_support(d_dis)[2:1], meta_support(d_dis_minus))
+  expect_equal(d_dis(x_dis_vec_ext), d_dis_minus(-x_dis_vec_ext))
 
   d_con_minus <- -d_con
   expect_equal(-meta_support(d_con)[2:1], meta_support(d_con_minus))
@@ -403,7 +403,7 @@ test_that("Ops.pdqr works with generics which take one argument", {
 
   # `!`
   d_negate <- !new_d(
-    data.frame(x = c(-1, 0, 1), prob = c(0.1, 0.2, 0.7)), "fin"
+    data.frame(x = c(-1, 0, 1), prob = c(0.1, 0.2, 0.7)), "discrete"
   )
   expect_equal(d_negate(1), 0.2)
 
@@ -418,22 +418,22 @@ test_that("Ops.pdqr validates input with generics which take one argument", {
 })
 
 test_that("Ops.pdqr works in case of linear operation", {
-  d_fin_supp <- meta_support(d_fin)
+  d_dis_supp <- meta_support(d_dis)
   d_con_supp <- meta_support(d_con)
-  d_dirac <- form_retype(d_fin, "continuous", method = "dirac")
+  d_dirac <- form_retype(d_dis, "continuous", method = "dirac")
   d_dirac_supp <- meta_support(d_dirac)
 
   # `+`
-  expect_lin_trans(d_fin + 10, f_in = d_fin, ref_supp = d_fin_supp + 10)
-  expect_lin_trans(10 + d_fin, f_in = d_fin, ref_supp = d_fin_supp + 10)
+  expect_lin_trans(d_dis + 10, f_in = d_dis, ref_supp = d_dis_supp + 10)
+  expect_lin_trans(10 + d_dis, f_in = d_dis, ref_supp = d_dis_supp + 10)
   expect_lin_trans(d_con + 10, f_in = d_con, ref_supp = d_con_supp + 10)
   expect_lin_trans(10 + d_con, f_in = d_con, ref_supp = d_con_supp + 10)
   expect_lin_trans(d_dirac + 10, f_in = d_dirac, ref_supp = d_dirac_supp + 10)
   expect_lin_trans(10 + d_dirac, f_in = d_dirac, ref_supp = d_dirac_supp + 10)
 
   # `-`
-  expect_lin_trans(d_fin - 10, f_in = d_fin, ref_supp = d_fin_supp - 10)
-  expect_lin_trans(10 - d_fin, f_in = -d_fin, ref_supp = 10 - d_fin_supp[2:1])
+  expect_lin_trans(d_dis - 10, f_in = d_dis, ref_supp = d_dis_supp - 10)
+  expect_lin_trans(10 - d_dis, f_in = -d_dis, ref_supp = 10 - d_dis_supp[2:1])
   expect_lin_trans(d_con - 10, f_in = d_con, ref_supp = d_con_supp - 10)
   expect_lin_trans(
     10 - d_con, f_in = -d_con, ref_supp = 10 - d_con_supp[2:1]
@@ -444,15 +444,15 @@ test_that("Ops.pdqr works in case of linear operation", {
   )
 
   # `*`
-  expect_lin_trans(d_fin * 10, f_in = d_fin, ref_supp = d_fin_supp * 10)
-  expect_lin_trans(10 * d_fin, f_in = d_fin, ref_supp = d_fin_supp * 10)
+  expect_lin_trans(d_dis * 10, f_in = d_dis, ref_supp = d_dis_supp * 10)
+  expect_lin_trans(10 * d_dis, f_in = d_dis, ref_supp = d_dis_supp * 10)
   expect_lin_trans(d_con * 10, f_in = d_con, ref_supp = d_con_supp * 10)
   expect_lin_trans(10 * d_con, f_in = d_con, ref_supp = d_con_supp * 10)
   expect_lin_trans(d_dirac * 10, f_in = d_dirac, ref_supp = d_dirac_supp * 10)
   expect_lin_trans(10 * d_dirac, f_in = d_dirac, ref_supp = d_dirac_supp * 10)
 
   # `/`
-  expect_lin_trans(d_fin / 10, f_in = d_fin, ref_supp = d_fin_supp / 10)
+  expect_lin_trans(d_dis / 10, f_in = d_dis, ref_supp = d_dis_supp / 10)
   expect_lin_trans(d_con / 10, f_in = d_con, ref_supp = d_con_supp / 10)
   expect_lin_trans(d_dirac / 10, f_in = d_dirac, ref_supp = d_dirac_supp / 10)
 })
@@ -468,43 +468,43 @@ test_that("Ops.pdqr validates input in case of linear operation", {
 })
 
 test_that("Ops.pdqr works in case of comparison", {
-  d_dirac <- form_retype(d_fin, "continuous", method = "dirac")
+  d_dirac <- form_retype(d_dis, "continuous", method = "dirac")
   d_con_2 <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
   num <- 3
-  num_d <- new_d(num, "fin")
+  num_d <- new_d(num, "discrete")
 
   # `>=`
-  expect_equal_x_tbl(d_fin >= num, form_geq(d_fin, num_d))
+  expect_equal_x_tbl(d_dis >= num, form_geq(d_dis, num_d))
   expect_equal_x_tbl(num >= d_con, form_geq(num_d, d_con))
   expect_equal_x_tbl(d_con >= d_con_2, form_geq(d_con, d_con_2))
   expect_equal_x_tbl(d_con >= d_dirac, form_geq(d_con, d_dirac))
 
   # `>`
-  expect_equal_x_tbl(d_fin > num, form_greater(d_fin, num_d))
+  expect_equal_x_tbl(d_dis > num, form_greater(d_dis, num_d))
   expect_equal_x_tbl(num > d_con, form_greater(num_d, d_con))
   expect_equal_x_tbl(d_con > d_con_2, form_greater(d_con, d_con_2))
   expect_equal_x_tbl(d_con > d_dirac, form_greater(d_con, d_dirac))
 
   # `<=`
-  expect_equal_x_tbl(d_fin <= num, form_leq(d_fin, num_d))
+  expect_equal_x_tbl(d_dis <= num, form_leq(d_dis, num_d))
   expect_equal_x_tbl(num <= d_con, form_leq(num_d, d_con))
   expect_equal_x_tbl(d_con <= d_con_2, form_leq(d_con, d_con_2))
   expect_equal_x_tbl(d_con <= d_dirac, form_leq(d_con, d_dirac))
 
   # `<`
-  expect_equal_x_tbl(d_fin < num, form_less(d_fin, num_d))
+  expect_equal_x_tbl(d_dis < num, form_less(d_dis, num_d))
   expect_equal_x_tbl(num < d_con, form_less(num_d, d_con))
   expect_equal_x_tbl(d_con < d_con_2, form_less(d_con, d_con_2))
   expect_equal_x_tbl(d_con < d_dirac, form_less(d_con, d_dirac))
 
   # `==`
-  expect_equal_x_tbl(d_fin == num, form_equal(d_fin, num_d))
+  expect_equal_x_tbl(d_dis == num, form_equal(d_dis, num_d))
   expect_equal_x_tbl(num == d_con, form_equal(num_d, d_con))
   expect_equal_x_tbl(d_con == d_con_2, form_equal(d_con, d_con_2))
   expect_equal_x_tbl(d_con == d_dirac, form_equal(d_con, d_dirac))
 
   # `!=`
-  expect_equal_x_tbl(d_fin != num, form_not_equal(d_fin, num_d))
+  expect_equal_x_tbl(d_dis != num, form_not_equal(d_dis, num_d))
   expect_equal_x_tbl(num != d_con, form_not_equal(num_d, d_con))
   expect_equal_x_tbl(d_con != d_con_2, form_not_equal(d_con, d_con_2))
   expect_equal_x_tbl(d_con != d_dirac, form_not_equal(d_con, d_dirac))
@@ -516,89 +516,89 @@ test_that("Ops.pdqr validates input in case of comparison", {
   expect_error(bad_pdqr >= 1, geq_err)
   expect_error(1 >= bad_pdqr, geq_err)
   expect_error(bad_pdqr >= bad_pdqr_2, geq_err)
-  expect_error(d_fin >= bad_pdqr_2, geq_err)
-  expect_error("a" >= d_fin, geq_err)
-  expect_error(d_fin >= "a", geq_err)
+  expect_error(d_dis >= bad_pdqr_2, geq_err)
+  expect_error("a" >= d_dis, geq_err)
+  expect_error(d_dis >= "a", geq_err)
 
   `>`
   gre_err <- validate_error(">")
   expect_error(bad_pdqr > 1, gre_err)
   expect_error(1 > bad_pdqr, gre_err)
   expect_error(bad_pdqr > bad_pdqr_2, gre_err)
-  expect_error(d_fin > bad_pdqr_2, gre_err)
-  expect_error("a" > d_fin, gre_err)
-  expect_error(d_fin > "a", gre_err)
+  expect_error(d_dis > bad_pdqr_2, gre_err)
+  expect_error("a" > d_dis, gre_err)
+  expect_error(d_dis > "a", gre_err)
 
   `<=`
   leq_err <- validate_error("<=")
   expect_error(bad_pdqr <= 1, leq_err)
   expect_error(1 <= bad_pdqr, leq_err)
   expect_error(bad_pdqr <= bad_pdqr_2, leq_err)
-  expect_error(d_fin <= bad_pdqr_2, leq_err)
-  expect_error("a" <= d_fin, leq_err)
-  expect_error(d_fin <= "a", leq_err)
+  expect_error(d_dis <= bad_pdqr_2, leq_err)
+  expect_error("a" <= d_dis, leq_err)
+  expect_error(d_dis <= "a", leq_err)
 
   `<`
   less_err <- validate_error("<")
   expect_error(bad_pdqr < 1, less_err)
   expect_error(1 < bad_pdqr, less_err)
   expect_error(bad_pdqr < bad_pdqr_2, less_err)
-  expect_error(d_fin < bad_pdqr_2, less_err)
-  expect_error("a" < d_fin, less_err)
-  expect_error(d_fin < "a", less_err)
+  expect_error(d_dis < bad_pdqr_2, less_err)
+  expect_error("a" < d_dis, less_err)
+  expect_error(d_dis < "a", less_err)
 
   `==`
   eq_err <- validate_error("==")
   expect_error(bad_pdqr == 1, eq_err)
   expect_error(1 == bad_pdqr, eq_err)
   expect_error(bad_pdqr == bad_pdqr_2, eq_err)
-  expect_error(d_fin == bad_pdqr_2, eq_err)
-  expect_error("a" == d_fin, eq_err)
-  expect_error(d_fin == "a", eq_err)
+  expect_error(d_dis == bad_pdqr_2, eq_err)
+  expect_error("a" == d_dis, eq_err)
+  expect_error(d_dis == "a", eq_err)
 
   `!=`
   not_eq_err <- validate_error("!=")
   expect_error(bad_pdqr != 1, not_eq_err)
   expect_error(1 != bad_pdqr, not_eq_err)
   expect_error(bad_pdqr != bad_pdqr_2, not_eq_err)
-  expect_error(d_fin != bad_pdqr_2, not_eq_err)
-  expect_error("a" != d_fin, not_eq_err)
-  expect_error(d_fin != "a", not_eq_err)
+  expect_error(d_dis != bad_pdqr_2, not_eq_err)
+  expect_error("a" != d_dis, not_eq_err)
+  expect_error(d_dis != "a", not_eq_err)
 })
 
 test_that("Ops.pdqr works in case of logical AND/OR", {
-  cur_d_fin <- new_d(
-    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "fin"
+  cur_d_dis <- new_d(
+    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "discrete"
   )
 
   # `&`
-  expect_prob_true(expect_warning(cur_d_fin & cur_d_fin), (1-0.2)*(1-0.2))
-  expect_prob_true(expect_warning(cur_d_fin & new_d(1, "fin")), 1-0.2)
-  expect_prob_true(expect_warning(new_d(2, "fin") & cur_d_fin), 1-0.2)
-  expect_prob_true(expect_warning(cur_d_fin & new_d(0, "fin")), 0)
+  expect_prob_true(expect_warning(cur_d_dis & cur_d_dis), (1-0.2)*(1-0.2))
+  expect_prob_true(expect_warning(cur_d_dis & new_d(1, "discrete")), 1-0.2)
+  expect_prob_true(expect_warning(new_d(2, "discrete") & cur_d_dis), 1-0.2)
+  expect_prob_true(expect_warning(cur_d_dis & new_d(0, "discrete")), 0)
 
     # Probability of `d_con` being 0 is always 0 (i.e. it is always
     # "`TRUE`"), so presence of "continuous" terms is irrelevant
-  expect_prob_true(expect_warning(d_con & cur_d_fin), 1-0.2)
+  expect_prob_true(expect_warning(d_con & cur_d_dis), 1-0.2)
   expect_prob_true(expect_warning(d_con & d_con), 1)
 
   # `|`
-  expect_prob_true(expect_warning(cur_d_fin | cur_d_fin), 1 - 0.2*0.2)
-  expect_prob_true(expect_warning(cur_d_fin | new_d(0, "fin")), 1-0.2)
-  expect_prob_true(expect_warning(new_d(0, "fin") | cur_d_fin), 1-0.2)
-  expect_prob_true(expect_warning(cur_d_fin | new_d(2, "fin")), 1)
+  expect_prob_true(expect_warning(cur_d_dis | cur_d_dis), 1 - 0.2*0.2)
+  expect_prob_true(expect_warning(cur_d_dis | new_d(0, "discrete")), 1-0.2)
+  expect_prob_true(expect_warning(new_d(0, "discrete") | cur_d_dis), 1-0.2)
+  expect_prob_true(expect_warning(cur_d_dis | new_d(2, "discrete")), 1)
 
     # Probability of `d_con` being 0 is always 0 (i.e. it is always
     # "`TRUE`"), so presence of "continuous" terms  always results into 1
-  expect_prob_true(expect_warning(d_con | cur_d_fin), 1)
+  expect_prob_true(expect_warning(d_con | cur_d_dis), 1)
   expect_prob_true(expect_warning(d_con | d_con), 1)
 })
 
 test_that("Ops.pdqr warns about 'non-booleanness' in case of logical AND/OR", {
   not_bool <- new_d(
-    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "fin"
+    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "discrete"
   )
-  bool <- new_d(data.frame(x = 0:1, prob = c(0.3, 0.7)), "fin")
+  bool <- new_d(data.frame(x = 0:1, prob = c(0.3, 0.7)), "discrete")
 
   expect_warning(not_bool & bool, "One of `&` input.*boolean")
   expect_warning(bool & not_bool, "One of `&` input.*boolean")
@@ -614,22 +614,22 @@ test_that("Ops.pdqr validates input in case of logical AND/OR", {
   expect_error(bad_pdqr & 1, "Both.*`&`.*pdqr")
   expect_error(1 & bad_pdqr, "Both.*`&`.*pdqr")
   expect_error(bad_pdqr & bad_pdqr_2, "Both.*`&`.*pdqr")
-  expect_error(d_fin & bad_pdqr_2, "Both.*`&`.*pdqr")
-  expect_error("a" & d_fin, "Both.*`&`.*pdqr")
-  expect_error(d_fin & "a", "Both.*`&`.*pdqr")
+  expect_error(d_dis & bad_pdqr_2, "Both.*`&`.*pdqr")
+  expect_error("a" & d_dis, "Both.*`&`.*pdqr")
+  expect_error(d_dis & "a", "Both.*`&`.*pdqr")
 
   # `|`
   expect_error(bad_pdqr | 1, "Both.*`|`.*pdqr")
   expect_error(1 | bad_pdqr, "Both.*`|`.*pdqr")
   expect_error(bad_pdqr | bad_pdqr_2, "Both.*`|`.*pdqr")
-  expect_error(d_fin | bad_pdqr_2, "Both.*`|`.*pdqr")
-  expect_error("a" | d_fin, "Both.*`|`.*pdqr")
-  expect_error(d_fin | "a", "Both.*`|`.*pdqr")
+  expect_error(d_dis | bad_pdqr_2, "Both.*`|`.*pdqr")
+  expect_error("a" | d_dis, "Both.*`|`.*pdqr")
+  expect_error(d_dis | "a", "Both.*`|`.*pdqr")
 })
 
 test_that("Ops.pdqr validates input", {
-  expect_error(bad_pdqr + d_fin, validate_error("\\+"))
-  expect_error(d_fin - bad_pdqr_2, validate_error("\\-"))
+  expect_error(bad_pdqr + d_dis, validate_error("\\+"))
+  expect_error(d_dis - bad_pdqr_2, validate_error("\\-"))
   expect_error(bad_pdqr * bad_pdqr_2, validate_error("\\*"))
   expect_error(bad_pdqr %% bad_pdqr_2, validate_error("%%"))
 })
@@ -637,8 +637,8 @@ test_that("Ops.pdqr validates input", {
 
 # Summary.pdqr ------------------------------------------------------------
 test_that("Summary.pdqr works", {
-  expect_distr_fun(min(p_fin), "p", "fin")
-  expect_distr_fun(max(p_fin, p_fin), "p", "fin")
+  expect_distr_fun(min(p_dis), "p", "discrete")
+  expect_distr_fun(max(p_dis, p_dis), "p", "discrete")
   expect_distr_fun(sum(q_custom, q_con, q_con), "q", "continuous")
   expect_distr_fun(prod(r_custom, r_custom, na.rm = TRUE), "r", "continuous")
 })
@@ -648,16 +648,16 @@ test_that("Summary.pdqr accepts single numbers in general case", {
 })
 
 test_that("Summary.pdqr works in case of `all()` and `any()`", {
-  bool_d_1 <- new_d(data.frame(x = c(0, 1), prob = c(0.2, 0.8)), "fin")
-  bool_p_2 <- new_p(data.frame(x = c(0, 1), prob = c(0.3, 0.7)), "fin")
-  bool_q_3 <- new_q(data.frame(x = c(0, 1), prob = c(0, 1)), "fin")
+  bool_d_1 <- new_d(data.frame(x = c(0, 1), prob = c(0.2, 0.8)), "discrete")
+  bool_p_2 <- new_p(data.frame(x = c(0, 1), prob = c(0.3, 0.7)), "discrete")
+  bool_q_3 <- new_q(data.frame(x = c(0, 1), prob = c(0, 1)), "discrete")
 
   # all()
   expect_prob_true(all(bool_d_1), 0.8)
   expect_prob_true(all(bool_d_1, bool_p_2), 0.8*0.7)
   expect_prob_true(all(bool_d_1, bool_p_2, bool_q_3), 0.8*0.7*1)
     # Works when 1 is not present in input's 'x' levels
-  expect_prob_true(expect_warning(all(new_d(0, "fin"))), 0)
+  expect_prob_true(expect_warning(all(new_d(0, "discrete"))), 0)
     # Works for "continuous" functions, which are always `TRUE`
   expect_prob_true(expect_warning(all(d_con)), 1)
     # Class of output is taken from the first input
@@ -668,7 +668,7 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
   expect_prob_true(any(bool_d_1, bool_p_2), 1 - (1-0.8)*(1-0.7))
   expect_prob_true(any(bool_d_1, bool_p_2, bool_q_3), 1 - (1-0.8)*(1-0.7)*(1-1))
     # Works when 1 is not present in input's 'x' levels
-  expect_prob_true(expect_warning(any(new_d(0, "fin"))), 0)
+  expect_prob_true(expect_warning(any(new_d(0, "discrete"))), 0)
     # Works for "continuous" functions, which are always `TRUE`
   expect_prob_true(expect_warning(any(d_con)), 1)
     # Class of output is taken from the first input
@@ -677,9 +677,9 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
 
 test_that("Summary.pdqr warns about 'non-booleanness' in `all()` and `any()`", {
   not_bool <- new_d(
-    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "fin"
+    data.frame(x = c(-1, 0, 1), prob = c(0.3, 0.2, 0.5)), "discrete"
   )
-  bool <- new_d(data.frame(x = 0:1, prob = c(0.3, 0.7)), "fin")
+  bool <- new_d(data.frame(x = 0:1, prob = c(0.3, 0.7)), "discrete")
 
   expect_warning(all(not_bool, bool), "Some.*`all\\(\\)`.*boolean")
   expect_warning(all(bool, not_bool), "Some.*`all\\(\\)`.*boolean")
@@ -691,15 +691,15 @@ test_that("Summary.pdqr warns about 'non-booleanness' in `all()` and `any()`", {
 })
 
 test_that("Summary.pdqr validates input in case of `all()` and `any()`", {
-  expect_error(all(d_fin, "a"), "All.*`all\\(\\)`.*pdqr")
+  expect_error(all(d_dis, "a"), "All.*`all\\(\\)`.*pdqr")
   expect_error(any(d_con >= 1, 1), "All.*`any\\(\\)`.*pdqr")
 })
 
 test_that("Summary.pdqr uses options", {
   # Option for `n_sample`
   op <- options(pdqr.group_gen.n_sample = 1)
-  min_fin <- min(d_fin, d_fin)
-  expect_true(nrow(meta_x_tbl(min_fin)) == 1)
+  min_dis <- min(d_dis, d_dis)
+  expect_true(nrow(meta_x_tbl(min_dis)) == 1)
   options(op)
 
   # Options for `args_new` and support repair method
@@ -733,11 +733,11 @@ test_that("Summary.pdqr repairs support in general cases", {
 })
 
 test_that("Summary.pdqr throws error on `range()`", {
-  expect_error(range(p_fin, p_fin), "range.*two.*numbers")
+  expect_error(range(p_dis, p_dis), "range.*two.*numbers")
 })
 
 test_that("Summary.pdqr validates input in general cases", {
-  expect_error(min(d_fin, "a"), validate_error("min"))
+  expect_error(min(d_dis, "a"), validate_error("min"))
 })
 
 

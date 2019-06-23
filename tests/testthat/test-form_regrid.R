@@ -2,8 +2,8 @@ context("test-form_regrid")
 
 
 # Input data --------------------------------------------------------------
-cur_fin <- new_d(
-  data.frame(x = c(1, 1.1, 2, 2.5, 3.4), prob = (5:1) / 15), "fin"
+cur_dis <- new_d(
+  data.frame(x = c(1, 1.1, 2, 2.5, 3.4), prob = (5:1) / 15), "discrete"
 )
 cur_con <- new_d(
   data.frame(x = 0:3, y = c(0, 0.5, 1, 2) / 2.5), "continuous"
@@ -41,15 +41,15 @@ expect_pdqr_commute <- function(f, n_grid, method) {
 
 
 # form_regrid -------------------------------------------------------------
-test_that("form_regrid downgrids 'fin' functions", {
+test_that("form_regrid downgrids 'discrete' functions", {
   # Output `x` are edges with probabilities collapsed according to smallest
   # ordinary distance. Probabilities are sum of respective nearest input `x`.
   expect_ref_x_tbl(
-    form_regrid(cur_fin, n_grid = 2, method = "x"),
+    form_regrid(cur_dis, n_grid = 2, method = "x"),
     data.frame(x = c(1, 3.4), prob = c(5+4+3, 2+1) / 15)
   )
   expect_ref_x_tbl(
-    form_regrid(cur_fin, n_grid = 2, method = "q"),
+    form_regrid(cur_dis, n_grid = 2, method = "q"),
     data.frame(x = c(1, 3.4), prob = c(5+4+3, 2+1) / 15)
   )
 
@@ -61,30 +61,30 @@ test_that("form_regrid downgrids 'fin' functions", {
 
   # Grid is c(1, 2.2, 3.4).
   expect_ref_x_tbl(
-    form_regrid(cur_fin, n_grid = 3, method = "x"),
+    form_regrid(cur_dis, n_grid = 3, method = "x"),
     data.frame(x = c(1, 2, 3.4), prob = c(5+4, 3+2, 1) / 15)
   )
   # Grid is c(1, 1.1, 3.4).
   expect_ref_x_tbl(
-    form_regrid(cur_fin, n_grid = 3, method = "q"),
+    form_regrid(cur_dis, n_grid = 3, method = "q"),
     data.frame(x = c(1, 1.1, 3.4), prob = c(5, 4+3, 2+1) / 15)
   )
   # Grid is c(1, 1.8, 2.6, 3.4).
   expect_ref_x_tbl(
-    form_regrid(cur_fin, n_grid = 4, method = "x"),
+    form_regrid(cur_dis, n_grid = 4, method = "x"),
     data.frame(x = c(1, 2, 2.5, 3.4), prob = c(5+4, 3, 2, 1) / 15)
   )
   # Grid is c(1, 1, 2, 3.4). Note that output `x` is computed by
   # **matching** needed amount of input `x` elements to the c(1, 2, 3.4).
   expect_ref_x_tbl(
-    form_regrid(cur_fin, n_grid = 4, method = "q"),
+    form_regrid(cur_dis, n_grid = 4, method = "q"),
     data.frame(x = c(1, 1.1, 2, 3.4), prob = c(5, 4, 3+2, 1) / 15)
   )
 })
 
-test_that("form_regrid returns self when upgridding 'fin' function", {
-  expect_equal(form_regrid(cur_fin, 10, method = "x"), cur_fin)
-  expect_equal(form_regrid(cur_fin, 10, method = "q"), cur_fin)
+test_that("form_regrid returns self when upgridding 'discrete' function", {
+  expect_equal(form_regrid(cur_dis, 10, method = "x"), cur_dis)
+  expect_equal(form_regrid(cur_dis, 10, method = "q"), cur_dis)
 })
 
 test_that("form_regrid downgrids 'continuous' functions", {
@@ -155,17 +155,17 @@ test_that("form_regrid errors if `n_grid=2`, zero edges, 'continuous' function",
 })
 
 test_that("form_regrid works with different pdqr-functions", {
-  expect_pdqr_commute(cur_fin, n_grid = 3, method = "x")
+  expect_pdqr_commute(cur_dis, n_grid = 3, method = "x")
   expect_pdqr_commute(cur_con, n_grid = 10, method = "q")
 })
 
 test_that("form_regrid handles difficult cases", {
-  difficult_fin <- new_d(
-    data.frame(x = c(0.98, 0.99, 1.01, 2.2, 3.1), prob = 1:5 / 15), "fin"
+  difficult_dis <- new_d(
+    data.frame(x = c(0.98, 0.99, 1.01, 2.2, 3.1), prob = 1:5 / 15), "discrete"
   )
 
   expect_ref_x_tbl(
-    form_regrid(difficult_fin, n_grid = 3, method = "x"),
+    form_regrid(difficult_dis, n_grid = 3, method = "x"),
     # Output `x` shouldn't be squashed near c(0.98, 0.99, 1.01). At least, that
     # is a current reasoning taking into account speed of computations.
     data.frame(x = c(0.98, 2.2, 3.1), prob = c(1+2+3, 4, 5) / 15)
@@ -173,24 +173,24 @@ test_that("form_regrid handles difficult cases", {
 })
 
 test_that("form_regrid returns dirac-like function at median if `n_grid = 1`", {
-  expect_regrid_to_one(cur_fin)
+  expect_regrid_to_one(cur_dis)
   expect_regrid_to_one(cur_con)
 })
 
 test_that("form_regrid returns self when `n_grid` = number of present points", {
-  expect_equal(form_regrid(cur_fin, 5, method = "x"), cur_fin)
-  expect_equal(form_regrid(cur_fin, 5, method = "q"), cur_fin)
+  expect_equal(form_regrid(cur_dis, 5, method = "x"), cur_dis)
+  expect_equal(form_regrid(cur_dis, 5, method = "q"), cur_dis)
   expect_equal(form_regrid(cur_con, 4, method = "x"), cur_con)
   expect_equal(form_regrid(cur_con, 4, method = "q"), cur_con)
 })
 
 test_that("form_regrid validates input", {
   expect_error(form_regrid("a", 10), "`f`.*not pdqr-function")
-  expect_error(form_regrid(cur_fin), "`n_grid`.*missing.*grid size")
-  expect_error(form_regrid(cur_fin, "a"), "`n_grid`.*single.*number")
-  expect_error(form_regrid(cur_fin, 0), "`n_grid`.*positive")
-  expect_error(form_regrid(cur_fin, 10, method = 1), "`method`.*string")
-  expect_error(form_regrid(cur_fin, 10, method = "a"), "`method`.*one of")
+  expect_error(form_regrid(cur_dis), "`n_grid`.*missing.*grid size")
+  expect_error(form_regrid(cur_dis, "a"), "`n_grid`.*single.*number")
+  expect_error(form_regrid(cur_dis, 0), "`n_grid`.*positive")
+  expect_error(form_regrid(cur_dis, 10, method = 1), "`method`.*string")
+  expect_error(form_regrid(cur_dis, 10, method = "a"), "`method`.*one of")
 })
 
 
@@ -214,7 +214,7 @@ test_that("form_regrid validates input", {
 # Tested in `form_regrid()`
 
 
-# adjust_to_grid_fin ------------------------------------------------------
+# adjust_to_grid_dis ------------------------------------------------------
 # Tested in `form_regrid()`
 
 

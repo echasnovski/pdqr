@@ -5,7 +5,7 @@ context("test-x_tbl")
 # Tested in `new_*()` functions
 
 
-# compute_x_tbl_fin -------------------------------------------------------
+# compute_x_tbl_dis -------------------------------------------------------
 # Tested in `new_*()` functions
 
 
@@ -32,15 +32,15 @@ test_that("dirac_x_tbl ensures that total integral is 1", {
 # impute_x_tbl_impl -------------------------------------------------------
 # Main tests are in `new_*()` functions
 test_that("impute_x_tbl_impl throws error", {
-  expect_error(impute_x_tbl_impl(x_fin_x_tbl, "a"), "type")
+  expect_error(impute_x_tbl_impl(x_dis_x_tbl, "a"), "type")
 })
 
 
-# impute_x_tbl_impl_fin ---------------------------------------------------
+# impute_x_tbl_impl_dis ---------------------------------------------------
 # Main functionality is tested in `impute_x_tbl_impl()`
-test_that("impute_x_tbl_impl_fin correctly collapses duplicate 'x'",  {
+test_that("impute_x_tbl_impl_dis correctly collapses duplicate 'x'",  {
   expect_equal(
-    impute_x_tbl_impl_fin(data.frame(x = c(1, 2, 1), prob = c(0.3, 0.2, 0.5))),
+    impute_x_tbl_impl_dis(data.frame(x = c(1, 2, 1), prob = c(0.3, 0.2, 0.5))),
     data.frame(x = c(1, 2), prob = c(0.8, 0.2), cumprob = c(0.8, 1))
   )
 })
@@ -64,24 +64,24 @@ test_that("impute_x_tbl_impl_fin correctly collapses duplicate 'x'",  {
 
 # get_x_tbl_sec_col -------------------------------------------------------
 test_that("get_x_tbl_sec_col works", {
-  expect_equal(get_x_tbl_sec_col(x_fin_x_tbl), "prob")
+  expect_equal(get_x_tbl_sec_col(x_dis_x_tbl), "prob")
   expect_equal(get_x_tbl_sec_col(x_con_x_tbl), "y")
 })
 
 
 # get_type_from_x_tbl -----------------------------------------------------
 test_that("get_type_from_x_tbl works", {
-  expect_equal(get_type_from_x_tbl(x_fin_x_tbl), "fin")
+  expect_equal(get_type_from_x_tbl(x_dis_x_tbl), "discrete")
   expect_equal(get_type_from_x_tbl(x_con_x_tbl), "continuous")
 })
 
 
 # filter_x_tbl ------------------------------------------------------------
 test_that("filter_x_tbl works", {
-  x_tbl_fin <- data.frame(x = 1:5, prob = (1:5) / 15)
+  x_tbl_dis <- data.frame(x = 1:5, prob = (1:5) / 15)
   expect_equal(
-    filter_x_tbl(x_tbl_fin, c(-10, 1))[, c("x", "prob")],
-    x_tbl_fin[1, ]
+    filter_x_tbl(x_tbl_dis, c(-10, 1))[, c("x", "prob")],
+    x_tbl_dis[1, ]
   )
 
   x_tbl_con <- data.frame(x = 1:5, y = (1:5) / 12)
@@ -94,11 +94,11 @@ test_that("filter_x_tbl works", {
 
 # union_inside_x_tbl ------------------------------------------------------
 test_that("union_inside_x_tbl works", {
-  x_tbl_fin_1 <- data.frame(x = 1:3, prob = c(0, 0.3, 0.7))
-  x_tbl_fin_2 <- data.frame(x = c(0, 1, 1.5, 3.1), prob = rep(0.5, 4))
+  x_tbl_dis_1 <- data.frame(x = 1:3, prob = c(0, 0.3, 0.7))
+  x_tbl_dis_2 <- data.frame(x = c(0, 1, 1.5, 3.1), prob = rep(0.5, 4))
 
   expect_equal(
-    union_inside_x_tbl(x_tbl_fin_1, x_tbl_fin_2),
+    union_inside_x_tbl(x_tbl_dis_1, x_tbl_dis_2),
     data.frame(x = c(1, 1.5, 2, 3), prob = c(0, 0.5, 0.3, 0.7))
   )
 
@@ -113,18 +113,18 @@ test_that("union_inside_x_tbl works", {
 
 
 # reflect_x_tbl -----------------------------------------------------------
-test_that("reflect_x_tbl works with 'fin' type", {
-  x_tbl_fin <- data.frame(
+test_that("reflect_x_tbl works with 'discrete' type", {
+  x_tbl_dis <- data.frame(
     x = c(1, 2, 4), prob = c(0.1, 0, 0.9), cumprob = c(0.1, 0.1, 1)
   )
   expect_equal(
-    reflect_x_tbl(x_tbl_fin, 0),
+    reflect_x_tbl(x_tbl_dis, 0),
     data.frame(
       x = c(-4, -2, -1), prob = c(0.9, 0, 0.1), cumprob = c(0.9, 0.9, 1)
     )
   )
   expect_equal(
-    reflect_x_tbl(x_tbl_fin, 2),
+    reflect_x_tbl(x_tbl_dis, 2),
     data.frame(
       x = c(0, 2, 3), prob = c(0.9, 0, 0.1), cumprob = c(0.9, 0.9, 1)
     )
@@ -158,7 +158,7 @@ test_that("reflect_x_tbl works with 'continuous' type", {
 
 # ground_x_tbl ------------------------------------------------------------
 test_that("ground_x_tbl works", {
-  expect_equal(ground_x_tbl(x_fin_x_tbl), x_fin_x_tbl)
+  expect_equal(ground_x_tbl(x_dis_x_tbl), x_dis_x_tbl)
 
   x_tbl <- data.frame(
     x = c(-1, 0.25, 2), y = c(1/1.25, 0, 1/1.75), cumprob = c(0, 0.5, 1)
@@ -225,16 +225,16 @@ test_that("enfun_x_tbl works",  {
 
 
 # stack_x_tbl -------------------------------------------------------------
-test_that("stack_x_tbl works with 'fin' type",  {
-  x_tbl_fin_1 <- data.frame(x = 1, prob = 1)
-  x_tbl_fin_2 <- data.frame(x = 2:4, prob = c(0.2, 0.5, 0.3))
-  x_tbl_fin_3 <- data.frame(x = c(-1, 1, 4, 5), prob = c(0.1, 0.2, 0.3, 0.4))
+test_that("stack_x_tbl works with 'discrete' type",  {
+  x_tbl_dis_1 <- data.frame(x = 1, prob = 1)
+  x_tbl_dis_2 <- data.frame(x = 2:4, prob = c(0.2, 0.5, 0.3))
+  x_tbl_dis_3 <- data.frame(x = c(-1, 1, 4, 5), prob = c(0.1, 0.2, 0.3, 0.4))
 
   expect_equal(
-    stack_x_tbl(list(x_tbl_fin_1, x_tbl_fin_2, x_tbl_fin_3)),
+    stack_x_tbl(list(x_tbl_dis_1, x_tbl_dis_2, x_tbl_dis_3)),
     data.frame(x = c(-1, 1, 2, 3, 4, 5), prob = c(0.1, 1.2, 0.2, 0.5, 0.6, 0.4))
   )
-  expect_equal(stack_x_tbl(list(x_tbl_fin_3)), x_tbl_fin_3)
+  expect_equal(stack_x_tbl(list(x_tbl_dis_3)), x_tbl_dis_3)
 })
 
 test_that("stack_x_tbl works with 'continuous' type",  {
@@ -260,7 +260,7 @@ test_that("stack_x_tbl handles zero density edges",  {
 })
 
 
-# stack_x_tbl_fin ---------------------------------------------------------
+# stack_x_tbl_dis ---------------------------------------------------------
 # Tested in `stack_x_tbl()`
 
 

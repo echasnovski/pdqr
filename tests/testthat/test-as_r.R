@@ -44,7 +44,7 @@ r_list <- list(
 
 
 # as_r.default ------------------------------------------------------------
-test_that("as_r.default honors special 'fin' distributions", {
+test_that("as_r.default honors special 'discrete' distributions", {
   # Originally finite support
   expect_ref_x_tbl(
     as_r(rbinom, size = 10, prob = 0.1),
@@ -408,22 +408,22 @@ test_that("as_r.default throws error if detected support isn't proper", {
 
 # as_r.pdqr ---------------------------------------------------------------
 test_that("as_r works with 'p'", {
-  expect_equal_r_distr(as_r(p_fin), r_fin)
+  expect_equal_r_distr(as_r(p_dis), r_dis)
   expect_equal_r_distr(as_r(p_con), r_con)
 })
 
 test_that("as_r works with 'd'", {
-  expect_equal_r_distr(as_r(d_fin), r_fin)
+  expect_equal_r_distr(as_r(d_dis), r_dis)
   expect_equal_r_distr(as_r(d_con), r_con)
 })
 
 test_that("as_r works with 'q'", {
-  expect_equal_r_distr(as_r(q_fin), r_fin, mean_thres = 0.12)
+  expect_equal_r_distr(as_r(q_dis), r_dis, mean_thres = 0.12)
   expect_equal_r_distr(as_r(q_con), r_con)
 })
 
 test_that("as_r works with 'r'", {
-  expect_equal_r_distr(as_r(r_fin), r_fin)
+  expect_equal_r_distr(as_r(r_dis), r_dis)
   expect_equal_r_distr(as_r(r_con), r_con)
 })
 

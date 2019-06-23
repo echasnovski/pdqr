@@ -21,7 +21,7 @@ expect_relative_summ_entropy2_works <- function(f, g) {
 
 # summ_entropy ------------------------------------------------------------
 # There are also tests in `cross_entropy()`
-test_that("summ_entropy works with 'fin' functions", {
+test_that("summ_entropy works with 'discrete' functions", {
   expect_equal_stat(summ_entropy, stat_list[["binom"]], "entropy")
 
   # Output isn't exact because of tail trimming during `as_d()` and not exact
@@ -49,15 +49,15 @@ test_that("summ_entropy works with 'continuous' functions", {
 })
 
 test_that("summ_entropy works with dirac-like functions", {
-  expect_equal(summ_entropy(new_d(10, "fin")), 0)
+  expect_equal(summ_entropy(new_d(10, "discrete")), 0)
   # Entropy of dirac-like "continuous" function is computed from symmetric triangular
   # distribution with width 2*1e-8
   expect_equal(summ_entropy(new_d(10, "continuous")), 0.5 + log(1e-8))
 })
 
 test_that("summ_entropy handles zero probabilities/densities", {
-  cur_d_fin <- new_d(data.frame(x = 1:3, prob = c(0, 0.5, 0.5)), "fin")
-  expect_equal(summ_entropy(cur_d_fin), -2*0.5*log(0.5))
+  cur_d_dis <- new_d(data.frame(x = 1:3, prob = c(0, 0.5, 0.5)), "discrete")
+  expect_equal(summ_entropy(cur_d_dis), -2*0.5*log(0.5))
 
   cur_d_con <- new_d(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "continuous")
   ref_d_con <- new_d(data.frame(x = 1:3, y = c(0, 1, 0)), "continuous")
@@ -71,9 +71,9 @@ test_that("summ_entropy validates input", {
 
 # summ_entropy2 -----------------------------------------------------------
 # More tests in `cross_entropy()`
-test_that("summ_entropy2 works with 'fin' functions", {
-  f <- new_d(1:4, "fin")
-  g <- new_d(3:7, "fin")
+test_that("summ_entropy2 works with 'discrete' functions", {
+  f <- new_d(1:4, "discrete")
+  g <- new_d(3:7, "discrete")
 
   # Method "relative"
   expect_relative_summ_entropy2_works(f, g)
@@ -122,8 +122,8 @@ test_that("summ_entropy2 handles numerical representation accuracy", {
 })
 
 test_that("summ_entropy2 throws error on inputs of different types", {
-  expect_error(summ_entropy2(d_fin, d_con), "`f`.*`g`.*same type")
-  expect_error(summ_entropy2(d_con, d_fin), "`f`.*`g`.*same type")
+  expect_error(summ_entropy2(d_dis, d_con), "`f`.*`g`.*same type")
+  expect_error(summ_entropy2(d_con, d_dis), "`f`.*`g`.*same type")
 })
 
 test_that("summ_entropy2 uses `clip` argument", {
@@ -133,23 +133,23 @@ test_that("summ_entropy2 uses `clip` argument", {
 })
 
 test_that("summ_entropy2 validates input", {
-  expect_error(summ_entropy2("a", d_fin), "`f`.*not pdqr-function")
-  expect_error(summ_entropy2(d_fin, "a"), "`g`.*not pdqr-function")
-  expect_error(summ_entropy2(d_fin, d_fin, clip = "a"), "`clip`.*number")
-  expect_error(summ_entropy2(d_fin, d_fin, clip = 1:2), "`clip`.*single")
-  expect_error(summ_entropy2(d_fin, d_fin, clip = -1), "`clip`.*non-negative")
+  expect_error(summ_entropy2("a", d_dis), "`f`.*not pdqr-function")
+  expect_error(summ_entropy2(d_dis, "a"), "`g`.*not pdqr-function")
+  expect_error(summ_entropy2(d_dis, d_dis, clip = "a"), "`clip`.*number")
+  expect_error(summ_entropy2(d_dis, d_dis, clip = 1:2), "`clip`.*single")
+  expect_error(summ_entropy2(d_dis, d_dis, clip = -1), "`clip`.*non-negative")
 })
 
 
 # cross_entropy -----------------------------------------------------------
-test_that("cross_entropy works with 'fin' functions", {
+test_that("cross_entropy works with 'discrete' functions", {
   # Simple uniform discrete distribution
-  f <- new_d(1:15, "fin")
+  f <- new_d(1:15, "discrete")
   expect_equal(cross_entropy(f, f), -log(1/15))
 
   # Two distributions with different `x`s
-  f <- new_d(1:4, "fin")
-  g <- new_d(3:7, "fin")
+  f <- new_d(1:4, "discrete")
+  g <- new_d(3:7, "discrete")
   expect_equal(cross_entropy(f, g), -2*0.25*log(0.2) + 2*0.25*max_entropy)
   expect_equal(cross_entropy(g, f), -2*0.2*log(0.25) + 3*0.2*max_entropy)
 })
@@ -197,13 +197,13 @@ test_that("cross_entropy works with dirac-like 'continuous' functions", {
 })
 
 test_that("cross_entropy returns maximum value with non-overlapping supports", {
-  # Type "fin"
-  f_fin <- new_d(1:4, "fin")
-  g_fin <- new_d(5:8, "fin")
-  expect_equal(cross_entropy(f_fin, g_fin, clip = exp(-20)), 20)
-  expect_equal(cross_entropy(g_fin, f_fin, clip = exp(-20)), 20)
+  # Type "discrete"
+  f_dis <- new_d(1:4, "discrete")
+  g_dis <- new_d(5:8, "discrete")
+  expect_equal(cross_entropy(f_dis, g_dis, clip = exp(-20)), 20)
+  expect_equal(cross_entropy(g_dis, f_dis, clip = exp(-20)), 20)
 
-  expect_equal(cross_entropy(f_fin, g_fin, clip = exp(-10)), 10)
+  expect_equal(cross_entropy(f_dis, g_dis, clip = exp(-10)), 10)
 
   # Type "continuous"
   f_con <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
@@ -235,12 +235,12 @@ test_that("cross_entropy handles numerical representation accuracy", {
 })
 
 test_that("cross_entropy throws error on inputs of different types", {
-  expect_error(cross_entropy(d_fin, d_con), "`f`.*`g`.*same type")
-  expect_error(cross_entropy(d_con, d_fin), "`f`.*`g`.*same type")
+  expect_error(cross_entropy(d_dis, d_con), "`f`.*`g`.*same type")
+  expect_error(cross_entropy(d_con, d_dis), "`f`.*`g`.*same type")
 })
 
 
-# cross_entropy_fin -------------------------------------------------------
+# cross_entropy_dis -------------------------------------------------------
 # Tested in `cross_entropy()`
 
 

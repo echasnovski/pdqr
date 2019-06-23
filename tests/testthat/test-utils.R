@@ -570,9 +570,9 @@ test_that("granulate_grid works", {
 
 # enpoint -----------------------------------------------------------------
 test_that("enpoint works with p-functions", {
-  # Type "fin"
-  x_tbl <- meta_x_tbl(p_fin)
-  expect_equal(enpoint(p_fin), data.frame(x = x_tbl$x, p = x_tbl$cumprob))
+  # Type "discrete"
+  x_tbl <- meta_x_tbl(p_dis)
+  expect_equal(enpoint(p_dis), data.frame(x = x_tbl$x, p = x_tbl$cumprob))
 
   # Type "continuous"
   x_seq <- seq_between(meta_support(p_con), length.out = 3)
@@ -583,9 +583,9 @@ test_that("enpoint works with p-functions", {
 })
 
 test_that("enpoint works with d-functions", {
-  # Type "fin"
-  x_tbl <- meta_x_tbl(d_fin)
-  expect_equal(enpoint(d_fin), data.frame(x = x_tbl$x, prob = x_tbl$prob))
+  # Type "discrete"
+  x_tbl <- meta_x_tbl(d_dis)
+  expect_equal(enpoint(d_dis), data.frame(x = x_tbl$x, prob = x_tbl$prob))
 
   # Type "continuous"
   x_seq <- seq_between(meta_support(d_con), length.out = 3)
@@ -596,9 +596,9 @@ test_that("enpoint works with d-functions", {
 })
 
 test_that("enpoint works with q-functions", {
-  # Type "fin"
-  x_tbl <- meta_x_tbl(q_fin)
-  expect_equal(enpoint(q_fin), data.frame(p = x_tbl$cumprob, x = x_tbl$x))
+  # Type "discrete"
+  x_tbl <- meta_x_tbl(q_dis)
+  expect_equal(enpoint(q_dis), data.frame(p = x_tbl$cumprob, x = x_tbl$x))
 
   # Type "continuous"
   p_seq <- seq_between(c(0, 1), length.out = 3)
@@ -611,11 +611,11 @@ test_that("enpoint works with q-functions", {
 test_that("enpoint works with r-functions", {
   set.seed(101)
 
-  # Type "fin"
-  output <- enpoint(r_fin, n_points = 10)
+  # Type "discrete"
+  output <- enpoint(r_dis, n_points = 10)
   expect_named(output, c("n", "x"))
   expect_equal(output[["n"]], seq_len(10))
-  expect_equal(mean(output[["x"]]), summ_mean(r_fin), tolerance = 0.9)
+  expect_equal(mean(output[["x"]]), summ_mean(r_dis), tolerance = 0.9)
 
   # Type "continuous"
   output <- enpoint(r_con, n_points = 10)
@@ -628,15 +628,15 @@ test_that("enpoint uses `n_points` argument", {
   expect_equal(nrow(enpoint(p_con, n_points = 3)), 3)
   expect_equal(nrow(enpoint(d_con, n_points = 14)), 14)
   expect_equal(nrow(enpoint(q_con, n_points = 15)), 15)
-  expect_equal(nrow(enpoint(r_fin,   n_points = 92)), 92)
+  expect_equal(nrow(enpoint(r_dis,   n_points = 92)), 92)
   expect_equal(nrow(enpoint(r_con, n_points = 6)), 6)
 })
 
 test_that("enpoint validates input", {
   expect_error(enpoint("a"), "`f`.*not pdqr-function")
-  expect_error(enpoint(d_fin, n_points = "a"), "`n_points`.*number")
-  expect_error(enpoint(d_fin, n_points = 10:11), "`n_points`.*single")
-  expect_error(enpoint(d_fin, n_points = 0.5), "`n_points`.*more than 1")
+  expect_error(enpoint(d_dis, n_points = "a"), "`n_points`.*number")
+  expect_error(enpoint(d_dis, n_points = 10:11), "`n_points`.*single")
+  expect_error(enpoint(d_dis, n_points = 0.5), "`n_points`.*more than 1")
 })
 
 

@@ -2,8 +2,8 @@ context("test-form_resupport")
 
 
 # form_resupport ----------------------------------------------------------
-test_that("form_resupport works with `method='reflect'` and 'fin' type", {
-  p_f <- new_p(data.frame(x = 1:4, prob = (1:4)/10), "fin")
+test_that("form_resupport works with `method='reflect'` and 'discrete' type", {
+  p_f <- new_p(data.frame(x = 1:4, prob = (1:4)/10), "discrete")
   p_f_x_tbl <- meta_x_tbl(p_f)
 
   # Returns self when supplied support equals `f`'s support or wider
@@ -74,12 +74,12 @@ test_that("form_resupport works with `method='reflect'` and 'continuous' type", 
   )
 })
 
-test_that("form_resupport works with `method = 'trim'` and 'fin' type", {
+test_that("form_resupport works with `method = 'trim'` and 'discrete' type", {
   x_tbl <- data.frame(
     x    = c(0,   1, 2,   3,   4,   5,   6, 7),
     prob = c(0, 0.2, 0, 0.4, 0.1, 0.1, 0.2, 0)
   )
-  p_f <- new_p(x_tbl, "fin")
+  p_f <- new_p(x_tbl, "discrete")
 
   expect_ref_x_tbl(
     form_resupport(p_f, c(1.5, 4.5), "trim"),
@@ -137,21 +137,21 @@ test_that("form_resupport works with `method = 'trim'` and 'continuous' type", {
   expect_error(form_resupport(d_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
 })
 
-test_that("form_resupport works with `method = 'winsor'` and 'fin' type",  {
-  d_f <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "fin")
+test_that("form_resupport works with `method = 'winsor'` and 'discrete' type",  {
+  d_f <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "discrete")
 
   # Collapsing into single element
   expect_equal_x_tbl(
     form_resupport(d_f, c(5, 6), "winsor"),
-    new_d(5, "fin")
+    new_d(5, "discrete")
   )
   expect_equal_x_tbl(
     form_resupport(d_f, c(0, 0.5), "winsor"),
-    new_d(0.5, "fin")
+    new_d(0.5, "discrete")
   )
   expect_equal_x_tbl(
     form_resupport(d_f, c(3.14, 3.14), "winsor"),
-    new_d(3.14, "fin")
+    new_d(3.14, "discrete")
   )
 
   # Left
@@ -218,8 +218,8 @@ test_that("form_resupport works with `method = 'winsor'` and 'continuous' type",
   )
 })
 
-test_that("form_resupport works with `method = 'linear'` and 'fin' type", {
-  p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "fin")
+test_that("form_resupport works with `method = 'linear'` and 'discrete' type", {
+  p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "discrete")
 
   expect_ref_x_tbl(
     form_resupport(p_f, c(-0.5, 3), "linear"),
@@ -228,12 +228,12 @@ test_that("form_resupport works with `method = 'linear'` and 'fin' type", {
 
   expect_equal_x_tbl(
     form_resupport(p_f, c(15, 15), "linear"),
-    new_p(15, "fin")
+    new_p(15, "discrete")
   )
 
   # Can't resupport from single point support to interval one
   expect_error(
-    form_resupport(new_p(1, "fin"), c(0, 1), "linear"), "single.*interval"
+    form_resupport(new_p(1, "discrete"), c(0, 1), "linear"), "single.*interval"
   )
 })
 
@@ -256,14 +256,14 @@ test_that("form_resupport works with `method = 'linear'` and 'continuous' type",
 })
 
 test_that("form_resupport returns correct class of pdqr-function", {
-  p_f_fin <- new_p(data.frame(x = 1:2, prob = c(0.3, 0.7)), "fin")
+  p_f_dis <- new_p(data.frame(x = 1:2, prob = c(0.3, 0.7)), "discrete")
   p_f_con <- new_p(data.frame(x = 1:3, y = c(0, 1, 0)), "continuous")
 
   # Method "trim"
-  expect_is(form_resupport(p_f_fin, c(1, 2), "trim"), "p")
-  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "trim"), "d")
-  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "trim"), "q")
-  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "trim"), "r")
+  expect_is(form_resupport(p_f_dis, c(1, 2), "trim"), "p")
+  expect_is(form_resupport(as_d(p_f_dis), c(1, 2), "trim"), "d")
+  expect_is(form_resupport(as_q(p_f_dis), c(1, 2), "trim"), "q")
+  expect_is(form_resupport(as_r(p_f_dis), c(1, 2), "trim"), "r")
 
   expect_is(form_resupport(p_f_con, c(1, 2), "trim"), "p")
   expect_is(form_resupport(as_d(p_f_con), c(1, 2), "trim"), "d")
@@ -271,10 +271,10 @@ test_that("form_resupport returns correct class of pdqr-function", {
   expect_is(form_resupport(as_r(p_f_con), c(1, 2), "trim"), "r")
 
   # Method "linear"
-  expect_is(form_resupport(p_f_fin, c(1, 2), "linear"), "p")
-  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "linear"), "d")
-  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "linear"), "q")
-  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "linear"), "r")
+  expect_is(form_resupport(p_f_dis, c(1, 2), "linear"), "p")
+  expect_is(form_resupport(as_d(p_f_dis), c(1, 2), "linear"), "d")
+  expect_is(form_resupport(as_q(p_f_dis), c(1, 2), "linear"), "q")
+  expect_is(form_resupport(as_r(p_f_dis), c(1, 2), "linear"), "r")
 
   expect_is(form_resupport(p_f_con, c(1, 2), "linear"), "p")
   expect_is(form_resupport(as_d(p_f_con), c(1, 2), "linear"), "d")
@@ -282,10 +282,10 @@ test_that("form_resupport returns correct class of pdqr-function", {
   expect_is(form_resupport(as_r(p_f_con), c(1, 2), "linear"), "r")
 
   # Method "reflect"
-  expect_is(form_resupport(p_f_fin, c(1, 2), "reflect"), "p")
-  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "reflect"), "d")
-  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "reflect"), "q")
-  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "reflect"), "r")
+  expect_is(form_resupport(p_f_dis, c(1, 2), "reflect"), "p")
+  expect_is(form_resupport(as_d(p_f_dis), c(1, 2), "reflect"), "d")
+  expect_is(form_resupport(as_q(p_f_dis), c(1, 2), "reflect"), "q")
+  expect_is(form_resupport(as_r(p_f_dis), c(1, 2), "reflect"), "r")
 
   expect_is(form_resupport(p_f_con, c(1, 2), "reflect"), "p")
   expect_is(form_resupport(as_d(p_f_con), c(1, 2), "reflect"), "d")
@@ -293,10 +293,10 @@ test_that("form_resupport returns correct class of pdqr-function", {
   expect_is(form_resupport(as_r(p_f_con), c(1, 2), "reflect"), "r")
 
   # Method "winsor"
-  expect_is(form_resupport(p_f_fin, c(1, 2), "winsor"), "p")
-  expect_is(form_resupport(as_d(p_f_fin), c(1, 2), "winsor"), "d")
-  expect_is(form_resupport(as_q(p_f_fin), c(1, 2), "winsor"), "q")
-  expect_is(form_resupport(as_r(p_f_fin), c(1, 2), "winsor"), "r")
+  expect_is(form_resupport(p_f_dis, c(1, 2), "winsor"), "p")
+  expect_is(form_resupport(as_d(p_f_dis), c(1, 2), "winsor"), "d")
+  expect_is(form_resupport(as_q(p_f_dis), c(1, 2), "winsor"), "q")
+  expect_is(form_resupport(as_r(p_f_dis), c(1, 2), "winsor"), "r")
 
   expect_is(form_resupport(p_f_con, c(1, 2), "winsor"), "p")
   expect_is(form_resupport(as_d(p_f_con), c(1, 2), "winsor"), "d")
@@ -305,7 +305,7 @@ test_that("form_resupport returns correct class of pdqr-function", {
 })
 
 test_that("form_resupport handles `NA`s in `support`", {
-  p_f <- new_p(1:3, "fin")
+  p_f <- new_p(1:3, "discrete")
   expect_close_f(
     f_1 = form_resupport(p_f, c(1.5, NA), "trim"),
     f_2 = form_resupport(p_f, c(1.5,  3), "trim"),
@@ -319,12 +319,12 @@ test_that("form_resupport handles `NA`s in `support`", {
 })
 
 test_that("form_resupport returns self when appropriate", {
-  output_1 <- form_resupport(p_fin, c(NA_real_, NA_real_))
-  expect_close_f(p_fin, output_1, x_fin_vec)
+  output_1 <- form_resupport(p_dis, c(NA_real_, NA_real_))
+  expect_close_f(p_dis, output_1, x_dis_vec)
 
   for (method in c("trim", "linear", "reflect", "winsor")) {
-    output_fin <- form_resupport(p_fin, meta_support(p_fin), method)
-    expect_close_f(p_fin, output_fin, x_fin_vec)
+    output_dis <- form_resupport(p_dis, meta_support(p_dis), method)
+    expect_close_f(p_dis, output_dis, x_dis_vec)
 
     output_con <- form_resupport(p_con, meta_support(p_con), method)
     expect_close_f(p_con, output_con, x_con_vec)
@@ -333,13 +333,13 @@ test_that("form_resupport returns self when appropriate", {
 
 test_that("form_resupport validates input", {
   expect_error(form_resupport(1, c(0, 1), "trim"), "`f`.*not pdqr-function")
-  expect_error(form_resupport(p_fin), "`support`.*missing.*vector for support")
-  expect_error(form_resupport(p_fin, "a", "trim"), "`support`.*numeric")
-  expect_error(form_resupport(p_fin, c(2, 1), "trim"), "`support`")
-  expect_error(form_resupport(p_fin, c(1, 3), 1), "`method`.*string")
-  expect_error(form_resupport(p_fin, c(1, 3), "a"), "`method`.*one of")
+  expect_error(form_resupport(p_dis), "`support`.*missing.*vector for support")
+  expect_error(form_resupport(p_dis, "a", "trim"), "`support`.*numeric")
+  expect_error(form_resupport(p_dis, c(2, 1), "trim"), "`support`")
+  expect_error(form_resupport(p_dis, c(1, 3), 1), "`method`.*string")
+  expect_error(form_resupport(p_dis, c(1, 3), "a"), "`method`.*one of")
   expect_error(
-    form_resupport(p_fin, c(x_fin_support[2] + 1, NA), "trim"),
+    form_resupport(p_dis, c(x_dis_support[2] + 1, NA), "trim"),
     "`NA`.*support.*(10, 9).*not proper"
   )
 })
@@ -353,7 +353,7 @@ test_that("form_resupport validates input", {
 # Tested in `form_resupport()`
 
 
-# resupport_trim_fin ------------------------------------------------------
+# resupport_trim_dis ------------------------------------------------------
 # Tested in `resupport_trim()`
 
 
@@ -365,7 +365,7 @@ test_that("form_resupport validates input", {
 # Tested in `form_resupport()`
 
 
-# resupport_winsor_fin ----------------------------------------------------
+# resupport_winsor_dis ----------------------------------------------------
 # Tested in `form_resupport()`
 
 

@@ -12,10 +12,10 @@ expect_local_mode_equals_global <- function(d_fun) {
 # summ_center -------------------------------------------------------------
 # More thorough testing is done in other "center" `summ_*()` functions
 test_that("summ_center works", {
-  # "fin"
-  expect_equal(summ_center(d_fin, "mean"), summ_mean(d_fin))
-  expect_equal(summ_center(d_fin, "median"), summ_median(d_fin))
-  expect_equal(summ_center(d_fin, "mode"), summ_mode(d_fin))
+  # "discrete"
+  expect_equal(summ_center(d_dis, "mean"), summ_mean(d_dis))
+  expect_equal(summ_center(d_dis, "median"), summ_median(d_dis))
+  expect_equal(summ_center(d_dis, "mode"), summ_mode(d_dis))
 
   # "continuous"
   expect_equal(summ_center(d_con, "mean"), summ_mean(d_con))
@@ -25,13 +25,13 @@ test_that("summ_center works", {
 
 test_that("summ_center validates input", {
   expect_error(summ_center("a"), "`f`.*not pdqr-function")
-  expect_error(summ_center(d_fin, method = 1), "`method`.*string")
-  expect_error(summ_center(d_fin, method = "a"), "`method`.*one of")
+  expect_error(summ_center(d_dis, method = 1), "`method`.*string")
+  expect_error(summ_center(d_dis, method = "a"), "`method`.*one of")
 })
 
 
 # summ_mean ---------------------------------------------------------------
-test_that("summ_mean works with 'fin' functions", {
+test_that("summ_mean works with 'discrete' functions", {
   expect_equal_stat(summ_mean, stat_list[["binom"]], "mean")
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -72,7 +72,7 @@ test_that("summ_mean works with winsorized 'continuous' functions", {
 
 test_that("summ_mean works with zero probability spaces in distribution", {
   expect_equal(
-    summ_mean(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "fin")),
+    summ_mean(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "discrete")),
     2.2
   )
   expect_equal(
@@ -95,7 +95,7 @@ test_that("summ_mean validates input", {
 
 
 # summ_median -------------------------------------------------------------
-test_that("summ_median works with 'fin' functions", {
+test_that("summ_median works with 'discrete' functions", {
   expect_equal_stat(summ_median, stat_list[["binom"]], "median")
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -103,7 +103,7 @@ test_that("summ_median works with 'fin' functions", {
 })
 
 test_that("summ_median not always mimic `median()`", {
-  expect_equal(summ_median(new_q(1:10, "fin")), 5)
+  expect_equal(summ_median(new_q(1:10, "discrete")), 5)
   expect_equal(summ_median(new_q(1:10, "continuous")), 5.5)
 })
 
@@ -148,7 +148,7 @@ test_that("summ_median works with winsorized 'continuous' functions", {
 
 test_that("summ_median works with zero probability spaces in distribution", {
   expect_equal(
-    summ_median(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "fin")),
+    summ_median(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "discrete")),
     1
   )
   expect_equal(
@@ -173,7 +173,7 @@ test_that("summ_median validates input", {
 
 
 # summ_mode ---------------------------------------------------------------
-test_that("summ_mode works with 'fin' functions", {
+test_that("summ_mode works with 'discrete' functions", {
   # Method "global" (default)
   expect_equal_stat(summ_mode, stat_list[["binom"]], "mode", thres = 1e-12)
   expect_equal_stat(summ_mode, stat_list[["pois"]], "mode", thres = 1e-12)
@@ -246,35 +246,35 @@ test_that("summ_mode works with winsorized 'continuous' functions", {
 })
 
 test_that("summ_mode works with plateaus in distribution", {
-  d_plateau_fin <- new_d(
-    data.frame(x = 1:5, prob = c(0.15, 0.2, 0.2, 0.2, 0.25)), "fin"
+  d_plateau_dis <- new_d(
+    data.frame(x = 1:5, prob = c(0.15, 0.2, 0.2, 0.2, 0.25)), "discrete"
   )
-  d_plateau_fin_2 <- new_d(
-    data.frame(x = 1:5, prob = c(0.1, 0.25, 0.25, 0.25, 0.15)), "fin"
+  d_plateau_dis_2 <- new_d(
+    data.frame(x = 1:5, prob = c(0.1, 0.25, 0.25, 0.25, 0.15)), "discrete"
   )
   # `y` isn't exact and will get renormalized
   d_plateau_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 3)), "continuous")
   d_plateau_con_2 <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 1)), "continuous")
 
   # Method "global" (default)
-  expect_equal(summ_mode(d_plateau_fin), 5)
+  expect_equal(summ_mode(d_plateau_dis), 5)
     # Returns the smallest "x" with highest probability
-  expect_equal(summ_mode(d_plateau_fin_2), 2)
+  expect_equal(summ_mode(d_plateau_dis_2), 2)
   expect_equal(summ_mode(d_plateau_con), 5)
     # Returns the smallest "x" with highest probability
   expect_equal(summ_mode(d_plateau_con_2), 2)
 
   # Method "local"
-  expect_equal(summ_mode(d_plateau_fin, method = "local"), c(2, 3, 5))
-  expect_equal(summ_mode(d_plateau_fin_2, method = "local"), c(2, 3, 4))
+  expect_equal(summ_mode(d_plateau_dis, method = "local"), c(2, 3, 5))
+  expect_equal(summ_mode(d_plateau_dis_2, method = "local"), c(2, 3, 4))
   expect_equal(summ_mode(d_plateau_con, method = "local"), c(2, 3, 5))
   expect_equal(summ_mode(d_plateau_con_2, method = "local"), c(2, 3, 4))
 })
 
 test_that("summ_mode validates input", {
   expect_error(summ_mode("a"), "`f`.*not pdqr-function")
-  expect_error(summ_mode(d_fin, method = 1), "`method`.*string")
-  expect_error(summ_mode(d_fin, method = "a"), "`method`.*one of")
+  expect_error(summ_mode(d_dis, method = 1), "`method`.*string")
+  expect_error(summ_mode(d_dis, method = "a"), "`method`.*one of")
 })
 
 

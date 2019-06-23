@@ -49,19 +49,19 @@ test_that("form_trans works with `method = 'random'`", {
 })
 
 test_that("form_trans works with `method = 'bruteforce'`", {
-  # Output type "fin"
+  # Output type "discrete"
     # Single input
   add_one <- function(x) {x + 1}
-  cur_fin <- new_d(data.frame(x = 0:2, prob = c(0.1, 0.2, 0.7)), "fin")
+  cur_dis <- new_d(data.frame(x = 0:2, prob = c(0.1, 0.2, 0.7)), "discrete")
   expect_ref_x_tbl(
-    form_trans(list(cur_fin), add_one, method = "bruteforce"),
+    form_trans(list(cur_dis), add_one, method = "bruteforce"),
     data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7))
   )
 
     # Multiple input
-  cur_fin_2 <- new_p(data.frame(x = 1:2, prob = c(0.4, 0.6)), "fin")
+  cur_dis_2 <- new_p(data.frame(x = 1:2, prob = c(0.4, 0.6)), "discrete")
   expect_ref_x_tbl(
-    form_trans(list(cur_fin, cur_fin_2), `+`, method = "bruteforce"),
+    form_trans(list(cur_dis, cur_dis_2), `+`, method = "bruteforce"),
     data.frame(
       x =    c(      1,               2,               3,       4),
       prob = c(0.1*0.4, 0.1*0.6+0.2*0.4, 0.2*0.6+0.7*0.4, 0.7*0.6)
@@ -112,29 +112,29 @@ test_that("form_trans handles `NA` in case of logical `trans` output", {
 })
 
 test_that("form_trans produces correct 'pdqr' class", {
-  expect_is(form_trans(list(1, p_fin), `+`, method = "random"), "p")
-  expect_is(form_trans(list(p_fin, 1), `+`, method = "random"), "p")
-  expect_is(form_trans(list(d_fin, p_fin), `+`, method = "random"), "d")
-  expect_is(form_trans(list(p_fin, d_fin), `+`, method = "random"), "p")
+  expect_is(form_trans(list(1, p_dis), `+`, method = "random"), "p")
+  expect_is(form_trans(list(p_dis, 1), `+`, method = "random"), "p")
+  expect_is(form_trans(list(d_dis, p_dis), `+`, method = "random"), "d")
+  expect_is(form_trans(list(p_dis, d_dis), `+`, method = "random"), "p")
 
-  expect_is(form_trans(list(1, p_fin), `+`, method = "bruteforce"), "p")
-  expect_is(form_trans(list(p_fin, 1), `+`, method = "bruteforce"), "p")
-  expect_is(form_trans(list(d_fin, p_fin), `+`, method = "bruteforce"), "d")
-  expect_is(form_trans(list(p_fin, d_fin), `+`, method = "bruteforce"), "p")
+  expect_is(form_trans(list(1, p_dis), `+`, method = "bruteforce"), "p")
+  expect_is(form_trans(list(p_dis, 1), `+`, method = "bruteforce"), "p")
+  expect_is(form_trans(list(d_dis, p_dis), `+`, method = "bruteforce"), "d")
+  expect_is(form_trans(list(p_dis, d_dis), `+`, method = "bruteforce"), "p")
 })
 
 test_that("form_trans produces correct 'pdqr' type", {
   expect_equal(
-    meta_type(form_trans(list(1, p_fin), `+`, method = "random")), "fin"
+    meta_type(form_trans(list(1, p_dis), `+`, method = "random")), "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_fin, q_fin), `+`, method = "random")), "fin"
+    meta_type(form_trans(list(p_dis, q_dis), `+`, method = "random")), "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_con, q_fin), `+`, method = "random")), "continuous"
+    meta_type(form_trans(list(p_con, q_dis), `+`, method = "random")), "continuous"
   )
   expect_equal(
-    meta_type(form_trans(list(d_fin, p_con), `+`, method = "random")), "continuous"
+    meta_type(form_trans(list(d_dis, p_con), `+`, method = "random")), "continuous"
   )
   expect_equal(
     meta_type(form_trans(list(p_con, d_con), `+`, method = "random")),
@@ -142,35 +142,35 @@ test_that("form_trans produces correct 'pdqr' type", {
   )
 
   expect_equal(
-    meta_type(form_trans(list(1, p_fin), `+`, method = "bruteforce")), "fin"
+    meta_type(form_trans(list(1, p_dis), `+`, method = "bruteforce")), "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_fin, q_fin), `+`, method = "bruteforce")), "fin"
+    meta_type(form_trans(list(p_dis, q_dis), `+`, method = "bruteforce")), "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_con, q_fin), `+`, method = "bruteforce")),
+    meta_type(form_trans(list(p_con, q_dis), `+`, method = "bruteforce")),
     "continuous"
   )
 
-  # If `trans` produces logical output, type should be "fin"
+  # If `trans` produces logical output, type should be "discrete"
   expect_equal(
-    meta_type(form_trans(list(p_con, q_fin), `>=`, method = "random")),
-    "fin"
+    meta_type(form_trans(list(p_con, q_dis), `>=`, method = "random")),
+    "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_con, q_fin), `>=`, method = "bruteforce")),
-    "fin"
+    meta_type(form_trans(list(p_con, q_dis), `>=`, method = "bruteforce")),
+    "discrete"
   )
 })
 
 test_that("form_trans throws error if `trans` produces bad output",  {
   bad_trans <- function(x) {rep("a", length(x))}
   expect_error(
-    form_trans(list(p_fin), bad_trans, method = "random"),
+    form_trans(list(p_dis), bad_trans, method = "random"),
     "transformation.*numeric.*logical"
   )
   expect_error(
-    form_trans(list(p_fin), bad_trans, method = "bruteforce"),
+    form_trans(list(p_dis), bad_trans, method = "bruteforce"),
     "transformation.*numeric.*logical"
   )
 })
@@ -178,23 +178,23 @@ test_that("form_trans throws error if `trans` produces bad output",  {
 test_that("form_trans uses `...` as `trans` arguments",  {
   adder <- function(x, y) {x + y}
 
-  output_random <- form_trans(list(p_fin), adder, y = 100, method = "random")
-  expect_true(meta_support(p_fin)[1] == meta_support(output_random)[1] - 100)
+  output_random <- form_trans(list(p_dis), adder, y = 100, method = "random")
+  expect_true(meta_support(p_dis)[1] == meta_support(output_random)[1] - 100)
 
-  output_brute <- form_trans(list(p_fin), adder, y = 100, method = "bruteforce")
-  expect_true(meta_support(p_fin)[1] == meta_support(output_brute)[1] - 100)
+  output_brute <- form_trans(list(p_dis), adder, y = 100, method = "bruteforce")
+  expect_true(meta_support(p_dis)[1] == meta_support(output_brute)[1] - 100)
 })
 
 test_that("form_trans uses `n_sample` argument",  {
   # It is used with "random" method
-  output_random <- form_trans(list(p_fin), sq, method = "random", n_sample = 1)
+  output_random <- form_trans(list(p_dis), sq, method = "random", n_sample = 1)
   expect_equal(nrow(meta_x_tbl(output_random)), 1)
 
   # It is not used with "bruteforce" method
   output_brute <- form_trans(
-    list(p_fin), sq, method = "bruteforce", n_sample = 1
+    list(p_dis), sq, method = "bruteforce", n_sample = 1
   )
-  expect_equal(nrow(meta_x_tbl(output_brute)), nrow(meta_x_tbl(p_fin)))
+  expect_equal(nrow(meta_x_tbl(output_brute)), nrow(meta_x_tbl(p_dis)))
 })
 
 test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
@@ -208,44 +208,44 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   # in which case extra arguments are currently not used. However, `args_new`
   # are passed to `new_*()` in the code.
   expect_equal(
-    form_trans(list(p_fin), sq, method = "bruteforce", args_new = list(n = 3)),
-    form_trans(list(p_fin), sq, method = "bruteforce")
+    form_trans(list(p_dis), sq, method = "bruteforce", args_new = list(n = 3)),
+    form_trans(list(p_dis), sq, method = "bruteforce")
   )
 
   # Supplying `x` or `type` doesn't affect the output
   expect_equal(
     form_trans(
-      list(p_con), sq, method = "random", args_new = list(x = 1, type = "fin")
+      list(p_con), sq, method = "random", args_new = list(x = 1, type = "discrete")
     ),
     form_trans(list(p_con), sq, method = "random")
   )
   expect_equal(
     form_trans(
-      list(p_fin), sq, method = "bruteforce",
+      list(p_dis), sq, method = "bruteforce",
       args_new = list(x = 1, type = "continuous")
     ),
-    form_trans(list(p_fin), sq, method = "bruteforce")
+    form_trans(list(p_dis), sq, method = "bruteforce")
   )
 })
 
 test_that("form_trans validates input", {
   expect_error(form_trans(trans = sq), "`f_list`.*missing.*list of")
-  expect_error(form_trans(p_fin, sq), "`f_list`.*list")
+  expect_error(form_trans(p_dis, sq), "`f_list`.*list")
   expect_error(form_trans(list(), sq), "`f_list`.*empty")
   expect_error(form_trans(list("a"), sq), "`f_list`.*pdqr-function.*number")
   expect_error(form_trans(list(1), sq), "`f_list`.*one.*pdqr-function")
-  expect_error(form_trans(list(p_fin)), "`trans`.*missing.*transformation")
-  expect_error(form_trans(list(p_fin), 1), "`trans`.*function")
-  expect_error(form_trans(list(p_fin), sq, method = 1), "`method`.*string")
-  expect_error(form_trans(list(p_fin), sq, method = "a"), "`method`.*one of")
+  expect_error(form_trans(list(p_dis)), "`trans`.*missing.*transformation")
+  expect_error(form_trans(list(p_dis), 1), "`trans`.*function")
+  expect_error(form_trans(list(p_dis), sq, method = 1), "`method`.*string")
+  expect_error(form_trans(list(p_dis), sq, method = "a"), "`method`.*one of")
   expect_error(
-    form_trans(list(p_fin), sq, n_sample = "a"), "`n_sample`.*single number"
+    form_trans(list(p_dis), sq, n_sample = "a"), "`n_sample`.*single number"
   )
   expect_error(
-    form_trans(list(p_fin), sq, n_sample = 1:2), "`n_sample`.*single number"
+    form_trans(list(p_dis), sq, n_sample = 1:2), "`n_sample`.*single number"
   )
   expect_error(
-    form_trans(list(p_fin), sq, args_new = "a"), "`args_new`.*list"
+    form_trans(list(p_dis), sq, args_new = "a"), "`args_new`.*list"
   )
 })
 
@@ -255,13 +255,13 @@ test_that("form_trans validates input", {
 # `form_trans()`
 test_that("form_trans_self works",  {
   expect_equal(
-    form_trans_self(p_fin, sq),
-    form_trans(list(p_fin), sq, method = "bruteforce")
+    form_trans_self(p_dis, sq),
+    form_trans(list(p_dis), sq, method = "bruteforce")
   )
 
   # Default method should be "random"
-  cur_fin <- new_d(data.frame(x = c(-2, 0, 1), prob = c(0.1, 0.7, 0.2)), "fin")
-  output <- form_trans_self(cur_fin, `-`)
+  cur_dis <- new_d(data.frame(x = c(-2, 0, 1), prob = c(0.1, 0.7, 0.2)), "discrete")
+  output <- form_trans_self(cur_dis, `-`)
   output_x_tbl <- meta_x_tbl(output)
   expect_equal(output_x_tbl[["x"]], c(-1, 0, 2))
   expect_true(max(abs(output_x_tbl[["prob"]] - c(0.2, 0.7, 0.1))) < 2e-2)
@@ -270,7 +270,7 @@ test_that("form_trans_self works",  {
 test_that("form_trans_self validates input", {
   expect_error(form_trans_self("a", sq), "f.*not pdqr-function")
   expect_error(
-    form_trans_self(d_fin), "`trans`.*missing.*transformation function"
+    form_trans_self(d_dis), "`trans`.*missing.*transformation function"
   )
   # Validation of other arguments is tested in `form_trans()`
 })

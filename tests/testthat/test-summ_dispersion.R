@@ -4,11 +4,11 @@ context("test-summ_dispersion")
 # summ_dispersion ---------------------------------------------------------
 # More thorough testing is done in other "dispersion" `summ_*()` functions
 test_that("summ_dispersion works", {
-  # "fin"
-  expect_equal(summ_dispersion(d_fin, "var"), summ_var(d_fin))
-  expect_equal(summ_dispersion(d_fin, "sd"), summ_sd(d_fin))
-  expect_equal(summ_dispersion(d_fin, "iqr"), summ_iqr(d_fin))
-  expect_equal(summ_dispersion(d_fin, "mad"), summ_mad(d_fin))
+  # "discrete"
+  expect_equal(summ_dispersion(d_dis, "var"), summ_var(d_dis))
+  expect_equal(summ_dispersion(d_dis, "sd"), summ_sd(d_dis))
+  expect_equal(summ_dispersion(d_dis, "iqr"), summ_iqr(d_dis))
+  expect_equal(summ_dispersion(d_dis, "mad"), summ_mad(d_dis))
 
   # "continuous"
   expect_equal(summ_dispersion(d_con, "var"), summ_var(d_con))
@@ -19,13 +19,13 @@ test_that("summ_dispersion works", {
 
 test_that("summ_dispersion validates input", {
   expect_error(summ_dispersion("a"), "`f`.*not pdqr-function")
-  expect_error(summ_dispersion(d_fin, method = 1), "`method`.*string")
-  expect_error(summ_dispersion(d_fin, method = "a"), "`method`.*one of")
+  expect_error(summ_dispersion(d_dis, method = 1), "`method`.*string")
+  expect_error(summ_dispersion(d_dis, method = "a"), "`method`.*one of")
 })
 
 
 # summ_sd -----------------------------------------------------------------
-test_that("summ_sd works with 'fin' functions", {
+test_that("summ_sd works with 'discrete' functions", {
   expect_equal_stat(summ_sd, stat_list[["binom"]], "sd")
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -77,7 +77,7 @@ test_that("summ_sd validates input", {
 
 
 # summ_var ----------------------------------------------------------------
-test_that("summ_var works with 'fin' functions", {
+test_that("summ_var works with 'discrete' functions", {
   expect_equal_stat(summ_var, stat_list[["binom"]], "var")
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -136,7 +136,7 @@ test_that("summ_var validates input", {
 
 
 # summ_iqr ----------------------------------------------------------------
-test_that("summ_iqr works with 'fin' functions", {
+test_that("summ_iqr works with 'discrete' functions", {
   expect_equal_stat(summ_iqr, stat_list[["binom"]], "iqr")
   expect_equal_stat(summ_iqr, stat_list[["pois"]], "iqr")
 })
@@ -187,7 +187,7 @@ test_that("summ_iqr validates input", {
 
 
 # summ_mad ----------------------------------------------------------------
-test_that("summ_mad works with 'fin' functions", {
+test_that("summ_mad works with 'discrete' functions", {
   expect_equal_stat(summ_mad, stat_list[["binom"]], "mad")
   expect_equal_stat(summ_mad, stat_list[["pois"]], "mad")
 })

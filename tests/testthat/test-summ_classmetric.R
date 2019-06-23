@@ -2,19 +2,19 @@ context("test-summ_classmetric")
 
 
 # Input data --------------------------------------------------------------
-f_fin <- new_d(seq(1.5, 4.5, by = 1), "fin")
-g_fin <- new_d(seq(1.2, 2.1, by = 0.1), "fin")
+f_dis <- new_d(seq(1.5, 4.5, by = 1), "discrete")
+g_dis <- new_d(seq(1.2, 2.1, by = 0.1), "discrete")
 f_con <- new_d(data.frame(x = c(0.5, 2.5), y = c(1, 1)/2), "continuous")
 g_con <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
 
-fin_threshold <- c(1, 1.5, 1.95, 3, 5)
+dis_threshold <- c(1, 1.5, 1.95, 3, 5)
 mixed_threshold <- c(0, 1, 1.75, 3, 5)
 con_threshold <- c(-1, 0.25, 0.75, 1.5, 3)
 
 # These values are also tests for classification rule: "negative" if "<="
 # threshold, "positive" otherwise.
-fin_classmetric_df <- data.frame(
-  threshold = fin_threshold,
+dis_classmetric_df <- data.frame(
+  threshold = dis_threshold,
 
   TPR = c(1,  0.6,  0.2,   0, 0),
   TNR = c(0, 0.25, 0.25, 0.5, 1),
@@ -121,8 +121,8 @@ expect_classmetric <- function(f, g, ref_df) {
 
 # summ_classmetric --------------------------------------------------------
 test_that("summ_classmetric works", {
-  expect_classmetric(f_fin, g_fin, fin_classmetric_df)
-  expect_classmetric(f_fin, f_con, mixed_classmetric_df)
+  expect_classmetric(f_dis, g_dis, dis_classmetric_df)
+  expect_classmetric(f_dis, f_con, mixed_classmetric_df)
   expect_classmetric(f_con, g_con, con_classmetric_df)
 })
 
@@ -133,31 +133,31 @@ test_that("summ_classmetric respects method aliases", {
 
   for (i in seq_along(meth)) {
     expect_equal(
-      summ_classmetric(f_fin, g_fin, fin_threshold, names(meth)[i]),
-      summ_classmetric(f_fin, g_fin, fin_threshold, meth[i])
+      summ_classmetric(f_dis, g_dis, dis_threshold, names(meth)[i]),
+      summ_classmetric(f_dis, g_dis, dis_threshold, meth[i])
     )
   }
 })
 
 test_that("summ_classmetric works with different pdqr classes", {
   expect_equal(
-    summ_classmetric(d_fin, d_con, 2), summ_classmetric(p_fin, q_con, 2)
+    summ_classmetric(d_dis, d_con, 2), summ_classmetric(p_dis, q_con, 2)
   )
 })
 
 test_that("summ_classmetric validates input", {
-  expect_error(summ_classmetric("a", d_fin, 1), "`f`.*not pdqr-function")
-  expect_error(summ_classmetric(d_fin, "a", 1), "`g`.*not pdqr-function")
+  expect_error(summ_classmetric("a", d_dis, 1), "`f`.*not pdqr-function")
+  expect_error(summ_classmetric(d_dis, "a", 1), "`g`.*not pdqr-function")
   expect_error(
-    summ_classmetric(d_fin, d_fin),
+    summ_classmetric(d_dis, d_dis),
     "`threshold`.*missing.*classification threshold"
   )
-  expect_error(summ_classmetric(d_fin, d_fin, "a"), "`threshold`.*numeric")
+  expect_error(summ_classmetric(d_dis, d_dis, "a"), "`threshold`.*numeric")
   expect_error(
-    summ_classmetric(d_fin, d_fin, 1, method = 1), "`method`.*string"
+    summ_classmetric(d_dis, d_dis, 1, method = 1), "`method`.*string"
   )
   expect_error(
-    summ_classmetric(d_fin, d_fin, 1, method = "a"), "`method`.*one of"
+    summ_classmetric(d_dis, d_dis, 1, method = "a"), "`method`.*one of"
   )
 })
 
@@ -167,11 +167,11 @@ test_that("summ_classmetric_df works", {
   method_vec <- unique(classmetric_aliases)
 
   expect_equal(
-    summ_classmetric_df(f_fin, g_fin, fin_threshold, method = method_vec),
-    fin_classmetric_df
+    summ_classmetric_df(f_dis, g_dis, dis_threshold, method = method_vec),
+    dis_classmetric_df
   )
   expect_equal(
-    summ_classmetric_df(f_fin, f_con, mixed_threshold, method = method_vec),
+    summ_classmetric_df(f_dis, f_con, mixed_threshold, method = method_vec),
     mixed_classmetric_df
   )
   expect_equal(
@@ -186,7 +186,7 @@ test_that("summ_classmetric_df respects method aliases", {
   meth <- classmetric_aliases[names(classmetric_aliases) != classmetric_aliases]
 
   total_df <- summ_classmetric_df(
-    f_fin, g_fin, mixed_threshold, method = names(classmetric_aliases)
+    f_dis, g_dis, mixed_threshold, method = names(classmetric_aliases)
   )
   alias_df <- total_df[, names(meth)]
   ref_df <- total_df[, meth]
@@ -198,25 +198,25 @@ test_that("summ_classmetric_df respects method aliases", {
 
 test_that("summ_classmetric_df works with different pdqr classes", {
   expect_equal(
-    summ_classmetric_df(d_fin, d_con, 2),
-    summ_classmetric_df(p_fin, q_con, 2)
+    summ_classmetric_df(d_dis, d_con, 2),
+    summ_classmetric_df(p_dis, q_con, 2)
   )
 })
 
 
 test_that("summ_classmetric_df validates input", {
-  expect_error(summ_classmetric_df("a", d_fin, 1), "`f`.*not pdqr-function")
-  expect_error(summ_classmetric_df(d_fin, "a", 1), "`g`.*not pdqr-function")
+  expect_error(summ_classmetric_df("a", d_dis, 1), "`f`.*not pdqr-function")
+  expect_error(summ_classmetric_df(d_dis, "a", 1), "`g`.*not pdqr-function")
   expect_error(
-    summ_classmetric_df(d_fin, d_fin),
+    summ_classmetric_df(d_dis, d_dis),
     "`threshold`.*missing.*classification threshold"
   )
-  expect_error(summ_classmetric_df(d_fin, d_fin, "a"), "`threshold`.*numeric")
+  expect_error(summ_classmetric_df(d_dis, d_dis, "a"), "`threshold`.*numeric")
   expect_error(
-    summ_classmetric_df(d_fin, d_fin, 1, method = 1), "`method`.*character"
+    summ_classmetric_df(d_dis, d_dis, 1, method = 1), "`method`.*character"
   )
   expect_error(
-    summ_classmetric_df(d_fin, d_fin, 1, method = "a"), "`method`.*values"
+    summ_classmetric_df(d_dis, d_dis, 1, method = "a"), "`method`.*values"
   )
 })
 

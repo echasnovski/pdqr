@@ -3,9 +3,9 @@ context("test-new_p")
 
 # new_p -------------------------------------------------------------------
 test_that("new_p works with numeric input", {
-  expect_distr_fun(p_fin, "p", "fin")
-  expect_equal(meta_support(p_fin), x_fin_support)
-  expect_equal(p_fin(1:10), c(cumsum(x_fin_x_tbl[["prob"]]), 1))
+  expect_distr_fun(p_dis, "p", "discrete")
+  expect_equal(meta_support(p_dis), x_dis_support)
+  expect_equal(p_dis(1:10), c(cumsum(x_dis_x_tbl[["prob"]]), 1))
 
   expect_distr_fun(p_con, "p", "continuous")
   expect_equal(round(meta_support(p_con), 2), round(x_con_support, 2))
@@ -20,7 +20,7 @@ test_that("new_p works with numeric input", {
 })
 
 test_that("new_p returns dirac-like function with length-one numeric input",  {
-  expect_ref_x_tbl(new_p(0.1, "fin"), data.frame(x = 0.1, prob = 1))
+  expect_ref_x_tbl(new_p(0.1, "discrete"), data.frame(x = 0.1, prob = 1))
   expect_ref_x_tbl(
     new_p(0.1, "continuous"),
     data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
@@ -31,7 +31,7 @@ test_that("new_p returns dirac-like function with length-one numeric input",  {
 })
 
 test_that("new_p works with data frame input", {
-  expect_equal_distr(new_p(x_fin_x_tbl, "fin"), p_fin, x_fin_vec_ext)
+  expect_equal_distr(new_p(x_dis_x_tbl, "discrete"), p_dis, x_dis_vec_ext)
   expect_equal_distr(
     new_p(x_con_x_tbl, "continuous"), p_con, x_con_vec_ext
   )
@@ -41,7 +41,7 @@ test_that("new_p imputes data frame input", {
   expect_x_tbl_imputation(new_p)
 })
 
-test_that("new_p rounds input in case of `type = 'fin'`", {
+test_that("new_p rounds input in case of `type = 'discrete'`", {
   # Some values in this sequence show numerical representation issues after
   # `round(x_seq, digits = 10)` (see `dput(x_seq - round(x_seq, digits = 10))`).
   # If input is not rounded during `x_tbl` creation/imputation then output
@@ -50,23 +50,23 @@ test_that("new_p rounds input in case of `type = 'fin'`", {
   x_df <- data.frame(x = x_seq, prob = rep(1, length(x_seq)) / length(x_seq))
 
   # Testing correctness of `compute_x_tbl()`
-  cur_p_1 <- new_p(x_seq, "fin")
+  cur_p_1 <- new_p(x_seq, "discrete")
   expect_equal(cur_p_1(0.0045), 0.0045)
 
   # Testing correctness of `impute_x_tbl()`
-  cur_p_2 <- new_p(x_df, "fin")
+  cur_p_2 <- new_p(x_df, "discrete")
   expect_equal(cur_p_2(0.0045), 0.0045)
 })
 
-test_that("new_p's output rounds input in case of `type = 'fin'`", {
+test_that("new_p's output rounds input in case of `type = 'discrete'`", {
   near_1 <- 1 - 10^c(-6, -11)
-  expect_equal(p_fin(near_1), c(0, 0.1))
+  expect_equal(p_dis(near_1), c(0, 0.1))
 })
 
 test_that("new_p's output works with 'edge case' inputs", {
-  expect_equal(p_fin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 1))
-  expect_equal(p_fin(numeric(0)), numeric(0))
-  expect_equal(p_fin(meta_support(p_fin)[1] - 1:2), c(0, 0))
+  expect_equal(p_dis(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 1))
+  expect_equal(p_dis(numeric(0)), numeric(0))
+  expect_equal(p_dis(meta_support(p_dis)[1] - 1:2), c(0, 0))
 
   expect_equal(p_con(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, 0, 1))
   expect_equal(p_con(numeric(0)), numeric(0))
@@ -75,18 +75,18 @@ test_that("new_p's output works with 'edge case' inputs", {
 
 test_that("new_p's output works with extreme values", {
   extreme_vec <- c(-1, 1) * 10000
-  expect_equal(p_fin(extreme_vec), c(0, 1))
+  expect_equal(p_dis(extreme_vec), c(0, 1))
   expect_equal(p_con(extreme_vec), c(0, 1))
 })
 
 test_that("new_p's output validates input", {
-  expect_error(p_fin("a"), "`q`.*numeric")
+  expect_error(p_dis("a"), "`q`.*numeric")
   expect_error(p_con("a"), "`q`.*numeric")
 })
 
-test_that("new_p's output behaves like ecdf() in case of `type = 'fin'`", {
-  x_fin_grid <- seq(from = min(x_fin) - 1, to = max(x_fin) + 1, by = 0.01)
-  expect_equal(p_fin(x_fin_grid), ecdf(x_fin)(x_fin_grid))
+test_that("new_p's output behaves like ecdf() in case of `type = 'discrete'`", {
+  x_dis_grid <- seq(from = min(x_dis) - 1, to = max(x_dis) + 1, by = 0.01)
+  expect_equal(p_dis(x_dis_grid), ecdf(x_dis)(x_dis_grid))
 })
 
 test_that("new_p's output is integration of new_d's if `type = 'continuous'`", {
@@ -120,16 +120,16 @@ test_that("new_p validates input", {
   expect_error(new_p(type = "continuous"), "`x`.*missing.*numeric.*data frame")
   expect_error(new_p("a", "continuous"), "x.*numeric.*data.*frame")
   expect_error(new_p(numeric(0), "continuous"), "x.*empty")
-  expect_error(new_p(x_fin), "`type`.*missing.*pdqr type")
-  expect_error(new_p(x_fin, type = 1), "type.*string")
-  expect_error(new_p(x_fin, type = "a"), "type.*fin.*continuous")
+  expect_error(new_p(x_dis), "`type`.*missing.*pdqr type")
+  expect_error(new_p(x_dis, type = 1), "type.*string")
+  expect_error(new_p(x_dis, type = "a"), "type.*discrete.*continuous")
 })
 
 test_that("new_p handles metadata", {
   expect_equal(
-    meta_all(p_fin),
+    meta_all(p_dis),
     list(
-      class = "p", type = "fin", support = x_fin_support, x_tbl = x_fin_x_tbl
+      class = "p", type = "discrete", support = x_dis_support, x_tbl = x_dis_x_tbl
     )
   )
 
@@ -152,7 +152,7 @@ test_that("new_p uses `...` as arguments for `density()`", {
 })
 
 
-# new_p_fin ---------------------------------------------------------------
+# new_p_dis ---------------------------------------------------------------
 # Tested in `new_p()`
 
 

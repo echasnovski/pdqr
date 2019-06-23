@@ -51,7 +51,7 @@ expect_common_moments <- function(f) {
 
 
 # summ_moment -------------------------------------------------------------
-test_that("summ_moment works with 'fin' functions", {
+test_that("summ_moment works with 'discrete' functions", {
   expect_equal_stat(summ_moment, stat_list[["binom"]], "mean", order = 1)
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -82,10 +82,10 @@ test_that("summ_moment works with 'continuous' functions", {
 })
 
 test_that("summ_moment works with dirac-like functions", {
-  # Type "fin"
-  d_dirac_fin <- new_d(2, "fin")
-  expect_equal(summ_moment(d_dirac_fin, 1), 2)
-  expect_equal(summ_moment(d_dirac_fin, 10), 2^10)
+  # Type "discrete"
+  d_dirac_dis <- new_d(2, "discrete")
+  expect_equal(summ_moment(d_dirac_dis, 1), 2)
+  expect_equal(summ_moment(d_dirac_dis, 10), 2^10)
 
   # Type "continuous"
   d_dirac <- new_d(2, "continuous")
@@ -100,42 +100,42 @@ test_that("summ_moment works with dirac-like functions", {
 })
 
 test_that("summ_moment agrees with other `summ_*()` functions", {
-  expect_common_moments(d_fin)
+  expect_common_moments(d_dis)
   expect_common_moments(d_con)
 })
 
 test_that("summ_moment uses all arguments", {
-  expect_all_moment_types_work(d_fin, 3)
+  expect_all_moment_types_work(d_dis, 3)
   expect_all_moment_types_work(d_con, 3)
 })
 
 test_that("summ_moment works with fractional and zero `order`", {
   expect_equal(
-    summ_moment(d_fin, order = 1.5),
-    sum(x_fin_x_tbl[["x"]]^1.5 * x_fin_x_tbl[["prob"]])
+    summ_moment(d_dis, order = 1.5),
+    sum(x_dis_x_tbl[["x"]]^1.5 * x_dis_x_tbl[["prob"]])
   )
   expect_equal(summ_moment(d_con, order = 0), 1)
 })
 
 test_that("summ_moment computes infinite standard moment", {
-  expect_equal(summ_moment(new_d(1, "fin"), 1, standard = TRUE), Inf)
+  expect_equal(summ_moment(new_d(1, "discrete"), 1, standard = TRUE), Inf)
   expect_equal(summ_moment(new_d(1, "continuous"), 1, standard = TRUE), Inf)
 })
 
 test_that("summ_moment validates input", {
   expect_error(summ_moment("a", 1), "`f`.*not pdqr-function")
-  expect_error(summ_moment(d_fin), "`order`.*missing.*order of moment")
-  expect_error(summ_moment(d_fin, "a"), "`order`.*number")
-  expect_error(summ_moment(d_fin, -1), "`order`.*non-negative")
-  expect_error(summ_moment(d_fin, 1:2), "`order`.*single")
-  expect_error(summ_moment(d_fin, 1, central = "a"), "`central`.*TRUE.*FALSE")
-  expect_error(summ_moment(d_fin, 1, standard = "a"), "`standard`.*TRUE.*FALSE")
-  expect_error(summ_moment(d_fin, 1, absolute = "a"), "`absolute`.*TRUE.*FALSE")
+  expect_error(summ_moment(d_dis), "`order`.*missing.*order of moment")
+  expect_error(summ_moment(d_dis, "a"), "`order`.*number")
+  expect_error(summ_moment(d_dis, -1), "`order`.*non-negative")
+  expect_error(summ_moment(d_dis, 1:2), "`order`.*single")
+  expect_error(summ_moment(d_dis, 1, central = "a"), "`central`.*TRUE.*FALSE")
+  expect_error(summ_moment(d_dis, 1, standard = "a"), "`standard`.*TRUE.*FALSE")
+  expect_error(summ_moment(d_dis, 1, absolute = "a"), "`absolute`.*TRUE.*FALSE")
 })
 
 
 # summ_skewness -----------------------------------------------------------
-test_that("summ_skewness works with 'fin' functions", {
+test_that("summ_skewness works with 'discrete' functions", {
   expect_equal_stat(summ_skewness, stat_list[["binom"]], "skewness")
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -166,9 +166,9 @@ test_that("summ_skewness works with 'continuous' functions", {
 })
 
 test_that("summ_skewness works with dirac-like functions", {
-  # Type "fin"
-  d_dirac_fin <- new_d(2, "fin")
-  expect_equal(summ_skewness(d_dirac_fin), Inf)
+  # Type "discrete"
+  d_dirac_dis <- new_d(2, "discrete")
+  expect_equal(summ_skewness(d_dirac_dis), Inf)
 
   # Type "continuous"
   d_dirac <- new_d(2, "continuous")
@@ -189,7 +189,7 @@ test_that("summ_skewness validates input", {
 
 
 # summ_kurtosis -----------------------------------------------------------
-test_that("summ_kurtosis works with 'fin' functions", {
+test_that("summ_kurtosis works with 'discrete' functions", {
   expect_equal_stat(summ_kurtosis, stat_list[["binom"]], "ex_kurtosis")
 
   # Output isn't exact because of tail trimming during `as_d()`
@@ -226,9 +226,9 @@ test_that("summ_kurtosis works with 'continuous' functions", {
 })
 
 test_that("summ_kurtosis works with dirac-like functions", {
-  # Type "fin"
-  d_dirac_fin <- new_d(2, "fin")
-  expect_equal(summ_kurtosis(d_dirac_fin), Inf)
+  # Type "discrete"
+  d_dirac_dis <- new_d(2, "discrete")
+  expect_equal(summ_kurtosis(d_dirac_dis), Inf)
 
   # Type "continuous"
   d_dirac <- new_d(2, "continuous")
@@ -244,7 +244,7 @@ test_that("summ_kurtosis works with dirac-like functions", {
 })
 
 test_that("summ_kurtosis uses `excess` argument", {
-  expect_equal(summ_kurtosis(d_fin, excess = FALSE), summ_kurtosis(d_fin) + 3)
+  expect_equal(summ_kurtosis(d_dis, excess = FALSE), summ_kurtosis(d_dis) + 3)
   expect_equal(
     summ_kurtosis(d_con, excess = FALSE), summ_kurtosis(d_con) + 3
   )
@@ -252,5 +252,5 @@ test_that("summ_kurtosis uses `excess` argument", {
 
 test_that("summ_kurtosis validates input", {
   expect_error(summ_kurtosis("a"), "`f`.*not pdqr-function")
-  expect_error(summ_kurtosis(d_fin, excess = "a"), "`excess`.*TRUE.*FALSE")
+  expect_error(summ_kurtosis(d_dis, excess = "a"), "`excess`.*TRUE.*FALSE")
 })

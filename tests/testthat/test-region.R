@@ -97,8 +97,8 @@ test_that("region_is_in validates input", {
 
 
 # region_prob -------------------------------------------------------------
-test_that("region_prob works with 'fin' functions", {
-  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+test_that("region_prob works with 'discrete' functions", {
+  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
 
   region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
   expect_equal(region_prob(region_1, cur_d), 0.1 + 0.3)
@@ -256,23 +256,23 @@ test_that("region_prob works with real world cases", {
 
 test_that("region_prob validates input", {
   region <- data.frame(left = 1, right = 2)
-  expect_error(region_prob(f = d_fin), "`region`.*missing.*region data frame")
-  expect_error(region_prob("a", d_fin), "`region`.*data frame")
-  expect_error(region_prob(data.frame(a = 1), d_fin), '`region`.*"left"')
+  expect_error(region_prob(f = d_dis), "`region`.*missing.*region data frame")
+  expect_error(region_prob("a", d_dis), "`region`.*data frame")
+  expect_error(region_prob(data.frame(a = 1), d_dis), '`region`.*"left"')
   expect_error(region_prob(region, "a"), "`f`.*not pdqr-function")
   expect_error(
-    region_prob(region, d_fin, left_closed = "a"), "`left_closed`.*TRUE.*FALSE"
+    region_prob(region, d_dis, left_closed = "a"), "`left_closed`.*TRUE.*FALSE"
   )
   expect_error(
-    region_prob(region, d_fin, right_closed = "a"),
+    region_prob(region, d_dis, right_closed = "a"),
     "`right_closed`.*TRUE.*FALSE"
   )
 })
 
 
 # region_height -----------------------------------------------------------
-test_that("region_height works with 'fin' functions", {
-  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+test_that("region_height works with 'discrete' functions", {
+  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
 
   region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
   expect_equal(region_height(region_1, cur_d), 0.1)
@@ -404,16 +404,16 @@ test_that("region_height works with dirac-like 'continuous' functions", {
 
 test_that("region_height validates input", {
   region <- data.frame(left = 1, right = 2)
-  expect_error(region_height(f = d_fin), "`region`.*missing.*region data frame")
-  expect_error(region_height("a", d_fin), "`region`.*data frame")
-  expect_error(region_height(data.frame(a = 1), d_fin), '`region`.*"left"')
+  expect_error(region_height(f = d_dis), "`region`.*missing.*region data frame")
+  expect_error(region_height("a", d_dis), "`region`.*data frame")
+  expect_error(region_height(data.frame(a = 1), d_dis), '`region`.*"left"')
   expect_error(region_height(region, "a"), "`f`.*not pdqr-function")
   expect_error(
-    region_height(region, d_fin, left_closed = "a"),
+    region_height(region, d_dis, left_closed = "a"),
     "`left_closed`.*TRUE.*FALSE"
   )
   expect_error(
-    region_height(region, d_fin, right_closed = "a"),
+    region_height(region, d_dis, right_closed = "a"),
     "`right_closed`.*TRUE.*FALSE"
   )
 })

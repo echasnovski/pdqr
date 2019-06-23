@@ -2,8 +2,8 @@ context("test-summ_interval")
 
 
 # summ_interval -----------------------------------------------------------
-test_that("summ_interval works with 'fin' functions", {
-  cur_d <- new_d(data.frame(x = 1:10, prob = c(5:0, 1:4)/25), "fin")
+test_that("summ_interval works with 'discrete' functions", {
+  cur_d <- new_d(data.frame(x = 1:10, prob = c(5:0, 1:4)/25), "discrete")
   cur_q <- as_q(cur_d)
   cur_d_mean <- sum((1:10) * c(5:0, 1:4)/25)
   cur_d_sd <- sqrt(sum((1:10)^2 * c(5:0, 1:4)/25) - cur_d_mean^2)
@@ -101,20 +101,20 @@ test_that("summ_interval works with 'continuous' functions", {
 })
 
 test_that("summ_interval works with dirac-like functions", {
-  # Type "fin"
-  d_dirac_fin <- new_d(10, "fin")
+  # Type "discrete"
+  d_dirac_dis <- new_d(10, "discrete")
   expect_equal(
-    summ_interval(d_dirac_fin, 0.95, method = "minwidth"),
+    summ_interval(d_dirac_dis, 0.95, method = "minwidth"),
     data.frame(left = 10, right = 10),
     tolerance = 1e-12
   )
   expect_equal(
-    summ_interval(d_dirac_fin, 0.95, method = "percentile"),
+    summ_interval(d_dirac_dis, 0.95, method = "percentile"),
     data.frame(left = 10, right = 10),
     tolerance = 1e-12
   )
   expect_equal(
-    summ_interval(d_dirac_fin, 0.95, method = "sigma"),
+    summ_interval(d_dirac_dis, 0.95, method = "sigma"),
     data.frame(left = 10, right = 10),
     tolerance = 1e-12
   )
@@ -273,15 +273,15 @@ test_that("summ_interval uses `n_grid` argument", {
 
 test_that("summ_interval validates input", {
   expect_error(summ_interval("a"), "`f`.*not pdqr-function")
-  expect_error(summ_interval(d_fin, level = "a"), "`level`.*number")
-  expect_error(summ_interval(d_fin, level = c(0.05, 0.1)), "`level`.*single")
-  expect_error(summ_interval(d_fin, level = 1.1), "`level`.*between 0 and 1")
-  expect_error(summ_interval(d_fin, level = -0.1), "`level`.*between 0 and 1")
-  expect_error(summ_interval(d_fin, 0.95, method = 1), "`method`.*string")
-  expect_error(summ_interval(d_fin, 0.95, method = "a"), "`method`.*one of")
-  expect_error(summ_interval(d_fin, 0.95, n_grid = "a"), "`n_grid`.*number")
-  expect_error(summ_interval(d_fin, 0.95, n_grid = 1:2), "`n_grid`.*single")
-  expect_error(summ_interval(d_fin, 0.95, n_grid = 0.5), "`n_grid`.*1")
+  expect_error(summ_interval(d_dis, level = "a"), "`level`.*number")
+  expect_error(summ_interval(d_dis, level = c(0.05, 0.1)), "`level`.*single")
+  expect_error(summ_interval(d_dis, level = 1.1), "`level`.*between 0 and 1")
+  expect_error(summ_interval(d_dis, level = -0.1), "`level`.*between 0 and 1")
+  expect_error(summ_interval(d_dis, 0.95, method = 1), "`method`.*string")
+  expect_error(summ_interval(d_dis, 0.95, method = "a"), "`method`.*one of")
+  expect_error(summ_interval(d_dis, 0.95, n_grid = "a"), "`n_grid`.*number")
+  expect_error(summ_interval(d_dis, 0.95, n_grid = 1:2), "`n_grid`.*single")
+  expect_error(summ_interval(d_dis, 0.95, n_grid = 0.5), "`n_grid`.*1")
 })
 
 

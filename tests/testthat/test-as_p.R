@@ -38,7 +38,7 @@ p_list <- list(
 
 
 # as_p.default ------------------------------------------------------------
-test_that("as_p.default honors special 'fin' distributions", {
+test_that("as_p.default honors special 'discrete' distributions", {
   # Originally finite support
   expect_ref_x_tbl(
     as_p(pbinom, size = 10, prob = 0.1),
@@ -306,22 +306,22 @@ test_that("as_p.default throws error if detected support isn't proper", {
 
 # as_p.pdqr ---------------------------------------------------------------
 test_that("as_p.pdqr works with 'p'", {
-  expect_equal_distr(as_p(p_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
+  expect_equal_distr(as_p(p_dis), p_dis, grid = c(x_dis_vec_ext, x_dis_vec))
   expect_equal_distr(as_p(p_con), p_con, grid = x_con_vec_ext)
 })
 
 test_that("as_p.pdqr works with 'd'", {
-  expect_equal_distr(as_p(d_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
+  expect_equal_distr(as_p(d_dis), p_dis, grid = c(x_dis_vec_ext, x_dis_vec))
   expect_equal_distr(as_p(d_con), p_con, grid = x_con_vec_ext)
 })
 
 test_that("as_p.pdqr works with 'q'", {
-  expect_equal_distr(as_p(q_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
+  expect_equal_distr(as_p(q_dis), p_dis, grid = c(x_dis_vec_ext, x_dis_vec))
   expect_equal_distr(as_p(q_con), p_con, grid = x_con_vec_ext)
 })
 
 test_that("as_p.pdqr works with 'r'", {
-  expect_equal_distr(as_p(r_fin), p_fin, grid = c(x_fin_vec_ext, x_fin_vec))
+  expect_equal_distr(as_p(r_dis), p_dis, grid = c(x_dis_vec_ext, x_dis_vec))
   expect_equal_distr(as_p(r_con), p_con, grid = x_con_vec_ext)
 })
 

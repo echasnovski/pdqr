@@ -6,14 +6,14 @@ empty_hdr <- data.frame(left = numeric(0), right = numeric(0))
 
 
 # summ_hdr ----------------------------------------------------------------
-test_that("summ_hdr works with 'fin' functions", {
-  cur_d_1 <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+test_that("summ_hdr works with 'discrete' functions", {
+  cur_d_1 <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
   expect_equal(summ_hdr(cur_d_1, 0.1), data.frame(left = 4, right = 4))
   expect_equal(summ_hdr(cur_d_1, 0.4), data.frame(left = 4, right = 4))
   expect_equal(summ_hdr(cur_d_1, 0.4001), data.frame(left = 3, right = 4))
   expect_equal(summ_hdr(cur_d_1, 0.95), data.frame(left = 1, right = 4))
 
-  cur_d_2 <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "fin")
+  cur_d_2 <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "discrete")
   expect_equal(summ_hdr(cur_d_2, 0.1), data.frame(left = 1, right = 1))
   expect_equal(
     summ_hdr(cur_d_2, 0.4001), data.frame(left = c(1, 3), right = c(1, 3))
@@ -91,10 +91,10 @@ test_that("summ_hdr works with extreme 'continuous' functions", {
 })
 
 test_that("summ_hdr works with dirac-like functions", {
-  # Type "fin"
-  d_fin_dirac <- new_d(100, "fin")
-  expect_equal(summ_hdr(d_fin_dirac, 0.1), data.frame(left = 100, right = 100))
-  expect_equal(summ_hdr(d_fin_dirac, 0.9), data.frame(left = 100, right = 100))
+  # Type "discrete"
+  d_dis_dirac <- new_d(100, "discrete")
+  expect_equal(summ_hdr(d_dis_dirac, 0.1), data.frame(left = 100, right = 100))
+  expect_equal(summ_hdr(d_dis_dirac, 0.9), data.frame(left = 100, right = 100))
 
   # Type "continuous"
   d_dirac_1 <- new_d(1, "continuous")
@@ -162,7 +162,7 @@ test_that("summ_hdr handles plateaus", {
 })
 
 test_that("summ_hdr works with real world cases", {
-  # Type "fin"
+  # Type "discrete"
   d_binom <- as_d(dbinom, size = 10, prob = 0.5)
   ref_hdr_quan <- qbinom(c(0.025, 0.975), size = 10, prob = 0.5)
   expect_equal(
@@ -191,14 +191,14 @@ test_that("summ_hdr accepts different pdqr classes", {
 })
 
 test_that("summ_hdr works with special values of `level`", {
-  # Type "fin"
-  d_fin_mode <- summ_mode(d_fin, method = "global")
-  d_fin_supp <- meta_support(d_fin)
+  # Type "discrete"
+  d_dis_mode <- summ_mode(d_dis, method = "global")
+  d_dis_supp <- meta_support(d_dis)
   expect_equal(
-    summ_hdr(d_fin, 0), data.frame(left = d_fin_mode, right = d_fin_mode)
+    summ_hdr(d_dis, 0), data.frame(left = d_dis_mode, right = d_dis_mode)
   )
   expect_equal(
-    summ_hdr(d_fin, 1), data.frame(left = d_fin_supp[1], right = d_fin_supp[2])
+    summ_hdr(d_dis, 1), data.frame(left = d_dis_supp[1], right = d_dis_supp[2])
   )
 
   # Type "continuous"
@@ -215,14 +215,14 @@ test_that("summ_hdr works with special values of `level`", {
 
 test_that("summ_hdr validates input", {
   expect_error(summ_hdr("a"), "`f`.*not pdqr-function")
-  expect_error(summ_hdr(d_fin, level = "a"), "`level`.*number")
-  expect_error(summ_hdr(d_fin, level = c(0.05, 0.1)), "`level`.*single")
-  expect_error(summ_hdr(d_fin, level = 1.1), "`level`.*between 0 and 1")
-  expect_error(summ_hdr(d_fin, level = -0.1), "`level`.*between 0 and 1")
+  expect_error(summ_hdr(d_dis, level = "a"), "`level`.*number")
+  expect_error(summ_hdr(d_dis, level = c(0.05, 0.1)), "`level`.*single")
+  expect_error(summ_hdr(d_dis, level = 1.1), "`level`.*between 0 and 1")
+  expect_error(summ_hdr(d_dis, level = -0.1), "`level`.*between 0 and 1")
 })
 
 
-# hdr_fin -----------------------------------------------------------------
+# hdr_dis -----------------------------------------------------------------
 # Tested in `summ_hdr()`
 
 

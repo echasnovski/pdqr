@@ -13,7 +13,7 @@ test_that("summ_order works", {
   }
 
   # Works with different types
-  f_list <- list(as_d(dnorm), new_d(1:10, "fin"))
+  f_list <- list(as_d(dnorm), new_d(1:10, "discrete"))
   for (meth in c("compare", "mean", "median", "mode")) {
     expect_equal(summ_order(f_list, method = meth), 1:2)
   }
@@ -49,7 +49,7 @@ test_that("summ_order works with method 'compare'", {
     new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     new_d(data.frame(x = c(0, 0.5, 1), y = c(0, 1, 0)), "continuous"),
     new_d(data.frame(x = c(0, 0.5, 1), y = c(1, 0, 1)), "continuous"),
-    new_d(c(0, 0.5, 1), "fin")
+    new_d(c(0, 0.5, 1), "discrete")
   )
   # Input order should be preserved
   expect_equal(summ_order(equi_list, method = "compare"), 1:4)
@@ -72,7 +72,7 @@ test_that("summ_order works with methods from `summ_center()`", {
 })
 
 test_that("summ_order uses `decreasing` argument", {
-  f_list <- list(d_fin, d_fin + 1)
+  f_list <- list(d_dis, d_dis + 1)
 
   expect_equal(
     summ_order(f_list, method = "compare", decreasing = TRUE),
@@ -85,13 +85,13 @@ test_that("summ_order uses `decreasing` argument", {
 })
 
 test_that("summ_order works with list of length 1", {
-  expect_equal(summ_order(list(d_fin), method = "compare"), 1)
-  expect_equal(summ_order(list(d_fin), method = "mean"), 1)
+  expect_equal(summ_order(list(d_dis), method = "compare"), 1)
+  expect_equal(summ_order(list(d_dis), method = "mean"), 1)
 })
 
 test_that("summ_order works with different pdqr classes", {
   expect_equal(
-    summ_order(list(d_fin, d_con)), summ_order(list(p_fin, q_con))
+    summ_order(list(d_dis, d_con)), summ_order(list(p_dis, q_con))
   )
 })
 
@@ -99,8 +99,8 @@ test_that("summ_order validates input", {
   expect_error(summ_order("a"), "`f_list`.*list")
   expect_error(summ_order(list()), "`f_list`.*empty")
   expect_error(summ_order(list(function(x) {x})), "`f_list`.*pdqr")
-  expect_error(summ_order(list(d_fin), method = 1), "`method`.*string")
-  expect_error(summ_order(list(d_fin), method = "a"), "`method`.*one of")
+  expect_error(summ_order(list(d_dis), method = 1), "`method`.*string")
+  expect_error(summ_order(list(d_dis), method = "a"), "`method`.*one of")
 })
 
 
@@ -117,7 +117,7 @@ test_that("summ_sort works", {
   }
 
   # Works with different types
-  f_list <- list(as_d(dnorm), new_d(1:10, "fin"))
+  f_list <- list(as_d(dnorm), new_d(1:10, "discrete"))
   ref_list <- f_list
   for (meth in c("compare", "mean", "median", "mode")) {
     expect_equal(summ_sort(f_list, method = meth), ref_list)
@@ -125,7 +125,7 @@ test_that("summ_sort works", {
 })
 
 test_that("summ_sort uses `decreasing` argument", {
-  f_list <- list(d_fin, d_fin + 1)
+  f_list <- list(d_dis, d_dis + 1)
 
   expect_equal(
     summ_sort(f_list, method = "compare", decreasing = TRUE),
@@ -141,8 +141,8 @@ test_that("summ_sort validates input", {
   expect_error(summ_sort("a"), "`f_list`.*list")
   expect_error(summ_sort(list()), "`f_list`.*empty")
   expect_error(summ_sort(list(function(x) {x})), "`f_list`.*pdqr")
-  expect_error(summ_sort(list(d_fin), method = 1), "`method`.*string")
-  expect_error(summ_sort(list(d_fin), method = "a"), "`method`.*one of")
+  expect_error(summ_sort(list(d_dis), method = 1), "`method`.*string")
+  expect_error(summ_sort(list(d_dis), method = "a"), "`method`.*one of")
 })
 
 
@@ -159,14 +159,14 @@ test_that("summ_rank works", {
   }
 
   # Works with different types
-  f_list <- list(as_d(dnorm), new_d(1:10, "fin"))
+  f_list <- list(as_d(dnorm), new_d(1:10, "discrete"))
   for (meth in c("compare", "mean", "median", "mode")) {
     expect_equal(summ_rank(f_list, method = meth), 1:2)
   }
 })
 
 test_that("summ_rank preserves names", {
-  f_list <- list(a = d_fin, d_fin + 1, c = d_fin + 2)
+  f_list <- list(a = d_dis, d_dis + 1, c = d_dis + 2)
   expect_named(summ_rank(f_list), c("a", "", "c"))
 })
 
@@ -174,8 +174,8 @@ test_that("summ_rank validates input", {
   expect_error(summ_rank("a"), "`f_list`.*list")
   expect_error(summ_rank(list()), "`f_list`.*empty")
   expect_error(summ_rank(list(function(x) {x})), "`f_list`.*pdqr")
-  expect_error(summ_rank(list(d_fin), method = 1), "`method`.*string")
-  expect_error(summ_rank(list(d_fin), method = "a"), "`method`.*one of")
+  expect_error(summ_rank(list(d_dis), method = 1), "`method`.*string")
+  expect_error(summ_rank(list(d_dis), method = "a"), "`method`.*one of")
 })
 
 

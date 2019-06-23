@@ -3,8 +3,8 @@ context("test-summ_distr_tbl")
 
 # summ_distr_tbl ----------------------------------------------------------
 test_that("summ_distr_tbl works", {
-  expect_equal(summ_distr_tbl(p_fin), x_fin_x_tbl[, c("x", "prob")])
-  expect_equal(summ_distr_tbl(q_fin), x_fin_x_tbl[, c("x", "prob")])
+  expect_equal(summ_distr_tbl(p_dis), x_dis_x_tbl[, c("x", "prob")])
+  expect_equal(summ_distr_tbl(q_dis), x_dis_x_tbl[, c("x", "prob")])
 
   output_con_distr_tbl <- summ_distr_tbl(p_con, n_discrete = 1000)
   # Output has 999 rows instead of 1000 because the first discrete element has

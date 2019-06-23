@@ -5,8 +5,8 @@ set.seed(9999)
 
 # Input data --------------------------------------------------------------
 cur_f_list <- list(
-  new_d(data.frame(x = 0:1, prob = c(0.4, 0.6)), "fin"),
-  new_q(data.frame(x = 1:2, prob = c(0.5, 0.5)), "fin"),
+  new_d(data.frame(x = 0:1, prob = c(0.4, 0.6)), "discrete"),
+  new_q(data.frame(x = 1:2, prob = c(0.5, 0.5)), "discrete"),
   new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
   new_p(data.frame(x = c(0.5, 0.75), y = c(4, 4)), "continuous")
 )
@@ -26,7 +26,7 @@ median_abs_deriv <- function(f) {
 
 
 # form_mix ----------------------------------------------------------------
-test_that("form_mix works when input is all 'fin'", {
+test_that("form_mix works when input is all 'discrete'", {
   expect_ref_x_tbl(
     # By default equal-weight mix is done
     form_mix(cur_f_list[1:2]),
@@ -63,7 +63,7 @@ test_that("form_mix works when input is all 'continuous'", {
   )
 })
 
-test_that("form_mix works when input has both 'fin' and 'continuous' functions", {
+test_that("form_mix works when input has both 'discrete' and 'continuous' functions", {
   h <- 1e-8
 
   expect_ref_x_tbl(
@@ -132,16 +132,16 @@ test_that("form_mix validates input", {
 
 
 # form_smooth -------------------------------------------------------------
-test_that("form_smooth works with 'fin' functions", {
-  bad_fin <- new_d(bad_x_tbl_big[, c("x", "prob")], "fin")
+test_that("form_smooth works with 'discrete' functions", {
+  bad_dis <- new_d(bad_x_tbl_big[, c("x", "prob")], "discrete")
 
-  output <- form_smooth(bad_fin)
+  output <- form_smooth(bad_dis)
   expect_is(output, "d")
-  expect_equal(meta_x_tbl(output)[["x"]], meta_x_tbl(bad_fin)[["x"]])
-  expect_true(median_abs_deriv(output) < median_abs_deriv(bad_fin))
+  expect_equal(meta_x_tbl(output)[["x"]], meta_x_tbl(bad_dis)[["x"]])
+  expect_true(median_abs_deriv(output) < median_abs_deriv(bad_dis))
 
   # Handling of one-point edge case
-  d_one_point <- new_d(0.37, "fin")
+  d_one_point <- new_d(0.37, "discrete")
   expect_equal(form_smooth(d_one_point), d_one_point)
 })
 
@@ -155,10 +155,10 @@ test_that("form_smooth works with 'continuous' functions", {
 })
 
 test_that("form_smooth uses `n_sample` argument", {
-  bad_fin <- new_d(data.frame(x = 0:2, prob = c(0.05, 0.9, 0.05)), "fin")
+  bad_dis <- new_d(data.frame(x = 0:2, prob = c(0.05, 0.9, 0.05)), "discrete")
 
-  smooth_d_1 <- form_smooth(bad_fin, n_sample = 1e4)
-  smooth_d_2 <- form_smooth(bad_fin, n_sample = 2)
+  smooth_d_1 <- form_smooth(bad_dis, n_sample = 1e4)
+  smooth_d_2 <- form_smooth(bad_dis, n_sample = 2)
 
   # Usage of extremely small `n_sample` should result here into "less spiked"
   # `density()` output
@@ -177,18 +177,18 @@ test_that("form_smooth uses `args_new` as arguments for `new_*()`", {
 
   # Supplied `x` and `type` in `args_new` is ignored
   set.seed(333)
-  output_3 <- form_smooth(bad_con, args_new = list(x = 1:10, type = "fin"))
+  output_3 <- form_smooth(bad_con, args_new = list(x = 1:10, type = "discrete"))
 
   expect_equal_x_tbl(output_1, output_3)
 })
 
-d_fin <- new_d(data.frame(x = 0:1, prob = 0:1), "fin")
+d_dis <- new_d(data.frame(x = 0:1, prob = 0:1), "discrete")
 
 test_that("form_smooth validates input", {
   expect_error(form_smooth("a"), "`f`.*not pdqr-function")
-  expect_error(form_smooth(d_fin, n_sample = "a"), "`n_sample`.*single number")
-  expect_error(form_smooth(d_fin, n_sample = 1), "`n_sample`.*more than 1")
-  expect_error(form_smooth(d_fin, args_new = "a"), "`args_new`.*list")
+  expect_error(form_smooth(d_dis, n_sample = "a"), "`n_sample`.*single number")
+  expect_error(form_smooth(d_dis, n_sample = 1), "`n_sample`.*more than 1")
+  expect_error(form_smooth(d_dis, args_new = "a"), "`args_new`.*list")
 })
 
 
@@ -198,18 +198,18 @@ test_that("form_estimate works", {
   # `mean_input` and sd = `sd_input / sqrt(n)` (here `*_input` are moments of
   # input distribution and `sqrt(n)` - square root of estimator's sample size).
 
-  # Type "fin"
-  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
+  # Type "discrete"
+  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "discrete")
   mean_cur_d <- 0.4*1 + 0.3*2
   sd_cur_d <- sqrt((0.4*1^2 + 0.3*2^2) - (mean_cur_d)^2)
 
-  fin_mean_est <- form_estimate(cur_d, mean, sample_size = 16, n_sample = 1000)
-  expect_is(fin_mean_est, "d")
-  expect_true(meta_type(fin_mean_est) == "fin")
+  dis_mean_est <- form_estimate(cur_d, mean, sample_size = 16, n_sample = 1000)
+  expect_is(dis_mean_est, "d")
+  expect_true(meta_type(dis_mean_est) == "discrete")
 
     # Testing Central limit theorem
-  expect_true(abs(summ_mean(fin_mean_est) - mean_cur_d) <= 2e-2)
-  expect_true(abs(summ_sd(fin_mean_est) - sd_cur_d / 4) <= 1e-3)
+  expect_true(abs(summ_mean(dis_mean_est) - mean_cur_d) <= 2e-2)
+  expect_true(abs(summ_sd(dis_mean_est) - sd_cur_d / 4) <= 1e-3)
 
   # Type "continuous"
   d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
@@ -254,12 +254,12 @@ test_that("form_estimate works with logical output of `estimate`", {
 test_that("form_estimate uses `...` as arguments to `estimate`", {
   dummy_estimate <- function(x, y) {y}
 
-  est <- form_estimate(d_fin, dummy_estimate, 10, y = 10)
+  est <- form_estimate(d_dis, dummy_estimate, 10, y = 10)
   expect_ref_x_tbl(est, data.frame(x = 10, prob = 1))
 })
 
 test_that("form_estimate uses `n_sample` argument", {
-  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
+  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "discrete")
 
   mean_est <- form_estimate(cur_d, mean, 10, n_sample = 2)
   expect_true(nrow(meta_x_tbl(mean_est)) <= 2)
@@ -276,7 +276,7 @@ test_that("form_estimate uses `args_new` as arguments to `new_*()`", {
 })
 
 test_that("form_estimate allows `type` in `args_new`", {
-  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "fin")
+  cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "discrete")
 
   mean_est <- form_estimate(
     cur_d, estimate = mean, sample_size = 10,
@@ -287,11 +287,11 @@ test_that("form_estimate allows `type` in `args_new`", {
 
 test_that("form_estimate checks that `estimate` returns single num or lgl", {
   expect_error(
-    form_estimate(d_fin, function(x) {"a"}, 10),
+    form_estimate(d_dis, function(x) {"a"}, 10),
     "output.*`estimate`.*single.*numeric.*logical"
   )
   expect_error(
-    form_estimate(d_fin, function(x) {1:3}, 10),
+    form_estimate(d_dis, function(x) {1:3}, 10),
     "output.*`estimate`.*single.*numeric.*logical"
   )
 })
@@ -299,22 +299,22 @@ test_that("form_estimate checks that `estimate` returns single num or lgl", {
 test_that("form_estimate validates input", {
   expect_error(form_estimate("a", mean, 10), "`f`.*not pdqr-function")
   expect_error(
-    form_estimate(d_fin, sample_size = 10),
+    form_estimate(d_dis, sample_size = 10),
     "`estimate`.*missing.*estimate function"
   )
-  expect_error(form_estimate(d_fin, "a", 10), "`estimate`.*function")
+  expect_error(form_estimate(d_dis, "a", 10), "`estimate`.*function")
   expect_error(
-    form_estimate(d_fin, mean), "`sample_size`.*missing.*size of sample"
+    form_estimate(d_dis, mean), "`sample_size`.*missing.*size of sample"
   )
-  expect_error(form_estimate(d_fin, mean, "a"), "`sample_size`.*single.*number")
-  expect_error(form_estimate(d_fin, mean, 0), "`sample_size`.*positive")
+  expect_error(form_estimate(d_dis, mean, "a"), "`sample_size`.*single.*number")
+  expect_error(form_estimate(d_dis, mean, 0), "`sample_size`.*positive")
   expect_error(
-    form_estimate(d_fin, mean, 10, n_sample = "a"), "`n_sample`.*single.*number"
-  )
-  expect_error(
-    form_estimate(d_fin, mean, 10, n_sample = 0), "`n_sample`.*positive"
+    form_estimate(d_dis, mean, 10, n_sample = "a"), "`n_sample`.*single.*number"
   )
   expect_error(
-    form_estimate(d_fin, mean, 10, args_new = "a"), "`args_new`.*list"
+    form_estimate(d_dis, mean, 10, n_sample = 0), "`n_sample`.*positive"
+  )
+  expect_error(
+    form_estimate(d_dis, mean, 10, args_new = "a"), "`args_new`.*list"
   )
 })

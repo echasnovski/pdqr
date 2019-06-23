@@ -1,5 +1,5 @@
 # Single distribution stats -----------------------------------------------
-# "fin" functions
+# "discrete" functions
 stat_binom <- list(
   d_fun = as_d(stats::dbinom, size = 10, prob = 0.3),
   mean = 3, median = 3, mode = 3,
@@ -99,7 +99,7 @@ stat_unif <- list(
 )
 
 stat_list <- list(
-  # "fin"
+  # "discrete"
   binom = stat_binom,
   pois = stat_pois,
   # "continuous"

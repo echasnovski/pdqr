@@ -4,12 +4,12 @@ context("test-meta")
 # meta_all ----------------------------------------------------------------
 test_that("meta_all works", {
   expect_equal(
-    meta_all(d_fin),
+    meta_all(d_dis),
     list(
-      class = meta_class(d_fin),
-      type = meta_type(d_fin),
-      support = meta_support(d_fin),
-      x_tbl = meta_x_tbl(d_fin))
+      class = meta_class(d_dis),
+      type = meta_type(d_dis),
+      support = meta_support(d_dis),
+      x_tbl = meta_x_tbl(d_dis))
   )
 })
 
@@ -24,8 +24,8 @@ test_that("meta_all validates input", {
 
 # meta_class --------------------------------------------------------------
 test_that("meta_class works", {
-  expect_equal(meta_class(d_fin), "d")
-  expect_equal(meta_class(p_fin), "p")
+  expect_equal(meta_class(d_dis), "d")
+  expect_equal(meta_class(p_dis), "p")
   expect_equal(meta_class(q_con), "q")
   expect_equal(meta_class(r_con), "r")
 
@@ -86,7 +86,7 @@ test_that("meta_x_tbl validates input", {
 # has_meta ----------------------------------------------------------------
 test_that("has_meta works", {
   input <- function(x) {x}
-  assign("type", "fin", environment(input))
+  assign("type", "discrete", environment(input))
 
   expect_true(has_meta(input, "type"))
   expect_false(has_meta(input, "support"))
@@ -95,7 +95,7 @@ test_that("has_meta works", {
 
 # check_f_envir -----------------------------------------------------------
 test_that("check_f_envir works", {
-  expect_silent(check_f_envir(p_fin))
+  expect_silent(check_f_envir(p_dis))
   expect_error(check_f_envir(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}

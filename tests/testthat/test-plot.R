@@ -12,35 +12,35 @@ set.seed(5555)
 # plot.p --------------------------------------------------------------
 test_that("plot.p works", {
   # These are also tests for `lines.p()`
-  p_fin_2 <- new_p(c(1.5, 1.75), "fin")
+  p_dis_2 <- new_p(c(1.5, 1.75), "discrete")
   vdiffr::expect_doppelganger(
-    "plot-p-fin-1", recordPlot({
-      plot(p_fin)
-      lines(p_fin_2)
+    "plot-p-discrete-1", recordPlot({
+      plot(p_dis)
+      lines(p_dis_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fin-2", recordPlot({
-      plot(p_fin, y = NA)
-      lines(p_fin_2, col = "red")
+    "plot-p-discrete-2", recordPlot({
+      plot(p_dis, y = NA)
+      lines(p_dis_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fin-3", recordPlot({
-      plot(p_fin, xlab = "a", ylab = "b", main = "c", type = "p")
-      lines(p_fin_2, xlab = "q")
+    "plot-p-discrete-3", recordPlot({
+      plot(p_dis, xlab = "a", ylab = "b", main = "c", type = "p")
+      lines(p_dis_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fin-4", recordPlot({
-      plot(p_fin, xlim = c(0, 2), col = "blue")
-      lines(p_fin_2, lwd = 2)
+    "plot-p-discrete-4", recordPlot({
+      plot(p_dis, xlim = c(0, 2), col = "blue")
+      lines(p_dis_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-fin-5", recordPlot({
-      plot(p_fin, lty = 2, lwd = 2, pch = 17, cex = 2)
-      lines(p_fin_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    "plot-p-discrete-5", recordPlot({
+      plot(p_dis, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(p_dis_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
@@ -95,35 +95,35 @@ test_that("plot.p validates input", {
 # plot.d ------------------------------------------------------------------
 test_that("plot.d works", {
   # These are also tests for `lines.p()`
-  d_fin_2 <- new_d(c(1.5, 1.75), "fin")
+  d_dis_2 <- new_d(c(1.5, 1.75), "discrete")
   vdiffr::expect_doppelganger(
-    "plot-d-fin-1", recordPlot({
-      plot(d_fin)
-      lines(d_fin_2)
+    "plot-d-discrete-1", recordPlot({
+      plot(d_dis)
+      lines(d_dis_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fin-2", recordPlot({
-      plot(d_fin, y = NA)
-      lines(d_fin_2, col = "red")
+    "plot-d-discrete-2", recordPlot({
+      plot(d_dis, y = NA)
+      lines(d_dis_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fin-3", recordPlot({
-      plot(d_fin, xlab = "a", ylab = "b", main = "c", type = "p")
-      lines(d_fin_2, xlab = "q")
+    "plot-d-discrete-3", recordPlot({
+      plot(d_dis, xlab = "a", ylab = "b", main = "c", type = "p")
+      lines(d_dis_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fin-4", recordPlot({
-      plot(d_fin, xlim = c(0, 2), col = "blue")
-      lines(d_fin_2, lwd = 2)
+    "plot-d-discrete-4", recordPlot({
+      plot(d_dis, xlim = c(0, 2), col = "blue")
+      lines(d_dis_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-fin-5", recordPlot({
-      plot(d_fin, lty = 2, lwd = 2, pch = 17, cex = 2)
-      lines(d_fin_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    "plot-d-discrete-5", recordPlot({
+      plot(d_dis, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(d_dis_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
@@ -172,7 +172,7 @@ test_that("plot.d and lines.d use `n_extra_grid` argument", {
 test_that("plot.d handles dirac-like 'continuous' functions",  {
   vdiffr::expect_doppelganger(
     "dirac-like-1", recordPlot({
-      plot(form_retype(d_fin, "continuous", method = "dirac"))
+      plot(form_retype(d_dis, "continuous", method = "dirac"))
     })
   )
   vdiffr::expect_doppelganger(
@@ -182,7 +182,7 @@ test_that("plot.d handles dirac-like 'continuous' functions",  {
   )
   vdiffr::expect_doppelganger(
     "dirac-like-3", recordPlot({
-      plot(form_mix(list(d_fin, d_con)))
+      plot(form_mix(list(d_dis, d_con)))
     })
   )
   vdiffr::expect_doppelganger(
@@ -202,35 +202,35 @@ test_that("plot.d validates input", {
 # plot.q ------------------------------------------------------------------
 test_that("plot.q works", {
   # These are also tests for `lines.p()`
-  q_fin_2 <- new_q(c(1.5, 1.75), "fin")
+  q_dis_2 <- new_q(c(1.5, 1.75), "discrete")
   vdiffr::expect_doppelganger(
-    "plot-q-fin-1", recordPlot({
-      plot(q_fin)
-      lines(q_fin_2)
+    "plot-q-discrete-1", recordPlot({
+      plot(q_dis)
+      lines(q_dis_2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fin-2", recordPlot({
-      plot(q_fin, y = NA)
-      lines(q_fin_2, col = "red")
+    "plot-q-discrete-2", recordPlot({
+      plot(q_dis, y = NA)
+      lines(q_dis_2, col = "red")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fin-3", recordPlot({
-      plot(q_fin, xlab = "a", ylab = "b", main = "c", type = "p")
-      lines(q_fin_2, xlab = "q")
+    "plot-q-discrete-3", recordPlot({
+      plot(q_dis, xlab = "a", ylab = "b", main = "c", type = "p")
+      lines(q_dis_2, xlab = "q")
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fin-4", recordPlot({
-      plot(q_fin, xlim = c(0, 2), col = "blue")
-      lines(q_fin_2, lwd = 2)
+    "plot-q-discrete-4", recordPlot({
+      plot(q_dis, xlim = c(0, 2), col = "blue")
+      lines(q_dis_2, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-fin-5", recordPlot({
-      plot(q_fin, lty = 2, lwd = 2, pch = 17, cex = 2)
-      lines(q_fin_2, lty = 3, lwd = 3, pch = 18, cex = 3)
+    "plot-q-discrete-5", recordPlot({
+      plot(q_dis, lty = 2, lwd = 2, pch = 17, cex = 2)
+      lines(q_dis_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
@@ -286,19 +286,19 @@ test_that("plot.q validates input", {
 # plot.r ------------------------------------------------------------------
 test_that("plot.r works", {
   vdiffr::expect_doppelganger(
-    "plot-r-fin-1", recordPlot(plot(r_fin))
+    "plot-r-discrete-1", recordPlot(plot(r_dis))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fin-2", recordPlot(plot(r_fin, y = NA))
+    "plot-r-discrete-2", recordPlot(plot(r_dis, y = NA))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fin-3", recordPlot(
-      plot(r_fin, xlab = "a", main = "c")
+    "plot-r-discrete-3", recordPlot(
+      plot(r_dis, xlab = "a", main = "c")
     )
   )
   vdiffr::expect_doppelganger(
-    "plot-r-fin-4", recordPlot(
-      plot(r_fin, xlim = c(0, 2), col = "blue", freq = FALSE)
+    "plot-r-discrete-4", recordPlot(
+      plot(r_dis, xlim = c(0, 2), col = "blue", freq = FALSE)
     )
   )
 
@@ -341,15 +341,15 @@ test_that("plot.r validates input", {
 # Tested in `plot()` methods
 
 
-# add_p_fin_segments ------------------------------------------------------
+# add_p_dis_segments ------------------------------------------------------
 # Tested in `plot.p()`
 
 
-# add_q_fin_segments ------------------------------------------------------
+# add_q_dis_segments ------------------------------------------------------
 # Tested in `plot.q()`
 
 
-# compute_p_fin_dots ------------------------------------------------------
+# compute_p_dis_dots ------------------------------------------------------
 # Tested in `plot.p()` and `plot.q()`
 
 

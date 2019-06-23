@@ -14,9 +14,9 @@ test_that("new_pdqr_by_class works",  {
 
 # new_pdqr_by_ref ---------------------------------------------------------
 test_that("new_pdqr_by_ref works", {
-  expect_equal(new_pdqr_by_ref(p_fin), new_p)
+  expect_equal(new_pdqr_by_ref(p_dis), new_p)
   expect_equal(new_pdqr_by_ref(d_con), new_d)
-  expect_equal(new_pdqr_by_ref(q_fin), new_q)
+  expect_equal(new_pdqr_by_ref(q_dis), new_q)
   expect_equal(new_pdqr_by_ref(r_con), new_r)
 
   expect_error(new_pdqr_by_ref(function(x) {x}), "class")
@@ -36,9 +36,9 @@ test_that("as_pdqr_by_class works",  {
 
 # as_pdqr_by_ref ----------------------------------------------------------
 test_that("as_pdqr_by_ref works", {
-  expect_equal(as_pdqr_by_ref(p_fin), as_p)
+  expect_equal(as_pdqr_by_ref(p_dis), as_p)
   expect_equal(as_pdqr_by_ref(d_con), as_d)
-  expect_equal(as_pdqr_by_ref(q_fin), as_q)
+  expect_equal(as_pdqr_by_ref(q_dis), as_q)
   expect_equal(as_pdqr_by_ref(r_con), as_r)
 
   expect_error(as_pdqr_by_ref(function(x) {x}), "class")
@@ -59,7 +59,7 @@ test_that("boolean_pdqr works", {
 
 # assert_f_list -----------------------------------------------------------
 test_that("assert_f_list works",  {
-  expect_silent(assert_f_list(list(d_fin)))
+  expect_silent(assert_f_list(list(d_dis)))
   expect_silent(assert_f_list(list(1, p_con), allow_numbers = TRUE))
 
   expect_error(assert_f_list(list()), "empty")
@@ -80,23 +80,23 @@ test_that("assert_f_list works",  {
 
 # compute_f_list_meta -----------------------------------------------------
 test_that("compute_f_list_meta works",  {
-  # Type is "fin" only if all pdqr-functions are "fin"
+  # Type is "discrete" only if all pdqr-functions are "discrete"
   expect_equal(
-    compute_f_list_meta(list(p_fin, p_fin, d_fin)),
-    list(type = "fin", class = "p")
+    compute_f_list_meta(list(p_dis, p_dis, d_dis)),
+    list(type = "discrete", class = "p")
   )
   expect_equal(
-    compute_f_list_meta(list(1, p_fin, 1)),
-    list(type = "fin", class = "p")
+    compute_f_list_meta(list(1, p_dis, 1)),
+    list(type = "discrete", class = "p")
   )
   expect_equal(
-    compute_f_list_meta(list(p_fin, p_fin, d_con)),
+    compute_f_list_meta(list(p_dis, p_dis, d_con)),
     list(type = "continuous", class = "p")
   )
 
   # Class is based on the first pdqr-function in the list
   expect_equal(
-    compute_f_list_meta(list(p_fin, 1)), list(type = "fin", class = "p")
+    compute_f_list_meta(list(p_dis, 1)), list(type = "discrete", class = "p")
   )
   expect_equal(
     compute_f_list_meta(list(1, d_con)), list(type = "continuous", class = "d")
@@ -111,7 +111,7 @@ test_that("compute_f_list_meta works",  {
 # intersection_x ----------------------------------------------------------
 test_that("intersection_x works", {
   d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "continuous")
-  d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "fin")
+  d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "discrete")
   d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "continuous")
 
   expect_equal(intersection_x(d_1, d_2), c(1, 2, 3, 4))
@@ -123,7 +123,7 @@ test_that("intersection_x works", {
 # union_x -----------------------------------------------------------------
 test_that("union_x works", {
   d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "continuous")
-  d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "fin")
+  d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "discrete")
   d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "continuous")
 
   expect_equal(union_x(d_1, d_2), c(-1, 1, 2, 3, 4, 5))
@@ -134,25 +134,25 @@ test_that("union_x works", {
 
 # intersection_support ----------------------------------------------------
 test_that("intersection_support works", {
-  cur_d <- new_d(c(1, 10), "fin")
-  expect_equal(intersection_support(cur_d, new_d(c(6, 11), "fin")), c(6, 10))
-  expect_equal(intersection_support(cur_d, new_d(c(-1, 5), "fin")), c(1, 5))
-  expect_equal(intersection_support(cur_d, new_d(c(2, 7), "fin")), c(2, 7))
-  expect_equal(intersection_support(cur_d, new_d(c(1, 9), "fin")), c(1, 9))
-  expect_equal(intersection_support(cur_d, new_d(c(11, 12), "fin")), numeric(0))
+  cur_d <- new_d(c(1, 10), "discrete")
+  expect_equal(intersection_support(cur_d, new_d(c(6, 11), "discrete")), c(6, 10))
+  expect_equal(intersection_support(cur_d, new_d(c(-1, 5), "discrete")), c(1, 5))
+  expect_equal(intersection_support(cur_d, new_d(c(2, 7), "discrete")), c(2, 7))
+  expect_equal(intersection_support(cur_d, new_d(c(1, 9), "discrete")), c(1, 9))
+  expect_equal(intersection_support(cur_d, new_d(c(11, 12), "discrete")), numeric(0))
   expect_equal(
-    intersection_support(cur_d, new_d(c(-12, -11), "fin")), numeric(0)
+    intersection_support(cur_d, new_d(c(-12, -11), "discrete")), numeric(0)
   )
 })
 
 
 # union_support -----------------------------------------------------------
 test_that("union_support works", {
-  cur_d <- new_d(c(1, 10), "fin")
-  expect_equal(union_support(cur_d, new_d(c(6, 11), "fin")), c(1, 11))
-  expect_equal(union_support(cur_d, new_d(c(-1, 5), "fin")), c(-1, 10))
-  expect_equal(union_support(cur_d, new_d(c(2, 7), "fin")), c(1, 10))
-  expect_equal(union_support(cur_d, new_d(c(1, 9), "fin")), c(1, 10))
-  expect_equal(union_support(cur_d, new_d(c(11, 12), "fin")), c(1, 12))
-  expect_equal(union_support(cur_d, new_d(c(-12, -11), "fin")), c(-12, 10))
+  cur_d <- new_d(c(1, 10), "discrete")
+  expect_equal(union_support(cur_d, new_d(c(6, 11), "discrete")), c(1, 11))
+  expect_equal(union_support(cur_d, new_d(c(-1, 5), "discrete")), c(-1, 10))
+  expect_equal(union_support(cur_d, new_d(c(2, 7), "discrete")), c(1, 10))
+  expect_equal(union_support(cur_d, new_d(c(1, 9), "discrete")), c(1, 10))
+  expect_equal(union_support(cur_d, new_d(c(11, 12), "discrete")), c(1, 12))
+  expect_equal(union_support(cur_d, new_d(c(-12, -11), "discrete")), c(-12, 10))
 })
