@@ -121,8 +121,6 @@ summ_distance <- function(f, g, method = "KS") {
 
 
 # Method "KS" -------------------------------------------------------------
-# **Notes in docs**. Distance is equal to supremum of |F - G|, where F and G are
-# corresponding p-functions.
 distance_ks <- function(f, g) {
   p_f <- as_p(f)
   p_g <- as_p(g)
@@ -177,14 +175,11 @@ distance_ks_two_con <- function(p_f, p_g) {
 
 
 # Method "totvar" ---------------------------------------------------------
-# **Notes in docs**. Maximum absolute difference in probabilities across all
-# possible sets. In other words, there should be some subset of real line (or a
-# set of those) probabilities of (more formally, limit of) which under `f` and
-# `g` differ the most. This set (of finite values for "discrete" and of
-# intervals for "continuous") can be expressed as `A = {x | f(x) > g(x)}` (`f`
-# and `g` are d-functions) or `B = {x | f(x) < g(x)}`.
-# However, absolute differences in probabilities for `A` and `B` are equal. This
-# is because:
+# **Notes**. Set (of finite values for "discrete" and of intervals for
+# "continuous"), at which total variation distance is achieved, can be expressed
+# as `A = {x | f(x) > g(x)}` (`f` and `g` are d-functions) or `B = {x | f(x) <
+# g(x)}`. However, absolute differences in probabilities for `A` and `B` are
+# equal. This is because:
 # `0 = 1 - 1 = (P_f(A) + P_f(B) + P_f(C)) - (P_g(A) + P_g(B) + P_g(C))`, where
 # `P_f` and `P_g` are probability measures of `f` and `g`;
 # `C = {x | f(x) = g(x)}`.
@@ -268,28 +263,18 @@ distance_compare <- function(f, g) {
 
 
 # Method "wass" -----------------------------------------------------------
-# **Notes in docs**. "Minimum cost of 'moving' one density into another". Here
-# 1-Wasserstein distance is computed as integral of |F - G| over union support.
 distance_wass <- function(f, g) {
   integrate_cdf_absdiff(p_f = as_p(f), p_g = as_p(g), power = 1)
 }
 
 
 # Method "cramer" ---------------------------------------------------------
-# **Notes in docs**. Integral of (F - G)^2 over union support. Roughly, this
-# is related to 1-Wasserstein distance in the same way as mean absolute
-# deviation around the mean (absolute central first moment) is related to
-# variance (central second moment).
 distance_cramer <- function(f, g) {
   integrate_cdf_absdiff(p_f = as_p(f), p_g = as_p(g), power = 2)
 }
 
 
 # distance_align() --------------------------------------------------------
-# Note in docs. Output represents the absolute value of `d` that should be added
-# to `f` to achieve both `P(f+d >= g) >= 0.5` and `P(f+d <= g) >= 0.5` as close
-# as reasonably possible. **Note** that solution is found numerically, which
-# introduces some numerical error to result.
 distance_align <- function(f, g) {
   f_supp <- meta_support(f)
   g_supp <- meta_support(g)
