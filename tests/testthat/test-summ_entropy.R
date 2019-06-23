@@ -1,4 +1,4 @@
-context("test-summ-entropy")
+context("test-summ_entropy")
 
 
 # Input data --------------------------------------------------------------
