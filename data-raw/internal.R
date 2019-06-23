@@ -1,13 +1,13 @@
 # Honored distributions ---------------------------------------------------
 # These are all continuous distributions from 'stats' package
 stats_distrs <- c(
-  # "fin"
+  # "discrete"
   "binom", "geom", "hyper", "nbinom", "pois",
-  # "infin"
+  # "continuous"
   "beta", "cauchy", "chisq", "exp", "f", "gamma", "lnorm", "norm", "t", "unif",
   "weibull"
 )
-stats_types <- c(rep("fin", 5), rep("infin", 11))
+stats_types <- c(rep("discrete", 5), rep("continuous", 11))
 
 stats_distrs_class <- rep(c("p", "d", "q", "r"), times = length(stats_distrs))
 stats_distrs_vec <- rep(stats_distrs, each = 4)
