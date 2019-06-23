@@ -35,8 +35,8 @@ input \code{support}. This option is useful for repairing support of
 there is a need to ensure that distribution has only positive values, one can
 do \code{form_resupport(f, c(0, NA), method = "reflect")}. \strong{Notes}:
 \itemize{
-\item For "fin" pdqr-functions that might result into creating new "x" values of
-distribution.
+\item For "discrete" pdqr-functions that might result into creating new "x"
+values of distribution.
 \item Reflection over \code{support[1]} is done only if it is strictly greater than
 \code{f}'s left edge of support. Reflection over \code{support[2]} - if \code{f}'s right
 edge is strictly smaller.
@@ -50,8 +50,8 @@ Method "winsor" makes all density "tails" outside of input \code{support}
 both tails is moved inside \code{support} and becomes concentrated in \code{1e-8}
 neighborhood of nearest edge. This models a singular dirac distributions at
 the edges of \code{support}. \strong{Note} that \code{support} can represent single point,
-in which case output has single element if \code{f}'s type is "fin" or is a
-dirac-like distribution in case of "infin" type.
+in which case output has single element if \code{f}'s type is "discrete" or is a
+dirac-like distribution in case of "continuous" type.
 
 Method "linear" transforms \code{f}'s support linearly to be input \code{support}. For
 example, if \code{f}'s support is [0; 1] and \code{support} is \code{c(-1, 1)}, linear
@@ -61,18 +61,18 @@ single point with the same effect as in "winsor" method.
 \examples{
 set.seed(101)
 d_norm <- as_d(dnorm)
-d_fin <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
 
 # Method "reflect"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
 
-  # For "fin" functions it might create new values
-meta_x_tbl(form_resupport(d_fin, c(NA, 2.25), "reflect"))
+  # For "discrete" functions it might create new values
+meta_x_tbl(form_resupport(d_dis, c(NA, 2.25), "reflect"))
 
   # This is often useful to ensure constraints after `new_()`
 x <- runif(1e4)
-d_x <- new_d(x, "infin")
+d_x <- new_d(x, "continuous")
 plot(d_x)
 lines(form_resupport(d_x, c(0, NA), "reflect"), col = "red")
 lines(form_resupport(d_x, c(0, 1), "reflect"), col = "blue")

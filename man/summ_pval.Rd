@@ -45,13 +45,13 @@ which is a left one-sided p-value.
 \code{p.adjust(*, method = adjust)}. To not do any adjustment, use \code{adjust = "none"}.
 }
 \examples{
-# Type "fin"
-d_fin <- new_d(data.frame(x = 1:5, prob = c(1, 2, 3, 2, 1) / 9), "fin")
-summ_pval(d_fin, 3, method = "both")
-summ_pval(d_fin, 3, method = "right")
-summ_pval(d_fin, 3, method = "left")
+# Type "discrete"
+d_dis <- new_d(data.frame(x = 1:5, prob = c(1, 2, 3, 2, 1) / 9), "discrete")
+summ_pval(d_dis, 3, method = "both")
+summ_pval(d_dis, 3, method = "right")
+summ_pval(d_dis, 3, method = "left")
 
-# Type "infin"
+# Type "continuous"
 d_norm <- as_d(dnorm)
 summ_pval(d_norm, 2, method = "both")
 summ_pval(d_norm, 2, method = "right")

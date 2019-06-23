@@ -41,8 +41,8 @@ independent).
 accepts a single pdqr-function instead of a list of them.
 
 \link[=meta_class]{Class} of output is chosen as class of first pdqr-function in
-\code{f_list}. \link[=meta_type]{Type} of output is chosen to be "fin" in case all
-input pdqr-functions have "fin" type, and "infin" otherwise.
+\code{f_list}. \link[=meta_type]{Type} of output is chosen to be "discrete" in case
+all input pdqr-functions have "discrete" type, and "continuous" otherwise.
 
 Method "random" performs transformation using random generation of samples:
 \itemize{
@@ -55,30 +55,32 @@ fashion). So, for example, using \code{sum} directly is not possible as it retur
 only single number.
 \item \strong{Creates output pdqr-function}. If output is logical, probability of
 being true is estimated as share of \code{TRUE} in output, and boolean
-pdqr-function is created (type "fin" with "x" values equal to 0 and 1, and
-probabilities of being false and true respectively). If output is numeric,
-one of \code{new_*()} (suitable for output class) is called with arguments from
-\code{args_new} list.
+pdqr-function is created (type "discrete" with "x" values equal to 0 and 1,
+and probabilities of being false and true respectively). If output is
+numeric, one of \code{new_*()} (suitable for output class) is called with
+arguments from \code{args_new} list.
 }
 
 Method "bruteforce":
 \itemize{
-\item \strong{\link[=form_retype]{Retypes} input} pdqr-function to "fin"
+\item \strong{\link[=form_retype]{Retypes} input} pdqr-function to "discrete"
 type (using "piecelin" method).
 \item \strong{Computes output for every combination of "x" values} (probability of
 which will be a product of corresponding probabilities).
-\item \strong{Creates pdqr-function of type "fin"} with suitable \code{new_*()} function.
-\item \strong{Possibly retypes to "infin" type} if output should have it (also with
-"piecelin" method).
+\item \strong{Creates pdqr-function of type "discrete"} with suitable \code{new_*()}
+function.
+\item \strong{Possibly retypes to "continuous" type} if output should have it (also
+with "piecelin" method).
 }
 
 \strong{Notes} about "bruteforce" method:
 \itemize{
 \item Its main advantage is that it is not random.
 \item It may start to be very memory consuming very quickly.
-\item It is usually useful when type of output function is "fin". In case of
-"infin" type, retyping from "fin" to "infin" might introduce big errors.
-\item Used "fin" probabilities shouldn't be very small because they will be
+\item It is usually useful when type of output function is "discrete". In case of
+"continuous" type, retyping from "discrete" to "continuous" might introduce
+big errors.
+\item Used "discrete" probabilities shouldn't be very small because they will be
 directly multiplied, which might cause numerical accuracy issues.
 }
 }
@@ -99,24 +101,28 @@ form_trans(list(d_norm, 0), trans = `>=`)
 
 # Transformation with "bruteforce" method
 power <- function(x, n = 1) {x^n}
-p_fin <- new_p(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), type = "fin")
-
-p_fin_sq <- form_trans_self(
-  p_fin, trans = power, n = 2, method = "bruteforce"
+p_dis <- new_p(
+  data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)),
+  type = "discrete"
 )
-meta_x_tbl(p_fin_sq)
+
+p_dis_sq <- form_trans_self(
+  p_dis, trans = power, n = 2, method = "bruteforce"
+)
+meta_x_tbl(p_dis_sq)
   # Compare with "random" method
-p_fin_sq_rand <- form_trans_self(p_fin, trans = power, n = 2)
-meta_x_tbl(p_fin_sq_rand)
+p_dis_sq_rand <- form_trans_self(p_dis, trans = power, n = 2)
+meta_x_tbl(p_dis_sq_rand)
 
 # `form_trans_self()` is a wrapper for `form_trans()`
 form_trans_self(d_norm, trans = function(x) {2*x})
 
 }
 \seealso{
-\link[=methods-group-generic]{Pdqr methods for S3 group generic functions} for more accurate implementations of most
-commonly used functions. Some of them are direct (without randomness) and
-some of them use \code{form_trans()} with "random" method.
+\link[=methods-group-generic]{Pdqr methods for S3 group generic functions}
+for more accurate implementations of most commonly used functions. Some of
+them are direct (without randomness) and some of them use \code{form_trans()}
+with "random" method.
 
 \code{\link[=form_regrid]{form_regrid()}} to increase/decrease granularity of pdqr-functions for method
 "bruteforce".

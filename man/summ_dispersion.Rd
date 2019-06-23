@@ -45,7 +45,7 @@ a \code{as_q(f)(0.75) - as_q(f)(0.25)}.
 distribution's \emph{median}.
 }
 \examples{
-# Type "infin"
+# Type "continuous"
 d_norm <- as_d(dnorm)
   # The same as `summ_dispersion(d_norm, method = "sd")`
 summ_sd(d_norm)
@@ -53,7 +53,7 @@ summ_var(d_norm)
 summ_iqr(d_norm)
 summ_mad(d_norm)
 
-# Type "fin"
+# Type "discrete"
 d_pois <- as_d(dpois, lambda = 10)
 summ_sd(d_pois)
 summ_var(d_pois)

@@ -24,55 +24,53 @@ for corresponding mixture distribution.
 \details{
 \strong{Type of output mixture} is determined by the following algorithm:
 \itemize{
-\item If \code{f_list} consists only from pdqr-functions of "fin" type, then output
-will have "fin" type.
-\item If \code{f_list} has at least one pdqr-function of type "infin", then output
-will have "infin" type. In this case all "fin" pdqr-functions in \code{f_list} are
-approximated with corresponding dirac-like "infin" functions (with
-\link[=form_retype]{form_retype(*, method = "dirac")}). \strong{Note} that this
-approximation has consequences during computation of comparisons. For
-example, if original "fin" function \code{f} is for distribution with one element
-\code{x}, then probability of \code{f >= x} being true is 1. After retyping to
-dirac-like function, this probability will be 0.5, because of symmetrical
-dirac-like approximation. Using a little nudge to \code{x} of \code{1e-7} magnitude in
-the correct direction (\code{f >= x - 1e-7} in this case) will have expected
-output.
+\item If \code{f_list} consists only from pdqr-functions of "discrete" type, then
+output will have "discrete" type.
+\item If \code{f_list} has at least one pdqr-function of type "continuous", then
+output will have "continuous" type. In this case all "discrete"
+pdqr-functions in \code{f_list} are approximated with corresponding dirac-like
+"continuous" functions (with \link[=form_retype]{form_retype(*, method = "dirac")}). \strong{Note} that this approximation has consequences
+during computation of comparisons. For example, if original "discrete"
+function \code{f} is for distribution with one element \code{x}, then probability of `f
 }
+
+= x\code{being true is 1. After retyping to dirac-like function, this probability will be 0.5, because of symmetrical dirac-like approximation. Using a little nudge to}x\code{of}1e-7\code{ magnitude in the correct direction (}f
+= x - 1e-7` in this case) will have expected output.
 
 \strong{Class of output mixture} is determined by the class of the first element
 of \code{f_list}. To change output class, use one of \code{as_*()} functions to change
 class of first element in \code{f_list} or class of output.
 
-\strong{Note} that if output "infin" pdqr-function for mixture distribution (in
-theory) should have discontinuous density, it is approximated continuously:
-discontinuities are represented as intervals in \link[=meta_x_tbl]{"x_tbl"} with
-extreme slopes (see Examples).
+\strong{Note} that if output "continuous" pdqr-function for mixture distribution
+(in theory) should have discontinuous density, it is approximated
+continuously: discontinuities are represented as intervals in
+\link[=meta_x_tbl]{"x_tbl"} with extreme slopes (see Examples).
 }
 \examples{
-# All "fin"
+# All "discrete"
 d_binom <- as_d(dbinom, size = 10, prob = 0.5)
 r_pois <- as_r(rpois, lambda = 1)
-fin_mix <- form_mix(list(d_binom, r_pois))
-plot(fin_mix)
+dis_mix <- form_mix(list(d_binom, r_pois))
+plot(dis_mix)
 
-# All "infin"
+# All "continuous"
 p_norm <- as_p(pnorm)
 d_unif <- as_d(dunif)
 
-infin_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
+con_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
   # Output is a p-function, as is first element of `f_list`
-infin_mix
-plot(infin_mix)
+con_mix
+plot(con_mix)
 
   # Use `as_*()` functions to change class
-d_infin_mix <- as_d(infin_mix)
+d_con_mix <- as_d(con_mix)
 
   # Theoretical output density should be discontinuous, but here it is
   # approximated with continuous function
-infin_x_tbl <- meta_x_tbl(infin_mix)
-infin_x_tbl[(infin_x_tbl$x >= -1e-4) & (infin_x_tbl$x <= 1e-4), ]
+con_x_tbl <- meta_x_tbl(con_mix)
+con_x_tbl[(con_x_tbl$x >= -1e-4) & (con_x_tbl$x <= 1e-4), ]
 
-# Some "fin", some "infin"
+# Some "discrete", some "continuous"
 all_mix <- form_mix(list(d_binom, d_unif))
 plot(all_mix)
 all_x_tbl <- meta_x_tbl(all_mix)

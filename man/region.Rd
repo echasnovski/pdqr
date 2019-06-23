@@ -74,23 +74,24 @@ intervals one of \code{left_closed} or \code{right_closed} being \code{TRUE} is 
 accept that point as "in region".
 
 \code{region_prob()} computes total probability of region according to
-pdqr-function \code{f}. If \code{f} has "fin" \link[=meta_type]{type}, output is computed
-as sum of probabilities for all "x" values from \link[=meta_x_tbl]{"x_tbl" metadata} which lie inside a region (respecting \code{left_closed}
-and \code{right_closed} options while using \code{region_is_in()}). If \code{f} has "infin"
-type, output is computed as integral of density over a region (\code{*_closed}
-options having any effect).
+pdqr-function \code{f}. If \code{f} has "discrete" \link[=meta_type]{type}, output is
+computed as sum of probabilities for all "x" values from \link[=meta_x_tbl]{"x_tbl" metadata} which lie inside a region (respecting \code{left_closed}
+and \code{right_closed} options while using \code{region_is_in()}). If \code{f} has
+"continuous" type, output is computed as integral of density over a region
+(\code{*_closed} options having any effect).
 
 \code{region_height()} computes "height" of a region (with respect to \code{f}):
 minimum value of corresponding to \code{f} d-function can return based on relevant
-points inside a region. If \code{f} has "fin" type, those relevant points are
+points inside a region. If \code{f} has "discrete" type, those relevant points are
 computed as "x" values from "x_tbl" metadata which lie inside a region (if
-there are no such points, output is 0). If \code{f} has "infin" type, the whole
-intervals are used as relevant points. The notion of "height" comes from
-\code{\link[=summ_hdr]{summ_hdr()}} function: if \code{region} is \code{summ_hdr(f, level)} for some \code{level},
-then \code{region_height(region, f)} is what is called in \code{summ_hdr()}'s docs as
-"target height" of HDR. That is, a maximum value of d-function for which a
-set consisting from points at which d-function has values not less than
-target height and total probability of the set being not less than \code{level}.
+there are no such points, output is 0). If \code{f} has "continuous" type, the
+whole intervals are used as relevant points. The notion of "height" comes
+from \code{\link[=summ_hdr]{summ_hdr()}} function: if \code{region} is \code{summ_hdr(f, level)} for some
+\code{level}, then \code{region_height(region, f)} is what is called in \code{summ_hdr()}'s
+docs as "target height" of HDR. That is, a maximum value of d-function for
+which a set consisting from points at which d-function has values not less
+than target height and total probability of the set being not less than
+\code{level}.
 
 \code{region_width()} computes total width of a region, i.e. sum of differences
 between "right" and "left" columns.
@@ -100,24 +101,24 @@ colored rectangles vertically starting from zero and ending in the top of the
 plot (technically, at "y" value of \code{2e8}).
 }
 \examples{
-# Type "fin"
+# Type "discrete"
 d_binom <- as_d(dbinom, size = 10, prob = 0.7)
-hdr_fin <- summ_hdr(d_binom, level = 0.6)
-region_is_in(hdr_fin, 0:10)
+hdr_dis <- summ_hdr(d_binom, level = 0.6)
+region_is_in(hdr_dis, 0:10)
   # This should be not less than 0.6
-region_prob(hdr_fin, d_binom)
-region_height(hdr_fin, d_binom)
-region_width(hdr_fin)
+region_prob(hdr_dis, d_binom)
+region_height(hdr_dis, d_binom)
+region_width(hdr_dis)
 
-# Type "infin"
+# Type "continuous"
 d_norm <- as_d(dnorm)
-hdr_infin <- summ_hdr(d_norm, level = 0.95)
-region_is_in(hdr_infin, c(-Inf, -2, 0, 2, Inf))
+hdr_con <- summ_hdr(d_norm, level = 0.95)
+region_is_in(hdr_con, c(-Inf, -2, 0, 2, Inf))
   # This should be approximately equal to 0.95
-region_prob(hdr_infin, d_norm)
-  # This should be equal to `d_norm(hdr_infin[["left"]][1])`
-region_height(hdr_infin, d_norm)
-region_width(hdr_infin)
+region_prob(hdr_con, d_norm)
+  # This should be equal to `d_norm(hdr_con[["left"]][1])`
+region_height(hdr_con, d_norm)
+region_width(hdr_con)
 
 # Usage of `*_closed` options
 region <- data.frame(left = 1, right = 3)

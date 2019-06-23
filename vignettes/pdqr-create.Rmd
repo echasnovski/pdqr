@@ -25,26 +25,30 @@ library(pdqr)
 
 Package 'pdqr' supports two types of distributions:
 
-- **Type "fin"**: random variable has finite number of output values. It is explicitly defined by the collection of its values with their corresponding probability.
-- **Type "infin"**: there are infinite number of output values in the form of continuous random variable. It is explicitly defined by piecewise-linear density function.
+- **Type "discrete"**: random variable has finite number of output values. It is explicitly defined by the collection of its values with their corresponding probability.
+- **Type "continuous"**: there are infinite number of output values in the form of continuous random variable. It is explicitly defined by piecewise-linear density function.
 
-All `new_*()` functions create a pdqr-function of certain type ("fin" or "infin") based on sample or data frame of appropriate structure:
+**Note** that all distributions assume **finite support** (output values are bounded from below and above) and **finite values of density function** (density function in case of "continuous" type can't go to infinity).
 
-- **Sample input** is processed based on type. For "fin" type it gets tabulated with frequency of unique values serving as their probability. For "infin" type distribution density is estimated using [`density()`](https://rdrr.io/r/stats/density.html) function if input has at least 2 elements. For 1 element special "dirac-like" pdqr-function is created: an *approximation single number* with triangular distribution of very narrow support (1e-8 of magnitude). Basically, sample input is converted into data frame of appropriate structure that defines distribution (see next list item).
-- **Data frame input** should completely define distribution. For "fin" type it should have "x" and "prob" columns for output values and their probabilities. For "infin" type - "x" and "y" columns for points, which define piecewise-linear continuous density function. Columns "prob" and "y" will be automatically normalized to represent proper distribution: sum of "prob" will be 1 and total square under graph of piecewise-linear function will be 1.
+All `new_*()` functions create a pdqr-function of certain type ("discrete" or "continuous") based on sample or data frame of appropriate structure:
+
+- **Sample input** is processed based on type. For "discrete" type it gets tabulated with frequency of unique values serving as their probability. For "continuous" type distribution density is estimated using [`density()`](https://rdrr.io/r/stats/density.html) function if input has at least 2 elements. For 1 element special "dirac-like" pdqr-function is created: an *approximation single number* with triangular distribution of very narrow support (1e-8 of magnitude). Basically, sample input is converted into data frame of appropriate structure that defines distribution (see next list item).
+- **Data frame input** should completely define distribution. For "discrete" type it should have "x" and "prob" columns for output values and their probabilities. For "continuous" type - "x" and "y" columns for points, which define piecewise-linear continuous density function. Columns "prob" and "y" will be automatically normalized to represent proper distribution: sum of "prob" will be 1 and total square under graph of piecewise-linear function will be 1.
 
 We will use the following data frame inputs in examples:
 
 ```{r setup_data-frame-inputs}
-fin_df <- data.frame(x = 1:4, prob = 4:1 / 10)
-infin_df <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
+# For type "discrete"
+dis_df <- data.frame(x = 1:4, prob = 4:1 / 10)
+# For type "continuous"
+con_df <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
 ```
 
 This vignette is organized as follows:
 
 - Four sections about how to create p-, d-, q-, and r-functions (both from sample and data frame).
 - Section "Special cases", which describes two special cases of pdqr-functions: dirac-like and boolean.
-- Section "Using `density()` arguments" describes how to use `density()` arguments to tweak smoothing during creation of "infin" pdqr-functions.
+- Section "Using `density()` arguments" describes how to use `density()` arguments to tweak smoothing during creation of "continuous" pdqr-functions.
 - "Metadata of pdqr-functions" describes the concept of metadata of pdqr-functions.
 
 ## P-functions
@@ -55,73 +59,73 @@ P-function (analogue of `p*()` functions in base R) represents a cumulative dist
 
 ```{r p-fun_sample}
 # Treating input as discrete
-p_mpg_fin <- new_p(mtcars$mpg, type = "fin")
-p_mpg_fin
+p_mpg_dis <- new_p(mtcars$mpg, type = "discrete")
+p_mpg_dis
 
 # Treating input as continuous
-p_mpg_infin <- new_p(mtcars$mpg, type = "infin")
-p_mpg_infin
+p_mpg_con <- new_p(mtcars$mpg, type = "continuous")
+p_mpg_con
 
 # Outputs are actually vectorized functions
-p_mpg_fin(15:20)
-p_mpg_infin(15:20)
+p_mpg_dis(15:20)
+p_mpg_con(15:20)
 
 # You can plot them directly using base `plot()` and `lines()`
-plot(p_mpg_infin, main = "P-functions from sample")
-lines(p_mpg_fin, col = "blue")
+plot(p_mpg_con, main = "P-functions from sample")
+lines(p_mpg_dis, col = "blue")
 ```
 
 ### From data frame
 
 ```{r p-fun_data-frame}
-p_df_fin <- new_p(fin_df, type = "fin")
-p_df_fin
+p_df_dis <- new_p(dis_df, type = "discrete")
+p_df_dis
 
-p_df_infin <- new_p(infin_df, type = "infin")
-p_df_infin
+p_df_con <- new_p(con_df, type = "continuous")
+p_df_con
 
-plot(p_df_infin, main = "P-functions from data frame")
-lines(p_df_fin, col = "blue")
+plot(p_df_con, main = "P-functions from data frame")
+lines(p_df_dis, col = "blue")
 ```
 
 ## D-functions
 
-D-function (analogue of `d*()` functions in base R) represents a probability mass function for "fin" type and density function for "infin":
+D-function (analogue of `d*()` functions in base R) represents a probability mass function for "discrete" type and density function for "continuous":
 
 ### From sample
 
 ```{r d-fun_sample}
 # Treating input as discrete
-d_mpg_fin <- new_d(mtcars$mpg, type = "fin")
-d_mpg_fin
+d_mpg_dis <- new_d(mtcars$mpg, type = "discrete")
+d_mpg_dis
 
 # Treating input as continuous
-d_mpg_infin <- new_d(mtcars$mpg, type = "infin")
-d_mpg_infin
+d_mpg_con <- new_d(mtcars$mpg, type = "continuous")
+d_mpg_con
 
 # Outputs are actually vectorized functions
-d_mpg_fin(15:20)
-d_mpg_infin(15:20)
+d_mpg_dis(15:20)
+d_mpg_con(15:20)
 
 # You can plot them directly using base `plot()` and `lines()`
 op <- par(mfrow = c(1, 2))
-plot(d_mpg_infin, main = '"infin" d-function from sample')
-plot(d_mpg_fin, main = '"fin" d-function from sample', col = "blue")
+plot(d_mpg_con, main = '"continuous" d-function from sample')
+plot(d_mpg_dis, main = '"discrete" d-function from sample', col = "blue")
 par(op)
 ```
 
 ### From data frame
 
 ```{r d-fun_data-frame}
-d_df_fin <- new_d(fin_df, type = "fin")
-d_df_fin
+d_df_dis <- new_d(dis_df, type = "discrete")
+d_df_dis
 
-d_df_infin <- new_d(infin_df, type = "infin")
-d_df_infin
+d_df_con <- new_d(con_df, type = "continuous")
+d_df_con
 
 op <- par(mfrow = c(1, 2))
-plot(d_df_infin, main = '"infin" d-function from data frame')
-plot(d_df_fin, main = '"fin" d-function from data frame', col = "blue")
+plot(d_df_con, main = '"continuous" d-function from data frame')
+plot(d_df_dis, main = '"discrete" d-function from data frame', col = "blue")
 par(op)
 ```
 
@@ -133,71 +137,71 @@ Q-function (analogue of `q*()` functions in base R) represents a quantile functi
 
 ```{r q-fun_sample}
 # Treating input as discrete
-q_mpg_fin <- new_q(mtcars$mpg, type = "fin")
-q_mpg_fin
+q_mpg_dis <- new_q(mtcars$mpg, type = "discrete")
+q_mpg_dis
 
 # Treating input as continuous
-q_mpg_infin <- new_q(mtcars$mpg, type = "infin")
-q_mpg_infin
+q_mpg_con <- new_q(mtcars$mpg, type = "continuous")
+q_mpg_con
 
 # Outputs are actually vectorized functions
-q_mpg_fin(c(0.1, 0.3, 0.7, 1.5))
-q_mpg_infin(c(0.1, 0.3, 0.7, 1.5))
+q_mpg_dis(c(0.1, 0.3, 0.7, 1.5))
+q_mpg_con(c(0.1, 0.3, 0.7, 1.5))
 
 # You can plot them directly using base `plot()` and `lines()`
-plot(q_mpg_infin, main = "Q-functions from sample")
-lines(q_mpg_fin, col = "blue")
+plot(q_mpg_con, main = "Q-functions from sample")
+lines(q_mpg_dis, col = "blue")
 ```
 
 ### From data frame
 
 ```{r q-fun_data-frame}
-q_df_fin <- new_q(fin_df, type = "fin")
-q_df_fin
+q_df_dis <- new_q(dis_df, type = "discrete")
+q_df_dis
 
-q_df_infin <- new_q(infin_df, type = "infin")
-q_df_infin
+q_df_con <- new_q(con_df, type = "continuous")
+q_df_con
 
-plot(q_df_infin, main = "Q-functions from data frame")
-lines(q_df_fin, col = "blue")
+plot(q_df_con, main = "Q-functions from data frame")
+lines(q_df_dis, col = "blue")
 ```
 
 ## R-functions
 
-R-function (analogue of `r*()` functions in base R) represents a random generation function. For "fin" type it will generate only values present in input. For "infin" function it will generate values from distribution corresponding to one estimated with `density()`.
+R-function (analogue of `r*()` functions in base R) represents a random generation function. For "discrete" type it will generate only values present in input. For "continuous" function it will generate values from distribution corresponding to one estimated with `density()`.
 
 ### From sample
 
 ```{r r-fun_sample}
 # Treating input as discrete
-r_mpg_fin <- new_r(mtcars$mpg, type = "fin")
-r_mpg_fin
+r_mpg_dis <- new_r(mtcars$mpg, type = "discrete")
+r_mpg_dis
 
 # Treating input as continuous
-r_mpg_infin <- new_r(mtcars$mpg, type = "infin")
-r_mpg_infin
+r_mpg_con <- new_r(mtcars$mpg, type = "continuous")
+r_mpg_con
 
 # Outputs are actually functions
-r_mpg_fin(5)
-r_mpg_infin(5)
+r_mpg_dis(5)
+r_mpg_con(5)
 
 # You can plot them directly using base `plot()` and `lines()`
 op <- par(mfrow = c(1, 2))
-plot(r_mpg_infin, main = '"infin" r-function from sample')
-plot(r_mpg_fin, main = '"fin" r-function from sample', col = "blue")
+plot(r_mpg_con, main = '"continuous" r-function from sample')
+plot(r_mpg_dis, main = '"discrete" r-function from sample', col = "blue")
 par(op)
 ```
 
 ```{r r-fun_data-frame}
-r_df_fin <- new_r(fin_df, type = "fin")
-r_df_fin
+r_df_dis <- new_r(dis_df, type = "discrete")
+r_df_dis
 
-r_df_infin <- new_r(infin_df, type = "infin")
-r_df_infin
+r_df_con <- new_r(con_df, type = "continuous")
+r_df_con
 
 op <- par(mfrow = c(1, 2))
-plot(r_df_infin, main = '"infin" r-function from data frame')
-plot(r_df_fin, main = '"fin" r-function from data frame', col = "blue")
+plot(r_df_con, main = '"continuous" r-function from data frame')
+plot(r_df_dis, main = '"discrete" r-function from data frame', col = "blue")
 par(op)
 ```
 
@@ -205,10 +209,10 @@ par(op)
 
 ### Dirac-like
 
-When creating "infin" pdqr-function with `new_*()` from single number, a special "dirac-like" pdqr-function is created. It is an *approximation single number* with triangular distribution of very narrow support (1e-8 of magnitude):
+When creating "continuous" pdqr-function with `new_*()` from single number, a special "dirac-like" pdqr-function is created. It is an *approximation of single number* with triangular distribution of very narrow support (1e-8 of magnitude):
 
 ```{r dirac}
-r_dirac <- new_r(3.14, type = "infin")
+r_dirac <- new_r(3.14, type = "continuous")
 r_dirac
 r_dirac(4)
 
@@ -218,32 +222,32 @@ dput(r_dirac(4))
 
 ### Boolean
 
-Boolean pdqr-function is a special case of "fin" function, which values are exactly 0 and 1. Those functions are usually created after transformations involving logical operators (see vignette on transformation for more details). It is assumed that 0 represents that some expression is false, and 1 is for being true. Corresponding probabilities describe distribution of expression's logical values. The only difference from other "fin" pdqr-functions is in more detailed printing.
+Boolean pdqr-function is a special case of "discrete" function, which values are exactly 0 and 1. Those functions are usually created after transformations involving logical operators (see vignette on transformation for more details). It is assumed that 0 represents that some expression is false, and 1 is for being true. Corresponding probabilities describe distribution of expression's logical values. The only difference from other "discrete" pdqr-functions is in more detailed printing.
 
 ```{r boolean}
-new_d(data.frame(x = c(0, 1), prob = c(0.25, 0.75)), type = "fin")
+new_d(data.frame(x = c(0, 1), prob = c(0.25, 0.75)), type = "discrete")
 ```
 
 ## Using `density()` arguments
 
-When creating pdqr-function of "infin" type, `density()` is used to estimate density. To tweak its performance, supply its extra arguments directly to `new_*()` functions. Here are some examples:
+When creating pdqr-function of "continuous" type, `density()` is used to estimate density. To tweak its performance, supply its extra arguments directly to `new_*()` functions. Here are some examples:
 
 ```{r density-args}
 plot(
-  new_d(mtcars$mpg, "infin"), lwd = 3,
+  new_d(mtcars$mpg, "continuous"), lwd = 3,
   main = "Examples of `density()` options"
 )
 
-# Argument `adjust` of `density()` helps to define smoothign bandwidth
-lines(new_d(mtcars$mpg, "infin", adj = 0.3), col = "blue")
+# Argument `adjust` of `density()` helps to define smoothing bandwidth
+lines(new_d(mtcars$mpg, "continuous", adj = 0.3), col = "blue")
 
 # Argument `n` defines number of points to be used in piecewise-linear
 # approximation
-lines(new_d(mtcars$mpg, "infin", n = 5), col = "green")
+lines(new_d(mtcars$mpg, "continuous", n = 5), col = "green")
 
 # Argument `cut` defines the "extending" property of density estimation.
 # Using `cut = 0` assumes that density can't go outside of input's range
-lines(new_d(mtcars$mpg, "infin", cut = 0), col = "magenta")
+lines(new_d(mtcars$mpg, "continuous", cut = 0), col = "magenta")
 ```
 
 ## Metadata of pdqr-functions
@@ -251,34 +255,34 @@ lines(new_d(mtcars$mpg, "infin", cut = 0), col = "magenta")
 Every pdqr-function has metadata, information which describes underline distribution and pdqr-function. Family of `meta_*()` functions are implemented to extract that information:
 
 - **"x_tbl" metadata** (returned by `meta_x_tbl()`) completely defines distribution. It is a data frame with structure depending on type of pdqr-function:
-    - For "fin" type it has columns "x" (output values), "prob" (their probability), and "cumprob" (their cumulative probability). 
-    - For "infin" type it has columns "x" (knots of piecewise-linear density), "y" (density values at those points), "cumprob" (their cumulative probability).
+    - For "discrete" type it has columns "x" (output values), "prob" (their probability), and "cumprob" (their cumulative probability). 
+    - For "continuous" type it has columns "x" (knots of piecewise-linear density), "y" (density values at those points), "cumprob" (their cumulative probability).
 - **Pdqr class** (returned by `meta_class()`) - class of pdqr-function. This can be one of "p", "d", "q", "r". Represents how pdqr-function describes underlying distribution.
-- **Pdqr type** (returned by `meta_type()`) - type of pdqr-function. This can be one of "fin" (short for "finite") or "infin" (short for "infinite"). Represents type of underlying distribution.
+- **Pdqr type** (returned by `meta_type()`) - type of pdqr-function. This can be one of "discrete" or "continuous". Represents type of underlying distribution.
 - **Pdqr support** (returned by `meta_support()`) - support of distribution. This is a range of "x" column from "x_tbl" metadata.
 
 ```{r meta_x_tbl}
-# Type "fin"
-d_fin <- new_d(1:4, type = "fin")
-meta_x_tbl(d_fin)
-meta_class(d_fin)
-meta_type(d_fin)
-meta_support(d_fin)
+# Type "discrete"
+d_dis <- new_d(1:4, type = "discrete")
+meta_x_tbl(d_dis)
+meta_class(d_dis)
+meta_type(d_dis)
+meta_support(d_dis)
 
-# Type "infin"
-p_infin <- new_p(1:4, type = "infin")
-head(meta_x_tbl(p_infin))
-meta_class(p_infin)
-meta_type(p_infin)
-meta_support(p_infin)
+# Type "continuous"
+p_con <- new_p(1:4, type = "continuous")
+head(meta_x_tbl(p_con))
+meta_class(p_con)
+meta_type(p_con)
+meta_support(p_con)
 
-# Dirac-like "infin" function
-r_dirac <- new_r(1, type = "infin")
+# Dirac-like "continuous" function
+r_dirac <- new_r(1, type = "continuous")
 dput(meta_x_tbl(r_dirac))
 dput(meta_support(r_dirac))
 
 # `meta_all()` returns all metadata in a single list
-meta_all(d_fin)
+meta_all(d_dis)
 ```
 
 For more details go to help page of `meta_all()`.

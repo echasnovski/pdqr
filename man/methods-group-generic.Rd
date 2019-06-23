@@ -60,8 +60,8 @@ slightly random, which slightly increases random nature of those methods).
 
 This family of S3 generics represents mathematical functions. Most of the
 methods have \strong{random nature}, except \code{abs()} and \code{sign()} which are
-computed directly. Output of \code{sign()} has "fin" type with 3 "x" values: -1,
-0, 1.
+computed directly. Output of \code{sign()} has "discrete" type with 3 "x" values:
+-1, 0, 1.
 
 \strong{Note} that \code{cumsum()}, \code{cumprod()}, \code{cummmax()}, and \code{cummin()} functions
 don't make much sense in these implementations: their outputs represent
@@ -83,15 +83,15 @@ multiplying, and dividing by a single number. For example, all \code{f + 1},
 \code{2 - f} (which is actually \code{(-f) + 2}), \code{3*f} and \code{f/2} are linear
 transformations, but \code{1 / f}, \code{f + g} are not.
 \item Functions for comparing: \code{==}, \code{!=}, \code{<}, \code{<=}, \code{>=}, \code{>}. Their output is
-\strong{boolean pdqr-function}: "fin" type function with elements being exactly 0
-and 1. Probability of 0 represents probability of operator output being
-false, and 1 - being true. Probability of being true is computed directly as
-\strong{limit of empirical estimation from simulations} (as size of samples grows
-to infinity). In other words, output is an exact number which might be
-approximated by simulating two big samples of same size from input \code{e1} and
-\code{e2} (one of which can be a single number), and estimating probability as
-share of those pairs from samples for which comparison is true. \strong{Note} that
-if at least one input has "infin" type, then:
+\strong{boolean pdqr-function}: "discrete" type function with elements being
+exactly 0 and 1. Probability of 0 represents probability of operator output
+being false, and 1 - being true. Probability of being true is computed
+directly as \strong{limit of empirical estimation from simulations} (as size of
+samples grows to infinity). In other words, output is an exact number which
+might be approximated by simulating two big samples of same size from input
+\code{e1} and \code{e2} (one of which can be a single number), and estimating
+probability as share of those pairs from samples for which comparison is
+true. \strong{Note} that if at least one input has "continuous" type, then:
 \itemize{
 \item \code{==} will always have probability 0 of being true because probability
 of generating a certain exact one or two numbers from continuous random
@@ -145,8 +145,8 @@ representing minimum of \code{f} and \code{g}", etc.
 input and therefore can't be made vectorized. Error is thrown if it is
 applied to pdqr-function.
 \item Although all \code{sum()}, \code{prod()}, \code{min()}, \code{max()} accept pdqr-functions or
-single numbers, using numbers and "infin" functions simultaneously is not a
-great idea. This is because output will be automatically smoothed (as
+single numbers, using numbers and "continuous" functions simultaneously is
+not a great idea. This is because output will be automatically smoothed (as
 \code{form_trans()} will use some \code{new_*()} function) which will give a misleading
 picture. For a more realistic output:
 \itemize{
@@ -164,7 +164,7 @@ picture. For a more realistic output:
 \examples{
 d_norm <- as_d(dnorm)
 d_unif <- as_d(dunif)
-d_fin <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "fin")
+d_dis <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
 
 set.seed(101)
 
@@ -178,26 +178,26 @@ lines(cos(d_norm), col = "blue")
 
   # Although here distribution shouldn't change, it changes slightly due to
   # random implementation
-meta_x_tbl(d_fin)
-meta_x_tbl(floor(d_fin))
+meta_x_tbl(d_dis)
+meta_x_tbl(floor(d_dis))
 
 # Ops
   # Single input, linear transformations, and logical are not random
-d_fin > 1
-!(d_fin > 1)
+d_dis > 1
+!(d_dis > 1)
 d_norm >= (2*d_norm+1)
   # All others are random
 plot(d_norm + d_norm)
   # This is an exact reference curve
 lines(as_d(dnorm, sd = sqrt(2)), col = "red")
 
-plot(d_fin + d_norm)
+plot(d_dis + d_norm)
 
 plot(d_unif^d_unif)
 
 # Summary
   # `all()` and `any()` are non-random
-all(d_fin > 1, d_fin > 1)
+all(d_dis > 1, d_dis > 1)
   # Others are random
 plot(max(d_norm, d_norm, d_norm))
 
@@ -205,7 +205,7 @@ plot(d_norm + d_norm + d_norm)
 lines(sum(d_norm, d_norm, d_norm), col = "red")
 
   # Using single numbers is allowed, but gives misleading output in case of
-  # "infin" functions. Use other functions instead (see documentation).
+  # "continuous" functions. Use other functions instead (see documentation).
 plot(min(d_unif, 0.5))
 lines(form_resupport(d_unif, c(NA, 0.5), method = "winsor"), col = "blue")
 

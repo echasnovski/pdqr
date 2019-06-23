@@ -21,8 +21,8 @@ new_r(x, type, ...)
 \item{x}{Numeric vector or data frame with appropriate columns (see "Data
 frame input" section).}
 
-\item{type}{\link[=meta_type]{Type} of pdqr-function. Should be one of "fin" or
-"infin".}
+\item{type}{\link[=meta_type]{Type} of pdqr-function. Should be one of "discrete"
+or "continuous".}
 
 \item{...}{Extra arguments for \link[stats:density]{density()}.}
 }
@@ -43,10 +43,10 @@ more details see "Data frame input" section.
 Numeric input is transformed into data frame which is then used as "x_tbl"
 metadata (for more details see "Numeric input" section):
 \itemize{
-\item If \code{type} is \code{"fin"} then \code{x} is viewed as sample from distribution that
-can produce only values from \code{x}. Input is tabulated and normalized to form
-"x_tbl" metadata.
-\item If \code{type} is \code{"infin"} then:
+\item If \code{type} is \code{"discrete"} then \code{x} is viewed as sample from distribution
+that can produce only values from \code{x}. Input is tabulated and normalized to
+form "x_tbl" metadata.
+\item If \code{type} is \code{"continuous"} then:
 \itemize{
 \item If \code{x} has 1 element, output distribution represents a \strong{dirac-like}
 distribution which is an approximation to singular dirac distribution.
@@ -67,7 +67,7 @@ First, all \code{NaN}, \code{NA}, and infinite values are removed with warnings.
 there are no elements left, error is thrown. Then data frame is created in
 the way which depends on the \code{type} argument.
 
-\strong{For "fin" type} elements of filtered \code{x} are:
+\strong{For "discrete" type} elements of filtered \code{x} are:
 \itemize{
 \item Rounded to 10th digit to avoid numerical representation issues (see Note
 in \code{\link{==}}'s help page).
@@ -76,13 +76,13 @@ columns: "x" with unique values, "prob" with normalized (divided by sum)
 counts, "cumprob" with cumulative sum of "prob" column.
 }
 
-\strong{For "infin" type} output data frame has columns "x", "y", "cumprob".
+\strong{For "continuous" type} output data frame has columns "x", "y", "cumprob".
 Choice of algorithm depends on the number of \code{x} elements:
 \itemize{
-\item If \code{x} has 1 element, an "x_tbl" metadata describes \strong{dirac-like} "infin"
-pdqr-function. It is implemented as triangular peak with center at \code{x}'s
-value and width of \code{2e-8} (see Examples). This is an approximation of
-singular dirac distribution. Data frame has columns "x" with value
+\item If \code{x} has 1 element, an "x_tbl" metadata describes \strong{dirac-like}
+"continuous" pdqr-function. It is implemented as triangular peak with center
+at \code{x}'s value and width of \code{2e-8} (see Examples). This is an approximation
+of singular dirac distribution. Data frame has columns "x" with value
 \code{c(x-1e-8, x, x+1e-8)}, "y" with value \code{c(0, 1e8, 0)} normalized to have
 total integral of "x"-"y" points of 1, "cumprob" \code{c(0, 0.5, 1)}.
 \item If \code{x} has more than 1 element, it serves as input to
@@ -99,13 +99,13 @@ function passing through "x"-"y" points has total integral of 1. Column
 
 
 If \code{x} is a data frame, it should have numeric columns appropriate for
-\link[=meta_x_tbl]{"x_tbl" metadata} of input \code{type}: "x", "prob" for "fin"
-\code{type} and "x", "y" for "infin" type ("cumprob" column will be computed
+\link[=meta_x_tbl]{"x_tbl" metadata} of input \code{type}: "x", "prob" for "discrete"
+\code{type} and "x", "y" for "continuous" type ("cumprob" column will be computed
 inside \code{new_*()}). To become an appropriate "x_tbl" metadata, input data
 frame is ordered in increasing order of "x" column and then \strong{imputed} in
 the way which depends on the \code{type} argument.
 
-\strong{For "fin" type}:
+\strong{For "discrete" type}:
 \itemize{
 \item Values in column "x" are rounded to 10th digit to avoid numerical
 representation issues (see Note in \code{\link{==}}'s help page).
@@ -115,7 +115,7 @@ having sum of their probability in "prob" column.
 \item Column "cumprob" is computed as cumulative sum of "prob" column.
 }
 
-\strong{For "infin" type} column "y" is normalized so that piecewise-linear
+\strong{For "continuous" type} column "y" is normalized so that piecewise-linear
 function passing through "x"-"y" points has total integral of 1. Column
 "cumprob" has cumulative probability of piecewise-linear d-function.
 }
@@ -124,28 +124,28 @@ function passing through "x"-"y" points has total integral of 1. Column
 set.seed(101)
 x <- rnorm(10)
 
-# Type "fin": `x` values are directly tabulated
-my_d_fin <- new_d(x, "fin")
-meta_x_tbl(my_d_fin)
-plot(my_d_fin)
+# Type "discrete": `x` values are directly tabulated
+my_d_dis <- new_d(x, "discrete")
+meta_x_tbl(my_d_dis)
+plot(my_d_dis)
 
-# Type "infin": `x` serves as input to `density()`
-my_d_infin <- new_d(x, "infin")
-head(meta_x_tbl(my_d_infin))
-plot(my_d_infin)
+# Type "continuous": `x` serves as input to `density()`
+my_d_con <- new_d(x, "continuous")
+head(meta_x_tbl(my_d_con))
+plot(my_d_con)
 
 # Data frame input
   # Values in "prob" column will be normalized automatically
-my_p_fin <- new_p(data.frame(x = 1:4, prob = 1:4), "fin")
+my_p_dis <- new_p(data.frame(x = 1:4, prob = 1:4), "discrete")
   # As are values in "y" column
-my_p_infin <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "infin")
+my_p_con <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "continuous")
 
 # Using bigger bandwidth in `density()`
-my_d_infin_2 <- new_d(x, "infin", adjust = 2)
-plot(my_d_infin, main = "Comparison of density bandwidths")
-lines(my_d_infin_2, col = "red")
+my_d_con_2 <- new_d(x, "continuous", adjust = 2)
+plot(my_d_con, main = "Comparison of density bandwidths")
+lines(my_d_con_2, col = "red")
 
-# Dirac-like "infin" pdqr-function is created if `x` is a single number
-meta_x_tbl(new_d(1, "infin"))
+# Dirac-like "continuous" pdqr-function is created if `x` is a single number
+meta_x_tbl(new_d(1, "continuous"))
 
 }

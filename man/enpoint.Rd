@@ -10,10 +10,10 @@ enpoint(f, n_points = 1001)
 \item{f}{A pdqr-function.}
 
 \item{n_points}{Desired number of points in the output. Not used in case of
-"fin" type p-, d-, and q-function \code{f}.}
+"discrete" type p-, d-, and q-function \code{f}.}
 }
 \value{
-A data frame with \code{n_points} (or less, for "fin" type p-, d-, or
+A data frame with \code{n_points} (or less, for "discrete" type p-, d-, or
 q-function \code{f}) rows and two columns with names depending on \code{f}'s class
 and type.
 }
@@ -31,26 +31,27 @@ Structure of output depends on \link[=meta_class]{class} and
 \item \strong{P-functions} are represented with "x" (for "x" values) and "p" (for
 cumulative probability at "x" points) columns:
 \itemize{
-\item For "infin" type, "x" is taken as an equidistant grid (with \code{n_points}
-elements) on input's \link[=meta_support]{support}.
-\item For "fin" type, "x" is taken directly from \link[=meta_x_tbl]{"x_tbl" metadata} without using \code{n_points} argument.
+\item For "continuous" type, "x" is taken as an equidistant grid (with
+\code{n_points} elements) on input's \link[=meta_support]{support}.
+\item For "discrete" type, "x" is taken directly from \link[=meta_x_tbl]{"x_tbl" metadata} without using \code{n_points} argument.
 }
 \item \strong{D-functions} are represented with "x" column and one more (for values of
 d-function at "x" points):
 \itemize{
-\item For "infin" type, second column is named "y" and is computed as values
-of \code{f} at elements of "x" column (which is the same grid as in p-function
-case).
-\item For "fin" it is named "prob". Both "x" and "prob" columns are taken
-from "x_tbl" metadata.
+\item For "continuous" type, second column is named "y" and is computed as
+values of \code{f} at elements of "x" column (which is the same grid as in
+p-function case).
+\item For "discrete" it is named "prob". Both "x" and "prob" columns are
+taken from "x_tbl" metadata.
 }
 \item \strong{Q-functions} are represented almost as p-functions but in inverse
 fashion. Output data frame has "p" (probabilities) and "x" (values of
 q-function \code{f} at "p" elements) columns.
 \itemize{
-\item For "infin" type, "p" is computed as equidistant grid (with \code{n_points}
-elements) between 0 and 1.
-\item For "fin" type, "p" is taken from "cumprob" column of "x_tbl" metadata.
+\item For "continuous" type, "p" is computed as equidistant grid (with
+\code{n_points} elements) between 0 and 1.
+\item For "discrete" type, "p" is taken from "cumprob" column of "x_tbl"
+metadata.
 }
 \item \strong{R-functions} are represented by generating \code{n_points} elements from
 distribution. Output data frame has columns "n" (consecutive point number,
@@ -70,11 +71,11 @@ enpoint(d_norm)
 enpoint(d_norm, n_points = 5)
 
 # Different pdqr classes and types produce different column names in output
-colnames(enpoint(new_p(1:2, "fin")))
-colnames(enpoint(new_d(1:2, "fin")))
-colnames(enpoint(new_d(1:2, "infin")))
-colnames(enpoint(new_q(1:2, "infin")))
-colnames(enpoint(new_r(1:2, "infin")))
+colnames(enpoint(new_p(1:2, "discrete")))
+colnames(enpoint(new_d(1:2, "discrete")))
+colnames(enpoint(new_d(1:2, "continuous")))
+colnames(enpoint(new_q(1:2, "continuous")))
+colnames(enpoint(new_r(1:2, "continuous")))
 
 # Manual way with different output structure
 df <- meta_x_tbl(form_regrid(d_norm, 5))

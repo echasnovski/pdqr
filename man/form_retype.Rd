@@ -9,7 +9,8 @@ form_retype(f, type, method = "piecelin")
 \arguments{
 \item{f}{A pdqr-function.}
 
-\item{type}{A desired type of output. Should be one of "fin" or "infin".}
+\item{type}{A desired type of output. Should be one of "discrete" or
+"continuous".}
 
 \item{method}{Retyping method. Should be one of "piecelin" or "dirac".}
 }
@@ -22,49 +23,50 @@ Modify \link[=meta_type]{type} of pdqr-function using method of choice.
 \details{
 If type of \code{f} is equal to input \code{type} then \code{f} is returned.
 
-Method "piecelin" (default) should be used mostly for converting from "infin"
-to "fin" type. It uses the fact that 'pdqr' densities are piecewise-linear
-(linear in intervals between values of "x" column of \link[=meta_x_tbl]{"x_tbl" metadata}) on their \link[=meta_support]{support}:
+Method "piecelin" (default) should be used mostly for converting from
+"continuous" to "discrete" type. It uses the fact that 'pdqr' densities are
+piecewise-linear (linear in intervals between values of "x" column of
+\link[=meta_x_tbl]{"x_tbl" metadata}) on their \link[=meta_support]{support}:
 \itemize{
-\item Retyping from "infin" to \code{type} "fin" is done by computing "x" values as
-centers of interval masses with probabilities equal to interval total
-probabilities.
-\item Retyping from "fin" to \code{type} "infin" is made approximately by trying to
-compute "x" grid, for which "x" values of input distribution are going to be
-centers of mass. Algorithm is approximate and might result into a big errors
-in case of small number of "x" values or if they are not "suitable" for this
-kind of transformation.
+\item Retyping from "continuous" to \code{type} "discrete" is done by computing "x"
+values as centers of interval masses with probabilities equal to interval
+total probabilities.
+\item Retyping from "discrete" to \code{type} "continuous" is made approximately by
+trying to compute "x" grid, for which "x" values of input distribution are
+going to be centers of mass. Algorithm is approximate and might result into a
+big errors in case of small number of "x" values or if they are not
+"suitable" for this kind of transformation.
 }
 
-Method "dirac" is used mostly for converting from "fin" to "infin" type (for
-example, in \code{form_mix()} in case different types of input pdqr-functions). It
-works in the following way:
+Method "dirac" is used mostly for converting from "discrete" to "continuous"
+type (for example, in \code{form_mix()} in case different types of input
+pdqr-functions). It works in the following way:
 \itemize{
-\item Retyping from "infin" to \code{type} "fin" works only if "x_tbl" metadata
-represents a mixture of dirac-like distributions. In that case it is
+\item Retyping from "continuous" to \code{type} "discrete" works only if "x_tbl"
+metadata represents a mixture of dirac-like distributions. In that case it is
 transformed to have "x" values from centers of those dirac-like distributions
 with corresponding probabilities.
-\item Retyping from "fin" to \code{type} "infin" works by transforming each "x" value
-from "x_tbl" metadata into dirac-like distribution with total probability
-taken from corresponding value of "prob" column. Output essentially
-represents a mixture of dirac-like distributions.
+\item Retyping from "discrete" to \code{type} "continuous" works by transforming each
+"x" value from "x_tbl" metadata into dirac-like distribution with total
+probability taken from corresponding value of "prob" column. Output
+essentially represents a mixture of dirac-like distributions.
 }
 }
 \examples{
-my_infin <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "infin")
-my_fin <- form_retype(my_infin, "fin")
-meta_x_tbl(my_fin)
+my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
+my_dis <- form_retype(my_con, "discrete")
+meta_x_tbl(my_dis)
 
-my_dirac <- form_retype(my_fin, "infin", method = "dirac")
+my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
 meta_x_tbl(my_dirac)
 
-# Default retyping from "fin" to "infin" isn't very accurate for small number
-# of points/intervals
-my_infin_2 <- form_retype(my_fin, "infin")
-meta_x_tbl(my_infin_2)
+# Default retyping from "discrete" to "continuous" isn't very accurate for
+# small number of points/intervals
+my_con_2 <- form_retype(my_dis, "continuous")
+meta_x_tbl(my_con_2)
 
-plot(my_infin)
-lines(my_infin_2, col = "blue")
+plot(my_con)
+lines(my_con_2, col = "blue")
 
 }
 \seealso{

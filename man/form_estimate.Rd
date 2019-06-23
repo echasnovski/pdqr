@@ -37,11 +37,11 @@ inference.
 General idea is to create a sample from target distribution by
 generating \code{n_sample} samples of size \code{sample_size} and compute for each of
 them its estimate by calling input \code{estimate} function. If created sample is
-logical, \strong{boolean} pdqr-function (type "fin" with elements being exactly 0
-and 1) is created with probability of being true estimated as share of \code{TRUE}
-values (after removing possible \code{NA}). If sample is numeric, it is used as
-input to \code{new_*()} of appropriate class with \code{type} equal to type of \code{f} (if
-not forced otherwise in \code{args_new}).
+logical, \strong{boolean} pdqr-function (type "discrete" with elements being
+exactly 0 and 1) is created with probability of being true estimated as share
+of \code{TRUE} values (after removing possible \code{NA}). If sample is numeric, it is
+used as input to \code{new_*()} of appropriate class with \code{type} equal to type of
+\code{f} (if not forced otherwise in \code{args_new}).
 
 \strong{Notes}:
 \itemize{
@@ -59,17 +59,17 @@ then recenter distribution to actually have that as a mean.
 \dontrun{
 set.seed(101)
 
-# Type "fin"
-d_fin <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+# Type "discrete"
+d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
   # Estimate of distribution of mean
-form_estimate(d_fin, estimate = mean, sample_size = 10)
+form_estimate(d_dis, estimate = mean, sample_size = 10)
   # To change type of output, supply it in `args_new`
 form_estimate(
-  d_fin, estimate = mean, sample_size = 10,
-  args_new = list(type = "infin")
+  d_dis, estimate = mean, sample_size = 10,
+  args_new = list(type = "continuous")
 )
 
-# Type "infin"
+# Type "continuous"
 d_unif <- as_d(dunif)
   # Supply extra named arguments for `estimate` in `...`
 plot(form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.1))

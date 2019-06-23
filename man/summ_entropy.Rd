@@ -26,9 +26,9 @@ then it will be finite.
 }
 \description{
 \code{summ_entropy()} computes entropy of single distribution while
-\code{summ_entropy2()} - for a pair of distributions. For "fin" pdqr-functions a
-classic formula \code{-sum(p * log(p))} (in nats) is used. In "infin" case a
-differential entropy is computed.
+\code{summ_entropy2()} - for a pair of distributions. For "discrete"
+pdqr-functions a classic formula \code{-sum(p * log(p))} (in nats) is used. In
+"continuous" case a differential entropy is computed.
 }
 \details{
 \strong{Note} that due to \link[=pdqr_approx_error]{pdqr approximation error}
@@ -44,8 +44,8 @@ summ_entropy2(d_norm, d_norm_2)
 summ_entropy2(d_norm, d_norm_2, method = "cross")
 
 # Increasing `clip` leads to decreasing maximum output value
-d_1 <- new_d(1:10, "fin")
-d_2 <- new_d(20:21, "fin")
+d_1 <- new_d(1:10, "discrete")
+d_2 <- new_d(20:21, "discrete")
 
   # Formally, output isn't clearly defined because functions don't have the
   # same support. Direct use of entropy formulas gives infinity output, but

@@ -32,20 +32,20 @@ Print output of pdqr-function describes the following information:
 \item Full name of function \link[=meta_class]{class}:
 \itemize{
 \item P-function is "Cumulative distribution function".
-\item D-function is "Probability mass function" for "fin" type and
-"Probability density function" for "infin".
+\item D-function is "Probability mass function" for "discrete" type and
+"Probability density function" for "continuous".
 \item Q-function is "Quantile function".
 \item R-function is "Random generation function".
 }
 \item \link[=meta_type]{Type} of function in the form "with * number of values" where
-"*" is "finite" for "fin" type and "infinite" for "infin".
+"*" is "finite" for "discrete" type and "infinite" for "continuous".
 \item \link[=meta_support]{Support} of function.
-\item Number of elements in distribution for "fin" type or number of intervals of
-piecewise-linear density for "infin" type.
-\item If pdqr-function has "fin" type and exactly two possible values 0 and 1, it
-is treated as "boolean" pdqr-function and probability of 1 is shown. This is
-done to simplify interactive work with output of comparing functions like
-\code{>=}, etc. (see \link[=methods-group-generic]{description of methods for S3 group generic functions}). To extract probabilities from "boolean"
+\item Number of elements in distribution for "discrete" type or number of
+intervals of piecewise-linear density for "continuous" type.
+\item If pdqr-function has "discrete" type and exactly two possible values 0 and
+1, it is treated as "boolean" pdqr-function and probability of 1 is shown.
+This is done to simplify interactive work with output of comparing functions
+like \code{>=}, etc. (see \link[=methods-group-generic]{description of methods for S3 group generic functions}). To extract probabilities from "boolean"
 pdqr-function, use \code{\link[=summ_prob_true]{summ_prob_true()}} and \code{\link[=summ_prob_false]{summ_prob_false()}}.
 }
 
@@ -53,7 +53,7 @@ Symbol "~" in \code{print()} output indicates that printed value or support is a
 approximation to a true one (for readability purpose).
 }
 \examples{
-print(new_d(1:10, "fin"))
+print(new_d(1:10, "discrete"))
 
 r_unif <- as_r(runif, n_grid = 251)
 print(r_unif)

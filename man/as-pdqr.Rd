@@ -86,13 +86,13 @@ in \code{...}. For more details see "Honored distributions" section.
 
 If \strong{\code{f} is some other unknown function}, \code{as_*()} functions use heuristics
 for approximating input distribution with a "proper" pdqr-function. Outputs
-of \code{as_*()} can be only pdqr-functions of type "infin" (because of issues
-with support detection). It is assumed that \code{f} returns values appropriate
-for desired output class of \code{as_*()} function and output type "infin". For
-example, input for \code{as_p()} should return values of some continuous
-cumulative distribution function (monotonically non-increasing values from 0
-to 1). To manually create function of type "fin", supply data frame input
-describing it to appropriate \code{new_*()} function.
+of \code{as_*()} can be only pdqr-functions of type "continuous" (because of
+issues with support detection). It is assumed that \code{f} returns values
+appropriate for desired output class of \code{as_*()} function and output type
+"continuous". For example, input for \code{as_p()} should return values of some
+continuous cumulative distribution function (monotonically non-increasing
+values from 0 to 1). To manually create function of type "discrete", supply
+data frame input describing it to appropriate \code{new_*()} function.
 
 General algorithm of how \code{as_*()} functions work for unknown function is as
 follows:
@@ -124,7 +124,7 @@ based on sample, generated from input \code{f}. After that, its values are
 used to create data frame with \code{as_d()}.
 }
 \item \strong{Use appropriate \code{new_*()} function} with data frame from previous step
-and \code{type = "infin"}. This step implies that all tails outside detected
+and \code{type = "continuous"}. This step implies that all tails outside detected
 support are trimmed and data frame is normalized to represent proper
 piecewise-linear density.
 }
@@ -152,9 +152,9 @@ account special features of distribution (like infinite support or infinite
 density values) and supplied extra arguments in \code{...}. Usually output support
 "loses" only around \code{1e-6} probability on each infinite tail.
 
-After that, for "fin" type output \code{new_d()} is used for appropriate data
-frame input and for "infin" - \code{as_d()} with appropriate \code{d*()} function and
-support. D-function is then converted to desired class with \code{as_*()}.
+After that, for "discrete" type output \code{new_d()} is used for appropriate data
+frame input and for "continuous" - \code{as_d()} with appropriate \code{d*()} function
+and support. D-function is then converted to desired class with \code{as_*()}.
 }
 
 \section{Support detection}{
@@ -196,7 +196,7 @@ which output is then used as approximation to "original randomness".
 # Convert existing "proper" pdqr-function
 set.seed(101)
 x <- rnorm(10)
-my_d <- new_d(x, "infin")
+my_d <- new_d(x, "continuous")
 
 my_p <- as_p(my_d)
 

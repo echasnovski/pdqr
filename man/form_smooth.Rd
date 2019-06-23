@@ -28,8 +28,8 @@ much as reasonably possible while creating more "smooth" probability mass or
 density function.
 
 At first step, sample of size \code{n_sample} is generated from distribution
-represented by \code{f}. Then, based on the sample, "infin" d-function is created
-with \code{new_d()} and arguments from \code{args_new} list. To account for
+represented by \code{f}. Then, based on the sample, "continuous" d-function is
+created with \code{new_d()} and arguments from \code{args_new} list. To account for
 \link[stats:density]{density()}'s default behavior of "stretching range" by
 adding small tails, \link[=meta_support]{support} of d-function is forced to be
 equal to \code{f}'s support (this is done with \code{\link[=form_resupport]{form_resupport()}} and method
@@ -42,17 +42,23 @@ exactly the same "x" grid as \code{f} but "more smooth" nature.
 \examples{
 set.seed(101)
 
-# Type "fin"
-bad_fin <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "fin")
-smoothed_fin <- form_smooth(bad_fin)
-plot(bad_fin)
-lines(smoothed_fin, col = "blue")
+# Type "discrete"
+bad_dis <- new_d(
+  data.frame(x = sort(runif(100)), prob = runif(100)),
+  type = "discrete"
+)
+smoothed_dis <- form_smooth(bad_dis)
+plot(bad_dis)
+lines(smoothed_dis, col = "blue")
 
-# Type "infin"
-bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
-smoothed_infin <- form_smooth(bad_infin)
-plot(bad_infin)
-lines(smoothed_infin, col = "blue")
+# Type "continuous"
+bad_con <- new_d(
+  data.frame(x = sort(runif(100)), y = runif(100)),
+  type = "continuous"
+)
+smoothed_con <- form_smooth(bad_con)
+plot(bad_con)
+lines(smoothed_con, col = "blue")
 
 }
 \seealso{

@@ -16,8 +16,8 @@ as \code{f}. Usually the input to the aforementioned \code{as_*()} function.}
 \item{...}{Other arguments to \code{ref_f}. If they were supplied to \code{as_*()}
 function, then the exact same values must be supplied here.}
 
-\item{gran}{Degree of grid "granularity" in case of "infin" type: number of
-subintervals to be produced inside every interval of density linearity.
+\item{gran}{Degree of grid "granularity" in case of "continuous" type: number
+of subintervals to be produced inside every interval of density linearity.
 Should be not less than 1 (indicator that original column from
 \link[=meta_x_tbl]{"x_tbl"} will be used, see details).}
 
@@ -35,8 +35,8 @@ A data frame with the following columns:
 \description{
 \code{pdqr_approx_error()} computes errors that are results of 'pdqr'
 approximation, which occurs because of possible tail trimming and assuming
-piecewise linearity of density function in case of "infin" type. For an easy
-view summary, use \link[base:summary]{summary()}.
+piecewise linearity of density function in case of "continuous" type. For an
+easy view summary, use \link[base:summary]{summary()}.
 }
 \details{
 Errors are computed as difference between "true" value (output of
@@ -47,11 +47,11 @@ because of possible tail trimming of reference distribution.
 
 \strong{Notes}:
 \itemize{
-\item \code{gran} argument for "fin" type is always 1.
-\item Quantile pdqr approximation of "fin" distribution with infinite tale(s) can
-result into "all one" summary of error. This is expected output and is
-because test grid is chosen to be quantiles of pdqr-distribution which due to
-renormalization can differ by one from reference ones. For example:
+\item \code{gran} argument for "discrete" type is always 1.
+\item Quantile pdqr approximation of "discrete" distribution with infinite
+tale(s) can result into "all one" summary of error. This is expected output
+and is because test grid is chosen to be quantiles of pdqr-distribution which
+due to renormalization can differ by one from reference ones. For example:
 \code{summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))}.
 }
 }

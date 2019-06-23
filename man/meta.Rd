@@ -87,23 +87,17 @@ following transformations (here \code{d_f} means a function of class "d", etc.):
 \section{Pdqr type}{
 
 
-Pdqr type is returned by \code{meta_type()}. This can be one of "fin" (short for
-"finite") or "infin" (short for "infinite"). Represents \strong{type of underlying
+Pdqr type is returned by \code{meta_type()}. This can be one of "discrete" (short
+for "finite") or "continuous". Represents \strong{type of underlying
 distribution}:
 \itemize{
-\item Type "fin" is used for distributions with finite number of outcomes.
-Functions with "fin" type has a fixed set of "x" values ("x" column in
+\item Type "discrete" is used for distributions with finite number of outcomes.
+Functions with "discrete" type has a fixed set of "x" values ("x" column in
 "x_tbl" metadata) on which d-function returns possibly non-zero output
-(values from "prob" column in "x_tbl" metadata). It is not called "discrete",
-because discrete distributions can (in theory) have infinite number of
-possible outcomes.
-\item Type "infin" is used for distribution with potentially infinite number of
-outcomes (not accounting for "finite nature" of computer simulation).
-Functions with "infin" type have piecewise-linear density which goes through
-points defined by "x" and "y" columns in "x_tbl" metadata. It is not called
-"continuous" (although it has continuous, on its support, density) because
-"infin" pdqr-functions can be used to approximate mixture of discrete and
-continuous distributions.
+(values from "prob" column in "x_tbl" metadata).
+\item Type "continuous" is used to represent continuous distributions with
+piecewise-linear density with finite values and on finite support. Density
+goes through points defined by "x" and "y" columns in "x_tbl" metadata.
 }
 }
 
@@ -112,7 +106,7 @@ continuous distributions.
 Pdqr support is returned by \code{meta_support()}. This is a numeric vector with
 two finite values. Represents \strong{support of underlying distribution}: closed
 interval, outside of which d-function is equal to zero. \strong{Note} that inside
-of support d-function can also be zero, which especially true for "fin"
+of support d-function can also be zero, which especially true for "discrete"
 functions.
 
 Technically, pdqr support is range of values from "x" column of "x_tbl"
@@ -126,14 +120,14 @@ Metadata "x_tbl" is returned by \code{meta_x_tbl()}. This is a key metadata whic
 \strong{completely defines distribution}. It is a data frame with three numeric
 columns, content of which partially depends on pdqr type.
 
-Type "fin" functions have "x_tbl" with columns "x", "prob", "cumprob".
+Type "discrete" functions have "x_tbl" with columns "x", "prob", "cumprob".
 D-functions return a value from "prob" column for input which is very near
 (should be equal up to ten digits, defined by \link[=round]{round(*, digits = 10)}) to corresponding value of "x" column. Rounding is done to
 account for issues with representation of numerical values (see Note section
 of \code{\link{==}}'s help page). For any other input, d-functions return
 zero.
 
-Type "infin" functions have "x_tbl" with columns "x", "y", "cumprob".
+Type "continuous" functions have "x_tbl" with columns "x", "y", "cumprob".
 D-functions return a value of piecewise-linear function passing through
 points that have "x" and "y" coordinates. For any value outside support (i.e.
 strictly less than minimum "x" and strictly more than maximum "x") output is

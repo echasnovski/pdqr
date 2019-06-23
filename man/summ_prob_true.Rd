@@ -18,8 +18,8 @@ A single numeric value representing corresponding probability.
 \description{
 Here \code{summ_prob_false()} returns a probability of 0 and \code{summ_prob_true()} -
 complementary probability (one minus \code{summ_prob_false()} output). Both of
-them check if their input is a \strong{boolean} pdqr-function: type "fin" with \code{x}
-in \code{x_tbl} identical to \code{c(0, 1)}. If it is not, warning is thrown.
+them check if their input is a \strong{boolean} pdqr-function: type "discrete"
+with \code{x} in \code{x_tbl} identical to \code{c(0, 1)}. If it is not, warning is thrown.
 }
 \examples{
 d_unif <- as_d(dunif)
@@ -27,10 +27,10 @@ d_norm <- as_d(dnorm)
 summ_prob_true(d_unif > d_norm)
 summ_prob_false(2*d_norm > d_unif)
 
-# When input is "infin" function or doesn't have 0 as distribution element,
-# probability of being false is returned as 0.
+# When input is "continuous" function or doesn't have 0 as distribution
+# element, probability of being false is returned as 0.
 summ_prob_false(d_unif)
-summ_prob_true(new_d(2, "fin"))
+summ_prob_true(new_d(2, "discrete"))
 
 }
 \seealso{

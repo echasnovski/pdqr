@@ -40,27 +40,27 @@ not less than \code{level}.
 \item \strong{Form a HDR as a set of closed intervals}.
 }
 
-If \code{f} has "fin" type, target height is computed by looking at "x" values of
-\link[=meta_x_tbl]{"x_tbl" metadata} in order of decreasing probability until
-their total probability is not less than \code{level}. After that, all "x" values
-with probability not less than height are considered to form a HDR. Output is
-formed as a set of \strong{closed} intervals (i.e. both edges included) inside of
-which lie all HDR "x" elements and others - don't.
+If \code{f} has "discrete" type, target height is computed by looking at "x"
+values of \link[=meta_x_tbl]{"x_tbl" metadata} in order of decreasing probability
+until their total probability is not less than \code{level}. After that, all "x"
+values with probability not less than height are considered to form a HDR.
+Output is formed as a set of \strong{closed} intervals (i.e. both edges included)
+inside of which lie all HDR "x" elements and others - don't.
 
-If \code{f} has "infin" type, target height is estimated as \code{1-level} quantile of
-\code{Y = d_f(X)} distribution, where \code{d_f} is d-function corresponding to \code{f}
-(\code{\link[=as_d]{as_d(f)}} in other words) and \code{X} is a random variable represented
-by \code{f}. Essentially, \code{Y} has a distribution of \code{f}'s density values and its
-\code{1-level} quantile is a target height. After that, HDR is formed as a set of
-intervals \strong{with positive width} (if \code{level} is more than 0, see Notes)
-inside which density is not less than target height.
+If \code{f} has "continuous" type, target height is estimated as \code{1-level}
+quantile of \code{Y = d_f(X)} distribution, where \code{d_f} is d-function
+corresponding to \code{f} (\code{\link[=as_d]{as_d(f)}} in other words) and \code{X} is a random
+variable represented by \code{f}. Essentially, \code{Y} has a distribution of \code{f}'s
+density values and its \code{1-level} quantile is a target height. After that, HDR
+is formed as a set of intervals \strong{with positive width} (if \code{level} is more
+than 0, see Notes) inside which density is not less than target height.
 
 \strong{Notes}:
 \itemize{
 \item If \code{level} is 0, output has one interval of zero width at point of \link[=summ_mode]{global mode}.
 \item If \code{level} is 1, output has one interval equal to support.
-\item Computation of target height in case of "infin" type is approximate which
-in some extreme cases (for example, like \link[=form_tails]{winsorized}
+\item Computation of target height in case of "continuous" type is approximate
+which in some extreme cases (for example, like \link[=form_tails]{winsorized}
 distributions) can lead to HDR having total probability very approximate to
 and even slightly lower than \code{level}.
 \item If d-function has "plateaus" (consecutive values with equal
@@ -71,15 +71,15 @@ and total probability should be \strong{not less} than \code{level}.
 }
 }
 \examples{
-# "fin" functions
-d_fin <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "fin")
-summ_hdr(d_fin, 0.3)
-summ_hdr(d_fin, 0.5)
-summ_hdr(d_fin, 0.9)
+# "discrete" functions
+d_dis <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "discrete")
+summ_hdr(d_dis, 0.3)
+summ_hdr(d_dis, 0.5)
+summ_hdr(d_dis, 0.9)
   # Zero width interval at global mode
-summ_hdr(d_fin, 0)
+summ_hdr(d_dis, 0)
 
-# "infin" functions
+# "continuous" functions
 d_norm <- as_d(dnorm)
 summ_hdr(d_norm, 0.95)
   # Zero width interval at global mode

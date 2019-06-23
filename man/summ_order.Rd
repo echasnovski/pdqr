@@ -69,8 +69,8 @@ summ_rank(f_list)
 # All methods might give different results on some elaborated pdqr-functions
 # Methods "compare" and "mean" are not equivalent
 non_mean_list <- list(
-  new_d(data.frame(x = c(0.56, 0.815), y = c(1, 1)), "infin"),
-  new_d(data.frame(x = 0:1, y = c(0, 1)), "infin")
+  new_d(data.frame(x = c(0.56, 0.815), y = c(1, 1)), "continuous"),
+  new_d(data.frame(x = 0:1, y = c(0, 1)), "continuous")
 )
 summ_order(non_mean_list, method = "compare")
 summ_order(non_mean_list, method = "mean")
@@ -89,9 +89,9 @@ summ_order(dlnorm_list, method = "mode")
 # "greater" than second (`P(f >= g) > 0.5`), second - than first, and first
 # is "greater" than third.
 non_trans_list <- list(
-  new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "infin"),
-  new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "infin"),
-  new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "infin")
+  new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "continuous"),
+  new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "continuous"),
+  new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "continuous")
 )
 summ_sort(non_trans_list)
   # Output doesn't depend on initial order

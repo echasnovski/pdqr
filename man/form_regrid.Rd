@@ -38,33 +38,33 @@ reference grids for both methods are \code{n_grid}.
 case when \code{n_grid} is strictly more than number of rows in "x_tbl" metadata,
 downgridding - when it is strictly less):
 \itemize{
-\item Type "fin":
+\item Type "discrete":
 \itemize{
-\item UPgridding "fin" functions is not possible as it is assumed that
-input "fin" functions can't have any "x" values other then present
-ones. In this case input is returned, the only case when output
-doesn't have desired \code{n_grid} rows in "x_tbl" metadata.
-\item DOWNgridding "fin" functions is done by computing nearest match of
-reference grid to \code{f}'s one and collapsing (by summing probabilities)
-all "x" values from input to the nearest matched ones. Here
-"computing nearest match" means that every element of reference grid
-is one-one matched with subset of unique values from \code{f}'s "x"
+\item UPgridding "discrete" functions is not possible as it is assumed
+that input "discrete" functions can't have any "x" values other then
+present ones. In this case input is returned, the only case when
+output doesn't have desired \code{n_grid} rows in "x_tbl" metadata.
+\item DOWNgridding "discrete" functions is done by computing nearest
+match of reference grid to \code{f}'s one and collapsing (by summing
+probabilities) all "x" values from input to the nearest matched ones.
+Here "computing nearest match" means that every element of reference
+grid is one-one matched with subset of unique values from \code{f}'s "x"
 elements. Matching is done in greedy iterative fashion in order to
 minimize total distance between reference grid and matched subset.
 \strong{Note} that this can result in not optimal (with not minimum total
 distance) match and can take a while to compute in some cases.
 }
-\item Type "infin":
+\item Type "continuous":
 \itemize{
-\item UPgridding "infin" functions is done by adding rows to "x_tbl"
+\item UPgridding "continuous" functions is done by adding rows to "x_tbl"
 metadata with "x" values equal to those elements of reference grid
 which are the furthest away from input "x" grid as a set. Distance
 from point to set is meant as minimum of distances between point and
 all points of set. Values of "y" and "cumprob" columns are taken as
 values of corresponding to \code{f} d- and p-functions.
-\item DOWNgridding "infin" functions is done by computing nearest match
-of reference grid to \code{f}'s one (as for "fin" type) and removing all
-unmatched rows from "x_tbl" metadata.
+\item DOWNgridding "continuous" functions is done by computing nearest
+match of reference grid to \code{f}'s one (as for "discrete" type) and
+removing all unmatched rows from "x_tbl" metadata.
 }
 }
 }
@@ -78,17 +78,17 @@ numeric input equal to distribution's median.
 }
 }
 \examples{
-# Type "fin"
-d_fin <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "fin")
+# Type "discrete"
+d_dis <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "discrete")
 
   # Downgridding
-meta_x_tbl(form_regrid(d_fin, n_grid = 4))
-meta_x_tbl(form_regrid(d_fin, n_grid = 4, method = "q"))
+meta_x_tbl(form_regrid(d_dis, n_grid = 4))
+meta_x_tbl(form_regrid(d_dis, n_grid = 4, method = "q"))
 
-  # Upgridding for "fin" type isn't possible. Input is returned
-identical(d_fin, form_regrid(d_fin, n_grid = 100))
+  # Upgridding for "discrete" type isn't possible. Input is returned
+identical(d_dis, form_regrid(d_dis, n_grid = 100))
 
-# Type "infin"
+# Type "continuous"
   # Downgridding
 d_norm <- as_d(dnorm)
 plot(d_norm)
@@ -96,13 +96,13 @@ lines(form_regrid(d_norm, n_grid = 10), col = "blue")
 lines(form_regrid(d_norm, n_grid = 10, method = "q"), col = "green")
 
   # Upgridding
-d_infin <- new_d(data.frame(x = 1:3, y = rep(0.5, 3)), type = "infin")
-meta_x_tbl(form_regrid(d_infin, n_grid = 6))
+d_con <- new_d(data.frame(x = 1:3, y = rep(0.5, 3)), type = "continuous")
+meta_x_tbl(form_regrid(d_con, n_grid = 6))
 
 # Pdqr-function with center at median is returned in case `n_grid` is 1
-form_regrid(d_fin, n_grid = 1)
+form_regrid(d_dis, n_grid = 1)
   # Dirac-like function is returned
-form_regrid(d_infin, n_grid = 1)
+form_regrid(d_con, n_grid = 1)
 
 }
 \seealso{

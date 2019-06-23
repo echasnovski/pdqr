@@ -51,7 +51,7 @@ r-functions, see Details).
 Main idea of plotting pdqr-functions is to use plotting mechanisms
 for appropriate numerical data.
 
-Plotting of \link[=meta_type]{type} \strong{fin} functions:
+Plotting of \link[=meta_type]{type} \strong{discrete} functions:
 \itemize{
 \item P-functions are plotted as step-line with jumps at points of "x" column of
 \link[=meta_x_tbl]{"x_tbl" metadata}.
@@ -63,7 +63,7 @@ column of "x_tbl".
 \link[graphics:hist]{hist()} function.
 }
 
-Plotting of type \strong{infin} functions:
+Plotting of type \strong{continuous} functions:
 \itemize{
 \item P-functions are plotted in piecewise-linear fashion at their values on
 compound grid: sorted union of "x" column from "x_tbl" metadata and sequence
@@ -74,8 +74,8 @@ points from "x_tbl" (see Examples).
 \item Q-functions are plotted similarly as p- and d-functions but grid consists
 from union of "cumprob" column of "x_tbl" metadata and equidistant grid of
 length \code{n_extra_grid} from 0 to 1.
-\item R-functions are plotted the same way as type "fin" ones: as histogram of
-generated sample of size \code{n_sample}.
+\item R-functions are plotted the same way as type "discrete" ones: as histogram
+of generated sample of size \code{n_sample}.
 }
 }
 \examples{
@@ -85,8 +85,9 @@ d_norm_2 <- as_d(dnorm, mean = 1)
 plot(d_norm_1)
 lines(d_norm_2, col = "red")
 
-# Usage of `n_extra_grid` is important in case of "infin" p- and q-functions
-simple_p <- new_p(data.frame(x = c(0, 1), y = c(0, 1)), "infin")
+# Usage of `n_extra_grid` is important in case of "continuous" p- and
+# q-functions
+simple_p <- new_p(data.frame(x = c(0, 1), y = c(0, 1)), "continuous")
 plot(simple_p, main = "Case study of n_extra_grid argument")
 lines(simple_p, n_extra_grid = 0, col = "red")
 

@@ -22,10 +22,9 @@ summ_mode(f, method = "global")
 "mean", "median", "mode". For \code{summ_mode()} is one of "global" or "local".}
 }
 \value{
-\code{summ_center()}, \code{summ_mean()}, \code{summ_median()} and
-\code{summ_mode(*, method = "global")} always return a single number
-representing a center of distribution. \code{summ_mode(*, method = "local")} can
-return a numeric vector with multiple values representing local maxima.
+\code{summ_center()}, \code{summ_mean()}, \code{summ_median()} and \code{summ_mode(*, method = "global")} always return a single number representing a center of
+distribution. \code{summ_mode(*, method = "local")} can return a numeric vector
+with multiple values representing local maxima.
 }
 \description{
 Functions to compute center of distribution. \code{summ_center()} is a wrapper for
@@ -36,8 +35,8 @@ respective \code{summ_*()} functions (from this page) with default arguments.
 
 \code{summ_median()} computes a smallest \code{x} value for which cumulative
 probability is not less than 0.5. Essentially, it is a \code{as_q(f)(0.5)}. This
-also means that for pdqr-functions with type "fin" it always returns an entry
-of "x" column from \code{f}'s \code{\link[=meta_x_tbl]{x_tbl}}.
+also means that for pdqr-functions with type "discrete" it always returns an
+entry of "x" column from \code{f}'s \link[=meta_x_tbl]{"x_tbl" metadata}.
 
 \code{summ_mode(*, method = "global")} computes a smallest \code{x} (which is an entry
 of "x" column from \code{f}'s \code{x_tbl}) with the highest probability/density.
@@ -45,14 +44,14 @@ of "x" column from \code{f}'s \code{x_tbl}) with the highest probability/density
 non-strict \strong{local maxima} of probability mass/density function.
 }
 \examples{
-# Type "infin"
+# Type "continuous"
 d_norm <- as_d(dnorm)
   # The same as `summ_center(d_norm, method = "mean")`
 summ_mean(d_norm)
 summ_median(d_norm)
 summ_mode(d_norm)
 
-# Type "fin"
+# Type "discrete"
 d_pois <- as_d(dpois, lambda = 10)
 summ_mean(d_pois)
 summ_median(d_pois)
@@ -62,7 +61,7 @@ summ_mode(d_pois)
 summ_mode(d_pois, method = "local")
 
 # Details of computing local modes
-my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "infin")
+my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "continuous")
   # Several values, which are entries of `x_tbl`, are returned as local modes
 summ_mode(my_d, method = "local")
 

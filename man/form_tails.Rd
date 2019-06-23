@@ -38,14 +38,14 @@ Direction "both" affect both tails. Directions "left" and "right" affect only
 left and right tail respectively.
 }
 \examples{
-# Type "fin"
-my_fin <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "fin")
-meta_x_tbl(form_tails(my_fin, level = 0.1))
+# Type "discrete"
+my_dis <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "discrete")
+meta_x_tbl(form_tails(my_dis, level = 0.1))
 meta_x_tbl(
-  form_tails(my_fin, level = 0.35, method = "winsor", direction = "left")
+  form_tails(my_dis, level = 0.35, method = "winsor", direction = "left")
 )
 
-# Type "infin"
+# Type "continuous"
 d_norm <- as_d(dnorm)
 plot(d_norm)
 lines(form_tails(d_norm, level = 0.1), col = "blue")
@@ -63,7 +63,7 @@ form_resupport(d_norm, support = new_supp)
 # Examples of robust mean
 set.seed(101)
 x <- rcauchy(1000)
-d_x <- new_d(x, "infin")
+d_x <- new_d(x, "continuous")
 summ_mean(d_x)
   # Trimmed mean
 summ_mean(form_tails(d_x, level = 0.1, method = "trim"))

@@ -43,11 +43,11 @@ distance is achieved. Instead, there might be a sequence of points from left
 to right with \code{|F - G|} values tending to the result (see Examples).
 \item \emph{Method "totvar"} (short for "total variation") computes a biggest absolute
 difference of probabilities for any subset of real line. In other words,
-there is a set of points for "fin" type and intervals for "infin", total
-probability of which under \code{f} and \code{g} differs the most. \strong{Note} that if
-\code{f} and \code{g} have different types, output is always 1. The set of interest
-consists from all "x" values of "fin" pdqr-function: probability under "fin"
-distribution is 1 and under "infin" is 0.
+there is a set of points for "discrete" type and intervals for "continuous",
+total probability of which under \code{f} and \code{g} differs the most. \strong{Note} that
+if \code{f} and \code{g} have different types, output is always 1. The set of interest
+consists from all "x" values of "discrete" pdqr-function: probability under
+"discrete" distribution is 1 and under "continuous" is 0.
 \item \emph{Method "compare"} represents a value computed based on probabilities of
 one distribution being bigger than the other (see \link[=methods-group-generic]{pdqr methods for "Ops" group generic family} for more details on comparing
 pdqr-functions). It is computed as
@@ -65,7 +65,7 @@ real line:
 distance: "minimum cost of 'moving' one density into another", or "average
 path density point should go while transforming from one into another". It is
 computed as integral of \code{|F - G|} (absolute difference between p-functions).
-If any of \code{f} and \code{g} has "infin" type, \code{\link[stats:integrate]{stats::integrate()}} is used, so
+If any of \code{f} and \code{g} has "continuous" type, \code{\link[stats:integrate]{stats::integrate()}} is used, so
 relatively small numerical errors can happen.
 \item \emph{Method "cramer"} computes Cramer distance: integral of \code{(F - G)^2}. This
 somewhat relates to "wass" method as \link[=summ_moment]{first central absolute moment} relates to \link[=summ_var]{variance}. Relatively small
@@ -103,10 +103,10 @@ vapply(
 )
 
 # "Supremum" quality of "KS" distance
-d_fin <- new_d(2, "fin")
+d_dis <- new_d(2, "discrete")
   # Distance is 1, which is a limit of |F - G| at points which tend to 2 from
   # left
-summ_distance(d_fin, d_unif, method = "KS")
+summ_distance(d_dis, d_unif, method = "KS")
 
 }
 \seealso{

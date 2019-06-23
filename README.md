@@ -25,24 +25,28 @@ Typical usage is to:
 2.  Make necessary transformations with `form_*()` family.
 3.  Compute summary values with `summ_*()` family.
 
-Two types of distributions are supported:
+Two types of pdqr-functions, representing different types of
+distributions, are supported:
 
-  - **Type “fin”**: random variable has *finite number of output
-    values*. It is explicitly defined by the collection of its values
-    with their corresponding probability. Usually is used when
-    underlying distribution is discrete.
-  - **Type “infin”**: *infinite number of output values* in the form of
-    continuous random variable. It is explicitly defined by
-    piecewise-linear density function. Usually is used when underlying
-    distribution is continuous.
+  - **Type “discrete”**: random variable has *finite number of output
+    values*. Pdqr-function is explicitly defined by the collection of
+    its values with their corresponding probability. Usually is used
+    when underlying distribution is discrete (even if in theory there
+    are infinite number of output values).
+  - **Type “continuous”**: random variable has *infinite number of
+    output values in the form of continuous random variable*. It is
+    explicitly defined by piecewise-linear density function with finite
+    support and values. Usually is used when underlying distribution is
+    continuous (even if in theory it has infinite support and/or density
+    values).
 
 Implemented approaches often emphasize approximate and numerical
 solutions:
 
   - All distributions assume **finite support** (output values are
     bounded from below and above) and **finite values of density
-    function** (density function in case of “infin” type can’t go to
-    infinity).
+    function** (density function in case of “continuous” type can’t go
+    to infinity).
   - Some methods implemented with **simulation techniques**.
 
 **Note** that to fully use this package, one needs to be familiar with
@@ -82,8 +86,8 @@ Compute winsorized mean:
 library(magrittr)
 # Take a sample
 mtcars$mpg %>% 
-  # Create any pdqr-function treating input as discrete
-  new_d(type = "fin") %>% 
+  # Create pdqr-function of any class treating input as discrete
+  new_d(type = "discrete") %>% 
   # Winsorize tails
   form_tails(level = 0.1, method = "winsor", direction = "both") %>% 
   # Compute mean of distribution
@@ -96,7 +100,7 @@ Compute and visualize distribution of difference of sample means:
 ``` r
 # Compute distribution of first sample mean treating input as continuous
 mpg_vs0 <- mtcars$mpg[mtcars$vs == 0]
-d_vs0 <- new_d(mpg_vs0, "infin")
+d_vs0 <- new_d(mpg_vs0, "continuous")
 (d_vs0_mean <- form_estimate(
   d_vs0, estimate = mean, sample_size = length(mpg_vs0)
 ))
@@ -105,7 +109,7 @@ d_vs0 <- new_d(mpg_vs0, "infin")
 
 # Compute distribution of second sample mean treating input as continuous
 mpg_vs1 <- mtcars$mpg[mtcars$vs == 1]
-d_vs1 <- new_d(mpg_vs1, "infin")
+d_vs1 <- new_d(mpg_vs1, "continuous")
 (d_vs1_mean <- form_estimate(
   d_vs1, estimate = mean, sample_size = length(mpg_vs1)
 ))
@@ -148,13 +152,13 @@ region_draw(norm_hdr)
 ## <a id="pdqr-create"></a> Create with `new_*()`
 
 All `new_*()` functions create a pdqr-function of certain class (“p”,
-“d”, “q”, or “r”) and type (“fin” or “infin”) based on sample or
-data frame of appropriate structure:
+“d”, “q”, or “r”) and type (“discrete” or “continuous”) based on
+sample or data frame of appropriate structure:
 
   - **Sample input** is converted into data frame of appropriate
     structure that defines distribution (see next list item). It is done
-    based on type. For “fin” type it gets tabulated with frequency of
-    unique values serving as their probability. For “infin” type
+    based on type. For “discrete” type it gets tabulated with frequency
+    of unique values serving as their probability. For “continuous” type
     distribution density is estimated using
     [`density()`](https://rdrr.io/r/stats/density.html) function if
     input has at least 2 elements. For 1 element special “dirac-like”
@@ -162,8 +166,8 @@ data frame of appropriate structure:
     triangular distribution with very narrow support (1e-8 order of
     magnitude).
   - **Data frame input** should completely define distribution. For
-    “fin” type it should have “x” and “prob” columns for output
-    values and their probabilities. For “infin” type - “x” and “y”
+    “discrete” type it should have “x” and “prob” columns for output
+    values and their probabilities. For “continuous” type - “x” and “y”
     columns for points, which define piecewise-linear continuous density
     function. Columns “prob” and “y” will be automatically normalized to
     represent proper distribution: sum of “prob” will be 1 and total
@@ -179,9 +183,9 @@ distribution:
 
   - **P-function** is a cumulative distribution function. Created with
     `new_p()`.
-  - **D-function** is a probability mass function for “fin” type and
-    density function for “infin”. Created with `new_d()`. Generally
-    speaking, it is a derivative of distribution’s p-function.
+  - **D-function** is a probability mass function for “discrete” type
+    and density function for “continuous”. Created with `new_d()`.
+    Generally speaking, it is a derivative of distribution’s p-function.
   - **Q-function** is a quantile function. Created with `new_q()`.
     Inverse of distribution’s p-function.
   - **R-function** is a random generation function. Created with
@@ -193,61 +197,61 @@ For more details see vignette about creation of pdqr-functions.
 
 ``` r
 # Treat input as discrete
-(p_mpg_fin <- new_p(mtcars$mpg, type = "fin"))
+(p_mpg_dis <- new_p(mtcars$mpg, type = "discrete"))
 #> Cumulative distribution function with finite number of values
 #> Support: [10.4, 33.9] (25 elements)
-(d_mpg_fin <- new_d(mtcars$mpg, type = "fin"))
+(d_mpg_dis <- new_d(mtcars$mpg, type = "discrete"))
 #> Probability mass function with finite number of values
 #> Support: [10.4, 33.9] (25 elements)
-(q_mpg_fin <- new_q(mtcars$mpg, type = "fin"))
+(q_mpg_dis <- new_q(mtcars$mpg, type = "discrete"))
 #> Quantile function with finite number of values
 #> Support: [10.4, 33.9] (25 elements)
-(r_mpg_fin <- new_r(mtcars$mpg, type = "fin"))
+(r_mpg_dis <- new_r(mtcars$mpg, type = "discrete"))
 #> Random generation function with finite number of values
 #> Support: [10.4, 33.9] (25 elements)
 
-  # "x_tbl" metadata is the same for all `*_mpg_fin()` pdqr-functions
-head(meta_x_tbl(p_mpg_fin), n = 3)
+  # "x_tbl" metadata is the same for all `*_mpg_dis()` pdqr-functions
+head(meta_x_tbl(p_mpg_dis), n = 3)
 #>      x    prob cumprob
 #> 1 10.4 0.06250 0.06250
 #> 2 13.3 0.03125 0.09375
 #> 3 14.3 0.03125 0.12500
 
 # Treat input as continuous
-(p_mpg_infin <- new_p(mtcars$mpg, type = "infin"))
+(p_mpg_con <- new_p(mtcars$mpg, type = "continuous"))
 #> Cumulative distribution function with infinite number of values
 #> Support: ~[2.96996, 41.33004] (511 intervals)
-(d_mpg_infin <- new_d(mtcars$mpg, type = "infin"))
+(d_mpg_con <- new_d(mtcars$mpg, type = "continuous"))
 #> Density function with infinite number of values
 #> Support: ~[2.96996, 41.33004] (511 intervals)
-(q_mpg_infin <- new_q(mtcars$mpg, type = "infin"))
+(q_mpg_con <- new_q(mtcars$mpg, type = "continuous"))
 #> Quantile function with infinite number of values
 #> Support: ~[2.96996, 41.33004] (511 intervals)
-(r_mpg_infin <- new_r(mtcars$mpg, type = "infin"))
+(r_mpg_con <- new_r(mtcars$mpg, type = "continuous"))
 #> Random generation function with infinite number of values
 #> Support: ~[2.96996, 41.33004] (511 intervals)
 
-  # "x_tbl" metadata is the same for all `*_mpg_infin()` pdqr-functions
-head(meta_x_tbl(p_mpg_infin), n = 3)
+  # "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions
+head(meta_x_tbl(p_mpg_con), n = 3)
 #>            x              y        cumprob
 #> 1 2.96996269 0.000114133557 0.00000000e+00
 #> 2 3.04503133 0.000125168087 8.98202438e-06
 #> 3 3.12009996 0.000136934574 1.88198694e-05
 
 # Output of `new_*()` is actually a function
-p_mpg_fin(15:20)
+p_mpg_dis(15:20)
 #> [1] 0.18750 0.31250 0.34375 0.40625 0.46875 0.56250
 
-  # Random generation. "fin" type generates only values from input
-r_mpg_fin(10)
+  # Random generation. "discrete" type generates only values from input
+r_mpg_dis(10)
 #>  [1] 21.0 10.4 27.3 15.2 21.0 19.7 21.0 16.4 21.4 14.3
-r_mpg_infin(10)
+r_mpg_con(10)
 #>  [1]  9.04778435 34.75375947 25.85388829 19.14534473 24.97377936
 #>  [6] 18.78212805 17.81914730 18.72417709 15.81156928 21.58663248
 
 # Special case of dirac-like pdqr-function, which numerically approximates
 # single number with distribution with narrow support
-(r_dirac <- new_r(3.14, "infin"))
+(r_dirac <- new_r(3.14, "continuous"))
 #> Random generation function with infinite number of values
 #> Support: ~[3.14, 3.14] (2 intervals)
 meta_x_tbl(r_dirac)
@@ -260,20 +264,20 @@ meta_x_tbl(r_dirac)
 ### Create pdqr-function from data frame
 
 ``` r
-# Type "fin"
-fin_tbl <- data.frame(x = 1:4, prob = 4:1 / 10)
-new_d(fin_tbl, type = "fin")
+# Type "discrete"
+dis_tbl <- data.frame(x = 1:4, prob = 4:1 / 10)
+new_d(dis_tbl, type = "discrete")
 #> Probability mass function with finite number of values
 #> Support: [1, 4] (4 elements)
-new_r(fin_tbl, type = "fin")(10)
+new_r(dis_tbl, type = "discrete")(10)
 #>  [1] 4 4 4 1 2 1 1 1 2 2
 
-# Type "infin"
-infin_tbl <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
-new_d(infin_tbl, type = "infin")
+# Type "continuous"
+con_tbl <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
+new_d(con_tbl, type = "continuous")
 #> Density function with infinite number of values
 #> Support: [1, 4] (3 intervals)
-new_r(infin_tbl, type = "infin")(10)
+new_r(con_tbl, type = "continuous")(10)
 #>  [1] 3.78486663 2.12600804 3.74231079 2.48302382 2.89583449 3.76072579
 #>  [7] 3.50610764 2.63287220 3.79795585 1.67113707
 ```
@@ -299,19 +303,19 @@ straightforwardly by changing function’s class without touching the
 underlying distribution (“x\_tbl” metadata is the same):
 
 ``` r
-d_fin <- new_d(1:4, "fin")
-meta_x_tbl(d_fin)
+d_dis <- new_d(1:4, "discrete")
+meta_x_tbl(d_dis)
 #>   x prob cumprob
 #> 1 1 0.25    0.25
 #> 2 2 0.25    0.50
 #> 3 3 0.25    0.75
 #> 4 4 0.25    1.00
 
-# This is equivalent to `new_p(1:4, "fin")`
-(p_fin <- as_p(d_fin))
+# This is equivalent to `new_p(1:4, "discrete")`
+(p_dis <- as_p(d_dis))
 #> Cumulative distribution function with finite number of values
 #> Support: [1, 4] (4 elements)
-meta_x_tbl(p_fin)
+meta_x_tbl(p_dis)
 #>   x prob cumprob
 #> 1 1 0.25    0.25
 #> 2 2 0.25    0.50
@@ -323,12 +327,12 @@ meta_x_tbl(p_fin)
 
 Another important use case for `as_*()` functions is to convert some
 other distribution functions to be pdqr-functions. Except small number
-of special cases, output of `as_*()` function will have “infin” type.
-The reason is because identifying exact values of distribution in “fin”
-case is very hard in this setup (when almost nothing is known about the
-input function). It is assumed that if user knows those values, some
-`new_*()` function with data frame input can be used to create arbitrary
-“fin” pdqr-function.
+of special cases, output of `as_*()` function will have “continuous”
+type. The reason is because identifying exact values of distribution in
+discrete case is very hard in this setup (when almost nothing is known
+about the input function). It is assumed that if user knows those
+values, some `new_*()` function with data frame input can be used to
+create arbitrary discrete pdqr-function.
 
 General conversion algorithm is as follows:
 
@@ -402,7 +406,7 @@ examples:
 ``` r
 # Transform support of pdqr-function with `form_resupport()`. Usually useful
 # for dealing with bounded values.
-d_smpl <- new_d(runif(1000), type = "infin")
+d_smpl <- new_d(runif(1000), type = "continuous")
 d_smpl_bounded <- form_resupport(d_smpl, support = c(0, 1), method = "reflect")
 
 plot(d_smpl, main = "Estimating density of bounded quantity", col = "black")
@@ -448,10 +452,10 @@ d_norm - d_unif
 #> Support: ~[-4.68318, 3.9119] (511 intervals)
 
 # Comparing random variables results into boolean random variable represented
-# by boolean pdqr-function (type "fin" with values 0 for FALSE and 1 for TRUE).
-# Here it means that random value of `d_norm` will be greater than random value
-# of `d_unif` with probability around 0.316. This is computed directly, without
-# random simulation.
+# by boolean pdqr-function (type "discrete" with values 0 for FALSE and 1 for
+# TRUE). Here it means that random value of `d_norm` will be greater than random
+# value of `d_unif` with probability around 0.316. This is computed directly,
+# without random simulation.
 d_norm > d_unif
 #> Probability mass function with finite number of values
 #> Support: [0, 1] (2 elements, probability of 1: ~0.31563)
