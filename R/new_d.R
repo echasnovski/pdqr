@@ -4,7 +4,7 @@
 new_d <- function(x, type, ...) {
   distr_impl(
     pdqr_class = "d",
-    impl_funs = list(fin = new_d_fin, infin = new_d_infin),
+    impl_funs = list(fin = new_d_fin, continuous = new_d_con),
     x = x, type = type, ...
   )
 }
@@ -33,8 +33,8 @@ new_d_fin <- function(x_tbl) {
   }
 }
 
-new_d_infin <- function(x_tbl) {
-  type <- "infin"
+new_d_con <- function(x_tbl) {
+  type <- "continuous"
   support <- range(x_tbl[["x"]])
 
   # Using custom function instead of `stats::approxfun()` to avoid creating

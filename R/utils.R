@@ -67,7 +67,7 @@ neigh_dist <- function(vec, neigh_type = "min", def_dist = NULL) {
 # This is an euristic for a computation of "effective" height of density.
 # Currently this is used for a nice plotting in presence of dirac-like entries
 # in "x_tbl"
-compute_d_infin_ylim <- function(f) {
+compute_d_con_ylim <- function(f) {
   f_x_tbl <- meta_x_tbl(f)
   x <- f_x_tbl[["x"]]
   y <- f_x_tbl[["y"]]
@@ -405,7 +405,7 @@ capture_null <- function(x) {
 #'
 #' `pdqr_approx_error()` computes errors that are results of 'pdqr'
 #' approximation, which occurs because of possible tail trimming and assuming
-#' piecewise linearity of density function in case of "infin" type. For an easy
+#' piecewise linearity of density function in case of "continuous" type. For an easy
 #' view summary, use [summary()][base::summary()].
 #'
 #' @param f A p-, d-, or q-function to diagnose. Usually the output of one of
@@ -414,7 +414,7 @@ capture_null <- function(x) {
 #'   as `f`. Usually the input to the aforementioned `as_*()` function.
 #' @param ... Other arguments to `ref_f`. If they were supplied to `as_*()`
 #'   function, then the exact same values must be supplied here.
-#' @param gran Degree of grid "granularity" in case of "infin" type: number of
+#' @param gran Degree of grid "granularity" in case of "continuous" type: number of
 #'   subintervals to be produced inside every interval of density linearity.
 #'   Should be not less than 1 (indicator that original column from
 #'   ["x_tbl"][meta_x_tbl()] will be used, see details).
@@ -485,7 +485,7 @@ pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
   grid <- switch(
     meta_type(f),
     fin = granulate_grid(f, gran = 1),
-    infin = granulate_grid(f, gran = gran)
+    continuous = granulate_grid(f, gran = gran)
   )
 
   error <- ref_f(grid, ...) - f(grid)
@@ -539,13 +539,13 @@ granulate_grid <- function(f, gran) {
 #' [type][meta_type()] of input pdqr-function `f`:
 #' - **P-functions** are represented with "x" (for "x" values) and "p" (for
 #' cumulative probability at "x" points) columns:
-#'     - For "infin" type, "x" is taken as an equidistant grid (with `n_points`
+#'     - For "continuous" type, "x" is taken as an equidistant grid (with `n_points`
 #'     elements) on input's [support][meta_support()].
 #'     - For "fin" type, "x" is taken directly from ["x_tbl"
 #'     metadata][meta_x_tbl()] without using `n_points` argument.
 #' - **D-functions** are represented with "x" column and one more (for values of
 #' d-function at "x" points):
-#'     - For "infin" type, second column is named "y" and is computed as values
+#'     - For "continuous" type, second column is named "y" and is computed as values
 #'     of `f` at elements of "x" column (which is the same grid as in p-function
 #'     case).
 #'     - For "fin" it is named "prob". Both "x" and "prob" columns are taken
@@ -553,7 +553,7 @@ granulate_grid <- function(f, gran) {
 #' - **Q-functions** are represented almost as p-functions but in inverse
 #' fashion. Output data frame has "p" (probabilities) and "x" (values of
 #' q-function `f` at "p" elements) columns.
-#'     - For "infin" type, "p" is computed as equidistant grid (with `n_points`
+#'     - For "continuous" type, "p" is computed as equidistant grid (with `n_points`
 #'     elements) between 0 and 1.
 #'     - For "fin" type, "p" is taken from "cumprob" column of "x_tbl" metadata.
 #' - **R-functions** are represented by generating `n_points` elements from
@@ -587,9 +587,9 @@ granulate_grid <- function(f, gran) {
 #' # Different pdqr classes and types produce different column names in output
 #' colnames(enpoint(new_p(1:2, "fin")))
 #' colnames(enpoint(new_d(1:2, "fin")))
-#' colnames(enpoint(new_d(1:2, "infin")))
-#' colnames(enpoint(new_q(1:2, "infin")))
-#' colnames(enpoint(new_r(1:2, "infin")))
+#' colnames(enpoint(new_d(1:2, "continuous")))
+#' colnames(enpoint(new_q(1:2, "continuous")))
+#' colnames(enpoint(new_r(1:2, "continuous")))
 #'
 #' # Manual way with different output structure
 #' df <- meta_x_tbl(form_regrid(d_norm, 5))

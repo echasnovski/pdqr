@@ -27,7 +27,7 @@
 #' formed as a set of **closed** intervals (i.e. both edges included) inside of
 #' which lie all HDR "x" elements and others - don't.
 #'
-#' If `f` has "infin" type, target height is estimated as `1-level` quantile of
+#' If `f` has "continuous" type, target height is estimated as `1-level` quantile of
 #' `Y = d_f(X)` distribution, where `d_f` is d-function corresponding to `f`
 #' ([`as_d(f)`][as_d()] in other words) and `X` is a random variable represented
 #' by `f`. Essentially, `Y` has a distribution of `f`'s density values and its
@@ -39,7 +39,7 @@
 #' - If `level` is 0, output has one interval of zero width at point of [global
 #' mode][summ_mode()].
 #' - If `level` is 1, output has one interval equal to support.
-#' - Computation of target height in case of "infin" type is approximate which
+#' - Computation of target height in case of "continuous" type is approximate which
 #' in some extreme cases (for example, like [winsorized][form_tails()]
 #' distributions) can lead to HDR having total probability very approximate to
 #' and even slightly lower than `level`.
@@ -70,7 +70,7 @@
 #'   # Zero width interval at global mode
 #' summ_hdr(d_fin, 0)
 #'
-#' # "infin" functions
+#' # "continuous" functions
 #' d_norm <- as_d(dnorm)
 #' summ_hdr(d_norm, 0.95)
 #'   # Zero width interval at global mode
@@ -113,7 +113,7 @@ summ_hdr <- function(f, level = 0.95) {
   switch(
     meta_type(f),
     fin = hdr_fin(f, level),
-    infin = hdr_infin(f, level)
+    continuous = hdr_con(f, level)
   )
 }
 
@@ -138,7 +138,7 @@ hdr_fin <- function(f, level) {
   region_new(left = x_high[is_interval_left], right = x_high[is_interval_right])
 }
 
-hdr_infin <- function(f, level) {
+hdr_con <- function(f, level) {
   # "Cut down" `y` values inside very narrow intervals. Otherwise they might
   # greatly skew computation of target height. This happen in winsorized
   # pdqr-functions.
@@ -155,7 +155,7 @@ hdr_infin <- function(f, level) {
 cut_down_density <- function(f, level) {
   # This computes `y` range excluding those values inside "very narrow"
   # intervals, which are (very probably) dirac-like values.
-  y_lim <- compute_d_infin_ylim(f)
+  y_lim <- compute_d_con_ylim(f)
   x_tbl <- meta_x_tbl(f)
   y <- x_tbl[["y"]]
   y_cut_down <- pmin(y, y_lim[2])

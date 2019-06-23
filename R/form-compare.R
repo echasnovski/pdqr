@@ -59,7 +59,7 @@ prob_geq <- function(f, g) {
       # 1 - P(g >= f)
       1 - prob_geq_fin_any(g, f)
     } else {
-      prob_geq_infin_infin(f, g)
+      prob_geq_con_con(f, g)
     }
   }
 }
@@ -72,7 +72,7 @@ prob_equal <- function(f, g) {
 
     # This is basically a copy of `new_d_fin()` output's body but without input
     # rounding. This is done to ensure the following code is valid:
-    # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
+    # dirac_single_fin <- form_retype(new_d(1, "continuous"), "fin")
     # This should return 0.5 which it doesn't (because of rounding policy) if
     # `d_g_at_x_f` is computed with `as_d(g)(x_f)`:
     # prob_equal(dirac_single_fin, dirac_single_fin)
@@ -83,8 +83,8 @@ prob_equal <- function(f, g) {
 
     sum(f_x_tbl[["prob"]] * d_g_at_x_f)
   } else {
-    # If any of `f` or `g` is "infin" (i.e. "continuous") then probability
-    # of generating two exactly equal values is 0
+    # If any of `f` or `g` is "continuous" then probability of generating two
+    # exactly equal values is 0
     0
   }
 }
@@ -100,7 +100,7 @@ prob_geq_fin_any <- function(f, g) {
   if (meta_type(g) == "fin") {
     # This is basically a copy of `new_p_fin()` output's body but without input
     # rounding. This is done to ensure that the following code is valid:
-    # dirac_single_fin <- form_retype(new_d(1, "infin"), "fin")
+    # dirac_single_fin <- form_retype(new_d(1, "continuous"), "fin")
     # # This should return 0.75 which it doesn't (because of rounding policy) if
     # # `cumprob_g` is computed with `as_p(g)(x_f)`.
     # prob_geq_fin_any(dirac_single_fin, dirac_single_fin)
@@ -123,14 +123,14 @@ prob_geq_fin_any <- function(f, g) {
   sum(f_x_tbl[["prob"]] * cumprob_g)
 }
 
-prob_geq_infin_infin <- function(f, g) {
+prob_geq_con_con <- function(f, g) {
   # Create intersection grid (with some helper grids) for `f` and `g`. It is
   # created as union of `f` and `g` "x"s which lie in the intersection of both
   # supports. This is done to workaround the assumption that vectors `x` and `y`
   # during integral computation represent actual density points **between which
   # there are lines**. This doesn't hold if grid is created as simple union of
   # grids (there will be distortion on the edge of some support).
-  # Example: `f` and `g` are "infin" uniform on (0, 1) and (0.5, 1.5). `f` on
+  # Example: `f` and `g` are "continuous" uniform on (0, 1) and (0.5, 1.5). `f` on
   # union grid (0, 0.5, 1, 1.5) would have "y" values (1, 1, 1, 0) which during
   # computation of integrals will be treated as having line from (x=1, y=1) to
   # (x=1.5, y=0), which is not true.
@@ -171,7 +171,7 @@ prob_geq_infin_infin <- function(f, g) {
   # here is `[inters_x[1], inters_x[n]]`.
   cumprob_g_left <- as_p(g)(inters_left)
 
-  inters_res <- infin_geq_piece_integral(
+  inters_res <- con_geq_piece_integral(
     diff_x = diff(inters_x),
     y_f_left = as_d(f)(inters_left),
     y_g_left = as_d(g)(inters_left),
@@ -187,7 +187,7 @@ prob_geq_infin_infin <- function(f, g) {
   inters_res + f_geq_outside
 }
 
-infin_geq_piece_integral <- function(diff_x, y_f_left, y_g_left,
+con_geq_piece_integral <- function(diff_x, y_f_left, y_g_left,
                                      slope_f, slope_g, cumprob_g_left) {
   # Output probability is equal to definite integral of `d_f(x) * p_g(x)` over
   # intersection support. On each interval, where both densities have linear

@@ -11,14 +11,14 @@
 #' - Full name of function [class][meta_class()]:
 #'     - P-function is "Cumulative distribution function".
 #'     - D-function is "Probability mass function" for "fin" type and
-#'     "Probability density function" for "infin".
+#'     "Probability density function" for "continuous".
 #'     - Q-function is "Quantile function".
 #'     - R-function is "Random generation function".
 #' - [Type][meta_type()] of function in the form "with * number of values" where
-#' "\*" is "finite" for "fin" type and "infinite" for "infin".
+#' "\*" is "finite" for "fin" type and "infinite" for "continuous".
 #' - [Support][meta_support()] of function.
 #' - Number of elements in distribution for "fin" type or number of intervals of
-#' piecewise-linear density for "infin" type.
+#' piecewise-linear density for "continuous" type.
 #' - If pdqr-function has "fin" type and exactly two possible values 0 and 1, it
 #' is treated as "boolean" pdqr-function and probability of 1 is shown. This is
 #' done to simplify interactive work with output of comparing functions like
@@ -109,7 +109,7 @@ n_x_tbl_info <- function(x) {
       " (", n_x_tbl, " ", ngettext(n_x_tbl, "element", "elements"),
       prob_string, ")"
     )
-  } else if (x_type == "infin") {
+  } else if (x_type == "continuous") {
     paste0(
       " (", n_x_tbl-1, " ", ngettext(n_x_tbl-1, "interval", "intervals"), ")"
     )
@@ -139,10 +139,10 @@ use_color <- function() {
 meta_type_print_name <- function(x) {
   x_type <- meta_type(x)
 
-  if (is.null(x_type) || !(x_type %in% c("fin", "infin"))) {
+  if (is.null(x_type) || !(x_type %in% c("fin", "continuous"))) {
     "unknown"
   } else {
-    switch(x_type, fin = "finite", infin = "infinite")
+    switch(x_type, fin = "finite", continuous = "infinite")
   }
 }
 

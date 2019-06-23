@@ -67,28 +67,28 @@
 #' region_draw(summ_interval(d_fin, 0.5, method = "percentile"), col = "red")
 #' region_draw(summ_interval(d_fin, 0.5, method = "sigma"), col = "green")
 #'
-#' # Type "infin"
-#' d_infin <- form_mix(
+#' # Type "continuous"
+#' d_con <- form_mix(
 #'   list(as_d(dnorm), as_d(dnorm, mean = 5)),
 #'   weights = c(0.25, 0.75)
 #' )
-#' summ_interval(d_infin, level = 0.5, method = "minwidth")
-#' summ_interval(d_infin, level = 0.5, method = "percentile")
-#' summ_interval(d_infin, level = 0.5, method = "sigma")
+#' summ_interval(d_con, level = 0.5, method = "minwidth")
+#' summ_interval(d_con, level = 0.5, method = "percentile")
+#' summ_interval(d_con, level = 0.5, method = "sigma")
 #'
 #'   # Visual difference between methods
-#' plot(d_infin)
-#' region_draw(summ_interval(d_infin, 0.5, method = "minwidth"), col = "blue")
-#' region_draw(summ_interval(d_infin, 0.5, method = "percentile"), col = "red")
-#' region_draw(summ_interval(d_infin, 0.5, method = "sigma"), col = "green")
+#' plot(d_con)
+#' region_draw(summ_interval(d_con, 0.5, method = "minwidth"), col = "blue")
+#' region_draw(summ_interval(d_con, 0.5, method = "percentile"), col = "red")
+#' region_draw(summ_interval(d_con, 0.5, method = "sigma"), col = "green")
 #'
 #' # Output interval is always inside input's support. Formally, next code
 #' # should return interval from `-Inf` to `Inf`, but output is cut to be inside
 #' # support.
-#' summ_interval(d_infin, level = 1, method = "sigma")
+#' summ_interval(d_con, level = 1, method = "sigma")
 #'
 #' # To get vector output, use `unlist()`
-#' unlist(summ_interval(d_infin))
+#' unlist(summ_interval(d_con))
 #'
 #' @export
 summ_interval <- function(f, level = 0.95, method = "minwidth",

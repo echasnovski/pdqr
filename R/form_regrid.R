@@ -36,14 +36,14 @@
 #'         minimize total distance between reference grid and matched subset.
 #'         **Note** that this can result in not optimal (with not minimum total
 #'         distance) match and can take a while to compute in some cases.
-#'     - Type "infin":
-#'         - UPgridding "infin" functions is done by adding rows to "x_tbl"
+#'     - Type "continuous":
+#'         - UPgridding "continuous" functions is done by adding rows to "x_tbl"
 #'         metadata with "x" values equal to those elements of reference grid
 #'         which are the furthest away from input "x" grid as a set. Distance
 #'         from point to set is meant as minimum of distances between point and
 #'         all points of set. Values of "y" and "cumprob" columns are taken as
 #'         values of corresponding to `f` d- and p-functions.
-#'         - DOWNgridding "infin" functions is done by computing nearest match
+#'         - DOWNgridding "continuous" functions is done by computing nearest match
 #'         of reference grid to `f`'s one (as for "fin" type) and removing all
 #'         unmatched rows from "x_tbl" metadata.
 #'
@@ -72,7 +72,7 @@
 #'   # Upgridding for "fin" type isn't possible. Input is returned
 #' identical(d_fin, form_regrid(d_fin, n_grid = 100))
 #'
-#' # Type "infin"
+#' # Type "continuous"
 #'   # Downgridding
 #' d_norm <- as_d(dnorm)
 #' plot(d_norm)
@@ -80,13 +80,13 @@
 #' lines(form_regrid(d_norm, n_grid = 10, method = "q"), col = "green")
 #'
 #'   # Upgridding
-#' d_infin <- new_d(data.frame(x = 1:3, y = rep(0.5, 3)), type = "infin")
-#' meta_x_tbl(form_regrid(d_infin, n_grid = 6))
+#' d_con <- new_d(data.frame(x = 1:3, y = rep(0.5, 3)), type = "continuous")
+#' meta_x_tbl(form_regrid(d_con, n_grid = 6))
 #'
 #' # Pdqr-function with center at median is returned in case `n_grid` is 1
 #' form_regrid(d_fin, n_grid = 1)
 #'   # Dirac-like function is returned
-#' form_regrid(d_infin, n_grid = 1)
+#' form_regrid(d_con, n_grid = 1)
 #'
 #' @export
 form_regrid <- function(f, n_grid, method = "x") {
@@ -156,7 +156,7 @@ adjust_to_grid <- function(f, ref_grid) {
   switch(
     meta_type(f),
     fin = adjust_to_grid_fin(f, ref_grid),
-    infin = adjust_to_grid_infin(f, ref_grid)
+    continuous = adjust_to_grid_con(f, ref_grid)
   )
 }
 
@@ -176,7 +176,7 @@ adjust_to_grid_fin <- function(f, ref_grid) {
   new_pdqr_by_ref(f)(f_x_tbl, "fin")
 }
 
-adjust_to_grid_infin <- function(f, ref_grid) {
+adjust_to_grid_con <- function(f, ref_grid) {
   f_x_tbl <- meta_x_tbl(f)[, c("x", "y")]
   x <- f_x_tbl[["x"]]
   n_grid_surplus <- length(ref_grid) - length(x)
@@ -204,5 +204,5 @@ adjust_to_grid_infin <- function(f, ref_grid) {
     x_tbl <- f_x_tbl[closest_x_inds, ]
   }
 
-  new_pdqr_by_ref(f)(x_tbl, "infin")
+  new_pdqr_by_ref(f)(x_tbl, "continuous")
 }

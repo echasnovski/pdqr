@@ -3,7 +3,7 @@ compute_x_tbl <- function(x, type, ...) {
   switch(
     type,
     fin = compute_x_tbl_fin(x),
-    infin = compute_x_tbl_infin(x, ...)
+    continuous = compute_x_tbl_con(x, ...)
   )
 }
 
@@ -19,7 +19,7 @@ compute_x_tbl_fin <- function(x) {
   data.frame(x = vals, prob = prob, cumprob = cumprob)
 }
 
-compute_x_tbl_infin <- function(x, ...) {
+compute_x_tbl_con <- function(x, ...) {
   if (length(x) == 1) {
     dirac_x_tbl(x)
   } else {
@@ -34,7 +34,7 @@ dirac_x_tbl <- function(at_x, h = 1e-8) {
   x <- at_x + h*c(-1, 0, 1)
   y <- c(0, 1, 0)/h
   # Normalization is needed to ensure that total integral is 1. If omit this,
-  # then, for example, `new_d(1e8, "infin")` will have total integral of around
+  # then, for example, `new_d(1e8, "continuous")` will have total integral of around
   # `1.49`.
   y <- y / trapez_integral(x, y)
 
@@ -69,8 +69,8 @@ impute_x_tbl_impl <- function(x_tbl, type) {
 
   if (type == "fin") {
     impute_x_tbl_impl_fin(x_tbl)
-  } else if (type == "infin") {
-    impute_x_tbl_impl_infin(x_tbl)
+  } else if (type == "continuous") {
+    impute_x_tbl_impl_con(x_tbl)
   } else {
     stop("Wrong `type`.")
   }
@@ -106,7 +106,7 @@ impute_x_tbl_impl_fin <- function(x_tbl) {
   }
 }
 
-impute_x_tbl_impl_infin <- function(x_tbl) {
+impute_x_tbl_impl_con <- function(x_tbl) {
   res <- data.frame(
     x = x_tbl[["x"]],
     y = impute_y(x_tbl[["y"]], x_tbl[["x"]])
@@ -160,7 +160,7 @@ get_type_from_x_tbl <- function(x_tbl) {
   if (get_x_tbl_sec_col(x_tbl) == "prob") {
     "fin"
   } else {
-    "infin"
+    "continuous"
   }
 }
 
@@ -200,7 +200,7 @@ reflect_x_tbl <- function(x_tbl, around) {
   x_tbl_probs <- switch(
     get_type_from_x_tbl(x_tbl),
     fin = diff(c(0, x_tbl[["cumprob"]])),
-    infin = diff(c(x_tbl[["cumprob"]], 1))
+    continuous = diff(c(x_tbl[["cumprob"]], 1))
   )
   res[["cumprob"]] <- cumsum(rev(x_tbl_probs))
 
@@ -284,7 +284,7 @@ stack_x_tbl <- function(x_tbl_list) {
   res <- switch(
     type,
     fin = stack_x_tbl_fin(x_tbl_list),
-    infin = stack_x_tbl_infin(x_tbl_list)
+    continuous = stack_x_tbl_con(x_tbl_list)
   )
   row.names(res) <- NULL
 
@@ -305,7 +305,7 @@ stack_x_tbl_fin <- function(x_tbl_list) {
   data.frame(x = x, prob = prob)
 }
 
-stack_x_tbl_infin <- function(x_tbl_list) {
+stack_x_tbl_con <- function(x_tbl_list) {
   x_tbl_funs <- lapply(x_tbl_list, enfun_x_tbl)
 
   x <- unlist(lapply(x_tbl_list, function(x_tbl) {

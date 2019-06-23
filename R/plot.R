@@ -26,7 +26,7 @@
 #' - R-functions are plotted by generating sample of size `n_sample` and calling
 #' [hist()][graphics::hist()] function.
 #'
-#' Plotting of type **infin** functions:
+#' Plotting of type **continuous** functions:
 #' - P-functions are plotted in piecewise-linear fashion at their values on
 #' compound grid: sorted union of "x" column from "x_tbl" metadata and sequence
 #' of length `n_extra_grid` consisting from equidistant points between edges of
@@ -51,8 +51,8 @@
 #' plot(d_norm_1)
 #' lines(d_norm_2, col = "red")
 #'
-#' # Usage of `n_extra_grid` is important in case of "infin" p- and q-functions
-#' simple_p <- new_p(data.frame(x = c(0, 1), y = c(0, 1)), "infin")
+#' # Usage of `n_extra_grid` is important in case of "continuous" p- and q-functions
+#' simple_p <- new_p(data.frame(x = c(0, 1), y = c(0, 1)), "continuous")
 #' plot(simple_p, main = "Case study of n_extra_grid argument")
 #' lines(simple_p, n_extra_grid = 0, col = "red")
 #'
@@ -119,7 +119,7 @@ plot.d <- function(x, y = NULL, n_extra_grid = 1001, ...) {
       # not based on actually plotted points, so the output `ylim` can be an
       # overestimation (which is kind of a good indication of too small value
       # of `n_extra_grid`).
-      ylim = compute_d_infin_ylim(x)
+      ylim = compute_d_con_ylim(x)
     )
 
     plot_impl_pdq(x, compute_plot_grid(x, n_extra_grid), dots)

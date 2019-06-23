@@ -3,7 +3,7 @@
 new_p <- function(x, type, ...) {
   distr_impl(
     pdqr_class = "p",
-    impl_funs = list(fin = new_p_fin, infin = new_p_infin),
+    impl_funs = list(fin = new_p_fin, continuous = new_p_con),
     x = x, type = type, ...
   )
 }
@@ -33,8 +33,8 @@ new_p_fin <- function(x_tbl) {
   }
 }
 
-new_p_infin <- function(x_tbl) {
-  type <- "infin"
+new_p_con <- function(x_tbl) {
+  type <- "continuous"
   support <- range(x_tbl[["x"]])
 
   function(q) {

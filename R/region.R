@@ -32,7 +32,7 @@
 #' pdqr-function `f`. If `f` has "fin" [type][meta_type()], output is computed
 #' as sum of probabilities for all "x" values from ["x_tbl"
 #' metadata][meta_x_tbl()] which lie inside a region (respecting `left_closed`
-#' and `right_closed` options while using `region_is_in()`). If `f` has "infin"
+#' and `right_closed` options while using `region_is_in()`). If `f` has "continuous"
 #' type, output is computed as integral of density over a region (`*_closed`
 #' options having any effect).
 #'
@@ -40,7 +40,7 @@
 #' minimum value of corresponding to `f` d-function can return based on relevant
 #' points inside a region. If `f` has "fin" type, those relevant points are
 #' computed as "x" values from "x_tbl" metadata which lie inside a region (if
-#' there are no such points, output is 0). If `f` has "infin" type, the whole
+#' there are no such points, output is 0). If `f` has "continuous" type, the whole
 #' intervals are used as relevant points. The notion of "height" comes from
 #' [summ_hdr()] function: if `region` is `summ_hdr(f, level)` for some `level`,
 #' then `region_height(region, f)` is what is called in `summ_hdr()`'s docs as
@@ -85,15 +85,15 @@
 #' region_height(hdr_fin, d_binom)
 #' region_width(hdr_fin)
 #'
-#' # Type "infin"
+#' # Type "continuous"
 #' d_norm <- as_d(dnorm)
-#' hdr_infin <- summ_hdr(d_norm, level = 0.95)
-#' region_is_in(hdr_infin, c(-Inf, -2, 0, 2, Inf))
+#' hdr_con <- summ_hdr(d_norm, level = 0.95)
+#' region_is_in(hdr_con, c(-Inf, -2, 0, 2, Inf))
 #'   # This should be approximately equal to 0.95
-#' region_prob(hdr_infin, d_norm)
-#'   # This should be equal to `d_norm(hdr_infin[["left"]][1])`
-#' region_height(hdr_infin, d_norm)
-#' region_width(hdr_infin)
+#' region_prob(hdr_con, d_norm)
+#'   # This should be equal to `d_norm(hdr_con[["left"]][1])`
+#' region_height(hdr_con, d_norm)
+#' region_width(hdr_con)
 #'
 #' # Usage of `*_closed` options
 #' region <- data.frame(left = 1, right = 3)

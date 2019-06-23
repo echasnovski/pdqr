@@ -20,7 +20,7 @@
 #'
 #' [Class][meta_class()] of output is chosen as class of first pdqr-function in
 #' `f_list`. [Type][meta_type()] of output is chosen to be "fin" in case all
-#' input pdqr-functions have "fin" type, and "infin" otherwise.
+#' input pdqr-functions have "fin" type, and "continuous" otherwise.
 #'
 #' Method "random" performs transformation using random generation of samples:
 #' - **Generates a sample of size `n_sample` from every element of `f_list`**
@@ -43,14 +43,14 @@
 #' - **Computes output for every combination of "x" values** (probability of
 #' which will be a product of corresponding probabilities).
 #' - **Creates pdqr-function of type "fin"** with suitable `new_*()` function.
-#' - **Possibly retypes to "infin" type** if output should have it (also with
+#' - **Possibly retypes to "continuous" type** if output should have it (also with
 #' "piecelin" method).
 #'
 #' **Notes** about "bruteforce" method:
 #' - Its main advantage is that it is not random.
 #' - It may start to be very memory consuming very quickly.
 #' - It is usually useful when type of output function is "fin". In case of
-#' "infin" type, retyping from "fin" to "infin" might introduce big errors.
+#' "continuous" type, retyping from "fin" to "continuous" might introduce big errors.
 #' - Used "fin" probabilities shouldn't be very small because they will be
 #' directly multiplied, which might cause numerical accuracy issues.
 #'

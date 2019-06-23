@@ -137,7 +137,7 @@ assert_pdqr_fun <- function(f) {
 
   if (!has_meta_type(f)) {
     stop_collapse(
-      err_header, 'It should have proper "type" metadata ("fin" or "infin").'
+      err_header, 'It should have proper "type" metadata ("fin" or "continuous").'
     )
   }
 
@@ -166,9 +166,9 @@ assert_distr_type <- function(type) {
   if (!is_string(type)) {
     stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
   }
-  if (!(type %in% c("fin", "infin"))) {
+  if (!(type %in% c("fin", "continuous"))) {
     stop_collapse(
-      type_name, ' should be one of "fin" or "infin", not "', type, '".'
+      type_name, ' should be one of "fin" or "continuous", not "', type, '".'
     )
   }
 
@@ -211,7 +211,7 @@ assert_x_tbl <- function(x_tbl, type, err_header = "") {
   switch(
     type,
     fin = assert_x_tbl_fin(x_tbl, x_tbl_name, err_header = err_header),
-    infin = assert_x_tbl_infin(x_tbl, x_tbl_name, err_header = err_header)
+    continuous = assert_x_tbl_con(x_tbl, x_tbl_name, err_header = err_header)
   )
 }
 
@@ -238,7 +238,7 @@ assert_x_tbl_fin <- function(x_tbl, x_tbl_name, err_header = "") {
   TRUE
 }
 
-assert_x_tbl_infin <- function(x_tbl, x_tbl_name, err_header = "") {
+assert_x_tbl_con <- function(x_tbl, x_tbl_name, err_header = "") {
   if (nrow(x_tbl) < 2) {
     stop_collapse(err_header, x_tbl_name, " should have at least 2 rows.")
   }
@@ -299,11 +299,11 @@ assert_x_tbl_meta <- function(x_tbl, type, err_header = "") {
     }
   }
 
-  if (type == "infin") {
+  if (type == "continuous") {
     if (!is_near(trapez_integral(x_tbl[["x"]], x_tbl[["y"]]), 1)) {
       stop_collapse(
         err_header, 'Total integral from "x_tbl" metadata columns should be 1 ',
-        'if `type` is "infin".'
+        'if `type` is "continuous".'
       )
     }
   }

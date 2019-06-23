@@ -6,11 +6,11 @@ raw_moment <- function(f, order) {
   switch(
     meta_type(f),
     fin = dotprod(x_tbl[["x"]]^order, x_tbl[["prob"]]),
-    infin = raw_moment_infin(x_tbl, order)
+    continuous = raw_moment_con(x_tbl, order)
   )
 }
 
-raw_moment_infin <- function(x_tbl, k) {
+raw_moment_con <- function(x_tbl, k) {
   # `E[X^k] = integral{x^k * f(x)} = sum(integral_i{x^k * (A_i*x + B-i)})`
   n <- nrow(x_tbl)
   x_l <- x_tbl[["x"]][-n]
@@ -47,7 +47,7 @@ raw_moment_infin <- function(x_tbl, k) {
 
 # Density crossings -------------------------------------------------------
 # Returns `x` coordinates of density crossing (intersection) points in case of
-# `f` and `g` both being "infin" pdqr-functions
+# `f` and `g` both being "continuous" pdqr-functions
 compute_density_crossings <- function(f, g) {
   # Early return in case of non-overlapping supports
   inters_supp <- intersection_support(f, g)
@@ -114,7 +114,7 @@ compute_density_crossings <- function(f, g) {
 
 # CDF crossings -----------------------------------------------------------
 # Returns `x` coordinates of CDF crossing (intersection) points in case of `f`
-# and `g` both being "infin" pdqr-functions
+# and `g` both being "continuous" pdqr-functions
 compute_cdf_crossings <- function(f, g) {
   inters_x <- intersection_x(f, g)
   n <- length(inters_x)

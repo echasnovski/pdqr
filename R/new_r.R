@@ -3,7 +3,7 @@
 new_r <- function(x, type, ...) {
   distr_impl(
     pdqr_class = "r",
-    impl_funs = list(fin = new_r_fin, infin = new_r_infin),
+    impl_funs = list(fin = new_r_fin, continuous = new_r_con),
     x = x, type = type, ...
   )
 }
@@ -29,12 +29,12 @@ new_r_fin <- function(x_tbl) {
   }
 }
 
-new_r_infin <- function(x_tbl) {
-  q_infin <- new_q(x_tbl, type = "infin")
+new_r_con <- function(x_tbl) {
+  q_con <- new_q(x_tbl, type = "continuous")
 
-  type <- "infin"
-  support <- meta_support(q_infin)
-  x_tbl <- meta_x_tbl(q_infin)
+  type <- "continuous"
+  support <- meta_support(q_con)
+  x_tbl <- meta_x_tbl(q_con)
 
   function(n) {
     # Not using `assert_type()` for speed reasons
@@ -46,7 +46,7 @@ new_r_infin <- function(x_tbl) {
 
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
 
-    q_infin(rand_q_vec)
+    q_con(rand_q_vec)
   }
 }
 

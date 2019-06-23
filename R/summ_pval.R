@@ -41,7 +41,7 @@
 #' summ_pval(d_fin, 3, method = "right")
 #' summ_pval(d_fin, 3, method = "left")
 #'
-#' # Type "infin"
+#' # Type "continuous"
 #' d_norm <- as_d(dnorm)
 #' summ_pval(d_norm, 2, method = "both")
 #' summ_pval(d_norm, 2, method = "right")

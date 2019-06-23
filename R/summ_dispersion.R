@@ -27,7 +27,7 @@
 #' @family summary functions
 #'
 #' @examples
-#' # Type "infin"
+#' # Type "continuous"
 #' d_norm <- as_d(dnorm)
 #'   # The same as `summ_dispersion(d_norm, method = "sd")`
 #' summ_sd(d_norm)

@@ -47,7 +47,7 @@ summ_quantile <- function(f, probs) {
 #' summ_prob_true(d_unif > d_norm)
 #' summ_prob_false(2*d_norm > d_unif)
 #'
-#' # When input is "infin" function or doesn't have 0 as distribution element,
+#' # When input is "continuous" function or doesn't have 0 as distribution element,
 #' # probability of being false is returned as 0.
 #' summ_prob_false(d_unif)
 #' summ_prob_true(new_d(2, "fin"))

@@ -35,7 +35,7 @@
 #' neighborhood of nearest edge. This models a singular dirac distributions at
 #' the edges of `support`. **Note** that `support` can represent single point,
 #' in which case output has single element if `f`'s type is "fin" or is a
-#' dirac-like distribution in case of "infin" type.
+#' dirac-like distribution in case of "continuous" type.
 #'
 #' Method "linear" transforms `f`'s support linearly to be input `support`. For
 #' example, if `f`'s support is \[0; 1\] and `support` is `c(-1, 1)`, linear
@@ -66,7 +66,7 @@
 #'
 #'   # This is often useful to ensure constraints after `new_()`
 #' x <- runif(1e4)
-#' d_x <- new_d(x, "infin")
+#' d_x <- new_d(x, "continuous")
 #' plot(d_x)
 #' lines(form_resupport(d_x, c(0, NA), "reflect"), col = "red")
 #' lines(form_resupport(d_x, c(0, 1), "reflect"), col = "blue")
@@ -141,7 +141,7 @@ resupport_trim <- function(f, support) {
   switch(
     meta_type(f),
     fin = resupport_trim_fin(f, support),
-    infin = resupport_trim_infin(f, support)
+    continuous = resupport_trim_con(f, support)
   )
 }
 
@@ -156,7 +156,7 @@ resupport_trim_fin <- function(f, support) {
   new_pdqr_by_ref(f)(res_x_tbl, "fin")
 }
 
-resupport_trim_infin <- function(f, support) {
+resupport_trim_con <- function(f, support) {
   d_f <- as_d(f)
   edge_y <- d_f(support)
 
@@ -173,7 +173,7 @@ resupport_trim_infin <- function(f, support) {
     stop_resupport_zero_tot_prob()
   }
 
-  new_pdqr_by_ref(f)(res_x_tbl, "infin")
+  new_pdqr_by_ref(f)(res_x_tbl, "continuous")
 }
 
 
@@ -186,7 +186,7 @@ resupport_winsor <- function(f, support) {
   switch(
     meta_type(f),
     fin = resupport_winsor_fin(f, support),
-    infin = resupport_winsor_infin(f, support)
+    continuous = resupport_winsor_con(f, support)
   )
 }
 
@@ -200,7 +200,7 @@ resupport_winsor_fin <- function(f, support) {
   new_pdqr_by_ref(f)(f_x_tbl, "fin")
 }
 
-resupport_winsor_infin <- function(f, support, h = 1e-8) {
+resupport_winsor_con <- function(f, support, h = 1e-8) {
   p_f <- as_p.pdqr(f)
   f_x_tbl <- meta_x_tbl(f)
   f_supp <- meta_support(f)
@@ -231,7 +231,7 @@ resupport_winsor_infin <- function(f, support, h = 1e-8) {
     x_tbl <- increase_tail_weight(x_tbl, tail_prob, "right")
   }
 
-  new_pdqr_by_ref(f)(x_tbl, "infin")
+  new_pdqr_by_ref(f)(x_tbl, "continuous")
 }
 
 increase_tail_weight <- function(x_tbl, by_prob, edge) {

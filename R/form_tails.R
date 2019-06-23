@@ -41,7 +41,7 @@
 #'   form_tails(my_fin, level = 0.35, method = "winsor", direction = "left")
 #' )
 #'
-#' # Type "infin"
+#' # Type "continuous"
 #' d_norm <- as_d(dnorm)
 #' plot(d_norm)
 #' lines(form_tails(d_norm, level = 0.1), col = "blue")
@@ -59,7 +59,7 @@
 #' # Examples of robust mean
 #' set.seed(101)
 #' x <- rcauchy(1000)
-#' d_x <- new_d(x, "infin")
+#' d_x <- new_d(x, "continuous")
 #' summ_mean(d_x)
 #'   # Trimmed mean
 #' summ_mean(form_tails(d_x, level = 0.1, method = "trim"))
@@ -87,7 +87,7 @@ tails_trim <- function(f, level, direction = "both") {
   switch(
     meta_type(f),
     fin = tails_trim_fin(f, level, direction),
-    infin = tails_trim_infin(f, level, direction)
+    continuous = tails_trim_con(f, level, direction)
   )
 }
 
@@ -129,7 +129,7 @@ tails_trim_fin <- function(f, level, direction) {
   new_pdqr_by_ref(f)(f_x_tbl, "fin")
 }
 
-tails_trim_infin <- function(f, level, direction) {
+tails_trim_con <- function(f, level, direction) {
   new_supp <- compute_support_after_remove(f, level, direction)
 
   form_resupport(f, new_supp, method = "trim")

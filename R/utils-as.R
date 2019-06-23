@@ -34,9 +34,9 @@
 #'
 #' If **`f` is some other unknown function**, `as_*()` functions use heuristics
 #' for approximating input distribution with a "proper" pdqr-function. Outputs
-#' of `as_*()` can be only pdqr-functions of type "infin" (because of issues
+#' of `as_*()` can be only pdqr-functions of type "continuous" (because of issues
 #' with support detection). It is assumed that `f` returns values appropriate
-#' for desired output class of `as_*()` function and output type "infin". For
+#' for desired output class of `as_*()` function and output type "continuous". For
 #' example, input for `as_p()` should return values of some continuous
 #' cumulative distribution function (monotonically non-increasing values from 0
 #' to 1). To manually create function of type "fin", supply data frame input
@@ -69,7 +69,7 @@
 #'     based on sample, generated from input `f`. After that, its values are
 #'     used to create data frame with `as_d()`.
 #' - **Use appropriate `new_*()` function** with data frame from previous step
-#' and `type = "infin"`. This step implies that all tails outside detected
+#' and `type = "continuous"`. This step implies that all tails outside detected
 #' support are trimmed and data frame is normalized to represent proper
 #' piecewise-linear density.
 #'
@@ -96,7 +96,7 @@
 #' "loses" only around `1e-6` probability on each infinite tail.
 #'
 #' After that, for "fin" type output `new_d()` is used for appropriate data
-#' frame input and for "infin" - `as_d()` with appropriate `d*()` function and
+#' frame input and for "continuous" - `as_d()` with appropriate `d*()` function and
 #' support. D-function is then converted to desired class with `as_*()`.
 #'
 #' @section Support detection:
@@ -139,7 +139,7 @@
 #' # Convert existing "proper" pdqr-function
 #' set.seed(101)
 #' x <- rnorm(10)
-#' my_d <- new_d(x, "infin")
+#' my_d <- new_d(x, "continuous")
 #'
 #' my_p <- as_p(my_d)
 #'
@@ -257,7 +257,7 @@ honored_distr_supp <- function(distr, q_fun, ..., p = 1e-6) {
     distr %in% c(
       # "fin"
       "nbinom", "pois",
-      # "infin"
+      # "continuous"
       "beta", "chisq", "f", "gamma", "lnorm", "norm", "t", "weibull"
     )
   ) {

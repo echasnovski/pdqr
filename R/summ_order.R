@@ -52,8 +52,8 @@
 #' # All methods might give different results on some elaborated pdqr-functions
 #' # Methods "compare" and "mean" are not equivalent
 #' non_mean_list <- list(
-#'   new_d(data.frame(x = c(0.56, 0.815), y = c(1, 1)), "infin"),
-#'   new_d(data.frame(x = 0:1, y = c(0, 1)), "infin")
+#'   new_d(data.frame(x = c(0.56, 0.815), y = c(1, 1)), "continuous"),
+#'   new_d(data.frame(x = 0:1, y = c(0, 1)), "continuous")
 #' )
 #' summ_order(non_mean_list, method = "compare")
 #' summ_order(non_mean_list, method = "mean")
@@ -72,9 +72,9 @@
 #' # "greater" than second (`P(f >= g) > 0.5`), second - than first, and first
 #' # is "greater" than third.
 #' non_trans_list <- list(
-#'   new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "infin"),
-#'   new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "infin"),
-#'   new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "infin")
+#'   new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "continuous"),
+#'   new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "continuous"),
+#'   new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "continuous")
 #' )
 #' summ_sort(non_trans_list)
 #'   # Output doesn't depend on initial order
@@ -125,9 +125,9 @@ order_compare <- function(f_list, decreasing) {
   # Example of the effect of non-transitivity:
   #```
   # # Here P(d1 <= d2) >= 0.5, P(d2 <= d3) >= 0.5, but P(d1 <= d3) < 0.5
-  # d1 <- new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "infin")
-  # d2 <- new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "infin")
-  # d3 <- new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "infin")
+  # d1 <- new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "continuous")
+  # d2 <- new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "continuous")
+  # d3 <- new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "continuous")
   # f_list <- list(d1, d2, d3)
   # class(f_list) <- "pdqr_list"
   # # Returns c(1, 2, 3)
@@ -165,7 +165,7 @@ order_center <- function(f_list, method, decreasing = decreasing) {
   # inequality is achieved with `> 0.5` instead of `>= 0.5`.
   # Also NOTE that this definition can result into `e1 > e2` and `e2 > e1`
   # being both `TRUE` (in case of two "fin" functions) or both `FALSE` (in case
-  # of equivalent but not equal "infin" functions; this is kind of reasonable).
+  # of equivalent but not equal "continuous" functions; this is kind of reasonable).
   prob_geq(e1[[1]], e2[[1]]) > 0.5
 }
 

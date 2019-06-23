@@ -32,7 +32,7 @@ as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
   support <- detect_support_r(smpl, format_support(support))
 
   # Create density function from sample
-  new_call_args <- c_dedupl(list(x = smpl, type = "infin"), args_new)
+  new_call_args <- c_dedupl(list(x = smpl, type = "continuous"), args_new)
   d_f <- do.call(new_d, new_call_args)
 
   # Adjust to supplied support

@@ -30,7 +30,7 @@
 #' @family summary functions
 #'
 #' @examples
-#' # Type "infin"
+#' # Type "continuous"
 #' d_norm <- as_d(dnorm)
 #'   # The same as `summ_center(d_norm, method = "mean")`
 #' summ_mean(d_norm)
@@ -47,7 +47,7 @@
 #' summ_mode(d_pois, method = "local")
 #'
 #' # Details of computing local modes
-#' my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "infin")
+#' my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "continuous")
 #'   # Several values, which are entries of `x_tbl`, are returned as local modes
 #' summ_mode(my_d, method = "local")
 #'
@@ -80,7 +80,7 @@ summ_mean <- function(f) {
   switch(
     meta_type(f),
     fin = dotprod(x_tbl[["x"]], x_tbl[["prob"]]),
-    infin = summ_mean_infin(x_tbl)
+    continuous = summ_mean_con(x_tbl)
   )
 }
 
@@ -101,7 +101,7 @@ summ_mode <- function(f, method = "global") {
 
   f_x_tbl <- meta_x_tbl(f)
   x <- f_x_tbl[["x"]]
-  col_name <- switch(meta_type(f), fin = "prob", infin = "y")
+  col_name <- switch(meta_type(f), fin = "prob", continuous = "y")
   col <- f_x_tbl[[col_name]]
 
   if (method == "global") {
@@ -117,7 +117,7 @@ summ_mode <- function(f, method = "global") {
   }
 }
 
-summ_mean_infin <- function(x_tbl) {
+summ_mean_con <- function(x_tbl) {
   n <- nrow(x_tbl)
   x_lag <- x_tbl[["x"]][-n]
   x_lead <- x_tbl[["x"]][-1]

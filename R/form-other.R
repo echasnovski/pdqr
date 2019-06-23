@@ -12,9 +12,9 @@
 #' @details **Type of output mixture** is determined by the following algorithm:
 #' - If `f_list` consists only from pdqr-functions of "fin" type, then output
 #' will have "fin" type.
-#' - If `f_list` has at least one pdqr-function of type "infin", then output
-#' will have "infin" type. In this case all "fin" pdqr-functions in `f_list` are
-#' approximated with corresponding dirac-like "infin" functions (with
+#' - If `f_list` has at least one pdqr-function of type "continuous", then output
+#' will have "continuous" type. In this case all "fin" pdqr-functions in `f_list` are
+#' approximated with corresponding dirac-like "continuous" functions (with
 #' [form_retype(*, method = "dirac")][form_retype()]). **Note** that this
 #' approximation has consequences during computation of comparisons. For
 #' example, if original "fin" function `f` is for distribution with one element
@@ -28,7 +28,7 @@
 #' of `f_list`. To change output class, use one of `as_*()` functions to change
 #' class of first element in `f_list` or class of output.
 #'
-#' **Note** that if output "infin" pdqr-function for mixture distribution (in
+#' **Note** that if output "continuous" pdqr-function for mixture distribution (in
 #' theory) should have discontinuous density, it is approximated continuously:
 #' discontinuities are represented as intervals in ["x_tbl"][meta_x_tbl()] with
 #' extreme slopes (see Examples).
@@ -45,24 +45,24 @@
 #' fin_mix <- form_mix(list(d_binom, r_pois))
 #' plot(fin_mix)
 #'
-#' # All "infin"
+#' # All "continuous"
 #' p_norm <- as_p(pnorm)
 #' d_unif <- as_d(dunif)
 #'
-#' infin_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
+#' con_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
 #'   # Output is a p-function, as is first element of `f_list`
-#' infin_mix
-#' plot(infin_mix)
+#' con_mix
+#' plot(con_mix)
 #'
 #'   # Use `as_*()` functions to change class
-#' d_infin_mix <- as_d(infin_mix)
+#' d_con_mix <- as_d(con_mix)
 #'
 #'   # Theoretical output density should be discontinuous, but here it is
 #'   # approximated with continuous function
-#' infin_x_tbl <- meta_x_tbl(infin_mix)
-#' infin_x_tbl[(infin_x_tbl$x >= -1e-4) & (infin_x_tbl$x <= 1e-4), ]
+#' con_x_tbl <- meta_x_tbl(con_mix)
+#' con_x_tbl[(con_x_tbl$x >= -1e-4) & (con_x_tbl$x <= 1e-4), ]
 #'
-#' # Some "fin", some "infin"
+#' # Some "fin", some "continuous"
 #' all_mix <- form_mix(list(d_binom, d_unif))
 #' plot(all_mix)
 #' all_x_tbl <- meta_x_tbl(all_mix)
@@ -128,7 +128,7 @@ impute_weights <- function(weights, n) {
 #' density function.
 #'
 #' At first step, sample of size `n_sample` is generated from distribution
-#' represented by `f`. Then, based on the sample, "infin" d-function is created
+#' represented by `f`. Then, based on the sample, "continuous" d-function is created
 #' with `new_d()` and arguments from `args_new` list. To account for
 #' [density()][stats::density()]'s default behavior of "stretching range" by
 #' adding small tails, [support][meta_support()] of d-function is forced to be
@@ -154,11 +154,11 @@ impute_weights <- function(weights, n) {
 #' plot(bad_fin)
 #' lines(smoothed_fin, col = "blue")
 #'
-#' # Type "infin"
-#' bad_infin <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "infin")
-#' smoothed_infin <- form_smooth(bad_infin)
-#' plot(bad_infin)
-#' lines(smoothed_infin, col = "blue")
+#' # Type "continuous"
+#' bad_con <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "continuous")
+#' smoothed_con <- form_smooth(bad_con)
+#' plot(bad_con)
+#' lines(smoothed_con, col = "blue")
 #'
 #' @export
 form_smooth <- function(f, n_sample = 10000, args_new = list()) {
@@ -182,21 +182,21 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
   smpl <- as_r(f)(n_sample)
 
   # Smooth with `density()`
-  call_args <- c_dedupl(list(x = smpl, type = "infin"), args_new)
-  infin_d <- do.call(new_d, call_args)
+  call_args <- c_dedupl(list(x = smpl, type = "continuous"), args_new)
+  con_d <- do.call(new_d, call_args)
 
   # Account for extra tails that appeared after using `density()`
-  infin_d <- form_resupport(
-    infin_d, support = meta_support(f), method = "reflect"
+  con_d <- form_resupport(
+    con_d, support = meta_support(f), method = "reflect"
   )
 
-  # Output probabilities (or densities) are proportional to smoothed "infin"
+  # Output probabilities (or densities) are proportional to smoothed "continuous"
   # density. The logic behind this is that "smoothing data" basically means
   # reducing the amount of "jumps" between close data points. In other words,
   # the closer the points the smaller should be difference in
   # probabilities/densities. This also results into reducing variance of
   # probabilities if "x"s are relatively dense.
-  f_x_tbl[[get_x_tbl_sec_col(f_x_tbl)]] <- infin_d(f_x_tbl[["x"]])
+  f_x_tbl[[get_x_tbl_sec_col(f_x_tbl)]] <- con_d(f_x_tbl[["x"]])
 
   pdqr_fun(f_x_tbl, type = meta_type(f))
 }
@@ -255,10 +255,10 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'   # To change type of output, supply it in `args_new`
 #' form_estimate(
 #'   d_fin, estimate = mean, sample_size = 10,
-#'   args_new = list(type = "infin")
+#'   args_new = list(type = "continuous")
 #' )
 #'
-#' # Type "infin"
+#' # Type "continuous"
 #' d_unif <- as_d(dunif)
 #'   # Supply extra named arguments for `estimate` in `...`
 #' plot(form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.1))

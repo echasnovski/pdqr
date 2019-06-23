@@ -54,21 +54,16 @@
 #' @section Pdqr type:
 #'
 #' Pdqr type is returned by `meta_type()`. This can be one of "fin" (short for
-#' "finite") or "infin" (short for "infinite"). Represents **type of underlying
-#' distribution**:
+#' "finite") or "continuous". Represents **type of underlying distribution**:
 #' - Type "fin" is used for distributions with finite number of outcomes.
 #' Functions with "fin" type has a fixed set of "x" values ("x" column in
 #' "x_tbl" metadata) on which d-function returns possibly non-zero output
 #' (values from "prob" column in "x_tbl" metadata). It is not called "discrete",
 #' because discrete distributions can (in theory) have infinite number of
 #' possible outcomes.
-#' - Type "infin" is used for distribution with potentially infinite number of
-#' outcomes (not accounting for "finite nature" of computer simulation).
-#' Functions with "infin" type have piecewise-linear density which goes through
-#' points defined by "x" and "y" columns in "x_tbl" metadata. It is not called
-#' "continuous" (although it has continuous, on its support, density) because
-#' "infin" pdqr-functions can be used to approximate mixture of discrete and
-#' continuous distributions.
+#' - Type "continuous" is used to represent continuous distributions with
+#' piecewise-linear density with finite values and on finite support. Density
+#' goes through points defined by "x" and "y" columns in "x_tbl" metadata.
 #'
 #' @section Pdqr support:
 #' Pdqr support is returned by `meta_support()`. This is a numeric vector with
@@ -94,7 +89,7 @@
 #' of [`==`]'s help page). For any other input, d-functions return
 #' zero.
 #'
-#' Type "infin" functions have "x_tbl" with columns "x", "y", "cumprob".
+#' Type "continuous" functions have "x_tbl" with columns "x", "y", "cumprob".
 #' D-functions return a value of piecewise-linear function passing through
 #' points that have "x" and "y" coordinates. For any value outside support (i.e.
 #' strictly less than minimum "x" and strictly more than maximum "x") output is

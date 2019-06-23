@@ -40,7 +40,7 @@ as_d.default <- function(f, support = NULL, ..., n_grid = 10001) {
   # approximation of q-function in case `as_q()` is called
   x_tbl <- remove_zero_edge_y(data.frame(x = x, y = y))
 
-  new_d(x_tbl, "infin")
+  new_d(x_tbl, "continuous")
 }
 
 #' @rdname as-pdqr

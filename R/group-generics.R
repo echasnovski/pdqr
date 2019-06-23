@@ -63,7 +63,7 @@
 #' approximated by simulating two big samples of same size from input `e1` and
 #' `e2` (one of which can be a single number), and estimating probability as
 #' share of those pairs from samples for which comparison is true. **Note** that
-#' if at least one input has "infin" type, then:
+#' if at least one input has "continuous" type, then:
 #'     - `==` will always have probability 0 of being true because probability
 #'     of generating a certain exact one or two numbers from continuous random
 #'     variable is zero.
@@ -109,7 +109,7 @@
 #' input and therefore can't be made vectorized. Error is thrown if it is
 #' applied to pdqr-function.
 #' - Although all `sum()`, `prod()`, `min()`, `max()` accept pdqr-functions or
-#' single numbers, using numbers and "infin" functions simultaneously is not a
+#' single numbers, using numbers and "continuous" functions simultaneously is not a
 #' great idea. This is because output will be automatically smoothed (as
 #' `form_trans()` will use some `new_*()` function) which will give a misleading
 #' picture. For a more realistic output:
@@ -175,7 +175,7 @@
 #' lines(sum(d_norm, d_norm, d_norm), col = "red")
 #'
 #'   # Using single numbers is allowed, but gives misleading output in case of
-#'   # "infin" functions. Use other functions instead (see documentation).
+#'   # "continuous" functions. Use other functions instead (see documentation).
 #' plot(min(d_unif, 0.5))
 #' lines(form_resupport(d_unif, c(NA, 0.5), method = "winsor"), col = "blue")
 #'
@@ -343,7 +343,7 @@ reflect_pdqr_around_zero <- function(f) {
 }
 
 negate_pdqr <- function(f) {
-  # Probability of type "infin" pdqr-function being exactly 0 is equal to zero
+  # Probability of type "continuous" pdqr-function being exactly 0 is equal to zero
   prob_zero <- if (meta_type(f) == "fin") {as_d(f)(0)} else {0}
 
   new_pdqr_by_ref(f)(

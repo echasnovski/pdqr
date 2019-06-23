@@ -2,7 +2,7 @@
 #'
 #' `summ_entropy()` computes entropy of single distribution while
 #' `summ_entropy2()` - for a pair of distributions. For "fin" pdqr-functions a
-#' classic formula `-sum(p * log(p))` (in nats) is used. In "infin" case a
+#' classic formula `-sum(p * log(p))` (in nats) is used. In "continuous" case a
 #' differential entropy is computed.
 #'
 #' @inheritParams summ_mean
@@ -71,13 +71,13 @@ cross_entropy <- function(f, g, clip = exp(-20)) {
   d_f <- as_d(f)
   d_g <- as_d(g)
 
-  num_infin <- (meta_type(f) == "infin") + (meta_type(g) == "infin")
+  num_con <- (meta_type(f) == "continuous") + (meta_type(g) == "continuous")
 
   switch(
-    as.character(num_infin),
+    as.character(num_con),
     `0` = cross_entropy_fin(d_f, d_g, clip),
     `1` = stop_collapse("`f` and `g` should have the same type."),
-    `2` = cross_entropy_infin(d_f, d_g, clip)
+    `2` = cross_entropy_con(d_f, d_g, clip)
   )
 }
 
@@ -92,7 +92,7 @@ cross_entropy_fin <- function(d_f, d_g, clip = exp(-20)) {
 # Not using `stats::integrate()` here because of possible dirac-like intervals
 # in `d_f` and/or `d_g`. Except these cases, `integrate()` works pretty good
 # considering both numerical and speed reasons.
-cross_entropy_infin <- function(d_f, d_g, clip) {
+cross_entropy_con <- function(d_f, d_g, clip) {
   # Entropy will be computed over `d_f`'s support. However, computation is non
   # trivial only on intersection support. Influence of intervals from exactly
   # one support will be used at the end (`outside_entropy`).

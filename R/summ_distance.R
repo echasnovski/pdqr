@@ -28,11 +28,11 @@
 #' to right with `|F - G|` values tending to the result (see Examples).
 #' - *Method "totvar"* (short for "total variation") computes a biggest absolute
 #' difference of probabilities for any subset of real line. In other words,
-#' there is a set of points for "fin" type and intervals for "infin", total
+#' there is a set of points for "fin" type and intervals for "continuous", total
 #' probability of which under `f` and `g` differs the most. **Note** that if
 #' `f` and `g` have different types, output is always 1. The set of interest
 #' consists from all "x" values of "fin" pdqr-function: probability under "fin"
-#' distribution is 1 and under "infin" is 0.
+#' distribution is 1 and under "continuous" is 0.
 #' - *Method "compare"* represents a value computed based on probabilities of
 #' one distribution being bigger than the other (see [pdqr methods for "Ops"
 #' group generic family][methods-group-generic] for more details on comparing
@@ -50,7 +50,7 @@
 #' distance: "minimum cost of 'moving' one density into another", or "average
 #' path density point should go while transforming from one into another". It is
 #' computed as integral of `|F - G|` (absolute difference between p-functions).
-#' If any of `f` and `g` has "infin" type, [stats::integrate()] is used, so
+#' If any of `f` and `g` has "continuous" type, [stats::integrate()] is used, so
 #' relatively small numerical errors can happen.
 #' - *Method "cramer"* computes Cramer distance: integral of `(F - G)^2`. This
 #' somewhat relates to "wass" method as [first central absolute
@@ -134,13 +134,13 @@ distance_ks <- function(f, g) {
     if (g_type == "fin") {
       distance_ks_two_fin(p_f, p_g)
     } else {
-      distance_ks_mixed(p_fin = p_f, p_infin = p_g)
+      distance_ks_mixed(p_fin = p_f, p_con = p_g)
     }
   } else {
     if (g_type == "fin") {
-      distance_ks_mixed(p_fin = p_g, p_infin = p_f)
+      distance_ks_mixed(p_fin = p_g, p_con = p_f)
     } else {
-      distance_ks_two_infin(p_f, p_g)
+      distance_ks_two_con(p_f, p_g)
     }
   }
 }
@@ -151,26 +151,26 @@ distance_ks_two_fin <- function(p_f, p_g) {
   abs(p_f(ks_sep) - p_g(ks_sep))
 }
 
-distance_ks_mixed <- function(p_fin, p_infin) {
+distance_ks_mixed <- function(p_fin, p_con) {
   # Not using `separation_ks_mixed()` because of possible "limit" nature of K-S
   # distance which is a "supremum" and not "maximum". Its output might be
   # misleading because supremum distance might be achieved as left limit at the
   # point. See also commentary in `separation_ks_mixed()`.
   x_test <- meta_x_tbl(p_fin)[["x"]]
 
-  p_infin_cumprob <- p_infin(x_test)
+  p_con_cumprob <- p_con(x_test)
 
   p_fin_cumprob <- meta_x_tbl(p_fin)[["cumprob"]]
   p_fin_left_cumprob <- c(0, p_fin_cumprob[-length(p_fin_cumprob)])
 
   max(
-    abs(p_infin_cumprob - p_fin_cumprob),
-    abs(p_infin_cumprob - p_fin_left_cumprob)
+    abs(p_con_cumprob - p_fin_cumprob),
+    abs(p_con_cumprob - p_fin_left_cumprob)
   )
 }
 
-distance_ks_two_infin <- function(p_f, p_g) {
-  ks_sep <- separation_ks_two_infin(p_f, p_g)
+distance_ks_two_con <- function(p_f, p_g) {
+  ks_sep <- separation_ks_two_con(p_f, p_g)
 
   abs(p_f(ks_sep) - p_g(ks_sep))
 }
@@ -181,7 +181,7 @@ distance_ks_two_infin <- function(p_f, p_g) {
 # possible sets. In other words, there should be some subset of real line (or a
 # set of those) probabilities of (more formally, limit of) which under `f` and
 # `g` differ the most. This set (of finite values for "fin" and of intervals for
-# "infin") can be expressed as `A = {x | f(x) > g(x)}` (`f` and `g` are
+# "continuous") can be expressed as `A = {x | f(x) > g(x)}` (`f` and `g` are
 # d-functions) or `B = {x | f(x) < g(x)}`.
 # However, absolute differences in probabilities for `A` and `B` are equal. This
 # is because:
@@ -199,15 +199,15 @@ distance_totvar <- function(f, g) {
 
   switch(
     as.character(num_fin),
-    `0` = distance_totvar_two_infin(d_f, d_g),
+    `0` = distance_totvar_two_con(d_f, d_g),
     # A target set is all `x` values of "fin" pdqr-function. Its probability
-    # under "fin" is 1 and under "infin" is zero because it is countable.
+    # under "fin" is 1 and under "continuous" is zero because it is countable.
     `1` = 1,
     `2` = distance_totvar_two_fin(d_f, d_g)
   )
 }
 
-distance_totvar_two_infin <- function(d_f, d_g) {
+distance_totvar_two_con <- function(d_f, d_g) {
   # `{x | d_f(x) > d_g(x)}` is a union of intervals where `d_f(x) - d_g(x)` has
   # constant positive sign. `d_f(x) - d_g(x)` can change sign in two cases:
   # - When `d_f` and `d_g` intersect.

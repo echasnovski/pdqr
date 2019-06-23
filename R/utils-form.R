@@ -83,7 +83,7 @@ compute_f_list_meta <- function(f_list) {
   type_vec <- vapply(f_list[is_elem_pdqr], meta_type, character(1))
 
   # Combined type is "fin" only if all inputs are "fin"
-  res_type <- if (all(type_vec == "fin")) {"fin"} else {"infin"}
+  res_type <- if (all(type_vec == "fin")) {"fin"} else {"continuous"}
 
   # Combined class is the class of first pdqr-function (which should be present
   # due to call to `assert_f_list()`)

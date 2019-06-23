@@ -3,32 +3,32 @@
 #' Modify [type][meta_type()] of pdqr-function using method of choice.
 #'
 #' @param f A pdqr-function.
-#' @param type A desired type of output. Should be one of "fin" or "infin".
+#' @param type A desired type of output. Should be one of "fin" or "continuous".
 #' @param method Retyping method. Should be one of "piecelin" or "dirac".
 #'
 #' @details If type of `f` is equal to input `type` then `f` is returned.
 #'
-#' Method "piecelin" (default) should be used mostly for converting from "infin"
+#' Method "piecelin" (default) should be used mostly for converting from "continuous"
 #' to "fin" type. It uses the fact that 'pdqr' densities are piecewise-linear
 #' (linear in intervals between values of "x" column of ["x_tbl"
 #' metadata][meta_x_tbl()]) on their [support][meta_support()]:
-#' - Retyping from "infin" to `type` "fin" is done by computing "x" values as
+#' - Retyping from "continuous" to `type` "fin" is done by computing "x" values as
 #' centers of interval masses with probabilities equal to interval total
 #' probabilities.
-#' - Retyping from "fin" to `type` "infin" is made approximately by trying to
+#' - Retyping from "fin" to `type` "continuous" is made approximately by trying to
 #' compute "x" grid, for which "x" values of input distribution are going to be
 #' centers of mass. Algorithm is approximate and might result into a big errors
 #' in case of small number of "x" values or if they are not "suitable" for this
 #' kind of transformation.
 #'
-#' Method "dirac" is used mostly for converting from "fin" to "infin" type (for
+#' Method "dirac" is used mostly for converting from "fin" to "continuous" type (for
 #' example, in `form_mix()` in case different types of input pdqr-functions). It
 #' works in the following way:
-#' - Retyping from "infin" to `type` "fin" works only if "x_tbl" metadata
+#' - Retyping from "continuous" to `type` "fin" works only if "x_tbl" metadata
 #' represents a mixture of dirac-like distributions. In that case it is
 #' transformed to have "x" values from centers of those dirac-like distributions
 #' with corresponding probabilities.
-#' - Retyping from "fin" to `type` "infin" works by transforming each "x" value
+#' - Retyping from "fin" to `type` "continuous" works by transforming each "x" value
 #' from "x_tbl" metadata into dirac-like distribution with total probability
 #' taken from corresponding value of "prob" column. Output essentially
 #' represents a mixture of dirac-like distributions.
@@ -43,20 +43,20 @@
 #' @family form functions
 #'
 #' @examples
-#' my_infin <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "infin")
-#' my_fin <- form_retype(my_infin, "fin")
+#' my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
+#' my_fin <- form_retype(my_con, "fin")
 #' meta_x_tbl(my_fin)
 #'
-#' my_dirac <- form_retype(my_fin, "infin", method = "dirac")
+#' my_dirac <- form_retype(my_fin, "continuous", method = "dirac")
 #' meta_x_tbl(my_dirac)
 #'
-#' # Default retyping from "fin" to "infin" isn't very accurate for small number
+#' # Default retyping from "fin" to "continuous" isn't very accurate for small number
 #' # of points/intervals
-#' my_infin_2 <- form_retype(my_fin, "infin")
-#' meta_x_tbl(my_infin_2)
+#' my_con_2 <- form_retype(my_fin, "continuous")
+#' meta_x_tbl(my_con_2)
 #'
-#' plot(my_infin)
-#' lines(my_infin_2, col = "blue")
+#' plot(my_con)
+#' lines(my_con_2, col = "blue")
 #'
 #' @export
 form_retype <- function(f, type, method = "piecelin") {
@@ -69,7 +69,7 @@ form_retype <- function(f, type, method = "piecelin") {
   switch(
     type,
     fin = retype_fin(f, method),
-    infin = retype_infin(f, method)
+    continuous = retype_con(f, method)
   )
 }
 
@@ -143,19 +143,19 @@ retype_fin_dirac <- function(f) {
   new_pdqr_by_ref(f)(data.frame(x = new_x, prob = new_prob), "fin")
 }
 
-retype_infin <- function(f, method) {
-  if (meta_type(f) == "infin") {
+retype_con <- function(f, method) {
+  if (meta_type(f) == "continuous") {
     return(f)
   }
 
   switch(
     method,
-    piecelin = retype_infin_piecelin(f),
-    dirac = retype_infin_dirac(f)
+    piecelin = retype_con_piecelin(f),
+    dirac = retype_con_dirac(f)
   )
 }
 
-retype_infin_piecelin <- function(f) {
+retype_con_piecelin <- function(f) {
   # Note that `f` has already passed `assert_pdqr_fun()` which means that "x"
   # column in "x_tbl" metadata is sorted and has no duplicate values
   x_tbl <- meta_x_tbl(f)
@@ -163,7 +163,7 @@ retype_infin_piecelin <- function(f) {
   n <- nrow(x_tbl)
   if (n < 4) {
     stop_collapse(
-      'For conversion to "infin" type `form_retype()` needs at least 4 unique ',
+      'For conversion to "continuous" type `form_retype()` needs at least 4 unique ',
       '`x` values.'
     )
   }
@@ -171,7 +171,7 @@ retype_infin_piecelin <- function(f) {
   x <- x_tbl[["x"]]
   prob <- x_tbl[["prob"]]
 
-  # Values of `x` grid (except first and last elements) of "infin" output is
+  # Values of `x` grid (except first and last elements) of "continuous" output is
   # approximated as convex combination of nearest "centers of mass":
   # `x_mid = (1-alpha)*x_mass_left + alpha*x_mass_right`. Here `alpha` is
   # approximated based on two separate assumptions:
@@ -199,10 +199,10 @@ retype_infin_piecelin <- function(f) {
   # Creating pdqr-function
   pdqr_fun <- new_pdqr_by_ref(f)
 
-  pdqr_fun(data.frame(x = x_grid, y = y), "infin")
+  pdqr_fun(data.frame(x = x_grid, y = y), "continuous")
 }
 
-retype_infin_dirac <- function(f, h = 1e-8) {
+retype_con_dirac <- function(f, h = 1e-8) {
   x_tbl <- meta_x_tbl(f)
   x <- x_tbl[["x"]]
   half_diff_x <- diff(x) / 2
@@ -216,5 +216,5 @@ retype_infin_dirac <- function(f, h = 1e-8) {
   new_x <- c(x - h_vec,                       x, x + h_vec)
   new_y <- c(   y_zero, x_tbl[["prob"]] / h_vec,    y_zero)
 
-  new_pdqr_by_ref(f)(data.frame(x = new_x, y = new_y), "infin")
+  new_pdqr_by_ref(f)(data.frame(x = new_x, y = new_y), "continuous")
 }
