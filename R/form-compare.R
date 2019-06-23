@@ -51,13 +51,13 @@ prob_geq <- function(f, g) {
   }
 
   # Actual computations
-  if (meta_type(f) == "fin") {
-    prob_geq_fin_any(f, g)
+  if (meta_type(f) == "discrete") {
+    prob_geq_dis_any(f, g)
   } else {
-    if (meta_type(g) == "fin") {
+    if (meta_type(g) == "discrete") {
       # P(f >= g) = 1 - P(f < g) = [due to continuity of `f`] = 1 - P(f <= g) =
       # 1 - P(g >= f)
-      1 - prob_geq_fin_any(g, f)
+      1 - prob_geq_dis_any(g, f)
     } else {
       prob_geq_con_con(f, g)
     }
@@ -65,17 +65,17 @@ prob_geq <- function(f, g) {
 }
 
 prob_equal <- function(f, g) {
-  if ((meta_type(f) == "fin") && (meta_type(g) == "fin")) {
+  if ((meta_type(f) == "discrete") && (meta_type(g) == "discrete")) {
     f_x_tbl <- meta_x_tbl(f)
     g_x_tbl <- meta_x_tbl(g)
     x_f <- f_x_tbl[["x"]]
 
-    # This is basically a copy of `new_d_fin()` output's body but without input
+    # This is basically a copy of `new_d_dis()` output's body but without input
     # rounding. This is done to ensure the following code is valid:
-    # dirac_single_fin <- form_retype(new_d(1, "continuous"), "fin")
+    # dirac_single_dis <- form_retype(new_d(1, "continuous"), "discrete")
     # This should return 0.5 which it doesn't (because of rounding policy) if
     # `d_g_at_x_f` is computed with `as_d(g)(x_f)`:
-    # prob_equal(dirac_single_fin, dirac_single_fin)
+    # prob_equal(dirac_single_dis, dirac_single_dis)
     d_g_at_x_f <- numeric(length(x_f))
     inds <- match(x_f, g_x_tbl[["x"]], nomatch = NA)
     good_inds <- !is.na(inds)
@@ -93,17 +93,17 @@ prob_greater <- function(f, g) {
   prob_geq(f, g) - prob_equal(f, g)
 }
 
-prob_geq_fin_any <- function(f, g) {
+prob_geq_dis_any <- function(f, g) {
   f_x_tbl <- meta_x_tbl(f)
   x_f <- f_x_tbl[["x"]]
 
-  if (meta_type(g) == "fin") {
-    # This is basically a copy of `new_p_fin()` output's body but without input
+  if (meta_type(g) == "discrete") {
+    # This is basically a copy of `new_p_dis()` output's body but without input
     # rounding. This is done to ensure that the following code is valid:
-    # dirac_single_fin <- form_retype(new_d(1, "continuous"), "fin")
+    # dirac_single_dis <- form_retype(new_d(1, "continuous"), "discrete")
     # # This should return 0.75 which it doesn't (because of rounding policy) if
     # # `cumprob_g` is computed with `as_p(g)(x_f)`.
-    # prob_geq_fin_any(dirac_single_fin, dirac_single_fin)
+    # prob_geq_dis_any(dirac_single_dis, dirac_single_dis)
 
     g_x_tbl <- meta_x_tbl(g)
     cumprob_g <- numeric(length(x_f))

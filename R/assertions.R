@@ -137,7 +137,7 @@ assert_pdqr_fun <- function(f) {
 
   if (!has_meta_type(f)) {
     stop_collapse(
-      err_header, 'It should have proper "type" metadata ("fin" or "continuous").'
+      err_header, 'It should have proper "type" metadata ("discrete" or "continuous").'
     )
   }
 
@@ -166,9 +166,9 @@ assert_distr_type <- function(type) {
   if (!is_string(type)) {
     stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
   }
-  if (!(type %in% c("fin", "continuous"))) {
+  if (!(type %in% c("discrete", "continuous"))) {
     stop_collapse(
-      type_name, ' should be one of "fin" or "continuous", not "', type, '".'
+      type_name, ' should be one of "discrete" or "continuous", not "', type, '".'
     )
   }
 
@@ -210,12 +210,12 @@ assert_x_tbl <- function(x_tbl, type, err_header = "") {
 
   switch(
     type,
-    fin = assert_x_tbl_fin(x_tbl, x_tbl_name, err_header = err_header),
+    discrete = assert_x_tbl_dis(x_tbl, x_tbl_name, err_header = err_header),
     continuous = assert_x_tbl_con(x_tbl, x_tbl_name, err_header = err_header)
   )
 }
 
-assert_x_tbl_fin <- function(x_tbl, x_tbl_name, err_header = "") {
+assert_x_tbl_dis <- function(x_tbl, x_tbl_name, err_header = "") {
   if (!("prob" %in% names(x_tbl))) {
     stop_collapse(err_header, x_tbl_name, ' should have "prob" column.')
   }
@@ -279,11 +279,11 @@ assert_x_tbl_meta <- function(x_tbl, type, err_header = "") {
     stop_collapse(err_header, '"x_tbl" metadata should have "cumprob" column.')
   }
 
-  if (type == "fin") {
+  if (type == "discrete") {
     if (!("prob" %in% names(x_tbl))) {
       stop_collapse(
         err_header, '"x_tbl" metadata should have "prob" column if `type` is ',
-        '"fin".'
+        '"discrete".'
       )
     }
     if (!is_near(sum(x_tbl[["prob"]]), 1)) {
@@ -339,7 +339,7 @@ warning_boolean_pdqr_fun <- function(f = NULL, f_name = NULL) {
   }
 
   warning_collapse(
-    f_name, ' is not a "boolean" pdqr-function (type "fin" with "x" values ',
+    f_name, ' is not a "boolean" pdqr-function (type "discrete" with "x" values ',
     'equal to 0 and 1). Proceed with caution.'
   )
 }

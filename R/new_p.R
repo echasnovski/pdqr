@@ -3,13 +3,13 @@
 new_p <- function(x, type, ...) {
   distr_impl(
     pdqr_class = "p",
-    impl_funs = list(fin = new_p_fin, continuous = new_p_con),
+    impl_funs = list(discrete = new_p_dis, continuous = new_p_con),
     x = x, type = type, ...
   )
 }
 
-new_p_fin <- function(x_tbl) {
-  type <- "fin"
+new_p_dis <- function(x_tbl) {
+  type <- "discrete"
   support <- range(x_tbl[["x"]])
 
   function(q) {

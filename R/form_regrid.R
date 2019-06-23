@@ -22,12 +22,12 @@
 #' [type][meta_type()] and which kind or regridding is done (upgridding is the
 #' case when `n_grid` is strictly more than number of rows in "x_tbl" metadata,
 #' downgridding - when it is strictly less):
-#'     - Type "fin":
-#'         - UPgridding "fin" functions is not possible as it is assumed that
-#'         input "fin" functions can't have any "x" values other then present
+#'     - Type "discrete":
+#'         - UPgridding "discrete" functions is not possible as it is assumed that
+#'         input "discrete" functions can't have any "x" values other then present
 #'         ones. In this case input is returned, the only case when output
 #'         doesn't have desired `n_grid` rows in "x_tbl" metadata.
-#'         - DOWNgridding "fin" functions is done by computing nearest match of
+#'         - DOWNgridding "discrete" functions is done by computing nearest match of
 #'         reference grid to `f`'s one and collapsing (by summing probabilities)
 #'         all "x" values from input to the nearest matched ones. Here
 #'         "computing nearest match" means that every element of reference grid
@@ -44,7 +44,7 @@
 #'         all points of set. Values of "y" and "cumprob" columns are taken as
 #'         values of corresponding to `f` d- and p-functions.
 #'         - DOWNgridding "continuous" functions is done by computing nearest match
-#'         of reference grid to `f`'s one (as for "fin" type) and removing all
+#'         of reference grid to `f`'s one (as for "discrete" type) and removing all
 #'         unmatched rows from "x_tbl" metadata.
 #'
 #' Special cases of `n_grid`:
@@ -62,15 +62,15 @@
 #' @family form functions
 #'
 #' @examples
-#' # Type "fin"
-#' d_fin <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "fin")
+#' # Type "discrete"
+#' d_dis <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "discrete")
 #'
 #'   # Downgridding
-#' meta_x_tbl(form_regrid(d_fin, n_grid = 4))
-#' meta_x_tbl(form_regrid(d_fin, n_grid = 4, method = "q"))
+#' meta_x_tbl(form_regrid(d_dis, n_grid = 4))
+#' meta_x_tbl(form_regrid(d_dis, n_grid = 4, method = "q"))
 #'
-#'   # Upgridding for "fin" type isn't possible. Input is returned
-#' identical(d_fin, form_regrid(d_fin, n_grid = 100))
+#'   # Upgridding for "discrete" type isn't possible. Input is returned
+#' identical(d_dis, form_regrid(d_dis, n_grid = 100))
 #'
 #' # Type "continuous"
 #'   # Downgridding
@@ -84,7 +84,7 @@
 #' meta_x_tbl(form_regrid(d_con, n_grid = 6))
 #'
 #' # Pdqr-function with center at median is returned in case `n_grid` is 1
-#' form_regrid(d_fin, n_grid = 1)
+#' form_regrid(d_dis, n_grid = 1)
 #'   # Dirac-like function is returned
 #' form_regrid(d_con, n_grid = 1)
 #'
@@ -123,11 +123,11 @@ early_regrid <- function(f, n_grid) {
   }
 
   # Return input if `n_grid` is the same as number of present points or it is a
-  # case of UPgridding a "fin" pdqr-function
+  # case of UPgridding a "discrete" pdqr-function
   n_f_x_tbl <- nrow(meta_x_tbl(f))
   is_equal_size <- n_grid == n_f_x_tbl
-  is_fin_increasing <- (meta_type(f) == "fin") && (n_grid > n_f_x_tbl)
-  if (is_equal_size || is_fin_increasing) {
+  is_dis_increasing <- (meta_type(f) == "discrete") && (n_grid > n_f_x_tbl)
+  if (is_equal_size || is_dis_increasing) {
     return(f)
   }
 
@@ -148,19 +148,19 @@ compute_grid_x <- function(f, n_grid) {
 }
 
 compute_grid_q <- function(f, n_grid) {
-  # Note that this might have duplicate values if `f` is of `type` "fin"
+  # Note that this might have duplicate values if `f` is of `type` "discrete"
   as_q(f)(seq(0, 1, length.out = n_grid))
 }
 
 adjust_to_grid <- function(f, ref_grid) {
   switch(
     meta_type(f),
-    fin = adjust_to_grid_fin(f, ref_grid),
+    discrete = adjust_to_grid_dis(f, ref_grid),
     continuous = adjust_to_grid_con(f, ref_grid)
   )
 }
 
-adjust_to_grid_fin <- function(f, ref_grid) {
+adjust_to_grid_dis <- function(f, ref_grid) {
   # If this function executes, it means that this is DOWNgridding (decreasing
   # granularity), i.e. `length(ref_grid)` is strictly less than
   # `nrow(meta_x_tbl(f))`.
@@ -173,7 +173,7 @@ adjust_to_grid_fin <- function(f, ref_grid) {
   # Collapse surplus of `x` into the nearest `res_x`
   f_x_tbl[["x"]] <- res_x[find_nearest_ind(x, res_x)]
 
-  new_pdqr_by_ref(f)(f_x_tbl, "fin")
+  new_pdqr_by_ref(f)(f_x_tbl, "discrete")
 }
 
 adjust_to_grid_con <- function(f, ref_grid) {

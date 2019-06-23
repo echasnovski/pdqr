@@ -35,7 +35,7 @@
 #' summ_iqr(d_norm)
 #' summ_mad(d_norm)
 #'
-#' # Type "fin"
+#' # Type "discrete"
 #' d_pois <- as_d(dpois, lambda = 10)
 #' summ_sd(d_pois)
 #' summ_var(d_pois)

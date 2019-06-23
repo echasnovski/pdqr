@@ -35,11 +35,11 @@
 #' @family summary functions
 #'
 #' @examples
-#' # Type "fin"
-#' d_fin <- new_d(data.frame(x = 1:5, prob = c(1, 2, 3, 2, 1) / 9), "fin")
-#' summ_pval(d_fin, 3, method = "both")
-#' summ_pval(d_fin, 3, method = "right")
-#' summ_pval(d_fin, 3, method = "left")
+#' # Type "discrete"
+#' d_dis <- new_d(data.frame(x = 1:5, prob = c(1, 2, 3, 2, 1) / 9), "discrete")
+#' summ_pval(d_dis, 3, method = "both")
+#' summ_pval(d_dis, 3, method = "right")
+#' summ_pval(d_dis, 3, method = "left")
 #'
 #' # Type "continuous"
 #' d_norm <- as_d(dnorm)
@@ -83,7 +83,7 @@ both_pval <- function(p_f, obs) {
 }
 
 right_pval <- function(p_f, obs) {
-  if (meta_type(p_f) == "fin") {
+  if (meta_type(p_f) == "discrete") {
     # This is needed to compute probability of `x >= obs` and not of `x > obs`
     # (which is returned by `1 - p_f(obs)`).
     # Alternative implementation is to sum probabilities directly from "x_tbl"

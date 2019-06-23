@@ -55,17 +55,17 @@
 #' @family summary functions
 #'
 #' @examples
-#' # Type "fin"
-#' d_fin <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2)/9), "fin")
-#' summ_interval(d_fin, level = 0.5, method = "minwidth")
-#' summ_interval(d_fin, level = 0.5, method = "percentile")
-#' summ_interval(d_fin, level = 0.5, method = "sigma")
+#' # Type "discrete"
+#' d_dis <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2)/9), "discrete")
+#' summ_interval(d_dis, level = 0.5, method = "minwidth")
+#' summ_interval(d_dis, level = 0.5, method = "percentile")
+#' summ_interval(d_dis, level = 0.5, method = "sigma")
 #'
 #'   # Visual difference between methods
-#' plot(d_fin)
-#' region_draw(summ_interval(d_fin, 0.5, method = "minwidth"), col = "blue")
-#' region_draw(summ_interval(d_fin, 0.5, method = "percentile"), col = "red")
-#' region_draw(summ_interval(d_fin, 0.5, method = "sigma"), col = "green")
+#' plot(d_dis)
+#' region_draw(summ_interval(d_dis, 0.5, method = "minwidth"), col = "blue")
+#' region_draw(summ_interval(d_dis, 0.5, method = "percentile"), col = "red")
+#' region_draw(summ_interval(d_dis, 0.5, method = "sigma"), col = "green")
 #'
 #' # Type "continuous"
 #' d_con <- form_mix(

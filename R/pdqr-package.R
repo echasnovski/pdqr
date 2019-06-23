@@ -14,7 +14,7 @@ type_sum.pdqr <- function(x) {
   paste0(meta_class(x), "-fun")
 }
 
-# This enables printing the `data.frame(l = I(list(new_d(1, "fin"))))`
+# This enables printing the `data.frame(l = I(list(new_d(1, "discrete"))))`
 #' @export
 toString.pdqr <- function(x, ...) {
   paste0(meta_class(x), "-function")

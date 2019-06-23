@@ -11,8 +11,8 @@
 #'
 #' `summ_median()` computes a smallest `x` value for which cumulative
 #' probability is not less than 0.5. Essentially, it is a `as_q(f)(0.5)`. This
-#' also means that for pdqr-functions with type "fin" it always returns an entry
-#' of "x" column from `f`'s [`x_tbl`][meta_x_tbl()].
+#' also means that for pdqr-functions with type "discrete" it always returns an entry
+#' of "x" column from `f`'s ["x_tbl" metadata][meta_x_tbl()].
 #'
 #' `summ_mode(*, method = "global")` computes a smallest `x` (which is an entry
 #' of "x" column from `f`'s `x_tbl`) with the highest probability/density.
@@ -37,7 +37,7 @@
 #' summ_median(d_norm)
 #' summ_mode(d_norm)
 #'
-#' # Type "fin"
+#' # Type "discrete"
 #' d_pois <- as_d(dpois, lambda = 10)
 #' summ_mean(d_pois)
 #' summ_median(d_pois)
@@ -79,7 +79,7 @@ summ_mean <- function(f) {
 
   switch(
     meta_type(f),
-    fin = dotprod(x_tbl[["x"]], x_tbl[["prob"]]),
+    discrete = dotprod(x_tbl[["x"]], x_tbl[["prob"]]),
     continuous = summ_mean_con(x_tbl)
   )
 }
@@ -101,7 +101,7 @@ summ_mode <- function(f, method = "global") {
 
   f_x_tbl <- meta_x_tbl(f)
   x <- f_x_tbl[["x"]]
-  col_name <- switch(meta_type(f), fin = "prob", continuous = "y")
+  col_name <- switch(meta_type(f), discrete = "prob", continuous = "y")
   col <- f_x_tbl[[col_name]]
 
   if (method == "global") {

@@ -53,17 +53,17 @@
 #' summ_separation(d_norm_1, d_unif, method = "OP")
 #'
 #' # Mixed types for "KS" method
-#' p_fin <- new_p(1, "fin")
+#' p_dis <- new_p(1, "discrete")
 #' p_unif <- as_p(punif)
-#' thres <- summ_separation(p_fin, p_unif)
-#' abs(p_fin(thres) - p_unif(thres))
+#' thres <- summ_separation(p_dis, p_unif)
+#' abs(p_dis(thres) - p_unif(thres))
 #'   # Actual difference at `thres` is 0. However, supremum (equal to 1) as
 #'   # limit value is # reached there.
 #' x_grid <- seq(0, 1, by = 1e-3)
-#' plot(x_grid, abs(p_fin(x_grid) - p_unif(x_grid)), type = "b")
+#' plot(x_grid, abs(p_dis(x_grid) - p_unif(x_grid)), type = "b")
 #'
 #' # Handling of non-overlapping supports
-#' summ_separation(new_d(2, "fin"), new_d(3, "fin"))
+#' summ_separation(new_d(2, "discrete"), new_d(3, "discrete"))
 #'
 #' # The smallest "x" value is returned in case of several optimal thresholds
 #' summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
@@ -102,64 +102,64 @@ separation_ks <- function(f, g) {
   f_type <- meta_type(f)
   g_type <- meta_type(g)
 
-  if (f_type == "fin") {
-    if (g_type == "fin") {
-      separation_ks_two_fin(p_f, p_g)
+  if (f_type == "discrete") {
+    if (g_type == "discrete") {
+      separation_ks_two_dis(p_f, p_g)
     } else {
-      separation_ks_mixed(p_fin = p_f, p_con = p_g)
+      separation_ks_mixed(p_dis = p_f, p_con = p_g)
     }
   } else {
-    if (g_type == "fin") {
-      separation_ks_mixed(p_fin = p_g, p_con = p_f)
+    if (g_type == "discrete") {
+      separation_ks_mixed(p_dis = p_g, p_con = p_f)
     } else {
       separation_ks_two_con(p_f, p_g)
     }
   }
 }
 
-separation_ks_two_fin <- function(p_f, p_g) {
+separation_ks_two_dis <- function(p_f, p_g) {
   x_test <- union_x(p_f, p_g)
   max_ind <- which.max(abs(p_f(x_test) - p_g(x_test)))
 
   x_test[max_ind]
 }
 
-separation_ks_mixed <- function(p_fin, p_con) {
-  # Supremum of |F - G| can be found only by inspecting "x" elements of "fin"
+separation_ks_mixed <- function(p_dis, p_con) {
+  # Supremum of |F - G| can be found only by inspecting "x" elements of "discrete"
   # pdqr-function. However, it can be also located on one of "x" elements of
   # "continuous" pdqr-function, and this fact should be accounted for, because of
   # obligation to return 'the smallest "x" value on which supremum of |F-G| is
   # located'.
-  fin_test <- meta_x_tbl(p_fin)[["x"]]
+  dis_test <- meta_x_tbl(p_dis)[["x"]]
 
-  p_con_cumprob <- p_con(fin_test)
+  p_con_cumprob <- p_con(dis_test)
 
-  p_fin_cumprob <- meta_x_tbl(p_fin)[["cumprob"]]
-  p_fin_left_cumprob <- c(0, p_fin_cumprob[-length(p_fin_cumprob)])
+  p_dis_cumprob <- meta_x_tbl(p_dis)[["cumprob"]]
+  p_dis_left_cumprob <- c(0, p_dis_cumprob[-length(p_dis_cumprob)])
 
   # Using `alternate()` here to ensure that the smallest "x" value is returned
   # if there are several candidates.
   # Also, `round()` is used to ensure that numerical representation issues don't
   # affect the output (especially in case of several output candidates and the
   # need to return the smallest one)
-  cdf_absdiff_fin <- round(alternate(
-    abs(p_con_cumprob - p_fin_cumprob),
+  cdf_absdiff_dis <- round(alternate(
+    abs(p_con_cumprob - p_dis_cumprob),
     # Testing against "left cumulative probabilities" (which are left limits
-    # of "fin" type CDF at points of discontinuity) is needed because K-S
+    # of "discrete" type CDF at points of discontinuity) is needed because K-S
     # distance is a **supremum** of absolute differences between two CDFs. It
     # is a way to account for discontinuity. Consider example in which K-S
     # distance should be equal to 1 but without using "left cumprob" it is
     # equal to 0:
     #   f <- new_p(data.frame(x = 0:1, y = c(1, 1)), "continuous")
-    #   g <- new_p(1, "fin")
-    abs(p_con_cumprob - p_fin_left_cumprob)
+    #   g <- new_p(1, "discrete")
+    abs(p_con_cumprob - p_dis_left_cumprob)
   ), digits = 12)
 
-  # Compute result `fin_test` element taking into account their "double usage"
+  # Compute result `dis_test` element taking into account their "double usage"
   # in `cdf_absdiff`
-  max_ind_fin <- which.max(cdf_absdiff_fin)
-  sep_fin <- fin_test[ceiling(max_ind_fin / 2)]
-  sep_fin_absdiff <- cdf_absdiff_fin[max_ind_fin]
+  max_ind_dis <- which.max(cdf_absdiff_dis)
+  sep_dis <- dis_test[ceiling(max_ind_dis / 2)]
+  sep_dis_absdiff <- cdf_absdiff_dis[max_ind_dis]
 
   # Take into account CDF values at "x" elements of "continuous" pdqr-function
   con_x_tbl <- meta_x_tbl(p_con)
@@ -167,7 +167,7 @@ separation_ks_mixed <- function(p_fin, p_con) {
     # No need taking into account "left limits" because if they matter, they are
     # already accounted for in previous step
   cdf_absdiff_con <- round(
-    abs(con_x_tbl[["cumprob"]] - p_fin(con_x)),
+    abs(con_x_tbl[["cumprob"]] - p_dis(con_x)),
     digits = 12
   )
 
@@ -175,10 +175,10 @@ separation_ks_mixed <- function(p_fin, p_con) {
   sep_con <- con_x[max_ind_con]
   sep_con_absdiff <- cdf_absdiff_con[max_ind_con]
 
-  if (sep_con_absdiff >= sep_fin_absdiff) {
-    min(sep_fin, sep_con)
+  if (sep_con_absdiff >= sep_dis_absdiff) {
+    min(sep_dis, sep_con)
   } else {
-    sep_fin
+    sep_dis
   }
 }
 

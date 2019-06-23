@@ -35,7 +35,7 @@
 #'
 #' This family of S3 generics represents mathematical functions. Most of the
 #' methods have **random nature**, except `abs()` and `sign()` which are
-#' computed directly. Output of `sign()` has "fin" type with 3 "x" values: -1,
+#' computed directly. Output of `sign()` has "discrete" type with 3 "x" values: -1,
 #' 0, 1.
 #'
 #' **Note** that `cumsum()`, `cumprod()`, `cummmax()`, and `cummin()` functions
@@ -55,7 +55,7 @@
 #' `2 - f` (which is actually `(-f) + 2`), `3*f` and `f/2` are linear
 #' transformations, but `1 / f`, `f + g` are not.
 #' - Functions for comparing: `==`, `!=`, `<`, `<=`, `>=`, `>`. Their output is
-#' **boolean pdqr-function**: "fin" type function with elements being exactly 0
+#' **boolean pdqr-function**: "discrete" type function with elements being exactly 0
 #' and 1. Probability of 0 represents probability of operator output being
 #' false, and 1 - being true. Probability of being true is computed directly as
 #' **limit of empirical estimation from simulations** (as size of samples grows
@@ -134,7 +134,7 @@
 #' @examples
 #' d_norm <- as_d(dnorm)
 #' d_unif <- as_d(dunif)
-#' d_fin <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "fin")
+#' d_dis <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
 #'
 #' set.seed(101)
 #'
@@ -148,26 +148,26 @@
 #'
 #'   # Although here distribution shouldn't change, it changes slightly due to
 #'   # random implementation
-#' meta_x_tbl(d_fin)
-#' meta_x_tbl(floor(d_fin))
+#' meta_x_tbl(d_dis)
+#' meta_x_tbl(floor(d_dis))
 #'
 #' # Ops
 #'   # Single input, linear transformations, and logical are not random
-#' d_fin > 1
-#' !(d_fin > 1)
+#' d_dis > 1
+#' !(d_dis > 1)
 #' d_norm >= (2*d_norm+1)
 #'   # All others are random
 #' plot(d_norm + d_norm)
 #'   # This is an exact reference curve
 #' lines(as_d(dnorm, sd = sqrt(2)), col = "red")
 #'
-#' plot(d_fin + d_norm)
+#' plot(d_dis + d_norm)
 #'
 #' plot(d_unif^d_unif)
 #'
 #' # Summary
 #'   # `all()` and `any()` are non-random
-#' all(d_fin > 1, d_fin > 1)
+#' all(d_dis > 1, d_dis > 1)
 #'   # Others are random
 #' plot(max(d_norm, d_norm, d_norm))
 #'
@@ -313,11 +313,11 @@ math_pdqr_impl <- function(gen, f, ...) {
 }
 
 math_abs <- function(f) {
-  if (meta_type(f) == "fin") {
+  if (meta_type(f) == "discrete") {
     x_tbl <- meta_x_tbl(f)
     x_tbl[["x"]] <- abs(x_tbl[["x"]])
 
-    new_pdqr_by_ref(f)(x_tbl, "fin")
+    new_pdqr_by_ref(f)(x_tbl, "discrete")
   } else {
     f_mix <- form_mix(list(f, -f))
 
@@ -333,7 +333,7 @@ math_sign <- function(f) {
     prob = c((d_f < 0)(1), (d_f == 0)(1), (d_f > 0)(1))
   )
 
-  new_pdqr_by_ref(f)(x_tbl, "fin")
+  new_pdqr_by_ref(f)(x_tbl, "discrete")
 }
 
 reflect_pdqr_around_zero <- function(f) {
@@ -344,10 +344,10 @@ reflect_pdqr_around_zero <- function(f) {
 
 negate_pdqr <- function(f) {
   # Probability of type "continuous" pdqr-function being exactly 0 is equal to zero
-  prob_zero <- if (meta_type(f) == "fin") {as_d(f)(0)} else {0}
+  prob_zero <- if (meta_type(f) == "discrete") {as_d(f)(0)} else {0}
 
   new_pdqr_by_ref(f)(
-    data.frame(x = 0:1, prob = c(1-prob_zero, prob_zero)), "fin"
+    data.frame(x = 0:1, prob = c(1-prob_zero, prob_zero)), "discrete"
   )
 }
 
@@ -399,7 +399,7 @@ ops_logic <- function(gen, e1, e2) {
     warning_boolean_pdqr_fun(f_name = paste0("One of `", gen, "` input"))
   }
 
-  d_zero <- new_d(0, "fin")
+  d_zero <- new_d(0, "discrete")
 
   prob_false_1 <- prob_equal(e1, d_zero)
   prob_false_2 <- prob_equal(e2, d_zero)
@@ -436,7 +436,7 @@ summary_allany <- function(gen, ...) {
     warning_boolean_pdqr_fun(f_name = paste0("Some input to `", gen, "()`"))
   }
 
-  d_zero <- new_d(0, "fin")
+  d_zero <- new_d(0, "discrete")
 
   prob_false <- vapply(dots, function(f) {prob_equal(f, d_zero)}, numeric(1))
 
@@ -466,7 +466,7 @@ ensure_pdqr_functions <- function(gen, ...) {
   res <- vector(mode = "list", length = length(dots))
   res[is_pdqr] <- dots[is_pdqr]
   res[is_number] <- lapply(
-    dots[is_number], new_pdqr_by_class(f_class), type = "fin"
+    dots[is_number], new_pdqr_by_class(f_class), type = "discrete"
   )
 
   res

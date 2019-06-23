@@ -20,7 +20,7 @@
 #' not less than `level`.
 #' 1. **Form a HDR as a set of closed intervals**.
 #'
-#' If `f` has "fin" type, target height is computed by looking at "x" values of
+#' If `f` has "discrete" type, target height is computed by looking at "x" values of
 #' ["x_tbl" metadata][meta_x_tbl()] in order of decreasing probability until
 #' their total probability is not less than `level`. After that, all "x" values
 #' with probability not less than height are considered to form a HDR. Output is
@@ -62,13 +62,13 @@
 #' @family summary functions
 #'
 #' @examples
-#' # "fin" functions
-#' d_fin <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "fin")
-#' summ_hdr(d_fin, 0.3)
-#' summ_hdr(d_fin, 0.5)
-#' summ_hdr(d_fin, 0.9)
+#' # "discrete" functions
+#' d_dis <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "discrete")
+#' summ_hdr(d_dis, 0.3)
+#' summ_hdr(d_dis, 0.5)
+#' summ_hdr(d_dis, 0.9)
 #'   # Zero width interval at global mode
-#' summ_hdr(d_fin, 0)
+#' summ_hdr(d_dis, 0)
 #'
 #' # "continuous" functions
 #' d_norm <- as_d(dnorm)
@@ -112,12 +112,12 @@ summ_hdr <- function(f, level = 0.95) {
 
   switch(
     meta_type(f),
-    fin = hdr_fin(f, level),
+    discrete = hdr_dis(f, level),
     continuous = hdr_con(f, level)
   )
 }
 
-hdr_fin <- function(f, level) {
+hdr_dis <- function(f, level) {
   x_tbl <- meta_x_tbl(f)
   x <- x_tbl[["x"]]
   prob <- x_tbl[["prob"]]

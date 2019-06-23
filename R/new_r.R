@@ -3,17 +3,17 @@
 new_r <- function(x, type, ...) {
   distr_impl(
     pdqr_class = "r",
-    impl_funs = list(fin = new_r_fin, continuous = new_r_con),
+    impl_funs = list(discrete = new_r_dis, continuous = new_r_con),
     x = x, type = type, ...
   )
 }
 
-new_r_fin <- function(x_tbl) {
-  q_fin <- new_q(x_tbl, type = "fin")
+new_r_dis <- function(x_tbl) {
+  q_dis <- new_q(x_tbl, type = "discrete")
 
-  type <- "fin"
-  support <- meta_support(q_fin)
-  x_tbl <- meta_x_tbl(q_fin)
+  type <- "discrete"
+  support <- meta_support(q_dis)
+  x_tbl <- meta_x_tbl(q_dis)
 
   function(n) {
     # Not using `assert_type()` for speed reasons
@@ -25,7 +25,7 @@ new_r_fin <- function(x_tbl) {
 
     rand_q_vec <- stats::runif(n, min = 0, max = 1)
 
-    q_fin(rand_q_vec)
+    q_dis(rand_q_vec)
   }
 }
 

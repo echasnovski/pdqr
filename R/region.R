@@ -29,7 +29,7 @@
 #' accept that point as "in region".
 #'
 #' `region_prob()` computes total probability of region according to
-#' pdqr-function `f`. If `f` has "fin" [type][meta_type()], output is computed
+#' pdqr-function `f`. If `f` has "discrete" [type][meta_type()], output is computed
 #' as sum of probabilities for all "x" values from ["x_tbl"
 #' metadata][meta_x_tbl()] which lie inside a region (respecting `left_closed`
 #' and `right_closed` options while using `region_is_in()`). If `f` has "continuous"
@@ -38,7 +38,7 @@
 #'
 #' `region_height()` computes "height" of a region (with respect to `f`):
 #' minimum value of corresponding to `f` d-function can return based on relevant
-#' points inside a region. If `f` has "fin" type, those relevant points are
+#' points inside a region. If `f` has "discrete" type, those relevant points are
 #' computed as "x" values from "x_tbl" metadata which lie inside a region (if
 #' there are no such points, output is 0). If `f` has "continuous" type, the whole
 #' intervals are used as relevant points. The notion of "height" comes from
@@ -76,14 +76,14 @@
 #' [summ_interval()] for computing of single interval summary of distribution.
 #'
 #' @examples
-#' # Type "fin"
+#' # Type "discrete"
 #' d_binom <- as_d(dbinom, size = 10, prob = 0.7)
-#' hdr_fin <- summ_hdr(d_binom, level = 0.6)
-#' region_is_in(hdr_fin, 0:10)
+#' hdr_dis <- summ_hdr(d_binom, level = 0.6)
+#' region_is_in(hdr_dis, 0:10)
 #'   # This should be not less than 0.6
-#' region_prob(hdr_fin, d_binom)
-#' region_height(hdr_fin, d_binom)
-#' region_width(hdr_fin)
+#' region_prob(hdr_dis, d_binom)
+#' region_height(hdr_dis, d_binom)
+#' region_width(hdr_dis)
 #'
 #' # Type "continuous"
 #' d_norm <- as_d(dnorm)
@@ -159,7 +159,7 @@ region_prob <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
   assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
 
-  if (meta_type(f) == "fin") {
+  if (meta_type(f) == "discrete") {
     x_tbl <- meta_x_tbl(f)
 
     x_is_in_region <- region_is_in(
@@ -192,7 +192,7 @@ region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
 
   # `x_probe` contains all points of interest on which minimum
   # probability/density inside region might occure
-  if (meta_type(f) == "fin") {
+  if (meta_type(f) == "discrete") {
     x_probe <- x[x_is_in_region]
   } else {
     x_probe <- c(region[["left"]], region[["right"]], x[x_is_in_region])

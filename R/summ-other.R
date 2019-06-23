@@ -32,7 +32,7 @@ summ_quantile <- function(f, probs) {
 #'
 #' Here `summ_prob_false()` returns a probability of 0 and `summ_prob_true()` -
 #' complementary probability (one minus `summ_prob_false()` output). Both of
-#' them check if their input is a **boolean** pdqr-function: type "fin" with `x`
+#' them check if their input is a **boolean** pdqr-function: type "discrete" with `x`
 #' in `x_tbl` identical to `c(0, 1)`. If it is not, warning is thrown.
 #'
 #' @inheritParams summ_mean
@@ -50,7 +50,7 @@ summ_quantile <- function(f, probs) {
 #' # When input is "continuous" function or doesn't have 0 as distribution element,
 #' # probability of being false is returned as 0.
 #' summ_prob_false(d_unif)
-#' summ_prob_true(new_d(2, "fin"))
+#' summ_prob_true(new_d(2, "discrete"))
 #'
 #' @name summ_prob_true
 NULL

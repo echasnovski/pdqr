@@ -10,14 +10,14 @@
 #'   equal weights). Should be non-negative numbers with positive sum.
 #'
 #' @details **Type of output mixture** is determined by the following algorithm:
-#' - If `f_list` consists only from pdqr-functions of "fin" type, then output
-#' will have "fin" type.
+#' - If `f_list` consists only from pdqr-functions of "discrete" type, then output
+#' will have "discrete" type.
 #' - If `f_list` has at least one pdqr-function of type "continuous", then output
-#' will have "continuous" type. In this case all "fin" pdqr-functions in `f_list` are
+#' will have "continuous" type. In this case all "discrete" pdqr-functions in `f_list` are
 #' approximated with corresponding dirac-like "continuous" functions (with
 #' [form_retype(*, method = "dirac")][form_retype()]). **Note** that this
 #' approximation has consequences during computation of comparisons. For
-#' example, if original "fin" function `f` is for distribution with one element
+#' example, if original "discrete" function `f` is for distribution with one element
 #' `x`, then probability of `f >= x` being true is 1. After retyping to
 #' dirac-like function, this probability will be 0.5, because of symmetrical
 #' dirac-like approximation. Using a little nudge to `x` of `1e-7` magnitude in
@@ -39,11 +39,11 @@
 #' @family form functions
 #'
 #' @examples
-#' # All "fin"
+#' # All "discrete"
 #' d_binom <- as_d(dbinom, size = 10, prob = 0.5)
 #' r_pois <- as_r(rpois, lambda = 1)
-#' fin_mix <- form_mix(list(d_binom, r_pois))
-#' plot(fin_mix)
+#' dis_mix <- form_mix(list(d_binom, r_pois))
+#' plot(dis_mix)
 #'
 #' # All "continuous"
 #' p_norm <- as_p(pnorm)
@@ -62,7 +62,7 @@
 #' con_x_tbl <- meta_x_tbl(con_mix)
 #' con_x_tbl[(con_x_tbl$x >= -1e-4) & (con_x_tbl$x <= 1e-4), ]
 #'
-#' # Some "fin", some "continuous"
+#' # Some "discrete", some "continuous"
 #' all_mix <- form_mix(list(d_binom, d_unif))
 #' plot(all_mix)
 #' all_x_tbl <- meta_x_tbl(all_mix)
@@ -80,7 +80,7 @@ form_mix <- function(f_list, weights = NULL) {
   f_list_meta <- compute_f_list_meta(f_list)
   res_type <- f_list_meta[["type"]]
 
-  sec_col <- if (res_type == "fin") {"prob"} else {"y"}
+  sec_col <- if (res_type == "discrete") {"prob"} else {"y"}
 
   x_tbl_list <- lapply(seq_along(f_list), function(i) {
     f_typed <- form_retype(f_list[[i]], res_type, method = "dirac")
@@ -148,11 +148,11 @@ impute_weights <- function(weights, n) {
 #' @examples
 #' set.seed(101)
 #'
-#' # Type "fin"
-#' bad_fin <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "fin")
-#' smoothed_fin <- form_smooth(bad_fin)
-#' plot(bad_fin)
-#' lines(smoothed_fin, col = "blue")
+#' # Type "discrete"
+#' bad_dis <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "discrete")
+#' smoothed_dis <- form_smooth(bad_dis)
+#' plot(bad_dis)
+#' lines(smoothed_dis, col = "blue")
 #'
 #' # Type "continuous"
 #' bad_con <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "continuous")
@@ -174,9 +174,9 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
   pdqr_fun <- new_pdqr_by_ref(f)
 
   # Handle edge case of single point input (which is possible only if type of
-  # `f` is "fin")
+  # `f` is "discrete")
   if (nrow(f_x_tbl) == 1) {
-    return(pdqr_fun(f_x_tbl[["x"]][1], "fin"))
+    return(pdqr_fun(f_x_tbl[["x"]][1], "discrete"))
   }
 
   smpl <- as_r(f)(n_sample)
@@ -223,7 +223,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #' @details General idea is to create a sample from target distribution by
 #' generating `n_sample` samples of size `sample_size` and compute for each of
 #' them its estimate by calling input `estimate` function. If created sample is
-#' logical, **boolean** pdqr-function (type "fin" with elements being exactly 0
+#' logical, **boolean** pdqr-function (type "discrete" with elements being exactly 0
 #' and 1) is created with probability of being true estimated as share of `TRUE`
 #' values (after removing possible `NA`). If sample is numeric, it is used as
 #' input to `new_*()` of appropriate class with `type` equal to type of `f` (if
@@ -248,13 +248,13 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #' \dontrun{
 #' set.seed(101)
 #'
-#' # Type "fin"
-#' d_fin <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+#' # Type "discrete"
+#' d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
 #'   # Estimate of distribution of mean
-#' form_estimate(d_fin, estimate = mean, sample_size = 10)
+#' form_estimate(d_dis, estimate = mean, sample_size = 10)
 #'   # To change type of output, supply it in `args_new`
 #' form_estimate(
-#'   d_fin, estimate = mean, sample_size = 10,
+#'   d_dis, estimate = mean, sample_size = 10,
 #'   args_new = list(type = "continuous")
 #' )
 #'

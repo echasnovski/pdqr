@@ -29,7 +29,7 @@
 #' output points of ROC curve are ordered from left to right) covering range of
 #' all meaningful thresholds. This range is computed as slightly extended range
 #' of `f` and `g` supports (extension is needed to achieve extreme values of
-#' "fpr" in presence of "fin" type). Then FPR and TPR are computed for every
+#' "fpr" in presence of "discrete" type). Then FPR and TPR are computed for every
 #' threshold.
 #'
 #' `summ_rocauc()` computes a common general (without any particular threshold
@@ -40,7 +40,7 @@
 #' "pessimistic" doesn't add correction, "expected" adds half of probability of
 #' `f` and `g` being equal (which is default), "optimistic" adds full
 #' probability. **Note** that this means that correction might be done only if
-#' both input pdqr-functions have "fin" type. See [pdqr methods for "Ops" group
+#' both input pdqr-functions have "discrete" type. See [pdqr methods for "Ops" group
 #' generic family][methods-group-generic] for more details on comparing
 #' functions.
 #'
@@ -75,14 +75,14 @@
 #' roc_plot(roc)
 #' roc_lines(summ_roc(d_norm_2, d_norm_1), col = "blue")
 #'
-#' # For "fin" functions `summ_rocauc()` can produce different outputs
-#' d_fin_1 <- new_d(1:2, "fin")
-#' d_fin_2 <- new_d(2:3, "fin")
-#' summ_rocauc(d_fin_1, d_fin_2)
-#' summ_rocauc(d_fin_1, d_fin_2, method = "pessimistic")
-#' summ_rocauc(d_fin_1, d_fin_2, method = "optimistic")
+#' # For "discrete" functions `summ_rocauc()` can produce different outputs
+#' d_dis_1 <- new_d(1:2, "discrete")
+#' d_dis_2 <- new_d(2:3, "discrete")
+#' summ_rocauc(d_dis_1, d_dis_2)
+#' summ_rocauc(d_dis_1, d_dis_2, method = "pessimistic")
+#' summ_rocauc(d_dis_1, d_dis_2, method = "optimistic")
 #'   # These methods correspond to different ways of plotting ROC curves
-#' roc <- summ_roc(d_fin_1, d_fin_2)
+#' roc <- summ_roc(d_dis_1, d_dis_2)
 #'   # Default line plot for "expected" method
 #' roc_plot(roc, main = "Different type of plotting ROC curve")
 #'   # Method "pessimistic"
@@ -105,7 +105,7 @@ summ_roc <- function(f, g, n_grid = 1001) {
   )
 
   # This is needed to achieve [0; 1] range of both `fpr` and `tpr` in case of
-  # "fin" type input
+  # "discrete" type input
   t_range <- stretch_range(union_support(f, g))
   # Inversing range so that `t_grid` will be decreasing sequence. This is needed
   # to order points of ROC curve from left to right.

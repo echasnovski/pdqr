@@ -53,14 +53,12 @@
 #'
 #' @section Pdqr type:
 #'
-#' Pdqr type is returned by `meta_type()`. This can be one of "fin" (short for
+#' Pdqr type is returned by `meta_type()`. This can be one of "discrete" (short for
 #' "finite") or "continuous". Represents **type of underlying distribution**:
-#' - Type "fin" is used for distributions with finite number of outcomes.
-#' Functions with "fin" type has a fixed set of "x" values ("x" column in
+#' - Type "discrete" is used for distributions with finite number of outcomes.
+#' Functions with "discrete" type has a fixed set of "x" values ("x" column in
 #' "x_tbl" metadata) on which d-function returns possibly non-zero output
-#' (values from "prob" column in "x_tbl" metadata). It is not called "discrete",
-#' because discrete distributions can (in theory) have infinite number of
-#' possible outcomes.
+#' (values from "prob" column in "x_tbl" metadata).
 #' - Type "continuous" is used to represent continuous distributions with
 #' piecewise-linear density with finite values and on finite support. Density
 #' goes through points defined by "x" and "y" columns in "x_tbl" metadata.
@@ -69,7 +67,7 @@
 #' Pdqr support is returned by `meta_support()`. This is a numeric vector with
 #' two finite values. Represents **support of underlying distribution**: closed
 #' interval, outside of which d-function is equal to zero. **Note** that inside
-#' of support d-function can also be zero, which especially true for "fin"
+#' of support d-function can also be zero, which especially true for "discrete"
 #' functions.
 #'
 #' Technically, pdqr support is range of values from "x" column of "x_tbl"
@@ -81,7 +79,7 @@
 #' **completely defines distribution**. It is a data frame with three numeric
 #' columns, content of which partially depends on pdqr type.
 #'
-#' Type "fin" functions have "x_tbl" with columns "x", "prob", "cumprob".
+#' Type "discrete" functions have "x_tbl" with columns "x", "prob", "cumprob".
 #' D-functions return a value from "prob" column for input which is very near
 #' (should be equal up to ten digits, defined by [round(*, digits =
 #' 10)][round()]) to corresponding value of "x" column. Rounding is done to

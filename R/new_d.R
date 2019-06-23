@@ -4,13 +4,13 @@
 new_d <- function(x, type, ...) {
   distr_impl(
     pdqr_class = "d",
-    impl_funs = list(fin = new_d_fin, continuous = new_d_con),
+    impl_funs = list(discrete = new_d_dis, continuous = new_d_con),
     x = x, type = type, ...
   )
 }
 
-new_d_fin <- function(x_tbl) {
-  type <- "fin"
+new_d_dis <- function(x_tbl) {
+  type <- "discrete"
   support <- range(x_tbl[["x"]])
 
   function(x) {
@@ -79,7 +79,7 @@ new_d_con <- function(x_tbl) {
 print.d <- function(x, ...) {
   x_type <- meta_type(x)
 
-  if (!is.null(x_type) && (x_type == "fin")) {
+  if (!is.null(x_type) && (x_type == "discrete")) {
     pdqr_print(x, "Probability mass")
   } else {
     pdqr_print(x, "Density")

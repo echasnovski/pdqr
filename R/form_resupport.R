@@ -20,7 +20,7 @@
 #' `density()` adds tails to the range of input `x` values. For example, if
 #' there is a need to ensure that distribution has only positive values, one can
 #' do `form_resupport(f, c(0, NA), method = "reflect")`. **Notes**:
-#' - For "fin" pdqr-functions that might result into creating new "x" values of
+#' - For "discrete" pdqr-functions that might result into creating new "x" values of
 #' distribution.
 #' - Reflection over `support[1]` is done only if it is strictly greater than
 #' `f`'s left edge of support. Reflection over `support[2]` - if `f`'s right
@@ -34,7 +34,7 @@
 #' both tails is moved inside `support` and becomes concentrated in `1e-8`
 #' neighborhood of nearest edge. This models a singular dirac distributions at
 #' the edges of `support`. **Note** that `support` can represent single point,
-#' in which case output has single element if `f`'s type is "fin" or is a
+#' in which case output has single element if `f`'s type is "discrete" or is a
 #' dirac-like distribution in case of "continuous" type.
 #'
 #' Method "linear" transforms `f`'s support linearly to be input `support`. For
@@ -55,14 +55,14 @@
 #' @examples
 #' set.seed(101)
 #' d_norm <- as_d(dnorm)
-#' d_fin <- new_d(data.frame(x = 1:4, prob = 1:4/10), "fin")
+#' d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
 #'
 #' # Method "reflect"
 #' plot(d_norm)
 #' lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
 #'
-#'   # For "fin" functions it might create new values
-#' meta_x_tbl(form_resupport(d_fin, c(NA, 2.25), "reflect"))
+#'   # For "discrete" functions it might create new values
+#' meta_x_tbl(form_resupport(d_dis, c(NA, 2.25), "reflect"))
 #'
 #'   # This is often useful to ensure constraints after `new_()`
 #' x <- runif(1e4)
@@ -140,12 +140,12 @@ resupport_reflect <- function(f, support) {
 resupport_trim <- function(f, support) {
   switch(
     meta_type(f),
-    fin = resupport_trim_fin(f, support),
+    discrete = resupport_trim_dis(f, support),
     continuous = resupport_trim_con(f, support)
   )
 }
 
-resupport_trim_fin <- function(f, support) {
+resupport_trim_dis <- function(f, support) {
   res_x_tbl <- filter_x_tbl(meta_x_tbl(f), support)
   res_x_tbl <- res_x_tbl[, c("x", "prob")]
 
@@ -153,7 +153,7 @@ resupport_trim_fin <- function(f, support) {
     stop_resupport_zero_tot_prob()
   }
 
-  new_pdqr_by_ref(f)(res_x_tbl, "fin")
+  new_pdqr_by_ref(f)(res_x_tbl, "discrete")
 }
 
 resupport_trim_con <- function(f, support) {
@@ -185,19 +185,19 @@ resupport_winsor <- function(f, support) {
 
   switch(
     meta_type(f),
-    fin = resupport_winsor_fin(f, support),
+    discrete = resupport_winsor_dis(f, support),
     continuous = resupport_winsor_con(f, support)
   )
 }
 
-resupport_winsor_fin <- function(f, support) {
+resupport_winsor_dis <- function(f, support) {
   f_x_tbl <- meta_x_tbl(f)
   x <- f_x_tbl[["x"]]
   x[x <= support[1]] <- support[1]
   x[x >= support[2]] <- support[2]
   f_x_tbl[["x"]] <- x
 
-  new_pdqr_by_ref(f)(f_x_tbl, "fin")
+  new_pdqr_by_ref(f)(f_x_tbl, "discrete")
 }
 
 resupport_winsor_con <- function(f, support, h = 1e-8) {

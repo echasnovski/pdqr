@@ -5,7 +5,7 @@ raw_moment <- function(f, order) {
 
   switch(
     meta_type(f),
-    fin = dotprod(x_tbl[["x"]]^order, x_tbl[["prob"]]),
+    discrete = dotprod(x_tbl[["x"]]^order, x_tbl[["prob"]]),
     continuous = raw_moment_con(x_tbl, order)
   )
 }

@@ -3,32 +3,32 @@
 #' Modify [type][meta_type()] of pdqr-function using method of choice.
 #'
 #' @param f A pdqr-function.
-#' @param type A desired type of output. Should be one of "fin" or "continuous".
+#' @param type A desired type of output. Should be one of "discrete" or "continuous".
 #' @param method Retyping method. Should be one of "piecelin" or "dirac".
 #'
 #' @details If type of `f` is equal to input `type` then `f` is returned.
 #'
 #' Method "piecelin" (default) should be used mostly for converting from "continuous"
-#' to "fin" type. It uses the fact that 'pdqr' densities are piecewise-linear
+#' to "discrete" type. It uses the fact that 'pdqr' densities are piecewise-linear
 #' (linear in intervals between values of "x" column of ["x_tbl"
 #' metadata][meta_x_tbl()]) on their [support][meta_support()]:
-#' - Retyping from "continuous" to `type` "fin" is done by computing "x" values as
+#' - Retyping from "continuous" to `type` "discrete" is done by computing "x" values as
 #' centers of interval masses with probabilities equal to interval total
 #' probabilities.
-#' - Retyping from "fin" to `type` "continuous" is made approximately by trying to
+#' - Retyping from "discrete" to `type` "continuous" is made approximately by trying to
 #' compute "x" grid, for which "x" values of input distribution are going to be
 #' centers of mass. Algorithm is approximate and might result into a big errors
 #' in case of small number of "x" values or if they are not "suitable" for this
 #' kind of transformation.
 #'
-#' Method "dirac" is used mostly for converting from "fin" to "continuous" type (for
+#' Method "dirac" is used mostly for converting from "discrete" to "continuous" type (for
 #' example, in `form_mix()` in case different types of input pdqr-functions). It
 #' works in the following way:
-#' - Retyping from "continuous" to `type` "fin" works only if "x_tbl" metadata
+#' - Retyping from "continuous" to `type` "discrete" works only if "x_tbl" metadata
 #' represents a mixture of dirac-like distributions. In that case it is
 #' transformed to have "x" values from centers of those dirac-like distributions
 #' with corresponding probabilities.
-#' - Retyping from "fin" to `type` "continuous" works by transforming each "x" value
+#' - Retyping from "discrete" to `type` "continuous" works by transforming each "x" value
 #' from "x_tbl" metadata into dirac-like distribution with total probability
 #' taken from corresponding value of "prob" column. Output essentially
 #' represents a mixture of dirac-like distributions.
@@ -44,15 +44,15 @@
 #'
 #' @examples
 #' my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
-#' my_fin <- form_retype(my_con, "fin")
-#' meta_x_tbl(my_fin)
+#' my_dis <- form_retype(my_con, "discrete")
+#' meta_x_tbl(my_dis)
 #'
-#' my_dirac <- form_retype(my_fin, "continuous", method = "dirac")
+#' my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
 #' meta_x_tbl(my_dirac)
 #'
-#' # Default retyping from "fin" to "continuous" isn't very accurate for small number
+#' # Default retyping from "discrete" to "continuous" isn't very accurate for small number
 #' # of points/intervals
-#' my_con_2 <- form_retype(my_fin, "continuous")
+#' my_con_2 <- form_retype(my_dis, "continuous")
 #' meta_x_tbl(my_con_2)
 #'
 #' plot(my_con)
@@ -68,24 +68,24 @@ form_retype <- function(f, type, method = "piecelin") {
 
   switch(
     type,
-    fin = retype_fin(f, method),
+    discrete = retype_dis(f, method),
     continuous = retype_con(f, method)
   )
 }
 
-retype_fin <- function(f, method) {
-  if (meta_type(f) == "fin") {
+retype_dis <- function(f, method) {
+  if (meta_type(f) == "discrete") {
     return(f)
   }
 
   switch(
     method,
-    piecelin = retype_fin_piecelin(f),
-    dirac = retype_fin_dirac(f)
+    piecelin = retype_dis_piecelin(f),
+    dirac = retype_dis_dirac(f)
   )
 }
 
-retype_fin_piecelin <- function(f) {
+retype_dis_piecelin <- function(f) {
   x_tbl <- meta_x_tbl(f)
   n <- nrow(x_tbl)
 
@@ -107,30 +107,30 @@ retype_fin_piecelin <- function(f) {
   # Creating pdqr-function
   pdqr_fun <- new_pdqr_by_ref(f)
 
-  pdqr_fun(data.frame(x = x_mass, prob = prob), "fin")
+  pdqr_fun(data.frame(x = x_mass, prob = prob), "discrete")
 }
 
-retype_fin_dirac <- function(f) {
+retype_dis_dirac <- function(f) {
   x_tbl <- meta_x_tbl(f)
   # Ensure presense of zero densities
   x_tbl <- ground_x_tbl(x_tbl)
 
-  # One output "fin" value is computed as mean of two consequtive "x"s with zero
-  # density. Each "x" corresponds to only one "fin" value counting from left:
-  # x_1 and x_2 are used to compute first "fin" value; x_3 and x_4 - second, and
-  # so on. Probability of "fin" value is computed as difference in cumulative
+  # One output "discrete" value is computed as mean of two consequtive "x"s with zero
+  # density. Each "x" corresponds to only one "discrete" value counting from left:
+  # x_1 and x_2 are used to compute first "discrete" value; x_3 and x_4 - second, and
+  # so on. Probability of "discrete" value is computed as difference in cumulative
   # probabilities between corresponding right and left "x" values.
   y_is_zero <- is_zero(x_tbl[["y"]])
   n_y_zero <- sum(y_is_zero)
-  fin_groups <- rep(seq_len(n_y_zero), each = 2, length.out = n_y_zero)
+  dis_groups <- rep(seq_len(n_y_zero), each = 2, length.out = n_y_zero)
 
-  new_x <- tapply(x_tbl[["x"]][y_is_zero], fin_groups, mean)
+  new_x <- tapply(x_tbl[["x"]][y_is_zero], dis_groups, mean)
   # Remove dimnames
   new_x <- as.vector(new_x)
 
   new_prob <- tapply(
     x_tbl[["cumprob"]][y_is_zero],
-    fin_groups,
+    dis_groups,
     function(cumprob) {
       # This custom function is used instead of `diff()` if, for some reason,
       # there are odd number of zero density rows in `x_tbl`. In that case
@@ -140,7 +140,7 @@ retype_fin_dirac <- function(f) {
   # Remove dimnames
   new_prob <- as.vector(new_prob)
 
-  new_pdqr_by_ref(f)(data.frame(x = new_x, prob = new_prob), "fin")
+  new_pdqr_by_ref(f)(data.frame(x = new_x, prob = new_prob), "discrete")
 }
 
 retype_con <- function(f, method) {

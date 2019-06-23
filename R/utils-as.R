@@ -39,7 +39,7 @@
 #' for desired output class of `as_*()` function and output type "continuous". For
 #' example, input for `as_p()` should return values of some continuous
 #' cumulative distribution function (monotonically non-increasing values from 0
-#' to 1). To manually create function of type "fin", supply data frame input
+#' to 1). To manually create function of type "discrete", supply data frame input
 #' describing it to appropriate `new_*()` function.
 #'
 #' General algorithm of how `as_*()` functions work for unknown function is as
@@ -95,7 +95,7 @@
 #' density values) and supplied extra arguments in `...`. Usually output support
 #' "loses" only around `1e-6` probability on each infinite tail.
 #'
-#' After that, for "fin" type output `new_d()` is used for appropriate data
+#' After that, for "discrete" type output `new_d()` is used for appropriate data
 #' frame input and for "continuous" - `as_d()` with appropriate `d*()` function and
 #' support. D-function is then converted to desired class with `as_*()`.
 #'
@@ -203,14 +203,14 @@ as_honored_distr <- function(pdqr_class, f_name, f, support, ..., n_grid) {
   )
   supp <- coalesce_pair(format_support(support), distr_supp)
 
-  if (distr_info[["type"]] == "fin") {
-    # This approach assumes that honored "fin" pdqr-functions have only integer
+  if (distr_info[["type"]] == "discrete") {
+    # This approach assumes that honored "discrete" pdqr-functions have only integer
     # "x" values. If in future it is not true, some (serious) refactoring should
     # be made here.
     x_vec <- supp[1]:supp[2]
     x_tbl <- data.frame(x = x_vec, prob = distr_info[["d_fun"]](x_vec, ...))
 
-    res <- new_d(x_tbl, type = "fin")
+    res <- new_d(x_tbl, type = "discrete")
   } else {
     # This is a shallow recursion for `as_d.default()`. However, during this run
     # there will be no match for honored distribtuion (there shouldn't be any
@@ -255,7 +255,7 @@ honored_distr_supp <- function(distr, q_fun, ..., p = 1e-6) {
     distr_edge_quantiles <- c(0, 1 - p)
   } else if (
     distr %in% c(
-      # "fin"
+      # "discrete"
       "nbinom", "pois",
       # "continuous"
       "beta", "chisq", "f", "gamma", "lnorm", "norm", "t", "weibull"

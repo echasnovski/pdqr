@@ -10,16 +10,16 @@
 #' @details Print output of pdqr-function describes the following information:
 #' - Full name of function [class][meta_class()]:
 #'     - P-function is "Cumulative distribution function".
-#'     - D-function is "Probability mass function" for "fin" type and
+#'     - D-function is "Probability mass function" for "discrete" type and
 #'     "Probability density function" for "continuous".
 #'     - Q-function is "Quantile function".
 #'     - R-function is "Random generation function".
 #' - [Type][meta_type()] of function in the form "with * number of values" where
-#' "\*" is "finite" for "fin" type and "infinite" for "continuous".
+#' "\*" is "finite" for "discrete" type and "infinite" for "continuous".
 #' - [Support][meta_support()] of function.
-#' - Number of elements in distribution for "fin" type or number of intervals of
+#' - Number of elements in distribution for "discrete" type or number of intervals of
 #' piecewise-linear density for "continuous" type.
-#' - If pdqr-function has "fin" type and exactly two possible values 0 and 1, it
+#' - If pdqr-function has "discrete" type and exactly two possible values 0 and 1, it
 #' is treated as "boolean" pdqr-function and probability of 1 is shown. This is
 #' done to simplify interactive work with output of comparing functions like
 #' `>=`, etc. (see [description of methods for S3 group generic
@@ -32,7 +32,7 @@
 #' @family pdqr methods for generic functions
 #'
 #' @examples
-#' print(new_d(1:10, "fin"))
+#' print(new_d(1:10, "discrete"))
 #'
 #' r_unif <- as_r(runif, n_grid = 251)
 #' print(r_unif)
@@ -87,7 +87,7 @@ n_x_tbl_info <- function(x) {
 
   n_x_tbl <- nrow(x_tbl)
 
-  if (x_type == "fin") {
+  if (x_type == "discrete") {
     # Add "probability of 1: " printing in case of a "boolean" pdqr
     if (identical(x_tbl[["x"]], c(0, 1))) {
       prob_one <- x_tbl[["prob"]][x_tbl[["x"]] == 1]
@@ -139,10 +139,10 @@ use_color <- function() {
 meta_type_print_name <- function(x) {
   x_type <- meta_type(x)
 
-  if (is.null(x_type) || !(x_type %in% c("fin", "continuous"))) {
+  if (is.null(x_type) || !(x_type %in% c("discrete", "continuous"))) {
     "unknown"
   } else {
-    switch(x_type, fin = "finite", continuous = "infinite")
+    switch(x_type, discrete = "finite", continuous = "infinite")
   }
 }
 

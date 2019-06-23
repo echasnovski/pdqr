@@ -428,8 +428,8 @@ capture_null <- function(x) {
 #' because of possible tail trimming of reference distribution.
 #'
 #' **Notes**:
-#' - `gran` argument for "fin" type is always 1.
-#' - Quantile pdqr approximation of "fin" distribution with infinite tale(s) can
+#' - `gran` argument for "discrete" type is always 1.
+#' - Quantile pdqr approximation of "discrete" distribution with infinite tale(s) can
 #' result into "all one" summary of error. This is expected output and is
 #' because test grid is chosen to be quantiles of pdqr-distribution which due to
 #' renormalization can differ by one from reference ones. For example:
@@ -484,7 +484,7 @@ pdqr_approx_error <- function(f, ref_f, ..., gran = 10,
   gran <- ceiling(gran)
   grid <- switch(
     meta_type(f),
-    fin = granulate_grid(f, gran = 1),
+    discrete = granulate_grid(f, gran = 1),
     continuous = granulate_grid(f, gran = gran)
   )
 
@@ -533,7 +533,7 @@ granulate_grid <- function(f, gran) {
 #'
 #' @param f A pdqr-function.
 #' @param n_points Desired number of points in the output. Not used in case of
-#'   "fin" type p-, d-, and q-function `f`.
+#'   "discrete" type p-, d-, and q-function `f`.
 #'
 #' @details Structure of output depends on [class][meta_class()] and
 #' [type][meta_type()] of input pdqr-function `f`:
@@ -541,21 +541,21 @@ granulate_grid <- function(f, gran) {
 #' cumulative probability at "x" points) columns:
 #'     - For "continuous" type, "x" is taken as an equidistant grid (with `n_points`
 #'     elements) on input's [support][meta_support()].
-#'     - For "fin" type, "x" is taken directly from ["x_tbl"
+#'     - For "discrete" type, "x" is taken directly from ["x_tbl"
 #'     metadata][meta_x_tbl()] without using `n_points` argument.
 #' - **D-functions** are represented with "x" column and one more (for values of
 #' d-function at "x" points):
 #'     - For "continuous" type, second column is named "y" and is computed as values
 #'     of `f` at elements of "x" column (which is the same grid as in p-function
 #'     case).
-#'     - For "fin" it is named "prob". Both "x" and "prob" columns are taken
+#'     - For "discrete" it is named "prob". Both "x" and "prob" columns are taken
 #'     from "x_tbl" metadata.
 #' - **Q-functions** are represented almost as p-functions but in inverse
 #' fashion. Output data frame has "p" (probabilities) and "x" (values of
 #' q-function `f` at "p" elements) columns.
 #'     - For "continuous" type, "p" is computed as equidistant grid (with `n_points`
 #'     elements) between 0 and 1.
-#'     - For "fin" type, "p" is taken from "cumprob" column of "x_tbl" metadata.
+#'     - For "discrete" type, "p" is taken from "cumprob" column of "x_tbl" metadata.
 #' - **R-functions** are represented by generating `n_points` elements from
 #' distribution. Output data frame has columns "n" (consecutive point number,
 #' basically a row number) and "x" (generated elements).
@@ -565,7 +565,7 @@ granulate_grid <- function(f, gran) {
 #' this method may slightly change function values due to possible
 #' renormalization inside `form_regrid()`.
 #'
-#' @return A data frame with `n_points` (or less, for "fin" type p-, d-, or
+#' @return A data frame with `n_points` (or less, for "discrete" type p-, d-, or
 #'   q-function `f`) rows and two columns with names depending on `f`'s class
 #'   and type.
 #'
@@ -585,8 +585,8 @@ granulate_grid <- function(f, gran) {
 #' enpoint(d_norm, n_points = 5)
 #'
 #' # Different pdqr classes and types produce different column names in output
-#' colnames(enpoint(new_p(1:2, "fin")))
-#' colnames(enpoint(new_d(1:2, "fin")))
+#' colnames(enpoint(new_p(1:2, "discrete")))
+#' colnames(enpoint(new_d(1:2, "discrete")))
 #' colnames(enpoint(new_d(1:2, "continuous")))
 #' colnames(enpoint(new_q(1:2, "continuous")))
 #' colnames(enpoint(new_r(1:2, "continuous")))
@@ -616,7 +616,7 @@ enpoint <- function(f, n_points = 1001) {
 }
 
 enpoint_p <- function(f, n_points) {
-  if (meta_type(f) == "fin") {
+  if (meta_type(f) == "discrete") {
     x_tbl <- meta_x_tbl(f)
 
     data.frame(x = x_tbl[["x"]], p = x_tbl[["cumprob"]])
@@ -628,7 +628,7 @@ enpoint_p <- function(f, n_points) {
 }
 
 enpoint_d <- function(f, n_points) {
-  if (meta_type(f) == "fin") {
+  if (meta_type(f) == "discrete") {
     x_tbl <- meta_x_tbl(f)
 
     data.frame(x = x_tbl[["x"]], prob = x_tbl[["prob"]])
@@ -640,7 +640,7 @@ enpoint_d <- function(f, n_points) {
 }
 
 enpoint_q <- function(f, n_points) {
-  if (meta_type(f) == "fin") {
+  if (meta_type(f) == "discrete") {
     x_tbl <- meta_x_tbl(f)
 
     data.frame(p = x_tbl[["cumprob"]], x = x_tbl[["x"]])

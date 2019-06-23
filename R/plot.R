@@ -16,7 +16,7 @@
 #' @details Main idea of plotting pdqr-functions is to use plotting mechanisms
 #' for appropriate numerical data.
 #'
-#' Plotting of [type][meta_type()] **fin** functions:
+#' Plotting of [type][meta_type()] **discrete** functions:
 #' - P-functions are plotted as step-line with jumps at points of "x" column of
 #' ["x_tbl" metadata][meta_x_tbl()].
 #' - D-functions are plotted with vertical lines at points of "x" column of
@@ -36,7 +36,7 @@
 #' - Q-functions are plotted similarly as p- and d-functions but grid consists
 #' from union of "cumprob" column of "x_tbl" metadata and equidistant grid of
 #' length `n_extra_grid` from 0 to 1.
-#' - R-functions are plotted the same way as type "fin" ones: as histogram of
+#' - R-functions are plotted the same way as type "discrete" ones: as histogram of
 #' generated sample of size `n_sample`.
 #'
 #' @return Output of [invisible()][base::invisible()] without arguments, i.e.
@@ -76,7 +76,7 @@ plot.p <- function(x, y = NULL, n_extra_grid = 1001, ...) {
     xlab = "x", ylab = "Cumulative probability"
   )
 
-  if (meta_type(x) == "fin") {
+  if (meta_type(x) == "discrete") {
     # Create canvas
     no_plot_dots <- c_dedupl(
       list(x = meta_support(x), y = c(0, 1), type = "n"),
@@ -86,7 +86,7 @@ plot.p <- function(x, y = NULL, n_extra_grid = 1001, ...) {
     do.call(graphics::plot, no_plot_dots)
 
     # Add segments
-    add_p_fin_segments(x, list(...))
+    add_p_dis_segments(x, list(...))
   } else {
     plot_impl_pdq(x, compute_plot_grid(x, n_extra_grid), dots)
   }
@@ -98,7 +98,7 @@ plot.d <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
 
-  if (meta_type(x) == "fin") {
+  if (meta_type(x) == "discrete") {
     x_tbl <- meta_x_tbl(x)
 
     dots <- make_plot_dots(
@@ -138,7 +138,7 @@ plot.q <- function(x, y = NULL, n_extra_grid = 1001, ...) {
     xlab = "Cumulative probability", ylab = "x"
   )
 
-  if (meta_type(x) == "fin") {
+  if (meta_type(x) == "discrete") {
     # Create canvas
     no_plot_dots <- c_dedupl(
       list(x = c(0, 1), y = meta_support(x), type = "n"),
@@ -148,7 +148,7 @@ plot.q <- function(x, y = NULL, n_extra_grid = 1001, ...) {
     do.call(graphics::plot, no_plot_dots)
 
     # Add segments
-    add_q_fin_segments(x, list(...))
+    add_q_dis_segments(x, list(...))
   } else {
     plot_impl_pdq(x, compute_plot_grid(x, n_extra_grid), dots)
   }
@@ -202,16 +202,16 @@ compute_plot_grid <- function(f, n_extra_grid) {
   sort(unique(c(grid, extra_grid)))
 }
 
-add_p_fin_segments <- function(x, dots) {
-  plot_dots <- compute_p_fin_dots(x, dots)
+add_p_dis_segments <- function(x, dots) {
+  plot_dots <- compute_p_dis_dots(x, dots)
 
   do.call(graphics::segments, plot_dots[["seg_ver"]])
   do.call(graphics::segments, plot_dots[["seg_hor"]])
   do.call(graphics::points, plot_dots[["points"]])
 }
 
-add_q_fin_segments <- function(x, dots) {
-  plot_p_dots <- compute_p_fin_dots(x, dots)
+add_q_dis_segments <- function(x, dots) {
+  plot_p_dots <- compute_p_dis_dots(x, dots)
 
   # Output should be inverse of plot for "p"
   plot_dots <- list(
@@ -234,7 +234,7 @@ add_q_fin_segments <- function(x, dots) {
   do.call(graphics::points, plot_dots[["points"]])
 }
 
-compute_p_fin_dots <- function(x, dots) {
+compute_p_dis_dots <- function(x, dots) {
   x_tbl <- meta_x_tbl(x)
   x <- x_tbl[["x"]]
   cumprob <- x_tbl[["cumprob"]]
@@ -273,8 +273,8 @@ make_plot_dots <- function(...) {
 lines.p <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (meta_type(x) == "fin") {
-    add_p_fin_segments(x, list(...))
+  if (meta_type(x) == "discrete") {
+    add_p_dis_segments(x, list(...))
   } else {
     lines_impl_pdq(x, compute_plot_grid(x, n_extra_grid), list(...))
   }
@@ -285,7 +285,7 @@ lines.p <- function(x, n_extra_grid = 1001, ...) {
 lines.d <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (meta_type(x) == "fin") {
+  if (meta_type(x) == "discrete") {
     x_tbl <- meta_x_tbl(x)
     lines_args <- c_dedupl(
       list(x = x_tbl[["x"]], y = x_tbl[["prob"]], type = "h"), list(...)
@@ -302,8 +302,8 @@ lines.d <- function(x, n_extra_grid = 1001, ...) {
 lines.q <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
 
-  if (meta_type(x) == "fin") {
-    add_q_fin_segments(x, list(...))
+  if (meta_type(x) == "discrete") {
+    add_q_dis_segments(x, list(...))
   } else {
     lines_impl_pdq(x, compute_plot_grid(x, n_extra_grid), list(...))
   }

@@ -19,8 +19,8 @@
 #' accepts a single pdqr-function instead of a list of them.
 #'
 #' [Class][meta_class()] of output is chosen as class of first pdqr-function in
-#' `f_list`. [Type][meta_type()] of output is chosen to be "fin" in case all
-#' input pdqr-functions have "fin" type, and "continuous" otherwise.
+#' `f_list`. [Type][meta_type()] of output is chosen to be "discrete" in case all
+#' input pdqr-functions have "discrete" type, and "continuous" otherwise.
 #'
 #' Method "random" performs transformation using random generation of samples:
 #' - **Generates a sample of size `n_sample` from every element of `f_list`**
@@ -32,26 +32,26 @@
 #' only single number.
 #' - **Creates output pdqr-function**. If output is logical, probability of
 #' being true is estimated as share of `TRUE` in output, and boolean
-#' pdqr-function is created (type "fin" with "x" values equal to 0 and 1, and
+#' pdqr-function is created (type "discrete" with "x" values equal to 0 and 1, and
 #' probabilities of being false and true respectively). If output is numeric,
 #' one of `new_*()` (suitable for output class) is called with arguments from
 #' `args_new` list.
 #'
 #' Method "bruteforce":
-#' - **[Retypes][form_retype()] input** pdqr-function to "fin"
+#' - **[Retypes][form_retype()] input** pdqr-function to "discrete"
 #' type (using "piecelin" method).
 #' - **Computes output for every combination of "x" values** (probability of
 #' which will be a product of corresponding probabilities).
-#' - **Creates pdqr-function of type "fin"** with suitable `new_*()` function.
+#' - **Creates pdqr-function of type "discrete"** with suitable `new_*()` function.
 #' - **Possibly retypes to "continuous" type** if output should have it (also with
 #' "piecelin" method).
 #'
 #' **Notes** about "bruteforce" method:
 #' - Its main advantage is that it is not random.
 #' - It may start to be very memory consuming very quickly.
-#' - It is usually useful when type of output function is "fin". In case of
-#' "continuous" type, retyping from "fin" to "continuous" might introduce big errors.
-#' - Used "fin" probabilities shouldn't be very small because they will be
+#' - It is usually useful when type of output function is "discrete". In case of
+#' "continuous" type, retyping from "discrete" to "continuous" might introduce big errors.
+#' - Used "discrete" probabilities shouldn't be very small because they will be
 #' directly multiplied, which might cause numerical accuracy issues.
 #'
 #' @return A pdqr-function for transformed random variable.
@@ -83,15 +83,15 @@
 #'
 #' # Transformation with "bruteforce" method
 #' power <- function(x, n = 1) {x^n}
-#' p_fin <- new_p(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), type = "fin")
+#' p_dis <- new_p(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), type = "discrete")
 #'
-#' p_fin_sq <- form_trans_self(
-#'   p_fin, trans = power, n = 2, method = "bruteforce"
+#' p_dis_sq <- form_trans_self(
+#'   p_dis, trans = power, n = 2, method = "bruteforce"
 #' )
-#' meta_x_tbl(p_fin_sq)
+#' meta_x_tbl(p_dis_sq)
 #'   # Compare with "random" method
-#' p_fin_sq_rand <- form_trans_self(p_fin, trans = power, n = 2)
-#' meta_x_tbl(p_fin_sq_rand)
+#' p_dis_sq_rand <- form_trans_self(p_dis, trans = power, n = 2)
+#' meta_x_tbl(p_dis_sq_rand)
 #'
 #' # `form_trans_self()` is a wrapper for `form_trans()`
 #' form_trans_self(d_norm, trans = function(x) {2*x})
@@ -176,13 +176,13 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
   # Compute type and class of output function
   res_meta <- compute_f_list_meta(f_list)
 
-  # Retype `f_list` to "fin" type. If element is number, create dirac-like
+  # Retype `f_list` to "discrete" type. If element is number, create dirac-like
   # function where `prob = 1`.
   f_list <- lapply(f_list, function(f) {
     if (is_single_number(f)) {
-      new_p(f, "fin")
+      new_p(f, "discrete")
     } else {
-      form_retype(f, type = "fin", method = "piecelin")
+      form_retype(f, type = "discrete", method = "piecelin")
     }
   })
   x_tbl_list <- lapply(f_list, meta_x_tbl)
@@ -194,7 +194,7 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
   prob_list <- lapply(x_tbl_list, function(x_tbl) {x_tbl[["prob"]]})
   prob_grid <- list_grid(prob_list)
 
-  # Compute "x_tbl" for output "fin" function
+  # Compute "x_tbl" for output "discrete" function
   x_new <- do.call(trans, args = c(x_grid, list(...)))
   assert_trans_output(x_new)
   prob_new <- Reduce(f = `*`, x = prob_grid[-1], init = prob_grid[[1]])
@@ -206,16 +206,16 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
     return(boolean_pdqr(prob_true, res_meta[["class"]]))
   }
 
-  # Create transformed "fin" pdqr-function. Usage of `args_new` doesn't have
+  # Create transformed "discrete" pdqr-function. Usage of `args_new` doesn't have
   # any effect for now (as input to `new_*()` is data frame), but might be
   # helpful if in future `new_*()` will have new arguments.
   x_tbl <- data.frame(x = x_new, prob = prob_new)
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])
-  call_args <- c_dedupl(list(x = x_tbl, type = "fin"), args_new)
-  fin_res <- do.call(new_pdqr, args = call_args)
+  call_args <- c_dedupl(list(x = x_tbl, type = "discrete"), args_new)
+  dis_res <- do.call(new_pdqr, args = call_args)
 
   # Retype back to input type
-  form_retype(fin_res, res_meta[["type"]], method = "piecelin")
+  form_retype(dis_res, res_meta[["type"]], method = "piecelin")
 }
 
 list_grid <- function(vec_list) {

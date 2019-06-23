@@ -8,7 +8,7 @@
 #'
 #' @param x Numeric vector or data frame with appropriate columns (see "Data
 #'   frame input" section).
-#' @param type [Type][meta_type()] of pdqr-function. Should be one of "fin" or
+#' @param type [Type][meta_type()] of pdqr-function. Should be one of "discrete" or
 #'   "continuous".
 #' @param ... Extra arguments for [density()][stats::density()].
 #'
@@ -18,7 +18,7 @@
 #'
 #' Numeric input is transformed into data frame which is then used as "x_tbl"
 #' metadata (for more details see "Numeric input" section):
-#' - If `type` is `"fin"` then `x` is viewed as sample from distribution that
+#' - If `type` is `"discrete"` then `x` is viewed as sample from distribution that
 #' can produce only values from `x`. Input is tabulated and normalized to form
 #' "x_tbl" metadata.
 #' - If `type` is `"continuous"` then:
@@ -38,7 +38,7 @@
 #' there are no elements left, error is thrown. Then data frame is created in
 #' the way which depends on the `type` argument.
 #'
-#' **For "fin" type** elements of filtered `x` are:
+#' **For "discrete" type** elements of filtered `x` are:
 #' - Rounded to 10th digit to avoid numerical representation issues (see Note
 #' in [`==`]'s help page).
 #' - Tabulated (all unique values are counted). Output data frame has three
@@ -64,13 +64,13 @@
 #' @section Data frame input:
 #'
 #' If `x` is a data frame, it should have numeric columns appropriate for
-#' ["x_tbl" metadata][meta_x_tbl()] of input `type`: "x", "prob" for "fin"
+#' ["x_tbl" metadata][meta_x_tbl()] of input `type`: "x", "prob" for "discrete"
 #' `type` and "x", "y" for "continuous" type ("cumprob" column will be computed
 #' inside `new_*()`). To become an appropriate "x_tbl" metadata, input data
 #' frame is ordered in increasing order of "x" column and then **imputed** in
 #' the way which depends on the `type` argument.
 #'
-#' **For "fin" type**:
+#' **For "discrete" type**:
 #' - Values in column "x" are rounded to 10th digit to avoid numerical
 #' representation issues (see Note in [`==`]'s help page).
 #' - If there are duplicate values in "x" column, they are "squashed" into one
@@ -89,10 +89,10 @@
 #' set.seed(101)
 #' x <- rnorm(10)
 #'
-#' # Type "fin": `x` values are directly tabulated
-#' my_d_fin <- new_d(x, "fin")
-#' meta_x_tbl(my_d_fin)
-#' plot(my_d_fin)
+#' # Type "discrete": `x` values are directly tabulated
+#' my_d_dis <- new_d(x, "discrete")
+#' meta_x_tbl(my_d_dis)
+#' plot(my_d_dis)
 #'
 #' # Type "continuous": `x` serves as input to `density()`
 #' my_d_con <- new_d(x, "continuous")
@@ -101,7 +101,7 @@
 #'
 #' # Data frame input
 #'   # Values in "prob" column will be normalized automatically
-#' my_p_fin <- new_p(data.frame(x = 1:4, prob = 1:4), "fin")
+#' my_p_dis <- new_p(data.frame(x = 1:4, prob = 1:4), "discrete")
 #'   # As are values in "y" column
 #' my_p_con <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "continuous")
 #'
@@ -120,7 +120,7 @@ NULL
 # Common functionality for `new_*()` --------------------------------------
 distr_impl <- function(pdqr_class, impl_funs, x, type, ...) {
   assert_missing(x, "numeric vector or appropriate data frame")
-  assert_missing(type, 'pdqr type ("fin" or "continuous")')
+  assert_missing(type, 'pdqr type ("discrete" or "continuous")')
   assert_distr_type(type)
 
   x_tbl <- impute_x_tbl(x, type, ...)
@@ -130,7 +130,7 @@ distr_impl <- function(pdqr_class, impl_funs, x, type, ...) {
 
   res <- switch(
     type,
-    fin = impl_funs[["fin"]](x_tbl),
+    discrete = impl_funs[["discrete"]](x_tbl),
     continuous = impl_funs[["continuous"]](x_tbl)
   )
 
@@ -195,7 +195,7 @@ is_pdqr_class <- function(chr) {
 }
 
 is_boolean_pdqr_fun <- function(f) {
-  (meta_type(f) == "fin") && identical(meta_x_tbl(f)[["x"]], c(0, 1))
+  (meta_type(f) == "discrete") && identical(meta_x_tbl(f)[["x"]], c(0, 1))
 }
 
 has_meta_type <- function(f) {

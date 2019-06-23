@@ -164,7 +164,7 @@ order_center <- function(f_list, method, decreasing = decreasing) {
   # NOTE that here `prob_geq()` is used and not `prob_greater()`. Strict
   # inequality is achieved with `> 0.5` instead of `>= 0.5`.
   # Also NOTE that this definition can result into `e1 > e2` and `e2 > e1`
-  # being both `TRUE` (in case of two "fin" functions) or both `FALSE` (in case
+  # being both `TRUE` (in case of two "discrete" functions) or both `FALSE` (in case
   # of equivalent but not equal "continuous" functions; this is kind of reasonable).
   prob_geq(e1[[1]], e2[[1]]) > 0.5
 }

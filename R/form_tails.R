@@ -34,11 +34,11 @@
 #' @family form functions
 #'
 #' @examples
-#' # Type "fin"
-#' my_fin <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "fin")
-#' meta_x_tbl(form_tails(my_fin, level = 0.1))
+#' # Type "discrete"
+#' my_dis <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "discrete")
+#' meta_x_tbl(form_tails(my_dis, level = 0.1))
 #' meta_x_tbl(
-#'   form_tails(my_fin, level = 0.35, method = "winsor", direction = "left")
+#'   form_tails(my_dis, level = 0.35, method = "winsor", direction = "left")
 #' )
 #'
 #' # Type "continuous"
@@ -86,7 +86,7 @@ tails_trim <- function(f, level, direction = "both") {
 
   switch(
     meta_type(f),
-    fin = tails_trim_fin(f, level, direction),
+    discrete = tails_trim_dis(f, level, direction),
     continuous = tails_trim_con(f, level, direction)
   )
 }
@@ -97,7 +97,7 @@ tails_winsor <- function(f, level, direction = "both") {
   form_resupport(f, new_supp, method = "winsor")
 }
 
-tails_trim_fin <- function(f, level, direction) {
+tails_trim_dis <- function(f, level, direction) {
   f_x_tbl <- meta_x_tbl(f)
 
   new_supp <- compute_support_after_remove(f, level, direction)
@@ -126,7 +126,7 @@ tails_trim_fin <- function(f, level, direction) {
     )
   }
 
-  new_pdqr_by_ref(f)(f_x_tbl, "fin")
+  new_pdqr_by_ref(f)(f_x_tbl, "discrete")
 }
 
 tails_trim_con <- function(f, level, direction) {

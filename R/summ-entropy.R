@@ -1,7 +1,7 @@
 #' Summarize distribution with entropy
 #'
 #' `summ_entropy()` computes entropy of single distribution while
-#' `summ_entropy2()` - for a pair of distributions. For "fin" pdqr-functions a
+#' `summ_entropy2()` - for a pair of distributions. For "discrete" pdqr-functions a
 #' classic formula `-sum(p * log(p))` (in nats) is used. In "continuous" case a
 #' differential entropy is computed.
 #'
@@ -30,8 +30,8 @@
 #' summ_entropy2(d_norm, d_norm_2, method = "cross")
 #'
 #' # Increasing `clip` leads to decreasing maximum output value
-#' d_1 <- new_d(1:10, "fin")
-#' d_2 <- new_d(20:21, "fin")
+#' d_1 <- new_d(1:10, "discrete")
+#' d_2 <- new_d(20:21, "discrete")
 #'
 #'   # Formally, output isn't clearly defined because functions don't have the
 #'   # same support. Direct use of entropy formulas gives infinity output, but
@@ -75,13 +75,13 @@ cross_entropy <- function(f, g, clip = exp(-20)) {
 
   switch(
     as.character(num_con),
-    `0` = cross_entropy_fin(d_f, d_g, clip),
+    `0` = cross_entropy_dis(d_f, d_g, clip),
     `1` = stop_collapse("`f` and `g` should have the same type."),
     `2` = cross_entropy_con(d_f, d_g, clip)
   )
 }
 
-cross_entropy_fin <- function(d_f, d_g, clip = exp(-20)) {
+cross_entropy_dis <- function(d_f, d_g, clip = exp(-20)) {
   x <- meta_x_tbl(d_f)[["x"]]
 
   prob_g <- pmax(d_g(x), clip)

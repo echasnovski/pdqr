@@ -2,12 +2,12 @@
 compute_x_tbl <- function(x, type, ...) {
   switch(
     type,
-    fin = compute_x_tbl_fin(x),
+    discrete = compute_x_tbl_dis(x),
     continuous = compute_x_tbl_con(x, ...)
   )
 }
 
-compute_x_tbl_fin <- function(x) {
+compute_x_tbl_dis <- function(x) {
   x <- x[!is.na(x)]
   x <- round(x, digits = 10)
   vals <- sort(unique(x))
@@ -67,8 +67,8 @@ impute_x_tbl_impl <- function(x_tbl, type) {
     x_tbl <- x_tbl[order(x_tbl[["x"]]), ]
   }
 
-  if (type == "fin") {
-    impute_x_tbl_impl_fin(x_tbl)
+  if (type == "discrete") {
+    impute_x_tbl_impl_dis(x_tbl)
   } else if (type == "continuous") {
     impute_x_tbl_impl_con(x_tbl)
   } else {
@@ -76,10 +76,10 @@ impute_x_tbl_impl <- function(x_tbl, type) {
   }
 }
 
-impute_x_tbl_impl_fin <- function(x_tbl) {
+impute_x_tbl_impl_dis <- function(x_tbl) {
   # Rounding is needed due to some usage of `form_retype()`. This also aligns
-  # with how d-functions of type "fin" work (see `new_d_fin()` or
-  # `new_p_fin()`).
+  # with how d-functions of type "discrete" work (see `new_d_dis()` or
+  # `new_p_dis()`).
   x <- round(x_tbl[["x"]], digits = 10)
 
   if (anyDuplicated(x) != 0) {
@@ -158,7 +158,7 @@ get_x_tbl_sec_col <- function(x_tbl) {
 
 get_type_from_x_tbl <- function(x_tbl) {
   if (get_x_tbl_sec_col(x_tbl) == "prob") {
-    "fin"
+    "discrete"
   } else {
     "continuous"
   }
@@ -199,7 +199,7 @@ reflect_x_tbl <- function(x_tbl, around) {
 
   x_tbl_probs <- switch(
     get_type_from_x_tbl(x_tbl),
-    fin = diff(c(0, x_tbl[["cumprob"]])),
+    discrete = diff(c(0, x_tbl[["cumprob"]])),
     continuous = diff(c(x_tbl[["cumprob"]], 1))
   )
   res[["cumprob"]] <- cumsum(rev(x_tbl_probs))
@@ -210,7 +210,7 @@ reflect_x_tbl <- function(x_tbl, around) {
 }
 
 ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
-  if (get_type_from_x_tbl(x_tbl) == "fin") {
+  if (get_type_from_x_tbl(x_tbl) == "discrete") {
     return(x_tbl)
   }
 
@@ -283,7 +283,7 @@ stack_x_tbl <- function(x_tbl_list) {
 
   res <- switch(
     type,
-    fin = stack_x_tbl_fin(x_tbl_list),
+    discrete = stack_x_tbl_dis(x_tbl_list),
     continuous = stack_x_tbl_con(x_tbl_list)
   )
   row.names(res) <- NULL
@@ -291,7 +291,7 @@ stack_x_tbl <- function(x_tbl_list) {
   res
 }
 
-stack_x_tbl_fin <- function(x_tbl_list) {
+stack_x_tbl_dis <- function(x_tbl_list) {
   x <- unlist(lapply(x_tbl_list, `[[`, i = "x"))
   prob <- unlist(lapply(x_tbl_list, `[[`, i = "prob"))
 

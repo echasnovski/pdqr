@@ -28,10 +28,10 @@
 #' to right with `|F - G|` values tending to the result (see Examples).
 #' - *Method "totvar"* (short for "total variation") computes a biggest absolute
 #' difference of probabilities for any subset of real line. In other words,
-#' there is a set of points for "fin" type and intervals for "continuous", total
+#' there is a set of points for "discrete" type and intervals for "continuous", total
 #' probability of which under `f` and `g` differs the most. **Note** that if
 #' `f` and `g` have different types, output is always 1. The set of interest
-#' consists from all "x" values of "fin" pdqr-function: probability under "fin"
+#' consists from all "x" values of "discrete" pdqr-function: probability under "discrete"
 #' distribution is 1 and under "continuous" is 0.
 #' - *Method "compare"* represents a value computed based on probabilities of
 #' one distribution being bigger than the other (see [pdqr methods for "Ops"
@@ -93,10 +93,10 @@
 #' )
 #'
 #' # "Supremum" quality of "KS" distance
-#' d_fin <- new_d(2, "fin")
+#' d_dis <- new_d(2, "discrete")
 #'   # Distance is 1, which is a limit of |F - G| at points which tend to 2 from
 #'   # left
-#' summ_distance(d_fin, d_unif, method = "KS")
+#' summ_distance(d_dis, d_unif, method = "KS")
 #'
 #' @export
 summ_distance <- function(f, g, method = "KS") {
@@ -130,42 +130,42 @@ distance_ks <- function(f, g) {
   f_type <- meta_type(f)
   g_type <- meta_type(g)
 
-  if (f_type == "fin") {
-    if (g_type == "fin") {
-      distance_ks_two_fin(p_f, p_g)
+  if (f_type == "discrete") {
+    if (g_type == "discrete") {
+      distance_ks_two_dis(p_f, p_g)
     } else {
-      distance_ks_mixed(p_fin = p_f, p_con = p_g)
+      distance_ks_mixed(p_dis = p_f, p_con = p_g)
     }
   } else {
-    if (g_type == "fin") {
-      distance_ks_mixed(p_fin = p_g, p_con = p_f)
+    if (g_type == "discrete") {
+      distance_ks_mixed(p_dis = p_g, p_con = p_f)
     } else {
       distance_ks_two_con(p_f, p_g)
     }
   }
 }
 
-distance_ks_two_fin <- function(p_f, p_g) {
-  ks_sep <- separation_ks_two_fin(p_f, p_g)
+distance_ks_two_dis <- function(p_f, p_g) {
+  ks_sep <- separation_ks_two_dis(p_f, p_g)
 
   abs(p_f(ks_sep) - p_g(ks_sep))
 }
 
-distance_ks_mixed <- function(p_fin, p_con) {
+distance_ks_mixed <- function(p_dis, p_con) {
   # Not using `separation_ks_mixed()` because of possible "limit" nature of K-S
   # distance which is a "supremum" and not "maximum". Its output might be
   # misleading because supremum distance might be achieved as left limit at the
   # point. See also commentary in `separation_ks_mixed()`.
-  x_test <- meta_x_tbl(p_fin)[["x"]]
+  x_test <- meta_x_tbl(p_dis)[["x"]]
 
   p_con_cumprob <- p_con(x_test)
 
-  p_fin_cumprob <- meta_x_tbl(p_fin)[["cumprob"]]
-  p_fin_left_cumprob <- c(0, p_fin_cumprob[-length(p_fin_cumprob)])
+  p_dis_cumprob <- meta_x_tbl(p_dis)[["cumprob"]]
+  p_dis_left_cumprob <- c(0, p_dis_cumprob[-length(p_dis_cumprob)])
 
   max(
-    abs(p_con_cumprob - p_fin_cumprob),
-    abs(p_con_cumprob - p_fin_left_cumprob)
+    abs(p_con_cumprob - p_dis_cumprob),
+    abs(p_con_cumprob - p_dis_left_cumprob)
   )
 }
 
@@ -180,7 +180,7 @@ distance_ks_two_con <- function(p_f, p_g) {
 # **Notes in docs**. Maximum absolute difference in probabilities across all
 # possible sets. In other words, there should be some subset of real line (or a
 # set of those) probabilities of (more formally, limit of) which under `f` and
-# `g` differ the most. This set (of finite values for "fin" and of intervals for
+# `g` differ the most. This set (of finite values for "discrete" and of intervals for
 # "continuous") can be expressed as `A = {x | f(x) > g(x)}` (`f` and `g` are
 # d-functions) or `B = {x | f(x) < g(x)}`.
 # However, absolute differences in probabilities for `A` and `B` are equal. This
@@ -195,15 +195,15 @@ distance_totvar <- function(f, g) {
   d_f <- as_d(f)
   d_g <- as_d(g)
 
-  num_fin <- (meta_type(f) == "fin") + (meta_type(g) == "fin")
+  num_dis <- (meta_type(f) == "discrete") + (meta_type(g) == "discrete")
 
   switch(
-    as.character(num_fin),
+    as.character(num_dis),
     `0` = distance_totvar_two_con(d_f, d_g),
-    # A target set is all `x` values of "fin" pdqr-function. Its probability
-    # under "fin" is 1 and under "continuous" is zero because it is countable.
+    # A target set is all `x` values of "discrete" pdqr-function. Its probability
+    # under "discrete" is 1 and under "continuous" is zero because it is countable.
     `1` = 1,
-    `2` = distance_totvar_two_fin(d_f, d_g)
+    `2` = distance_totvar_two_dis(d_f, d_g)
   )
 }
 
@@ -238,7 +238,7 @@ distance_totvar_two_con <- function(d_f, d_g) {
   )
 }
 
-distance_totvar_two_fin <- function(d_f, d_g) {
+distance_totvar_two_dis <- function(d_f, d_g) {
   union_x <- union_x(d_f, d_g)
   prob_diff <- d_f(union_x) - d_g(union_x)
 
@@ -296,7 +296,7 @@ distance_align <- function(f, g) {
   f_geq_g <- prob_geq(f, g) >= 0.5
   g_geq_f <- prob_geq(g, f) >= 0.5
 
-  # Handle edge case of identical "fin" pdqr-functions
+  # Handle edge case of identical "discrete" pdqr-functions
   if (f_geq_g && g_geq_f) {
     return(0)
   }
@@ -336,7 +336,7 @@ distance_entropy <- function(f, g) {
 
 # Helpers -----------------------------------------------------------------
 integrate_cdf_absdiff <- function(p_f, p_g, power) {
-  if ((meta_type(p_f) == "fin") && (meta_type(p_g) == "fin")) {
+  if ((meta_type(p_f) == "discrete") && (meta_type(p_g) == "discrete")) {
     union_x <- union_x(p_f, p_g)
     abs_diff_cumprob <- abs(p_f(union_x) - p_g(union_x))
 
