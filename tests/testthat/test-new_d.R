@@ -112,7 +112,8 @@ test_that("new_d handles metadata", {
   expect_equal(
     meta_all(d_dis),
     list(
-      class = "d", type = "discrete", support = x_dis_support, x_tbl = x_dis_x_tbl
+      class = "d", type = "discrete", support = x_dis_support,
+      x_tbl = x_dis_x_tbl
     )
   )
 

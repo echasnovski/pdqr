@@ -20,8 +20,8 @@
 #' `density()` adds tails to the range of input `x` values. For example, if
 #' there is a need to ensure that distribution has only positive values, one can
 #' do `form_resupport(f, c(0, NA), method = "reflect")`. **Notes**:
-#' - For "discrete" pdqr-functions that might result into creating new "x" values of
-#' distribution.
+#' - For "discrete" pdqr-functions that might result into creating new "x"
+#' values of distribution.
 #' - Reflection over `support[1]` is done only if it is strictly greater than
 #' `f`'s left edge of support. Reflection over `support[2]` - if `f`'s right
 #' edge is strictly smaller.

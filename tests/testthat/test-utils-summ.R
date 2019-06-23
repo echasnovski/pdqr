@@ -66,7 +66,9 @@ test_that("raw_moment works with 'continuous' functions with few intervals", {
 # compute_density_crossings -----------------------------------------------
 test_that("compute_density_crossings works", {
   cur_d_1 <- new_d(data.frame(x = 1:6, y = c(0, 1, 0, 0, 1, 0)), "continuous")
-  cur_d_2 <- new_d(data.frame(x = 1:6+0.5, y = c(0, 1, 0, 0, 1, 0)), "continuous")
+  cur_d_2 <- new_d(
+    data.frame(x = 1:6+0.5, y = c(0, 1, 0, 0, 1, 0)), "continuous"
+  )
   expect_equal(
     compute_density_crossings(cur_d_1, cur_d_2), c(2.25, 3.5, 4, 5.25)
   )
@@ -85,7 +87,8 @@ test_that("compute_density_crossings handles 'intervals of identity'", {
   # "Partial" identity
   cur_d_1 <- new_d(data.frame(x = 1:5, y = c(0, 0, 0, 1, 0)), "continuous")
   cur_d_2 <- new_d(
-    data.frame(x = c(1:4, 4.5, 5.5, 6), y = c(0, 0, 0, 1, 0, 0, 1)), "continuous"
+    data.frame(x = c(1:4, 4.5, 5.5, 6), y = c(0, 0, 0, 1, 0, 0, 1)),
+    "continuous"
   )
   expect_equal(compute_density_crossings(cur_d_1, cur_d_2), c(1, 4, 5))
 
@@ -167,7 +170,8 @@ test_that("compute_cdf_crossings handles 'intervals of identity'", {
 
   # "Partial" identity
   cur_p_1 <- new_p(
-    data.frame(x = c(1, 1.5, 2, 3, 3.5, 4), y = c(1, 0, 1, 1, 0, 1)), "continuous"
+    data.frame(x = c(1, 1.5, 2, 3, 3.5, 4), y = c(1, 0, 1, 1, 0, 1)),
+    "continuous"
   )
   cur_p_2 <- new_p(data.frame(x = 1:4, y = c(0, 1, 1, 0)), "continuous")
   expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), c(1, 2, 3, 4))

@@ -254,7 +254,9 @@ test_that("assert_x_tbl works with 'discrete' type", {
 
   # Column "x"
   expect_error(assert_x_tbl(data.frame(a = 1), type = "discrete"), '"x"')
-  expect_error(assert_x_tbl(data.frame(x = "a"), type = "discrete"), '"x".*numeric')
+  expect_error(
+    assert_x_tbl(data.frame(x = "a"), type = "discrete"), '"x".*numeric'
+  )
   expect_error(
     assert_x_tbl(data.frame(x = NA_real_), type = "discrete"), '"x".*`NA`'
   )
@@ -265,7 +267,8 @@ test_that("assert_x_tbl works with 'discrete' type", {
   # Column "prob"
   expect_error(assert_x_tbl(data.frame(x = 1), type = "discrete"), '"prob"')
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "discrete"), '"prob".*numeric'
+    assert_x_tbl(data.frame(x = 1, prob = "a"), type = "discrete"),
+    '"prob".*numeric'
   )
   expect_error(
     assert_x_tbl(data.frame(x = 1, prob = NA_real_), type = "discrete"),
@@ -276,7 +279,8 @@ test_that("assert_x_tbl works with 'discrete' type", {
     '"prob".*finite'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1, prob = -1), type = "discrete"), '"prob".*negative'
+    assert_x_tbl(data.frame(x = 1, prob = -1), type = "discrete"),
+    '"prob".*negative'
   )
   expect_error(
     assert_x_tbl(data.frame(x = 1, prob = 0), type = "discrete"),
@@ -308,16 +312,20 @@ test_that("assert_x_tbl works with 'continuous' type", {
   # Column "x"
   expect_error(assert_x_tbl(data.frame(a = 1:2), type = "continuous"), '"x"')
   expect_error(
-    assert_x_tbl(data.frame(x = c("a", "b")), type = "continuous"), '"x".*numeric'
+    assert_x_tbl(data.frame(x = c("a", "b")), type = "continuous"),
+    '"x".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "continuous"), '"x".*`NA`'
+    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "continuous"),
+    '"x".*`NA`'
   )
   expect_error(
     assert_x_tbl(data.frame(x = c(1, Inf)), type = "continuous"), '"x".*finite'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "continuous"),
+    assert_x_tbl(
+      data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "continuous"
+    ),
     '"x".*duplicate'
   )
 
@@ -342,7 +350,9 @@ test_that("assert_x_tbl works with 'continuous' type", {
 
   # Extra columns are allowed
   expect_silent(
-    assert_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "continuous")
+    assert_x_tbl(
+      data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "continuous"
+    )
   )
   # Different column order is allowed
   expect_silent(

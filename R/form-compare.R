@@ -130,10 +130,10 @@ prob_geq_con_con <- function(f, g) {
   # during integral computation represent actual density points **between which
   # there are lines**. This doesn't hold if grid is created as simple union of
   # grids (there will be distortion on the edge of some support).
-  # Example: `f` and `g` are "continuous" uniform on (0, 1) and (0.5, 1.5). `f` on
-  # union grid (0, 0.5, 1, 1.5) would have "y" values (1, 1, 1, 0) which during
-  # computation of integrals will be treated as having line from (x=1, y=1) to
-  # (x=1.5, y=0), which is not true.
+  # Example: `f` and `g` are "continuous" uniform on (0, 1) and (0.5, 1.5). `f`
+  # on union grid (0, 0.5, 1, 1.5) would have "y" values (1, 1, 1, 0) which
+  # during computation of integrals will be treated as having line from (x=1,
+  # y=1) to (x=1.5, y=0), which is not true.
   # Note that there will be at least 2 points in `inters_x` because this code
   # will execute after early returns in `prob_geq()` didn't return.
   inters_x <- intersection_x(f, g)

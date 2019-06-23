@@ -23,7 +23,7 @@ test_that("summ_roc works", {
   expect_equal(range(output[["tpr"]]), c(0, 1))
 })
 
-test_that("summm_roc covers [0; 1] range on both axis in case of 'discrete' input", {
+test_that("summm_roc covers [0; 1] on both axis in case of 'discrete' input", {
   output <- summ_roc(d_dis, d_dis + 1)
   expect_equal(range(output[["fpr"]]), c(0, 1))
   expect_equal(range(output[["tpr"]]), c(0, 1))

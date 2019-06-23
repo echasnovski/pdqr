@@ -52,7 +52,9 @@ test_that("summ_interval works with 'discrete' functions", {
 })
 
 test_that("summ_interval works with 'continuous' functions", {
-  cur_d <- new_d(data.frame(x = c(1, 2, 3, 5), y = c(1, 0, 0, 0.5)), "continuous")
+  cur_d <- new_d(
+    data.frame(x = c(1, 2, 3, 5), y = c(1, 0, 0, 0.5)), "continuous"
+  )
   cur_q <- as_q(cur_d)
   cur_d_mean <- summ_mean(cur_d)
   cur_d_sd <- summ_sd(cur_d)
@@ -140,7 +142,8 @@ test_that("summ_interval works with dirac-like functions", {
 
     # Two dirac-like peaks
   d_dirac_2 <- form_mix(
-    list(new_d(1, "continuous"), new_d(2, "continuous")), weights = c(0.25, 0.75)
+    list(new_d(1, "continuous"), new_d(2, "continuous")),
+    weights = c(0.25, 0.75)
   )
   d_dirac_2_mean <- 1*0.25 + 2*0.75
   d_dirac_2_sd <- sqrt(1^2*0.25 + 2^2*0.75 - d_dirac_2_mean^2)

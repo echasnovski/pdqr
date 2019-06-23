@@ -58,7 +58,7 @@ test_that("new_q's output validates input", {
   expect_error(q_con("a"), "`p`.*numeric")
 })
 
-test_that("new_q's output behaves like inverse of ecdf() if `type = 'discrete'`", {
+test_that("new_q's output behaves like ecdf() inverse if `type='discrete'`", {
   inv_ecdf <- quantile(x_dis, probs = p_vec, type = 1)
   names(inv_ecdf) <- NULL
 
@@ -68,7 +68,8 @@ test_that("new_q's output behaves like inverse of ecdf() if `type = 'discrete'`"
 test_that("new_q's output is inverse of new_p's output", {
   expect_equal(x_dis_vec, q_dis(p_dis(x_dis_vec)))
   # There is not test `p_vec == p_dis(q_dis(p_vec))` because it shouldn't be
-  # true in "discrete" case. This is tested in "behaves like inverse of ecdf()" test.
+  # true in "discrete" case. This is tested in "behaves like inverse of ecdf()"
+  # test.
   expect_equal(x_con_vec, q_con(p_con(x_con_vec)))
   expect_equal(p_vec, p_con(q_con(p_vec)))
 })
@@ -108,7 +109,8 @@ test_that("new_q handles metadata", {
   expect_equal(
     meta_all(q_dis),
     list(
-      class = "q", type = "discrete", support = x_dis_support, x_tbl = x_dis_x_tbl
+      class = "q", type = "discrete", support = x_dis_support,
+      x_tbl = x_dis_x_tbl
     )
   )
 

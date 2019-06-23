@@ -23,15 +23,15 @@
 #' case when `n_grid` is strictly more than number of rows in "x_tbl" metadata,
 #' downgridding - when it is strictly less):
 #'     - Type "discrete":
-#'         - UPgridding "discrete" functions is not possible as it is assumed that
-#'         input "discrete" functions can't have any "x" values other then present
-#'         ones. In this case input is returned, the only case when output
-#'         doesn't have desired `n_grid` rows in "x_tbl" metadata.
-#'         - DOWNgridding "discrete" functions is done by computing nearest match of
-#'         reference grid to `f`'s one and collapsing (by summing probabilities)
-#'         all "x" values from input to the nearest matched ones. Here
-#'         "computing nearest match" means that every element of reference grid
-#'         is one-one matched with subset of unique values from `f`'s "x"
+#'         - UPgridding "discrete" functions is not possible as it is assumed
+#'         that input "discrete" functions can't have any "x" values other then
+#'         present ones. In this case input is returned, the only case when
+#'         output doesn't have desired `n_grid` rows in "x_tbl" metadata.
+#'         - DOWNgridding "discrete" functions is done by computing nearest
+#'         match of reference grid to `f`'s one and collapsing (by summing
+#'         probabilities) all "x" values from input to the nearest matched ones.
+#'         Here "computing nearest match" means that every element of reference
+#'         grid is one-one matched with subset of unique values from `f`'s "x"
 #'         elements. Matching is done in greedy iterative fashion in order to
 #'         minimize total distance between reference grid and matched subset.
 #'         **Note** that this can result in not optimal (with not minimum total
@@ -43,9 +43,9 @@
 #'         from point to set is meant as minimum of distances between point and
 #'         all points of set. Values of "y" and "cumprob" columns are taken as
 #'         values of corresponding to `f` d- and p-functions.
-#'         - DOWNgridding "continuous" functions is done by computing nearest match
-#'         of reference grid to `f`'s one (as for "discrete" type) and removing all
-#'         unmatched rows from "x_tbl" metadata.
+#'         - DOWNgridding "continuous" functions is done by computing nearest
+#'         match of reference grid to `f`'s one (as for "discrete" type) and
+#'         removing all unmatched rows from "x_tbl" metadata.
 #'
 #' Special cases of `n_grid`:
 #' - If `n_grid` is the same as number of rows in "x_tbl" metadata, then input

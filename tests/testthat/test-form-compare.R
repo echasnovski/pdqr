@@ -74,7 +74,9 @@ test_that("form_geq handles cases of separated supports", {
   expect_equal(form_geq(f_con_3, f_con_1)(1), 1)
 
   # "Touching" supports
-  expect_equal(form_geq(new_d(1:2, "discrete"), new_d(2:3, "discrete"))(1), 0.25)
+  expect_equal(
+    form_geq(new_d(1:2, "discrete"), new_d(2:3, "discrete"))(1), 0.25
+  )
 })
 
 test_that("form_geq works with dirac-like 'continuous' functions", {
@@ -128,7 +130,9 @@ test_that("form_greater handles cases of separated supports", {
   expect_equal(form_greater(f_con_3, f_con_1)(1), 1)
 
   # "Touching" supports
-  expect_equal(form_greater(new_d(1:2, "discrete"), new_d(2:3, "discrete"))(1), 0)
+  expect_equal(
+    form_greater(new_d(1:2, "discrete"), new_d(2:3, "discrete"))(1), 0
+  )
 })
 
 test_that("form_greater works with dirac-like 'continuous' functions", {
@@ -236,7 +240,9 @@ test_that("form_less handles cases of separated supports", {
   expect_equal(form_less(f_con_3, f_con_1)(1), 0)
 
   # "Touching" supports
-  expect_equal(form_less(new_d(1:2, "discrete"), new_d(2:3, "discrete"))(1), 0.75)
+  expect_equal(
+    form_less(new_d(1:2, "discrete"), new_d(2:3, "discrete"))(1), 0.75
+  )
 })
 
 test_that("form_less works with dirac-like 'continuous' functions", {

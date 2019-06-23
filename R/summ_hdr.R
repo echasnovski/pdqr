@@ -20,27 +20,27 @@
 #' not less than `level`.
 #' 1. **Form a HDR as a set of closed intervals**.
 #'
-#' If `f` has "discrete" type, target height is computed by looking at "x" values of
-#' ["x_tbl" metadata][meta_x_tbl()] in order of decreasing probability until
-#' their total probability is not less than `level`. After that, all "x" values
-#' with probability not less than height are considered to form a HDR. Output is
-#' formed as a set of **closed** intervals (i.e. both edges included) inside of
-#' which lie all HDR "x" elements and others - don't.
+#' If `f` has "discrete" type, target height is computed by looking at "x"
+#' values of ["x_tbl" metadata][meta_x_tbl()] in order of decreasing probability
+#' until their total probability is not less than `level`. After that, all "x"
+#' values with probability not less than height are considered to form a HDR.
+#' Output is formed as a set of **closed** intervals (i.e. both edges included)
+#' inside of which lie all HDR "x" elements and others - don't.
 #'
-#' If `f` has "continuous" type, target height is estimated as `1-level` quantile of
-#' `Y = d_f(X)` distribution, where `d_f` is d-function corresponding to `f`
-#' ([`as_d(f)`][as_d()] in other words) and `X` is a random variable represented
-#' by `f`. Essentially, `Y` has a distribution of `f`'s density values and its
-#' `1-level` quantile is a target height. After that, HDR is formed as a set of
-#' intervals **with positive width** (if `level` is more than 0, see Notes)
-#' inside which density is not less than target height.
+#' If `f` has "continuous" type, target height is estimated as `1-level`
+#' quantile of `Y = d_f(X)` distribution, where `d_f` is d-function
+#' corresponding to `f` ([`as_d(f)`][as_d()] in other words) and `X` is a random
+#' variable represented by `f`. Essentially, `Y` has a distribution of `f`'s
+#' density values and its `1-level` quantile is a target height. After that, HDR
+#' is formed as a set of intervals **with positive width** (if `level` is more
+#' than 0, see Notes) inside which density is not less than target height.
 #'
 #' **Notes**:
 #' - If `level` is 0, output has one interval of zero width at point of [global
 #' mode][summ_mode()].
 #' - If `level` is 1, output has one interval equal to support.
-#' - Computation of target height in case of "continuous" type is approximate which
-#' in some extreme cases (for example, like [winsorized][form_tails()]
+#' - Computation of target height in case of "continuous" type is approximate
+#' which in some extreme cases (for example, like [winsorized][form_tails()]
 #' distributions) can lead to HDR having total probability very approximate to
 #' and even slightly lower than `level`.
 #' - If d-function has "plateaus" (consecutive values with equal

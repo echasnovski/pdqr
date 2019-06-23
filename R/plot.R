@@ -36,8 +36,8 @@
 #' - Q-functions are plotted similarly as p- and d-functions but grid consists
 #' from union of "cumprob" column of "x_tbl" metadata and equidistant grid of
 #' length `n_extra_grid` from 0 to 1.
-#' - R-functions are plotted the same way as type "discrete" ones: as histogram of
-#' generated sample of size `n_sample`.
+#' - R-functions are plotted the same way as type "discrete" ones: as histogram
+#' of generated sample of size `n_sample`.
 #'
 #' @return Output of [invisible()][base::invisible()] without arguments, i.e.
 #'   `NULL` without printing.
@@ -51,7 +51,8 @@
 #' plot(d_norm_1)
 #' lines(d_norm_2, col = "red")
 #'
-#' # Usage of `n_extra_grid` is important in case of "continuous" p- and q-functions
+#' # Usage of `n_extra_grid` is important in case of "continuous" p- and
+#' # q-functions
 #' simple_p <- new_p(data.frame(x = c(0, 1), y = c(0, 1)), "continuous")
 #' plot(simple_p, main = "Case study of n_extra_grid argument")
 #' lines(simple_p, n_extra_grid = 0, col = "red")

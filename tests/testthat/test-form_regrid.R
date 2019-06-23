@@ -146,7 +146,7 @@ test_that("form_regrid upgrids 'continuous' functions", {
   )
 })
 
-test_that("form_regrid errors if `n_grid=2`, zero edges, 'continuous' function", {
+test_that("form_regrid errors if `n_grid=2`, zero edges, 'continuous' type", {
   # Output `x` in case of `n_grid = 2` are edges of input "x_tbl". So if they
   # are 0s then there should be an error.
   con_zero_edges <- new_d(data.frame(x = 0:2, y = c(0, 1, 0)), "continuous")

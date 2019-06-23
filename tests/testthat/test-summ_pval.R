@@ -29,7 +29,9 @@ test_that("summ_pval works", {
   expect_pval(cur_dis,   100, c(     0,      0,    0,    1))
 
   # Type "continuous"
-  cur_con <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "continuous")
+  cur_con <- new_d(
+    data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "continuous"
+  )
   expect_pval(cur_con,  -1, c(    0,     0,   1,   0))
   expect_pval(cur_con,   3, c(2*0.2, 2*0.2, 0.8, 0.2))
   expect_pval(cur_con,   6, c(2*0.5, 2*0.5, 0.5, 0.5))
@@ -39,7 +41,9 @@ test_that("summ_pval works", {
 
 test_that("summ_pval works with vector observations", {
   # This is also test for `summ_pval()` not adjusting if `adjust='none'`
-  cur_con <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "continuous")
+  cur_con <- new_d(
+    data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "continuous"
+  )
   expect_equal(
     summ_pval(cur_con, c(-1, 3, 6, 10, 100), adjust = "none"),
     c(0, 0.4, 1, 0.2, 0)

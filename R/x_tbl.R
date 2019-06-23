@@ -34,8 +34,8 @@ dirac_x_tbl <- function(at_x, h = 1e-8) {
   x <- at_x + h*c(-1, 0, 1)
   y <- c(0, 1, 0)/h
   # Normalization is needed to ensure that total integral is 1. If omit this,
-  # then, for example, `new_d(1e8, "continuous")` will have total integral of around
-  # `1.49`.
+  # then, for example, `new_d(1e8, "continuous")` will have total integral of
+  # around `1.49`.
   y <- y / trapez_integral(x, y)
 
   data.frame(x = x, y = y, cumprob = c(0, 0.5, 1))

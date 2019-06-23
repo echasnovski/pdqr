@@ -11,18 +11,18 @@
 #'
 #' `summ_median()` computes a smallest `x` value for which cumulative
 #' probability is not less than 0.5. Essentially, it is a `as_q(f)(0.5)`. This
-#' also means that for pdqr-functions with type "discrete" it always returns an entry
-#' of "x" column from `f`'s ["x_tbl" metadata][meta_x_tbl()].
+#' also means that for pdqr-functions with type "discrete" it always returns an
+#' entry of "x" column from `f`'s ["x_tbl" metadata][meta_x_tbl()].
 #'
 #' `summ_mode(*, method = "global")` computes a smallest `x` (which is an entry
 #' of "x" column from `f`'s `x_tbl`) with the highest probability/density.
 #' `summ_mode(*, method = "local")` computes all `x` values which represent
 #' non-strict **local maxima** of probability mass/density function.
 #'
-#' @return `summ_center()`, `summ_mean()`, `summ_median()` and
-#'   `summ_mode(*, method = "global")` always return a single number
-#'   representing a center of distribution. `summ_mode(*, method = "local")` can
-#'   return a numeric vector with multiple values representing local maxima.
+#' @return `summ_center()`, `summ_mean()`, `summ_median()` and `summ_mode(*,
+#'   method = "global")` always return a single number representing a center of
+#'   distribution. `summ_mode(*, method = "local")` can return a numeric vector
+#'   with multiple values representing local maxima.
 #'
 #' @seealso [summ_dispersion()] for computing distribution's dispersion,
 #'   [summ_moment()] for general moments.

@@ -76,7 +76,9 @@ test_that("summ_mean works with zero probability spaces in distribution", {
     2.2
   )
   expect_equal(
-    summ_mean(new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "continuous")),
+    summ_mean(
+      new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "continuous")
+    ),
     3.5
   )
 })
@@ -148,7 +150,9 @@ test_that("summ_median works with winsorized 'continuous' functions", {
 
 test_that("summ_median works with zero probability spaces in distribution", {
   expect_equal(
-    summ_median(new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "discrete")),
+    summ_median(
+      new_d(data.frame(x = 1:4, prob = c(0.6, 0, 0, 0.4)), "discrete")
+    ),
     1
   )
   expect_equal(
@@ -253,8 +257,12 @@ test_that("summ_mode works with plateaus in distribution", {
     data.frame(x = 1:5, prob = c(0.1, 0.25, 0.25, 0.25, 0.15)), "discrete"
   )
   # `y` isn't exact and will get renormalized
-  d_plateau_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 3)), "continuous")
-  d_plateau_con_2 <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 1)), "continuous")
+  d_plateau_con <- new_d(
+    data.frame(x = 1:5, y = c(1, 2, 2, 2, 3)), "continuous"
+  )
+  d_plateau_con_2 <- new_d(
+    data.frame(x = 1:5, y = c(1, 2, 2, 2, 1)), "continuous"
+  )
 
   # Method "global" (default)
   expect_equal(summ_mode(d_plateau_dis), 5)

@@ -28,11 +28,11 @@
 #' to right with `|F - G|` values tending to the result (see Examples).
 #' - *Method "totvar"* (short for "total variation") computes a biggest absolute
 #' difference of probabilities for any subset of real line. In other words,
-#' there is a set of points for "discrete" type and intervals for "continuous", total
-#' probability of which under `f` and `g` differs the most. **Note** that if
-#' `f` and `g` have different types, output is always 1. The set of interest
-#' consists from all "x" values of "discrete" pdqr-function: probability under "discrete"
-#' distribution is 1 and under "continuous" is 0.
+#' there is a set of points for "discrete" type and intervals for "continuous",
+#' total probability of which under `f` and `g` differs the most. **Note** that
+#' if `f` and `g` have different types, output is always 1. The set of interest
+#' consists from all "x" values of "discrete" pdqr-function: probability under
+#' "discrete" distribution is 1 and under "continuous" is 0.
 #' - *Method "compare"* represents a value computed based on probabilities of
 #' one distribution being bigger than the other (see [pdqr methods for "Ops"
 #' group generic family][methods-group-generic] for more details on comparing
@@ -180,9 +180,9 @@ distance_ks_two_con <- function(p_f, p_g) {
 # **Notes in docs**. Maximum absolute difference in probabilities across all
 # possible sets. In other words, there should be some subset of real line (or a
 # set of those) probabilities of (more formally, limit of) which under `f` and
-# `g` differ the most. This set (of finite values for "discrete" and of intervals for
-# "continuous") can be expressed as `A = {x | f(x) > g(x)}` (`f` and `g` are
-# d-functions) or `B = {x | f(x) < g(x)}`.
+# `g` differ the most. This set (of finite values for "discrete" and of
+# intervals for "continuous") can be expressed as `A = {x | f(x) > g(x)}` (`f`
+# and `g` are d-functions) or `B = {x | f(x) < g(x)}`.
 # However, absolute differences in probabilities for `A` and `B` are equal. This
 # is because:
 # `0 = 1 - 1 = (P_f(A) + P_f(B) + P_f(C)) - (P_g(A) + P_g(B) + P_g(C))`, where
@@ -200,8 +200,9 @@ distance_totvar <- function(f, g) {
   switch(
     as.character(num_dis),
     `0` = distance_totvar_two_con(d_f, d_g),
-    # A target set is all `x` values of "discrete" pdqr-function. Its probability
-    # under "discrete" is 1 and under "continuous" is zero because it is countable.
+    # A target set is all `x` values of "discrete" pdqr-function. Its
+    # probability under "discrete" is 1 and under "continuous" is zero because
+    # it is countable.
     `1` = 1,
     `2` = distance_totvar_two_dis(d_f, d_g)
   )

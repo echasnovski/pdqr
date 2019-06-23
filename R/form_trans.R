@@ -19,8 +19,8 @@
 #' accepts a single pdqr-function instead of a list of them.
 #'
 #' [Class][meta_class()] of output is chosen as class of first pdqr-function in
-#' `f_list`. [Type][meta_type()] of output is chosen to be "discrete" in case all
-#' input pdqr-functions have "discrete" type, and "continuous" otherwise.
+#' `f_list`. [Type][meta_type()] of output is chosen to be "discrete" in case
+#' all input pdqr-functions have "discrete" type, and "continuous" otherwise.
 #'
 #' Method "random" performs transformation using random generation of samples:
 #' - **Generates a sample of size `n_sample` from every element of `f_list`**
@@ -32,34 +32,36 @@
 #' only single number.
 #' - **Creates output pdqr-function**. If output is logical, probability of
 #' being true is estimated as share of `TRUE` in output, and boolean
-#' pdqr-function is created (type "discrete" with "x" values equal to 0 and 1, and
-#' probabilities of being false and true respectively). If output is numeric,
-#' one of `new_*()` (suitable for output class) is called with arguments from
-#' `args_new` list.
+#' pdqr-function is created (type "discrete" with "x" values equal to 0 and 1,
+#' and probabilities of being false and true respectively). If output is
+#' numeric, one of `new_*()` (suitable for output class) is called with
+#' arguments from `args_new` list.
 #'
 #' Method "bruteforce":
 #' - **[Retypes][form_retype()] input** pdqr-function to "discrete"
 #' type (using "piecelin" method).
 #' - **Computes output for every combination of "x" values** (probability of
 #' which will be a product of corresponding probabilities).
-#' - **Creates pdqr-function of type "discrete"** with suitable `new_*()` function.
-#' - **Possibly retypes to "continuous" type** if output should have it (also with
-#' "piecelin" method).
+#' - **Creates pdqr-function of type "discrete"** with suitable `new_*()`
+#' function.
+#' - **Possibly retypes to "continuous" type** if output should have it (also
+#' with "piecelin" method).
 #'
 #' **Notes** about "bruteforce" method:
 #' - Its main advantage is that it is not random.
 #' - It may start to be very memory consuming very quickly.
 #' - It is usually useful when type of output function is "discrete". In case of
-#' "continuous" type, retyping from "discrete" to "continuous" might introduce big errors.
+#' "continuous" type, retyping from "discrete" to "continuous" might introduce
+#' big errors.
 #' - Used "discrete" probabilities shouldn't be very small because they will be
 #' directly multiplied, which might cause numerical accuracy issues.
 #'
 #' @return A pdqr-function for transformed random variable.
 #'
-#' @seealso [Pdqr methods for S3 group generic
-#'   functions][methods-group-generic] for more accurate implementations of most
-#'   commonly used functions. Some of them are direct (without randomness) and
-#'   some of them use `form_trans()` with "random" method.
+#' @seealso [Pdqr methods for S3 group generic functions][methods-group-generic]
+#'   for more accurate implementations of most commonly used functions. Some of
+#'   them are direct (without randomness) and some of them use `form_trans()`
+#'   with "random" method.
 #'
 #' [form_regrid()] to increase/decrease granularity of pdqr-functions for method
 #' "bruteforce".
@@ -83,7 +85,10 @@
 #'
 #' # Transformation with "bruteforce" method
 #' power <- function(x, n = 1) {x^n}
-#' p_dis <- new_p(data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)), type = "discrete")
+#' p_dis <- new_p(
+#'   data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)),
+#'   type = "discrete"
+#' )
 #'
 #' p_dis_sq <- form_trans_self(
 #'   p_dis, trans = power, n = 2, method = "bruteforce"
@@ -206,8 +211,8 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
     return(boolean_pdqr(prob_true, res_meta[["class"]]))
   }
 
-  # Create transformed "discrete" pdqr-function. Usage of `args_new` doesn't have
-  # any effect for now (as input to `new_*()` is data frame), but might be
+  # Create transformed "discrete" pdqr-function. Usage of `args_new` doesn't
+  # have any effect for now (as input to `new_*()` is data frame), but might be
   # helpful if in future `new_*()` will have new arguments.
   x_tbl <- data.frame(x = x_new, prob = prob_new)
   new_pdqr <- new_pdqr_by_class(res_meta[["class"]])

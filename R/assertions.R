@@ -137,7 +137,8 @@ assert_pdqr_fun <- function(f) {
 
   if (!has_meta_type(f)) {
     stop_collapse(
-      err_header, 'It should have proper "type" metadata ("discrete" or "continuous").'
+      err_header, 'It should have proper "type" metadata ("discrete" or ',
+      '"continuous").'
     )
   }
 
@@ -168,7 +169,8 @@ assert_distr_type <- function(type) {
   }
   if (!(type %in% c("discrete", "continuous"))) {
     stop_collapse(
-      type_name, ' should be one of "discrete" or "continuous", not "', type, '".'
+      type_name, ' should be one of "discrete" or "continuous", ',
+      'not "', type, '".'
     )
   }
 
@@ -339,7 +341,7 @@ warning_boolean_pdqr_fun <- function(f = NULL, f_name = NULL) {
   }
 
   warning_collapse(
-    f_name, ' is not a "boolean" pdqr-function (type "discrete" with "x" values ',
-    'equal to 0 and 1). Proceed with caution.'
+    f_name, ' is not a "boolean" pdqr-function (type "discrete" with "x" ',
+    'values equal to 0 and 1). Proceed with caution.'
   )
 }

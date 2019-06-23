@@ -35,8 +35,8 @@
 #'
 #' This family of S3 generics represents mathematical functions. Most of the
 #' methods have **random nature**, except `abs()` and `sign()` which are
-#' computed directly. Output of `sign()` has "discrete" type with 3 "x" values: -1,
-#' 0, 1.
+#' computed directly. Output of `sign()` has "discrete" type with 3 "x" values:
+#' -1, 0, 1.
 #'
 #' **Note** that `cumsum()`, `cumprod()`, `cummmax()`, and `cummin()` functions
 #' don't make much sense in these implementations: their outputs represent
@@ -55,15 +55,15 @@
 #' `2 - f` (which is actually `(-f) + 2`), `3*f` and `f/2` are linear
 #' transformations, but `1 / f`, `f + g` are not.
 #' - Functions for comparing: `==`, `!=`, `<`, `<=`, `>=`, `>`. Their output is
-#' **boolean pdqr-function**: "discrete" type function with elements being exactly 0
-#' and 1. Probability of 0 represents probability of operator output being
-#' false, and 1 - being true. Probability of being true is computed directly as
-#' **limit of empirical estimation from simulations** (as size of samples grows
-#' to infinity). In other words, output is an exact number which might be
-#' approximated by simulating two big samples of same size from input `e1` and
-#' `e2` (one of which can be a single number), and estimating probability as
-#' share of those pairs from samples for which comparison is true. **Note** that
-#' if at least one input has "continuous" type, then:
+#' **boolean pdqr-function**: "discrete" type function with elements being
+#' exactly 0 and 1. Probability of 0 represents probability of operator output
+#' being false, and 1 - being true. Probability of being true is computed
+#' directly as **limit of empirical estimation from simulations** (as size of
+#' samples grows to infinity). In other words, output is an exact number which
+#' might be approximated by simulating two big samples of same size from input
+#' `e1` and `e2` (one of which can be a single number), and estimating
+#' probability as share of those pairs from samples for which comparison is
+#' true. **Note** that if at least one input has "continuous" type, then:
 #'     - `==` will always have probability 0 of being true because probability
 #'     of generating a certain exact one or two numbers from continuous random
 #'     variable is zero.
@@ -109,8 +109,8 @@
 #' input and therefore can't be made vectorized. Error is thrown if it is
 #' applied to pdqr-function.
 #' - Although all `sum()`, `prod()`, `min()`, `max()` accept pdqr-functions or
-#' single numbers, using numbers and "continuous" functions simultaneously is not a
-#' great idea. This is because output will be automatically smoothed (as
+#' single numbers, using numbers and "continuous" functions simultaneously is
+#' not a great idea. This is because output will be automatically smoothed (as
 #' `form_trans()` will use some `new_*()` function) which will give a misleading
 #' picture. For a more realistic output:
 #'     - Instead of `min(f, num)` use
@@ -343,7 +343,8 @@ reflect_pdqr_around_zero <- function(f) {
 }
 
 negate_pdqr <- function(f) {
-  # Probability of type "continuous" pdqr-function being exactly 0 is equal to zero
+  # Probability of type "continuous" pdqr-function being exactly 0 is equal to
+  # zero
   prob_zero <- if (meta_type(f) == "discrete") {as_d(f)(0)} else {0}
 
   new_pdqr_by_ref(f)(

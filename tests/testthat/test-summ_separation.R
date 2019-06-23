@@ -18,7 +18,9 @@ test_that("summ_separation works with method 'KS'", {
 
   # Mixed types
   p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
-  p_g <- new_p(data.frame(x = c(1.5, 2.5, 4.5), prob = c(0.1, 0.7, 0.3)), "discrete")
+  p_g <- new_p(
+    data.frame(x = c(1.5, 2.5, 4.5), prob = c(0.1, 0.7, 0.3)), "discrete"
+  )
   expect_equal(summ_separation(p_f, p_g, method = "KS"), 2)
   expect_equal(summ_separation(p_g, p_f, method = "KS"), 2)
 
@@ -85,8 +87,12 @@ test_that("summ_separation works with non-overlapping supports", {
   expect_equal(summ_separation(cur_dis_1, cur_dis_2), 4.5)
   expect_equal(summ_separation(cur_dis_2, cur_dis_1), 4.5)
     # "Touching" supports
-  expect_equal(summ_separation(new_p(1:2, "discrete"), new_p(2:3, "discrete")), 2)
-  expect_equal(summ_separation(new_p(2:3, "discrete"), new_p(1:2, "discrete")), 2)
+  expect_equal(
+    summ_separation(new_p(1:2, "discrete"), new_p(2:3, "discrete")), 2
+  )
+  expect_equal(
+    summ_separation(new_p(2:3, "discrete"), new_p(1:2, "discrete")), 2
+  )
 
   # "Mixed-typed"
   expect_equal(summ_separation(cur_dis_1, cur_con_2), 4.5)
@@ -156,7 +162,8 @@ test_that("separation_ks works with mixed-type functions", {
 
   expect_equal(
     separation_ks(
-      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"), new_p(2, "discrete")
+      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"),
+      new_p(2, "discrete")
     ),
     2
   )
@@ -182,7 +189,9 @@ test_that("separation_ks works with two 'continuous' functions", {
   expect_equal(separation_ks(p_g, p_f), 2/3)
 
   # Multiple density crossings in real-world example
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
+  p_f <- new_p(
+    data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous"
+  )
   p_g <- new_p(
     data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "continuous"
   )
@@ -218,9 +227,9 @@ test_that("separation_ks works with identical inputs", {
 
 test_that("separation_ks works with dirac-like functions", {
   # K-S distance when "dirac" function is involved should be essentially (but
-  # not exactly) the same as if it is replaced with corresponding "discrete" (except
-  # the case when the other one is "discrete" with one of points lying inside "dirac"
-  # support)
+  # not exactly) the same as if it is replaced with corresponding "discrete"
+  # (except the case when the other one is "discrete" with one of points lying
+  # inside "dirac" support)
   d_dirac <- new_d(2, "continuous")
   d_dirac_dis <- new_d(2, "discrete")
 

@@ -50,8 +50,8 @@ test_that("summ_entropy works with 'continuous' functions", {
 
 test_that("summ_entropy works with dirac-like functions", {
   expect_equal(summ_entropy(new_d(10, "discrete")), 0)
-  # Entropy of dirac-like "continuous" function is computed from symmetric triangular
-  # distribution with width 2*1e-8
+  # Entropy of dirac-like "continuous" function is computed from symmetric
+  # triangular distribution with width 2*1e-8
   expect_equal(summ_entropy(new_d(10, "continuous")), 0.5 + log(1e-8))
 })
 
@@ -115,7 +115,9 @@ test_that("summ_entropy2 works with dirac-like 'continuous' functions", {
 
 test_that("summ_entropy2 handles numerical representation accuracy", {
   # More info in corresponding `cross_entropy()` test
-  approx_unif <- new_d(data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "continuous")
+  approx_unif <- new_d(
+    data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "continuous"
+  )
   beta <- as_d(dbeta, shape1 = 1, shape2 = 2)
 
   expect_equal(summ_entropy2(beta, approx_unif, method = "cross"), 0)
@@ -221,7 +223,9 @@ test_that("cross_entropy returns maximum value with non-overlapping supports", {
 test_that("cross_entropy handles numerical representation accuracy", {
   # Here `y` values are not **exactly** equal but differ by ~1.38e-17 (on most
   # platforms, according to "Note" from `==`'s help page).
-  approx_unif <- new_d(data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "continuous")
+  approx_unif <- new_d(
+    data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "continuous"
+  )
   beta <- as_d(dbeta, shape1 = 1, shape2 = 2)
 
   # When this type of issue is in place, one of the previous implementations

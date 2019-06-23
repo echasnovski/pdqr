@@ -407,7 +407,8 @@ test_that("Ops.pdqr works with generics which take one argument", {
   )
   expect_equal(d_negate(1), 0.2)
 
-    # Probability of type "continuous" pdqr-function being exactly 0 is equal to zero
+    # Probability of type "continuous" pdqr-function being exactly 0 is equal to
+    # zero
   expect_equal((!d_con)(1), 0)
 })
 

@@ -405,8 +405,8 @@ capture_null <- function(x) {
 #'
 #' `pdqr_approx_error()` computes errors that are results of 'pdqr'
 #' approximation, which occurs because of possible tail trimming and assuming
-#' piecewise linearity of density function in case of "continuous" type. For an easy
-#' view summary, use [summary()][base::summary()].
+#' piecewise linearity of density function in case of "continuous" type. For an
+#' easy view summary, use [summary()][base::summary()].
 #'
 #' @param f A p-, d-, or q-function to diagnose. Usually the output of one of
 #'   [as_p()], [as_d()], or [as_q()] default methods.
@@ -414,8 +414,8 @@ capture_null <- function(x) {
 #'   as `f`. Usually the input to the aforementioned `as_*()` function.
 #' @param ... Other arguments to `ref_f`. If they were supplied to `as_*()`
 #'   function, then the exact same values must be supplied here.
-#' @param gran Degree of grid "granularity" in case of "continuous" type: number of
-#'   subintervals to be produced inside every interval of density linearity.
+#' @param gran Degree of grid "granularity" in case of "continuous" type: number
+#'   of subintervals to be produced inside every interval of density linearity.
 #'   Should be not less than 1 (indicator that original column from
 #'   ["x_tbl"][meta_x_tbl()] will be used, see details).
 #' @param remove_infinity Whether to remove rows corresponding to infinite
@@ -429,10 +429,10 @@ capture_null <- function(x) {
 #'
 #' **Notes**:
 #' - `gran` argument for "discrete" type is always 1.
-#' - Quantile pdqr approximation of "discrete" distribution with infinite tale(s) can
-#' result into "all one" summary of error. This is expected output and is
-#' because test grid is chosen to be quantiles of pdqr-distribution which due to
-#' renormalization can differ by one from reference ones. For example:
+#' - Quantile pdqr approximation of "discrete" distribution with infinite
+#' tale(s) can result into "all one" summary of error. This is expected output
+#' and is because test grid is chosen to be quantiles of pdqr-distribution which
+#' due to renormalization can differ by one from reference ones. For example:
 #' `summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))`.
 #'
 #' @return A data frame with the following columns:
@@ -539,23 +539,24 @@ granulate_grid <- function(f, gran) {
 #' [type][meta_type()] of input pdqr-function `f`:
 #' - **P-functions** are represented with "x" (for "x" values) and "p" (for
 #' cumulative probability at "x" points) columns:
-#'     - For "continuous" type, "x" is taken as an equidistant grid (with `n_points`
-#'     elements) on input's [support][meta_support()].
+#'     - For "continuous" type, "x" is taken as an equidistant grid (with
+#'     `n_points` elements) on input's [support][meta_support()].
 #'     - For "discrete" type, "x" is taken directly from ["x_tbl"
 #'     metadata][meta_x_tbl()] without using `n_points` argument.
 #' - **D-functions** are represented with "x" column and one more (for values of
 #' d-function at "x" points):
-#'     - For "continuous" type, second column is named "y" and is computed as values
-#'     of `f` at elements of "x" column (which is the same grid as in p-function
-#'     case).
-#'     - For "discrete" it is named "prob". Both "x" and "prob" columns are taken
-#'     from "x_tbl" metadata.
+#'     - For "continuous" type, second column is named "y" and is computed as
+#'     values of `f` at elements of "x" column (which is the same grid as in
+#'     p-function case).
+#'     - For "discrete" it is named "prob". Both "x" and "prob" columns are
+#'     taken from "x_tbl" metadata.
 #' - **Q-functions** are represented almost as p-functions but in inverse
 #' fashion. Output data frame has "p" (probabilities) and "x" (values of
 #' q-function `f` at "p" elements) columns.
-#'     - For "continuous" type, "p" is computed as equidistant grid (with `n_points`
-#'     elements) between 0 and 1.
-#'     - For "discrete" type, "p" is taken from "cumprob" column of "x_tbl" metadata.
+#'     - For "continuous" type, "p" is computed as equidistant grid (with
+#'     `n_points` elements) between 0 and 1.
+#'     - For "discrete" type, "p" is taken from "cumprob" column of "x_tbl"
+#'     metadata.
 #' - **R-functions** are represented by generating `n_points` elements from
 #' distribution. Output data frame has columns "n" (consecutive point number,
 #' basically a row number) and "x" (generated elements).

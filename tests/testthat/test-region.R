@@ -390,7 +390,8 @@ test_that("region_height works with dirac-like 'continuous' functions", {
   )
 
   d_dirac_2 <- form_mix(
-    list(new_d(1, "continuous"), new_d(2, "continuous")), weights = c(0.25, 0.75)
+    list(new_d(1, "continuous"), new_d(2, "continuous")),
+    weights = c(0.25, 0.75)
   )
   expect_equal(region_height(data.frame(left = 0, right = 1), d_dirac_2), 0)
   expect_equal(

@@ -13,7 +13,9 @@ test_that("summ_hdr works with 'discrete' functions", {
   expect_equal(summ_hdr(cur_d_1, 0.4001), data.frame(left = 3, right = 4))
   expect_equal(summ_hdr(cur_d_1, 0.95), data.frame(left = 1, right = 4))
 
-  cur_d_2 <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "discrete")
+  cur_d_2 <- new_d(
+    data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "discrete"
+  )
   expect_equal(summ_hdr(cur_d_2, 0.1), data.frame(left = 1, right = 1))
   expect_equal(
     summ_hdr(cur_d_2, 0.4001), data.frame(left = c(1, 3), right = c(1, 3))
@@ -43,7 +45,9 @@ test_that("summ_hdr works with basic 'continuous' functions", {
   expect_equal(summ_hdr(cur_d_2, 0.75), data.frame(left = 0.5, right = 1.5))
 
   # Several global modes
-  cur_d_3 <- new_d(data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous")
+  cur_d_3 <- new_d(
+    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous"
+  )
   expect_equal(
     summ_hdr(cur_d_3, 0.75),
     data.frame(left = c(0.5, 2.5, 4.5), right = c(1.5, 3.5, 5.5))
@@ -268,7 +272,9 @@ test_that("compute_hdr_intervals works", {
   )
   expect_equal(compute_hdr_intervals(cur_d_2, 1), empty_hdr)
 
-  cur_d_3 <- new_d(data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous")
+  cur_d_3 <- new_d(
+    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous"
+  )
   # Whole support in single row is returned because consecutive intervals in
   # output rows should be "collapsed" to one. In other words, there should be
   # non-zero distance between consecutive intervals in HDR.
@@ -322,7 +328,9 @@ test_that("compute_hdr_intervals handles plateaus", {
     compute_hdr_intervals(cur_d_1, 1), data.frame(left = 0, right = 1)
   )
 
-  cur_d_2 <- new_d(data.frame(x = c(0, 1, 10, 11), y = c(1, 0, 0, 1)), "continuous")
+  cur_d_2 <- new_d(
+    data.frame(x = c(0, 1, 10, 11), y = c(1, 0, 0, 1)), "continuous"
+  )
   expect_equal(
     compute_hdr_intervals(cur_d_2, 0), data.frame(left = 0, right = 11)
   )
@@ -356,7 +364,9 @@ test_that("compute_density_height_points works", {
   expect_equal(compute_density_height_points(cur_d_2, 0.5), 0.5 + 0:1)
   expect_equal(compute_density_height_points(cur_d_2, 1), 1)
 
-  cur_d_3 <- new_d(data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous")
+  cur_d_3 <- new_d(
+    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous"
+  )
   expect_equal(compute_density_height_points(cur_d_3, 0), c(0, 2, 4, 6))
   expect_equal(compute_density_height_points(cur_d_3, 1/6), 0.5 + 0:5)
   expect_equal(compute_density_height_points(cur_d_3, 1/3), c(1, 3, 5))
@@ -395,7 +405,9 @@ test_that("compute_density_height_points handles plateaus", {
   cur_d_1 <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
   expect_equal(compute_density_height_points(cur_d_1, 1), 0:1)
 
-  cur_d_2 <- new_d(data.frame(x = c(0, 1, 10, 11), y = c(1, 0, 0, 1)), "continuous")
+  cur_d_2 <- new_d(
+    data.frame(x = c(0, 1, 10, 11), y = c(1, 0, 0, 1)), "continuous"
+  )
   expect_equal(compute_density_height_points(cur_d_2, 0), c(1, 10))
 
   cur_d_3 <- new_d(

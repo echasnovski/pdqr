@@ -1,9 +1,9 @@
 #' Summarize distribution with entropy
 #'
 #' `summ_entropy()` computes entropy of single distribution while
-#' `summ_entropy2()` - for a pair of distributions. For "discrete" pdqr-functions a
-#' classic formula `-sum(p * log(p))` (in nats) is used. In "continuous" case a
-#' differential entropy is computed.
+#' `summ_entropy2()` - for a pair of distributions. For "discrete"
+#' pdqr-functions a classic formula `-sum(p * log(p))` (in nats) is used. In
+#' "continuous" case a differential entropy is computed.
 #'
 #' @inheritParams summ_mean
 #' @param g A pdqr-function. Should be the same type as `f`.

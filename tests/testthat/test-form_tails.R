@@ -41,7 +41,7 @@ cur_con <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
 
 
 # form_tails --------------------------------------------------------------
-test_that("form_tails works with `method='trim'` and 'discrete' functions", {
+test_that("form_tails works with `method='trim'` and 'discrete' type", {
   # `direction = "both"`
   # This should remove first row (not leave it with value 0 at "prob" column)
   expect_ref_x_tbl(
@@ -84,7 +84,7 @@ test_that("form_tails works with `method='trim'` and 'discrete' functions", {
   )
 })
 
-test_that("form_tails works with `method='trim'` and 'continuous' functions", {
+test_that("form_tails works with `method='trim'` and 'continuous' type", {
   # `direction = "both"`
   expect_ref_x_tbl(
     form_tails(cur_con, 0.05, "trim", "both"),
@@ -116,7 +116,7 @@ test_that("form_tails works with `method='trim'` and 'continuous' functions", {
   )
 })
 
-test_that("form_tails works with `method='winsor'` and 'discrete' functions", {
+test_that("form_tails works with `method='winsor'` and 'discrete' type", {
   # `direction = "both"`
   # Here first row ISN'T removed (unlike with "trim") because 10% quantile is 1
   expect_ref_x_tbl(
@@ -151,7 +151,7 @@ test_that("form_tails works with `method='winsor'` and 'discrete' functions", {
   )
 })
 
-test_that("form_tails works with `method='winsor'` and 'continuous' functions", {
+test_that("form_tails works with `method='winsor'` and 'continuous' type", {
   # `direction = "both"`
   expect_ref_x_tbl(
     form_tails(cur_con, 0.1, "winsor", "both"),

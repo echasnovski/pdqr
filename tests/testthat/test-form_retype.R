@@ -4,19 +4,21 @@ set.seed(12321)
 
 
 # form_retype -------------------------------------------------------------
-test_that("form_retype converts to 'discrete' type with `method='piecelin'`", {
+test_that("form_retype converts to 'discrete' with `method='piecelin'`", {
   output <- form_retype(p_con, "discrete", method = "piecelin")
   expect_distr_fun(output, "p", "discrete")
 
-  # "continuous" function should have one row more in "x_tbl" than "discrete" function
+  # "continuous" function should have one row more in "x_tbl" than "discrete"
+  # function
   expect_equal(nrow(meta_x_tbl(p_con)) - 1, nrow(meta_x_tbl(output)))
 })
 
-test_that("form_retype converts to 'continuous' type with `method='piecelin'`", {
+test_that("form_retype converts to 'continuous' with `method='piecelin'`", {
   output <- form_retype(d_dis, "continuous", method = "piecelin")
   expect_distr_fun(output, "d", "continuous")
 
-  # "continuous" function should have one row more in "x_tbl" than "discrete" function
+  # "continuous" function should have one row more in "x_tbl" than "discrete"
+  # function
   expect_equal(nrow(meta_x_tbl(d_dis)), nrow(meta_x_tbl(output)) - 1)
 })
 
@@ -44,7 +46,7 @@ test_that("form_retype works with `method='dirac'`", {
   expect_equal_x_tbl(d_dis_dirac, d_dis)
 })
 
-test_that("form_retype by default accurately retypes 'continuous'->'discrete'->'continuous'", {
+test_that("form_retype retypes well 'continuous'->'discrete'->'continuous'", {
   skip_on_cran()
 
   error <- vapply(
@@ -62,7 +64,7 @@ test_that("form_retype by default accurately retypes 'continuous'->'discrete'->'
   expect_true(all(error < 1e-6))
 })
 
-test_that("form_retype by default accurately retypes 'discrete'->'continuous'->'discrete'", {
+test_that("form_retype retypes well 'discrete'->'continuous'->'discrete'", {
   skip_on_cran()
 
   test_grid <- seq(-4, 4, length.out = 1e5)

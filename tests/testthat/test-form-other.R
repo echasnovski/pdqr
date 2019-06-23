@@ -63,7 +63,7 @@ test_that("form_mix works when input is all 'continuous'", {
   )
 })
 
-test_that("form_mix works when input has both 'discrete' and 'continuous' functions", {
+test_that("form_mix works when input has both pdqr types", {
   h <- 1e-8
 
   expect_ref_x_tbl(

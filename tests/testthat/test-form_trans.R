@@ -35,7 +35,8 @@ test_that("form_trans works with `method = 'random'`", {
 
   norm_seq <- seq(-20, 20, by = 0.001)
   d_norm_ref <- new_d(
-    data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2)), "continuous"
+    data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2)),
+    type = "continuous"
   )
 
   output_norm <- form_trans(list(2, d_norm_input), `*`, method = "random")
@@ -128,13 +129,16 @@ test_that("form_trans produces correct 'pdqr' type", {
     meta_type(form_trans(list(1, p_dis), `+`, method = "random")), "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_dis, q_dis), `+`, method = "random")), "discrete"
+    meta_type(form_trans(list(p_dis, q_dis), `+`, method = "random")),
+    "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_con, q_dis), `+`, method = "random")), "continuous"
+    meta_type(form_trans(list(p_con, q_dis), `+`, method = "random")),
+    "continuous"
   )
   expect_equal(
-    meta_type(form_trans(list(d_dis, p_con), `+`, method = "random")), "continuous"
+    meta_type(form_trans(list(d_dis, p_con), `+`, method = "random")),
+    "continuous"
   )
   expect_equal(
     meta_type(form_trans(list(p_con, d_con), `+`, method = "random")),
@@ -142,10 +146,12 @@ test_that("form_trans produces correct 'pdqr' type", {
   )
 
   expect_equal(
-    meta_type(form_trans(list(1, p_dis), `+`, method = "bruteforce")), "discrete"
+    meta_type(form_trans(list(1, p_dis), `+`, method = "bruteforce")),
+    "discrete"
   )
   expect_equal(
-    meta_type(form_trans(list(p_dis, q_dis), `+`, method = "bruteforce")), "discrete"
+    meta_type(form_trans(list(p_dis, q_dis), `+`, method = "bruteforce")),
+    "discrete"
   )
   expect_equal(
     meta_type(form_trans(list(p_con, q_dis), `+`, method = "bruteforce")),
@@ -215,7 +221,8 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   # Supplying `x` or `type` doesn't affect the output
   expect_equal(
     form_trans(
-      list(p_con), sq, method = "random", args_new = list(x = 1, type = "discrete")
+      list(p_con), sq, method = "random",
+      args_new = list(x = 1, type = "discrete")
     ),
     form_trans(list(p_con), sq, method = "random")
   )
@@ -260,7 +267,9 @@ test_that("form_trans_self works",  {
   )
 
   # Default method should be "random"
-  cur_dis <- new_d(data.frame(x = c(-2, 0, 1), prob = c(0.1, 0.7, 0.2)), "discrete")
+  cur_dis <- new_d(
+    data.frame(x = c(-2, 0, 1), prob = c(0.1, 0.7, 0.2)), "discrete"
+  )
   output <- form_trans_self(cur_dis, `-`)
   output_x_tbl <- meta_x_tbl(output)
   expect_equal(output_x_tbl[["x"]], c(-1, 0, 2))

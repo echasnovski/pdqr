@@ -29,24 +29,25 @@
 #' accept that point as "in region".
 #'
 #' `region_prob()` computes total probability of region according to
-#' pdqr-function `f`. If `f` has "discrete" [type][meta_type()], output is computed
-#' as sum of probabilities for all "x" values from ["x_tbl"
+#' pdqr-function `f`. If `f` has "discrete" [type][meta_type()], output is
+#' computed as sum of probabilities for all "x" values from ["x_tbl"
 #' metadata][meta_x_tbl()] which lie inside a region (respecting `left_closed`
-#' and `right_closed` options while using `region_is_in()`). If `f` has "continuous"
-#' type, output is computed as integral of density over a region (`*_closed`
-#' options having any effect).
+#' and `right_closed` options while using `region_is_in()`). If `f` has
+#' "continuous" type, output is computed as integral of density over a region
+#' (`*_closed` options having any effect).
 #'
 #' `region_height()` computes "height" of a region (with respect to `f`):
 #' minimum value of corresponding to `f` d-function can return based on relevant
 #' points inside a region. If `f` has "discrete" type, those relevant points are
 #' computed as "x" values from "x_tbl" metadata which lie inside a region (if
-#' there are no such points, output is 0). If `f` has "continuous" type, the whole
-#' intervals are used as relevant points. The notion of "height" comes from
-#' [summ_hdr()] function: if `region` is `summ_hdr(f, level)` for some `level`,
-#' then `region_height(region, f)` is what is called in `summ_hdr()`'s docs as
-#' "target height" of HDR. That is, a maximum value of d-function for which a
-#' set consisting from points at which d-function has values not less than
-#' target height and total probability of the set being not less than `level`.
+#' there are no such points, output is 0). If `f` has "continuous" type, the
+#' whole intervals are used as relevant points. The notion of "height" comes
+#' from [summ_hdr()] function: if `region` is `summ_hdr(f, level)` for some
+#' `level`, then `region_height(region, f)` is what is called in `summ_hdr()`'s
+#' docs as "target height" of HDR. That is, a maximum value of d-function for
+#' which a set consisting from points at which d-function has values not less
+#' than target height and total probability of the set being not less than
+#' `level`.
 #'
 #' `region_width()` computes total width of a region, i.e. sum of differences
 #' between "right" and "left" columns.

@@ -185,7 +185,9 @@ test_that("is_x_tbl works with 'discrete' type", {
   expect_false(is_x_tbl(data.frame(x = 1, prob = 0), type = "discrete"))
 
   # Extra columns are allowed
-  expect_true(is_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "discrete"))
+  expect_true(
+    is_x_tbl(data.frame(x = 1, prob = 1, extra = "a"), type = "discrete")
+  )
   # Different column order is allowed
   expect_true(
     is_x_tbl(data.frame(prob = c(0.1, 0.9), x = 1:2), type = "discrete")
@@ -211,7 +213,9 @@ test_that("is_x_tbl works with 'continuous' type", {
 
   # Column "y"
   expect_false(is_x_tbl(data.frame(x = 1:2), type = "continuous"), "y")
-  expect_false(is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "continuous"))
+  expect_false(
+    is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "continuous")
+  )
   expect_false(is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "continuous"))
   expect_false(is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "continuous"))
 

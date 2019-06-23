@@ -10,28 +10,28 @@
 #'   equal weights). Should be non-negative numbers with positive sum.
 #'
 #' @details **Type of output mixture** is determined by the following algorithm:
-#' - If `f_list` consists only from pdqr-functions of "discrete" type, then output
-#' will have "discrete" type.
-#' - If `f_list` has at least one pdqr-function of type "continuous", then output
-#' will have "continuous" type. In this case all "discrete" pdqr-functions in `f_list` are
-#' approximated with corresponding dirac-like "continuous" functions (with
-#' [form_retype(*, method = "dirac")][form_retype()]). **Note** that this
-#' approximation has consequences during computation of comparisons. For
-#' example, if original "discrete" function `f` is for distribution with one element
-#' `x`, then probability of `f >= x` being true is 1. After retyping to
-#' dirac-like function, this probability will be 0.5, because of symmetrical
-#' dirac-like approximation. Using a little nudge to `x` of `1e-7` magnitude in
-#' the correct direction (`f >= x - 1e-7` in this case) will have expected
-#' output.
+#' - If `f_list` consists only from pdqr-functions of "discrete" type, then
+#' output will have "discrete" type.
+#' - If `f_list` has at least one pdqr-function of type "continuous", then
+#' output will have "continuous" type. In this case all "discrete"
+#' pdqr-functions in `f_list` are approximated with corresponding dirac-like
+#' "continuous" functions (with [form_retype(*, method =
+#' "dirac")][form_retype()]). **Note** that this approximation has consequences
+#' during computation of comparisons. For example, if original "discrete"
+#' function `f` is for distribution with one element `x`, then probability of `f
+#' >= x` being true is 1. After retyping to dirac-like function, this
+#' probability will be 0.5, because of symmetrical dirac-like approximation.
+#' Using a little nudge to `x` of `1e-7` magnitude in the correct direction (`f
+#' >= x - 1e-7` in this case) will have expected output.
 #'
 #' **Class of output mixture** is determined by the class of the first element
 #' of `f_list`. To change output class, use one of `as_*()` functions to change
 #' class of first element in `f_list` or class of output.
 #'
-#' **Note** that if output "continuous" pdqr-function for mixture distribution (in
-#' theory) should have discontinuous density, it is approximated continuously:
-#' discontinuities are represented as intervals in ["x_tbl"][meta_x_tbl()] with
-#' extreme slopes (see Examples).
+#' **Note** that if output "continuous" pdqr-function for mixture distribution
+#' (in theory) should have discontinuous density, it is approximated
+#' continuously: discontinuities are represented as intervals in
+#' ["x_tbl"][meta_x_tbl()] with extreme slopes (see Examples).
 #'
 #' @return A pdqr-function for mixture distribution of certain
 #'   [type][meta_type()] and [class][meta_class()] (see Details).
@@ -128,8 +128,8 @@ impute_weights <- function(weights, n) {
 #' density function.
 #'
 #' At first step, sample of size `n_sample` is generated from distribution
-#' represented by `f`. Then, based on the sample, "continuous" d-function is created
-#' with `new_d()` and arguments from `args_new` list. To account for
+#' represented by `f`. Then, based on the sample, "continuous" d-function is
+#' created with `new_d()` and arguments from `args_new` list. To account for
 #' [density()][stats::density()]'s default behavior of "stretching range" by
 #' adding small tails, [support][meta_support()] of d-function is forced to be
 #' equal to `f`'s support (this is done with [form_resupport()] and method
@@ -149,13 +149,19 @@ impute_weights <- function(weights, n) {
 #' set.seed(101)
 #'
 #' # Type "discrete"
-#' bad_dis <- new_d(data.frame(x = sort(runif(100)), prob = runif(100)), "discrete")
+#' bad_dis <- new_d(
+#'   data.frame(x = sort(runif(100)), prob = runif(100)),
+#'   type = "discrete"
+#' )
 #' smoothed_dis <- form_smooth(bad_dis)
 #' plot(bad_dis)
 #' lines(smoothed_dis, col = "blue")
 #'
 #' # Type "continuous"
-#' bad_con <- new_d(data.frame(x = sort(runif(100)), y = runif(100)), "continuous")
+#' bad_con <- new_d(
+#'   data.frame(x = sort(runif(100)), y = runif(100)),
+#'   type = "continuous"
+#' )
 #' smoothed_con <- form_smooth(bad_con)
 #' plot(bad_con)
 #' lines(smoothed_con, col = "blue")
@@ -190,10 +196,10 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
     con_d, support = meta_support(f), method = "reflect"
   )
 
-  # Output probabilities (or densities) are proportional to smoothed "continuous"
-  # density. The logic behind this is that "smoothing data" basically means
-  # reducing the amount of "jumps" between close data points. In other words,
-  # the closer the points the smaller should be difference in
+  # Output probabilities (or densities) are proportional to smoothed
+  # "continuous" density. The logic behind this is that "smoothing data"
+  # basically means reducing the amount of "jumps" between close data points. In
+  # other words, the closer the points the smaller should be difference in
   # probabilities/densities. This also results into reducing variance of
   # probabilities if "x"s are relatively dense.
   f_x_tbl[[get_x_tbl_sec_col(f_x_tbl)]] <- con_d(f_x_tbl[["x"]])
@@ -223,11 +229,11 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #' @details General idea is to create a sample from target distribution by
 #' generating `n_sample` samples of size `sample_size` and compute for each of
 #' them its estimate by calling input `estimate` function. If created sample is
-#' logical, **boolean** pdqr-function (type "discrete" with elements being exactly 0
-#' and 1) is created with probability of being true estimated as share of `TRUE`
-#' values (after removing possible `NA`). If sample is numeric, it is used as
-#' input to `new_*()` of appropriate class with `type` equal to type of `f` (if
-#' not forced otherwise in `args_new`).
+#' logical, **boolean** pdqr-function (type "discrete" with elements being
+#' exactly 0 and 1) is created with probability of being true estimated as share
+#' of `TRUE` values (after removing possible `NA`). If sample is numeric, it is
+#' used as input to `new_*()` of appropriate class with `type` equal to type of
+#' `f` (if not forced otherwise in `args_new`).
 #'
 #' **Notes**:
 #' - This function may be very time consuming for large values of `n_sample` and

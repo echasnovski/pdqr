@@ -30,7 +30,9 @@ test_that("summ_distance works", {
   # Method "totvar"
   expect_equal(summ_distance(p_f, p_g, method = "totvar"), 0.5)
   expect_equal(
-    summ_distance(new_d(1:2, "discrete"), new_d(1:2, "continuous"), method = "totvar"),
+    summ_distance(
+      new_d(1:2, "discrete"), new_d(1:2, "continuous"), method = "totvar"
+    ),
     1
   )
 
@@ -132,7 +134,8 @@ test_that("distance_ks works with mixed-type functions", {
 
   expect_equal(
     distance_ks(
-      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"), new_p(2, "discrete")
+      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"),
+      new_p(2, "discrete")
     ),
     1
   )
@@ -158,7 +161,9 @@ test_that("distance_ks works with two 'continuous' functions", {
   expect_equal(distance_ks(p_g, p_f), abs(p_f(2/3) - p_g(2/3)))
 
   # Multiple density intersections in real-world example
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
+  p_f <- new_p(
+    data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous"
+  )
   p_g <- new_p(
     data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "continuous"
   )
@@ -208,9 +213,9 @@ test_that("distance_ks works with non-overlapping supports", {
 
 test_that("distance_ks works with dirac-like functions", {
   # K-S distance when "dirac" function is involved should be essentially (but
-  # not exactly) the same as if it is replaced with corresponding "discrete" (except
-  # the case when the other one is "discrete" with one of points lying inside "dirac"
-  # support)
+  # not exactly) the same as if it is replaced with corresponding "discrete"
+  # (except the case when the other one is "discrete" with one of points lying
+  # inside "dirac" support)
   d_dirac <- new_d(2, "continuous")
   d_dirac_dis <- new_d(2, "discrete")
 
@@ -268,7 +273,9 @@ test_that("distance_totvar works with mixed-type functions", {
 
 test_that("distance_totvar works with two 'continuous' functions", {
   # Multiple density intersections in real-world example
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
+  p_f <- new_p(
+    data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous"
+  )
   p_g <- new_p(
     data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "continuous"
   )
@@ -321,8 +328,8 @@ test_that("distance_totvar works with non-overlapping supports", {
 test_that("distance_totvar works with dirac-like functions", {
   # Total variation distance when "dirac" function is involved should be
   # essentially (but not exactly) the same as if it is replaced with
-  # corresponding "discrete" (except the case when the other one is "discrete" with one of
-  # points lying inside "dirac" support)
+  # corresponding "discrete" (except the case when the other one is "discrete"
+  # with one of points lying inside "dirac" support)
   d_dirac <- new_d(2, "continuous")
   d_dirac_dis <- new_d(2, "discrete")
 
@@ -397,7 +404,8 @@ test_that("distance_wass works with mixed-type functions", {
 
   expect_equal(
     distance_wass(
-      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"), new_p(2, "discrete")
+      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"),
+      new_p(2, "discrete")
     ),
     1*1/2
   )
@@ -419,7 +427,9 @@ test_that("distance_wass works with mixed-type functions", {
 })
 
 test_that("distance_wass works with two 'continuous' functions", {
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
+  p_f <- new_p(
+    data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous"
+  )
   p_g <- p_f + 0.5
   expect_equal(distance_wass(p_f, p_g), 0.5, tolerance = 5e-7)
   # Checking twice to test independence of argument order
@@ -496,9 +506,9 @@ test_that("distance_wass works for very distant distributions", {
 
 test_that("distance_wass works with dirac-like functions", {
   # Wasserstein distance when "dirac" function is involved should be essentially
-  # (but not exactly) the same as if it is replaced with corresponding "discrete"
-  # (except the case when the other one is "discrete" with one of points lying inside
-  # "dirac" support)
+  # (but not exactly) the same as if it is replaced with corresponding
+  # "discrete" (except the case when the other one is "discrete" with one of
+  # points lying inside "dirac" support)
   d_dirac <- new_d(2, "continuous")
   d_dirac_dis <- new_d(2, "discrete")
 
@@ -602,10 +612,10 @@ test_that("distance_cramer works for very distant distributions", {
 })
 
 test_that("distance_cramer works with dirac-like functions", {
-  # Cramer distance when "dirac" function is involved should be essentially
-  # (but not exactly) the same as if it is replaced with corresponding "discrete"
-  # (except the case when the other one is "discrete" with one of points lying inside
-  # "dirac" support)
+  # Cramer distance when "dirac" function is involved should be essentially (but
+  # not exactly) the same as if it is replaced with corresponding "discrete"
+  # (except the case when the other one is "discrete" with one of points lying
+  # inside "dirac" support)
   d_dirac <- new_d(2, "continuous")
   d_dirac_dis <- new_d(2, "discrete")
 
@@ -660,9 +670,9 @@ test_that("distance_align works for very distant distributions", {
 
 test_that("distance_align works with dirac-like functions", {
   # "Align" distance when "dirac" function is involved should be essentially
-  # (but not exactly) the same as if it is replaced with corresponding "discrete"
-  # (except the case when the other one is "discrete" with one of points lying inside
-  # "dirac" support)
+  # (but not exactly) the same as if it is replaced with corresponding
+  # "discrete" (except the case when the other one is "discrete" with one of
+  # points lying inside "dirac" support)
   d_dirac <- new_d(1, "continuous")
   expect_equal(
     distance_align(d_con, d_dirac), distance_align(d_con, new_d(1, "discrete"))

@@ -44,7 +44,7 @@ test_that("form_resupport works with `method='reflect'` and 'discrete' type", {
   )
 })
 
-test_that("form_resupport works with `method='reflect'` and 'continuous' type",  {
+test_that("form_resupport works with `method='reflect'`, 'continuous' type",  {
   p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
   p_f_x_tbl <- meta_x_tbl(p_f)
 
@@ -137,7 +137,7 @@ test_that("form_resupport works with `method = 'trim'` and 'continuous' type", {
   expect_error(form_resupport(d_f, c(-1, 0.5), "trim"), "not.*positive.*prob")
 })
 
-test_that("form_resupport works with `method = 'winsor'` and 'discrete' type",  {
+test_that("form_resupport works with `method='winsor'` and 'discrete' type",  {
   d_f <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "discrete")
 
   # Collapsing into single element
@@ -173,7 +173,7 @@ test_that("form_resupport works with `method = 'winsor'` and 'discrete' type",  
   )
 })
 
-test_that("form_resupport works with `method = 'winsor'` and 'continuous' type",  {
+test_that("form_resupport works with `method='winsor'`, 'continuous' type",  {
   d_f <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
 
   # Collapsing into single element
@@ -219,7 +219,9 @@ test_that("form_resupport works with `method = 'winsor'` and 'continuous' type",
 })
 
 test_that("form_resupport works with `method = 'linear'` and 'discrete' type", {
-  p_f <- new_p(data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "discrete")
+  p_f <- new_p(
+    data.frame(x = c(-1, -0.25, 2), prob = c(0, 0.1, 0.9)), "discrete"
+  )
 
   expect_ref_x_tbl(
     form_resupport(p_f, c(-0.5, 3), "linear"),
@@ -237,7 +239,7 @@ test_that("form_resupport works with `method = 'linear'` and 'discrete' type", {
   )
 })
 
-test_that("form_resupport works with `method = 'linear'` and 'continuous' type", {
+test_that("form_resupport works with `method='linear'` and 'continuous' type", {
   x_tbl <- data.frame(
     x = c(0, 1,   2, 5),
     y = c(0, 0, 0.5, 0)

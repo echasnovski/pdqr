@@ -135,11 +135,17 @@ test_that("union_x works", {
 # intersection_support ----------------------------------------------------
 test_that("intersection_support works", {
   cur_d <- new_d(c(1, 10), "discrete")
-  expect_equal(intersection_support(cur_d, new_d(c(6, 11), "discrete")), c(6, 10))
-  expect_equal(intersection_support(cur_d, new_d(c(-1, 5), "discrete")), c(1, 5))
+  expect_equal(
+    intersection_support(cur_d, new_d(c(6, 11), "discrete")), c(6, 10)
+  )
+  expect_equal(
+    intersection_support(cur_d, new_d(c(-1, 5), "discrete")), c(1, 5)
+  )
   expect_equal(intersection_support(cur_d, new_d(c(2, 7), "discrete")), c(2, 7))
   expect_equal(intersection_support(cur_d, new_d(c(1, 9), "discrete")), c(1, 9))
-  expect_equal(intersection_support(cur_d, new_d(c(11, 12), "discrete")), numeric(0))
+  expect_equal(
+    intersection_support(cur_d, new_d(c(11, 12), "discrete")), numeric(0)
+  )
   expect_equal(
     intersection_support(cur_d, new_d(c(-12, -11), "discrete")), numeric(0)
   )

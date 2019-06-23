@@ -125,11 +125,11 @@ separation_ks_two_dis <- function(p_f, p_g) {
 }
 
 separation_ks_mixed <- function(p_dis, p_con) {
-  # Supremum of |F - G| can be found only by inspecting "x" elements of "discrete"
-  # pdqr-function. However, it can be also located on one of "x" elements of
-  # "continuous" pdqr-function, and this fact should be accounted for, because of
-  # obligation to return 'the smallest "x" value on which supremum of |F-G| is
-  # located'.
+  # Supremum of |F - G| can be found only by inspecting "x" elements of
+  # "discrete" pdqr-function. However, it can be also located on one of "x"
+  # elements of "continuous" pdqr-function, and this fact should be accounted
+  # for, because of obligation to return 'the smallest "x" value on which
+  # supremum of |F-G| is located'.
   dis_test <- meta_x_tbl(p_dis)[["x"]]
 
   p_con_cumprob <- p_con(dis_test)

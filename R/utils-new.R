@@ -8,8 +8,8 @@
 #'
 #' @param x Numeric vector or data frame with appropriate columns (see "Data
 #'   frame input" section).
-#' @param type [Type][meta_type()] of pdqr-function. Should be one of "discrete" or
-#'   "continuous".
+#' @param type [Type][meta_type()] of pdqr-function. Should be one of "discrete"
+#'   or "continuous".
 #' @param ... Extra arguments for [density()][stats::density()].
 #'
 #' @details Data frame input `x` is treated as having enough information for
@@ -18,9 +18,9 @@
 #'
 #' Numeric input is transformed into data frame which is then used as "x_tbl"
 #' metadata (for more details see "Numeric input" section):
-#' - If `type` is `"discrete"` then `x` is viewed as sample from distribution that
-#' can produce only values from `x`. Input is tabulated and normalized to form
-#' "x_tbl" metadata.
+#' - If `type` is `"discrete"` then `x` is viewed as sample from distribution
+#' that can produce only values from `x`. Input is tabulated and normalized to
+#' form "x_tbl" metadata.
 #' - If `type` is `"continuous"` then:
 #'     - If `x` has 1 element, output distribution represents a **dirac-like**
 #'     distribution which is an approximation to singular dirac distribution.
@@ -47,10 +47,10 @@
 #'
 #' **For "continuous" type** output data frame has columns "x", "y", "cumprob".
 #' Choice of algorithm depends on the number of `x` elements:
-#' - If `x` has 1 element, an "x_tbl" metadata describes **dirac-like** "continuous"
-#' pdqr-function. It is implemented as triangular peak with center at `x`'s
-#' value and width of `2e-8` (see Examples). This is an approximation of
-#' singular dirac distribution. Data frame has columns "x" with value
+#' - If `x` has 1 element, an "x_tbl" metadata describes **dirac-like**
+#' "continuous" pdqr-function. It is implemented as triangular peak with center
+#' at `x`'s value and width of `2e-8` (see Examples). This is an approximation
+#' of singular dirac distribution. Data frame has columns "x" with value
 #' `c(x-1e-8, x, x+1e-8)`, "y" with value `c(0, 1e8, 0)` normalized to have
 #' total integral of "x"-"y" points of 1, "cumprob" `c(0, 0.5, 1)`.
 #' - If `x` has more than 1 element, it serves as input to

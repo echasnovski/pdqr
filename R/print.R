@@ -17,12 +17,12 @@
 #' - [Type][meta_type()] of function in the form "with * number of values" where
 #' "\*" is "finite" for "discrete" type and "infinite" for "continuous".
 #' - [Support][meta_support()] of function.
-#' - Number of elements in distribution for "discrete" type or number of intervals of
-#' piecewise-linear density for "continuous" type.
-#' - If pdqr-function has "discrete" type and exactly two possible values 0 and 1, it
-#' is treated as "boolean" pdqr-function and probability of 1 is shown. This is
-#' done to simplify interactive work with output of comparing functions like
-#' `>=`, etc. (see [description of methods for S3 group generic
+#' - Number of elements in distribution for "discrete" type or number of
+#' intervals of piecewise-linear density for "continuous" type.
+#' - If pdqr-function has "discrete" type and exactly two possible values 0 and
+#' 1, it is treated as "boolean" pdqr-function and probability of 1 is shown.
+#' This is done to simplify interactive work with output of comparing functions
+#' like `>=`, etc. (see [description of methods for S3 group generic
 #' functions][methods-group-generic]). To extract probabilities from "boolean"
 #' pdqr-function, use [summ_prob_true()] and [summ_prob_false()].
 #'

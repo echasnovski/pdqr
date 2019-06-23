@@ -29,8 +29,8 @@
 #' output points of ROC curve are ordered from left to right) covering range of
 #' all meaningful thresholds. This range is computed as slightly extended range
 #' of `f` and `g` supports (extension is needed to achieve extreme values of
-#' "fpr" in presence of "discrete" type). Then FPR and TPR are computed for every
-#' threshold.
+#' "fpr" in presence of "discrete" type). Then FPR and TPR are computed for
+#' every threshold.
 #'
 #' `summ_rocauc()` computes a common general (without any particular threshold
 #' in mind) diagnostic value of classifier, **area under ROC curve** ("ROC AUC"
@@ -40,8 +40,8 @@
 #' "pessimistic" doesn't add correction, "expected" adds half of probability of
 #' `f` and `g` being equal (which is default), "optimistic" adds full
 #' probability. **Note** that this means that correction might be done only if
-#' both input pdqr-functions have "discrete" type. See [pdqr methods for "Ops" group
-#' generic family][methods-group-generic] for more details on comparing
+#' both input pdqr-functions have "discrete" type. See [pdqr methods for "Ops"
+#' group generic family][methods-group-generic] for more details on comparing
 #' functions.
 #'
 #' `roc_plot()` and `roc_lines()` perform plotting (with
