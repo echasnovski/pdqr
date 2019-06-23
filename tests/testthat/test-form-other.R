@@ -7,8 +7,8 @@ set.seed(9999)
 cur_f_list <- list(
   new_d(data.frame(x = 0:1, prob = c(0.4, 0.6)), "fin"),
   new_q(data.frame(x = 1:2, prob = c(0.5, 0.5)), "fin"),
-  new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
-  new_p(data.frame(x = c(0.5, 0.75), y = c(4, 4)), "infin")
+  new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
+  new_p(data.frame(x = c(0.5, 0.75), y = c(4, 4)), "continuous")
 )
 
 bad_x_tbl_big <- data.frame(
@@ -38,7 +38,7 @@ test_that("form_mix works when input is all 'fin'", {
   )
 })
 
-test_that("form_mix works when input is all 'infin'", {
+test_that("form_mix works when input is all 'continuous'", {
   h <- 1e-8
 
   expect_ref_x_tbl(
@@ -63,7 +63,7 @@ test_that("form_mix works when input is all 'infin'", {
   )
 })
 
-test_that("form_mix works when input has both 'fin' and 'infin' functions", {
+test_that("form_mix works when input has both 'fin' and 'continuous' functions", {
   h <- 1e-8
 
   expect_ref_x_tbl(
@@ -145,13 +145,13 @@ test_that("form_smooth works with 'fin' functions", {
   expect_equal(form_smooth(d_one_point), d_one_point)
 })
 
-test_that("form_smooth works with 'infin' functions", {
-  bad_infin <- new_d(bad_x_tbl_big[, c("x", "y")], "infin")
+test_that("form_smooth works with 'continuous' functions", {
+  bad_con <- new_d(bad_x_tbl_big[, c("x", "y")], "continuous")
 
-  output <- form_smooth(bad_infin)
+  output <- form_smooth(bad_con)
   expect_is(output, "d")
-  expect_equal(meta_x_tbl(output)[["x"]], meta_x_tbl(bad_infin)[["x"]])
-  expect_true(median_abs_deriv(output) < median_abs_deriv(bad_infin))
+  expect_equal(meta_x_tbl(output)[["x"]], meta_x_tbl(bad_con)[["x"]])
+  expect_true(median_abs_deriv(output) < median_abs_deriv(bad_con))
 })
 
 test_that("form_smooth uses `n_sample` argument", {
@@ -166,18 +166,18 @@ test_that("form_smooth uses `n_sample` argument", {
 })
 
 test_that("form_smooth uses `args_new` as arguments for `new_*()`", {
-  bad_infin <- new_d(bad_x_tbl_big[, c("x", "y")], "infin")
+  bad_con <- new_d(bad_x_tbl_big[, c("x", "y")], "continuous")
 
   # Using more wide bandwidth results into smoother output
   set.seed(333)
-  output_1 <- form_smooth(bad_infin)
-  output_2 <- form_smooth(bad_infin, args_new = list(adjust = 10))
+  output_1 <- form_smooth(bad_con)
+  output_2 <- form_smooth(bad_con, args_new = list(adjust = 10))
 
   expect_true(median_abs_deriv(output_2) < median_abs_deriv(output_1))
 
   # Supplied `x` and `type` in `args_new` is ignored
   set.seed(333)
-  output_3 <- form_smooth(bad_infin, args_new = list(x = 1:10, type = "fin"))
+  output_3 <- form_smooth(bad_con, args_new = list(x = 1:10, type = "fin"))
 
   expect_equal_x_tbl(output_1, output_3)
 })
@@ -211,22 +211,22 @@ test_that("form_estimate works", {
   expect_true(abs(summ_mean(fin_mean_est) - mean_cur_d) <= 2e-2)
   expect_true(abs(summ_sd(fin_mean_est) - sd_cur_d / 4) <= 1e-3)
 
-  # Type "infin"
-  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  # Type "continuous"
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
   mean_d_unif <- 0.5
   sd_d_unif <- 1 / sqrt(12)
 
-  infin_mean_est <- form_estimate(d_unif, mean, 16, n_sample = 1000)
-  expect_is(infin_mean_est, "d")
-  expect_true(meta_type(infin_mean_est) == "infin")
+  con_mean_est <- form_estimate(d_unif, mean, 16, n_sample = 1000)
+  expect_is(con_mean_est, "d")
+  expect_true(meta_type(con_mean_est) == "continuous")
 
     # Testing Central limit theorem
-  expect_true(abs(summ_mean(infin_mean_est) - mean_d_unif) <= 1e-2)
-  expect_true(abs(summ_sd(infin_mean_est) - sd_d_unif / 4) <= 4e-3)
+  expect_true(abs(summ_mean(con_mean_est) - mean_d_unif) <= 1e-2)
+  expect_true(abs(summ_sd(con_mean_est) - sd_d_unif / 4) <= 4e-3)
 })
 
 test_that("form_estimate works with logical output of `estimate`", {
-  d_unif <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)/2), "infin")
+  d_unif <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)/2), "continuous")
 
   all_positive <- function(x) {all(x > 0)}
   estim <- form_estimate(d_unif, all_positive, sample_size = 3, n_sample = 1000)
@@ -266,13 +266,13 @@ test_that("form_estimate uses `n_sample` argument", {
 })
 
 test_that("form_estimate uses `args_new` as arguments to `new_*()`", {
-  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
 
-  infin_mean_est <- form_estimate(
+  con_mean_est <- form_estimate(
     d_unif, mean, 16, n_sample = 100, args_new = list(n = 100)
   )
 
-  expect_true(nrow(meta_x_tbl(infin_mean_est)) == 100)
+  expect_true(nrow(meta_x_tbl(con_mean_est)) == 100)
 })
 
 test_that("form_estimate allows `type` in `args_new`", {
@@ -280,9 +280,9 @@ test_that("form_estimate allows `type` in `args_new`", {
 
   mean_est <- form_estimate(
     cur_d, estimate = mean, sample_size = 10,
-    n_sample = 10, args_new = list(type = "infin")
+    n_sample = 10, args_new = list(type = "continuous")
   )
-  expect_equal(meta_type(mean_est), "infin")
+  expect_equal(meta_type(mean_est), "continuous")
 })
 
 test_that("form_estimate checks that `estimate` returns single num or lgl", {

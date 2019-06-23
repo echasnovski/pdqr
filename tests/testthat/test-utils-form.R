@@ -15,9 +15,9 @@ test_that("new_pdqr_by_class works",  {
 # new_pdqr_by_ref ---------------------------------------------------------
 test_that("new_pdqr_by_ref works", {
   expect_equal(new_pdqr_by_ref(p_fin), new_p)
-  expect_equal(new_pdqr_by_ref(d_infin), new_d)
+  expect_equal(new_pdqr_by_ref(d_con), new_d)
   expect_equal(new_pdqr_by_ref(q_fin), new_q)
-  expect_equal(new_pdqr_by_ref(r_infin), new_r)
+  expect_equal(new_pdqr_by_ref(r_con), new_r)
 
   expect_error(new_pdqr_by_ref(function(x) {x}), "class")
 })
@@ -37,9 +37,9 @@ test_that("as_pdqr_by_class works",  {
 # as_pdqr_by_ref ----------------------------------------------------------
 test_that("as_pdqr_by_ref works", {
   expect_equal(as_pdqr_by_ref(p_fin), as_p)
-  expect_equal(as_pdqr_by_ref(d_infin), as_d)
+  expect_equal(as_pdqr_by_ref(d_con), as_d)
   expect_equal(as_pdqr_by_ref(q_fin), as_q)
-  expect_equal(as_pdqr_by_ref(r_infin), as_r)
+  expect_equal(as_pdqr_by_ref(r_con), as_r)
 
   expect_error(as_pdqr_by_ref(function(x) {x}), "class")
 })
@@ -60,7 +60,7 @@ test_that("boolean_pdqr works", {
 # assert_f_list -----------------------------------------------------------
 test_that("assert_f_list works",  {
   expect_silent(assert_f_list(list(d_fin)))
-  expect_silent(assert_f_list(list(1, p_infin), allow_numbers = TRUE))
+  expect_silent(assert_f_list(list(1, p_con), allow_numbers = TRUE))
 
   expect_error(assert_f_list(list()), "empty")
 
@@ -90,8 +90,8 @@ test_that("compute_f_list_meta works",  {
     list(type = "fin", class = "p")
   )
   expect_equal(
-    compute_f_list_meta(list(p_fin, p_fin, d_infin)),
-    list(type = "infin", class = "p")
+    compute_f_list_meta(list(p_fin, p_fin, d_con)),
+    list(type = "continuous", class = "p")
   )
 
   # Class is based on the first pdqr-function in the list
@@ -99,20 +99,20 @@ test_that("compute_f_list_meta works",  {
     compute_f_list_meta(list(p_fin, 1)), list(type = "fin", class = "p")
   )
   expect_equal(
-    compute_f_list_meta(list(1, d_infin)), list(type = "infin", class = "d")
+    compute_f_list_meta(list(1, d_con)), list(type = "continuous", class = "d")
   )
   expect_equal(
-    compute_f_list_meta(list(q_infin, d_infin)),
-    list(type = "infin", class = "q")
+    compute_f_list_meta(list(q_con, d_con)),
+    list(type = "continuous", class = "q")
   )
 })
 
 
 # intersection_x ----------------------------------------------------------
 test_that("intersection_x works", {
-  d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "infin")
+  d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "continuous")
   d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "fin")
-  d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "infin")
+  d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "continuous")
 
   expect_equal(intersection_x(d_1, d_2), c(1, 2, 3, 4))
   expect_equal(intersection_x(d_1, d_3), numeric(0))
@@ -122,9 +122,9 @@ test_that("intersection_x works", {
 
 # union_x -----------------------------------------------------------------
 test_that("union_x works", {
-  d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "infin")
+  d_1 <- new_d(data.frame(x = c(1, 3, 4), y = c(1, 1, 1)), "continuous")
   d_2 <- new_d(data.frame(x = c(-1, 1, 2, 4, 5), prob = 1:5), "fin")
-  d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "infin")
+  d_3 <- new_d(data.frame(x = c(5, 6), y = c(1, 1)), "continuous")
 
   expect_equal(union_x(d_1, d_2), c(-1, 1, 2, 3, 4, 5))
   expect_equal(union_x(d_1, d_3), c(1, 3, 4, 5, 6))

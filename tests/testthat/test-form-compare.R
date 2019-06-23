@@ -7,17 +7,17 @@ set.seed(8888)
 f_fin_1 <- new_d(data.frame(x = 0:2, prob = c(0.2, 0.3, 0.5)), "fin")
 f_fin_2 <- new_d(data.frame(x = 1:3, prob = c(0.3, 0.2, 0.5)), "fin")
 f_fin_3 <- new_d(data.frame(x = 100:101, prob = c(0.5, 0.5)), "fin")
-f_infin_1 <- new_d(data.frame(x = 0:2, y = c(0, 2/3, 2/3)), "infin")
-f_infin_2 <- new_d(data.frame(x = 0:2 + 0.5, y = c(0, 1, 0)), "infin")
-f_infin_3 <- new_d(data.frame(x = 100:101, y = c(1, 1)), "infin")
+f_con_1 <- new_d(data.frame(x = 0:2, y = c(0, 2/3, 2/3)), "continuous")
+f_con_2 <- new_d(data.frame(x = 0:2 + 0.5, y = c(0, 1, 0)), "continuous")
+f_con_3 <- new_d(data.frame(x = 100:101, y = c(1, 1)), "continuous")
 
-f_fin_1_dirac <- form_retype(f_fin_1, "infin", method = "dirac")
-f_fin_2_dirac <- form_retype(f_fin_2, "infin", method = "dirac")
+f_fin_1_dirac <- form_retype(f_fin_1, "continuous", method = "dirac")
+f_fin_2_dirac <- form_retype(f_fin_2, "continuous", method = "dirac")
 
 # Case of symmetrical dirac-like entry and asymmetrical one after winsorizing
-d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
 dirac_winsor <- form_resupport(d_unif, c(0, 0.5), method = "winsor")
-dirac_single <- new_d(0.5, "infin")
+dirac_single <- new_d(0.5, "continuous")
 
 # Case of "long" "x"s
 dirac_single_fin <- form_retype(dirac_single, "fin")
@@ -46,45 +46,45 @@ expect_equal_probs <- function(f_1, f_2, form_f, sign_f, thres = 1e-2) {
 
 # form_geq ----------------------------------------------------------------
 test_that("form_geq works", {
-  output <- form_geq(f_infin_1, f_fin_2)
-  expect_distr_fun(output, meta_class(f_infin_1), "fin")
+  output <- form_geq(f_con_1, f_fin_2)
+  expect_distr_fun(output, meta_class(f_con_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
   expect_equal(form_geq(dirac_single_fin, dirac_single_fin)(1), 0.75)
 
-  # Inequality with "infin" self returns 0.5
-  expect_equal(form_geq(f_infin_1, f_infin_1)(1), 0.5)
+  # Inequality with "continuous" self returns 0.5
+  expect_equal(form_geq(f_con_1, f_con_1)(1), 0.5)
 })
 
 test_that("form_geq agrees with simulation", {
   skip_on_cran()
 
   expect_equal_probs(f_fin_1, f_fin_2, form_geq, `>=`)
-  expect_equal_probs(f_fin_1, f_infin_2, form_geq, `>=`)
-  expect_equal_probs(f_infin_1, f_fin_2, form_geq, `>=`)
-  expect_equal_probs(f_infin_1, f_infin_2, form_geq, `>=`)
+  expect_equal_probs(f_fin_1, f_con_2, form_geq, `>=`)
+  expect_equal_probs(f_con_1, f_fin_2, form_geq, `>=`)
+  expect_equal_probs(f_con_1, f_con_2, form_geq, `>=`)
 })
 
 test_that("form_geq handles cases of separated supports", {
   # Clear separation
   expect_equal(form_geq(f_fin_1, f_fin_3)(1), 0)
   expect_equal(form_geq(f_fin_3, f_fin_1)(1), 1)
-  expect_equal(form_geq(f_infin_1, f_infin_3)(1), 0)
-  expect_equal(form_geq(f_infin_3, f_infin_1)(1), 1)
+  expect_equal(form_geq(f_con_1, f_con_3)(1), 0)
+  expect_equal(form_geq(f_con_3, f_con_1)(1), 1)
 
   # "Touching" supports
   expect_equal(form_geq(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 0.25)
 })
 
-test_that("form_geq works with dirac-like 'infin' functions", {
+test_that("form_geq works with dirac-like 'continuous' functions", {
   expect_equal(
-    form_geq(f_fin_1_dirac, f_infin_2)(1),
-    form_geq(f_fin_1, f_infin_2)(1)
+    form_geq(f_fin_1_dirac, f_con_2)(1),
+    form_geq(f_fin_1, f_con_2)(1)
   )
   expect_equal(
-    form_geq(f_infin_1, f_fin_2_dirac)(1),
-    form_geq(f_infin_1, f_fin_2)(1)
+    form_geq(f_con_1, f_fin_2_dirac)(1),
+    form_geq(f_con_1, f_fin_2)(1)
   )
   expect_equal(form_geq(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -100,45 +100,45 @@ test_that("form_geq returns appropriate pdqr class", {
 
 # form_greater ------------------------------------------------------------
 test_that("form_greater works", {
-  output <- form_greater(f_infin_1, f_fin_2)
-  expect_distr_fun(output, meta_class(f_infin_1), "fin")
+  output <- form_greater(f_con_1, f_fin_2)
+  expect_distr_fun(output, meta_class(f_con_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
   expect_equal(form_greater(dirac_single_fin, dirac_single_fin)(1), 0.25)
 
-  # Inequality with "infin" self returns 0.5
-  expect_equal(form_greater(f_infin_1, f_infin_1)(1), 0.5)
+  # Inequality with "continuous" self returns 0.5
+  expect_equal(form_greater(f_con_1, f_con_1)(1), 0.5)
 })
 
 test_that("form_greater agrees with simulation", {
   skip_on_cran()
 
   expect_equal_probs(f_fin_1, f_fin_2, form_greater, `>`)
-  expect_equal_probs(f_fin_1, f_infin_2, form_greater, `>`)
-  expect_equal_probs(f_infin_1, f_fin_2, form_greater, `>`)
-  expect_equal_probs(f_infin_1, f_infin_2, form_greater, `>`)
+  expect_equal_probs(f_fin_1, f_con_2, form_greater, `>`)
+  expect_equal_probs(f_con_1, f_fin_2, form_greater, `>`)
+  expect_equal_probs(f_con_1, f_con_2, form_greater, `>`)
 })
 
 test_that("form_greater handles cases of separated supports", {
   # Clear separation
   expect_equal(form_greater(f_fin_1, f_fin_3)(1), 0)
   expect_equal(form_greater(f_fin_3, f_fin_1)(1), 1)
-  expect_equal(form_greater(f_infin_1, f_infin_3)(1), 0)
-  expect_equal(form_greater(f_infin_3, f_infin_1)(1), 1)
+  expect_equal(form_greater(f_con_1, f_con_3)(1), 0)
+  expect_equal(form_greater(f_con_3, f_con_1)(1), 1)
 
   # "Touching" supports
   expect_equal(form_greater(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 0)
 })
 
-test_that("form_greater works with dirac-like 'infin' functions", {
+test_that("form_greater works with dirac-like 'continuous' functions", {
   expect_equal(
-    form_greater(f_fin_1_dirac, f_infin_2)(1),
-    form_greater(f_fin_1, f_infin_2)(1)
+    form_greater(f_fin_1_dirac, f_con_2)(1),
+    form_greater(f_fin_1, f_con_2)(1)
   )
   expect_equal(
-    form_greater(f_infin_1, f_fin_2_dirac)(1),
-    form_greater(f_infin_1, f_fin_2)(1)
+    form_greater(f_con_1, f_fin_2_dirac)(1),
+    form_greater(f_con_1, f_fin_2)(1)
   )
   expect_equal(form_greater(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -154,45 +154,45 @@ test_that("form_greater returns appropriate pdqr class", {
 
 # form_leq ----------------------------------------------------------------
 test_that("form_leq works", {
-  output <- form_leq(f_infin_1, f_fin_2)
-  expect_distr_fun(output, meta_class(f_infin_1), "fin")
+  output <- form_leq(f_con_1, f_fin_2)
+  expect_distr_fun(output, meta_class(f_con_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
   expect_equal(form_leq(dirac_single_fin, dirac_single_fin)(1), 0.75)
 
-  # Inequality with "infin" self returns 0.5
-  expect_equal(form_leq(f_infin_1, f_infin_1)(1), 0.5)
+  # Inequality with "continuous" self returns 0.5
+  expect_equal(form_leq(f_con_1, f_con_1)(1), 0.5)
 })
 
 test_that("form_leq agrees with simulation", {
   skip_on_cran()
 
   expect_equal_probs(f_fin_1, f_fin_2, form_leq, `<=`)
-  expect_equal_probs(f_fin_1, f_infin_2, form_leq, `<=`)
-  expect_equal_probs(f_infin_1, f_fin_2, form_leq, `<=`)
-  expect_equal_probs(f_infin_1, f_infin_2, form_leq, `<=`)
+  expect_equal_probs(f_fin_1, f_con_2, form_leq, `<=`)
+  expect_equal_probs(f_con_1, f_fin_2, form_leq, `<=`)
+  expect_equal_probs(f_con_1, f_con_2, form_leq, `<=`)
 })
 
 test_that("form_leq handles cases of separated supports", {
   # Clear separation
   expect_equal(form_leq(f_fin_1, f_fin_3)(1), 1)
   expect_equal(form_leq(f_fin_3, f_fin_1)(1), 0)
-  expect_equal(form_leq(f_infin_1, f_infin_3)(1), 1)
-  expect_equal(form_leq(f_infin_3, f_infin_1)(1), 0)
+  expect_equal(form_leq(f_con_1, f_con_3)(1), 1)
+  expect_equal(form_leq(f_con_3, f_con_1)(1), 0)
 
   # "Touching" supports
   expect_equal(form_leq(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 1)
 })
 
-test_that("form_leq works with dirac-like 'infin' functions", {
+test_that("form_leq works with dirac-like 'continuous' functions", {
   expect_equal(
-    form_leq(f_fin_1_dirac, f_infin_2)(1),
-    form_leq(f_fin_1, f_infin_2)(1)
+    form_leq(f_fin_1_dirac, f_con_2)(1),
+    form_leq(f_fin_1, f_con_2)(1)
   )
   expect_equal(
-    form_leq(f_infin_1, f_fin_2_dirac)(1),
-    form_leq(f_infin_1, f_fin_2)(1)
+    form_leq(f_con_1, f_fin_2_dirac)(1),
+    form_leq(f_con_1, f_fin_2)(1)
   )
   expect_equal(form_leq(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -208,45 +208,45 @@ test_that("form_leq returns appropriate pdqr class", {
 
 # form_less ---------------------------------------------------------------
 test_that("form_less works", {
-  output <- form_less(f_infin_1, f_fin_2)
-  expect_distr_fun(output, meta_class(f_infin_1), "fin")
+  output <- form_less(f_con_1, f_fin_2)
+  expect_distr_fun(output, meta_class(f_con_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Inequality involving "fin" functions with "long" "x"s
   expect_equal(form_less(dirac_single_fin, dirac_single_fin)(1), 0.25)
 
-  # Inequality with "infin" self returns 0.5
-  expect_equal(form_less(f_infin_1, f_infin_1)(1), 0.5)
+  # Inequality with "continuous" self returns 0.5
+  expect_equal(form_less(f_con_1, f_con_1)(1), 0.5)
 })
 
 test_that("form_less agrees with simulation", {
   skip_on_cran()
 
   expect_equal_probs(f_fin_1, f_fin_2, form_less, `<`)
-  expect_equal_probs(f_fin_1, f_infin_2, form_less, `<`)
-  expect_equal_probs(f_infin_1, f_fin_2, form_less, `<`)
-  expect_equal_probs(f_infin_1, f_infin_2, form_less, `<`)
+  expect_equal_probs(f_fin_1, f_con_2, form_less, `<`)
+  expect_equal_probs(f_con_1, f_fin_2, form_less, `<`)
+  expect_equal_probs(f_con_1, f_con_2, form_less, `<`)
 })
 
 test_that("form_less handles cases of separated supports", {
   # Clear separation
   expect_equal(form_less(f_fin_1, f_fin_3)(1), 1)
   expect_equal(form_less(f_fin_3, f_fin_1)(1), 0)
-  expect_equal(form_less(f_infin_1, f_infin_3)(1), 1)
-  expect_equal(form_less(f_infin_3, f_infin_1)(1), 0)
+  expect_equal(form_less(f_con_1, f_con_3)(1), 1)
+  expect_equal(form_less(f_con_3, f_con_1)(1), 0)
 
   # "Touching" supports
   expect_equal(form_less(new_d(1:2, "fin"), new_d(2:3, "fin"))(1), 0.75)
 })
 
-test_that("form_less works with dirac-like 'infin' functions", {
+test_that("form_less works with dirac-like 'continuous' functions", {
   expect_equal(
-    form_less(f_fin_1_dirac, f_infin_2)(1),
-    form_less(f_fin_1, f_infin_2)(1)
+    form_less(f_fin_1_dirac, f_con_2)(1),
+    form_less(f_fin_1, f_con_2)(1)
   )
   expect_equal(
-    form_less(f_infin_1, f_fin_2_dirac)(1),
-    form_less(f_infin_1, f_fin_2)(1)
+    form_less(f_con_1, f_fin_2_dirac)(1),
+    form_less(f_con_1, f_fin_2)(1)
   )
   expect_equal(form_less(f_fin_1_dirac, f_fin_1_dirac)(1), 0.5)
 
@@ -262,8 +262,8 @@ test_that("form_less returns appropriate pdqr class", {
 
 # form_equal --------------------------------------------------------------
 test_that("form_equal works", {
-  output <- form_equal(f_infin_1, f_fin_2)
-  expect_distr_fun(output, meta_class(f_infin_1), "fin")
+  output <- form_equal(f_con_1, f_fin_2)
+  expect_distr_fun(output, meta_class(f_con_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Equality involving "fin" functions with "long" "x"s
@@ -277,19 +277,19 @@ test_that("form_equal agrees with simulation", {
   skip_on_cran()
 
   expect_equal_probs(f_fin_1, f_fin_2, form_equal, `==`)
-  expect_equal_probs(f_fin_1, f_infin_2, form_equal, `==`)
-  expect_equal_probs(f_infin_1, f_fin_2, form_equal, `==`)
-  expect_equal_probs(f_infin_1, f_infin_2, form_equal, `==`)
+  expect_equal_probs(f_fin_1, f_con_2, form_equal, `==`)
+  expect_equal_probs(f_con_1, f_fin_2, form_equal, `==`)
+  expect_equal_probs(f_con_1, f_con_2, form_equal, `==`)
 })
 
-test_that("form_equal works with dirac-like 'infin' functions", {
+test_that("form_equal works with dirac-like 'continuous' functions", {
   expect_equal(
-    form_equal(f_fin_1_dirac, f_infin_2)(1),
-    form_equal(f_fin_1, f_infin_2)(1)
+    form_equal(f_fin_1_dirac, f_con_2)(1),
+    form_equal(f_fin_1, f_con_2)(1)
   )
   expect_equal(
-    form_equal(f_infin_1, f_fin_2_dirac)(1),
-    form_equal(f_infin_1, f_fin_2)(1)
+    form_equal(f_con_1, f_fin_2_dirac)(1),
+    form_equal(f_con_1, f_fin_2)(1)
   )
 
   expect_equal(form_equal(dirac_single, dirac_winsor)(1), 0)
@@ -302,8 +302,8 @@ test_that("form_equal returns appropriate pdqr class", {
 
 # form_not_equal ----------------------------------------------------------
 test_that("form_not_equal works", {
-  output <- form_not_equal(f_infin_1, f_fin_2)
-  expect_distr_fun(output, meta_class(f_infin_1), "fin")
+  output <- form_not_equal(f_con_1, f_fin_2)
+  expect_distr_fun(output, meta_class(f_con_1), "fin")
   expect_equal(meta_x_tbl(output)[["x"]], c(0, 1))
 
   # Not equality involving "fin" functions with "long" "x"s
@@ -317,19 +317,19 @@ test_that("form_not_equal agrees with simulation", {
   skip_on_cran()
 
   expect_equal_probs(f_fin_1, f_fin_2, form_not_equal, `!=`)
-  expect_equal_probs(f_fin_1, f_infin_2, form_not_equal, `!=`)
-  expect_equal_probs(f_infin_1, f_fin_2, form_not_equal, `!=`)
-  expect_equal_probs(f_infin_1, f_infin_2, form_not_equal, `!=`)
+  expect_equal_probs(f_fin_1, f_con_2, form_not_equal, `!=`)
+  expect_equal_probs(f_con_1, f_fin_2, form_not_equal, `!=`)
+  expect_equal_probs(f_con_1, f_con_2, form_not_equal, `!=`)
 })
 
-test_that("form_not_equal works with dirac-like 'infin' functions", {
+test_that("form_not_equal works with dirac-like 'continuous' functions", {
   expect_equal(
-    form_not_equal(f_fin_1_dirac, f_infin_2)(1),
-    form_not_equal(f_fin_1, f_infin_2)(1)
+    form_not_equal(f_fin_1_dirac, f_con_2)(1),
+    form_not_equal(f_fin_1, f_con_2)(1)
   )
   expect_equal(
-    form_not_equal(f_infin_1, f_fin_2_dirac)(1),
-    form_not_equal(f_infin_1, f_fin_2)(1)
+    form_not_equal(f_con_1, f_fin_2_dirac)(1),
+    form_not_equal(f_con_1, f_fin_2)(1)
   )
 
   expect_equal(form_not_equal(dirac_single, dirac_winsor)(1), 1)
@@ -356,9 +356,9 @@ test_that("form_not_equal returns appropriate pdqr class", {
 # Tested in `form_*()` comparisons
 
 
-# prob_geq_infin_infin ----------------------------------------------------
+# prob_geq_con_con --------------------------------------------------------
 # Tested in `form_*()` comparisons
 
 
-# infin_geq_integral ------------------------------------------------------
+# con_geq_integral --------------------------------------------------------
 # Tested in `form_*()` comparisons

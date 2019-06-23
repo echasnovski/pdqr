@@ -13,7 +13,7 @@ p_custom_ref <- structure(
   },
   class = c("p", "pdqr", "function")
 )
-assign("type", "infin", environment(p_custom_ref))
+assign("type", "continuous", environment(p_custom_ref))
 assign("support", c(0, 1), environment(p_custom_ref))
 
 x_norm_seq <- seq(-10, 10, by = 0.01)
@@ -22,7 +22,7 @@ x_norm_seq <- seq(-10, 10, by = 0.01)
 # form_trans --------------------------------------------------------------
 test_that("form_trans works with `method = 'random'`", {
   output_custom <- form_trans(list(p_custom), sq, method = "random")
-  expect_distr_fun(output_custom, "p", "infin")
+  expect_distr_fun(output_custom, "p", "continuous")
   expect_equal_distr(
     output_custom, p_custom_ref,
     grid = x_custom_trunc, thres = 0.05,
@@ -31,15 +31,15 @@ test_that("form_trans works with `method = 'random'`", {
   )
 
   # Normal distribution multiplied by 2
-  d_norm_input <- new_d(rnorm(10000, mean = 0, sd = 1), "infin")
+  d_norm_input <- new_d(rnorm(10000, mean = 0, sd = 1), "continuous")
 
   norm_seq <- seq(-20, 20, by = 0.001)
   d_norm_ref <- new_d(
-    data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2)), "infin"
+    data.frame(x = norm_seq, y = dnorm(norm_seq, mean = 0, sd = 2)), "continuous"
   )
 
   output_norm <- form_trans(list(2, d_norm_input), `*`, method = "random")
-  expect_distr_fun(output_norm, "d", "infin")
+  expect_distr_fun(output_norm, "d", "continuous")
   expect_equal_distr(
     output_norm, d_norm_ref,
     grid = x_norm_seq, thres = 0.02,
@@ -69,18 +69,18 @@ test_that("form_trans works with `method = 'bruteforce'`", {
   )
 
     # Output of `trans` is logical
-  d_geq <- form_trans(list(0, d_infin), `>=`, method = "bruteforce")
-  expect_true(abs(d_geq(1) - p_infin(0)) <= 5e-3)
+  d_geq <- form_trans(list(0, d_con), `>=`, method = "bruteforce")
+  expect_true(abs(d_geq(1) - p_con(0)) <= 5e-3)
 
-  # Output type "infin"
-  output <- form_trans(list(d_infin, 1), `+`, method = "bruteforce")
-  expect_distr_fun(output, "d", "infin")
+  # Output type "continuous"
+  output <- form_trans(list(d_con, 1), `+`, method = "bruteforce")
+  expect_distr_fun(output, "d", "continuous")
   output_support <- meta_support(output)
-  expect_true(all(abs(output_support - (x_infin_support+1)) < 1e-3))
+  expect_true(all(abs(output_support - (x_con_support+1)) < 1e-3))
 })
 
 test_that("form_trans returns boolean pdqr-function for 'lgl' `trans` output", {
-  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
   bool_random <- form_trans(list(d_unif, 100), `>`, method = "random")
   expect_true(is_boolean_pdqr_fun(bool_random))
   bool_brute <- form_trans(list(d_unif, 100), `>`, method = "bruteforce")
@@ -88,7 +88,7 @@ test_that("form_trans returns boolean pdqr-function for 'lgl' `trans` output", {
 })
 
 test_that("form_trans handles `NA` in case of logical `trans` output", {
-  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
   na_geq <- function(x) {
     res <- x >= 0.25
     res[x < 0.75] <- NA
@@ -131,14 +131,14 @@ test_that("form_trans produces correct 'pdqr' type", {
     meta_type(form_trans(list(p_fin, q_fin), `+`, method = "random")), "fin"
   )
   expect_equal(
-    meta_type(form_trans(list(p_infin, q_fin), `+`, method = "random")), "infin"
+    meta_type(form_trans(list(p_con, q_fin), `+`, method = "random")), "continuous"
   )
   expect_equal(
-    meta_type(form_trans(list(d_fin, p_infin), `+`, method = "random")), "infin"
+    meta_type(form_trans(list(d_fin, p_con), `+`, method = "random")), "continuous"
   )
   expect_equal(
-    meta_type(form_trans(list(p_infin, d_infin), `+`, method = "random")),
-    "infin"
+    meta_type(form_trans(list(p_con, d_con), `+`, method = "random")),
+    "continuous"
   )
 
   expect_equal(
@@ -148,17 +148,17 @@ test_that("form_trans produces correct 'pdqr' type", {
     meta_type(form_trans(list(p_fin, q_fin), `+`, method = "bruteforce")), "fin"
   )
   expect_equal(
-    meta_type(form_trans(list(p_infin, q_fin), `+`, method = "bruteforce")),
-    "infin"
+    meta_type(form_trans(list(p_con, q_fin), `+`, method = "bruteforce")),
+    "continuous"
   )
 
   # If `trans` produces logical output, type should be "fin"
   expect_equal(
-    meta_type(form_trans(list(p_infin, q_fin), `>=`, method = "random")),
+    meta_type(form_trans(list(p_con, q_fin), `>=`, method = "random")),
     "fin"
   )
   expect_equal(
-    meta_type(form_trans(list(p_infin, q_fin), `>=`, method = "bruteforce")),
+    meta_type(form_trans(list(p_con, q_fin), `>=`, method = "bruteforce")),
     "fin"
   )
 })
@@ -199,7 +199,7 @@ test_that("form_trans uses `n_sample` argument",  {
 
 test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   output <- form_trans(
-    list(p_infin), sq, method = "random", args_new = list(n = 3)
+    list(p_con), sq, method = "random", args_new = list(n = 3)
   )
   expect_equal(nrow(meta_x_tbl(output)), 3)
 
@@ -215,14 +215,14 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   # Supplying `x` or `type` doesn't affect the output
   expect_equal(
     form_trans(
-      list(p_infin), sq, method = "random", args_new = list(x = 1, type = "fin")
+      list(p_con), sq, method = "random", args_new = list(x = 1, type = "fin")
     ),
-    form_trans(list(p_infin), sq, method = "random")
+    form_trans(list(p_con), sq, method = "random")
   )
   expect_equal(
     form_trans(
       list(p_fin), sq, method = "bruteforce",
-      args_new = list(x = 1, type = "infin")
+      args_new = list(x = 1, type = "continuous")
     ),
     form_trans(list(p_fin), sq, method = "bruteforce")
   )

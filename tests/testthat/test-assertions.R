@@ -3,7 +3,7 @@ context("test-assertions")
 
 # Notes -------------------------------------------------------------------
 # Usage of `as_*()` functions withoub seamingly apparent reason (for example,
-# `as_p(p_infin)`) ensures that output object has different enclosing
+# `as_p(p_con)`) ensures that output object has different enclosing
 # environement. This is needed for careful test behavior with "bad" metadat.
 
 
@@ -135,7 +135,7 @@ test_that("assert_pdqr_fun works", {
 
   # "support" metadata
   f_no_support <- f_no_type
-  assign("type", "infin", environment(f_no_support))
+  assign("type", "continuous", environment(f_no_support))
   expect_error(
     assert_pdqr_fun(f_no_support), "not pdqr-function.*proper.*support"
   )
@@ -148,7 +148,7 @@ test_that("assert_pdqr_fun works", {
 
   # "x_tbl" metadata
     # "x_tbl" is completely missing
-  f_no_x_tbl <- as_p(p_infin)
+  f_no_x_tbl <- as_p(p_con)
   rm("x_tbl", envir = environment(f_no_x_tbl))
   expect_error(assert_pdqr_fun(f_no_x_tbl), "not pdqr-function.*have.*x_tbl")
 
@@ -197,18 +197,18 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   assign("x_tbl", bad_x_tbl_5, environment(f_bad_x_tbl_5))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_5), '"x".*"x_tbl".*duplicate')
 
-  # "infin" type
+  # "continuous" type
     # Total integral is 1
-  bad_x_tbl_6 <- x_infin_x_tbl
+  bad_x_tbl_6 <- x_con_x_tbl
   bad_x_tbl_6[["y"]] <- 10 * bad_x_tbl_6[["y"]]
-  f_bad_x_tbl_6 <- as_p(p_infin)
+  f_bad_x_tbl_6 <- as_p(p_con)
   assign("x_tbl", bad_x_tbl_6, environment(f_bad_x_tbl_6))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_6), '[Tt]otal integral.*"x_tbl".*1')
 
     # Column "cumprob" is mandatory
-  bad_x_tbl_7 <- x_infin_x_tbl
+  bad_x_tbl_7 <- x_con_x_tbl
   bad_x_tbl_7[["cumprob"]] <- NULL
-  f_bad_x_tbl_7 <- as_p(p_infin)
+  f_bad_x_tbl_7 <- as_p(p_con)
   assign("x_tbl", bad_x_tbl_7, environment(f_bad_x_tbl_7))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_7), '"x_tbl".*have.*"cumprob"')
 })
@@ -217,11 +217,11 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 # assert_distr_type -------------------------------------------------------
 test_that("assert_distr_type works", {
   expect_silent(assert_distr_type("fin"))
-  expect_silent(assert_distr_type("infin"))
+  expect_silent(assert_distr_type("continuous"))
 
   expect_error(assert_distr_type(1), "string")
-  expect_error(assert_distr_type(c("fin", "infin")), "string")
-  expect_error(assert_distr_type("a"), "fin.*infin")
+  expect_error(assert_distr_type(c("fin", "continuous")), "string")
+  expect_error(assert_distr_type("a"), "fin.*continuous")
 })
 
 
@@ -293,60 +293,60 @@ test_that("assert_x_tbl works with 'fin' type", {
   )
 })
 
-test_that("assert_x_tbl works with 'infin' type", {
-  expect_silent(assert_x_tbl(x_infin_x_tbl, type = "infin"))
+test_that("assert_x_tbl works with 'continuous' type", {
+  expect_silent(assert_x_tbl(x_con_x_tbl, type = "continuous"))
 
   # Input type
   input <- "a"
-  expect_error(assert_x_tbl(input, type = "infin"), "`input`.*data.*frame")
+  expect_error(assert_x_tbl(input, type = "continuous"), "`input`.*data.*frame")
 
   # Number of rows
   expect_error(
-    assert_x_tbl(data.frame(x = 1, y = 1), type = "infin"), "2.*rows"
+    assert_x_tbl(data.frame(x = 1, y = 1), type = "continuous"), "2.*rows"
   )
 
   # Column "x"
-  expect_error(assert_x_tbl(data.frame(a = 1:2), type = "infin"), '"x"')
+  expect_error(assert_x_tbl(data.frame(a = 1:2), type = "continuous"), '"x"')
   expect_error(
-    assert_x_tbl(data.frame(x = c("a", "b")), type = "infin"), '"x".*numeric'
+    assert_x_tbl(data.frame(x = c("a", "b")), type = "continuous"), '"x".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "infin"), '"x".*`NA`'
+    assert_x_tbl(data.frame(x = c(1, NA_real_)), type = "continuous"), '"x".*`NA`'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, Inf)), type = "infin"), '"x".*finite'
+    assert_x_tbl(data.frame(x = c(1, Inf)), type = "continuous"), '"x".*finite'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "infin"),
+    assert_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "continuous"),
     '"x".*duplicate'
   )
 
   # Column "y"
-  expect_error(assert_x_tbl(data.frame(x = 1:2), type = "infin"), '"y"')
+  expect_error(assert_x_tbl(data.frame(x = 1:2), type = "continuous"), '"y"')
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "infin"),
+    assert_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "continuous"),
     '"y".*numeric'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c(1, NA_real_)), type = "infin"),
+    assert_x_tbl(data.frame(x = 1:2, y = c(1, NA_real_)), type = "continuous"),
     '"y".*`NA`'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "infin"),
+    assert_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "continuous"),
     '"y".*negative'
   )
   expect_error(
-    assert_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "infin"),
+    assert_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "continuous"),
     '"y".*positive'
   )
 
   # Extra columns are allowed
   expect_silent(
-    assert_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "infin")
+    assert_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "continuous")
   )
   # Different column order is allowed
   expect_silent(
-    assert_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "infin")
+    assert_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "continuous")
   )
 })
 
@@ -355,7 +355,7 @@ test_that("assert_x_tbl works with 'infin' type", {
 # Tested in `assert_x_tbl()`
 
 
-# assert_x_tbl_infin ------------------------------------------------------
+# assert_x_tbl_con --------------------------------------------------------
 # Tested in `assert_x_tbl()`
 
 

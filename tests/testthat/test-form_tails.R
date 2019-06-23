@@ -37,7 +37,7 @@ expect_error_negative_level <- function(pdqr_f) {
 
 # Input data --------------------------------------------------------------
 cur_fin <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), "fin")
-cur_infin <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+cur_con <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
 
 
 # form_tails --------------------------------------------------------------
@@ -84,34 +84,34 @@ test_that("form_tails works with `method='trim'` and 'fin' functions", {
   )
 })
 
-test_that("form_tails works with `method='trim'` and 'infin' functions", {
+test_that("form_tails works with `method='trim'` and 'continuous' functions", {
   # `direction = "both"`
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.05, "trim", "both"),
+    form_tails(cur_con, 0.05, "trim", "both"),
     data.frame(x = c(0.05, 0.95), y = c(1, 1) / 0.9)
   )
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.4, "trim", "both"),
+    form_tails(cur_con, 0.4, "trim", "both"),
     data.frame(x = c(0.4, 0.6), y = c(1, 1) / 0.2)
   )
 
   # `direction = "left"`
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.05, "trim", "left"),
+    form_tails(cur_con, 0.05, "trim", "left"),
     data.frame(x = c(0.05, 1), y = c(1, 1) / 0.95)
   )
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.8, "trim", "left"),
+    form_tails(cur_con, 0.8, "trim", "left"),
     data.frame(x = c(0.8, 1), y = c(1, 1) / 0.2)
   )
 
   # `direction = "right"`
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.05, "trim", "right"),
+    form_tails(cur_con, 0.05, "trim", "right"),
     data.frame(x = c(0, 0.95), y = c(1, 1) / 0.95)
   )
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.8, "trim", "right"),
+    form_tails(cur_con, 0.8, "trim", "right"),
     data.frame(x = c(0, 0.2), y = c(1, 1) / 0.2)
   )
 })
@@ -151,10 +151,10 @@ test_that("form_tails works with `method='winsor'` and 'fin' functions", {
   )
 })
 
-test_that("form_tails works with `method='winsor'` and 'infin' functions", {
+test_that("form_tails works with `method='winsor'` and 'continuous' functions", {
   # `direction = "both"`
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.1, "winsor", "both"),
+    form_tails(cur_con, 0.1, "winsor", "both"),
     data.frame(
       x = c(  0.1, 0.1+1e-8, 0.9-1e-8,   0.9),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
@@ -165,7 +165,7 @@ test_that("form_tails works with `method='winsor'` and 'infin' functions", {
 
   # `direction = "left"`
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.1, "winsor", "left"),
+    form_tails(cur_con, 0.1, "winsor", "left"),
     data.frame(
       x = c(  0.1, 0.1+1e-8, 1),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
@@ -176,7 +176,7 @@ test_that("form_tails works with `method='winsor'` and 'infin' functions", {
 
   # `direction = "right"`
   expect_ref_x_tbl(
-    form_tails(cur_infin, 0.1, "winsor", "right"),
+    form_tails(cur_con, 0.1, "winsor", "right"),
     data.frame(
       x = c(0, 0.9-1e-8,   0.9),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
@@ -188,12 +188,12 @@ test_that("form_tails works with `method='winsor'` and 'infin' functions", {
 
 test_that("form_tails returns self when `level = 0`", {
   expect_self_x_tbl(cur_fin)
-  expect_self_x_tbl(cur_infin)
+  expect_self_x_tbl(cur_con)
 })
 
 test_that("form_tails returns dirac-like distribution at maximum level", {
   expect_dirac(cur_fin, c("both" = 3, "left" = 4, "right" = 1))
-  expect_dirac(cur_infin, c("both" = 0.5, "left" = 1, "right" = 0))
+  expect_dirac(cur_con, c("both" = 0.5, "left" = 1, "right" = 0))
 })
 
 test_that("form_tails validates input",  {
@@ -230,7 +230,7 @@ test_that("form_tails validates input",  {
 # Tested in `form_tails()`
 
 
-# tails_trim_infin --------------------------------------------------------
+# tails_trim_con ----------------------------------------------------------
 # Tested in `form_tails()`
 
 

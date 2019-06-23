@@ -16,7 +16,7 @@ stat_pois <- list(
   entropy = 0.5*log(2*pi*exp(1) * 5) - 1/60 - 1/600 - 19/45000
 )
 
-# "infin" functions
+# "continuous" functions
 
 # Beta stats
 # # Variance
@@ -102,7 +102,7 @@ stat_list <- list(
   # "fin"
   binom = stat_binom,
   pois = stat_pois,
-  # "infin"
+  # "continuous"
   beta = stat_beta,
   beta_inf = stat_beta_inf,
   chisq = stat_chisq,

@@ -30,7 +30,7 @@ test_that("summ_distance works", {
   # Method "totvar"
   expect_equal(summ_distance(p_f, p_g, method = "totvar"), 0.5)
   expect_equal(
-    summ_distance(new_d(1:2, "fin"), new_d(1:2, "infin"), method = "totvar"),
+    summ_distance(new_d(1:2, "fin"), new_d(1:2, "continuous"), method = "totvar"),
     1
   )
 
@@ -62,34 +62,34 @@ test_that("summ_distance works", {
 })
 
 test_that("summ_distance returns 0 for identical inputs", {
-  d_dirac <- new_d(2, "infin")
+  d_dirac <- new_d(2, "continuous")
 
   expect_equal(summ_distance(d_fin, d_fin, method = "KS"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "KS"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "KS"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "KS"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "totvar"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "totvar"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "totvar"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "totvar"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "compare"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "compare"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "compare"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "compare"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "wass"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "wass"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "wass"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "wass"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "cramer"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "cramer"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "cramer"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "cramer"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "align"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "align"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "align"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "align"), 0)
 
   expect_equal(summ_distance(d_fin, d_fin, method = "entropy"), 0)
-  expect_equal(summ_distance(d_infin, d_infin, method = "entropy"), 0)
+  expect_equal(summ_distance(d_con, d_con, method = "entropy"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "entropy"), 0)
 })
 
@@ -125,42 +125,42 @@ test_that("distance_ks works with mixed-type functions", {
   # These two cases represent "supremum-not-maximum" quality of K-S distatnce,
   # when actual distance is achieved as limit of distances from left side
   cur_fin <- new_p(1:10, "fin")
-  cur_infin <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "infin")
-  expect_equal(distance_ks(cur_fin, cur_infin), 0.1)
+  cur_con <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "continuous")
+  expect_equal(distance_ks(cur_fin, cur_con), 0.1)
   # Checking twice to test independence of argument order
-  expect_equal(distance_ks(cur_infin, cur_fin), 0.1)
+  expect_equal(distance_ks(cur_con, cur_fin), 0.1)
 
   expect_equal(
     distance_ks(
-      new_p(data.frame(x = 1:2, y = c(1, 1)), "infin"), new_p(2, "fin")
+      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"), new_p(2, "fin")
     ),
     1
   )
 
   # Test that the smallest "x" value is returned in case of several candidates
   p_fin_2 <- new_p(data.frame(x = 2:3, prob = c(0.5, 0.5)), "fin")
-  p_infin_2 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
-  expect_equal(distance_ks(p_fin_2, p_infin_2), 0.5)
+  p_con_2 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
+  expect_equal(distance_ks(p_fin_2, p_con_2), 0.5)
 
   # Case when smallest "x" value with maximum absolute CDF difference is one
-  # of "x" values from "x_tbl" of "infin" pdqr-function
+  # of "x" values from "x_tbl" of "continuous" pdqr-function
   p_fin_3 <- new_p(2.5, "fin")
-  p_infin_3 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
-  expect_equal(distance_ks(p_fin_3, p_infin_3), 0.5)
+  p_con_3 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
+  expect_equal(distance_ks(p_fin_3, p_con_3), 0.5)
 })
 
-test_that("distance_ks works with two 'infin' functions", {
+test_that("distance_ks works with two 'continuous' functions", {
   # Maximum at density crossings
-  p_f <- new_p(data.frame(x = 0:1, y = c(2, 0)), "infin")
-  p_g <- new_p(data.frame(x = c(0.5, 1, 1.5), y = c(0, 2, 0)), "infin")
+  p_f <- new_p(data.frame(x = 0:1, y = c(2, 0)), "continuous")
+  p_g <- new_p(data.frame(x = c(0.5, 1, 1.5), y = c(0, 2, 0)), "continuous")
   expect_equal(distance_ks(p_f, p_g), abs(p_f(2/3) - p_g(2/3)))
   # Checking twice to test independence of argument order
   expect_equal(distance_ks(p_g, p_f), abs(p_f(2/3) - p_g(2/3)))
 
   # Multiple density intersections in real-world example
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "infin")
+  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
   p_g <- new_p(
-    data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "infin"
+    data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "continuous"
   )
   expect_equal(distance_ks(p_f, p_g), abs(p_f(2.25) - p_g(2.25)))
 
@@ -170,40 +170,40 @@ test_that("distance_ks works with two 'infin' functions", {
   expect_equal(distance_ks(p_f, p_g), abs(p_f(1) - p_g(1)))
 
   # Common y-zero plateau. Maximum difference on edge of one of support.
-  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
-  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "infin")
+  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
+  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "continuous")
   expect_equal(distance_ks(p_f, p_g), abs(p_f(1) - p_g(1)))
 
   # Common y-zero plateau. Maximum difference on edge of plateau.
-  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "infin")
-  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "infin")
+  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "continuous")
+  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "continuous")
   expect_equal(distance_ks(p_f, p_g), 1)
 })
 
 test_that("distance_ks works with non-overlapping supports", {
   cur_fin_1 <- new_p(1:4, "fin")
   cur_fin_2 <- new_p(5:6, "fin")
-  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
-  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
-  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+  cur_con_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "continuous")
+  cur_con_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "continuous")
+  cur_con_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "continuous")
 
   # "Two fin"
   expect_equal(distance_ks(cur_fin_1, cur_fin_2), 1)
   expect_equal(distance_ks(cur_fin_2, cur_fin_1), 1)
 
   # "Mixed-typed"
-  expect_equal(distance_ks(cur_fin_1, cur_infin_2), 1)
-  expect_equal(distance_ks(cur_infin_2, cur_fin_1), 1)
+  expect_equal(distance_ks(cur_fin_1, cur_con_2), 1)
+  expect_equal(distance_ks(cur_con_2, cur_fin_1), 1)
     # "Touching" supports
-  expect_equal(distance_ks(cur_fin_1, cur_infin_3), 1)
-  expect_equal(distance_ks(cur_infin_3, cur_fin_1), 1)
+  expect_equal(distance_ks(cur_fin_1, cur_con_3), 1)
+  expect_equal(distance_ks(cur_con_3, cur_fin_1), 1)
 
-  # "Two infin"
-  expect_equal(distance_ks(cur_infin_1, cur_infin_2), 1)
-  expect_equal(distance_ks(cur_infin_2, cur_infin_1), 1)
+  # "Two continuous"
+  expect_equal(distance_ks(cur_con_1, cur_con_2), 1)
+  expect_equal(distance_ks(cur_con_2, cur_con_1), 1)
     # "Touching" supports
-  expect_equal(distance_ks(cur_infin_1, cur_infin_3), 1)
-  expect_equal(distance_ks(cur_infin_3, cur_infin_1), 1)
+  expect_equal(distance_ks(cur_con_1, cur_con_3), 1)
+  expect_equal(distance_ks(cur_con_3, cur_con_1), 1)
 })
 
 test_that("distance_ks works with dirac-like functions", {
@@ -211,23 +211,23 @@ test_that("distance_ks works with dirac-like functions", {
   # not exactly) the same as if it is replaced with corresponding "fin" (except
   # the case when the other one is "fin" with one of points lying inside "dirac"
   # support)
-  d_dirac <- new_d(2, "infin")
+  d_dirac <- new_d(2, "continuous")
   d_dirac_fin <- new_d(2, "fin")
 
-  # "Mixed-type" case
+  # "Mixed-type"
   expect_equal(distance_ks(d_fin, d_dirac), distance_ks(d_fin, d_dirac_fin))
   # Here 0.5 because one of points from `d_dirac_fin` lies inside `d_dirac`
   # support
   expect_equal(distance_ks(d_dirac, d_dirac_fin), 0.5)
 
-  # "Two infin" case
-  expect_equal(distance_ks(d_infin, d_dirac), distance_ks(d_infin, d_dirac_fin))
+  # "Two continuous"
+  expect_equal(distance_ks(d_con, d_dirac), distance_ks(d_con, d_dirac_fin))
   # Non-overlapping dirac-like functions
-  expect_equal(distance_ks(d_dirac, new_d(3, "infin")), 1)
+  expect_equal(distance_ks(d_dirac, new_d(3, "continuous")), 1)
 })
 
 test_that("distance_ks works with different pdqr classes", {
-  expect_equal(distance_ks(d_fin, d_infin), distance_ks(p_fin, q_infin))
+  expect_equal(distance_ks(d_fin, d_con), distance_ks(p_fin, q_con))
 })
 
 
@@ -239,7 +239,7 @@ test_that("distance_ks works with different pdqr classes", {
 # Tested in `distance_ks()`
 
 
-# distance_ks_two_infin ---------------------------------------------------
+# distance_ks_two_con -----------------------------------------------------
 # Tested in `distance_ks()`
 
 
@@ -261,16 +261,16 @@ test_that("distance_totvar works with two 'fin' functions", {
 })
 
 test_that("distance_totvar works with mixed-type functions", {
-  expect_equal(distance_totvar(d_fin, d_infin), 1)
+  expect_equal(distance_totvar(d_fin, d_con), 1)
   # Checking twice to test independence of argument order
-  expect_equal(distance_totvar(d_infin, d_fin), 1)
+  expect_equal(distance_totvar(d_con, d_fin), 1)
 })
 
-test_that("distance_totvar works with two 'infin' functions", {
+test_that("distance_totvar works with two 'continuous' functions", {
   # Multiple density intersections in real-world example
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "infin")
+  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
   p_g <- new_p(
-    data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "infin"
+    data.frame(x = c(1:3, 5, 7) + 0.5, y = c(0, 0.5, 0, 0.25, 0)), "continuous"
   )
   # `{x | d_f(x) > d_g(x)}` is a union of (1; 2.25) and (3.4; 5.25)
   out_ref <- ((p_f(2.25)-p_f(1)) + (p_f(5.25)-p_f(3.4))) -
@@ -286,36 +286,36 @@ test_that("distance_totvar works with two 'infin' functions", {
   expect_equal(distance_totvar(p_f, p_g), 0.75)
 
   # Common y-zero plateau #1
-  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
-  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "infin")
+  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
+  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "continuous")
   # `{x | d_f(x) > d_g(x)}` is a union of (1; 2) and (3; 4)
   out_ref <- ((p_f(2)-p_f(1)) + (p_f(4)-p_f(3))) -
     ((p_g(2)-p_g(1)) + (p_g(4)-p_g(3)))
   expect_equal(distance_totvar(p_f, p_g), out_ref)
 
   # Common y-zero plateau #2
-  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "infin")
-  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "infin")
+  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "continuous")
+  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "continuous")
   expect_equal(distance_totvar(p_f, p_g), 1)
 })
 
 test_that("distance_totvar works with non-overlapping supports", {
   cur_fin_1 <- new_p(1:4, "fin")
   cur_fin_2 <- new_p(5:6, "fin")
-  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
-  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
-  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+  cur_con_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "continuous")
+  cur_con_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "continuous")
+  cur_con_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "continuous")
 
   # "Two fin"
   expect_equal(distance_totvar(cur_fin_1, cur_fin_2), 1)
   expect_equal(distance_totvar(cur_fin_2, cur_fin_1), 1)
 
-  # "Two infin"
-  expect_equal(distance_totvar(cur_infin_1, cur_infin_2), 1)
-  expect_equal(distance_totvar(cur_infin_2, cur_infin_1), 1)
+  # "Two continuous"
+  expect_equal(distance_totvar(cur_con_1, cur_con_2), 1)
+  expect_equal(distance_totvar(cur_con_2, cur_con_1), 1)
   # "Touching" supports
-  expect_equal(distance_totvar(cur_infin_1, cur_infin_3), 1)
-  expect_equal(distance_totvar(cur_infin_3, cur_infin_1), 1)
+  expect_equal(distance_totvar(cur_con_1, cur_con_3), 1)
+  expect_equal(distance_totvar(cur_con_3, cur_con_1), 1)
 })
 
 test_that("distance_totvar works with dirac-like functions", {
@@ -323,23 +323,23 @@ test_that("distance_totvar works with dirac-like functions", {
   # essentially (but not exactly) the same as if it is replaced with
   # corresponding "fin" (except the case when the other one is "fin" with one of
   # points lying inside "dirac" support)
-  d_dirac <- new_d(2, "infin")
+  d_dirac <- new_d(2, "continuous")
   d_dirac_fin <- new_d(2, "fin")
 
-  # "Two infin" case
+  # "Two continuous"
   expect_equal(
-    distance_totvar(d_infin, d_dirac), distance_totvar(d_infin, d_dirac_fin)
+    distance_totvar(d_con, d_dirac), distance_totvar(d_con, d_dirac_fin)
   )
   # Non-overlapping dirac-like functions
-  expect_equal(distance_totvar(d_dirac, new_d(3, "infin")), 1)
+  expect_equal(distance_totvar(d_dirac, new_d(3, "continuous")), 1)
 })
 
 test_that("distance_totvar works with different pdqr classes", {
-  expect_equal(distance_totvar(d_fin, d_infin), distance_totvar(p_fin, q_infin))
+  expect_equal(distance_totvar(d_fin, d_con), distance_totvar(p_fin, q_con))
 })
 
 
-# distance_totvar_two_infin -----------------------------------------------
+# distance_totvar_two_con -------------------------------------------------
 # Tested in `distance_totvar()`
 
 
@@ -350,22 +350,22 @@ test_that("distance_totvar works with different pdqr classes", {
 # distance_compare --------------------------------------------------------
 test_that("distance_compare works", {
   expect_dist_compare(d_fin, d_fin + 1)
-  expect_dist_compare(d_fin, d_infin)
-  expect_dist_compare(d_infin-2, d_infin)
+  expect_dist_compare(d_fin, d_con)
+  expect_dist_compare(d_con-2, d_con)
 })
 
 test_that("distance_compare works with dirac-like functions", {
-  expect_dist_compare(d_infin, new_d(1, "infin"))
+  expect_dist_compare(d_con, new_d(1, "continuous"))
 
   d_winsor <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"), c(0.1, 0.7)
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"), c(0.1, 0.7)
   )
-  expect_dist_compare(d_infin, d_winsor)
+  expect_dist_compare(d_con, d_winsor)
 })
 
 test_that("distance_compare works with different pdqr classes", {
   expect_equal(
-    distance_compare(d_fin, d_infin), distance_compare(p_fin, q_infin)
+    distance_compare(d_fin, d_con), distance_compare(p_fin, q_con)
   )
 })
 
@@ -389,37 +389,37 @@ test_that("distance_wass works with two 'fin' functions", {
 
 test_that("distance_wass works with mixed-type functions", {
   cur_fin <- new_p(1:10, "fin")
-  cur_infin <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "infin")
+  cur_con <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "continuous")
   # Total integral is multiple of squares of "triangles"
-  expect_equal(distance_wass(cur_fin, cur_infin), 10*(1*0.1)/2)
+  expect_equal(distance_wass(cur_fin, cur_con), 10*(1*0.1)/2)
   # Checking twice to test independence of argument order
-  expect_equal(distance_wass(cur_infin, cur_fin), 10*(1*0.1)/2)
+  expect_equal(distance_wass(cur_con, cur_fin), 10*(1*0.1)/2)
 
   expect_equal(
     distance_wass(
-      new_p(data.frame(x = 1:2, y = c(1, 1)), "infin"), new_p(2, "fin")
+      new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous"), new_p(2, "fin")
     ),
     1*1/2
   )
 
   # Case of common CDF plateau (zero density plateau)
   p_fin_2 <- new_p(data.frame(x = 2:3, prob = c(0.5, 0.5)), "fin")
-  p_infin_2 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
+  p_con_2 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
   # Result is twice the integral of `-0.5*x^2 + 2*x - 1.5` (equation of first
   # third of CDF) from 1 to 2
-  expect_equal(distance_wass(p_fin_2, p_infin_2), 2/3)
+  expect_equal(distance_wass(p_fin_2, p_con_2), 2/3)
 
   p_fin_3 <- new_p(2.5, "fin")
-  p_infin_3 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
-  # Result is equal to previous plus square of "infin" CDF from 2 to 3
+  p_con_3 <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
+  # Result is equal to previous plus square of "continuous" CDF from 2 to 3
   expect_equal(
-    distance_wass(p_fin_3, p_infin_3), 2/3 + 0.5,
+    distance_wass(p_fin_3, p_con_3), 2/3 + 0.5,
     tolerance = 4e-7
   )
 })
 
-test_that("distance_wass works with two 'infin' functions", {
-  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "infin")
+test_that("distance_wass works with two 'continuous' functions", {
+  p_f <- new_p(data.frame(x = c(1:3, 5, 7), y = c(0, 0.5, 0, 0.25, 0)), "continuous")
   p_g <- p_f + 0.5
   expect_equal(distance_wass(p_f, p_g), 0.5, tolerance = 5e-7)
   # Checking twice to test independence of argument order
@@ -431,13 +431,13 @@ test_that("distance_wass works with two 'infin' functions", {
   expect_equal(distance_wass(p_f, p_g), (0.5*1/2-0.5*0.5/2) + 0.5*0.5/2)
 
   # Common y-zero density plateau #1
-  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "infin")
-  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "infin")
+  p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
+  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "continuous")
   expect_equal(distance_wass(p_f, p_g), 1/3, tolerance = 4e-8)
 
   # Common y-zero density plateau #2
-  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "infin")
-  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "infin")
+  p_f <- new_p(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "continuous")
+  p_g <- new_p(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "continuous")
   # Result can be reasoned as distance at which "density triangle" should be
   # moved
   expect_equal(distance_wass(p_f, p_g), 3, tolerance = 7e-8)
@@ -446,9 +446,9 @@ test_that("distance_wass works with two 'infin' functions", {
 test_that("distance_wass works with non-overlapping supports", {
   cur_fin_1 <- new_p(1:4, "fin")
   cur_fin_2 <- new_p(5:6, "fin")
-  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
-  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
-  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+  cur_con_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "continuous")
+  cur_con_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "continuous")
+  cur_con_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "continuous")
 
   # "Two fin"
   # Result is square of 12 1x0.25 blocks
@@ -457,29 +457,29 @@ test_that("distance_wass works with non-overlapping supports", {
 
   # "Mixed-typed"
   expect_equal(
-    distance_wass(cur_fin_1, cur_infin_2), 6/4+1+0.5,
+    distance_wass(cur_fin_1, cur_con_2), 6/4+1+0.5,
     tolerance = 4e-6
   )
   expect_equal(
-    distance_wass(cur_infin_2, cur_fin_1), 6/4+1+0.5,
+    distance_wass(cur_con_2, cur_fin_1), 6/4+1+0.5,
     tolerance = 4e-6
   )
   # "Touching" supports
-  expect_equal(distance_wass(cur_fin_1, cur_infin_3), 6/4+0.5)
-  expect_equal(distance_wass(cur_infin_3, cur_fin_1), 6/4+0.5)
+  expect_equal(distance_wass(cur_fin_1, cur_con_3), 6/4+0.5)
+  expect_equal(distance_wass(cur_con_3, cur_fin_1), 6/4+0.5)
 
-  # "Two infin"
+  # "Two continuous"
   expect_equal(
-    distance_wass(cur_infin_1, cur_infin_2), 3*1/2 + 1 + 0.5,
+    distance_wass(cur_con_1, cur_con_2), 3*1/2 + 1 + 0.5,
     tolerance = 4e-6
   )
   expect_equal(
-    distance_wass(cur_infin_2, cur_infin_1), 3*1/2 + 1 + 0.5,
+    distance_wass(cur_con_2, cur_con_1), 3*1/2 + 1 + 0.5,
     tolerance = 4e-6
   )
   # "Touching" supports
-  expect_equal(distance_wass(cur_infin_1, cur_infin_3), 3*1/2 + 0.5)
-  expect_equal(distance_wass(cur_infin_3, cur_infin_1), 3*1/2 + 0.5)
+  expect_equal(distance_wass(cur_con_1, cur_con_3), 3*1/2 + 0.5)
+  expect_equal(distance_wass(cur_con_3, cur_con_1), 3*1/2 + 0.5)
 })
 
 test_that("distance_wass works for very distant distributions", {
@@ -499,20 +499,20 @@ test_that("distance_wass works with dirac-like functions", {
   # (but not exactly) the same as if it is replaced with corresponding "fin"
   # (except the case when the other one is "fin" with one of points lying inside
   # "dirac" support)
-  d_dirac <- new_d(2, "infin")
+  d_dirac <- new_d(2, "continuous")
   d_dirac_fin <- new_d(2, "fin")
 
-  # "Two infin" case
+  # "Two continuous"
   expect_equal(
-    distance_wass(d_infin, d_dirac),
-    distance_wass(d_infin, d_dirac_fin)
+    distance_wass(d_con, d_dirac),
+    distance_wass(d_con, d_dirac_fin)
   )
   # Non-overlapping dirac-like functions
-  expect_equal(distance_wass(d_dirac, new_d(3, "infin")), 1 + 1e-8)
+  expect_equal(distance_wass(d_dirac, new_d(3, "continuous")), 1 + 1e-8)
 })
 
 test_that("distance_wass works with different pdqr classes", {
-  expect_equal(distance_wass(d_fin, d_infin), distance_wass(p_fin, q_infin))
+  expect_equal(distance_wass(d_fin, d_con), distance_wass(p_fin, q_con))
 })
 
 
@@ -527,14 +527,14 @@ test_that("distance_cramer works with two 'fin' functions", {
 
 test_that("distance_cramer works with mixed-type functions", {
   cur_fin <- new_p(1:10, "fin")
-  cur_infin <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "infin")
+  cur_con <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "continuous")
   # Total integral is multiple of squares of "triangles"
-  expect_equal(distance_cramer(cur_fin, cur_infin), 10/300)
+  expect_equal(distance_cramer(cur_fin, cur_con), 10/300)
   # Checking twice to test independence of argument order
-  expect_equal(distance_cramer(cur_infin, cur_fin), 10/300)
+  expect_equal(distance_cramer(cur_con, cur_fin), 10/300)
 })
 
-test_that("distance_cramer works with two 'infin' functions", {
+test_that("distance_cramer works with two 'continuous' functions", {
   p_f <- as_p(punif)
   p_g <- as_p(punif, max = 0.5)
   # Result is sum of squares of two triangles
@@ -546,9 +546,9 @@ test_that("distance_cramer works with two 'infin' functions", {
 test_that("distance_cramer works with non-overlapping supports", {
   cur_fin_1 <- new_p(1:4, "fin")
   cur_fin_2 <- new_p(5:6, "fin")
-  cur_infin_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "infin")
-  cur_infin_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "infin")
-  cur_infin_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "infin")
+  cur_con_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "continuous")
+  cur_con_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "continuous")
+  cur_con_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "continuous")
 
   # "Two fin"
   # Here 2.125 = 0.25^2 + 0.5^2 + 0.75^2 + 1^2 + 0.5^2
@@ -558,33 +558,33 @@ test_that("distance_cramer works with non-overlapping supports", {
   # "Mixed-typed"
   # Here
   expect_equal(
-    distance_cramer(cur_fin_1, cur_infin_2), 0.25^2+0.5^2+0.75^2+1^2 + 1/3,
+    distance_cramer(cur_fin_1, cur_con_2), 0.25^2+0.5^2+0.75^2+1^2 + 1/3,
     tolerance = 1e-7
   )
   expect_equal(
-    distance_cramer(cur_infin_2, cur_fin_1), 0.25^2+0.5^2+0.75^2+1^2 + 1/3,
+    distance_cramer(cur_con_2, cur_fin_1), 0.25^2+0.5^2+0.75^2+1^2 + 1/3,
     tolerance = 1e-7
   )
   # "Touching" supports
   expect_equal(
-    distance_cramer(cur_fin_1, cur_infin_3), 0.25^2+0.5^2+0.75^2 + 1/3
+    distance_cramer(cur_fin_1, cur_con_3), 0.25^2+0.5^2+0.75^2 + 1/3
   )
   expect_equal(
-    distance_cramer(cur_infin_3, cur_fin_1), 0.25^2+0.5^2+0.75^2 + 1/3
+    distance_cramer(cur_con_3, cur_fin_1), 0.25^2+0.5^2+0.75^2 + 1/3
   )
 
-  # "Two infin"
+  # "Two continuous"
   expect_equal(
-    distance_cramer(cur_infin_1, cur_infin_2), 1 + 1 + 1/3,
+    distance_cramer(cur_con_1, cur_con_2), 1 + 1 + 1/3,
     tolerance = 1e-6
   )
   expect_equal(
-    distance_cramer(cur_infin_2, cur_infin_1), 1 + 1 + 1/3,
+    distance_cramer(cur_con_2, cur_con_1), 1 + 1 + 1/3,
     tolerance = 1e-6
   )
   # "Touching" supports
-  expect_equal(distance_cramer(cur_infin_1, cur_infin_3), 1 + 1/3)
-  expect_equal(distance_cramer(cur_infin_3, cur_infin_1), 1 + 1/3)
+  expect_equal(distance_cramer(cur_con_1, cur_con_3), 1 + 1/3)
+  expect_equal(distance_cramer(cur_con_3, cur_con_1), 1 + 1/3)
 })
 
 test_that("distance_cramer works for very distant distributions", {
@@ -606,20 +606,20 @@ test_that("distance_cramer works with dirac-like functions", {
   # (but not exactly) the same as if it is replaced with corresponding "fin"
   # (except the case when the other one is "fin" with one of points lying inside
   # "dirac" support)
-  d_dirac <- new_d(2, "infin")
+  d_dirac <- new_d(2, "continuous")
   d_dirac_fin <- new_d(2, "fin")
 
-  # "Two infin" case
+  # "Two continuous"
   expect_equal(
-    distance_cramer(d_infin, d_dirac),
-    distance_cramer(d_infin, d_dirac_fin)
+    distance_cramer(d_con, d_dirac),
+    distance_cramer(d_con, d_dirac_fin)
   )
   # Non-overlapping dirac-like functions
-  expect_equal(distance_cramer(d_dirac, new_d(3, "infin")), 1 + 2e-8)
+  expect_equal(distance_cramer(d_dirac, new_d(3, "continuous")), 1 + 2e-8)
 })
 
 test_that("distance_cramer works with different pdqr classes", {
-  expect_equal(distance_cramer(d_fin, d_infin), distance_cramer(p_fin, q_infin))
+  expect_equal(distance_cramer(d_fin, d_con), distance_cramer(p_fin, q_con))
 })
 
 
@@ -638,23 +638,23 @@ test_that("distance_align works with two 'fin' functions", {
 
 test_that("distance_align works with mixed-type functions", {
   f_fin <- new_d(1:4, "fin")
-  g_infin <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
-  expect_equal(distance_align(f_fin, g_infin), 2)
+  g_con <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
+  expect_equal(distance_align(f_fin, g_con), 2)
   # Checking twice to test independence of argument order
-  expect_equal(distance_align(g_infin, f_fin), 2)
+  expect_equal(distance_align(g_con, f_fin), 2)
 })
 
-test_that("distance_align works with two 'infin' functions", {
-  f_infin <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
-  g_infin <- new_d(data.frame(x = c(0, 1)+5.5, y = c(1, 1)), "infin")
-  expect_equal(distance_align(f_infin, g_infin), 5.5, tolerance = 1e-5)
+test_that("distance_align works with two 'continuous' functions", {
+  f_con <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
+  g_con <- new_d(data.frame(x = c(0, 1)+5.5, y = c(1, 1)), "continuous")
+  expect_equal(distance_align(f_con, g_con), 5.5, tolerance = 1e-5)
   # Checking twice to test independence of argument order
-  expect_equal(distance_align(g_infin, f_infin), 5.5, tolerance = 1e-5)
+  expect_equal(distance_align(g_con, f_con), 5.5, tolerance = 1e-5)
 })
 
 test_that("distance_align works for very distant distributions", {
-  p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
-  p_g <- new_p(data.frame(x = c(0, 1) + 1e4, y = c(1, 1)), "infin")
+  p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
+  p_g <- new_p(data.frame(x = c(0, 1) + 1e4, y = c(1, 1)), "continuous")
   expect_equal(distance_align(p_f, p_g), 1e4)
 })
 
@@ -663,18 +663,18 @@ test_that("distance_align works with dirac-like functions", {
   # (but not exactly) the same as if it is replaced with corresponding "fin"
   # (except the case when the other one is "fin" with one of points lying inside
   # "dirac" support)
-  d_dirac <- new_d(1, "infin")
+  d_dirac <- new_d(1, "continuous")
   expect_equal(
-    distance_align(d_infin, d_dirac), distance_align(d_infin, new_d(1, "fin"))
+    distance_align(d_con, d_dirac), distance_align(d_con, new_d(1, "fin"))
   )
 
-  d_dirac_2 <- new_d(2, "infin")
+  d_dirac_2 <- new_d(2, "continuous")
   expect_equal(distance_align(d_dirac, d_dirac_2), 1, tolerance = 1e-4)
 })
 
 test_that("distance_align works with different pdqr classes", {
   expect_equal(
-    distance_align(d_fin, d_infin), distance_align(p_fin, q_infin)
+    distance_align(d_fin, d_con), distance_align(p_fin, q_con)
   )
 })
 
@@ -687,26 +687,26 @@ test_that("distance_entropy works with 'fin' functions", {
   )
 })
 
-test_that("distance_entropy works with 'infin' functions", {
+test_that("distance_entropy works with 'continuous' functions", {
   expect_dist_entropy(as_d(dunif, max = 0.5), as_d(dunif))
   expect_dist_entropy(as_d(dnorm), as_d(dnorm, sd = 0.1))
 })
 
 test_that("distance_entropy works with dirac-like functions", {
-  expect_dist_entropy(d_infin, new_d(1, "infin"))
+  expect_dist_entropy(d_con, new_d(1, "continuous"))
   d_winsor <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"), c(0.1, 0.7)
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"), c(0.1, 0.7)
   )
-  expect_dist_entropy(d_infin, d_winsor)
+  expect_dist_entropy(d_con, d_winsor)
 })
 
 test_that("distance_entropy throws error functions with different types", {
-  expect_error(distance_entropy(d_fin, d_infin), "`f`.*`g`.*type")
+  expect_error(distance_entropy(d_fin, d_con), "`f`.*`g`.*type")
 })
 
 test_that("distance_entropy works with different pdqr classes", {
   expect_equal(
-    distance_entropy(d_infin, d_infin-1), distance_entropy(p_infin, q_infin-1)
+    distance_entropy(d_con, d_con-1), distance_entropy(p_con, q_con-1)
   )
 })
 

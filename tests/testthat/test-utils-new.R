@@ -67,7 +67,7 @@ test_that("is_pdqr_fun works", {
 
   # "support" metadata
   f_no_support <- f_no_type
-  assign("type", "infin", environment(f_no_support))
+  assign("type", "continuous", environment(f_no_support))
   expect_false(is_pdqr_fun(f_no_support))
 
   f_bad_support <- f_no_support
@@ -76,7 +76,7 @@ test_that("is_pdqr_fun works", {
 
   # "x_tbl" metadata
     # "x_tbl" is completely missing
-  f_no_x_tbl <- as_p(p_infin)
+  f_no_x_tbl <- as_p(p_con)
   rm("x_tbl", envir = environment(f_no_x_tbl))
   expect_false(is_pdqr_fun(f_no_x_tbl))
 
@@ -123,18 +123,18 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   assign("x_tbl", bad_x_tbl_5, environment(f_bad_x_tbl_5))
   expect_false(is_pdqr_fun(f_bad_x_tbl_5))
 
-  # "infin" type
+  # "continuous" type
     # Total integral is 1
-  bad_x_tbl_6 <- x_infin_x_tbl
+  bad_x_tbl_6 <- x_con_x_tbl
   bad_x_tbl_6[["y"]] <- 10 * bad_x_tbl_6[["y"]]
-  f_bad_x_tbl_6 <- as_p(p_infin)
+  f_bad_x_tbl_6 <- as_p(p_con)
   assign("x_tbl", bad_x_tbl_6, environment(f_bad_x_tbl_6))
   expect_false(is_pdqr_fun(f_bad_x_tbl_6))
 
     # Column "cumprob" is mandatory
-  bad_x_tbl_7 <- x_infin_x_tbl
+  bad_x_tbl_7 <- x_con_x_tbl
   bad_x_tbl_7[["cumprob"]] <- NULL
-  f_bad_x_tbl_7 <- as_p(p_infin)
+  f_bad_x_tbl_7 <- as_p(p_con)
   assign("x_tbl", bad_x_tbl_7, environment(f_bad_x_tbl_7))
   expect_false(is_pdqr_fun(f_bad_x_tbl_7))
 })
@@ -143,10 +143,10 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 # is_distr_type -----------------------------------------------------------
 test_that("is_distr_type works", {
   expect_true(is_distr_type("fin"))
-  expect_true(is_distr_type("infin"))
+  expect_true(is_distr_type("continuous"))
 
   expect_false(is_distr_type(1))
-  expect_false(is_distr_type(c("fin", "infin")))
+  expect_false(is_distr_type(c("fin", "continuous")))
   expect_false(is_distr_type("a"))
 })
 
@@ -192,35 +192,35 @@ test_that("is_x_tbl works with 'fin' type", {
   )
 })
 
-test_that("is_x_tbl works with 'infin' type", {
-  expect_true(is_x_tbl(x_infin_x_tbl, type = "infin"))
+test_that("is_x_tbl works with 'continuous' type", {
+  expect_true(is_x_tbl(x_con_x_tbl, type = "continuous"))
 
   # Input type
   input <- "a"
-  expect_false(is_x_tbl(input, type = "infin"))
+  expect_false(is_x_tbl(input, type = "continuous"))
 
   # Number of rows
-  expect_false(is_x_tbl(data.frame(x = 1, y = 1), type = "infin"))
+  expect_false(is_x_tbl(data.frame(x = 1, y = 1), type = "continuous"))
 
   # Column "x"
-  expect_false(is_x_tbl(data.frame(a = 1:2), type = "infin"), "x")
-  expect_false(is_x_tbl(data.frame(x = c("a", "b")), type = "infin"))
+  expect_false(is_x_tbl(data.frame(a = 1:2), type = "continuous"), "x")
+  expect_false(is_x_tbl(data.frame(x = c("a", "b")), type = "continuous"))
   expect_false(
-    is_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "infin")
+    is_x_tbl(data.frame(x = c(1, 1, 2), y = c(1, 1, 1)), type = "continuous")
   )
 
   # Column "y"
-  expect_false(is_x_tbl(data.frame(x = 1:2), type = "infin"), "y")
-  expect_false(is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "infin"))
-  expect_false(is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "infin"))
-  expect_false(is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "infin"))
+  expect_false(is_x_tbl(data.frame(x = 1:2), type = "continuous"), "y")
+  expect_false(is_x_tbl(data.frame(x = 1:2, y = c("a", "b")), type = "continuous"))
+  expect_false(is_x_tbl(data.frame(x = 1:2, y = c(-1, 1)), type = "continuous"))
+  expect_false(is_x_tbl(data.frame(x = 1:2, y = c(0, 0)), type = "continuous"))
 
   # Extra columns are allowed
   expect_true(
-    is_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "infin")
+    is_x_tbl(data.frame(x = 1:2, y = c(1, 1), extra = "a"), type = "continuous")
   )
   # Different column order is allowed
-  expect_true(is_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "infin"))
+  expect_true(is_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "continuous"))
 })
 
 
@@ -252,16 +252,16 @@ test_that("is_x_tbl_meta works", {
   input_bad_x_tbl_5[["x"]] <- 1
   expect_false(is_pdqr_fun(input_bad_x_tbl_5))
 
-  # "infin" type
+  # "continuous" type
     # Total integral is 1
-  input_bad_x_tbl_6 <- x_infin_x_tbl
+  input_bad_x_tbl_6 <- x_con_x_tbl
   input_bad_x_tbl_6[["y"]] <- 10 * input_bad_x_tbl_6[["y"]]
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_6, "infin"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_6, "continuous"))
 
     # Column "cumprob" is mandatory
-  input_bad_x_tbl_7 <- x_infin_x_tbl
+  input_bad_x_tbl_7 <- x_con_x_tbl
   input_bad_x_tbl_7[["cumprob"]] <- NULL
-  expect_false(is_x_tbl_meta(input_bad_x_tbl_7, "infin"))
+  expect_false(is_x_tbl_meta(input_bad_x_tbl_7, "continuous"))
 })
 
 
@@ -289,7 +289,7 @@ test_that("is_boolean_pdqr_fun works", {
   not_boolean_x_tbl_2 <- data.frame(x = 1, prob = 1)
   expect_false(is_boolean_pdqr_fun(new_d(not_boolean_x_tbl_2, "fin")))
   not_boolean_x_tbl_3 <- data.frame(x = c(0, 1), y = c(1, 1))
-  expect_false(is_boolean_pdqr_fun(new_d(not_boolean_x_tbl_3, "infin")))
+  expect_false(is_boolean_pdqr_fun(new_d(not_boolean_x_tbl_3, "continuous")))
 })
 
 
@@ -324,18 +324,18 @@ test_that("has_meta_support works", {
 # has_meta_x_tbl ----------------------------------------------------------
 test_that("has_meta_x_tbl works", {
   expect_true(has_meta_x_tbl(p_fin, "fin"))
-  expect_true(has_meta_x_tbl(p_infin, "infin"))
+  expect_true(has_meta_x_tbl(p_con, "continuous"))
 
-  expect_false(has_meta_x_tbl(p_fin, "infin"))
-  expect_false(has_meta_x_tbl(p_infin, "fin"))
+  expect_false(has_meta_x_tbl(p_fin, "continuous"))
+  expect_false(has_meta_x_tbl(p_con, "fin"))
 
   f_no_x_tbl <- as_p(p_fin)
   rm("x_tbl", envir = environment(f_no_x_tbl))
   expect_false(has_meta_x_tbl(f_no_x_tbl, "fin"))
 
-  f_bad_x_tbl_1 <- as_p(p_infin)
+  f_bad_x_tbl_1 <- as_p(p_con)
   assign("x_tbl", "a", environment(f_bad_x_tbl_1))
-  expect_false(has_meta_x_tbl(f_bad_x_tbl_1, "infin"))
+  expect_false(has_meta_x_tbl(f_bad_x_tbl_1, "continuous"))
 
   # Check for "good" "x_tbl" metadata
   f_bad_x_tbl_2 <- as_p(p_fin)

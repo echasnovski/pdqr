@@ -60,7 +60,7 @@ test_that("summ_moment works with 'fin' functions", {
   )
 })
 
-test_that("summ_moment works with 'infin' functions", {
+test_that("summ_moment works with 'continuous' functions", {
   expect_equal_stat(summ_moment, stat_list[["beta"]], "mean", order = 1)
   # Big threshold because original density goes to infinity at edges
   expect_equal_stat(
@@ -87,13 +87,13 @@ test_that("summ_moment works with dirac-like functions", {
   expect_equal(summ_moment(d_dirac_fin, 1), 2)
   expect_equal(summ_moment(d_dirac_fin, 10), 2^10)
 
-  # Type "infin"
-  d_dirac <- new_d(2, "infin")
+  # Type "continuous"
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_moment(d_dirac, 1), 2)
   expect_equal(summ_moment(d_dirac, 10), 2^10)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_moment(d_dirac_2, 1), 1.3)
   expect_equal(summ_moment(d_dirac_2, 10), 0.7*1^10 + 0.3*2^10)
@@ -101,12 +101,12 @@ test_that("summ_moment works with dirac-like functions", {
 
 test_that("summ_moment agrees with other `summ_*()` functions", {
   expect_common_moments(d_fin)
-  expect_common_moments(d_infin)
+  expect_common_moments(d_con)
 })
 
 test_that("summ_moment uses all arguments", {
   expect_all_moment_types_work(d_fin, 3)
-  expect_all_moment_types_work(d_infin, 3)
+  expect_all_moment_types_work(d_con, 3)
 })
 
 test_that("summ_moment works with fractional and zero `order`", {
@@ -114,12 +114,12 @@ test_that("summ_moment works with fractional and zero `order`", {
     summ_moment(d_fin, order = 1.5),
     sum(x_fin_x_tbl[["x"]]^1.5 * x_fin_x_tbl[["prob"]])
   )
-  expect_equal(summ_moment(d_infin, order = 0), 1)
+  expect_equal(summ_moment(d_con, order = 0), 1)
 })
 
 test_that("summ_moment computes infinite standard moment", {
   expect_equal(summ_moment(new_d(1, "fin"), 1, standard = TRUE), Inf)
-  expect_equal(summ_moment(new_d(1, "infin"), 1, standard = TRUE), Inf)
+  expect_equal(summ_moment(new_d(1, "continuous"), 1, standard = TRUE), Inf)
 })
 
 test_that("summ_moment validates input", {
@@ -144,7 +144,7 @@ test_that("summ_skewness works with 'fin' functions", {
   )
 })
 
-test_that("summ_skewness works with 'infin' functions", {
+test_that("summ_skewness works with 'continuous' functions", {
   expect_equal_stat(
     summ_skewness, stat_list[["beta"]], "skewness", thres = 4e-5
   )
@@ -170,12 +170,12 @@ test_that("summ_skewness works with dirac-like functions", {
   d_dirac_fin <- new_d(2, "fin")
   expect_equal(summ_skewness(d_dirac_fin), Inf)
 
-  # Type "infin"
-  d_dirac <- new_d(2, "infin")
+  # Type "continuous"
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_skewness(d_dirac), Inf)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(
     summ_skewness(d_dirac_2),
@@ -198,7 +198,7 @@ test_that("summ_kurtosis works with 'fin' functions", {
   )
 })
 
-test_that("summ_kurtosis works with 'infin' functions", {
+test_that("summ_kurtosis works with 'continuous' functions", {
   expect_equal_stat(
     summ_kurtosis, stat_list[["beta"]], "ex_kurtosis", thres = 2e-4
   )
@@ -230,12 +230,12 @@ test_that("summ_kurtosis works with dirac-like functions", {
   d_dirac_fin <- new_d(2, "fin")
   expect_equal(summ_kurtosis(d_dirac_fin), Inf)
 
-  # Type "infin"
-  d_dirac <- new_d(2, "infin")
+  # Type "continuous"
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_kurtosis(d_dirac), Inf)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(
     summ_kurtosis(d_dirac_2),
@@ -246,7 +246,7 @@ test_that("summ_kurtosis works with dirac-like functions", {
 test_that("summ_kurtosis uses `excess` argument", {
   expect_equal(summ_kurtosis(d_fin, excess = FALSE), summ_kurtosis(d_fin) + 3)
   expect_equal(
-    summ_kurtosis(d_infin, excess = FALSE), summ_kurtosis(d_infin) + 3
+    summ_kurtosis(d_con, excess = FALSE), summ_kurtosis(d_con) + 3
   )
 })
 

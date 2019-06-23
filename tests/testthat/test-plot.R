@@ -45,26 +45,26 @@ test_that("plot.p works", {
   )
 
   vdiffr::expect_doppelganger(
-    "plot-p-infin-1", recordPlot({
-      plot(p_infin)
+    "plot-p-continuous-1", recordPlot({
+      plot(p_con)
       lines(p_custom)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-infin-2", recordPlot({
-      plot(p_infin, y = NA)
+    "plot-p-continuous-2", recordPlot({
+      plot(p_con, y = NA)
       lines(p_custom, y = NA)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-infin-3", recordPlot({
-      plot(p_infin, xlab = "a", ylab = "b", main = "c", type = "p")
+    "plot-p-continuous-3", recordPlot({
+      plot(p_con, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(p_custom, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-p-infin-4", recordPlot({
-      plot(p_infin, xlim = c(0, 2), col = "blue")
+    "plot-p-continuous-4", recordPlot({
+      plot(p_con, xlim = c(0, 2), col = "blue")
       lines(p_custom)
     })
   )
@@ -72,13 +72,13 @@ test_that("plot.p works", {
 
 test_that("plot.p and lines.p use `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-p-infin-n-extra-grid", recordPlot({
+    "plot-p-continuous-n-extra-grid", recordPlot({
       plot(
-        new_p(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+        new_p(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
         n_extra_grid = NULL, type = "b", main = "n_extra_grid check"
       )
       lines(
-        new_p(data.frame(x = c(0.2, 1), y = c(1, 1)), "infin"),
+        new_p(data.frame(x = c(0.2, 1), y = c(1, 1)), "continuous"),
         n_extra_grid = 3, type = "b", col = "blue"
       )
     })
@@ -129,26 +129,26 @@ test_that("plot.d works", {
 
   # These are also tests for `lines.d()`
   vdiffr::expect_doppelganger(
-    "plot-d-infin-1", recordPlot({
-      plot(d_infin)
+    "plot-d-continuous-1", recordPlot({
+      plot(d_con)
       lines(d_custom)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-infin-2", recordPlot({
-      plot(d_infin, y = NA)
+    "plot-d-continuous-2", recordPlot({
+      plot(d_con, y = NA)
       lines(d_custom, y = NA)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-infin-3", recordPlot({
-      plot(d_infin, xlab = "a", ylab = "b", main = "c", type = "p")
+    "plot-d-continuous-3", recordPlot({
+      plot(d_con, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(d_custom, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-d-infin-4", recordPlot({
-      plot(d_infin, xlim = c(0, 2), col = "blue")
+    "plot-d-continuous-4", recordPlot({
+      plot(d_con, xlim = c(0, 2), col = "blue")
       lines(d_custom)
     })
   )
@@ -156,38 +156,38 @@ test_that("plot.d works", {
 
 test_that("plot.d and lines.d use `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-d-infin-n-extra-grid", recordPlot({
+    "plot-d-continuous-n-extra-grid", recordPlot({
       plot(
-        new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+        new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
         n_extra_grid = NULL, type = "b", main = "n_extra_grid check"
       )
       lines(
-        new_d(data.frame(x = c(0.2, 1), y = c(1, 1)), "infin"),
+        new_d(data.frame(x = c(0.2, 1), y = c(1, 1)), "continuous"),
         n_extra_grid = 3, type = "b", col = "blue"
       )
     })
   )
 })
 
-test_that("plot.d handles dirac-like 'infin' functions",  {
+test_that("plot.d handles dirac-like 'continuous' functions",  {
   vdiffr::expect_doppelganger(
     "dirac-like-1", recordPlot({
-      plot(form_retype(d_fin, "infin", method = "dirac"))
+      plot(form_retype(d_fin, "continuous", method = "dirac"))
     })
   )
   vdiffr::expect_doppelganger(
     "dirac-like-2", recordPlot({
-      plot(form_resupport(d_infin, c(-2, 1), method = "winsor"))
+      plot(form_resupport(d_con, c(-2, 1), method = "winsor"))
     })
   )
   vdiffr::expect_doppelganger(
     "dirac-like-3", recordPlot({
-      plot(form_mix(list(d_fin, d_infin)))
+      plot(form_mix(list(d_fin, d_con)))
     })
   )
   vdiffr::expect_doppelganger(
     "dirac-like-4", recordPlot({
-      plot(new_d(1, "infin"))
+      plot(new_d(1, "continuous"))
     })
   )
 })
@@ -236,26 +236,26 @@ test_that("plot.q works", {
 
   # These are also tests for `lines.q()`
   vdiffr::expect_doppelganger(
-    "plot-q-infin-1", recordPlot({
-      plot(q_infin)
+    "plot-q-continuous-1", recordPlot({
+      plot(q_con)
       lines(q_custom)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-infin-2", recordPlot({
-      plot(q_infin, y = NA)
+    "plot-q-continuous-2", recordPlot({
+      plot(q_con, y = NA)
       lines(q_custom, y = NA)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-infin-3", recordPlot({
-      plot(q_infin, xlab = "a", ylab = "b", main = "c", type = "p")
+    "plot-q-continuous-3", recordPlot({
+      plot(q_con, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(q_custom, lwd = 2)
     })
   )
   vdiffr::expect_doppelganger(
-    "plot-q-infin-4", recordPlot({
-      plot(q_infin, xlim = c(0, 2), col = "blue")
+    "plot-q-continuous-4", recordPlot({
+      plot(q_con, xlim = c(0, 2), col = "blue")
       lines(q_custom)
     })
   )
@@ -263,13 +263,13 @@ test_that("plot.q works", {
 
 test_that("plot.q and lines.q use `n_extra_grid` argument", {
   vdiffr::expect_doppelganger(
-    "plot-q-infin-n-extra-grid", recordPlot({
+    "plot-q-continuous-n-extra-grid", recordPlot({
       plot(
-        new_q(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+        new_q(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
         n_extra_grid = NULL, type = "b", main = "n_extra_grid check"
       )
       lines(
-        new_q(data.frame(x = c(0.2, 1), y = c(1, 1)), "infin"),
+        new_q(data.frame(x = c(0.2, 1), y = c(1, 1)), "continuous"),
         n_extra_grid = 3, type = "b", col = "blue"
       )
     })
@@ -303,26 +303,26 @@ test_that("plot.r works", {
   )
 
   vdiffr::expect_doppelganger(
-    "plot-r-infin-1", recordPlot(plot(r_infin))
+    "plot-r-continuous-1", recordPlot(plot(r_con))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-infin-2", recordPlot(plot(r_infin, y = NA))
+    "plot-r-continuous-2", recordPlot(plot(r_con, y = NA))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-infin-3",
-    recordPlot(plot(r_infin, xlab = "a", main = "c"))
+    "plot-r-continuous-3",
+    recordPlot(plot(r_con, xlab = "a", main = "c"))
   )
   vdiffr::expect_doppelganger(
-    "plot-r-infin-4",
+    "plot-r-continuous-4",
     recordPlot(
-      plot(r_infin, xlim = c(0, 2), col = "blue", freq = FALSE)
+      plot(r_con, xlim = c(0, 2), col = "blue", freq = FALSE)
     )
   )
 })
 
 test_that("plot.r uses `n_sample` argument", {
   vdiffr::expect_doppelganger(
-    "plot-r-n-sample", recordPlot(plot(r_infin, n_sample = 10))
+    "plot-r-n-sample", recordPlot(plot(r_con, n_sample = 10))
   )
 })
 

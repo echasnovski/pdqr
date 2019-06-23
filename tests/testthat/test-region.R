@@ -176,8 +176,8 @@ test_that("region_prob works with 'fin' functions", {
   )
 })
 
-test_that("region_prob works with 'infin' functions", {
-  expect_region_prob_works_with_infin <- function(region, f, ref_output) {
+test_that("region_prob works with 'continuous' functions", {
+  expect_region_prob_works_with_con <- function(region, f, ref_output) {
     expect_equal(
       region_prob(region, f, left_closed = TRUE, right_closed = TRUE),
       ref_output
@@ -196,36 +196,36 @@ test_that("region_prob works with 'infin' functions", {
     )
   }
 
-  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "infin")
+  d_unif <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
 
-  expect_region_prob_works_with_infin(
+  expect_region_prob_works_with_con(
     region = data.frame(left = c(0.1, 0.5), right = c(0.2, 0.7)),
     f = d_unif,
     ref_output = (0.2 - 0.1) + (0.7 - 0.5)
   )
-  expect_region_prob_works_with_infin(
+  expect_region_prob_works_with_con(
     region = data.frame(left = c(0.5, 0.7), right = c(0.6, 0.7)),
     f = d_unif,
     ref_output = 0.6 - 0.5
   )
-  expect_region_prob_works_with_infin(
+  expect_region_prob_works_with_con(
     region = data.frame(left = c(-1, 0.5, 0.7), right = c(-1, 0.5, 0.7)),
     f = d_unif,
     ref_output = 0
   )
-  expect_region_prob_works_with_infin(
+  expect_region_prob_works_with_con(
     region = data.frame(left = -1, right = -0.5),
     f = d_unif,
     ref_output = 0
   )
 })
 
-test_that("region_prob works with dirac-like 'infin' functions", {
-  d_dirac_1 <- new_d(1, "infin")
+test_that("region_prob works with dirac-like 'continuous' functions", {
+  d_dirac_1 <- new_d(1, "continuous")
   expect_equal(region_prob(data.frame(left = 0, right = 1), d_dirac_1), 0.5)
   expect_equal(region_prob(data.frame(left = 0, right = 1.5), d_dirac_1), 1)
 
-  d_dirac_2 <- form_mix(list(new_d(1, "infin"), new_d(2, "infin")))
+  d_dirac_2 <- form_mix(list(new_d(1, "continuous"), new_d(2, "continuous")))
   expect_equal(region_prob(data.frame(left = 0, right = 1), d_dirac_2), 0.25)
   expect_equal(region_prob(data.frame(left = 0, right = 1.5), d_dirac_2), 0.5)
   expect_equal(
@@ -350,8 +350,8 @@ test_that("region_height works with 'fin' functions", {
   )
 })
 
-test_that("region_height works with 'infin' functions", {
-  cur_d <- new_d(data.frame(x = 1:5, y = c(0, 2, 1, 2, 0)/5), "infin")
+test_that("region_height works with 'continuous' functions", {
+  cur_d <- new_d(data.frame(x = 1:5, y = c(0, 2, 1, 2, 0)/5), "continuous")
 
   expect_equal(
     region_height(data.frame(left = 1.5, right = 2.5), cur_d), cur_d(1.5)
@@ -382,15 +382,15 @@ test_that("region_height works with 'infin' functions", {
   )
 })
 
-test_that("region_height works with dirac-like 'infin' functions", {
-  d_dirac_1 <- new_d(1, "infin")
+test_that("region_height works with dirac-like 'continuous' functions", {
+  d_dirac_1 <- new_d(1, "continuous")
   expect_equal(region_height(data.frame(left = 0, right = 1), d_dirac_1), 0)
   expect_equal(
     region_height(data.frame(left = 1, right = 1), d_dirac_1), d_dirac_1(1)
   )
 
   d_dirac_2 <- form_mix(
-    list(new_d(1, "infin"), new_d(2, "infin")), weights = c(0.25, 0.75)
+    list(new_d(1, "continuous"), new_d(2, "continuous")), weights = c(0.25, 0.75)
   )
   expect_equal(region_height(data.frame(left = 0, right = 1), d_dirac_2), 0)
   expect_equal(
@@ -440,7 +440,7 @@ test_that("region_width validates input", {
 
 # region_draw -------------------------------------------------------------
 test_that("region_draw works", {
-  cur_d <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "infin")
+  cur_d <- new_d(data.frame(x = 1:11, y = c(0, rep(c(1, 0), 5))), "continuous")
   region <- data.frame(
     left = c(-100, 3.5, 5.5, 7.5),
     right = c(2.5,   5, 6.5, 100)

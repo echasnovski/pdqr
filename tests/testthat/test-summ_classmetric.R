@@ -4,12 +4,12 @@ context("test-summ_classmetric")
 # Input data --------------------------------------------------------------
 f_fin <- new_d(seq(1.5, 4.5, by = 1), "fin")
 g_fin <- new_d(seq(1.2, 2.1, by = 0.1), "fin")
-f_infin <- new_d(data.frame(x = c(0.5, 2.5), y = c(1, 1)/2), "infin")
-g_infin <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "infin")
+f_con <- new_d(data.frame(x = c(0.5, 2.5), y = c(1, 1)/2), "continuous")
+g_con <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
 
 fin_threshold <- c(1, 1.5, 1.95, 3, 5)
 mixed_threshold <- c(0, 1, 1.75, 3, 5)
-infin_threshold <- c(-1, 0.25, 0.75, 1.5, 3)
+con_threshold <- c(-1, 0.25, 0.75, 1.5, 3)
 
 # These values are also tests for classification rule: "negative" if "<="
 # threshold, "positive" otherwise.
@@ -75,8 +75,8 @@ mixed_classmetric_df <- data.frame(
   check.names = FALSE
 )
 
-infin_classmetric_df <- data.frame(
-  threshold = infin_threshold,
+con_classmetric_df <- data.frame(
+  threshold = con_threshold,
 
   TPR = c(1, 0.75,  0.25,   0, 0),
   TNR = c(0,    0, 0.125, 0.5, 1),
@@ -122,8 +122,8 @@ expect_classmetric <- function(f, g, ref_df) {
 # summ_classmetric --------------------------------------------------------
 test_that("summ_classmetric works", {
   expect_classmetric(f_fin, g_fin, fin_classmetric_df)
-  expect_classmetric(f_fin, f_infin, mixed_classmetric_df)
-  expect_classmetric(f_infin, g_infin, infin_classmetric_df)
+  expect_classmetric(f_fin, f_con, mixed_classmetric_df)
+  expect_classmetric(f_con, g_con, con_classmetric_df)
 })
 
 test_that("summ_classmetric respects method aliases", {
@@ -141,7 +141,7 @@ test_that("summ_classmetric respects method aliases", {
 
 test_that("summ_classmetric works with different pdqr classes", {
   expect_equal(
-    summ_classmetric(d_fin, d_infin, 2), summ_classmetric(p_fin, q_infin, 2)
+    summ_classmetric(d_fin, d_con, 2), summ_classmetric(p_fin, q_con, 2)
   )
 })
 
@@ -171,12 +171,12 @@ test_that("summ_classmetric_df works", {
     fin_classmetric_df
   )
   expect_equal(
-    summ_classmetric_df(f_fin, f_infin, mixed_threshold, method = method_vec),
+    summ_classmetric_df(f_fin, f_con, mixed_threshold, method = method_vec),
     mixed_classmetric_df
   )
   expect_equal(
-    summ_classmetric_df(f_infin, g_infin, infin_threshold, method = method_vec),
-    infin_classmetric_df
+    summ_classmetric_df(f_con, g_con, con_threshold, method = method_vec),
+    con_classmetric_df
   )
 })
 
@@ -198,8 +198,8 @@ test_that("summ_classmetric_df respects method aliases", {
 
 test_that("summ_classmetric_df works with different pdqr classes", {
   expect_equal(
-    summ_classmetric_df(d_fin, d_infin, 2),
-    summ_classmetric_df(p_fin, q_infin, 2)
+    summ_classmetric_df(d_fin, d_con, 2),
+    summ_classmetric_df(p_fin, q_con, 2)
   )
 })
 

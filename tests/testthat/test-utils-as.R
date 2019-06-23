@@ -4,7 +4,7 @@ context("test-utils-as")
 # as_honored_distr --------------------------------------------------------
 test_that("as_honored_distr works", {
   out <- as_honored_distr("p", "punif", stats::punif, c(0, 1), n_grid = 10000)
-  expect_distr_fun(out, "p", "infin")
+  expect_distr_fun(out, "p", "continuous")
   expect_equal(meta_support(out), c(0, 1))
 })
 
@@ -39,7 +39,7 @@ test_that("honored_distr_supp supports all honored distributions", {
   expect_honored("nbinom", qnbinom, c(p, 1 - p), size = 10, prob = 0.1)
   expect_honored("pois", qpois, c(p, 1 - p), lambda = 5)
 
-  # "infin"
+  # "continuous"
   expect_honored("beta", qbeta, c(p, 1 - p), shape1 = 20, shape2 = 20)
   expect_honored("cauchy", qcauchy, c(big_p, 1 - big_p), location = 100)
   expect_honored("chisq", qchisq, c(p, 1 - p), df = 100)

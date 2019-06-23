@@ -24,8 +24,8 @@ test_that("summ_order works with method 'compare'", {
   # `g` are first and second elements of `non_mean_list`) but `summ_mean(f) >=
   # summ_mean(g)` is `TRUE`. So `f` should be considered as being "less" than g.
   non_mean_list <- list(
-    new_d(data.frame(x = c(0.56, 0.815), y = c(1, 1)), "infin"),
-    new_d(data.frame(x = 0:1, y = c(0, 1)), "infin")
+    new_d(data.frame(x = c(0.56, 0.815), y = c(1, 1)), "continuous"),
+    new_d(data.frame(x = 0:1, y = c(0, 1)), "continuous")
   )
   expect_equal(summ_order(non_mean_list, method = "compare"), c(1, 2))
 
@@ -33,9 +33,9 @@ test_that("summ_order works with method 'compare'", {
   # (`summ_prob_true(f_list[[1]] <= f_list[[2]])` is more than 0.5), second is
   # less than third, but third is less than first.
   non_trans_list <- list(
-    new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "infin"),
-    new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "infin"),
-    new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "infin")
+    new_d(data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "continuous"),
+    new_d(data.frame(x = c(0.05, 0.3, 0.70), y = c(4, 0, 4)), "continuous"),
+    new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "continuous")
   )
     # One important feature here should be independence of output ordering
     # from order of input, i.e. eventual sorting should be the same
@@ -46,9 +46,9 @@ test_that("summ_order works with method 'compare'", {
 
   # Case of equivalent pdqr-functions (`P(f >= g) = 0.5` for all pairs).
   equi_list <- list(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
-    new_d(data.frame(x = c(0, 0.5, 1), y = c(0, 1, 0)), "infin"),
-    new_d(data.frame(x = c(0, 0.5, 1), y = c(1, 0, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
+    new_d(data.frame(x = c(0, 0.5, 1), y = c(0, 1, 0)), "continuous"),
+    new_d(data.frame(x = c(0, 0.5, 1), y = c(1, 0, 1)), "continuous"),
     new_d(c(0, 0.5, 1), "fin")
   )
   # Input order should be preserved
@@ -91,7 +91,7 @@ test_that("summ_order works with list of length 1", {
 
 test_that("summ_order works with different pdqr classes", {
   expect_equal(
-    summ_order(list(d_fin, d_infin)), summ_order(list(p_fin, q_infin))
+    summ_order(list(d_fin, d_con)), summ_order(list(p_fin, q_con))
   )
 })
 

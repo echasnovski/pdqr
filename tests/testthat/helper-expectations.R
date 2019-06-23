@@ -107,30 +107,30 @@ expect_x_tbl_imputation <- function(f) {
     )
   )
 
-  # Type "infin"
-  n_infin <- nrow(x_infin_x_tbl)
+  # Type "continuous"
+  n_con <- nrow(x_con_x_tbl)
 
     # Reordering rows
-  bad_infin_input_1 <- x_infin_x_tbl[n_infin:1, ]
-  output_1 <- new_d(bad_infin_input_1, "infin")
-  expect_equal(meta_x_tbl(output_1), x_infin_x_tbl)
+  bad_con_input_1 <- x_con_x_tbl[n_con:1, ]
+  output_1 <- new_d(bad_con_input_1, "continuous")
+  expect_equal(meta_x_tbl(output_1), x_con_x_tbl)
 
     # Reordering columns
-  bad_infin_input_2 <- x_infin_x_tbl[, c("y", "x")]
-  output_2 <- f(bad_infin_input_2, "infin")
-  expect_equal(meta_x_tbl(output_2), x_infin_x_tbl)
+  bad_con_input_2 <- x_con_x_tbl[, c("y", "x")]
+  output_2 <- f(bad_con_input_2, "continuous")
+  expect_equal(meta_x_tbl(output_2), x_con_x_tbl)
 
     # Normalizing
-  bad_infin_input_3 <- x_infin_x_tbl
-  bad_infin_input_3[["y"]] <- bad_infin_input_3[["y"]] * 10
-  output_3 <- new_d(bad_infin_input_3, "infin")
-  expect_equal(meta_x_tbl(output_3), x_infin_x_tbl)
+  bad_con_input_3 <- x_con_x_tbl
+  bad_con_input_3[["y"]] <- bad_con_input_3[["y"]] * 10
+  output_3 <- new_d(bad_con_input_3, "continuous")
+  expect_equal(meta_x_tbl(output_3), x_con_x_tbl)
 
     # Recomputing "cumprob" column
-  bad_infin_input_4 <- x_infin_x_tbl
-  bad_infin_input_4[["cumprob"]] <- bad_infin_input_4[["cumprob"]] * 10
-  output_4 <- f(bad_infin_input_4, "infin")
-  expect_equal(meta_x_tbl(output_4), x_infin_x_tbl)
+  bad_con_input_4 <- x_con_x_tbl
+  bad_con_input_4[["cumprob"]] <- bad_con_input_4[["cumprob"]] * 10
+  output_4 <- f(bad_con_input_4, "continuous")
+  expect_equal(meta_x_tbl(output_4), x_con_x_tbl)
 }
 
 expect_ref_x_tbl <- function(f, x_tbl) {
@@ -141,7 +141,7 @@ expect_equal_x_tbl <- function(f_1, f_2) {
   expect_equal(meta_x_tbl(f_1), meta_x_tbl(f_2))
 }
 
-expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
+expect_pdqr_print <- function(f, fin_name, con_name = fin_name) {
   supp_regex <- "Support: ~*\\[[-0-9\\.]+, [-0-9\\.]+\\]"
 
   f_fin <- f(x_fin, type = "fin")
@@ -151,21 +151,21 @@ expect_pdqr_print <- function(f, fin_name, infin_name = fin_name) {
     regex_scatter(fin_name, "finite number", supp_regex, n_fin, "elements")
   )
 
-  f_infin <- f(x_infin, type = "infin")
-  n_infin <- nrow(x_infin_x_tbl)
+  f_con <- f(x_con, type = "continuous")
+  n_con <- nrow(x_con_x_tbl)
   expect_output(
-    print(f_infin),
+    print(f_con),
     regex_scatter(
-      infin_name, "infinite number", supp_regex, n_infin-1, "intervals"
+      con_name, "infinite number", supp_regex, n_con-1, "intervals"
     )
   )
 
   # Test of approximation sign in support printing
-  f_pi_1 <- f(data.frame(x = c(0, pi), y = c(1, 1)/pi), "infin")
+  f_pi_1 <- f(data.frame(x = c(0, pi), y = c(1, 1)/pi), "continuous")
   expect_output(print(f_pi_1), "Support: ~\\[0, ")
-  f_pi_2 <- f(data.frame(x = c(pi, 4), y = c(1, 1)/(4-pi)), "infin")
+  f_pi_2 <- f(data.frame(x = c(pi, 4), y = c(1, 1)/(4-pi)), "continuous")
   expect_output(print(f_pi_2), "Support: ~\\[3\\.14159, ")
-  f_pi_3 <- f(data.frame(x = pi + 0:1, y = c(1, 1)), "infin")
+  f_pi_3 <- f(data.frame(x = pi + 0:1, y = c(1, 1)), "continuous")
   expect_output(print(f_pi_3), "Support: ~\\[3\\.14159, ")
 
   f_pi_4 <- f(c(0, pi), "fin")

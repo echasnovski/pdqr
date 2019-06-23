@@ -8,14 +8,14 @@ x_fin_x_tbl <- data.frame(
 x_fin_cumprobs <- cumsum(x_fin_x_tbl[["prob"]])
 x_fin_support <- c(1, 9)
 
-x_infin <- c(
+x_con <- c(
   1.47, 0.11, 0.04,  0.37, -0.43, 0.17, -0.18, 0.85, -0.05, 0.17,
   -1.27, 1.04, 1.06, -1.87, -1.71, -0.3, -0.26, 0.62,  1.42, 0.36
 )
-x_infin_support <- c(-2.91865392160928, 2.51865392160928)
-x_infin_x_tbl <- density_piecelin(x_infin)
-x_infin_x_tbl[["cumprob"]] <- trapez_part_integral(
-  x_infin_x_tbl[["x"]], x_infin_x_tbl[["y"]]
+x_con_support <- c(-2.91865392160928, 2.51865392160928)
+x_con_x_tbl <- density_piecelin(x_con)
+x_con_x_tbl[["cumprob"]] <- trapez_part_integral(
+  x_con_x_tbl[["x"]], x_con_x_tbl[["y"]]
 )
 
 
@@ -30,12 +30,12 @@ x_fin_vec_seq <- sample(
 # often important.
 x_fin_vec_ext <- c(x_fin_vec_seq, x_fin_vec)
 
-x_infin_vec <- sample(
-  seq(x_infin_support[1], x_infin_support[2], length.out = 1000)
+x_con_vec <- sample(
+  seq(x_con_support[1], x_con_support[2], length.out = 1000)
 )
-x_infin_vec_ext <- sample(
+x_con_vec_ext <- sample(
   seq(
-    x_infin_support[1] - 0.1, x_infin_support[2] + 0.1, length.out = 1000
+    x_con_support[1] - 0.1, x_con_support[2] + 0.1, length.out = 1000
   )
 )
 
@@ -70,24 +70,24 @@ create_user_pdqr <- function(custom_pdqr, ...) {
 
 # p-functions
 p_fin <- new_p(x_fin, "fin")
-p_infin <- new_p(x_infin, "infin")
+p_con <- new_p(x_con, "continuous")
 user_p <- create_user_pdqr(pbeta, 1, 2)
-p_custom <- new_p(custom_x_tbl, "infin")
+p_custom <- new_p(custom_x_tbl, "continuous")
 
 # d-functions
 d_fin <- new_d(x_fin, "fin")
-d_infin <- new_d(x_infin, "infin")
+d_con <- new_d(x_con, "continuous")
 user_d <- create_user_pdqr(dbeta, 1, 2)
-d_custom <- new_d(custom_x_tbl, "infin")
+d_custom <- new_d(custom_x_tbl, "continuous")
 
 # q-functions
 q_fin <- new_q(x_fin, "fin")
-q_infin <- new_q(x_infin, "infin")
+q_con <- new_q(x_con, "continuous")
 user_q <- create_user_pdqr(qbeta, 1, 2)
-q_custom <- new_q(custom_x_tbl, "infin")
+q_custom <- new_q(custom_x_tbl, "continuous")
 
 # r-functions
 r_fin <- new_r(x_fin, "fin")
-r_infin <- new_r(x_infin, "infin")
+r_con <- new_r(x_con, "continuous")
 user_r <- create_user_pdqr(rbeta, 1, 2)
-r_custom <- new_r(custom_x_tbl, "infin")
+r_custom <- new_r(custom_x_tbl, "continuous")

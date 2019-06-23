@@ -57,7 +57,7 @@ test_that("as_d.default honors special 'fin' distributions", {
   )
 })
 
-test_that("as_d.default honors special 'infin' distributions", {
+test_that("as_d.default honors special 'continuous' distributions", {
   # Standard uniform
   out_unif <- as_d(dunif)
   out_unif_ref <- as_d(function(x) {dunif(x)}, c(0, 1))
@@ -365,22 +365,22 @@ test_that("as_d.default throws error if detected support isn't proper", {
 # as_d.pdqr ---------------------------------------------------------------
 test_that("as_d.pdqr works with 'p'", {
   expect_equal_distr(as_d(p_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
-  expect_equal_distr(as_d(p_infin), d_infin, x_infin_vec_ext)
+  expect_equal_distr(as_d(p_con), d_con, x_con_vec_ext)
 })
 
 test_that("as_d.pdqr works with 'd'", {
   expect_equal_distr(as_d(d_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
-  expect_equal_distr(as_d(d_infin), d_infin, x_infin_vec_ext)
+  expect_equal_distr(as_d(d_con), d_con, x_con_vec_ext)
 })
 
 test_that("as_d.pdqr works with 'q'", {
   expect_equal_distr(as_d(q_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
-  expect_equal_distr(as_d(q_infin), d_infin, grid = x_infin_vec_ext)
+  expect_equal_distr(as_d(q_con), d_con, grid = x_con_vec_ext)
 })
 
 test_that("as_d.pdqr works with 'r'", {
   expect_equal_distr(as_d(r_fin), d_fin, grid = c(x_fin_vec_ext, x_fin_vec))
-  expect_equal_distr(as_d(r_infin), d_infin, grid = x_infin_vec_ext)
+  expect_equal_distr(as_d(r_con), d_con, grid = x_con_vec_ext)
 })
 
 test_that("as_d.pdqr validates input", {

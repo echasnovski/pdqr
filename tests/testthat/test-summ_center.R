@@ -17,10 +17,10 @@ test_that("summ_center works", {
   expect_equal(summ_center(d_fin, "median"), summ_median(d_fin))
   expect_equal(summ_center(d_fin, "mode"), summ_mode(d_fin))
 
-  # "infin"
-  expect_equal(summ_center(d_infin, "mean"), summ_mean(d_infin))
-  expect_equal(summ_center(d_infin, "median"), summ_median(d_infin))
-  expect_equal(summ_center(d_infin, "mode"), summ_mode(d_infin))
+  # "continuous"
+  expect_equal(summ_center(d_con, "mean"), summ_mean(d_con))
+  expect_equal(summ_center(d_con, "median"), summ_median(d_con))
+  expect_equal(summ_center(d_con, "mode"), summ_mode(d_con))
 })
 
 test_that("summ_center validates input", {
@@ -38,7 +38,7 @@ test_that("summ_mean works with 'fin' functions", {
   expect_equal_stat(summ_mean, stat_list[["pois"]], "mean", thres = 1e-5)
 })
 
-test_that("summ_mean works with common 'infin' functions", {
+test_that("summ_mean works with common 'continuous' functions", {
   expect_equal_stat(summ_mean, stat_list[["beta"]], "mean")
   # Big threshold because original density goes to infinity at edges
   expect_equal_stat(summ_mean, stat_list[["beta_inf"]], "mean", thres = 2e-2)
@@ -51,19 +51,19 @@ test_that("summ_mean works with common 'infin' functions", {
   expect_equal_stat(summ_mean, stat_list[["unif"]], "mean")
 })
 
-test_that("summ_mean works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_mean works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_mean(d_dirac), 2)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_mean(d_dirac_2), 1.3)
 })
 
-test_that("summ_mean works with winsorized 'infin' functions", {
+test_that("summ_mean works with winsorized 'continuous' functions", {
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
@@ -76,16 +76,16 @@ test_that("summ_mean works with zero probability spaces in distribution", {
     2.2
   )
   expect_equal(
-    summ_mean(new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "infin")),
+    summ_mean(new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "continuous")),
     3.5
   )
 })
 
-test_that("summ_mean works with 'infin' functions with few intervals", {
-  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+test_that("summ_mean works with 'continuous' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_mean(d_unif_1), 1.5)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
   expect_equal(summ_mean(d_unif_2), 1)
 })
 
@@ -104,10 +104,10 @@ test_that("summ_median works with 'fin' functions", {
 
 test_that("summ_median not always mimic `median()`", {
   expect_equal(summ_median(new_q(1:10, "fin")), 5)
-  expect_equal(summ_median(new_q(1:10, "infin")), 5.5)
+  expect_equal(summ_median(new_q(1:10, "continuous")), 5.5)
 })
 
-test_that("summ_median works with common 'infin' functions", {
+test_that("summ_median works with common 'continuous' functions", {
   expect_equal_stat(summ_median, stat_list[["beta"]], "median")
   # Big threshold because original density goes to infinity at edges
   expect_equal_stat(
@@ -124,22 +124,22 @@ test_that("summ_median works with common 'infin' functions", {
   expect_equal_stat(summ_median, stat_list[["unif"]], "median")
 })
 
-test_that("summ_median works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_median works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_median(d_dirac), 2)
 
   # Using equal weights ends up with numerical accuracy representation of
   # `cumprob` field in `meta_x_tbl(d_dirac_2)`. Therefore, output of
   # `summ_median(d_dirac_2)` is 2.
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_median(d_dirac_2), 1)
 })
 
-test_that("summ_median works with winsorized 'infin' functions", {
+test_that("summ_median works with winsorized 'continuous' functions", {
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
@@ -153,17 +153,17 @@ test_that("summ_median works with zero probability spaces in distribution", {
   )
   expect_equal(
     summ_median(
-      new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "infin")
+      new_d(data.frame(x = 1:6, y = c(0, 0.5, 0, 0, 0.5, 0)), "continuous")
     ),
     3
   )
 })
 
-test_that("summ_median works with 'infin' functions with few intervals", {
-  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+test_that("summ_median works with 'continuous' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_median(d_unif_1), 1.5)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
   expect_equal(summ_median(d_unif_2), 1)
 })
 
@@ -186,7 +186,7 @@ test_that("summ_mode works with 'fin' functions", {
   expect_equal(summ_mode(as_d(dpois, lambda = 10), method = "local"), c(9, 10))
 })
 
-test_that("summ_mode works with common 'infin' functions", {
+test_that("summ_mode works with common 'continuous' functions", {
   # Method "global" (default)
   expect_equal_stat(summ_mode, stat_list[["beta"]], "mode")
   expect_equal_stat(summ_mode, stat_list[["beta_inf"]], "mode")
@@ -216,10 +216,10 @@ test_that("summ_mode works with common 'infin' functions", {
   )
 })
 
-test_that("summ_mode works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_mode works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
 
   # Method "global" (default)
@@ -231,10 +231,10 @@ test_that("summ_mode works with dirac-like 'infin' functions", {
   expect_equal(summ_mode(d_dirac_2, method = "local"), c(1, 2))
 })
 
-test_that("summ_mode works with winsorized 'infin' functions", {
+test_that("summ_mode works with winsorized 'continuous' functions", {
   # Method "global" (default)
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
@@ -253,22 +253,22 @@ test_that("summ_mode works with plateaus in distribution", {
     data.frame(x = 1:5, prob = c(0.1, 0.25, 0.25, 0.25, 0.15)), "fin"
   )
   # `y` isn't exact and will get renormalized
-  d_plateau_infin <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 3)), "infin")
-  d_plateau_infin_2 <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 1)), "infin")
+  d_plateau_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 3)), "continuous")
+  d_plateau_con_2 <- new_d(data.frame(x = 1:5, y = c(1, 2, 2, 2, 1)), "continuous")
 
   # Method "global" (default)
   expect_equal(summ_mode(d_plateau_fin), 5)
     # Returns the smallest "x" with highest probability
   expect_equal(summ_mode(d_plateau_fin_2), 2)
-  expect_equal(summ_mode(d_plateau_infin), 5)
+  expect_equal(summ_mode(d_plateau_con), 5)
     # Returns the smallest "x" with highest probability
-  expect_equal(summ_mode(d_plateau_infin_2), 2)
+  expect_equal(summ_mode(d_plateau_con_2), 2)
 
   # Method "local"
   expect_equal(summ_mode(d_plateau_fin, method = "local"), c(2, 3, 5))
   expect_equal(summ_mode(d_plateau_fin_2, method = "local"), c(2, 3, 4))
-  expect_equal(summ_mode(d_plateau_infin, method = "local"), c(2, 3, 5))
-  expect_equal(summ_mode(d_plateau_infin_2, method = "local"), c(2, 3, 4))
+  expect_equal(summ_mode(d_plateau_con, method = "local"), c(2, 3, 5))
+  expect_equal(summ_mode(d_plateau_con_2, method = "local"), c(2, 3, 4))
 })
 
 test_that("summ_mode validates input", {
@@ -278,5 +278,5 @@ test_that("summ_mode validates input", {
 })
 
 
-# summ_mean_infin ---------------------------------------------------------
+# summ_mean_con -----------------------------------------------------------
 # Tested in `summ_mean()`

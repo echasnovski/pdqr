@@ -8,8 +8,8 @@ test_that("summ_quantile works", {
   # Type "fin"
   expect_equal(summ_quantile(d_fin, probs), q_fin(probs))
 
-  # Type "infin"
-  expect_equal(summ_quantile(d_infin, probs), q_infin(probs))
+  # Type "continuous"
+  expect_equal(summ_quantile(d_con, probs), q_con(probs))
 })
 
 test_that("summ_quantile validates input", {
@@ -41,8 +41,8 @@ test_that("summ_prob_true handles absence of 0 in 'x' column of 'x_tbl'", {
   cur_fin <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1)/2), "fin")
   expect_equal(expect_warning(summ_prob_true(cur_fin)), 1)
 
-  cur_infin <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "infin")
-  expect_equal(expect_warning(summ_prob_true(cur_infin)), 1)
+  cur_con <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "continuous")
+  expect_equal(expect_warning(summ_prob_true(cur_con)), 1)
 })
 
 test_that("summ_prob_true validates input", {
@@ -70,8 +70,8 @@ test_that("summ_prob_false handles absence of 0 in 'x' column of 'x_tbl'", {
   cur_fin <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1)/2), "fin")
   expect_equal(expect_warning(summ_prob_false(cur_fin)), 0)
 
-  cur_infin <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "infin")
-  expect_equal(expect_warning(summ_prob_false(cur_infin)), 0)
+  cur_con <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "continuous")
+  expect_equal(expect_warning(summ_prob_false(cur_con)), 0)
 })
 
 test_that("summ_prob_false validates input", {

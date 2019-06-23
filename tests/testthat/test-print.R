@@ -20,8 +20,8 @@ test_that("pdqr_print targets output to number of rows in `x_tbl`", {
   d_one <- new_d(1, "fin")
   expect_output(pdqr_print(d_one, "Temp"), "1 element")
 
-  d_infin_one <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
-  expect_output(pdqr_print(d_infin_one, "Temp"), "1 interval")
+  d_con_one <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
+  expect_output(pdqr_print(d_con_one, "Temp"), "1 interval")
 })
 
 

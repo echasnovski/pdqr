@@ -51,8 +51,8 @@ test_that("summ_interval works with 'fin' functions", {
   )
 })
 
-test_that("summ_interval works with 'infin' functions", {
-  cur_d <- new_d(data.frame(x = c(1, 2, 3, 5), y = c(1, 0, 0, 0.5)), "infin")
+test_that("summ_interval works with 'continuous' functions", {
+  cur_d <- new_d(data.frame(x = c(1, 2, 3, 5), y = c(1, 0, 0, 0.5)), "continuous")
   cur_q <- as_q(cur_d)
   cur_d_mean <- summ_mean(cur_d)
   cur_d_sd <- summ_sd(cur_d)
@@ -119,9 +119,9 @@ test_that("summ_interval works with dirac-like functions", {
     tolerance = 1e-12
   )
 
-  # Type "infin"
+  # Type "continuous"
     # Single dirac-like peak
-  d_dirac_1 <- new_d(1, "infin")
+  d_dirac_1 <- new_d(1, "continuous")
   expect_equal(
     summ_interval(d_dirac_1, 0.95, method = "minwidth"),
     data.frame(left = 1, right = 1),
@@ -140,7 +140,7 @@ test_that("summ_interval works with dirac-like functions", {
 
     # Two dirac-like peaks
   d_dirac_2 <- form_mix(
-    list(new_d(1, "infin"), new_d(2, "infin")), weights = c(0.25, 0.75)
+    list(new_d(1, "continuous"), new_d(2, "continuous")), weights = c(0.25, 0.75)
   )
   d_dirac_2_mean <- 1*0.25 + 2*0.75
   d_dirac_2_sd <- sqrt(1^2*0.25 + 2^2*0.75 - d_dirac_2_mean^2)
@@ -223,11 +223,11 @@ test_that("summ_interval works with real world cases", {
 })
 
 test_that("summ_interval works with `level` equal to 0 and 1", {
-  cur_d <- d_infin
-  cur_d_mean <- summ_mean(d_infin)
-  cur_d_median <- summ_median(d_infin)
-  cur_d_mode <- summ_mode(d_infin)
-  cur_d_supp <- meta_support(d_infin)
+  cur_d <- d_con
+  cur_d_mean <- summ_mean(d_con)
+  cur_d_median <- summ_median(d_con)
+  cur_d_mode <- summ_mode(d_con)
+  cur_d_supp <- meta_support(d_con)
   lev_1_output <- data.frame(left = cur_d_supp[1], right = cur_d_supp[2])
 
   # Method "minwidth"
@@ -262,7 +262,7 @@ test_that("summ_interval works with `level` equal to 0 and 1", {
 })
 
 test_that("summ_interval uses `n_grid` argument", {
-  cur_d <- new_d(data.frame(x = 0:1, y = c(0, 1)), "infin")
+  cur_d <- new_d(data.frame(x = 0:1, y = c(0, 1)), "continuous")
   expect_equal(
     summ_interval(cur_d, level = 0.1, method = "minwidth", n_grid = 1),
     # As `n_grid` equals 1, grid of candidate intervals consists from only one

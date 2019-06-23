@@ -107,7 +107,7 @@ test_that("neigh_dist works",  {
 })
 
 
-# compute_d_infin_ylim ----------------------------------------------------
+# compute_d_con_ylim ------------------------------------------------------
 # Tested in `plot.d()`
 
 
@@ -556,7 +556,7 @@ test_that("pdqr_approx_error validates input", {
 
 # granulate_grid ----------------------------------------------------------
 test_that("granulate_grid works", {
-  cur_d <- new_d(data.frame(x = 1:3, y = c(1, 1, 1)/2), "infin")
+  cur_d <- new_d(data.frame(x = 1:3, y = c(1, 1, 1)/2), "continuous")
   expect_equal(granulate_grid(cur_d, 1), 1:3)
   expect_equal(granulate_grid(cur_d, 10), seq(1, 3, length.out = 21))
 
@@ -574,11 +574,11 @@ test_that("enpoint works with p-functions", {
   x_tbl <- meta_x_tbl(p_fin)
   expect_equal(enpoint(p_fin), data.frame(x = x_tbl$x, p = x_tbl$cumprob))
 
-  # Type "infin"
-  x_seq <- seq_between(meta_support(p_infin), length.out = 3)
+  # Type "continuous"
+  x_seq <- seq_between(meta_support(p_con), length.out = 3)
   expect_equal(
-    enpoint(p_infin, n_points = 3),
-    data.frame(x = x_seq, p = p_infin(x_seq))
+    enpoint(p_con, n_points = 3),
+    data.frame(x = x_seq, p = p_con(x_seq))
   )
 })
 
@@ -587,11 +587,11 @@ test_that("enpoint works with d-functions", {
   x_tbl <- meta_x_tbl(d_fin)
   expect_equal(enpoint(d_fin), data.frame(x = x_tbl$x, prob = x_tbl$prob))
 
-  # Type "infin"
-  x_seq <- seq_between(meta_support(d_infin), length.out = 3)
+  # Type "continuous"
+  x_seq <- seq_between(meta_support(d_con), length.out = 3)
   expect_equal(
-    enpoint(d_infin, n_points = 3),
-    data.frame(x = x_seq, y = d_infin(x_seq))
+    enpoint(d_con, n_points = 3),
+    data.frame(x = x_seq, y = d_con(x_seq))
   )
 })
 
@@ -600,11 +600,11 @@ test_that("enpoint works with q-functions", {
   x_tbl <- meta_x_tbl(q_fin)
   expect_equal(enpoint(q_fin), data.frame(p = x_tbl$cumprob, x = x_tbl$x))
 
-  # Type "infin"
+  # Type "continuous"
   p_seq <- seq_between(c(0, 1), length.out = 3)
   expect_equal(
-    enpoint(q_infin, n_points = 3),
-    data.frame(p = p_seq, x = q_infin(p_seq))
+    enpoint(q_con, n_points = 3),
+    data.frame(p = p_seq, x = q_con(p_seq))
   )
 })
 
@@ -617,19 +617,19 @@ test_that("enpoint works with r-functions", {
   expect_equal(output[["n"]], seq_len(10))
   expect_equal(mean(output[["x"]]), summ_mean(r_fin), tolerance = 0.9)
 
-  # Type "infin"
-  output <- enpoint(r_infin, n_points = 10)
+  # Type "continuous"
+  output <- enpoint(r_con, n_points = 10)
   expect_named(output, c("n", "x"))
   expect_equal(output[["n"]], seq_len(10))
-  expect_equal(mean(output[["x"]]), summ_mean(r_infin), tolerance = 0.5)
+  expect_equal(mean(output[["x"]]), summ_mean(r_con), tolerance = 0.5)
 })
 
 test_that("enpoint uses `n_points` argument", {
-  expect_equal(nrow(enpoint(p_infin, n_points = 3)), 3)
-  expect_equal(nrow(enpoint(d_infin, n_points = 14)), 14)
-  expect_equal(nrow(enpoint(q_infin, n_points = 15)), 15)
+  expect_equal(nrow(enpoint(p_con, n_points = 3)), 3)
+  expect_equal(nrow(enpoint(d_con, n_points = 14)), 14)
+  expect_equal(nrow(enpoint(q_con, n_points = 15)), 15)
   expect_equal(nrow(enpoint(r_fin,   n_points = 92)), 92)
-  expect_equal(nrow(enpoint(r_infin, n_points = 6)), 6)
+  expect_equal(nrow(enpoint(r_con, n_points = 6)), 6)
 })
 
 test_that("enpoint validates input", {

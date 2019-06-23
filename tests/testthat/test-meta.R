@@ -26,8 +26,8 @@ test_that("meta_all validates input", {
 test_that("meta_class works", {
   expect_equal(meta_class(d_fin), "d")
   expect_equal(meta_class(p_fin), "p")
-  expect_equal(meta_class(q_infin), "q")
-  expect_equal(meta_class(r_infin), "r")
+  expect_equal(meta_class(q_con), "q")
+  expect_equal(meta_class(r_con), "r")
 
   expect_equal(meta_class(structure("a", class = "p")), "p")
   expect_equal(meta_class(structure("a", class = c("p", "d"))), "p")

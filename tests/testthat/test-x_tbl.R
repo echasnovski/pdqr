@@ -9,14 +9,14 @@ context("test-x_tbl")
 # Tested in `new_*()` functions
 
 
-# compute_x_tbl_infin -----------------------------------------------------
+# compute_x_tbl_con -------------------------------------------------------
 # Tested in `new_*()` functions
 
 
 # dirac_x_tbl -------------------------------------------------------------
 # Main functionality is tested in `new_*()` functions
 test_that("dirac_x_tbl ensures that total integral is 1", {
-  d_dirac <- new_d(1e8, "infin")
+  d_dirac <- new_d(1e8, "continuous")
   x_tbl <- meta_x_tbl(d_dirac)
   expect_equal(trapez_part_integral(x_tbl[["x"]], x_tbl[["y"]]), c(0, 0.5, 1))
   # This was the indicator of problem: error was returned because total integral
@@ -46,7 +46,7 @@ test_that("impute_x_tbl_impl_fin correctly collapses duplicate 'x'",  {
 })
 
 
-# impute_x_tbl_impl_infin -------------------------------------------------
+# impute_x_tbl_impl_con ---------------------------------------------------
 # Tested in `impute_x_tbl_impl()`
 
 
@@ -65,14 +65,14 @@ test_that("impute_x_tbl_impl_fin correctly collapses duplicate 'x'",  {
 # get_x_tbl_sec_col -------------------------------------------------------
 test_that("get_x_tbl_sec_col works", {
   expect_equal(get_x_tbl_sec_col(x_fin_x_tbl), "prob")
-  expect_equal(get_x_tbl_sec_col(x_infin_x_tbl), "y")
+  expect_equal(get_x_tbl_sec_col(x_con_x_tbl), "y")
 })
 
 
 # get_type_from_x_tbl -----------------------------------------------------
 test_that("get_type_from_x_tbl works", {
   expect_equal(get_type_from_x_tbl(x_fin_x_tbl), "fin")
-  expect_equal(get_type_from_x_tbl(x_infin_x_tbl), "infin")
+  expect_equal(get_type_from_x_tbl(x_con_x_tbl), "continuous")
 })
 
 
@@ -84,10 +84,10 @@ test_that("filter_x_tbl works", {
     x_tbl_fin[1, ]
   )
 
-  x_tbl_infin <- data.frame(x = 1:5, y = (1:5) / 12)
+  x_tbl_con <- data.frame(x = 1:5, y = (1:5) / 12)
   expect_equal(
-    filter_x_tbl(x_tbl_infin, c(2.5, 5))[, c("x", "y")],
-    x_tbl_infin[3:5, ]
+    filter_x_tbl(x_tbl_con, c(2.5, 5))[, c("x", "y")],
+    x_tbl_con[3:5, ]
   )
 })
 
@@ -102,11 +102,11 @@ test_that("union_inside_x_tbl works", {
     data.frame(x = c(1, 1.5, 2, 3), prob = c(0, 0.5, 0.3, 0.7))
   )
 
-  x_tbl_infin_1 <- data.frame(x = 1:3, y = c(0, 1, 0))
-  x_tbl_infin_2 <- data.frame(x = c(0, 1, 1.5, 3.1), y = rep(0.5, 4))
+  x_tbl_con_1 <- data.frame(x = 1:3, y = c(0, 1, 0))
+  x_tbl_con_2 <- data.frame(x = c(0, 1, 1.5, 3.1), y = rep(0.5, 4))
 
   expect_equal(
-    union_inside_x_tbl(x_tbl_infin_1, x_tbl_infin_2),
+    union_inside_x_tbl(x_tbl_con_1, x_tbl_con_2),
     data.frame(x = c(1, 1.5, 2, 3), y = c(0, 0.5, 1, 0))
   )
 })
@@ -131,14 +131,14 @@ test_that("reflect_x_tbl works with 'fin' type", {
   )
 })
 
-test_that("reflect_x_tbl works with 'infin' type", {
-  x_tbl_infin <- data.frame(
+test_that("reflect_x_tbl works with 'continuous' type", {
+  x_tbl_con <- data.frame(
     x = c( -2, -1, 0, 0.5, 4),
     y = c(0.5,  0, 1,   0, 0),
     cumprob = c(0, 0.25, 0.75, 1, 1)
   )
   expect_equal(
-    reflect_x_tbl(x_tbl_infin, 0),
+    reflect_x_tbl(x_tbl_con, 0),
     data.frame(
       x = c(-4, -0.5, 0, 1,   2),
       y = c( 0,    0, 1, 0, 0.5),
@@ -146,7 +146,7 @@ test_that("reflect_x_tbl works with 'infin' type", {
     )
   )
   expect_equal(
-    reflect_x_tbl(x_tbl_infin, 10),
+    reflect_x_tbl(x_tbl_con, 10),
     data.frame(
       x = c(16, 19.5, 20, 21,  22),
       y = c( 0,    0,  1,  0, 0.5),
@@ -237,17 +237,17 @@ test_that("stack_x_tbl works with 'fin' type",  {
   expect_equal(stack_x_tbl(list(x_tbl_fin_3)), x_tbl_fin_3)
 })
 
-test_that("stack_x_tbl works with 'infin' type",  {
-  x_tbl_infin_1 <- data.frame(x = c(1, 3), y = c(0.5, 0.5))
-  x_tbl_infin_2 <- data.frame(x = c(2, 6), y = c(0.25, 0.25))
-  x_tbl_infin_3 <- data.frame(x = c(7, 8), y = c(1, 1))
+test_that("stack_x_tbl works with 'continuous' type",  {
+  x_tbl_con_1 <- data.frame(x = c(1, 3), y = c(0.5, 0.5))
+  x_tbl_con_2 <- data.frame(x = c(2, 6), y = c(0.25, 0.25))
+  x_tbl_con_3 <- data.frame(x = c(7, 8), y = c(1, 1))
 
   expect_equal(
     data.frame(
       x = c(  1, 2-1e-8,    2,    3, 3+1e-8,    6, 6+1e-8, 7-1e-8, 7, 8),
       y = c(0.5,    0.5, 0.75, 0.75,   0.25, 0.25,      0,      0, 1, 1)
     ),
-    stack_x_tbl(list(x_tbl_infin_1, x_tbl_infin_2, x_tbl_infin_3))
+    stack_x_tbl(list(x_tbl_con_1, x_tbl_con_2, x_tbl_con_3))
   )
 })
 
@@ -264,7 +264,7 @@ test_that("stack_x_tbl handles zero density edges",  {
 # Tested in `stack_x_tbl()`
 
 
-# stack_x_tbl_infin -------------------------------------------------------
+# stack_x_tbl_con ---------------------------------------------------------
 # Tested in `stack_x_tbl()`
 
 

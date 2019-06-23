@@ -10,11 +10,11 @@ test_that("summ_dispersion works", {
   expect_equal(summ_dispersion(d_fin, "iqr"), summ_iqr(d_fin))
   expect_equal(summ_dispersion(d_fin, "mad"), summ_mad(d_fin))
 
-  # "infin"
-  expect_equal(summ_dispersion(d_infin, "var"), summ_var(d_infin))
-  expect_equal(summ_dispersion(d_infin, "sd"), summ_sd(d_infin))
-  expect_equal(summ_dispersion(d_infin, "iqr"), summ_iqr(d_infin))
-  expect_equal(summ_dispersion(d_infin, "mad"), summ_mad(d_infin))
+  # "continuous"
+  expect_equal(summ_dispersion(d_con, "var"), summ_var(d_con))
+  expect_equal(summ_dispersion(d_con, "sd"), summ_sd(d_con))
+  expect_equal(summ_dispersion(d_con, "iqr"), summ_iqr(d_con))
+  expect_equal(summ_dispersion(d_con, "mad"), summ_mad(d_con))
 })
 
 test_that("summ_dispersion validates input", {
@@ -32,7 +32,7 @@ test_that("summ_sd works with 'fin' functions", {
   expect_equal_stat(summ_sd, stat_list[["pois"]], "sd", thres = 1e-4)
 })
 
-test_that("summ_sd works with common 'infin' functions", {
+test_that("summ_sd works with common 'continuous' functions", {
   expect_equal_stat(summ_sd, stat_list[["beta"]], "sd", thres = 5e-6)
   expect_equal_stat(summ_sd, stat_list[["beta_inf"]], "sd", thres = 1e-3)
   expect_equal_stat(summ_sd, stat_list[["chisq"]], "sd", thres = 5e-4)
@@ -44,30 +44,30 @@ test_that("summ_sd works with common 'infin' functions", {
   expect_equal_stat(summ_sd, stat_list[["unif"]], "sd")
 })
 
-test_that("summ_sd works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_sd works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_sd(d_dirac), 0)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_sd(d_dirac_2), sqrt(1^2*0.7+2^2*0.3 - 1.3^2))
 })
 
-test_that("summ_sd works with winsorized 'infin' functions", {
+test_that("summ_sd works with winsorized 'continuous' functions", {
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
   expect_equal(summ_sd(d_wins), sqrt(0.0531))
 })
 
-test_that("summ_sd works with 'infin' functions with few intervals", {
-  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+test_that("summ_sd works with 'continuous' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_sd(d_unif_1), sqrt(1/12))
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
   expect_equal(summ_sd(d_unif_2), sqrt(1/3))
 })
 
@@ -84,7 +84,7 @@ test_that("summ_var works with 'fin' functions", {
   expect_equal_stat(summ_var, stat_list[["pois"]], "var", thres = 1e-4)
 })
 
-test_that("summ_var works with common 'infin' functions", {
+test_that("summ_var works with common 'continuous' functions", {
   expect_equal_stat(summ_var, stat_list[["beta"]], "var")
   expect_equal_stat(summ_var, stat_list[["beta_inf"]], "var", thres = 5e-4)
   expect_equal_stat(summ_var, stat_list[["chisq"]], "var", thres = 1e-3)
@@ -100,33 +100,33 @@ test_that("summ_var always returns non-negative value", {
   # Due to numerical accuracy representation, variance of dirac-like function
   # is although very small in absolute values, can result in negative value if
   # `summ_var()` isn't carefully implemented.
-  expect_true(summ_var(new_d(1, "infin")) >= 0)
+  expect_true(summ_var(new_d(1, "continuous")) >= 0)
 })
 
-test_that("summ_var works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_var works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_var(d_dirac), 0, tolerance = 1e-7)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_var(d_dirac_2), 1^2*0.7+2^2*0.3 - 1.3^2)
 })
 
-test_that("summ_var works with winsorized 'infin' functions", {
+test_that("summ_var works with winsorized 'continuous' functions", {
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
   expect_equal(summ_var(d_wins), 0.0531)
 })
 
-test_that("summ_var works with 'infin' functions with few intervals", {
-  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+test_that("summ_var works with 'continuous' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_var(d_unif_1), 1/12)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
   expect_equal(summ_var(d_unif_2), 1/3)
 })
 
@@ -141,7 +141,7 @@ test_that("summ_iqr works with 'fin' functions", {
   expect_equal_stat(summ_iqr, stat_list[["pois"]], "iqr")
 })
 
-test_that("summ_iqr works with common 'infin' functions", {
+test_that("summ_iqr works with common 'continuous' functions", {
   expect_equal_stat(summ_iqr, stat_list[["beta"]], "iqr")
   # Big threshold because original density goes to infinity at edges
   expect_equal_stat(summ_iqr, stat_list[["beta_inf"]], "iqr", thres = 2e-2)
@@ -154,30 +154,30 @@ test_that("summ_iqr works with common 'infin' functions", {
   expect_equal_stat(summ_iqr, stat_list[["unif"]], "iqr")
 })
 
-test_that("summ_iqr works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_iqr works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_iqr(d_dirac), 0, tolerance = 5e-8)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_iqr(d_dirac_2), 1)
 })
 
-test_that("summ_iqr works with winsorized 'infin' functions", {
+test_that("summ_iqr works with winsorized 'continuous' functions", {
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
   expect_equal(summ_iqr(d_wins), 0.5)
 })
 
-test_that("summ_iqr works with 'infin' functions with few intervals", {
-  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+test_that("summ_iqr works with 'continuous' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_iqr(d_unif_1), 0.5)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
   expect_equal(summ_iqr(d_unif_2), 1)
 })
 
@@ -192,7 +192,7 @@ test_that("summ_mad works with 'fin' functions", {
   expect_equal_stat(summ_mad, stat_list[["pois"]], "mad")
 })
 
-test_that("summ_mad works with common 'infin' functions", {
+test_that("summ_mad works with common 'continuous' functions", {
   # Many tests are "exact" because in `stat_list` reference was computed
   # numerically
   expect_equal_stat(summ_mad, stat_list[["beta"]], "mad")
@@ -205,30 +205,30 @@ test_that("summ_mad works with common 'infin' functions", {
   expect_equal_stat(summ_mad, stat_list[["unif"]], "mad")
 })
 
-test_that("summ_mad works with dirac-like 'infin' functions", {
-  d_dirac <- new_d(2, "infin")
+test_that("summ_mad works with dirac-like 'continuous' functions", {
+  d_dirac <- new_d(2, "continuous")
   expect_equal(summ_mad(d_dirac), 0)
 
   d_dirac_2 <- form_mix(
-    lapply(1:2, new_d, type = "infin"), weights = c(0.7, 0.3)
+    lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_mad(d_dirac_2), 0)
 })
 
-test_that("summ_mad works with winsorized 'infin' functions", {
+test_that("summ_mad works with winsorized 'continuous' functions", {
   d_wins <- form_resupport(
-    new_d(data.frame(x = 0:1, y = c(1, 1)), "infin"),
+    new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
     support = c(0.25, 0.85),
     method = "winsor"
   )
   expect_equal(summ_mad(d_wins), 0.25)
 })
 
-test_that("summ_mad works with 'infin' functions with few intervals", {
-  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "infin")
+test_that("summ_mad works with 'continuous' functions with few intervals", {
+  d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_mad(d_unif_1), 0.25)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "infin")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
   expect_equal(summ_mad(d_unif_2), 0.5)
 })
 

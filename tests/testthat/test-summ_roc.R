@@ -10,7 +10,7 @@ library(grDevices)
 
 # summ_roc ----------------------------------------------------------------
 test_that("summ_roc works", {
-  output <- summ_roc(d_fin, d_infin)
+  output <- summ_roc(d_fin, d_con)
   expect_named(output, c("threshold", "fpr", "tpr"))
 
   expect_decreasing <- function(x) {expect_false(is.unsorted(-x))}
@@ -30,19 +30,19 @@ test_that("summm_roc covers [0; 1] range on both axis in case of 'fin' input", {
 })
 
 test_that("summ_roc uses `n_grid` argument", {
-  expect_equal(nrow(summ_roc(d_fin, d_infin, n_grid = 3)), 3)
+  expect_equal(nrow(summ_roc(d_fin, d_con, n_grid = 3)), 3)
 })
 
 test_that("summ_roc works with different pdqr classes", {
-  expect_equal(summ_roc(p_fin, d_infin), summ_roc(r_fin, q_infin))
+  expect_equal(summ_roc(p_fin, d_con), summ_roc(r_fin, q_con))
 })
 
 test_that("summ_roc validates input", {
   expect_error(summ_roc("a", d_fin), "`f`.*not pdqr-function")
   expect_error(summ_roc(d_fin, "a"), "`g`.*not pdqr-function")
-  expect_error(summ_roc(d_fin, d_infin, n_grid = "a"), "`n_grid`.*number")
-  expect_error(summ_roc(d_fin, d_infin, n_grid = 10:11), "`n_grid`.*single")
-  expect_error(summ_roc(d_fin, d_infin, n_grid = 0.5), "`n_grid`.*more than 1")
+  expect_error(summ_roc(d_fin, d_con, n_grid = "a"), "`n_grid`.*number")
+  expect_error(summ_roc(d_fin, d_con, n_grid = 10:11), "`n_grid`.*single")
+  expect_error(summ_roc(d_fin, d_con, n_grid = 0.5), "`n_grid`.*more than 1")
 })
 
 
@@ -54,30 +54,30 @@ test_that("summ_rocauc works", {
   expect_equal(summ_rocauc(cur_fin_1, cur_fin_2, method = "pessimistic"), 0.75)
   expect_equal(summ_rocauc(cur_fin_1, cur_fin_2, method = "optimistic"), 1)
 
-  mixed_out <- summ_prob_true(d_infin > d_fin)
-  expect_equal(summ_rocauc(d_fin, d_infin, method = "expected"), mixed_out)
-  expect_equal(summ_rocauc(d_fin, d_infin, method = "pessimistic"), mixed_out)
-  expect_equal(summ_rocauc(d_fin, d_infin, method = "optimistic"), mixed_out)
+  mixed_out <- summ_prob_true(d_con > d_fin)
+  expect_equal(summ_rocauc(d_fin, d_con, method = "expected"), mixed_out)
+  expect_equal(summ_rocauc(d_fin, d_con, method = "pessimistic"), mixed_out)
+  expect_equal(summ_rocauc(d_fin, d_con, method = "optimistic"), mixed_out)
 
-  g <- q_infin + 1
-  infin_out <- summ_prob_true(g > p_infin)
-  expect_equal(summ_rocauc(p_infin, g, method = "expected"), infin_out)
-  expect_equal(summ_rocauc(p_infin, g, method = "pessimistic"), infin_out)
-  expect_equal(summ_rocauc(p_infin, g, method = "optimistic"), infin_out)
+  g <- q_con + 1
+  con_out <- summ_prob_true(g > p_con)
+  expect_equal(summ_rocauc(p_con, g, method = "expected"), con_out)
+  expect_equal(summ_rocauc(p_con, g, method = "pessimistic"), con_out)
+  expect_equal(summ_rocauc(p_con, g, method = "optimistic"), con_out)
 })
 
 test_that("summ_rocauc validates input", {
   expect_error(summ_rocauc("a", d_fin), "`f`.*not pdqr-function")
   expect_error(summ_rocauc(d_fin, "a"), "`g`.*not pdqr-function")
-  expect_error(summ_rocauc(d_fin, d_infin, method = 1), "`method`.*string")
-  expect_error(summ_rocauc(d_fin, d_infin, method = "a"), "`method`.*one of")
+  expect_error(summ_rocauc(d_fin, d_con, method = 1), "`method`.*string")
+  expect_error(summ_rocauc(d_fin, d_con, method = "a"), "`method`.*one of")
 })
 
 
 # roc_plot ----------------------------------------------------------------
 test_that("roc_plot works", {
-  roc_1 <- summ_roc(new_d(1:4, "infin"), new_d(3:7, "infin"))
-  roc_2 <- summ_roc(new_d(3:7, "infin"), new_d(2:5, "infin"))
+  roc_1 <- summ_roc(new_d(1:4, "continuous"), new_d(3:7, "continuous"))
+  roc_2 <- summ_roc(new_d(3:7, "continuous"), new_d(2:5, "continuous"))
 
   # Basic usage of `roc_plot()` and `roc_lines()`
   vdiffr::expect_doppelganger(
@@ -146,7 +146,7 @@ test_that("roc_lines validates input", {
 
 # is_roc ------------------------------------------------------------------
 test_that("is_roc works", {
-  expect_true(is_roc(summ_roc(d_fin, d_infin)))
+  expect_true(is_roc(summ_roc(d_fin, d_con)))
 
   expect_false(is_roc(list(fpr = 1, tpr = 1)))
   expect_false(is_roc(data.frame(tpr = 1)))

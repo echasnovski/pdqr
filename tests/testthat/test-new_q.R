@@ -9,10 +9,10 @@ test_that("new_q works with numeric input", {
     q_fin(cumsum(x_fin_x_tbl[["prob"]])), x_fin_x_tbl[["x"]]
   )
 
-  expect_distr_fun(q_infin, "q", "infin")
-  expect_equal(round(meta_support(q_infin), 2), round(x_infin_support, 2))
+  expect_distr_fun(q_con, "q", "continuous")
+  expect_equal(round(meta_support(q_con), 2), round(x_con_support, 2))
   expect_equal(
-    round(q_infin(0:20/20), 3),
+    round(q_con(0:20/20), 3),
     c(
       -2.919, -1.816, -1.434, -0.922, -0.579, -0.399, -0.267, -0.154,
       -0.052,  0.047,  0.144,  0.244,  0.351,  0.467,  0.598,  0.745,
@@ -24,17 +24,17 @@ test_that("new_q works with numeric input", {
 test_that("new_q returns dirac-like function with length-one numeric input",  {
   expect_ref_x_tbl(new_q(0.1, "fin"), data.frame(x = 0.1, prob = 1))
   expect_ref_x_tbl(
-    new_q(0.1, "infin"),
+    new_q(0.1, "continuous"),
     data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
   )
 
   # With big center value there can be problems with total integral being 1
-  expect_silent(assert_pdqr_fun(new_q(1e8, "infin")))
+  expect_silent(assert_pdqr_fun(new_q(1e8, "continuous")))
 })
 
 test_that("new_q works with data frame input", {
   expect_equal_distr(new_q(x_fin_x_tbl, "fin"), q_fin, p_vec)
-  expect_equal_distr(new_q(x_infin_x_tbl, "infin"), q_infin, p_vec)
+  expect_equal_distr(new_q(x_con_x_tbl, "continuous"), q_con, p_vec)
 })
 
 test_that("new_q imputes data frame input", {
@@ -47,15 +47,15 @@ test_that("new_q's output works with 'edge case' inputs", {
   expect_equal(q_fin(c(-0.1, 1.1)), c(NaN, NaN))
   expect_equal(q_fin(c(0, 1)), x_fin_support)
 
-  expect_equal(q_infin(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, NaN, NaN))
-  expect_equal(q_infin(numeric(0)), numeric(0))
-  expect_equal(q_infin(c(-0.1, 1.1)), c(NaN, NaN))
-  expect_equal(q_infin(c(0, 1)), x_infin_support)
+  expect_equal(q_con(c(NA_real_, NaN, -Inf, Inf)), c(NA, NA, NaN, NaN))
+  expect_equal(q_con(numeric(0)), numeric(0))
+  expect_equal(q_con(c(-0.1, 1.1)), c(NaN, NaN))
+  expect_equal(q_con(c(0, 1)), x_con_support)
 })
 
 test_that("new_q's output validates input", {
   expect_error(q_fin("a"), "`p`.*numeric")
-  expect_error(q_infin("a"), "`p`.*numeric")
+  expect_error(q_con("a"), "`p`.*numeric")
 })
 
 test_that("new_q's output behaves like inverse of ecdf() if `type = 'fin'`", {
@@ -69,8 +69,8 @@ test_that("new_q's output is inverse of new_p's output", {
   expect_equal(x_fin_vec, q_fin(p_fin(x_fin_vec)))
   # There is not test `p_vec == p_fin(q_fin(p_vec))` because it shouldn't be
   # true in "fin" case. This is tested in "behaves like inverse of ecdf()" test.
-  expect_equal(x_infin_vec, q_infin(p_infin(x_infin_vec)))
-  expect_equal(p_vec, p_infin(q_infin(p_vec)))
+  expect_equal(x_con_vec, q_con(p_con(x_con_vec)))
+  expect_equal(p_vec, p_con(q_con(p_vec)))
 })
 
 test_that("new_q's output returns the smallest `x` with not exceeding `p`", {
@@ -84,24 +84,24 @@ test_that("new_q's output returns the smallest `x` with not exceeding `p`", {
   # Here values 1 and 2 correspond to cumulative probability of 0 and
   # values 5 and 6 - to 1. Quantile function should return the smallest from
   # pairs.
-  cur_x_tbl_infin <- data.frame(x = 1:6, y = c(0, 0, 1, 1, 0, 0))
-  cur_q_infin <- new_q(cur_x_tbl_infin, "infin")
-  expect_equal(cur_q_infin(c(0, 1)), c(1, 5))
+  cur_x_tbl_con <- data.frame(x = 1:6, y = c(0, 0, 1, 1, 0, 0))
+  cur_q_con <- new_q(cur_x_tbl_con, "continuous")
+  expect_equal(cur_q_con(c(0, 1)), c(1, 5))
 })
 
 test_that("new_q warns about bad `x` elements", {
-  expect_warning(new_q(c(1, 0, NA), "infin"), "x.*NA.*removed")
-  expect_warning(new_q(c(1, 0, NaN), "infin"), "x.*NaN.*removed")
-  expect_warning(new_q(c(1, 0, Inf), "infin"), "x.*infinite.*removed")
+  expect_warning(new_q(c(1, 0, NA), "continuous"), "x.*NA.*removed")
+  expect_warning(new_q(c(1, 0, NaN), "continuous"), "x.*NaN.*removed")
+  expect_warning(new_q(c(1, 0, Inf), "continuous"), "x.*infinite.*removed")
 })
 
 test_that("new_q validates input", {
-  expect_error(new_q(type = "infin"), "`x`.*missing.*numeric.*data frame")
-  expect_error(new_q("a", "infin"), "x.*numeric.*data.*frame")
-  expect_error(new_q(numeric(0), "infin"), "x.*empty")
+  expect_error(new_q(type = "continuous"), "`x`.*missing.*numeric.*data frame")
+  expect_error(new_q("a", "continuous"), "x.*numeric.*data.*frame")
+  expect_error(new_q(numeric(0), "continuous"), "x.*empty")
   expect_error(new_q(x_fin), "`type`.*missing.*pdqr type")
   expect_error(new_q(x_fin, type = 1), "type.*string")
-  expect_error(new_q(x_fin, type = "a"), "type.*fin.*infin")
+  expect_error(new_q(x_fin, type = "a"), "type.*fin.*continuous")
 })
 
 test_that("new_q handles metadata", {
@@ -112,16 +112,16 @@ test_that("new_q handles metadata", {
     )
   )
 
-  expect_named(meta_all(q_infin), c("class", "type", "support", "x_tbl"))
-  expect_equal(meta_x_tbl(q_infin), x_infin_x_tbl)
-  expect_equal(round(meta_support(q_infin), 2), round(x_infin_support, 2))
-  expect_equal(meta_all(q_infin)["type"], list(type = "infin"))
+  expect_named(meta_all(q_con), c("class", "type", "support", "x_tbl"))
+  expect_equal(meta_x_tbl(q_con), x_con_x_tbl)
+  expect_equal(round(meta_support(q_con), 2), round(x_con_support, 2))
+  expect_equal(meta_all(q_con)["type"], list(type = "continuous"))
 })
 
 test_that("new_q uses `...` as arguments for `density()`", {
-  q_infin_cosine <- new_q(x_infin, type = "infin", kernel = "cosine")
+  q_con_cosine <- new_q(x_con, type = "continuous", kernel = "cosine")
   expect_equal(
-    round(q_infin_cosine(0:20/20), 3),
+    round(q_con_cosine(0:20/20), 3),
     c(
       -2.919, -1.82, -1.427, -0.91, -0.589, -0.408, -0.273, -0.158,
       -0.053, 0.048,  0.148,  0.25,  0.357,  0.473,    0.6,  0.743,
@@ -135,7 +135,7 @@ test_that("new_q uses `...` as arguments for `density()`", {
 # Tested in `new_q()`
 
 
-# new_q_infin -------------------------------------------------------------
+# new_q_con ---------------------------------------------------------------
 # Tested in `new_q()`
 
 
