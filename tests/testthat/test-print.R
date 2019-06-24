@@ -7,7 +7,7 @@ test_that("pdqr_print works with bad input", {
   input_1 <- function(x) {x}
   environment(input_1) <- new.env(parent = emptyenv())
   expect_output(
-    pdqr_print(input_1, "Temp"), "unknown number.*Support: not proper"
+    pdqr_print(input_1, "Temp"), "unknown type.*Support: not proper"
   )
 
   input_2 <- function(x) {x}

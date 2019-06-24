@@ -104,7 +104,7 @@ d_vs0 <- new_d(mpg_vs0, "continuous")
 (d_vs0_mean <- form_estimate(
   d_vs0, estimate = mean, sample_size = length(mpg_vs0)
 ))
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[13.00299, 20.78743] (511 intervals)
 
 # Compute distribution of second sample mean treating input as continuous
@@ -113,12 +113,12 @@ d_vs1 <- new_d(mpg_vs1, "continuous")
 (d_vs1_mean <- form_estimate(
   d_vs1, estimate = mean, sample_size = length(mpg_vs1)
 ))
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[18.2619, 30.79593] (511 intervals)
 
 # Compute distribution of difference of sample means using random simulation
 (mpg_diffmean <- d_vs0_mean - d_vs1_mean)
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-15.78983, 0.84769] (511 intervals)
 # Visualize with base `plot()`
 plot(mpg_diffmean, main = "Distribution of difference of sample means")
@@ -134,8 +134,10 @@ distributions:
 norm_list <- list(
   as_d(dnorm), as_d(dnorm, mean = 2, sd = 0.25), as_d(dnorm, mean = 4, sd = 0.5)
 )
+
 # Form a mixture with custom weights
 norm_mix <- form_mix(norm_list, weights = c(0.6, 0.2, 0.2))
+
 # Compute 95% highest density region
 (norm_hdr <- summ_hdr(norm_mix, level = 0.95))
 #>          left      right
@@ -198,16 +200,16 @@ For more details see vignette about creation of pdqr-functions.
 ``` r
 # Treat input as discrete
 (p_mpg_dis <- new_p(mtcars$mpg, type = "discrete"))
-#> Cumulative distribution function with finite number of values
+#> Cumulative distribution function of discrete type
 #> Support: [10.4, 33.9] (25 elements)
 (d_mpg_dis <- new_d(mtcars$mpg, type = "discrete"))
-#> Probability mass function with finite number of values
+#> Probability mass function of discrete type
 #> Support: [10.4, 33.9] (25 elements)
 (q_mpg_dis <- new_q(mtcars$mpg, type = "discrete"))
-#> Quantile function with finite number of values
+#> Quantile function of discrete type
 #> Support: [10.4, 33.9] (25 elements)
 (r_mpg_dis <- new_r(mtcars$mpg, type = "discrete"))
-#> Random generation function with finite number of values
+#> Random generation function of discrete type
 #> Support: [10.4, 33.9] (25 elements)
 
   # "x_tbl" metadata is the same for all `*_mpg_dis()` pdqr-functions
@@ -219,16 +221,16 @@ head(meta_x_tbl(p_mpg_dis), n = 3)
 
 # Treat input as continuous
 (p_mpg_con <- new_p(mtcars$mpg, type = "continuous"))
-#> Cumulative distribution function with infinite number of values
+#> Cumulative distribution function of continuous type
 #> Support: ~[2.96996, 41.33004] (511 intervals)
 (d_mpg_con <- new_d(mtcars$mpg, type = "continuous"))
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[2.96996, 41.33004] (511 intervals)
 (q_mpg_con <- new_q(mtcars$mpg, type = "continuous"))
-#> Quantile function with infinite number of values
+#> Quantile function of continuous type
 #> Support: ~[2.96996, 41.33004] (511 intervals)
 (r_mpg_con <- new_r(mtcars$mpg, type = "continuous"))
-#> Random generation function with infinite number of values
+#> Random generation function of continuous type
 #> Support: ~[2.96996, 41.33004] (511 intervals)
 
   # "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions
@@ -252,7 +254,7 @@ r_mpg_con(10)
 # Special case of dirac-like pdqr-function, which numerically approximates
 # single number with distribution with narrow support
 (r_dirac <- new_r(3.14, "continuous"))
-#> Random generation function with infinite number of values
+#> Random generation function of continuous type
 #> Support: ~[3.14, 3.14] (2 intervals)
 meta_x_tbl(r_dirac)
 #>            x         y cumprob
@@ -267,7 +269,7 @@ meta_x_tbl(r_dirac)
 # Type "discrete"
 dis_tbl <- data.frame(x = 1:4, prob = 4:1 / 10)
 new_d(dis_tbl, type = "discrete")
-#> Probability mass function with finite number of values
+#> Probability mass function of discrete type
 #> Support: [1, 4] (4 elements)
 new_r(dis_tbl, type = "discrete")(10)
 #>  [1] 4 4 4 1 2 1 1 1 2 2
@@ -275,7 +277,7 @@ new_r(dis_tbl, type = "discrete")(10)
 # Type "continuous"
 con_tbl <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
 new_d(con_tbl, type = "continuous")
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: [1, 4] (3 intervals)
 new_r(con_tbl, type = "continuous")(10)
 #>  [1] 3.78486663 2.12600804 3.74231079 2.48302382 2.89583449 3.76072579
@@ -313,7 +315,7 @@ meta_x_tbl(d_dis)
 
 # This is equivalent to `new_p(1:4, "discrete")`
 (p_dis <- as_p(d_dis))
-#> Cumulative distribution function with finite number of values
+#> Cumulative distribution function of discrete type
 #> Support: [1, 4] (4 elements)
 meta_x_tbl(p_dis)
 #>   x prob cumprob
@@ -363,32 +365,32 @@ following facts:
 ``` r
 # "Honored" distributions
 as_d(dnorm)
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-4.75342, 4.75342] (10000 intervals)
 
   # Different picewise-linear approximation precision
 as_d(dnorm, n_grid = 101)
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-4.75342, 4.75342] (100 intervals)
 
   # Different extra arguments for input
 as_d(dnorm, mean = 10, sd = 0.1)
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[9.52466, 10.47534] (10000 intervals)
 
 # Custom functions
 my_d <- function(x) {ifelse(x >= -1 & x <= 1, 0.75 * (1 - x^2), 0)}
   # With algorithmic support detection
 as_d(my_d)
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-1.00002, 1.00002] (7338 intervals)
 
   # Providing custom, maybe only partially known, support
 as_d(my_d, support = c(-1, NA))
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-1, 1.00001] (9278 intervals)
 as_d(my_d, support = c(-1, 1))
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: [-1, 1] (10000 intervals)
 ```
 
@@ -448,7 +450,7 @@ d_unif <- as_d(dunif)
 # Distribution of difference of random variables. Computed with random
 # simulation.
 d_norm - d_unif
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-4.68318, 3.9119] (511 intervals)
 
 # Comparing random variables results into boolean random variable represented
@@ -457,13 +459,13 @@ d_norm - d_unif
 # value of `d_unif` with probability around 0.316. This is computed directly,
 # without random simulation.
 d_norm > d_unif
-#> Probability mass function with finite number of values
+#> Probability mass function of discrete type
 #> Support: [0, 1] (2 elements, probability of 1: ~0.31563)
 
 # Distribution of maximum of three random variables. Computed with random
 # simulation.
 max(d_norm, d_norm, d_norm)
-#> Density function with infinite number of values
+#> Density function of continuous type
 #> Support: ~[-2.33171, 4.18984] (511 intervals)
 ```
 

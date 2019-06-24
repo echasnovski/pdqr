@@ -148,7 +148,7 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
   n_dis <- length(unique(x_dis))
   expect_output(
     print(f_dis),
-    regex_scatter(dis_name, "finite number", supp_regex, n_dis, "elements")
+    regex_scatter(dis_name, "discrete type", supp_regex, n_dis, "elements")
   )
 
   f_con <- f(x_con, type = "continuous")
@@ -156,7 +156,7 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
   expect_output(
     print(f_con),
     regex_scatter(
-      con_name, "infinite number", supp_regex, n_con-1, "intervals"
+      con_name, "continuous type", supp_regex, n_con-1, "intervals"
     )
   )
 
@@ -180,23 +180,17 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
   expect_output(
     print(f_bool_1),
     regex_scatter(
-      dis_name, "finite number",
+      dis_name, "discrete type",
       "Support: \\[0, 1\\] \\(2 elements, probability of 1: 0.3\\)"
     )
   )
   f_bool_2 <- f(data.frame(x = c(0, 1), prob = c(1, 0)), "discrete")
-  expect_output(
-    print(f_bool_2), "probability of 1: 0.0"
-  )
+  expect_output(print(f_bool_2), "probability of 1: 0.0")
   f_bool_3 <- f(data.frame(x = c(0, 1), prob = c(0, 1)), "discrete")
-  expect_output(
-    print(f_bool_3), "probability of 1: 1.0"
-  )
+  expect_output(print(f_bool_3), "probability of 1: 1.0")
   # Rounding
   f_bool_4 <- f(data.frame(x = c(0, 1), prob = c(1/3, 2/3)), "discrete")
-  expect_output(
-    print(f_bool_4), "probability of 1: ~0.66667"
-  )
+  expect_output(print(f_bool_4), "probability of 1: ~0.66667")
 }
 
 regex_scatter <- function(...) {

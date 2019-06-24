@@ -14,8 +14,8 @@
 #'     "Probability density function" for "continuous".
 #'     - Q-function is "Quantile function".
 #'     - R-function is "Random generation function".
-#' - [Type][meta_type()] of function in the form "with * number of values" where
-#' "\*" is "finite" for "discrete" type and "infinite" for "continuous".
+#' - [Type][meta_type()] of function in the form "of * type" where "\*" is
+#' "discrete" or "continuous" depending on actual type.
 #' - [Support][meta_support()] of function.
 #' - Number of elements in distribution for "discrete" type or number of
 #' intervals of piecewise-linear density for "continuous" type.
@@ -56,7 +56,7 @@ line_title <- function(x, fun_name) {
   type_print <- paste0(meta_type_print_name(x))
 
   paste0(
-    bold(fun_name), " function with ", bold(type_print), " number of values\n"
+    bold(fun_name), " function of ", bold(type_print), " type\n"
   )
 }
 
@@ -142,7 +142,7 @@ meta_type_print_name <- function(x) {
   if (is.null(x_type) || !(x_type %in% c("discrete", "continuous"))) {
     "unknown"
   } else {
-    switch(x_type, discrete = "finite", continuous = "infinite")
+    x_type
   }
 }
 

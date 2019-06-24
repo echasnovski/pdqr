@@ -37,8 +37,8 @@ Print output of pdqr-function describes the following information:
 \item Q-function is "Quantile function".
 \item R-function is "Random generation function".
 }
-\item \link[=meta_type]{Type} of function in the form "with * number of values" where
-"*" is "finite" for "discrete" type and "infinite" for "continuous".
+\item \link[=meta_type]{Type} of function in the form "of * type" where "*" is
+"discrete" or "continuous" depending on actual type.
 \item \link[=meta_support]{Support} of function.
 \item Number of elements in distribution for "discrete" type or number of
 intervals of piecewise-linear density for "continuous" type.
