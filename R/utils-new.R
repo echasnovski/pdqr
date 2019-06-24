@@ -116,6 +116,14 @@
 #' @name new-pdqr
 NULL
 
+new_discrete <- function(x, ...) {
+  new_d(x, type = "discrete", ...)
+}
+
+new_continuous <- function(x, ...) {
+  new_d(x, type = "continuous", ...)
+}
+
 
 # Common functionality for `new_*()` --------------------------------------
 distr_impl <- function(pdqr_class, impl_funs, x, type, ...) {

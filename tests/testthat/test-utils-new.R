@@ -1,6 +1,34 @@
 context("test-utils-new")
 
 
+# new_discrete ------------------------------------------------------------
+# This is a thin wrapper for `new_d()`. All valuable tests are done there.
+test_that("new_discrete works", {
+  out <- new_discrete(1:10)
+
+  expect_true(is_pdqr_fun(out))
+  expect_equal(meta_type(out), "discrete")
+})
+
+test_that("new_discrete validates input", {
+  expect_error(new_discrete("a"), "`x`.*numeric")
+})
+
+
+# new_continuous ----------------------------------------------------------
+# This is a thin wrapper for `new_d()`. All valuable tests are done there.
+test_that("new_continuous works", {
+  out <- new_continuous(1:10)
+
+  expect_true(is_pdqr_fun(out))
+  expect_equal(meta_type(out), "continuous")
+})
+
+test_that("new_continuous validates input", {
+  expect_error(new_continuous("a"), "`x`.*numeric")
+})
+
+
 # distr_impl --------------------------------------------------------------
 # Tested in `new_*()` functions
 
