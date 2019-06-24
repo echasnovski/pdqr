@@ -66,15 +66,24 @@ devtools::install_github("echasnovski/pdqr")
 
 ## <a id="pdqr-quick"></a> Quick examples
 
+Generate sample from distribution defined by other sample:
+
+```{r pdqr-quick_generate-sample}
+# Treat input sample as from continuous distribution
+r_mpg_con <- new_r(mtcars$mpg, type = "continuous")
+
+r_mpg_con(n = 10)
+```
+
 Compute winsorized mean:
 
-```{r pdqr-quick_hdr}
+```{r pdqr-quick_winsorised-mean}
 # Import 'magrittr' to use pipe operator `%>%`
 library(magrittr)
 # Take a sample
 mtcars$mpg %>% 
-  # Create pdqr-function of any class treating input as discrete
-  new_d(type = "discrete") %>% 
+  # Create pdqr-function treating input as discrete
+  new_discrete() %>% 
   # Winsorize tails
   form_tails(level = 0.1, method = "winsor", direction = "both") %>% 
   # Compute mean of distribution
@@ -86,14 +95,14 @@ Compute and visualize distribution of difference of sample means:
 ```{r pdqr-quick_diff-means}
 # Compute distribution of first sample mean treating input as continuous
 mpg_vs0 <- mtcars$mpg[mtcars$vs == 0]
-d_vs0 <- new_d(mpg_vs0, "continuous")
+d_vs0 <- new_continuous(mpg_vs0)
 (d_vs0_mean <- form_estimate(
   d_vs0, estimate = mean, sample_size = length(mpg_vs0)
 ))
 
 # Compute distribution of second sample mean treating input as continuous
 mpg_vs1 <- mtcars$mpg[mtcars$vs == 1]
-d_vs1 <- new_d(mpg_vs1, "continuous")
+d_vs1 <- new_continuous(mpg_vs1)
 (d_vs1_mean <- form_estimate(
   d_vs1, estimate = mean, sample_size = length(mpg_vs1)
 ))
@@ -125,7 +134,7 @@ region_draw(norm_hdr)
 
 ## <a id="pdqr-create"></a> Create with `new_*()`
 
-All `new_*()` functions create a pdqr-function of certain class ("p", "d", "q", or "r") and type ("discrete" or "continuous") based on sample or data frame of appropriate structure:
+All `new_*()` functions create a pdqr-function of certain class ("p", "d", "q", or "r") and type ("discrete" or "continuous") based on sample or data frame (with appropriate structure):
 
 - **Sample input** is converted into data frame of appropriate structure that defines distribution (see next list item). It is done based on type. For "discrete" type it gets tabulated with frequency of unique values serving as their probability. For "continuous" type distribution density is estimated using [`density()`](https://rdrr.io/r/stats/density.html) function if input has at least 2 elements. For 1 element special "dirac-like" pdqr-function is created: an *approximation of single number* as triangular distribution with very narrow support (1e-8 order of magnitude).
 - **Data frame input** should completely define distribution. For "discrete" type it should have "x" and "prob" columns for output values and their probabilities. For "continuous" type - "x" and "y" columns for points, which define piecewise-linear continuous density function. Columns "prob" and "y" will be automatically normalized to represent proper distribution: sum of "prob" will be 1 and total square under graph of piecewise-linear function will be 1.
@@ -138,6 +147,11 @@ Pdqr class correspond to the following functions describing distribution:
 - **D-function** is a probability mass function for "discrete" type and density function for "continuous". Created with `new_d()`. Generally speaking, it is a derivative of distribution's p-function.
 - **Q-function** is a quantile function. Created with `new_q()`. Inverse of distribution's p-function.
 - **R-function** is a random generation function. Created with `new_r()`. Generates a random sample from distribution.
+
+For situations when only type of pdqr-function matters and not its class (like for transforming and summarizing distributions), there are thin wrappers for `new_d()`:
+
+- `new_discrete(x)` is equivalent to `new_d(x, type = "discrete")`.
+- `new_continuous(x)` is equivalent to `new_d(x, type = "continuous")`.
 
 For more details see vignette about creation of pdqr-functions.
 
@@ -162,6 +176,10 @@ head(meta_x_tbl(p_mpg_dis), n = 3)
   # "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions
 head(meta_x_tbl(p_mpg_con), n = 3)
 
+# Use these wrappers when only type of distribution matters
+new_discrete(mtcars$mpg)
+new_continuous(mtcars$mpg)
+
 # Output of `new_*()` is actually a function
 p_mpg_dis(15:20)
 
@@ -181,11 +199,13 @@ meta_x_tbl(r_dirac)
 # Type "discrete"
 dis_tbl <- data.frame(x = 1:4, prob = 4:1 / 10)
 new_d(dis_tbl, type = "discrete")
+new_discrete(dis_tbl)
 new_r(dis_tbl, type = "discrete")(10)
 
 # Type "continuous"
 con_tbl <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
 new_d(con_tbl, type = "continuous")
+new_continuous(con_tbl)
 new_r(con_tbl, type = "continuous")(10)
 ```
 
@@ -259,7 +279,7 @@ There are several `form_*()` functions. Here are some examples:
 ```{r pdqr-transform_form}
 # Transform support of pdqr-function with `form_resupport()`. Usually useful
 # for dealing with bounded values.
-d_smpl <- new_d(runif(1000), type = "continuous")
+d_smpl <- new_continuous(runif(1000))
 d_smpl_bounded <- form_resupport(d_smpl, support = c(0, 1), method = "reflect")
 
 plot(d_smpl, main = "Estimating density of bounded quantity", col = "black")

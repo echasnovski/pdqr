@@ -79,6 +79,17 @@ devtools::install_github("echasnovski/pdqr")
 
 ## <a id="pdqr-quick"></a> Quick examples
 
+Generate sample from distribution defined by other sample:
+
+``` r
+# Treat input sample as from continuous distribution
+r_mpg_con <- new_r(mtcars$mpg, type = "continuous")
+
+r_mpg_con(n = 10)
+#>  [1] 17.3792362 10.4822955 22.8221407 21.8118788 15.5166760 16.3005293
+#>  [7] 20.5809388 16.8043292 21.1901692 19.9680967
+```
+
 Compute winsorized mean:
 
 ``` r
@@ -86,8 +97,8 @@ Compute winsorized mean:
 library(magrittr)
 # Take a sample
 mtcars$mpg %>% 
-  # Create pdqr-function of any class treating input as discrete
-  new_d(type = "discrete") %>% 
+  # Create pdqr-function treating input as discrete
+  new_discrete() %>% 
   # Winsorize tails
   form_tails(level = 0.1, method = "winsor", direction = "both") %>% 
   # Compute mean of distribution
@@ -100,26 +111,26 @@ Compute and visualize distribution of difference of sample means:
 ``` r
 # Compute distribution of first sample mean treating input as continuous
 mpg_vs0 <- mtcars$mpg[mtcars$vs == 0]
-d_vs0 <- new_d(mpg_vs0, "continuous")
+d_vs0 <- new_continuous(mpg_vs0)
 (d_vs0_mean <- form_estimate(
   d_vs0, estimate = mean, sample_size = length(mpg_vs0)
 ))
 #> Density function of continuous type
-#> Support: ~[13.00299, 20.78743] (511 intervals)
+#> Support: ~[12.14822, 20.63362] (511 intervals)
 
 # Compute distribution of second sample mean treating input as continuous
 mpg_vs1 <- mtcars$mpg[mtcars$vs == 1]
-d_vs1 <- new_d(mpg_vs1, "continuous")
+d_vs1 <- new_continuous(mpg_vs1)
 (d_vs1_mean <- form_estimate(
   d_vs1, estimate = mean, sample_size = length(mpg_vs1)
 ))
 #> Density function of continuous type
-#> Support: ~[18.2619, 30.79593] (511 intervals)
+#> Support: ~[18.42035, 31.00767] (511 intervals)
 
 # Compute distribution of difference of sample means using random simulation
 (mpg_diffmean <- d_vs0_mean - d_vs1_mean)
 #> Density function of continuous type
-#> Support: ~[-15.78983, 0.84769] (511 intervals)
+#> Support: ~[-15.97734, 0.93274] (511 intervals)
 # Visualize with base `plot()`
 plot(mpg_diffmean, main = "Distribution of difference of sample means")
 ```
@@ -155,7 +166,7 @@ region_draw(norm_hdr)
 
 All `new_*()` functions create a pdqr-function of certain class (“p”,
 “d”, “q”, or “r”) and type (“discrete” or “continuous”) based on
-sample or data frame of appropriate structure:
+sample or data frame (with appropriate structure):
 
   - **Sample input** is converted into data frame of appropriate
     structure that defines distribution (see next list item). It is done
@@ -192,6 +203,14 @@ distribution:
     Inverse of distribution’s p-function.
   - **R-function** is a random generation function. Created with
     `new_r()`. Generates a random sample from distribution.
+
+For situations when only type of pdqr-function matters and not its class
+(like for transforming and summarizing distributions), there are thin
+wrappers for `new_d()`:
+
+  - `new_discrete(x)` is equivalent to `new_d(x, type = "discrete")`.
+  - `new_continuous(x)` is equivalent to `new_d(x, type =
+    "continuous")`.
 
 For more details see vignette about creation of pdqr-functions.
 
@@ -240,16 +259,24 @@ head(meta_x_tbl(p_mpg_con), n = 3)
 #> 2 3.04503133 0.000125168087 8.98202438e-06
 #> 3 3.12009996 0.000136934574 1.88198694e-05
 
+# Use these wrappers when only type of distribution matters
+new_discrete(mtcars$mpg)
+#> Probability mass function of discrete type
+#> Support: [10.4, 33.9] (25 elements)
+new_continuous(mtcars$mpg)
+#> Density function of continuous type
+#> Support: ~[2.96996, 41.33004] (511 intervals)
+
 # Output of `new_*()` is actually a function
 p_mpg_dis(15:20)
 #> [1] 0.18750 0.31250 0.34375 0.40625 0.46875 0.56250
 
   # Random generation. "discrete" type generates only values from input
 r_mpg_dis(10)
-#>  [1] 21.0 10.4 27.3 15.2 21.0 19.7 21.0 16.4 21.4 14.3
+#>  [1] 10.4 33.9 26.0 19.2 24.4 18.7 17.8 18.7 15.5 21.4
 r_mpg_con(10)
-#>  [1]  9.04778435 34.75375947 25.85388829 19.14534473 24.97377936
-#>  [6] 18.78212805 17.81914730 18.72417709 15.81156928 21.58663248
+#>  [1] 35.7089680 33.3634914 31.1541225 15.6482281 20.8554689 13.7275908
+#>  [7] 11.3686051 16.7155604 20.6710197 20.5132727
 
 # Special case of dirac-like pdqr-function, which numerically approximates
 # single number with distribution with narrow support
@@ -271,17 +298,23 @@ dis_tbl <- data.frame(x = 1:4, prob = 4:1 / 10)
 new_d(dis_tbl, type = "discrete")
 #> Probability mass function of discrete type
 #> Support: [1, 4] (4 elements)
+new_discrete(dis_tbl)
+#> Probability mass function of discrete type
+#> Support: [1, 4] (4 elements)
 new_r(dis_tbl, type = "discrete")(10)
-#>  [1] 4 4 4 1 2 1 1 1 2 2
+#>  [1] 4 1 3 1 2 4 3 2 4 1
 
 # Type "continuous"
 con_tbl <- data.frame(x = 1:4, y = c(0, 1, 1, 1))
 new_d(con_tbl, type = "continuous")
 #> Density function of continuous type
 #> Support: [1, 4] (3 intervals)
+new_continuous(con_tbl)
+#> Density function of continuous type
+#> Support: [1, 4] (3 intervals)
 new_r(con_tbl, type = "continuous")(10)
-#>  [1] 3.78486663 2.12600804 3.74231079 2.48302382 2.89583449 3.76072579
-#>  [7] 3.50610764 2.63287220 3.79795585 1.67113707
+#>  [1] 2.21323986 1.58190910 2.85635049 2.32440194 2.44538842 2.89743821
+#>  [7] 3.29852362 2.43084969 2.81580878 2.79585280
 ```
 
 ## <a id="pdqr-convert"></a> Convert with `as_*()`
@@ -408,7 +441,7 @@ examples:
 ``` r
 # Transform support of pdqr-function with `form_resupport()`. Usually useful
 # for dealing with bounded values.
-d_smpl <- new_d(runif(1000), type = "continuous")
+d_smpl <- new_continuous(runif(1000))
 d_smpl_bounded <- form_resupport(d_smpl, support = c(0, 1), method = "reflect")
 
 plot(d_smpl, main = "Estimating density of bounded quantity", col = "black")

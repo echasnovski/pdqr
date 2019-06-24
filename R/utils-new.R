@@ -4,7 +4,12 @@
 #' Functions for creating new pdqr-functions based on numeric sample or data
 #' frame describing distribution. They construct appropriate ["x_tbl"
 #' metadata][meta_x_tbl()] based on the input and then create pdqr-function (of
-#' corresponding [pdqr class][meta_class()]) defined by that "x_tbl".
+#' corresponding [pdqr class][meta_class()]) defined by that "x_tbl". Main
+#' functions are `new_p()`, `new_d()`, `new_q()`, and `new_r()`. There are also
+#' two convenience wrappers `new_discrete()` and `new_continuous()` that use
+#' `new_d()` with appropriate `type` argument. They are meant to be used in
+#' situations when only type of pdqr-function matters and not its class, like
+#' for transforming and/or summarizing distributions.
 #'
 #' @param x Numeric vector or data frame with appropriate columns (see "Data
 #'   frame input" section).
@@ -83,7 +88,8 @@
 #' "cumprob" has cumulative probability of piecewise-linear d-function.
 #'
 #' @return A pdqr-function of corresponding [class][meta_class()] ("p" for
-#'   `new_p()`, etc.) and [type][meta_type()].
+#'   `new_p()`, etc.) and [type][meta_type()]. Both `new_discrete()` and
+#'   `new_continuous()` return d-functions of corresponding type.
 #'
 #' @examples
 #' set.seed(101)
@@ -105,6 +111,10 @@
 #'   # As are values in "y" column
 #' my_p_con <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "continuous")
 #'
+#' # Use these wrappers when only type of distribution matters
+#' new_discrete(x)
+#' new_continuous(x)
+#'
 #' # Using bigger bandwidth in `density()`
 #' my_d_con_2 <- new_d(x, "continuous", adjust = 2)
 #' plot(my_d_con, main = "Comparison of density bandwidths")
@@ -116,10 +126,14 @@
 #' @name new-pdqr
 NULL
 
+#' @rdname new-pdqr
+#' @export
 new_discrete <- function(x, ...) {
   new_d(x, type = "discrete", ...)
 }
 
+#' @rdname new-pdqr
+#' @export
 new_continuous <- function(x, ...) {
   new_d(x, type = "continuous", ...)
 }
