@@ -1,0 +1,211 @@
+---
+title: "Convert pdqr-functions with `as_*()`"
+output:
+  html_document:
+    fig_caption: false
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+toc_depth: 3
+vignette: >
+  %\VignetteIndexEntry{Convert pdqr-functions with `as_*()`}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(pdqr)
+```
+
+Family of `as_*()` functions should be used to convert existing distribution functions into desired class ("p", "d", "q", or "r"). Roughly, this is a `new_*()` family but with function as an input.
+
+There are two main use cases:
+
+- Convert existing pdqr-functions to different type.
+- Convert (create) pdqr-function based on some other user-supplied distribution function.
+
+## Existing pdqr-functions
+
+Converting existing pdqr-function to desired type is done straightforwardly by changing function's class without touching the underlying distribution ("x_tbl" metadata is the same):
+
+```{r existing}
+d_fin <- new_d(1:4, "discrete")
+
+meta_x_tbl(d_fin)
+
+# This is equivalent to `new_p(1:4, "discrete")`
+(p_fin <- as_p(d_fin))
+meta_x_tbl(p_fin)
+```
+
+## Other distribution functions
+
+Another important use case for `as_*()` functions is to convert some other distribution functions to be pdqr-functions. Except small number of special cases, output of `as_*()` function will have "continuous" type. The reason is because identifying exact values of distribution in discrete case is very hard in this setup (when almost nothing is known about the input function). It is assumed that if user knows those values, some `new_*()` function with data frame input can be used to create arbitrary "discrete" pdqr-function.
+
+General conversion algorithm is as follows:
+
+- If user didn't supply support, detect it using algorithms targeted for every pdqr class separately. If *input function belongs to a certain set of "honored" distributions* (currently, it is all common univariate distributions [from 'stats' package](https://rdrr.io/r/stats/Distributions.html)), support is detected in predefined way.
+- Using detected support, data frame input for corresponding `new_*()` function is created which approximates input function. Approximation precision can be tweaked with `n_grid` (and `n_sample` for `as_r()`) argument: bigger values lead to better approximation precision, but worse memory usage and evaluation speed (direct and of `summ_*()` functions).
+
+### Honored distributions
+
+For input distribution function to be recognized as "honored", it should be supplied directly with its original name:
+
+```{r honored}
+# "Honored" distributions
+as_d(dnorm)
+
+  # Underlying distribution doesn't depend on class ("p", "d", "q", "r").
+  # Following code has the same effect as `as_r(as_d(dnorm))`
+as_r(rnorm)
+
+  # Different picewise-linear approximation precision is achieved with different   # `n_grid` argument value
+as_d(dnorm, n_grid = 101)
+
+  # Different extra arguments for input
+as_d(dnorm, mean = 10, sd = 0.1)
+
+  # Currently only five distributions result into "discrete" output of `as_*()`
+as_d(dbinom, size = 10, prob = 0.3)
+as_d(dgeom, prob = 0.3)
+as_d(dhyper, m = 10, n = 10, k = 7)
+as_d(dnbinom, size = 10, prob = 0.3)
+as_d(dpois, lambda = 1)
+
+# This isn't recognized as "honored", but output is very close to "honored"
+as_d(function(x) {dnorm(x)})
+```
+
+### Support detection
+
+Support detection is implemented for more smooth user experience. For more details on algorithms behind it, see section "Support detection" in `as_p()` documentation. Generally, if you know exactly what support should be, it is better to provide it.
+
+```{r support-detection_demo}
+my_d <- function(x) {ifelse(x >= -1 & x <= 1, 0.75 * (1 - x^2), 0)}
+
+  # With default support detection
+as_d(my_d)
+
+  # Providing custom, maybe only partially known, support
+as_d(my_d, support = c(-1, NA))
+as_d(my_d, support = c(NA, 1))
+as_d(my_d, support = c(-1, 1))
+```
+
+Here is a comparison of support detection performance. One important note here is that algorithm has random nature in `as_r()` (which is reasonable because the only information available about distribution is its random generation function).
+
+```{r support-detection_performance}
+(p_norm <- as_p(function(x) {pnorm(x)}))
+(d_norm <- as_d(function(x) {dnorm(x)}))
+(q_norm <- as_q(function(x) {qnorm(x)}))
+(r_norm <- as_r(function(x) {rnorm(x)}))
+
+plot(
+  as_d(p_norm), col = "black",
+  main = "Comparison of `as_*()` functions support detection"
+)
+lines(d_norm, col = "blue")
+lines(as_d(q_norm), col = "red")
+lines(as_d(r_norm), col = "green")
+```
+
+### Infinity imputation
+
+If for some point density function goes to infinity, it is imputed linearly from its neighborhood. For not "honored" distribution functions, it can be more robust to use `as_p()` for initial conversion.
+
+```{r support_detection_infinity}
+x_grid <- seq(0, 0.06, by = 1e-5)
+
+# "Honored" distribution
+plot(
+  as_d(dchisq, df = 1), col = "black",
+  xlim = c(0, 0.05), ylim = c(0, 20),
+  main = "Infinity imputation for Chi-squared distribution"
+)
+lines(x_grid, dchisq(x_grid, df = 1), col = "red")
+
+# Custom function
+plot(
+  as_d(function(x) {-log(x)}, support = c(0, 1)), col = "black",
+  xlim = c(0, 0.001), ylim = c(6, 12),
+  main = "Infinity imputation for custom function"
+)
+lines(x_grid, -log(x_grid), col = "red")
+```
+
+## Approximation error
+
+**Note** that output distribution is usually an approximation (albeit a reasonably good one) of input due to the following facts:
+
+- Output density has piecewise-linear nature, which is almost never the case for input function.
+- Possible infinite tails are removed to obtain finite support. Usually output support "loses" only around 1e-6 probability on each infinite tail.
+- Possible infinite values of density are linearly approximated from neighborhood points.
+
+'pdqr' provides a diagnostic function `pdqr_approx_error()` to look at the precision of approximation. It accepts a pdqr-function and original reference distribution function with its possible extra arguments. It constructs a grid that is more dense than "x" column in pdqr-function's "x_tbl" metadata (to actually test the precision of piecewise-linear nature). Output is a data frame with rows corresponding to that grid elements and columns with two kinds of errors: "error" (with direct, signed error as difference between values of reference function and pdqr-function) and "abserror" (with absolute error):
+
+```{r pdqr_approx_error_demo}
+approx_err <- pdqr_approx_error(as_d(dnorm, sd = 2), dnorm, sd = 2)
+head(approx_err)
+summary(approx_err)
+```
+
+Here are estimation of median and maximum errors for most common "honored" distributions using default `n_grid` value (tested for d-functions, but can be used also for p- and q-functions):
+
+```{r pdqr_approx_error_common}
+abserror_stat <- function(f, ref_f, ...) {
+  approx_err <- pdqr_approx_error(f, ref_f, ...)
+  
+  c(
+    median_abserror = median(approx_err[["abserror"]]),
+    max_abserror = max(approx_err[["abserror"]])
+  )
+}
+
+abserror_stat_fin <- function(f, ref_f, grid, ...) {
+  abserror <- abs(f(grid) - ref_f(grid, ...))
+  
+    c(median_abserror = median(abserror), max_abserror = max(abserror))
+}
+
+# Normal
+abserror_stat(as_d(dnorm), dnorm)
+
+# Beta
+abserror_stat(
+  as_d(dbeta, shape1 = 10, shape2 = 20), dbeta, shape1 = 10, shape2 = 20
+)
+
+  # By default, `pdqr_approx_error()` removes infinity errors. As one can see,
+  # when density goes to infinity, error can be quite big
+abserror_stat(
+  as_d(dbeta, shape1 = 0.1, shape2 = 0.2), dbeta, shape1 = 0.1, shape2 = 0.2
+)
+
+# Exponential
+abserror_stat(as_d(dexp, rate = 10), dexp, rate = 10)
+
+# Student
+abserror_stat(as_d(dt, df = 5), dt, df = 5)
+
+# Cauchy. Heavy tails also affect approximation error
+abserror_stat(as_d(dcauchy), dcauchy)
+
+# Poisson. Pdqr-function isn't exact because of tail trimming.
+abserror_stat_fin(as_d(dpois, lambda = 10), dpois, grid = 0:30, lambda = 10)
+
+# For some distributions functions are exact
+# Uniform
+abserror_stat(as_d(dunif), dunif)
+
+# Binomial
+abserror_stat_fin(
+  as_d(dbinom, size = 10, prob = 0.1), dbinom, grid = 0:10,
+  size = 10, prob = 0.1
+)
+```
