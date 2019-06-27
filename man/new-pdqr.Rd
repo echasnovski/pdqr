@@ -7,8 +7,6 @@
 \alias{new_q}
 \alias{new_r}
 \alias{new-pdqr}
-\alias{new_discrete}
-\alias{new_continuous}
 \title{Create new pdqr-function}
 \usage{
 new_p(x, type, ...)
@@ -18,10 +16,6 @@ new_d(x, type, ...)
 new_q(x, type, ...)
 
 new_r(x, type, ...)
-
-new_discrete(x, ...)
-
-new_continuous(x, ...)
 }
 \arguments{
 \item{x}{Numeric vector or data frame with appropriate columns (see "Data
@@ -34,18 +28,12 @@ or "continuous".}
 }
 \value{
 A pdqr-function of corresponding \link[=meta_class]{class} ("p" for
-\code{new_p()}, etc.) and \link[=meta_type]{type}. Both \code{new_discrete()} and
-\code{new_continuous()} return d-functions of corresponding type.
+\code{new_p()}, etc.) and \link[=meta_type]{type}.
 }
 \description{
 Functions for creating new pdqr-functions based on numeric sample or data
 frame describing distribution. They construct appropriate \link[=meta_x_tbl]{"x_tbl" metadata} based on the input and then create pdqr-function (of
-corresponding \link[=meta_class]{pdqr class}) defined by that "x_tbl". Main
-functions are \code{new_p()}, \code{new_d()}, \code{new_q()}, and \code{new_r()}. There are also
-two convenience wrappers \code{new_discrete()} and \code{new_continuous()} that use
-\code{new_d()} with appropriate \code{type} argument. They are meant to be used in
-situations when only type of pdqr-function matters and not its class, like
-for transforming and/or summarizing distributions.
+corresponding \link[=meta_class]{pdqr class}) defined by that "x_tbl".
 }
 \details{
 Data frame input \code{x} is treated as having enough information for
@@ -151,10 +139,6 @@ plot(my_d_con)
 my_p_dis <- new_p(data.frame(x = 1:4, prob = 1:4), "discrete")
   # As are values in "y" column
 my_p_con <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "continuous")
-
-# Use these wrappers when only type of distribution matters
-new_discrete(x)
-new_continuous(x)
 
 # Using bigger bandwidth in `density()`
 my_d_con_2 <- new_d(x, "continuous", adjust = 2)
