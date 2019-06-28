@@ -10,6 +10,8 @@
 #'   from parsing original name of supplied `predicate`: all alphanumeric with
 #'   '_' and '.' characters (until the name end) after the first appearance of
 #'   either `is.` or `is_`. In case of a doubt supply `type` explicitly.
+#' @param x_name String to be used as variable name instead of supplied one
+#'   (default).
 #' @param allow_null If `TRUE` then error isn't thrown if `x` is `NULL`, no
 #'   matter what `predicate(x)` returns.
 #' @param ... Arguments to be passed to `predicate`.
@@ -28,9 +30,13 @@
 #'
 #' @keywords internal
 #' @noRd
-assert_type <- function(x, predicate, type_name = NULL, allow_null = FALSE,
-                        ...) {
-  x_name <- enbacktick(deparse(substitute(x)))
+assert_type <- function(x, predicate, type_name = NULL, x_name = NULL,
+                        allow_null = FALSE, ...) {
+  if (is.null(x_name)) {
+    x_name <- deparse(substitute(x))
+  }
+  x_name <- enbacktick(x_name)
+
   if (is.null(type_name)) {
     predicate_name <- deparse(substitute(predicate))
     type_name <- parse_type(predicate_name)
@@ -66,8 +72,11 @@ parse_type <- function(f_name) {
 
 
 # Assert object being in set ----------------------------------------------
-assert_in_set <- function(x, set, quote_set = TRUE) {
-  x_name <- enbacktick(deparse(substitute(x)))
+assert_in_set <- function(x, set, x_name = NULL, quote_set = TRUE) {
+  if (is.null(x_name)) {
+    x_name <- deparse(substitute(x))
+  }
+  x_name <- enbacktick(x_name)
 
   if (!(x %in% set)) {
     if (quote_set) {
@@ -128,8 +137,11 @@ error_missing <- function(var_name, value_name) {
 
 
 # Assertions for pdqr-functions -------------------------------------------
-assert_pdqr_fun <- function(f) {
-  f_name <- enbacktick(deparse(substitute(f)))
+assert_pdqr_fun <- function(f, f_name = NULL) {
+  if (is.null(f_name)) {
+    f_name <- deparse(substitute(f))
+  }
+  f_name <- enbacktick(f_name)
 
   if (missing(f)) {
     error_missing(var_name = f_name, value_name = "pdqr-function")

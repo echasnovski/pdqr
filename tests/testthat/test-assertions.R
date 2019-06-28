@@ -31,6 +31,11 @@ test_that("assert_type allows `NULL`", {
   expect_silent(assert_type(input, is.numeric, allow_null = TRUE))
 })
 
+test_that("assert_type allows custom name for `x`", {
+  input <- "a"
+  expect_error(assert_type(input, is.numeric, x_name = "aaa"), "^`aaa`")
+})
+
 test_that("assert_type allows extra arguments for `predicate`", {
   is_geq <- function(x, min_val) {x >= min_val}
   expect_silent(assert_type(1, is_geq, min_val = 0))
@@ -91,6 +96,11 @@ test_that("assert_in_set uses partial match first", {
     assert_in_set("con", c("discrete", "continuous")),
     'Did you mean "continuous"\\?'
   )
+})
+
+test_that("assert_in_set allows custom name for `x`", {
+  input <- "a"
+  expect_error(assert_in_set(input, c("b"), x_name = "aaa"), "^`aaa`")
 })
 
 
@@ -222,6 +232,11 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   f_bad_x_tbl_7 <- as_p(p_con)
   assign("x_tbl", bad_x_tbl_7, environment(f_bad_x_tbl_7))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_7), '"x_tbl".*have.*"cumprob"')
+})
+
+test_that("assert_pdqr_fun allows custom name for `f`", {
+  input <- "a"
+  expect_error(assert_pdqr_fun(input, f_name = "aaa"), "^`aaa`")
 })
 
 
