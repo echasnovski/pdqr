@@ -121,7 +121,7 @@ NULL
 distr_impl <- function(pdqr_class, impl_funs, x, type, ...) {
   assert_missing(x, "numeric vector or appropriate data frame")
   assert_missing(type, 'pdqr type ("discrete" or "continuous")')
-  assert_distr_type(type)
+  assert_pdqr_type(type)
 
   x_tbl <- impute_x_tbl(x, type, ...)
 
@@ -174,8 +174,8 @@ is_pdqr_fun <- function(f) {
   tryCatch(assert_pdqr_fun(f), error = function(e) {FALSE})
 }
 
-is_distr_type <- function(type) {
-  tryCatch(assert_distr_type(type), error = function(e) {FALSE})
+is_pdqr_type <- function(type) {
+  tryCatch(assert_pdqr_type(type), error = function(e) {FALSE})
 }
 
 is_support <- function(supp, allow_na = FALSE) {
@@ -199,7 +199,7 @@ is_boolean_pdqr_fun <- function(f) {
 }
 
 has_meta_type <- function(f) {
-  has_meta(f, "type") && is_distr_type(meta_type(f))
+  has_meta(f, "type") && is_pdqr_type(meta_type(f))
 }
 
 has_meta_support <- function(f) {

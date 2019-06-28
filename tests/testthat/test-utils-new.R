@@ -140,14 +140,14 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
 })
 
 
-# is_distr_type -----------------------------------------------------------
-test_that("is_distr_type works", {
-  expect_true(is_distr_type("discrete"))
-  expect_true(is_distr_type("continuous"))
+# is_pdqr_type ------------------------------------------------------------
+test_that("is_pdqr_type works", {
+  expect_true(is_pdqr_type("discrete"))
+  expect_true(is_pdqr_type("continuous"))
 
-  expect_false(is_distr_type(1))
-  expect_false(is_distr_type(c("discrete", "continuous")))
-  expect_false(is_distr_type("a"))
+  expect_false(is_pdqr_type(1))
+  expect_false(is_pdqr_type(c("discrete", "continuous")))
+  expect_false(is_pdqr_type("a"))
 })
 
 

@@ -63,7 +63,7 @@
 form_retype <- function(f, type, method = "piecelin") {
   assert_pdqr_fun(f)
   assert_missing(type, "pdqr type of output")
-  assert_distr_type(type)
+  assert_pdqr_type(type)
   assert_type(method, is_string)
   assert_in_set(method, c("piecelin", "dirac"))
 

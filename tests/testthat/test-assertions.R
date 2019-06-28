@@ -240,14 +240,19 @@ test_that("assert_pdqr_fun allows custom name for `f`", {
 })
 
 
-# assert_distr_type -------------------------------------------------------
-test_that("assert_distr_type works", {
-  expect_silent(assert_distr_type("discrete"))
-  expect_silent(assert_distr_type("continuous"))
+# assert_pdqr_type --------------------------------------------------------
+test_that("assert_pdqr_type works", {
+  expect_silent(assert_pdqr_type("discrete"))
+  expect_silent(assert_pdqr_type("continuous"))
 
-  expect_error(assert_distr_type(1), "string")
-  expect_error(assert_distr_type(c("discrete", "continuous")), "string")
-  expect_error(assert_distr_type("a"), "discrete.*continuous")
+  expect_error(assert_pdqr_type(1), "string")
+  expect_error(assert_pdqr_type(c("discrete", "continuous")), "string")
+  expect_error(assert_pdqr_type("a"), "discrete.*continuous")
+})
+
+test_that("assert_pdqr_type suggests correctly", {
+  expect_error(assert_pdqr_type("dis"), 'mean "discrete"\\?')
+  expect_error(assert_pdqr_type("con"), 'mean "continuous"\\?')
 })
 
 

@@ -188,18 +188,11 @@ assert_pdqr_fun <- function(f, f_name = NULL) {
   TRUE
 }
 
-assert_distr_type <- function(type) {
-  type_name <- enbacktick(deparse(substitute(type)))
+assert_pdqr_type <- function(type) {
+  type_name <- deparse(substitute(type))
 
-  if (!is_string(type)) {
-    stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
-  }
-  if (!(type %in% c("discrete", "continuous"))) {
-    stop_collapse(
-      type_name, ' should be one of "discrete" or "continuous", ',
-      'not "', type, '".'
-    )
-  }
+  assert_type(type, is_string, x_name = type_name)
+  assert_in_set(type, c("discrete", "continuous"), x_name = type_name)
 
   TRUE
 }
