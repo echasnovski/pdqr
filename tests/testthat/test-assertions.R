@@ -86,6 +86,17 @@ test_that("assert_in_set suggests correct value for character values", {
   )
 })
 
+test_that("assert_in_set uses partial match first", {
+  expect_error(
+    assert_in_set("con", c("discrete", "continuous")),
+    'Did you mean "continuous"\\?'
+  )
+})
+
+
+# match_in_set ------------------------------------------------------------
+# Tested in `assert_in_set()`
+
 
 # assert_missing ----------------------------------------------------------
 test_that("assert_missing works", {

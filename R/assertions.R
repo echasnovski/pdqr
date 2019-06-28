@@ -79,8 +79,7 @@ assert_in_set <- function(x, set, quote_set = TRUE) {
     }
 
     if (is.character(set) && is.character(x)) {
-      string_dist <- utils::adist(tolower(x), tolower(set))[1, ]
-      suggested_elem <- set[which.min(string_dist)]
+      suggested_elem <- match_in_set(x, set)
       suggestion_str <- paste0(' Did you mean "', suggested_elem, '"?')
     } else {
       suggestion_str <- ""
@@ -93,6 +92,22 @@ assert_in_set <- function(x, set, quote_set = TRUE) {
   }
 
   TRUE
+}
+
+match_in_set <- function(x, set) {
+  x_low <- tolower(x)
+  set_low <- tolower(set)
+  x_pmatch <- pmatch(x = x_low, table = set_low)
+
+  if (!is.na(x_pmatch)[1]) {
+    # Try partial match first
+    set[x_pmatch]
+  } else {
+    # If there is no partial match, return the closest set element
+    string_dist <- utils::adist(x_low, set_low)[1, ]
+
+    set[which.min(string_dist)]
+  }
 }
 
 
