@@ -452,7 +452,7 @@ summary_allany <- function(gen, ...) {
 
 ensure_pdqr_functions <- function(gen, ...) {
   dots <- list(...)
-  gen_name <- paste0("`", gen, "`")
+  gen_name <- enbacktick(gen)
 
   is_pdqr <- vapply(dots, is_pdqr_fun, logical(1))
   is_number <- vapply(dots, is_single_number, logical(1))

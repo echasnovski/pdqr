@@ -235,6 +235,12 @@ test_that("coalesce_pair works", {
 })
 
 
+# enbacktick --------------------------------------------------------------
+test_that("enbacktick works", {
+  expect_equal(enbacktick(c("a", "b", "c")), c("`a`", "`b`", "`c`"))
+})
+
+
 # integrate_safely --------------------------------------------------------
 test_that("integrate_safely integrates when `stats::integrate()` can't", {
   expect_silent(integrate_safely(fam_beta_inf$d, -1e8, 1e8))

@@ -91,7 +91,7 @@ compute_d_con_ylim <- function(f) {
 
 # Function and vector manipulations ---------------------------------------
 recycle_vec <- function(vec, n) {
-  vec_name <- paste0("`", deparse(substitute(vec)), "`")
+  vec_name <- enbacktick(deparse(substitute(vec)))
 
   if (!(length(vec) %in% c(1, n))) {
     stop_collapse(vec_name, " should have length 1 or ", n, ".")
@@ -203,6 +203,10 @@ coalesce_pair <- function(x, y) {
   res[x_is_na] <- y[x_is_na]
 
   res
+}
+
+enbacktick <- function(x) {
+  paste0("`", x, "`")
 }
 
 integrate_safely <- function(f, lower, upper, n_grid = 10001, ...) {

@@ -34,7 +34,7 @@ boolean_pdqr <- function(prob_true, pdqr_class) {
 
 # Handling list of pdqr-functions -----------------------------------------
 assert_f_list <- function(f_list, allow_numbers = FALSE) {
-  f_list_name <- paste0("`", deparse(substitute(f_list)), "`")
+  f_list_name <- enbacktick(deparse(substitute(f_list)))
 
   if (missing(f_list)) {
     if (allow_numbers) {

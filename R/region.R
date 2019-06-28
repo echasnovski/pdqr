@@ -256,7 +256,7 @@ region_new <- function(left, right) {
 }
 
 assert_region <- function(df) {
-  df_name <- paste0("`", deparse(substitute(df)), "`")
+  df_name <- enbacktick(deparse(substitute(df)))
 
   if (missing(df)) {
     error_missing(df_name, "region data frame")

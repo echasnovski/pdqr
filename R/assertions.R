@@ -30,7 +30,7 @@
 #' @noRd
 assert_type <- function(x, predicate, type_name = NULL, allow_null = FALSE,
                         ...) {
-  x_name <- deparse(substitute(x))
+  x_name <- enbacktick(deparse(substitute(x)))
   if (is.null(type_name)) {
     predicate_name <- deparse(substitute(predicate))
     type_name <- parse_type(predicate_name)
@@ -41,7 +41,7 @@ assert_type <- function(x, predicate, type_name = NULL, allow_null = FALSE,
   if (!is_pred_true) {
     # Not using "must be of type" because of 'tibble' and 'string' cases
     stop_collapse(
-      "`", x_name, "` must be '", type_name, "', not '", get_type(x), "'."
+      x_name, " must be '", type_name, "', not '", get_type(x), "'."
     )
   }
 
@@ -67,7 +67,7 @@ parse_type <- function(f_name) {
 
 # Assert object being in set ----------------------------------------------
 assert_in_set <- function(x, set, quote_set = TRUE) {
-  x_name <- paste0("`", deparse(substitute(x)), "`")
+  x_name <- enbacktick(deparse(substitute(x)))
 
   if (!(x %in% set)) {
     if (quote_set) {
@@ -114,7 +114,7 @@ match_in_set <- function(x, set) {
 # Assert missing arguments ------------------------------------------------
 assert_missing <- function(x, value_name) {
   if (missing(x)) {
-    x_name <- paste0("`", deparse(substitute(x)), "`")
+    x_name <- enbacktick(deparse(substitute(x)))
 
     error_missing(var_name = x_name, value_name = value_name)
   }
@@ -129,7 +129,7 @@ error_missing <- function(var_name, value_name) {
 
 # Assertions for pdqr-functions -------------------------------------------
 assert_pdqr_fun <- function(f) {
-  f_name <- paste0("`", deparse(substitute(f)), "`")
+  f_name <- enbacktick(deparse(substitute(f)))
 
   if (missing(f)) {
     error_missing(var_name = f_name, value_name = "pdqr-function")
@@ -177,7 +177,7 @@ assert_pdqr_fun <- function(f) {
 }
 
 assert_distr_type <- function(type) {
-  type_name <- paste0("`", deparse(substitute(type)), "`")
+  type_name <- enbacktick(deparse(substitute(type)))
 
   if (!is_string(type)) {
     stop_collapse(type_name, " must be 'string', not '", get_type(type), "' .")
@@ -193,7 +193,7 @@ assert_distr_type <- function(type) {
 }
 
 assert_support <- function(support, allow_na = FALSE) {
-  support_name <- paste0("`", deparse(substitute(support)), "`")
+  support_name <- enbacktick(deparse(substitute(support)))
 
   if (!(is.numeric(support) && (length(support) == 2))) {
     stop_collapse(
@@ -217,7 +217,7 @@ assert_support <- function(support, allow_na = FALSE) {
 }
 
 assert_x_tbl <- function(x_tbl, type, err_header = "") {
-  x_tbl_name <- paste0("`", deparse(substitute(x_tbl)), "`")
+  x_tbl_name <- enbacktick(deparse(substitute(x_tbl)))
 
   if (!is.data.frame(x_tbl)) {
     stop_collapse(err_header, x_tbl_name, " should be a data frame.")
@@ -352,7 +352,7 @@ assert_num_col <- function(vec, col_name, x_tbl_name, err_header = "") {
 # Warnings for pdqr-functions ---------------------------------------------
 warning_boolean_pdqr_fun <- function(f = NULL, f_name = NULL) {
   if (is.null(f_name)) {
-    f_name <- paste0("`", deparse(substitute(f)), "`")
+    f_name <- enbacktick(deparse(substitute(f)))
   }
 
   warning_collapse(
