@@ -68,7 +68,6 @@ Collate:
     'summ_classmetric.R'
     'summ_dispersion.R'
     'summ_distance.R'
-    'summ_distr_tbl.R'
     'summ_entropy.R'
     'summ_hdr.R'
     'summ_interval.R'
