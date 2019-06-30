@@ -190,6 +190,8 @@ plot(r_mpg_dis, main = '"discrete" r-function\nfrom sample', col = "blue")
 par(op)
 ```
 
+### From data frame
+
 ```{r r-fun_data-frame}
 r_df_dis <- new_r(dis_df, type = "discrete")
 r_df_dis
