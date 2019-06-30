@@ -1,15 +1,11 @@
 ---
-title: "Create pdqr-functions with `new_*()`"
+title: "Create with `new_*()`"
 output:
-  html_document:
-    fig_caption: false
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-toc_depth: 3
+  rmarkdown::html_vignette:
+    fig_width: 6.5
+    fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{Create pdqr-functions with `new_*()`}
+  %\VignetteIndexEntry{Create with `new_*()`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -109,8 +105,8 @@ d_mpg_con(15:20)
 
 # You can plot them directly using base `plot()` and `lines()`
 op <- par(mfrow = c(1, 2))
-plot(d_mpg_con, main = '"continuous" d-function from sample')
-plot(d_mpg_dis, main = '"discrete" d-function from sample', col = "blue")
+plot(d_mpg_con, main = '"continuous" d-function\nfrom sample')
+plot(d_mpg_dis, main = '"discrete" d-function\nfrom sample', col = "blue")
 par(op)
 ```
 
@@ -124,8 +120,8 @@ d_df_con <- new_d(con_df, type = "continuous")
 d_df_con
 
 op <- par(mfrow = c(1, 2))
-plot(d_df_con, main = '"continuous" d-function from data frame')
-plot(d_df_dis, main = '"discrete" d-function from data frame', col = "blue")
+plot(d_df_con, main = '"continuous" d-function\nfrom data frame')
+plot(d_df_dis, main = '"discrete" d-function\nfrom data frame', col = "blue")
 par(op)
 ```
 
@@ -187,8 +183,8 @@ r_mpg_con(5)
 
 # You can plot them directly using base `plot()` and `lines()`
 op <- par(mfrow = c(1, 2))
-plot(r_mpg_con, main = '"continuous" r-function from sample')
-plot(r_mpg_dis, main = '"discrete" r-function from sample', col = "blue")
+plot(r_mpg_con, main = '"continuous" r-function\nfrom sample')
+plot(r_mpg_dis, main = '"discrete" r-function\nfrom sample', col = "blue")
 par(op)
 ```
 
@@ -200,8 +196,8 @@ r_df_con <- new_r(con_df, type = "continuous")
 r_df_con
 
 op <- par(mfrow = c(1, 2))
-plot(r_df_con, main = '"continuous" r-function from data frame')
-plot(r_df_dis, main = '"discrete" r-function from data frame', col = "blue")
+plot(r_df_con, main = '"continuous" r-function\nfrom data frame')
+plot(r_df_dis, main = '"discrete" r-function\nfrom data frame', col = "blue")
 par(op)
 ```
 

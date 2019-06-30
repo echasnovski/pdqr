@@ -1,15 +1,11 @@
 ---
-title: "Convert pdqr-functions with `as_*()`"
+title: "Convert with `as_*()`"
 output:
-  html_document:
-    fig_caption: false
-    toc: true
-    toc_float:
-      collapsed: false
-      smooth_scroll: false
-toc_depth: 3
+  rmarkdown::html_vignette:
+    fig_width: 6.5
+    fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{Convert pdqr-functions with `as_*()`}
+  %\VignetteIndexEntry{Convert with `as_*()`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
