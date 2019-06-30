@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 )
 
 library(pdqr)
+
+set.seed(102)
 ```
 
 Family of `as_*()` functions should be used to convert existing distribution functions into desired class ("p", "d", "q", or "r"). Roughly, this is a `new_*()` family but with function as an input.

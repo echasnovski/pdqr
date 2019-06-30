@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 library(pdqr)
 
-set.seed(103)
+set.seed(104)
 ```
 
 Concept of summary functions is to take one or more pdqr-function(s) and return a summary value (which shouldn't necessarily be a number). Argument `method` is used to choose function-specific algorithm of computation.
