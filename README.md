@@ -135,7 +135,7 @@ d_vs1 <- new_d(mpg_vs1, "continuous")
 plot(mpg_diffmean, main = "Distribution of difference of sample means")
 ```
 
-<img src="man/figures/README-pdqr-quick_diff-means-1.png" width="62%" />
+![](man/figures/README-pdqr-quick_diff-means-1.png)<!-- -->
 
 Compute and visualize 95% highest density region for mixture of normal
 distributions:
@@ -160,7 +160,7 @@ plot(norm_mix, main = "95% highest density region for normal mixture")
 region_draw(norm_hdr)
 ```
 
-<img src="man/figures/README-pdqr-quick_mixture-hdr-1.png" width="62%" />
+![](man/figures/README-pdqr-quick_mixture-hdr-1.png)<!-- -->
 
 ## <a id="pdqr-create"></a> Create with `new_*()`
 
@@ -428,7 +428,7 @@ lines(d_smpl_bounded, col = "blue")
 lines(as_d(dunif), col = "red")
 ```
 
-<img src="man/figures/README-pdqr-transform_form-1.png" width="62%" />
+![](man/figures/README-pdqr-transform_form-1.png)<!-- -->
 
 ``` r
 
@@ -442,7 +442,7 @@ plot(d_norm_2, col = "black")
 lines(as_d(dnorm, sd = sqrt(2)), col = "red")
 ```
 
-<img src="man/figures/README-pdqr-transform_form-2.png" width="62%" />
+![](man/figures/README-pdqr-transform_form-2.png)<!-- -->
 
 ### Base operations
 
@@ -642,4 +642,4 @@ summ_rocauc(my_d, my_d_2)
 roc_plot(my_roc)
 ```
 
-<img src="man/figures/README-pdqr-summarize_roc-1.png" width="62%" />
+![](man/figures/README-pdqr-summarize_roc-1.png)<!-- -->
