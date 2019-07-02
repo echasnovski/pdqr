@@ -1,0 +1,58 @@
+title: pdqr
+
+template:
+  params:
+    bootswatch: united
+
+toc:
+  depth: 3
+
+reference:
+  - title: Package description
+    contents:
+    - pdqr-package
+  - title: Create
+    contents:
+    - new-pdqr
+    - meta
+  - title: Convert
+    contents:
+    - as-pdqr
+    - pdqr_approx_error
+  - title: Transform
+    contents:
+    - form_estimate
+    - form_mix
+    - form_regrid
+    - form_resupport
+    - form_retype
+    - form_smooth
+    - form_tails
+    - form_trans
+  - title: Summarize
+    contents:
+    - summ_center
+    - summ_classmetric
+    - summ_dispersion
+    - summ_distance
+    - summ_entropy
+    - summ_hdr
+    - summ_interval
+    - summ_moment
+    - summ_order
+    - summ_prob_true
+    - summ_pval
+    - summ_quantile
+    - summ_roc
+    - summ_separation
+  - title: Regions
+    contents:
+    - region
+  - title: Methods for other functions
+    contents:
+    - methods-group-generic
+    - methods-plot
+    - methods-print
+  - title: Other
+    contents:
+    - enpoint
