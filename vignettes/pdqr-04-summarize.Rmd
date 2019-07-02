@@ -1,11 +1,11 @@
 ---
-title: "Summarize with `summ_*()`"
+title: "Summarize pdqr-functions with `summ_*()`"
 output:
   rmarkdown::html_vignette:
     fig_width: 6.5
     fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{Summarize with `summ_*()`}
+  %\VignetteIndexEntry{Summarize pdqr-functions with `summ_*()`}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

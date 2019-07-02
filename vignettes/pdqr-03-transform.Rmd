@@ -1,11 +1,11 @@
 ---
-title: "Transform with `form_*()` and base operations"
+title: "Transform pdqr-functions with `form_*()` and base operations"
 output:
   rmarkdown::html_vignette:
     fig_width: 6.5
     fig_height: 4
 vignette: >
-  %\VignetteIndexEntry{Transform with `form_*()` and base operations}
+  %\VignetteIndexEntry{Transform pdqr-functions with `form_*()` and base operations}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
