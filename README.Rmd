@@ -325,12 +325,12 @@ summ_center(my_d, method = "mean")
 summ_center(my_d, method = "median")
 summ_center(my_d, method = "mode")
 
-# There are wrappers for dispersion summaries
-summ_dispersion(my_d, method = "sd")
+# There are wrappers for spread summaries
+summ_spread(my_d, method = "sd")
 
 # These return essentially the same result
 summ_moment(my_d, order = 2, central = TRUE)
-summ_dispersion(my_d, method = "var")
+summ_spread(my_d, method = "var")
 ```
 
 ### Regions

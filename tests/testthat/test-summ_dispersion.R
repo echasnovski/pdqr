@@ -1,26 +1,26 @@
-context("test-summ_dispersion")
+context("test-summ_spread")
 
 
-# summ_dispersion ---------------------------------------------------------
-# More thorough testing is done in other "dispersion" `summ_*()` functions
-test_that("summ_dispersion works", {
+# summ_spread -------------------------------------------------------------
+# More thorough testing is done in other "spread" `summ_*()` functions
+test_that("summ_spread works", {
   # "discrete"
-  expect_equal(summ_dispersion(d_dis, "var"), summ_var(d_dis))
-  expect_equal(summ_dispersion(d_dis, "sd"), summ_sd(d_dis))
-  expect_equal(summ_dispersion(d_dis, "iqr"), summ_iqr(d_dis))
-  expect_equal(summ_dispersion(d_dis, "mad"), summ_mad(d_dis))
+  expect_equal(summ_spread(d_dis, "var"), summ_var(d_dis))
+  expect_equal(summ_spread(d_dis, "sd"), summ_sd(d_dis))
+  expect_equal(summ_spread(d_dis, "iqr"), summ_iqr(d_dis))
+  expect_equal(summ_spread(d_dis, "mad"), summ_mad(d_dis))
 
   # "continuous"
-  expect_equal(summ_dispersion(d_con, "var"), summ_var(d_con))
-  expect_equal(summ_dispersion(d_con, "sd"), summ_sd(d_con))
-  expect_equal(summ_dispersion(d_con, "iqr"), summ_iqr(d_con))
-  expect_equal(summ_dispersion(d_con, "mad"), summ_mad(d_con))
+  expect_equal(summ_spread(d_con, "var"), summ_var(d_con))
+  expect_equal(summ_spread(d_con, "sd"), summ_sd(d_con))
+  expect_equal(summ_spread(d_con, "iqr"), summ_iqr(d_con))
+  expect_equal(summ_spread(d_con, "mad"), summ_mad(d_con))
 })
 
-test_that("summ_dispersion validates input", {
-  expect_error(summ_dispersion("a"), "`f`.*not pdqr-function")
-  expect_error(summ_dispersion(d_dis, method = 1), "`method`.*string")
-  expect_error(summ_dispersion(d_dis, method = "a"), "`method`.*one of")
+test_that("summ_spread validates input", {
+  expect_error(summ_spread("a"), "`f`.*not pdqr-function")
+  expect_error(summ_spread(d_dis, method = 1), "`method`.*string")
+  expect_error(summ_spread(d_dis, method = "a"), "`method`.*one of")
 })
 
 

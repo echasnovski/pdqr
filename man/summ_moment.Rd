@@ -61,16 +61,16 @@ summ_kurtosis(d_beta, excess = FALSE)
 
 }
 \seealso{
-\code{\link[=summ_center]{summ_center()}} for computing distribution's center,
-\code{\link[=summ_dispersion]{summ_dispersion()}} for dispersion.
+\code{\link[=summ_center]{summ_center()}} for computing distribution's center, \code{\link[=summ_spread]{summ_spread()}}
+for spread.
 
 Other summary functions: \code{\link{summ_center}},
   \code{\link{summ_classmetric}},
-  \code{\link{summ_dispersion}},
   \code{\link{summ_distance}}, \code{\link{summ_entropy}},
   \code{\link{summ_hdr}}, \code{\link{summ_interval}},
   \code{\link{summ_order}}, \code{\link{summ_prob_true}},
   \code{\link{summ_pval}}, \code{\link{summ_quantile}},
-  \code{\link{summ_roc}}, \code{\link{summ_separation}}
+  \code{\link{summ_roc}}, \code{\link{summ_separation}},
+  \code{\link{summ_spread}}
 }
 \concept{summary functions}

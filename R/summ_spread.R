@@ -1,11 +1,11 @@
-#' Summarize distribution with dispersion
+#' Summarize distribution with spread
 #'
-#' Functions to compute dispersion of distribution (i.e. "how wide it is
-#' spread"). `summ_dispersion()` is a wrapper for respective `summ_*()`
-#' functions (from this page) with default arguments.
+#' Functions to compute spread (variability, dispersion) of distribution (i.e.
+#' "how wide it is spread"). `summ_spread()` is a wrapper for respective
+#' `summ_*()` functions (from this page) with default arguments.
 #'
 #' @inheritParams summ_center
-#' @param method Method of center computation. Should be one of "sd", "var",
+#' @param method Method of spread computation. Should be one of "sd", "var",
 #'   "iqr", "mad".
 #'
 #' @details `summ_sd()` computes distribution's standard deviation.
@@ -18,7 +18,7 @@
 #' `summ_mad()` computes distribution's *median* absolute deviation around the
 #' distribution's *median*.
 #'
-#' @return All functions return a single number representing a dispersion of
+#' @return All functions return a single number representing a spread of
 #'   distribution.
 #'
 #' @seealso [summ_center()] for computing distribution's center, [summ_moment()]
@@ -29,7 +29,7 @@
 #' @examples
 #' # Type "continuous"
 #' d_norm <- as_d(dnorm)
-#'   # The same as `summ_dispersion(d_norm, method = "sd")`
+#'   # The same as `summ_spread(d_norm, method = "sd")`
 #' summ_sd(d_norm)
 #' summ_var(d_norm)
 #' summ_iqr(d_norm)
@@ -42,12 +42,12 @@
 #' summ_iqr(d_pois)
 #' summ_mad(d_pois)
 #'
-#' @name summ_dispersion
+#' @name summ_spread
 NULL
 
-#' @rdname summ_dispersion
+#' @rdname summ_spread
 #' @export
-summ_dispersion <- function(f, method = "sd") {
+summ_spread <- function(f, method = "sd") {
   # `f` is validated inside `summ_*()` calls
   assert_type(method, is_string)
   assert_in_set(method, c("var", "sd", "iqr", "mad"))
@@ -61,14 +61,14 @@ summ_dispersion <- function(f, method = "sd") {
   )
 }
 
-#' @rdname summ_dispersion
+#' @rdname summ_spread
 #' @export
 summ_sd <- function(f) {
   # `f` is validated inside `summ_var()`
   sqrt(summ_var(f))
 }
 
-#' @rdname summ_dispersion
+#' @rdname summ_spread
 #' @export
 summ_var <- function(f) {
   # `f` is validated inside `summ_mean()`
@@ -76,7 +76,7 @@ summ_var <- function(f) {
   max(-summ_mean(f)^2 + raw_moment(f, order = 2), 0)
 }
 
-#' @rdname summ_dispersion
+#' @rdname summ_spread
 #' @export
 summ_iqr <- function(f) {
   assert_pdqr_fun(f)
@@ -86,7 +86,7 @@ summ_iqr <- function(f) {
   quarts[2] - quarts[1]
 }
 
-#' @rdname summ_dispersion
+#' @rdname summ_spread
 #' @export
 summ_mad <- function(f) {
   # `f` is validated inside `summ_median(f)`

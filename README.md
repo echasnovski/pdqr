@@ -499,14 +499,14 @@ summ_center(my_d, method = "median")
 summ_center(my_d, method = "mode")
 #> [1] 0
 
-# There are wrappers for dispersion summaries
-summ_dispersion(my_d, method = "sd")
+# There are wrappers for spread summaries
+summ_spread(my_d, method = "sd")
 #> [1] 0.193647842
 
 # These return essentially the same result
 summ_moment(my_d, order = 2, central = TRUE)
 #> [1] 0.0374994867
-summ_dispersion(my_d, method = "var")
+summ_spread(my_d, method = "var")
 #> [1] 0.0374994867
 ```
 

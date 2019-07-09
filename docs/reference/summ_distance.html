@@ -212,7 +212,7 @@ computed as integral of <code>|F - G|</code> (absolute difference between p-func
 If any of <code>f</code> and <code>g</code> has "continuous" type, <code><a href='https://rdrr.io/r/stats/integrate.html'>stats::integrate()</a></code> is used, so
 relatively small numerical errors can happen.</p></li>
 <li><p><em>Method "cramer"</em> computes Cramer distance: integral of <code>(F - G)^2</code>. This
-somewhat relates to "wass" method as <a href='summ_moment.html'>first central absolute moment</a> relates to <a href='summ_dispersion.html'>variance</a>. Relatively small
+somewhat relates to "wass" method as <a href='summ_moment.html'>first central absolute moment</a> relates to <a href='summ_spread.html'>variance</a>. Relatively small
 numerical errors can happen.</p></li>
 <li><p><em>Method "align"</em> computes an absolute value of shift <code>d</code> (possibly
 negative) that should be added to <code>f</code> to achieve both <code>P(f+d &gt;= g) &gt;= 0.5</code>
@@ -239,12 +239,12 @@ elements in <a href='meta.html'>"x_tbl" metadata</a>. For example, with
 pair of distributions.</p>
 <p>Other summary functions: <code><a href='summ_center.html'>summ_center</a></code>,
   <code><a href='summ_classmetric.html'>summ_classmetric</a></code>,
-  <code><a href='summ_dispersion.html'>summ_dispersion</a></code>,
   <code><a href='summ_entropy.html'>summ_entropy</a></code>, <code><a href='summ_hdr.html'>summ_hdr</a></code>,
   <code><a href='summ_interval.html'>summ_interval</a></code>, <code><a href='summ_moment.html'>summ_moment</a></code>,
   <code><a href='summ_order.html'>summ_order</a></code>, <code><a href='summ_prob_true.html'>summ_prob_true</a></code>,
   <code><a href='summ_pval.html'>summ_pval</a></code>, <code><a href='summ_quantile.html'>summ_quantile</a></code>,
-  <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code></p></div>
+  <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code>,
+  <code><a href='summ_spread.html'>summ_spread</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

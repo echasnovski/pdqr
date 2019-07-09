@@ -24,8 +24,8 @@
 #'   distribution. `summ_mode(*, method = "local")` can return a numeric vector
 #'   with multiple values representing local maxima.
 #'
-#' @seealso [summ_dispersion()] for computing distribution's dispersion,
-#'   [summ_moment()] for general moments.
+#' @seealso [summ_spread()] for computing distribution's spread, [summ_moment()]
+#'   for general moments.
 #'
 #' @family summary functions
 #'

@@ -22,8 +22,8 @@
 #' @return A single number representing moment. If `summ_sd(f)` is zero and
 #'   `standard` is `TRUE`, then it is `Inf`; otherwise - finite number.
 #'
-#' @seealso [summ_center()] for computing distribution's center,
-#'   [summ_dispersion()] for dispersion.
+#' @seealso [summ_center()] for computing distribution's center, [summ_spread()]
+#'   for spread.
 #'
 #' @family summary functions
 #'

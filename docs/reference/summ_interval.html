@@ -190,7 +190,7 @@ ends are computed so that intervals have <code>level</code> total probability.</
 <code>1 - 0.5*(1-level)</code> quantiles. Output has total probability equal to <code>level</code>.</p>
 <p>Method "sigma" computes an interval symmetrically centered at
 <a href='summ_center.html'>mean</a> of distribution. Left and right edges are distant from
-center by the amount of <a href='summ_dispersion.html'>standard deviation</a> multiplied by
+center by the amount of <a href='summ_spread.html'>standard deviation</a> multiplied by
 <code>level</code>'s critical value. Critical value is computed using <a href='https://rdrr.io/r/stats/Normal.html'>normal distribution</a> as <code><a href='https://rdrr.io/r/stats/Normal.html'>qnorm(1 - 0.5*(1-level))</a></code>, which
 corresponds to a way of computing sample confidence interval with known
 standard deviation. The final output interval is possibly cut so that not to
@@ -209,12 +209,12 @@ summarize distribution with multiple intervals.</p>
 output.</p>
 <p>Other summary functions: <code><a href='summ_center.html'>summ_center</a></code>,
   <code><a href='summ_classmetric.html'>summ_classmetric</a></code>,
-  <code><a href='summ_dispersion.html'>summ_dispersion</a></code>,
   <code><a href='summ_distance.html'>summ_distance</a></code>, <code><a href='summ_entropy.html'>summ_entropy</a></code>,
   <code><a href='summ_hdr.html'>summ_hdr</a></code>, <code><a href='summ_moment.html'>summ_moment</a></code>,
   <code><a href='summ_order.html'>summ_order</a></code>, <code><a href='summ_prob_true.html'>summ_prob_true</a></code>,
   <code><a href='summ_pval.html'>summ_pval</a></code>, <code><a href='summ_quantile.html'>summ_quantile</a></code>,
-  <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code></p></div>
+  <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code>,
+  <code><a href='summ_spread.html'>summ_spread</a></code></p></div>
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

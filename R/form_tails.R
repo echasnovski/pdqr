@@ -28,8 +28,7 @@
 #' @seealso [form_resupport()] for changing [support][meta_support()] to some
 #' known interval.
 #'
-#' [summ_center()] and [summ_dispersion()] for computing summaries of
-#' distributions.
+#' [summ_center()] and [summ_spread()] for computing summaries of distributions.
 #'
 #' @family form functions
 #'

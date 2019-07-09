@@ -33,7 +33,6 @@ reference:
     contents:
     - summ_center
     - summ_classmetric
-    - summ_dispersion
     - summ_distance
     - summ_entropy
     - summ_hdr
@@ -45,6 +44,7 @@ reference:
     - summ_quantile
     - summ_roc
     - summ_separation
+    - summ_spread
   - title: Regions
     contents:
     - region

@@ -133,27 +133,27 @@
 <a class="sourceLine" id="cb2-18" data-line-number="18"><span class="kw"><a href="../reference/summ_center.html">summ_mode</a></span>(my_beta_mix, <span class="dt">method =</span> <span class="st">"local"</span>)</a>
 <a class="sourceLine" id="cb2-19" data-line-number="19"><span class="co">#&gt; [1] 0.2000014 1.2000014</span></a></code></pre></div>
 </div>
-<div id="dispersion" class="section level3">
+<div id="spread" class="section level3">
 <h3 class="hasAnchor">
-<a href="#dispersion" class="anchor"></a>Dispersion</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Usage of `summ_center()`</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/summ_dispersion.html">summ_dispersion</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"sd"</span>)</a>
+<a href="#spread" class="anchor"></a>Spread</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Usage of `summ_spread()`</span></a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="../reference/summ_spread.html">summ_spread</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"sd"</span>)</a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co">#&gt; [1] 0.1597178</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/summ_dispersion.html">summ_dispersion</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"var"</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/summ_spread.html">summ_spread</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"var"</span>)</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; [1] 0.02550977</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="../reference/summ_dispersion.html">summ_dispersion</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"iqr"</span>)</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="kw"><a href="../reference/summ_spread.html">summ_spread</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"iqr"</span>)</a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co">#&gt; [1] 0.2283162</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="../reference/summ_dispersion.html">summ_dispersion</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"mad"</span>)</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="kw"><a href="../reference/summ_spread.html">summ_spread</a></span>(my_beta, <span class="dt">method =</span> <span class="st">"mad"</span>)</a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [1] 0.1122417</span></a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co"># Usage of wrappers</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw"><a href="../reference/summ_dispersion.html">summ_sd</a></span>(my_beta)</a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw"><a href="../reference/summ_spread.html">summ_sd</a></span>(my_beta)</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; [1] 0.1597178</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="kw"><a href="../reference/summ_dispersion.html">summ_var</a></span>(my_beta)</a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="kw"><a href="../reference/summ_spread.html">summ_var</a></span>(my_beta)</a>
 <a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co">#&gt; [1] 0.02550977</span></a>
-<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw"><a href="../reference/summ_dispersion.html">summ_iqr</a></span>(my_beta)</a>
+<a class="sourceLine" id="cb3-16" data-line-number="16"><span class="kw"><a href="../reference/summ_spread.html">summ_iqr</a></span>(my_beta)</a>
 <a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; [1] 0.2283162</span></a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="kw"><a href="../reference/summ_dispersion.html">summ_mad</a></span>(my_beta)</a>
+<a class="sourceLine" id="cb3-18" data-line-number="18"><span class="kw"><a href="../reference/summ_spread.html">summ_mad</a></span>(my_beta)</a>
 <a class="sourceLine" id="cb3-19" data-line-number="19"><span class="co">#&gt; [1] 0.1122417</span></a></code></pre></div>
 </div>
 <div id="moments" class="section level3">
@@ -478,7 +478,7 @@
 <li class="toc-lev1">
 <a href="#basic-numerical-summary">Basic numerical summary</a><ul class="nav nav-pills nav-stacked">
 <li class="toc-lev2"><a href="#center">Center</a></li>
-      <li class="toc-lev2"><a href="#dispersion">Dispersion</a></li>
+      <li class="toc-lev2"><a href="#spread">Spread</a></li>
       <li class="toc-lev2"><a href="#moments">Moments</a></li>
       <li class="toc-lev2"><a href="#quantiles">Quantiles</a></li>
       <li class="toc-lev2"><a href="#entropy">Entropy</a></li>

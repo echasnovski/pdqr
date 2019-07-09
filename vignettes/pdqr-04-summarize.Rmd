@@ -54,14 +54,14 @@ summ_mode(my_beta)
 summ_mode(my_beta_mix, method = "local")
 ```
 
-### Dispersion
+### Spread
 
-```{r basic_dispersion}
-# Usage of `summ_center()`
-summ_dispersion(my_beta, method = "sd")
-summ_dispersion(my_beta, method = "var")
-summ_dispersion(my_beta, method = "iqr")
-summ_dispersion(my_beta, method = "mad")
+```{r basic_spread}
+# Usage of `summ_spread()`
+summ_spread(my_beta, method = "sd")
+summ_spread(my_beta, method = "var")
+summ_spread(my_beta, method = "iqr")
+summ_spread(my_beta, method = "mad")
 
 # Usage of wrappers
 summ_sd(my_beta)

@@ -75,8 +75,7 @@ summ_mean(form_tails(d_x, level = 0.1, method = "winsor"))
 \code{\link[=form_resupport]{form_resupport()}} for changing \link[=meta_support]{support} to some
 known interval.
 
-\code{\link[=summ_center]{summ_center()}} and \code{\link[=summ_dispersion]{summ_dispersion()}} for computing summaries of
-distributions.
+\code{\link[=summ_center]{summ_center()}} and \code{\link[=summ_spread]{summ_spread()}} for computing summaries of distributions.
 
 Other form functions: \code{\link{form_estimate}},
   \code{\link{form_mix}}, \code{\link{form_regrid}},
