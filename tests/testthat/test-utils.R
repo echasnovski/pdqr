@@ -111,6 +111,21 @@ test_that("neigh_dist works",  {
 # Tested in `plot.d()`
 
 
+# get_rand_state ----------------------------------------------------------
+test_that("get_rand_state works", {
+  expect_true(is.integer(get_rand_state()))
+})
+
+
+# set_rand_state ----------------------------------------------------------
+test_that("set_rand_state works", {
+  state <- get_rand_state()
+  a <- runif(1)
+  set_rand_state(state)
+  expect_equal(runif(1), a)
+})
+
+
 # recycle_vec -------------------------------------------------------------
 test_that("recycle_vec works", {
   expect_equal(recycle_vec(1:2, 2), 1:2)

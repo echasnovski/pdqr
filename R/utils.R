@@ -89,6 +89,68 @@ compute_d_con_ylim <- function(f) {
 }
 
 
+# Random generation manipulations -----------------------------------------
+#' Get and set state of random generation
+#'
+#' These functions are for manipulating random generation with purpose of not
+#' affecting upstream random generation process while using random generation
+#' inside some function (which is not designed to be a part of random
+#' generation).
+#'
+#' @param state Output of `get_rand_state()`.
+#'
+#' @examples
+#' # Main pattern is to use these functions at the beginning of a function
+#' inside which there will be explicit random generation:
+#' my_f <- function() {
+#'   state <- get_rand_state()
+#'   on.exit(set_rand_state(state))
+#'
+#'   runif(1)
+#' }
+#'
+#' my_f_2 <- function() {
+#'   my_f()
+#' }
+#'
+#' # Reference random output
+#' set.seed(101)
+#' a <- runif(1)
+#' b <- runif(1)
+#'
+#' # Calling `my_f()` from anywhere won't affect upstream random generation
+#' # process.
+#' set.seed(101)
+#' runif(1) - a
+#' my_f()
+#' runif(1) - b
+#'
+#' set.seed(101)
+#' my_f()
+#' runif(1) - a
+#'
+#' set.seed(101)
+#' runif(1) - a
+#' my_f_2()
+#' runif(1) - b
+#'
+#' @keywords internal
+#' @noRd
+NULL
+
+get_rand_state <- function() {
+  # Using `inherits = TRUE` is crucial in `*_rand_state()` functions because it
+  # searches for the first present `.Random.seed` in chain of environments
+  # (hopefuly, in the right way), which is affected by using random generation
+  # after their application inside some function.
+  get0(".Random.seed", inherits = TRUE)
+}
+
+set_rand_state <- function(state) {
+  assign(".Random.seed", state, inherits = TRUE)
+}
+
+
 # Function and vector manipulations ---------------------------------------
 recycle_vec <- function(vec, n) {
   vec_name <- enbacktick(deparse(substitute(vec)))

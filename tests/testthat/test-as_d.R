@@ -271,6 +271,29 @@ test_that("as_d.default detects support", {
   expect_equal(fam_beta$p(support_right[2]), 1, tolerance = 1e-7)
 })
 
+test_that("as_d.default doesn't affect upstream random generation process", {
+  # This test is created because of implementation details of support detection:
+  # it searches initial point of non-zero density by randomly generating broad
+  # sequence of points, which (if done carelessly) affects upstream random
+  # generation but it shouldn't.
+  d_f <- function(x) {dnorm(x)}
+
+  # Reference
+  set.seed(101)
+  a <- runif(1)
+  b <- runif(1)
+
+  # Testing
+  set.seed(101)
+  as_d(d_f)
+  expect_equal(runif(1), a)
+
+  set.seed(101)
+  runif(1)
+  as_d(d_f)
+  expect_equal(runif(1), b)
+})
+
 test_that("as_d.default removes edge `y` with zero density", {
   x_tbl <- meta_x_tbl(d_unif)
   expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
@@ -461,4 +484,23 @@ test_that("construct_p_f throws informative error", {
 test_that("optim_for_quan throws informative error", {
   p_f <- function(q) {rep(Inf, length.out = length(q))}
   expect_error(optim_for_quan(p_f, 0.5, 0), "[Cc]an't.*for.*0.5")
+})
+
+
+# detect_d_init_x ---------------------------------------------------------
+test_that("detect_d_init_x doesn't affect upstream random generation process", {
+  # Reference
+  set.seed(101)
+  a <- runif(1)
+  b <- runif(1)
+
+  # Testing
+  set.seed(101)
+  detect_d_init_x(dnorm)
+  expect_equal(runif(1), a)
+
+  set.seed(101)
+  runif(1)
+  detect_d_init_x(dnorm)
+  expect_equal(runif(1), b)
 })

@@ -112,6 +112,13 @@ optim_for_quan <- function(p_f, quan, init) {
 }
 
 detect_d_init_x <- function(d_f) {
+  # Capturing and restoring state of random generation process helps to not
+  # affect upstream random generation in any way. It seems to be good here
+  # because this function isn't a part of random generation process but uses it
+  # for convenience.
+  state <- get_rand_state()
+  on.exit(set_rand_state(state))
+
   # Reproducible sequence of "try" points
   set.seed(1)
   smpl <- stats::rcauchy(10000, scale = 1000)
