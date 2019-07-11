@@ -187,8 +187,8 @@ infinite values to form detected support.
 \item In \code{as_r()} sample of size \code{n_sample} is generated and detected support is
 its range stretched by mean difference of sorted points (to account for
 possible tails at which points were not generated). \strong{Note} that this means
-that original input \code{f} "demonstrates its randomness" ones inside \code{as_r()},
-which output is then used as approximation to "original randomness".
+that original input \code{f} "demonstrates its randomness" only once inside
+\code{as_r()}, with output then used for approximation of "original randomness".
 }
 }
 

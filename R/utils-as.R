@@ -127,8 +127,8 @@
 #' - In `as_r()` sample of size `n_sample` is generated and detected support is
 #' its range stretched by mean difference of sorted points (to account for
 #' possible tails at which points were not generated). **Note** that this means
-#' that original input `f` "demonstrates its randomness" ones inside `as_r()`,
-#' which output is then used as approximation to "original randomness".
+#' that original input `f` "demonstrates its randomness" only once inside
+#' `as_r()`, with output then used for approximation of "original randomness".
 #'
 #' @return A pdqr-function of corresponding [class][meta_class()].
 #'

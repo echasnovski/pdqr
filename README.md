@@ -204,7 +204,8 @@ distribution:
   - **R-function** is a random generation function. Created with
     `new_r()`. Generates a random sample from distribution.
 
-For more details see vignette about creation of pdqr-functions.
+For more details see [vignette about creating
+pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-01-create.html).
 
 ### Create pdqr-function from sample
 
@@ -307,7 +308,8 @@ There are two main use cases:
   - Convert (create) pdqr-function based on some other user-supplied
     distribution function.
 
-For more details go to help page of `as_p()` function.
+For more details see [vignette about converting
+pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-02-convert.html).
 
 ### Existing pdqr-functions
 
@@ -411,6 +413,9 @@ Concept of form functions is to take one or more pdqr-function(s) and
 return a transformed pdqr-function. Argument `method` is used to choose
 function-specific algorithm of computation.
 
+For more details see [vignette about transforming
+pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-03-transform.html).
+
 ### `form_*()` family
 
 There are several `form_*()` functions. Here are some
@@ -485,6 +490,9 @@ max(d_norm, d_norm, d_norm)
 Concept of summary functions is to take one or more pdqr-function(s) and
 return a summary value. Argument `method` is used to choose
 function-specific algorithm of computation.
+
+For more details see [vignette about summarizing
+pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-04-summarize.html).
 
 ### Basic summary
 

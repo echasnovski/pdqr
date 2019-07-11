@@ -63,7 +63,8 @@ as_d(dnorm)
   # Following code has the same effect as `as_r(as_d(dnorm))`
 as_r(rnorm)
 
-  # Different picewise-linear approximation precision is achieved with different   # `n_grid` argument value
+  # Different picewise-linear approximation precision is achieved with different
+  # `n_grid` argument value
 as_d(dnorm, n_grid = 101)
 
   # Different extra arguments for input
@@ -168,7 +169,7 @@ abserror_stat <- function(f, ref_f, ...) {
 abserror_stat_fin <- function(f, ref_f, grid, ...) {
   abserror <- abs(f(grid) - ref_f(grid, ...))
   
-    c(median_abserror = median(abserror), max_abserror = max(abserror))
+  c(median_abserror = median(abserror), max_abserror = max(abserror))
 }
 
 # Normal
