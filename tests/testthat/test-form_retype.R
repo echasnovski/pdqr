@@ -46,6 +46,34 @@ test_that("form_retype works with `method='dirac'`", {
   expect_equal_x_tbl(d_dis_dirac, d_dis)
 })
 
+test_that("form_retype works with `method='value'`", {
+  # "discrete" -> "continuous"
+  cur_dis <- new_d(
+    data.frame(x = c(0, 1, 5), prob = c(0.8, 0, 0.2)), "discrete"
+  )
+  expect_ref_x_tbl(
+    form_retype(cur_dis, "continuous", method = "value"),
+    data.frame(x = c(0, 1, 5), y = c(1, 0, 0.25))
+  )
+
+  # "continous" -> "discrete"
+  cur_con <- new_d(data.frame(x = 1:3, y = 1:3 / 4), "continuous")
+  expect_ref_x_tbl(
+    form_retype(cur_con, "discrete", method = "value"),
+    data.frame(x = 1:3, prob = 1:3 / 6)
+  )
+
+  # Double retyping should return self
+  expect_equal_x_tbl(
+    form_retype(form_retype(d_dis, "continuous", "value"), "discrete", "value"),
+    d_dis
+  )
+  expect_equal_x_tbl(
+    form_retype(form_retype(d_con, "discrete", "value"), "continuous", "value"),
+    d_con
+  )
+})
+
 test_that("form_retype retypes well 'continuous'->'discrete'->'continuous'", {
   skip_on_cran()
 
@@ -123,6 +151,10 @@ test_that("form_retype validates input", {
 # Tested in `form_retype()`
 
 
+# retype_dis_value --------------------------------------------------------
+# Tested in `form_retype()`
+
+
 # retype_con --------------------------------------------------------------
 # Tested in `form_retype()`
 
@@ -132,4 +164,8 @@ test_that("form_retype validates input", {
 
 
 # retype_con_dirac --------------------------------------------------------
+# Tested in `form_retype()`
+
+
+# retype_con_value --------------------------------------------------------
 # Tested in `form_retype()`

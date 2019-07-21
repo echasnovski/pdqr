@@ -19,7 +19,6 @@ FP
 fpr
 FPR
 HDR
-infin
 informedness
 iqr
 Jaccard
@@ -39,6 +38,7 @@ README
 Regrid
 regridding
 renormalization
+renormalized
 resupport
 Resupport
 rgb
