@@ -9,12 +9,14 @@ test_that("summ_spread works", {
   expect_equal(summ_spread(d_dis, "sd"), summ_sd(d_dis))
   expect_equal(summ_spread(d_dis, "iqr"), summ_iqr(d_dis))
   expect_equal(summ_spread(d_dis, "mad"), summ_mad(d_dis))
+  expect_equal(summ_spread(d_dis, "range"), summ_range(d_dis))
 
   # "continuous"
   expect_equal(summ_spread(d_con, "var"), summ_var(d_con))
   expect_equal(summ_spread(d_con, "sd"), summ_sd(d_con))
   expect_equal(summ_spread(d_con, "iqr"), summ_iqr(d_con))
   expect_equal(summ_spread(d_con, "mad"), summ_mad(d_con))
+  expect_equal(summ_spread(d_con, "range"), summ_range(d_con))
 })
 
 test_that("summ_spread validates input", {
@@ -234,4 +236,49 @@ test_that("summ_mad works with 'continuous' functions with few intervals", {
 
 test_that("summ_mad validates input", {
   expect_error(summ_mad("a"), "`f`.*not pdqr-function")
+})
+
+
+# summ_range --------------------------------------------------------------
+test_that("summ_range works with 'discrete' functions", {
+  cur_dis_1 <- new_d(data.frame(x = 1:4, prob = c(0.5, 0, 0, 0.5)), "discrete")
+  expect_equal(summ_range(cur_dis_1), 4-1)
+
+  cur_dis_2 <- new_d(data.frame(x = 1:4, prob = c(0.5, 0, 0.5, 0)), "discrete")
+  expect_equal(summ_range(cur_dis_2), 3-1)
+
+  cur_dis_3 <- new_d(data.frame(x = 1:4, prob = c(0, 0.5, 0, 0.5)), "discrete")
+  expect_equal(summ_range(cur_dis_3), 4-2)
+
+  cur_dis_4 <- new_d(data.frame(x = 1:4, prob = c(0, 0.5, 0.5, 0)), "discrete")
+  expect_equal(summ_range(cur_dis_4), 3-2)
+
+  cur_dis_5 <- new_d(data.frame(x = 1:4, prob = c(0, 0.5, 0, 0)), "discrete")
+  expect_equal(summ_range(cur_dis_5), 0)
+})
+
+test_that("summ_range works with 'continuous' functions", {
+  cur_con_1 <- new_d(data.frame(x = 1:5, y = c(1, 0, 0, 0, 1)), "continuous")
+  expect_equal(summ_range(cur_con_1), 5-1)
+
+  cur_con_2 <- new_d(data.frame(x = 1:5, y = c(1, 0, 1, 0, 0)), "continuous")
+    # Here range of positive probability is [1; 4] because of piecewise-linear
+    # nature of density
+  expect_equal(summ_range(cur_con_2), 4-1)
+
+  cur_con_3 <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 1)), "continuous")
+    # Here range of positive probability is [2; 5]
+  expect_equal(summ_range(cur_con_3), 5-2)
+
+  cur_con_4 <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 1, 0)), "continuous")
+    # Here range of positive probability is [2; 5]
+  expect_equal(summ_range(cur_con_4), 5-2)
+
+  cur_con_5 <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 0)), "continuous")
+    # Here range of positive probability is [2; 4]
+  expect_equal(summ_range(cur_con_5), 4-2)
+})
+
+test_that("summ_range validates input", {
+  expect_error(summ_range("a"), "`f`.*not pdqr-function")
 })

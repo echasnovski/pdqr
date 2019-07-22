@@ -6,6 +6,7 @@
 \alias{summ_var}
 \alias{summ_iqr}
 \alias{summ_mad}
+\alias{summ_range}
 \title{Summarize distribution with spread}
 \usage{
 summ_spread(f, method = "sd")
@@ -17,12 +18,14 @@ summ_var(f)
 summ_iqr(f)
 
 summ_mad(f)
+
+summ_range(f)
 }
 \arguments{
 \item{f}{A pdqr-function representing distribution.}
 
 \item{method}{Method of spread computation. Should be one of "sd", "var",
-"iqr", "mad".}
+"iqr", "mad", "range".}
 }
 \value{
 All functions return a single number representing a spread of
@@ -43,6 +46,11 @@ a \code{as_q(f)(0.75) - as_q(f)(0.25)}.
 
 \code{summ_mad()} computes distribution's \emph{median} absolute deviation around the
 distribution's \emph{median}.
+
+\code{summ_range()} computes range length (difference between maximum and minimum)
+of "x" values within region of positive probability. \strong{Note} that this might
+differ from length of \link[=meta_support]{support} because the latter might be
+affected by tails with zero probability (see Examples).
 }
 \examples{
 # Type "continuous"
@@ -52,6 +60,7 @@ summ_sd(d_norm)
 summ_var(d_norm)
 summ_iqr(d_norm)
 summ_mad(d_norm)
+summ_range(d_norm)
 
 # Type "discrete"
 d_pois <- as_d(dpois, lambda = 10)
@@ -59,6 +68,15 @@ summ_sd(d_pois)
 summ_var(d_pois)
 summ_iqr(d_pois)
 summ_mad(d_pois)
+summ_range(d_pois)
+
+# Difference of `summ_range(f)` and `diff(meta_support(f))`
+zero_tails <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 0)), "continuous")
+  # This returns difference between 5 and 1
+diff(meta_support(zero_tails))
+  # This returns difference between 2 and 4 as there are zero-probability
+  # tails
+summ_range(zero_tails)
 
 }
 \seealso{

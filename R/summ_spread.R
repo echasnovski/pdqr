@@ -6,7 +6,7 @@
 #'
 #' @inheritParams summ_center
 #' @param method Method of spread computation. Should be one of "sd", "var",
-#'   "iqr", "mad".
+#'   "iqr", "mad", "range".
 #'
 #' @details `summ_sd()` computes distribution's standard deviation.
 #'
@@ -17,6 +17,11 @@
 #'
 #' `summ_mad()` computes distribution's *median* absolute deviation around the
 #' distribution's *median*.
+#'
+#' `summ_range()` computes range length (difference between maximum and minimum)
+#' of "x" values within region of positive probability. **Note** that this might
+#' differ from length of [support][meta_support()] because the latter might be
+#' affected by tails with zero probability (see Examples).
 #'
 #' @return All functions return a single number representing a spread of
 #'   distribution.
@@ -34,6 +39,7 @@
 #' summ_var(d_norm)
 #' summ_iqr(d_norm)
 #' summ_mad(d_norm)
+#' summ_range(d_norm)
 #'
 #' # Type "discrete"
 #' d_pois <- as_d(dpois, lambda = 10)
@@ -41,6 +47,15 @@
 #' summ_var(d_pois)
 #' summ_iqr(d_pois)
 #' summ_mad(d_pois)
+#' summ_range(d_pois)
+#'
+#' # Difference of `summ_range(f)` and `diff(meta_support(f))`
+#' zero_tails <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 0)), "continuous")
+#'   # This returns difference between 5 and 1
+#' diff(meta_support(zero_tails))
+#'   # This returns difference between 2 and 4 as there are zero-probability
+#'   # tails
+#' summ_range(zero_tails)
 #'
 #' @name summ_spread
 NULL
@@ -50,14 +65,15 @@ NULL
 summ_spread <- function(f, method = "sd") {
   # `f` is validated inside `summ_*()` calls
   assert_type(method, is_string)
-  assert_in_set(method, c("var", "sd", "iqr", "mad"))
+  assert_in_set(method, c("var", "sd", "iqr", "mad", "range"))
 
   switch(
     method,
     var = summ_var(f),
     sd = summ_sd(f),
     iqr = summ_iqr(f),
-    mad = summ_mad(f)
+    mad = summ_mad(f),
+    range = summ_range(f)
   )
 }
 
@@ -93,4 +109,30 @@ summ_mad <- function(f) {
   med <- summ_median(f)
 
   summ_median(abs(f - med))
+}
+
+#' @rdname summ_spread
+#' @export
+summ_range <- function(f) {
+  assert_pdqr_fun(f)
+
+  x_tbl <- meta_x_tbl(f)
+  x <- x_tbl[["x"]]
+  d_vals <- x_tbl[[get_x_tbl_sec_col(x_tbl)]]
+
+  # Note that this code assumes that "x_tbl" metadata is arranged in ascending
+  # order of "x" column
+  pos_d_val_id <- which(d_vals > 0)
+  range_id <- pos_d_val_id[c(1, length(pos_d_val_id))]
+
+  # For "continuous" type correction should be made because piecewise-linear
+  # nature of density implies that there is a positive probability region to the
+  # left and right of "x_tbl" points with positive d-values (if they are not
+  # support edges).
+  if (meta_type(f) == "continuous") {
+    range_id[1] <- max(range_id[1] - 1, 1)
+    range_id[2] <- min(range_id[2] + 1, length(x))
+  }
+
+  x[range_id[2]] - x[range_id[1]]
 }

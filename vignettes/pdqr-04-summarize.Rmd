@@ -62,12 +62,14 @@ summ_spread(my_beta, method = "sd")
 summ_spread(my_beta, method = "var")
 summ_spread(my_beta, method = "iqr")
 summ_spread(my_beta, method = "mad")
+summ_spread(my_beta, method = "range")
 
 # Usage of wrappers
 summ_sd(my_beta)
 summ_var(my_beta)
 summ_iqr(my_beta)
 summ_mad(my_beta)
+summ_range(my_beta)
 ```
 
 ### Moments
