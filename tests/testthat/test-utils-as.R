@@ -98,6 +98,35 @@ test_that("remove_zero_edge_y works", {
 })
 
 
+# is_zero_tail ------------------------------------------------------------
+test_that("is_zero_tail works", {
+  # Type "discrete"
+  expect_equal(is_zero_tail(c(1, 0, 0, 0, 1), "discrete"), rep(FALSE, 5))
+  expect_equal(
+    is_zero_tail(c(0, 0, 0, 0, 1), "discrete"), c(rep(TRUE, 4), FALSE)
+  )
+  expect_equal(
+    is_zero_tail(c(1, 0, 0, 0, 0), "discrete"), c(FALSE, rep(TRUE, 4))
+  )
+  expect_equal(
+    is_zero_tail(c(0, 0, 1, 0, 0), "discrete"), c(TRUE, TRUE, FALSE, TRUE, TRUE)
+  )
+
+  # Type "continuous"
+  expect_equal(is_zero_tail(c(1, 0, 0, 0, 1), "continuous"), rep(FALSE, 5))
+  expect_equal(
+    is_zero_tail(c(0, 0, 0, 0, 1), "continuous"), c(rep(TRUE, 3), FALSE, FALSE)
+  )
+  expect_equal(
+    is_zero_tail(c(1, 0, 0, 0, 0), "continuous"), c(FALSE, FALSE, rep(TRUE, 3))
+  )
+  expect_equal(
+    is_zero_tail(c(0, 0, 1, 0, 0), "continuous"),
+    c(TRUE, FALSE, FALSE, FALSE, TRUE)
+  )
+})
+
+
 # format_support ----------------------------------------------------------
 test_that("format_support works", {
   expect_equal(format_support(NULL), c(NA_real_, NA_real_))

@@ -361,8 +361,8 @@ assert_tot_prob <- function(tot_prob) {
 }
 
 # Removes redundant rows from `x_tbl` corresponding to zero `y` values near the
-# edges (beginning or end of data frame) except the most "center" ones. It
-# doesn't affect the computation of future p- and d-functions.
+# edges (beginning or end of data frame) in a way depending on type of "x_tbl"'s
+# pdqr-function. It doesn't affect the computation of future p- and d-functions.
 # This is needed to ensure that q-function, created based on the `x_tbl`,
 # returns not extreme results (withing `as_*.default()` functions), as it
 # returns **the smallest** value with cumulative probability not more than
@@ -370,26 +370,73 @@ assert_tot_prob <- function(tot_prob) {
 # zero `y` than future q-function `q()` would give `q(0) = -100`, which is not
 # desirable because that `-100` is usually a result of too wide input `support`.
 remove_zero_edge_y <- function(x_tbl) {
-  n <- nrow(x_tbl)
-  y <- x_tbl[["y"]]
-  is_y_zero <- y == 0
+  d_vals <- x_tbl[[get_x_tbl_sec_col(x_tbl)]]
+  type <- get_type_from_x_tbl(x_tbl)
 
-  # `left_y_zero` is `TRUE` at all places in the beginning where `y == 0` except
-  # for last (the most center) one
-  left_y_zero <- cumsum(is_y_zero) == 1:n
-  left_y_zero <- left_y_zero & duplicated.default(left_y_zero, fromLast = TRUE)
+  is_to_remove <- is_zero_tail(d_vals, type)
 
-  # `right_y_zero` is `TRUE` at all places in the end where `y == 0` except for
-  # first (the most center) one
-  right_y_zero <- (cumsum(is_y_zero[n:1]) == 1:n)[n:1]
-  right_y_zero <- right_y_zero & duplicated.default(right_y_zero)
-
-  is_to_remove <- left_y_zero | right_y_zero
+  # Check is done for performance reasons
   if (any(is_to_remove)) {
     x_tbl <- x_tbl[!is_to_remove, ]
   }
 
   x_tbl
+}
+
+#' Check if element belongs to zero probability tail
+#'
+#' This is a utility function for detecting zero probability tails. Its input
+#' `vec` is supposed to be one of "prob" or "y" column of "x_tbl" metadata
+#' (depending on `type`). For "discrete" type element belongs to zero
+#' probability tail if it is a part of group of zeros at the beginning or end of
+#' input vector `vec`. For "continuous" the most center elements of groups
+#' doesn't belong to zero probability tail because it is used to define positive
+#' probability interval (due to piecewise-linear nature of density). For
+#' example, for `vec = c(0, 0, 1, 0, 0)`:
+#' - In case of "discrete" `type` elements 1, 2, 4, 5 are within zero
+#' probability tails. And so output will be `c(TRUE, TRUE, FALSE, TRUE, TRUE)`.
+#' - In case of "continuous" `type` only elements 1 and 5 are within zero
+#' probability tails. It defines a triangular density from second to fourth
+#' element. Output will be `c(TRUE, FALSE, FALSE, FALSE, TRUE)`.
+#'
+#' @param vec A numeric vector of either "prob" or "y" column of "x_tbl"
+#'   metadata.
+#' @param type Pdqr type. Should be one of "discrete" or "continuous".
+#'
+#' @return A logical vector indicating if element belonds to zero probability
+#'   tail.
+#'
+#' @noRd
+is_zero_tail <- function(vec, type) {
+  n <- length(vec)
+  is_zero <- vec == 0
+
+  # Check for first element being zero is made for performance reasons
+  if (is_zero[1]) {
+    left_is_zero <- cumsum(is_zero) == 1:n
+
+    if (type == "continuous") {
+      # Exclude the "most center" zero
+      left_is_zero <- left_is_zero &
+        duplicated.default(left_is_zero, fromLast = TRUE)
+    }
+  } else {
+    left_is_zero <- rep(FALSE, n)
+  }
+
+  # Check for last element being zero is made for performance reasons
+  if (is_zero[n]) {
+    right_is_zero <- (cumsum(is_zero[n:1]) == 1:n)[n:1]
+
+    if (type == "continuous") {
+      # Exclude the "most center" zero
+      right_is_zero <- right_is_zero & duplicated.default(right_is_zero)
+    }
+  } else {
+    right_is_zero <- rep(FALSE, n)
+  }
+
+  left_is_zero | right_is_zero
 }
 
 format_support <- function(support) {

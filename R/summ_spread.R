@@ -122,17 +122,8 @@ summ_range <- function(f) {
 
   # Note that this code assumes that "x_tbl" metadata is arranged in ascending
   # order of "x" column
-  pos_d_val_id <- which(d_vals > 0)
-  range_id <- pos_d_val_id[c(1, length(pos_d_val_id))]
+  within_pos_prob <- !is_zero_tail(d_vals, type = meta_type(f))
+  x_range <- range(x[within_pos_prob])
 
-  # For "continuous" type correction should be made because piecewise-linear
-  # nature of density implies that there is a positive probability region to the
-  # left and right of "x_tbl" points with positive d-values (if they are not
-  # support edges).
-  if (meta_type(f) == "continuous") {
-    range_id[1] <- max(range_id[1] - 1, 1)
-    range_id[2] <- min(range_id[2] + 1, length(x))
-  }
-
-  x[range_id[2]] - x[range_id[1]]
+  x_range[2] - x_range[1]
 }
