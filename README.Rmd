@@ -67,10 +67,10 @@ devtools::install_github("echasnovski/pdqr")
 
 ## <a id="pdqr-quick"></a> Quick examples
 
-Generate sample from distribution defined by some reference sample:
+Generate a sample from a distribution defined by some reference sample:
 
 ```{r pdqr-quick_generate-sample}
-# Treat input sample as from continuous distribution
+# Treat input sample as coming from a continuous distribution
 r_mpg <- new_r(mtcars$mpg, type = "continuous")
 
 r_mpg(n = 10)

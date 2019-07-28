@@ -79,10 +79,10 @@ devtools::install_github("echasnovski/pdqr")
 
 ## <a id="pdqr-quick"></a> Quick examples
 
-Generate sample from distribution defined by some reference sample:
+Generate a sample from a distribution defined by some reference sample:
 
 ``` r
-# Treat input sample as from continuous distribution
+# Treat input sample as coming from a continuous distribution
 r_mpg <- new_r(mtcars$mpg, type = "continuous")
 
 r_mpg(n = 10)
@@ -467,7 +467,7 @@ d_unif <- as_d(dunif)
 # simulation.
 d_norm - d_unif
 #> Density function of continuous type
-#> Support: ~[-4.68318, 3.9119] (511 intervals)
+#> Support: ~[-5.02445, 3.65236] (511 intervals)
 
 # Comparing random variables results into boolean random variable represented
 # by boolean pdqr-function (type "discrete" with values 0 for FALSE and 1 for
@@ -482,7 +482,7 @@ d_norm > d_unif
 # simulation.
 max(d_norm, d_norm, d_norm)
 #> Density function of continuous type
-#> Support: ~[-2.33171, 4.18984] (511 intervals)
+#> Support: ~[-2.3575, 4.11583] (511 intervals)
 ```
 
 ## <a id="pdqr-summarize"></a> Summarize with `summ_*()`
