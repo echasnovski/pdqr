@@ -124,7 +124,8 @@
 #' @examples
 #' d_unif <- as_d(dunif)
 #'
-#' meta_all(d_unif)
+#' str(meta_all(d_unif))
+#'
 #' meta_class(d_unif)
 #' meta_type(d_unif)
 #' meta_support(d_unif)

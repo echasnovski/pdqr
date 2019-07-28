@@ -65,7 +65,7 @@ renormalization inside \code{form_regrid()}.
 }
 \examples{
 d_norm <- as_d(dnorm)
-enpoint(d_norm)
+head(enpoint(d_norm))
 
 # Control number of points with `n_points` argument
 enpoint(d_norm, n_points = 5)
