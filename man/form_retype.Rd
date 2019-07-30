@@ -9,10 +9,10 @@ form_retype(f, type, method = "piecelin")
 \arguments{
 \item{f}{A pdqr-function.}
 
-\item{type}{A desired type of output. Should be one of "discrete",
-"continuous", "value".}
+\item{type}{A desired type of output. Should be one of "discrete" or
+"continuous".}
 
-\item{method}{Retyping method. Should be one of "piecelin" or "dirac".}
+\item{method}{Retyping method. Should be one of "piecelin", "dirac", "value".}
 }
 \value{
 A pdqr-function with type equal to input \code{type}.

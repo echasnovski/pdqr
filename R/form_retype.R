@@ -3,9 +3,9 @@
 #' Modify [type][meta_type()] of pdqr-function using method of choice.
 #'
 #' @param f A pdqr-function.
-#' @param type A desired type of output. Should be one of "discrete",
-#'   "continuous", "value".
-#' @param method Retyping method. Should be one of "piecelin" or "dirac".
+#' @param type A desired type of output. Should be one of "discrete" or
+#'   "continuous".
+#' @param method Retyping method. Should be one of "piecelin", "dirac", "value".
 #'
 #' @details If type of `f` is equal to input `type` then `f` is returned.
 #'
