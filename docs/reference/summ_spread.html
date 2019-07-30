@@ -70,7 +70,7 @@ summ_*() functions (from this page) with default arguments." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -105,6 +105,9 @@ summ_*() functions (from this page) with default arguments." />
       <a href="../articles/pdqr-04-summarize.html">Summarize pdqr-functions with `summ_*()`</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -149,7 +152,9 @@ summ_*() functions (from this page) with default arguments." />
 
 <span class='fu'>summ_iqr</span>(<span class='no'>f</span>)
 
-<span class='fu'>summ_mad</span>(<span class='no'>f</span>)</code></pre>
+<span class='fu'>summ_mad</span>(<span class='no'>f</span>)
+
+<span class='fu'>summ_range</span>(<span class='no'>f</span>)</code></pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -161,7 +166,7 @@ summ_*() functions (from this page) with default arguments." />
     <tr>
       <th>method</th>
       <td><p>Method of spread computation. Should be one of "sd", "var",
-"iqr", "mad".</p></td>
+"iqr", "mad", "range".</p></td>
     </tr>
     </table>
     
@@ -178,6 +183,10 @@ distribution.</p>
 a <code>as_q(f)(0.75) - as_q(f)(0.25)</code>.</p>
 <p><code>summ_mad()</code> computes distribution's <em>median</em> absolute deviation around the
 distribution's <em>median</em>.</p>
+<p><code>summ_range()</code> computes range length (difference between maximum and minimum)
+of "x" values within region of positive probability. <strong>Note</strong> that this might
+differ from length of <a href='meta.html'>support</a> because the latter might be
+affected by tails with zero probability (see Examples).</p>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -197,10 +206,16 @@ for general moments.</p>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "continuous"</span>
 <span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
   <span class='co'># The same as `summ_spread(d_norm, method = "sd")`</span>
-<span class='fu'>summ_sd</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.9999766</div><div class='input'><span class='fu'>summ_var</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.9999531</div><div class='input'><span class='fu'>summ_iqr</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 1.348976</div><div class='input'><span class='fu'>summ_mad</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.6744882</div><div class='input'>
+<span class='fu'>summ_sd</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.9999766</div><div class='input'><span class='fu'>summ_var</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.9999531</div><div class='input'><span class='fu'>summ_iqr</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 1.348976</div><div class='input'><span class='fu'>summ_mad</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.6744882</div><div class='input'><span class='fu'>summ_range</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 9.506849</div><div class='input'>
 <span class='co'># Type "discrete"</span>
 <span class='no'>d_pois</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dpois</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>10</span>)
-<span class='fu'>summ_sd</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 3.162233</div><div class='input'><span class='fu'>summ_var</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 9.999717</div><div class='input'><span class='fu'>summ_iqr</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 4</div><div class='input'><span class='fu'>summ_mad</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'>
+<span class='fu'>summ_sd</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 3.162233</div><div class='input'><span class='fu'>summ_var</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 9.999717</div><div class='input'><span class='fu'>summ_iqr</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 4</div><div class='input'><span class='fu'>summ_mad</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>summ_range</span>(<span class='no'>d_pois</span>)</div><div class='output co'>#&gt; [1] 28</div><div class='input'>
+<span class='co'># Difference of `summ_range(f)` and `diff(meta_support(f))`</span>
+<span class='no'>zero_tails</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>0</span>, <span class='fl'>1</span>, <span class='fl'>0</span>, <span class='fl'>0</span>)), <span class='st'>"continuous"</span>)
+  <span class='co'># This returns difference between 5 and 1</span>
+<span class='fu'><a href='https://rdrr.io/r/base/diff.html'>diff</a></span>(<span class='fu'><a href='meta.html'>meta_support</a></span>(<span class='no'>zero_tails</span>))</div><div class='output co'>#&gt; [1] 4</div><div class='input'>  <span class='co'># This returns difference between 2 and 4 as there are zero-probability</span>
+  <span class='co'># tails</span>
+<span class='fu'>summ_range</span>(<span class='no'>zero_tails</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 </div></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

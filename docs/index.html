@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -76,6 +76,9 @@
       <a href="articles/pdqr-04-summarize.html">Summarize pdqr-functions with `summ_*()`</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="news/index.html">Changelog</a>
 </li>
       </ul>
 <ul class="nav navbar-nav navbar-right">
@@ -146,8 +149,8 @@
 <div id="quick-examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#quick-examples" class="anchor"></a><a id="pdqr-quick"></a> Quick examples</h2>
-<p>Generate sample from distribution defined by some reference sample:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Treat input sample as from continuous distribution</span></a>
+<p>Generate a sample from a distribution defined by some reference sample:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Treat input sample as coming from a continuous distribution</span></a>
 <a class="sourceLine" id="cb2-2" data-line-number="2">r_mpg &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"continuous"</span>)</a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">r_mpg</span>(<span class="dt">n =</span> <span class="dv">10</span>)</a>
@@ -444,7 +447,7 @@
 <a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co"># simulation.</span></a>
 <a class="sourceLine" id="cb12-6" data-line-number="6">d_norm <span class="op">-</span><span class="st"> </span>d_unif</a>
 <a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Support: ~[-4.68318, 3.9119] (511 intervals)</span></a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Support: ~[-5.02445, 3.65236] (511 intervals)</span></a>
 <a class="sourceLine" id="cb12-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co"># Comparing random variables results into boolean random variable represented</span></a>
 <a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co"># by boolean pdqr-function (type "discrete" with values 0 for FALSE and 1 for</span></a>
@@ -459,7 +462,7 @@
 <a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co"># simulation.</span></a>
 <a class="sourceLine" id="cb12-21" data-line-number="21"><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(d_norm, d_norm, d_norm)</a>
 <a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; Support: ~[-2.33171, 4.18984] (511 intervals)</span></a></code></pre></div>
+<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; Support: ~[-2.3575, 4.11583] (511 intervals)</span></a></code></pre></div>
 </div>
 </div>
 <div id="summarize-with-summ_" class="section level2">

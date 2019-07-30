@@ -68,7 +68,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
       </span>
     </div>
 
@@ -103,6 +103,9 @@
       <a href="../articles/pdqr-04-summarize.html">Summarize pdqr-functions with `summ_*()`</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -153,7 +156,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Retyping method. Should be one of "piecelin" or "dirac".</p></td>
+      <td><p>Retyping method. Should be one of "piecelin", "dirac", "value".</p></td>
     </tr>
     </table>
     
@@ -188,6 +191,20 @@ with corresponding probabilities.</p></li>
 "x" value from "x_tbl" metadata into dirac-like distribution with total
 probability taken from corresponding value of "prob" column. Output
 essentially represents a mixture of dirac-like distributions.</p></li>
+</ul>
+    <p>Method "value" uses renormalized columns of <code>f</code>'s "x_tbl" metadata as values
+for output's "x_tbl" metadata. In other words, it preserves ratios between
+values of d-function at certain "x" points. Its main advantages are that this
+method can work well with any pdqr type and that two consecutive conversions
+return the same function. Conversion algorithm is as follows:</p><ul>
+<li><p>Retyping from "continuous" to <code>type</code> "discrete" is done by creating
+pdqr-function of corresponding class with the following "x_tbl" metadata: "x"
+column is the same as in <code>f</code>; "prob" column is equal to <code>f</code>'s "y" column
+after renormalization (so that their sum is 1).</p></li>
+<li><p>Retyping from "discrete" to <code>type</code> "continuous" is done in the same
+fashion: "x" column is the same; "y" column is equal to <code>f</code>'s "prob" column
+after renormalization (so that total integral of piecewise-linear density is
+equal to 1).</p></li>
 </ul>
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -233,6 +250,24 @@ pdqr-function.</p>
 #&gt; 4 4.0777778 0.2474227     0.8
 #&gt; 5 5.1555556 0.1237113     1.0</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>my_con</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>my_con_2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</div><div class='img'><img src='form_retype-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'># Method "value"</span>
+<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='fu'>form_retype</span>(<span class='no'>my_con</span>, <span class='st'>"discrete"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"value"</span>))</div><div class='output co'>#&gt;   x      prob   cumprob
+#&gt; 1 1 0.1111111 0.1111111
+#&gt; 2 2 0.2222222 0.3333333
+#&gt; 3 3 0.3333333 0.6666667
+#&gt; 4 4 0.2222222 0.8888889
+#&gt; 5 5 0.1111111 1.0000000</div><div class='input'>
+  <span class='co'># This method returns input function after two consecutive conversions</span>
+<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(
+  <span class='fu'>form_retype</span>(
+    <span class='kw'>f</span> <span class='kw'>=</span> <span class='fu'>form_retype</span>(<span class='no'>my_dis</span>, <span class='st'>"continuous"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"value"</span>),
+    <span class='st'>"discrete"</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"value"</span>
+  )
+)</div><div class='output co'>#&gt;          x   prob cumprob
+#&gt; 1 1.555556 0.1875  0.1875
+#&gt; 2 2.533333 0.3125  0.5000
+#&gt; 3 3.466667 0.3125  0.8125
+#&gt; 4 4.444444 0.1875  1.0000</div><div class='input'>
 </div></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
