@@ -66,6 +66,8 @@ This README covers the following topics:
     `form_*()`](#pdqr-transform).
   - How to summarize distribution in [Summarize with
     `summ_*()`](#pdqr-summarize).
+  - What are the other packages with similar functionality in [Similar
+    packages](#similar-packages).
 
 ## Installation
 
@@ -651,3 +653,21 @@ roc_plot(my_roc)
 ```
 
 ![](man/figures/README-pdqr-summarize_roc-1.png)<!-- -->
+
+## <a id="similar-packages"></a> Similar packages
+
+  - [“distrXXX”-family](http://distr.r-forge.r-project.org/) of
+    packages: S4 classes for distributions.
+  - [distr6](https://github.com/alan-turing-institute/distr6): Unified
+    and Object Oriented Probability Distribution Interface for R written
+    in R6.
+  - [distributions](https://github.com/alexpghayes/distributions):
+    Probability Distributions as S3 Objects (*work in
+    progress*).
+  - [fitdistrplus](https://cran.r-project.org/web/packages/fitdistrplus/index.html):
+    Help to Fit of a Parametric Distribution to Non-Censored or Censored
+    Data.
+  - [Probability
+    Distributions](https://cran.r-project.org/web/views/Distributions.html)
+    CRAN Task View has more examples of packages intended to work with
+    probability distributions.
