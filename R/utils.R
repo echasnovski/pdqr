@@ -101,7 +101,7 @@ compute_d_con_ylim <- function(f) {
 #'
 #' @examples
 #' # Main pattern is to use these functions at the beginning of a function
-#' inside which there will be explicit random generation:
+#' # inside which there will be explicit random generation:
 #' my_f <- function() {
 #'   state <- get_rand_state()
 #'   on.exit(set_rand_state(state))
@@ -139,15 +139,19 @@ compute_d_con_ylim <- function(f) {
 NULL
 
 get_rand_state <- function() {
-  # Using `inherits = TRUE` is crucial in `*_rand_state()` functions because it
-  # searches for the first present `.Random.seed` in chain of environments
-  # (hopefuly, in the right way), which is affected by using random generation
-  # after their application inside some function.
-  get0(".Random.seed", inherits = TRUE)
+  # Searching only in global environment seems to be enough as help page on
+  # `.Random.seed` says: "The object `.Random.seed` is only looked for in the
+  # user's workspace".
+  get0(".Random.seed", envir = .GlobalEnv, inherits = FALSE)
 }
 
 set_rand_state <- function(state) {
-  assign(".Random.seed", state, inherits = TRUE)
+  # In theory, `.Random.seed` can be `NULL`, which means it is uninitialized.
+  # However, it seems that assigning `NULL` is bad because it somehow breaks
+  # `set.seed()`.
+  if (!is.null(state)) {
+    assign(".Random.seed", state, envir = .GlobalEnv, inherits = FALSE)
+  }
 }
 
 

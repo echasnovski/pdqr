@@ -123,6 +123,9 @@ test_that("set_rand_state works", {
   a <- runif(1)
   set_rand_state(state)
   expect_equal(runif(1), a)
+
+  # Works with `NULL`
+  set_rand_state(NULL)
 })
 
 
