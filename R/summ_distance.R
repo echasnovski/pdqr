@@ -53,9 +53,9 @@
 #' If any of `f` and `g` has "continuous" type, [stats::integrate()] is used, so
 #' relatively small numerical errors can happen.
 #' - *Method "cramer"* computes Cramer distance: integral of `(F - G)^2`. This
-#' somewhat relates to "wass" method as [first central absolute
-#' moment][summ_moment()] relates to [variance][summ_var()]. Relatively small
-#' numerical errors can happen.
+#' somewhat relates to "wass" method as [variance][summ_var()] relates to [first
+#' central absolute moment][summ_moment()]. Relatively small numerical errors
+#' can happen.
 #' - *Method "align"* computes an absolute value of shift `d` (possibly
 #' negative) that should be added to `f` to achieve both `P(f+d >= g) >= 0.5`
 #' and `P(f+d <= g) >= 0.5` (in other words, align `f+d` and `g`) as close as

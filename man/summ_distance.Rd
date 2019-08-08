@@ -68,8 +68,8 @@ computed as integral of \code{|F - G|} (absolute difference between p-functions)
 If any of \code{f} and \code{g} has "continuous" type, \code{\link[stats:integrate]{stats::integrate()}} is used, so
 relatively small numerical errors can happen.
 \item \emph{Method "cramer"} computes Cramer distance: integral of \code{(F - G)^2}. This
-somewhat relates to "wass" method as \link[=summ_moment]{first central absolute moment} relates to \link[=summ_var]{variance}. Relatively small
-numerical errors can happen.
+somewhat relates to "wass" method as \link[=summ_var]{variance} relates to \link[=summ_moment]{first central absolute moment}. Relatively small numerical errors
+can happen.
 \item \emph{Method "align"} computes an absolute value of shift \code{d} (possibly
 negative) that should be added to \code{f} to achieve both \code{P(f+d >= g) >= 0.5}
 and \code{P(f+d <= g) >= 0.5} (in other words, align \code{f+d} and \code{g}) as close as
