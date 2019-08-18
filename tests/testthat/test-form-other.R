@@ -350,3 +350,56 @@ test_that("form_recenter validates input", {
   expect_error(form_recenter(d_dis, 1.5, method = 1), "`method`.*string")
   expect_error(form_recenter(d_dis, 1.5, method = "a"), "`method`.*one of")
 })
+
+
+# form_respread -----------------------------------------------------------
+test_that("form_respread works", {
+  expect_respread_works <- function(f, to) {
+    for (center_meth in c("mean", "median", "mode")) {
+      f_center <- summ_center(f, method = center_meth)
+
+      for (meth in c("sd", "var", "iqr", "mad", "range")) {
+        # Respreading to `to`
+        out <- form_respread(
+          f, to = to, method = meth, center_method = center_meth
+        )
+
+        expect_equal(summ_spread(out, method = meth), to)
+        expect_equal(summ_center(out, method = center_meth), f_center)
+
+        # Respreading to zero
+        out_zero <- form_respread(
+          f, to = 0, method = meth, center_method = center_meth
+        )
+        expect_equal_x_tbl(out_zero, new_d(f_center, type = meta_type(f)))
+      }
+    }
+  }
+
+  # Type "discrete"
+  cur_d_dis <- new_d(
+    data.frame(x = c(1, 2, 100), prob = c(0.4, 0.25, 0.35)), "discrete"
+  )
+
+  expect_respread_works(cur_d_dis, to = 1.5)
+
+  # Type "continuous"
+  cur_d_con <- new_d(data.frame(x = c(1, 2, 100), y = c(0, 1, 0)), "continuous")
+
+  expect_respread_works(cur_d_con, to = 1.5)
+})
+
+test_that("form_respread validates input", {
+  expect_error(form_respread("a", 1), "`f`.*not pdqr-function")
+  expect_error(form_respread(d_dis, "a"), "`to`.*number")
+  expect_error(form_respread(d_dis, 1:2), "`to`.*single")
+  expect_error(form_respread(d_dis, -1), "`to`.*non-negative")
+  expect_error(form_respread(d_dis, 1.5, method = 1), "`method`.*string")
+  expect_error(form_respread(d_dis, 1.5, method = "a"), "`method`.*one of")
+  expect_error(
+    form_respread(d_dis, 1.5, center_method = 1), "`center_method`.*string"
+  )
+  expect_error(
+    form_respread(d_dis, 1.5, center_method = "a"), "`center_method`.*one of"
+  )
+})

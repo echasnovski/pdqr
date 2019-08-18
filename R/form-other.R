@@ -343,3 +343,33 @@ form_recenter <- function(f, to, method = "mean") {
 
   f - summ_center(f, method) + to
 }
+
+form_respread <- function(f, to, method = "sd", center_method = "mean") {
+  # `f` and `method` are checked in subsequent `summ_center()` and
+  # `summ_spread()` calls
+  assert_type(
+    to, is_single_number, type_name = "single non-negative number",
+    min_val = 0
+  )
+  # `center_method` needs its own check to preserve variable name in possible
+  # error output
+  assert_type(center_method, is_string)
+  assert_in_set(center_method, c("mean", "median", "mode"))
+
+  center <- summ_center(f, center_method)
+
+  if (to == 0) {
+    new_pdqr_by_ref(f)(center, type = meta_type(f))
+  } else {
+    cur_spread <- summ_spread(f, method)
+    coef <- switch(
+      method,
+      var = sqrt(to / cur_spread),
+      to / cur_spread
+    )
+
+    # This is equivalent to `coef * (f - center) + center` but less operations
+    # are done with pdqr-functions for performance reasons
+    coef * f + center * (1 - coef)
+  }
+}
