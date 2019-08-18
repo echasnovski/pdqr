@@ -318,3 +318,35 @@ test_that("form_estimate validates input", {
     form_estimate(d_dis, mean, 10, args_new = "a"), "`args_new`.*list"
   )
 })
+
+
+# form_recenter -----------------------------------------------------------
+test_that("form_recenter works", {
+  expect_recenter_works <- function(f, to) {
+    for (meth in c("mean", "median", "mode")) {
+      out <- form_recenter(f, to = to, method = meth)
+
+      expect_equal(summ_center(out, method = meth), to)
+    }
+  }
+
+  # Type "discrete"
+  cur_d_dis <- new_d(
+    data.frame(x = c(1, 2, 100), prob = c(0.4, 0.25, 0.35)), "discrete"
+  )
+
+  expect_recenter_works(cur_d_dis, to = -10)
+
+  # Type "continuous"
+  cur_d_con <- new_d(data.frame(x = c(1, 2, 100), y = c(0, 1, 0)), "continuous")
+
+  expect_recenter_works(cur_d_con, to = -10)
+})
+
+test_that("form_recenter validates input", {
+  expect_error(form_recenter("a", 1), "`f`.*not pdqr-function")
+  expect_error(form_recenter(d_dis, "a"), "`to`.*number")
+  expect_error(form_recenter(d_dis, 1:2), "`to`.*single")
+  expect_error(form_recenter(d_dis, 1.5, method = 1), "`method`.*string")
+  expect_error(form_recenter(d_dis, 1.5, method = "a"), "`method`.*one of")
+})

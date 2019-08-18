@@ -334,3 +334,12 @@ form_estimate <- function(f, estimate, sample_size, ...,
 
   do.call(new_pdqr_by_ref(f), call_args)
 }
+
+
+# form_recenter and form_respread -----------------------------------------
+form_recenter <- function(f, to, method = "mean") {
+  # `f` and `method` are checked in subsequent `summ_center()` call
+  assert_type(to, is_single_number, type_name = "single number")
+
+  f - summ_center(f, method) + to
+}
