@@ -337,6 +337,52 @@ form_estimate <- function(f, estimate, sample_size, ...,
 
 
 # form_recenter and form_respread -----------------------------------------
+#' Change center and spread of distribution
+#'
+#' These functions implement linear transformations, output distribution of
+#' which has desired [center][summ_center()] and [spread][summ_spread()]. These
+#' functions are useful for creating distributions with some input center and
+#' spread value based on present distribution, which is a common task during
+#' hypothesis testing.
+#'
+#' @param f A pdqr-function.
+#' @param to A desired value of summary.
+#' @param method Method of computing center for `form_recenter()` and spread for
+#'   `form_respread()`. Values should be one of possible `method` values from
+#'   [summ_center()] and [summ_spread()] respectively.
+#' @param center_method Method of computing center for `form_respread()` in
+#'   order to preserve it in output.
+#'
+#' @details `form_recenter(f, to, method)` is basically a
+#' `f - summ_center(f, method) + to`: it moves distribution without affecting
+#' its shape so that output distribution has center at `to`.
+#'
+#' `form_respread(f, to, method, center_method)` is a following linear
+#' transformation: `coef * (f - center) + center`, where `center` is
+#' `summ_center(f, center_method)` and `coef` is computed so as to guarantee
+#' output distribution to have spread equal to `to`. In other words, this linear
+#' transformation stretches distribution around its center until the result has
+#' spread equal to `to` (center remains the same as in input `f`).
+#'
+#' @return A pdqr-function describing distribution with desired center or
+#'   spread.
+#'
+#' @examples
+#' my_beta <- as_d(dbeta, shape1 = 1, shape2 = 3)
+#'
+#' my_beta2 <- form_recenter(my_beta, to = 2)
+#' summ_center(my_beta2)
+#'
+#' my_beta3 <- form_respread(my_beta2, to = 10, method = "range")
+#' summ_spread(my_beta3, method = "range")
+#'   # Center remains unchainged
+#' summ_center(my_beta3)
+#'
+#' @name form_recenter
+NULL
+
+#' @rdname form_recenter
+#' @export
 form_recenter <- function(f, to, method = "mean") {
   # `f` and `method` are checked in subsequent `summ_center()` call
   assert_type(to, is_single_number, type_name = "single number")
@@ -344,6 +390,8 @@ form_recenter <- function(f, to, method = "mean") {
   f - summ_center(f, method) + to
 }
 
+#' @rdname form_recenter
+#' @export
 form_respread <- function(f, to, method = "sd", center_method = "mean") {
   # `f` and `method` are checked in subsequent `summ_center()` and
   # `summ_spread()` calls
