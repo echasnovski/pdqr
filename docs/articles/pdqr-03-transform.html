@@ -223,31 +223,52 @@
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; Density function of continuous type</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; Support: ~[-1.28155, 1.64485] (3080 intervals)</span></a></code></pre></div>
 </div>
+<div id="form_recenter-and-form_respread" class="section level3">
+<h3 class="hasAnchor">
+<a href="#form_recenter-and-form_respread" class="anchor"></a><code>form_recenter()</code> and <code>form_respread()</code>
+</h3>
+<p>During hypothesis testing there is usually a need to alter some existing distribution to have certain center and/or spread. Functions <code><a href="../reference/form_recenter.html">form_recenter()</a></code> and <code><a href="../reference/form_recenter.html">form_respread()</a></code> implement linear transformations that accomplish this goal:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">my_beta &lt;-<span class="st"> </span><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dbeta, <span class="dt">shape1 =</span> <span class="dv">1</span>, <span class="dt">shape2 =</span> <span class="dv">3</span>)</a>
+<a class="sourceLine" id="cb6-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co"># Distribution is shifted to the right so as to have mean (default method of</span></a>
+<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co"># `summ_center()`) equal to 2</span></a>
+<a class="sourceLine" id="cb6-5" data-line-number="5">my_beta2 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_recenter.html">form_recenter</a></span>(my_beta, <span class="dt">to =</span> <span class="dv">2</span>)</a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw"><a href="../reference/summ_center.html">summ_center</a></span>(my_beta2)</a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [1] 2</span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co"># Distribution is stretched around its center so as to have range equal to 10</span></a>
+<a class="sourceLine" id="cb6-10" data-line-number="10">my_beta3 &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_recenter.html">form_respread</a></span>(my_beta2, <span class="dt">to =</span> <span class="dv">10</span>, <span class="dt">method =</span> <span class="st">"range"</span>)</a>
+<a class="sourceLine" id="cb6-11" data-line-number="11"><span class="kw"><a href="../reference/summ_spread.html">summ_spread</a></span>(my_beta3, <span class="dt">method =</span> <span class="st">"range"</span>)</a>
+<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; [1] 10</span></a>
+<a class="sourceLine" id="cb6-13" data-line-number="13">  <span class="co"># Center remains unchainged</span></a>
+<a class="sourceLine" id="cb6-14" data-line-number="14"><span class="kw"><a href="../reference/summ_center.html">summ_center</a></span>(my_beta3)</a>
+<a class="sourceLine" id="cb6-15" data-line-number="15"><span class="co">#&gt; [1] 2</span></a></code></pre></div>
+</div>
 <div id="form_mix" class="section level3">
 <h3 class="hasAnchor">
 <a href="#form_mix" class="anchor"></a><code>form_mix()</code>
 </h3>
 <p><code><a href="../reference/form_mix.html">form_mix()</a></code> results into mixture of distributions. Input can have both types of pdqr-functions. Output will be “discrete” only if all inputs have “discrete” type. If at least one input pdqr-function has “continuous” type, all possible “discrete” inputs are converted to be “continuous” type (with <code><a href="../reference/form_retype.html">form_retype()</a></code> and method “dirac”) in form of mixture of dirac-like “continuous” functions. <strong>Note</strong> that output can have many piecewise-linear intervals, and to reduce their amount (with possible accuracy loss) use <code><a href="../reference/form_regrid.html">form_regrid()</a></code>.</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># All inputs have the same type</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">dis_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3">  <span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dbinom, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">prob =</span> <span class="fl">0.3</span>),</a>
-<a class="sourceLine" id="cb6-4" data-line-number="4">  <span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dpois, <span class="dt">lambda =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">)</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/form_mix.html">form_mix</a></span>(dis_list), <span class="dt">main =</span> <span class="st">"Mixture of binomial and Poisson"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># All inputs have the same type</span></a>
+<a class="sourceLine" id="cb7-2" data-line-number="2">dis_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
+<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dbinom, <span class="dt">size =</span> <span class="dv">10</span>, <span class="dt">prob =</span> <span class="fl">0.3</span>),</a>
+<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dpois, <span class="dt">lambda =</span> <span class="dv">10</span>)</a>
+<a class="sourceLine" id="cb7-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/form_mix.html">form_mix</a></span>(dis_list), <span class="dt">main =</span> <span class="st">"Mixture of binomial and Poisson"</span>)</a></code></pre></div>
 <p><img src="pdqr-03-transform_files/figure-html/form_mix-1.png" width="700"></p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1">norm_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dnorm), <span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="dv">4</span>))</a>
-<a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3">  <span class="kw"><a href="../reference/form_mix.html">form_mix</a></span>(norm_list, <span class="dt">weights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>)),</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4">  <span class="dt">main =</span> <span class="st">"Mixture of normal distributions"</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5">)</a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">norm_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dnorm), <span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="dv">4</span>))</a>
+<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(</a>
+<a class="sourceLine" id="cb8-3" data-line-number="3">  <span class="kw"><a href="../reference/form_mix.html">form_mix</a></span>(norm_list, <span class="dt">weights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.3</span>, <span class="fl">0.7</span>)),</a>
+<a class="sourceLine" id="cb8-4" data-line-number="4">  <span class="dt">main =</span> <span class="st">"Mixture of normal distributions"</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5">)</a></code></pre></div>
 <p><img src="pdqr-03-transform_files/figure-html/form_mix-2.png" width="700"></p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="co"># Here all "discrete" pdqr-functions are converted to be "continuous" with</span></a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co"># values represented as dirac-like density "spikes"</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4">mixed_both &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_mix.html">form_mix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(norm_list, dis_list))</a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mixed_both, <span class="dt">main =</span> <span class="st">'Density of mixture of "discrete" and "continuous"'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="co"># Here all "discrete" pdqr-functions are converted to be "continuous" with</span></a>
+<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co"># values represented as dirac-like density "spikes"</span></a>
+<a class="sourceLine" id="cb9-4" data-line-number="4">mixed_both &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_mix.html">form_mix</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(norm_list, dis_list))</a>
+<a class="sourceLine" id="cb9-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mixed_both, <span class="dt">main =</span> <span class="st">'Density of mixture of "discrete" and "continuous"'</span>)</a></code></pre></div>
 <p><img src="pdqr-03-transform_files/figure-html/form_mix-3.png" width="700"></p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_p</a></span>(mixed_both), <span class="dt">main =</span> <span class="st">'CDF of mixture of "discrete" and "continuous"'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_p</a></span>(mixed_both), <span class="dt">main =</span> <span class="st">'CDF of mixture of "discrete" and "continuous"'</span>)</a></code></pre></div>
 <p><img src="pdqr-03-transform_files/figure-html/form_mix-4.png" width="700"></p>
 </div>
 <div id="form_estimate" class="section level3">
@@ -255,33 +276,33 @@
 <a href="#form_estimate" class="anchor"></a><code>form_estimate()</code>
 </h3>
 <p><code><a href="../reference/form_estimate.html">form_estimate()</a></code> computes distribution of sample estimate. For example, what distribution would have mean of 20 sample elements from uniform distribution? To answer this question, <code><a href="../reference/form_estimate.html">form_estimate()</a></code> would use simulation. One randomly generate element from target distribution is achieved by generating 20 elements from input one and computing desired estimate. This is repeated many times with calling one of <code>new_*()</code> functions on resulted sample from target distribution. <strong>Note</strong> that this algorithm usually quite time consuming.</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1">(unif_mean &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_estimate.html">form_estimate</a></span>(d_unif, <span class="dt">estimate =</span> mean, <span class="dt">sample_size =</span> <span class="dv">20</span>))</a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3"><span class="co">#&gt; Support: ~[0.22168, 0.75006] (511 intervals)</span></a>
-<a class="sourceLine" id="cb10-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5">  unif_mean, <span class="dt">main =</span> <span class="st">"Distribution of mean estimate for 20 elements of uniform"</span></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  <span class="co"># Approximated normal output</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="fl">0.5</span>, <span class="dt">sd =</span> <span class="dv">1</span><span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">12</span><span class="op">*</span><span class="dv">20</span>)), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1">(unif_mean &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_estimate.html">form_estimate</a></span>(d_unif, <span class="dt">estimate =</span> mean, <span class="dt">sample_size =</span> <span class="dv">20</span>))</a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co">#&gt; Density function of continuous type</span></a>
+<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co">#&gt; Support: ~[0.22168, 0.75006] (511 intervals)</span></a>
+<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(</a>
+<a class="sourceLine" id="cb11-5" data-line-number="5">  unif_mean, <span class="dt">main =</span> <span class="st">"Distribution of mean estimate for 20 elements of uniform"</span></a>
+<a class="sourceLine" id="cb11-6" data-line-number="6">)</a>
+<a class="sourceLine" id="cb11-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb11-8" data-line-number="8">  <span class="co"># Approximated normal output</span></a>
+<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="fl">0.5</span>, <span class="dt">sd =</span> <span class="dv">1</span><span class="op">/</span><span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">12</span><span class="op">*</span><span class="dv">20</span>)), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="pdqr-03-transform_files/figure-html/form_estimate-1.png" width="700"></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Estimation of 75% quantile. Here once again one can see the "extending</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># property" of `density()` function used in `new_*()`, because right edge of</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co"># support is more than 1, which is impossible.</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">(unif_quan &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_estimate.html">form_estimate</a></span>(</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">  d_unif, <span class="dt">estimate =</span> quantile, <span class="dt">sample_size =</span> <span class="dv">20</span>, <span class="dt">probs =</span> <span class="fl">0.75</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">))</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="co">#&gt; Support: ~[0.25579, 1.01289] (511 intervals)</span></a>
-<a class="sourceLine" id="cb11-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(</a>
-<a class="sourceLine" id="cb11-11" data-line-number="11">  unif_quan,</a>
-<a class="sourceLine" id="cb11-12" data-line-number="12">  <span class="dt">main =</span> <span class="st">"Distribution of 75% quantile estimate for 20 elements of uniform"</span></a>
-<a class="sourceLine" id="cb11-13" data-line-number="13">)</a>
-<a class="sourceLine" id="cb11-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb11-15" data-line-number="15">  <span class="co"># "Correct" distribution of 15th order statistic of the uniform distribution</span></a>
-<a class="sourceLine" id="cb11-16" data-line-number="16">  <span class="co"># with sample size 20</span></a>
-<a class="sourceLine" id="cb11-17" data-line-number="17"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dbeta, <span class="dt">shape1 =</span> <span class="dv">15</span>, <span class="dt">shape2 =</span> <span class="dv">6</span>), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"></a>
+<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="co"># Estimation of 75% quantile. Here once again one can see the "extending</span></a>
+<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co"># property" of `density()` function used in `new_*()`, because right edge of</span></a>
+<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># support is more than 1, which is impossible.</span></a>
+<a class="sourceLine" id="cb12-5" data-line-number="5">(unif_quan &lt;-<span class="st"> </span><span class="kw"><a href="../reference/form_estimate.html">form_estimate</a></span>(</a>
+<a class="sourceLine" id="cb12-6" data-line-number="6">  d_unif, <span class="dt">estimate =</span> quantile, <span class="dt">sample_size =</span> <span class="dv">20</span>, <span class="dt">probs =</span> <span class="fl">0.75</span></a>
+<a class="sourceLine" id="cb12-7" data-line-number="7">))</a>
+<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Density function of continuous type</span></a>
+<a class="sourceLine" id="cb12-9" data-line-number="9"><span class="co">#&gt; Support: ~[0.25579, 1.01289] (511 intervals)</span></a>
+<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(</a>
+<a class="sourceLine" id="cb12-11" data-line-number="11">  unif_quan,</a>
+<a class="sourceLine" id="cb12-12" data-line-number="12">  <span class="dt">main =</span> <span class="st">"Distribution of 75% quantile estimate for 20 elements of uniform"</span></a>
+<a class="sourceLine" id="cb12-13" data-line-number="13">)</a>
+<a class="sourceLine" id="cb12-14" data-line-number="14"></a>
+<a class="sourceLine" id="cb12-15" data-line-number="15">  <span class="co"># "Correct" distribution of 15th order statistic of the uniform distribution</span></a>
+<a class="sourceLine" id="cb12-16" data-line-number="16">  <span class="co"># with sample size 20</span></a>
+<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(dbeta, <span class="dt">shape1 =</span> <span class="dv">15</span>, <span class="dt">shape2 =</span> <span class="dv">6</span>), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
 <p><img src="pdqr-03-transform_files/figure-html/form_estimate-2.png" width="700"></p>
 </div>
 </div>
@@ -290,43 +311,43 @@
 <a href="#base-operations" class="anchor"></a>Base operations</h2>
 <p>Almost all basic R operations (implemented with <a href="https://rdrr.io/r/base/groupGeneric.html">S3 group generic functions</a>) has methods for pdqr-functions. Operations are done as if applied to independent random variables with distributions represented by input pdqr-function(s). Many of methods have random nature and are implemented with <code><a href="../reference/form_trans.html">form_trans()</a></code>, but have little tweaks that make their direct usage better than <code><a href="../reference/form_trans.html">form_trans()</a></code>.</p>
 <p>Methods for <code>Math</code> are mostly implemented with simulation:</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1"><span class="co"># Exponent of uniform distribution</span></a>
-<a class="sourceLine" id="cb12-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(d_unif)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co">#&gt; Support: ~[1, 2.71828] (515 intervals)</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Exponent of uniform distribution</span></a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Log.html">exp</a></span>(d_unif)</a>
+<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co">#&gt; Density function of continuous type</span></a>
+<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="co">#&gt; Support: ~[1, 2.71828] (515 intervals)</span></a></code></pre></div>
 <p>Methods for <code>Ops</code> may be divided into two parts:</p>
 <ul>
 <li>Mathematical operations: “+”, “-”, "*“,”/“,”^“,”%%“,”%/%". They are implemented with simulation.</li>
 <li>Logical operations: all other. They are <strong>implemented directly</strong> and can be very useful when doing comparison statistical inference. Their output is boolean pdqr-function (type “discrete” with values 0 for FALSE and 1 for TRUE). To extract probability from this type of functions, use <code><a href="../reference/summ_prob_true.html">summ_prob_true()</a></code> and <code><a href="../reference/summ_prob_true.html">summ_prob_false()</a></code>.</li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1"><span class="co"># Distribution of used in `form_trans()` section transformation function. Note</span></a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"><span class="co"># the correct support [-1, 1] without effect of "extending property" of</span></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co"># `density()`. Here the default method of `form_resupport()` is used.</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(d_norm <span class="op">*</span><span class="st"> </span>d_unif)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="co">#&gt; Support: [-1, 1] (515 intervals)</span></a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="co"># Comparing random variables results into boolean random variable represented</span></a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co"># by boolean pdqr-function.</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"><span class="co"># Here it means that random value of `d_norm` will be greater than random value</span></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co"># of `d_unif` with probability around 0.316.</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12">d_norm <span class="op">&gt;</span><span class="st"> </span>d_unif</a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; Probability mass function of discrete type</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"><span class="co">#&gt; Support: [0, 1] (2 elements, probability of 1: ~0.31563)</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Distribution of used in `form_trans()` section transformation function. Note</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="co"># the correct support [-1, 1] without effect of "extending property" of</span></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co"># `density()`. Here the default method of `form_resupport()` is used.</span></a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw"><a href="https://rdrr.io/r/base/Trig.html">sin</a></span>(d_norm <span class="op">*</span><span class="st"> </span>d_unif)</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"><span class="co">#&gt; Density function of continuous type</span></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co">#&gt; Support: [-1, 1] (515 intervals)</span></a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co"># Comparing random variables results into boolean random variable represented</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co"># by boolean pdqr-function.</span></a>
+<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co"># Here it means that random value of `d_norm` will be greater than random value</span></a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"><span class="co"># of `d_unif` with probability around 0.316.</span></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">d_norm <span class="op">&gt;</span><span class="st"> </span>d_unif</a>
+<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt; Probability mass function of discrete type</span></a>
+<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; Support: [0, 1] (2 elements, probability of 1: ~0.31563)</span></a></code></pre></div>
 <p>Methods for <code>Summary</code> may also be divided into conceptually the same parts as in <code>Ops</code>:</p>
 <ul>
 <li>Mathematical operations: <code>sum</code>, <code>prod</code>, <code>min</code>, <code>max</code>. They are implemented with simulation.</li>
 <li>Logical operations: <code>all</code>, <code>any</code>. Implemented directly. They are most useful when all input pdqr-functions are boolean.</li>
 </ul>
 <p>Function <code><a href="https://rdrr.io/r/base/range.html">range()</a></code> doesn’t make sense in this setup because it returns two numbers instead of one.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># Distribution of maximum of three random variables</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(d_norm, d_norm, d_norm)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; Support: ~[-2.34473, 4.46546] (511 intervals)</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="co"># Probability that all inequalities are true</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"><span class="kw"><a href="../reference/summ_prob_true.html">summ_prob_true</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/all.html">all</a></span>(d_norm <span class="op">&gt;</span><span class="st"> </span>d_unif, d_norm <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>d_unif))</a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="co">#&gt; [1] 0.06161823</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1"><span class="co"># Distribution of maximum of three random variables</span></a>
+<a class="sourceLine" id="cb15-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(d_norm, d_norm, d_norm)</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co">#&gt; Density function of continuous type</span></a>
+<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="co">#&gt; Support: ~[-2.34473, 4.46546] (511 intervals)</span></a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co"># Probability that all inequalities are true</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="kw"><a href="../reference/summ_prob_true.html">summ_prob_true</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/all.html">all</a></span>(d_norm <span class="op">&gt;</span><span class="st"> </span>d_unif, d_norm <span class="op">&gt;</span><span class="st"> </span><span class="dv">2</span><span class="op">*</span>d_unif))</a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="co">#&gt; [1] 0.06161823</span></a></code></pre></div>
 </div>
   </div>
 
@@ -339,6 +360,7 @@
 <a href="#form_-family"><code>form_*()</code> family</a><ul class="nav nav-pills nav-stacked">
 <li class="toc-lev2"><a href="#form_trans"><code>form_trans()</code></a></li>
       <li class="toc-lev2"><a href="#form_resupport-and-form_tails"><code>form_resupport()</code> and <code>form_tails()</code></a></li>
+      <li class="toc-lev2"><a href="#form_recenter-and-form_respread"><code>form_recenter()</code> and <code>form_respread()</code></a></li>
       <li class="toc-lev2"><a href="#form_mix"><code>form_mix()</code></a></li>
       <li class="toc-lev2"><a href="#form_estimate"><code>form_estimate()</code></a></li>
       </ul>
