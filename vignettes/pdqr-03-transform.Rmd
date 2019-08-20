@@ -129,6 +129,25 @@ new_supp <- as_q(d_norm)(c(0.1, 1-0.05))
 form_resupport(d_norm, support = new_supp, method = "trim")
 ```
 
+### `form_recenter()` and `form_respread()`
+
+During hypothesis testing there is usually a need to alter some existing distribution to have certain center and/or spread. Functions `form_recenter()` and `form_respread()` implement linear transformations that accomplish this goal:
+
+```{r form_recenter-form_respread}
+my_beta <- as_d(dbeta, shape1 = 1, shape2 = 3)
+
+# Distribution is shifted to the right so as to have mean (default method of
+# `summ_center()`) equal to 2
+my_beta2 <- form_recenter(my_beta, to = 2)
+summ_center(my_beta2)
+
+# Distribution is stretched around its center so as to have range equal to 10
+my_beta3 <- form_respread(my_beta2, to = 10, method = "range")
+summ_spread(my_beta3, method = "range")
+  # Center remains unchainged
+summ_center(my_beta3)
+```
+
 ### `form_mix()`
 
 `form_mix()` results into mixture of distributions. Input can have both types of pdqr-functions. Output will be "discrete" only if all inputs have "discrete" type. If at least one input pdqr-function has "continuous" type, all possible "discrete" inputs are converted to be "continuous" type (with `form_retype()` and method "dirac") in form of mixture of dirac-like "continuous" functions. **Note** that output can have many piecewise-linear intervals, and to reduce their amount (with possible accuracy loss) use `form_regrid()`.
