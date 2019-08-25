@@ -108,7 +108,7 @@ retype_dis <- function(f, method) {
     method,
     piecelin = retype_dis_piecelin(f),
     dirac = retype_dis_dirac(f),
-    value = retype_dis_vlaue(f)
+    value = retype_dis_value(f)
   )
 }
 
@@ -171,7 +171,7 @@ retype_dis_dirac <- function(f) {
   new_pdqr_by_ref(f)(data.frame(x = new_x, prob = new_prob), "discrete")
 }
 
-retype_dis_vlaue <- function(f) {
+retype_dis_value <- function(f) {
   x_tbl <- meta_x_tbl(f)
   # Renormalization of "prob" column will be done inside `new_*()` function
   new_x_tbl <- data.frame(x = x_tbl[["x"]], prob = x_tbl[["y"]])
