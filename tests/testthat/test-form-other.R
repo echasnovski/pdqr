@@ -108,6 +108,31 @@ test_that("form_mix returns pdqr-function of correct class", {
   expect_is(form_mix(cur_f_list[4:1]), meta_class(cur_f_list[[4]]))
 })
 
+test_that("form_mix strictly treats supports as closed intervals", {
+  # This is mainly a regression test to demonstrate current position about the
+  # following matter: what should be a value of density mixture at point which
+  # is a support edge for multiple pdqr-functions? For example, what is a
+  # density value of equiweighted mixture of U(0; 1) and U(1; 2) at point 1?
+  # Current position is as follows: as distributions are defined on **closed**
+  # support intervals, value should be a weighted sum of separate density
+  # values. The problem with this approach is that it in some cases leads to
+  # discontinuity of "true" density: mixture of previous example is equal to 0.5
+  # on [0; 1) and (1; 2], but at point 1 density is 1 (0.5*1 + 0.5*1).
+  # In 'pdqr' implementation, this (consistently with other cases) means
+  # presence of dirac-like "spikes" (see test).
+
+  d_unif_1 <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
+  d_unif_2 <- new_d(data.frame(x = c(1, 2), y = c(1, 1)), "continuous")
+
+  expect_ref_x_tbl(
+    form_mix(list(d_unif_1, d_unif_2)),
+    data.frame(
+      x = c(  0, 1-1e-8, 1, 1+1e-8,   2),
+      y = c(0.5,    0.5, 1,    0.5, 0.5)
+    )
+  )
+})
+
 test_that("form_mix validates input", {
   expect_error(form_mix(), "`f_list`.*missing.*list of")
   expect_error(form_mix("a"), "`f_list`.*list")
