@@ -5,9 +5,23 @@
 #' @param f A pdqr-function.
 #' @param type A desired type of output. Should be one of "discrete" or
 #'   "continuous".
-#' @param method Retyping method. Should be one of "piecelin", "dirac", "value".
+#' @param method Retyping method. Should be one of "value", "piecelin", "dirac".
 #'
 #' @details If type of `f` is equal to input `type` then `f` is returned.
+#'
+#' Method "value" uses renormalized columns of `f`'s "x_tbl" metadata as values
+#' for output's "x_tbl" metadata. In other words, it preserves ratios between
+#' values of d-function at certain "x" points. Its main advantages are that this
+#' method can work well with any pdqr type and that two consecutive conversions
+#' return the same function. Conversion algorithm is as follows:
+#' - Retyping from "continuous" to `type` "discrete" is done by creating
+#' pdqr-function of corresponding class with the following "x_tbl" metadata: "x"
+#' column is the same as in `f`; "prob" column is equal to `f`'s "y" column
+#' after renormalization (so that their sum is 1).
+#' - Retyping from "discrete" to `type` "continuous" is done in the same
+#' fashion: "x" column is the same; "y" column is equal to `f`'s "prob" column
+#' after renormalization (so that total integral of piecewise-linear density is
+#' equal to 1).
 #'
 #' Method "piecelin" (default) should be used mostly for converting from
 #' "continuous" to "discrete" type. It uses the fact that 'pdqr' densities are
@@ -34,20 +48,6 @@
 #' probability taken from corresponding value of "prob" column. Output
 #' essentially represents a mixture of dirac-like distributions.
 #'
-#' Method "value" uses renormalized columns of `f`'s "x_tbl" metadata as values
-#' for output's "x_tbl" metadata. In other words, it preserves ratios between
-#' values of d-function at certain "x" points. Its main advantages are that this
-#' method can work well with any pdqr type and that two consecutive conversions
-#' return the same function. Conversion algorithm is as follows:
-#' - Retyping from "continuous" to `type` "discrete" is done by creating
-#' pdqr-function of corresponding class with the following "x_tbl" metadata: "x"
-#' column is the same as in `f`; "prob" column is equal to `f`'s "y" column
-#' after renormalization (so that their sum is 1).
-#' - Retyping from "discrete" to `type` "continuous" is done in the same
-#' fashion: "x" column is the same; "y" column is equal to `f`'s "prob" column
-#' after renormalization (so that total integral of piecewise-linear density is
-#' equal to 1).
-#'
 #' @return A pdqr-function with type equal to input `type`.
 #'
 #' @seealso [form_regrid()] for changing grid (rows of "x_tbl" metadata) of
@@ -59,33 +59,33 @@
 #'
 #' @examples
 #' my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
+#' meta_x_tbl(my_con)
+#'
 #' my_dis <- form_retype(my_con, "discrete")
 #' meta_x_tbl(my_dis)
 #'
-#' my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
-#' meta_x_tbl(my_dirac)
-#'
-#' # Default retyping from "discrete" to "continuous" isn't very accurate for
-#' # small number of points/intervals
+#' # Default retyping (with method "value") is accurate when doing consecutive
+#' # retyping
 #' my_con_2 <- form_retype(my_dis, "continuous")
 #' meta_x_tbl(my_con_2)
 #'
-#' plot(my_con)
-#' lines(my_con_2, col = "blue")
+#' # Method "dirac"
+#' my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
+#' meta_x_tbl(my_dirac)
 #'
-#' # Method "value"
-#' meta_x_tbl(form_retype(my_con, "discrete", method = "value"))
+#' # Method "piecelin"
+#'   # From "continuous" to "discrete" (preferred direction)
+#' my_dis_piece <- form_retype(my_con, "discrete", method = "piecelin")
+#' meta_x_tbl(my_dis_piece)
+#'   # Conversion from "discrete" to "continuous" is very approximate
+#' my_con_piece <- form_retype(my_dis_piece, "continuous", method = "piecelin")
+#' meta_x_tbl(my_con_piece)
 #'
-#'   # This method returns input function after two consecutive conversions
-#' meta_x_tbl(
-#'   form_retype(
-#'     f = form_retype(my_dis, "continuous", method = "value"),
-#'     "discrete", method = "value"
-#'   )
-#' )
+#' plot(my_con, main = 'Approximate nature of method "piecelin"')
+#' lines(my_con_piece, col = "blue")
 #'
 #' @export
-form_retype <- function(f, type, method = "piecelin") {
+form_retype <- function(f, type, method = "value") {
   assert_pdqr_fun(f)
   assert_missing(type, "pdqr type of output")
   assert_pdqr_type(type)
@@ -106,10 +106,18 @@ retype_dis <- function(f, method) {
 
   switch(
     method,
+    value = retype_dis_value(f),
     piecelin = retype_dis_piecelin(f),
-    dirac = retype_dis_dirac(f),
-    value = retype_dis_value(f)
+    dirac = retype_dis_dirac(f)
   )
+}
+
+retype_dis_value <- function(f) {
+  x_tbl <- meta_x_tbl(f)
+  # Renormalization of "prob" column will be done inside `new_*()` function
+  new_x_tbl <- data.frame(x = x_tbl[["x"]], prob = x_tbl[["y"]])
+
+  new_pdqr_by_ref(f)(new_x_tbl, type = "discrete")
 }
 
 retype_dis_piecelin <- function(f) {
@@ -171,14 +179,6 @@ retype_dis_dirac <- function(f) {
   new_pdqr_by_ref(f)(data.frame(x = new_x, prob = new_prob), "discrete")
 }
 
-retype_dis_value <- function(f) {
-  x_tbl <- meta_x_tbl(f)
-  # Renormalization of "prob" column will be done inside `new_*()` function
-  new_x_tbl <- data.frame(x = x_tbl[["x"]], prob = x_tbl[["y"]])
-
-  new_pdqr_by_ref(f)(new_x_tbl, type = "discrete")
-}
-
 retype_con <- function(f, method) {
   if (meta_type(f) == "continuous") {
     return(f)
@@ -186,10 +186,18 @@ retype_con <- function(f, method) {
 
   switch(
     method,
+    value = retype_con_value(f),
     piecelin = retype_con_piecelin(f),
-    dirac = retype_con_dirac(f),
-    value = retype_con_value(f)
+    dirac = retype_con_dirac(f)
   )
+}
+
+retype_con_value <- function(f) {
+  x_tbl <- meta_x_tbl(f)
+  # Renormalization of "y" column will be done inside `new_*()` function
+  new_x_tbl <- data.frame(x = x_tbl[["x"]], y = x_tbl[["prob"]])
+
+  new_pdqr_by_ref(f)(new_x_tbl, type = "continuous")
 }
 
 retype_con_piecelin <- function(f) {
@@ -254,12 +262,4 @@ retype_con_dirac <- function(f, h = 1e-8) {
   new_y <- c(   y_zero, x_tbl[["prob"]] / h_vec,    y_zero)
 
   new_pdqr_by_ref(f)(data.frame(x = new_x, y = new_y), "continuous")
-}
-
-retype_con_value <- function(f) {
-  x_tbl <- meta_x_tbl(f)
-  # Renormalization of "y" column will be done inside `new_*()` function
-  new_x_tbl <- data.frame(x = x_tbl[["x"]], y = x_tbl[["prob"]])
-
-  new_pdqr_by_ref(f)(new_x_tbl, type = "continuous")
 }

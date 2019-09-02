@@ -20,7 +20,7 @@ dirac_winsor <- form_resupport(d_unif, c(0, 0.5), method = "winsor")
 dirac_single <- new_d(0.5, "continuous")
 
 # Case of "long" "x"s
-dirac_single_dis <- form_retype(dirac_single, "discrete")
+dirac_single_dis <- form_retype(dirac_single, "discrete", method = "piecelin")
 
 
 # Custom expectations -----------------------------------------------------

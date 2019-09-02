@@ -4,7 +4,7 @@
 \alias{form_retype}
 \title{Change type of pdqr-function}
 \usage{
-form_retype(f, type, method = "piecelin")
+form_retype(f, type, method = "value")
 }
 \arguments{
 \item{f}{A pdqr-function.}
@@ -12,7 +12,7 @@ form_retype(f, type, method = "piecelin")
 \item{type}{A desired type of output. Should be one of "discrete" or
 "continuous".}
 
-\item{method}{Retyping method. Should be one of "piecelin", "dirac", "value".}
+\item{method}{Retyping method. Should be one of "value", "piecelin", "dirac".}
 }
 \value{
 A pdqr-function with type equal to input \code{type}.
@@ -22,6 +22,22 @@ Modify \link[=meta_type]{type} of pdqr-function using method of choice.
 }
 \details{
 If type of \code{f} is equal to input \code{type} then \code{f} is returned.
+
+Method "value" uses renormalized columns of \code{f}'s "x_tbl" metadata as values
+for output's "x_tbl" metadata. In other words, it preserves ratios between
+values of d-function at certain "x" points. Its main advantages are that this
+method can work well with any pdqr type and that two consecutive conversions
+return the same function. Conversion algorithm is as follows:
+\itemize{
+\item Retyping from "continuous" to \code{type} "discrete" is done by creating
+pdqr-function of corresponding class with the following "x_tbl" metadata: "x"
+column is the same as in \code{f}; "prob" column is equal to \code{f}'s "y" column
+after renormalization (so that their sum is 1).
+\item Retyping from "discrete" to \code{type} "continuous" is done in the same
+fashion: "x" column is the same; "y" column is equal to \code{f}'s "prob" column
+after renormalization (so that total integral of piecewise-linear density is
+equal to 1).
+}
 
 Method "piecelin" (default) should be used mostly for converting from
 "continuous" to "discrete" type. It uses the fact that 'pdqr' densities are
@@ -51,49 +67,33 @@ with corresponding probabilities.
 probability taken from corresponding value of "prob" column. Output
 essentially represents a mixture of dirac-like distributions.
 }
-
-Method "value" uses renormalized columns of \code{f}'s "x_tbl" metadata as values
-for output's "x_tbl" metadata. In other words, it preserves ratios between
-values of d-function at certain "x" points. Its main advantages are that this
-method can work well with any pdqr type and that two consecutive conversions
-return the same function. Conversion algorithm is as follows:
-\itemize{
-\item Retyping from "continuous" to \code{type} "discrete" is done by creating
-pdqr-function of corresponding class with the following "x_tbl" metadata: "x"
-column is the same as in \code{f}; "prob" column is equal to \code{f}'s "y" column
-after renormalization (so that their sum is 1).
-\item Retyping from "discrete" to \code{type} "continuous" is done in the same
-fashion: "x" column is the same; "y" column is equal to \code{f}'s "prob" column
-after renormalization (so that total integral of piecewise-linear density is
-equal to 1).
-}
 }
 \examples{
 my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
+meta_x_tbl(my_con)
+
 my_dis <- form_retype(my_con, "discrete")
 meta_x_tbl(my_dis)
 
-my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
-meta_x_tbl(my_dirac)
-
-# Default retyping from "discrete" to "continuous" isn't very accurate for
-# small number of points/intervals
+# Default retyping (with method "value") is accurate when doing consecutive
+# retyping
 my_con_2 <- form_retype(my_dis, "continuous")
 meta_x_tbl(my_con_2)
 
-plot(my_con)
-lines(my_con_2, col = "blue")
+# Method "dirac"
+my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
+meta_x_tbl(my_dirac)
 
-# Method "value"
-meta_x_tbl(form_retype(my_con, "discrete", method = "value"))
+# Method "piecelin"
+  # From "continuous" to "discrete" (preferred direction)
+my_dis_piece <- form_retype(my_con, "discrete", method = "piecelin")
+meta_x_tbl(my_dis_piece)
+  # Conversion from "discrete" to "continuous" is very approximate
+my_con_piece <- form_retype(my_dis_piece, "continuous", method = "piecelin")
+meta_x_tbl(my_con_piece)
 
-  # This method returns input function after two consecutive conversions
-meta_x_tbl(
-  form_retype(
-    f = form_retype(my_dis, "continuous", method = "value"),
-    "discrete", method = "value"
-  )
-)
+plot(my_con, main = 'Approximate nature of method "piecelin"')
+lines(my_con_piece, col = "blue")
 
 }
 \seealso{
