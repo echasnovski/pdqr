@@ -72,21 +72,31 @@ parse_type <- function(f_name) {
 
 
 # Assert object being in set ----------------------------------------------
-assert_in_set <- function(x, set, x_name = NULL, quote_set = TRUE) {
+assert_in_set <- function(x, set, x_name = NULL, quote_set = TRUE,
+                          allow_null = FALSE) {
   if (is.null(x_name)) {
     x_name <- deparse(substitute(x))
   }
   x_name <- enbacktick(x_name)
 
-  if (!(x %in% set)) {
+  if (!is_in_set(x, set, allow_null = allow_null)) {
+    # Create string for set enumeration
     if (quote_set) {
       set_str <- paste0('"', set, '"', collapse = ", ")
-      x_str <- paste0('"', x, '"')
     } else {
       set_str <- paste0(set, collapse = ", ")
+    }
+
+    # Create string for input `x`
+    if (is.null(x)) {
+      x_str <- "NULL"
+    } else if (quote_set) {
+      x_str <- paste0('"', x, '"')
+    } else {
       x_str <- as.character(x)
     }
 
+    # Create suggestion string
     if (is.character(set) && is.character(x)) {
       suggested_elem <- match_in_set(x, set)
       suggestion_str <- paste0(' Did you mean "', suggested_elem, '"?')
@@ -101,6 +111,14 @@ assert_in_set <- function(x, set, x_name = NULL, quote_set = TRUE) {
   }
 
   TRUE
+}
+
+is_in_set <- function(x, set, allow_null = FALSE) {
+  if (is.null(x)) {
+    return(allow_null)
+  }
+
+  x %in% set
 }
 
 match_in_set <- function(x, set) {
@@ -188,11 +206,14 @@ assert_pdqr_fun <- function(f, f_name = NULL) {
   TRUE
 }
 
-assert_pdqr_type <- function(type) {
+assert_pdqr_type <- function(type, allow_null = FALSE) {
   type_name <- deparse(substitute(type))
 
-  assert_type(type, is_string, x_name = type_name)
-  assert_in_set(type, c("discrete", "continuous"), x_name = type_name)
+  assert_type(type, is_string, x_name = type_name, allow_null = allow_null)
+  assert_in_set(
+    type, c("discrete", "continuous"), x_name = type_name,
+    allow_null = allow_null
+  )
 
   TRUE
 }

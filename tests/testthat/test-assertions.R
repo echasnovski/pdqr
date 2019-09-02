@@ -103,6 +103,21 @@ test_that("assert_in_set allows custom name for `x`", {
   expect_error(assert_in_set(input, c("b"), x_name = "aaa"), "^`aaa`")
 })
 
+test_that("assert_in_set uses `allow_null` argument", {
+  expect_silent(assert_in_set(NULL, c("a", "b"), allow_null = TRUE))
+  expect_error(assert_in_set(NULL, c("a", "b")), "(instead of NULL)")
+})
+
+
+# is_in_set ---------------------------------------------------------------
+test_that("is_in_set works", {
+  expect_true(is_in_set(1, 1:3))
+  expect_false(is_in_set(0, 1:3))
+
+  expect_true(is_in_set(NULL, 1:3, allow_null = TRUE))
+  expect_false(is_in_set(NULL, 1:3))
+})
+
 
 # match_in_set ------------------------------------------------------------
 # Tested in `assert_in_set()`
@@ -244,10 +259,12 @@ test_that("assert_pdqr_fun allows custom name for `f`", {
 test_that("assert_pdqr_type works", {
   expect_silent(assert_pdqr_type("discrete"))
   expect_silent(assert_pdqr_type("continuous"))
+  expect_silent(assert_pdqr_type(NULL, allow_null = TRUE))
 
   expect_error(assert_pdqr_type(1), "string")
   expect_error(assert_pdqr_type(c("discrete", "continuous")), "string")
   expect_error(assert_pdqr_type("a"), "discrete.*continuous")
+  expect_error(assert_pdqr_type(NULL), "NULL")
 })
 
 test_that("assert_pdqr_type suggests correctly", {
