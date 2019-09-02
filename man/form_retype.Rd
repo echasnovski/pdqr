@@ -4,13 +4,14 @@
 \alias{form_retype}
 \title{Change type of pdqr-function}
 \usage{
-form_retype(f, type, method = "value")
+form_retype(f, type = NULL, method = "value")
 }
 \arguments{
 \item{f}{A pdqr-function.}
 
 \item{type}{A desired type of output. Should be one of "discrete" or
-"continuous".}
+"continuous". If \code{NULL} (default), it is chosen as an opposite of \code{f}'s
+type.}
 
 \item{method}{Retyping method. Should be one of "value", "piecelin", "dirac".}
 }
@@ -72,7 +73,8 @@ essentially represents a mixture of dirac-like distributions.
 my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
 meta_x_tbl(my_con)
 
-my_dis <- form_retype(my_con, "discrete")
+  # By default, conversion is done to the opposite type
+my_dis <- form_retype(my_con)
 meta_x_tbl(my_dis)
 
 # Default retyping (with method "value") is accurate when doing consecutive

@@ -4,7 +4,8 @@
 #'
 #' @param f A pdqr-function.
 #' @param type A desired type of output. Should be one of "discrete" or
-#'   "continuous".
+#'   "continuous". If `NULL` (default), it is chosen as an opposite of `f`'s
+#'   type.
 #' @param method Retyping method. Should be one of "value", "piecelin", "dirac".
 #'
 #' @details If type of `f` is equal to input `type` then `f` is returned.
@@ -61,7 +62,8 @@
 #' my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
 #' meta_x_tbl(my_con)
 #'
-#' my_dis <- form_retype(my_con, "discrete")
+#'   # By default, conversion is done to the opposite type
+#' my_dis <- form_retype(my_con)
 #' meta_x_tbl(my_dis)
 #'
 #' # Default retyping (with method "value") is accurate when doing consecutive
@@ -85,12 +87,19 @@
 #' lines(my_con_piece, col = "blue")
 #'
 #' @export
-form_retype <- function(f, type, method = "value") {
+form_retype <- function(f, type = NULL, method = "value") {
   assert_pdqr_fun(f)
-  assert_missing(type, "pdqr type of output")
-  assert_pdqr_type(type)
+  assert_pdqr_type(type, allow_null = TRUE)
   assert_type(method, is_string)
   assert_in_set(method, c("piecelin", "dirac", "value"))
+
+  if (is.null(type)) {
+    type <- switch(
+      meta_type(f),
+      discrete = "continuous",
+      continuous = "discrete"
+    )
+  }
 
   switch(
     type,

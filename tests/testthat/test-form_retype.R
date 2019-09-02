@@ -4,6 +4,11 @@ set.seed(12321)
 
 
 # form_retype -------------------------------------------------------------
+test_that("form_retype converts to opposite type by default", {
+  expect_equal(meta_type(form_retype(d_dis)), "continuous")
+  expect_equal(meta_type(form_retype(d_con)), "discrete")
+})
+
 test_that("form_retype works with `method='value'`", {
   # "discrete" -> "continuous"
   cur_dis <- new_d(
@@ -127,7 +132,6 @@ test_that("form_retype returns input when types match", {
 
 test_that("form_retype validates input", {
   expect_error(form_retype("a", "discrete"), "`f`.*not pdqr-function")
-  expect_error(form_retype(d_dis), "`type`.*missing.*pdqr type of output")
   expect_error(form_retype(d_dis, "a"), '`type`.*"discrete".*"continuous"')
   expect_error(form_retype(d_dis, "continuous", 1), '`method`.*string')
   expect_error(
