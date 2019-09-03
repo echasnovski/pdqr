@@ -135,9 +135,11 @@
 <a href="#pdqr-development-version" class="anchor"></a>pdqr (development version)</h1>
 <ul>
 <li>
-<code><a href="../reference/summ_spread.html">summ_spread()</a></code> gets new method “range” with corresponding new <code><a href="../reference/summ_spread.html">summ_range()</a></code> function. It returns a range length of “x” values within region of positive probability.</li>
+<code><a href="../reference/form_retype.html">form_retype()</a></code> gets default value <code>NULL</code> of <code>type</code>, which means taking opposite of input’s type. This usage seems to be the most common.</li>
 <li>
-<code><a href="../reference/form_retype.html">form_retype()</a></code> gets new method “value” that preserves ratio of d-function values at certain “x” points.</li>
+<code><a href="../reference/form_retype.html">form_retype()</a></code> gets new <strong>default</strong> method “value” that preserves ratio of d-function values at certain “x” points. It is more robust than previous options.</li>
+<li>
+<code><a href="../reference/summ_spread.html">summ_spread()</a></code> gets new method “range” with corresponding new <code><a href="../reference/summ_spread.html">summ_range()</a></code> function. It returns a range length of “x” values within region of positive probability.</li>
 <li>New functions <code><a href="../reference/form_recenter.html">form_recenter()</a></code> and <code><a href="../reference/form_recenter.html">form_respread()</a></code> are implemented. They change center and spread of distribution (with linear transformation) to be equal to some desired value.</li>
 </ul>
 </div>
