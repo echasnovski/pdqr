@@ -8,10 +8,12 @@
 
 <title>Pdqr methods for base plotting functions — methods-plot • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,11 +36,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Pdqr methods for base plotting functions — methods-plot" />
 
+<meta property="og:title" content="Pdqr methods for base plotting functions — methods-plot" />
 <meta property="og:description" content="Pdqr-functions have their own methods for plot() and lines() (except
 r-functions, see Details)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -109,7 +112,6 @@ r-functions, see Details)." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -136,10 +138,8 @@ r-functions, see Details)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Pdqr-functions have their own methods for <code><a href='https://rdrr.io/r/graphics/plot.html'>plot()</a></code> and <code><a href='https://rdrr.io/r/graphics/lines.html'>lines()</a></code> (except
 r-functions, see Details).</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='co'># S3 method for p</span>
@@ -162,7 +162,7 @@ r-functions, see Details).</p>
 
 <span class='co'># S3 method for q</span>
 <span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>x</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -190,12 +190,11 @@ case of plotting r-function).</p></td>
 case of an r-function.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>Output of <a href='https://rdrr.io/r/base/invisible.html'>invisible()</a> without arguments, i.e.
 <code>NULL</code> without printing.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Main idea of plotting pdqr-functions is to use plotting mechanisms
@@ -210,7 +209,8 @@ column of "x_tbl".</p></li>
 <li><p>R-functions are plotted by generating sample of size <code>n_sample</code> and calling
 <a href='https://rdrr.io/r/graphics/hist.html'>hist()</a> function.</p></li>
 </ul>
-    <p>Plotting of type <strong>continuous</strong> functions:</p><ul>
+
+<p>Plotting of type <strong>continuous</strong> functions:</p><ul>
 <li><p>P-functions are plotted in piecewise-linear fashion at their values on
 compound grid: sorted union of "x" column from "x_tbl" metadata and sequence
 of length <code>n_extra_grid</code> consisting from equidistant points between edges of
@@ -223,12 +223,11 @@ length <code>n_extra_grid</code> from 0 to 1.</p></li>
 <li><p>R-functions are plotted the same way as type "discrete" ones: as histogram
 of generated sample of size <code>n_sample</code>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other pdqr methods for generic functions: <code><a href='methods-group-generic.html'>methods-group-generic</a></code>,
   <code><a href='methods-print.html'>methods-print</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
@@ -247,13 +246,9 @@ of generated sample of size <code>n_sample</code>.</p></li>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -267,7 +262,7 @@ of generated sample of size <code>n_sample</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

@@ -8,10 +8,12 @@
 
 <title>Work with regions — region • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,8 +36,8 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Work with regions — region" />
 
+<meta property="og:title" content="Work with regions — region" />
 <meta property="og:description" content="These functions provide ways of working with a region: a data frame with
 numeric &quot;left&quot; and &quot;right&quot; columns, each row of which represents a unique
 finite interval (open, either type of half-open, or closed). Values of &quot;left&quot;
@@ -45,6 +47,7 @@ width are accepted). Originally, region_*() functions were designed to work
 with output of summ_hdr() and summ_interval(), but can be used for any
 data frame which satisfies the definition of a region." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -115,7 +118,6 @@ data frame which satisfies the definition of a region." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -142,7 +144,6 @@ data frame which satisfies the definition of a region." />
     </div>
 
     <div class="ref-description">
-    
     <p>These functions provide ways of working with a <strong>region</strong>: a data frame with
 numeric "left" and "right" columns, each row of which represents a unique
 finite interval (open, either type of half-open, or closed). Values of "left"
@@ -151,7 +152,6 @@ and "right" columns should create an "ordered" set of intervals:
 width are accepted). Originally, <code>region_*()</code> functions were designed to work
 with output of <code><a href='summ_hdr.html'>summ_hdr()</a></code> and <code><a href='summ_interval.html'>summ_interval()</a></code>, but can be used for any
 data frame which satisfies the definition of a region.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='no'>x</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
@@ -163,7 +163,7 @@ data frame which satisfies the definition of a region.</p>
 <span class='fu'>region_width</span>(<span class='no'>region</span>)
 
 <span class='fu'>region_draw</span>(<span class='no'>region</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -200,7 +200,7 @@ right ends of intervals as their parts.</p></td>
 typically in [0; 1].</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>region_is_in()</code> returns a logical vector (with length equal to
@@ -214,7 +214,6 @@ return based on relevant points inside a region.</p>
 <p><code>region_width()</code> returns a single number representing total width of a
 region.</p>
 <p><code>region_draw()</code> draws colored rectangles filling <code>region</code> intervals.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>region_is_in()</code> tests each value of <code>x</code> for being inside interval.
@@ -246,12 +245,10 @@ between "right" and "left" columns.</p>
 <p><code>region_draw()</code> draws (on current plot) intervals stored in <code>region</code> as
 colored rectangles vertically starting from zero and ending in the top of the
 plot (technically, at "y" value of <code>2e8</code>).</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='summ_hdr.html'>summ_hdr()</a></code> for computing of Highest Density Region.</p>
 <p><code><a href='summ_interval.html'>summ_interval()</a></code> for computing of single interval summary of distribution.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "discrete"</span>
@@ -287,13 +284,9 @@ plot (technically, at "y" value of <code>2e8</code>).</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -307,7 +300,7 @@ plot (technically, at "y" value of <code>2e8</code>).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

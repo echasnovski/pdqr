@@ -8,10 +8,12 @@
 
 <title>Get metadata of pdqr-function — meta • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,8 +36,8 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Get metadata of pdqr-function — meta" />
 
+<meta property="og:title" content="Get metadata of pdqr-function — meta" />
 <meta property="og:description" content="Tools for getting metadata of pdqr-function: a function which represents
 distribution with finite support and finite values of probability/density.
 The key metadata which defines underline distribution is &quot;x_tbl&quot;. If two
@@ -43,6 +45,7 @@ pdqr-functions have the same &quot;x_tbl&quot; metadata, they represent the same
 distribution and can be converted to one another with as_*() family of
 functions." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -113,7 +116,6 @@ functions." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -140,14 +142,12 @@ functions." />
     </div>
 
     <div class="ref-description">
-    
     <p>Tools for getting metadata of <strong>pdqr-function</strong>: a function which represents
 distribution with finite support and finite values of probability/density.
 The key metadata which defines underline distribution is <strong>"x_tbl"</strong>. If two
 pdqr-functions have the same "x_tbl" metadata, they represent the same
 distribution and can be converted to one another with <code>as_*()</code> family of
 functions.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>meta_all</span>(<span class='no'>f</span>)
@@ -159,7 +159,7 @@ functions.</p>
 <span class='fu'>meta_support</span>(<span class='no'>f</span>)
 
 <span class='fu'>meta_x_tbl</span>(<span class='no'>f</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -168,13 +168,12 @@ functions.</p>
       <td><p>A pdqr-function.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p><code>meta_all()</code> returns a list of all metadata. <code>meta_class()</code>,
 <code>meta_type()</code>, <code>meta_support</code>, and <code>meta_x_tbl()</code> return corresponding
 metadata.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Internally storage of metadata is implemented as follows:</p><ul>
@@ -184,11 +183,13 @@ pdqr-function. All "proper" pdqr-functions have full S3 class of the form:
 <li><p>Pdqr type, support, and "x_tbl" are stored into function's
 <a href='https://rdrr.io/r/base/environment.html'>environment</a>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="pdqr-class"><a class="anchor" href="#pdqr-class"></a>Pdqr class</h2>
 
     
-    <p>Pdqr class is returned by <code>meta_class()</code>. This can be one of "p", "d", "q",
+
+
+<p>Pdqr class is returned by <code>meta_class()</code>. This can be one of "p", "d", "q",
 "r". Represents <strong>how pdqr-function describes underlying distribution</strong>:</p><ul>
 <li><p>P-function (i.e. of class "p") returns value of cumulative distribution
 function (probability of random variable being not more than certain value)
@@ -208,7 +209,8 @@ from distribution. Internally it is implemented using inverse transform
 sampling: certain amount of points from <a href='https://rdrr.io/r/stats/Uniform.html'>standard uniform distribution</a> is generated, and the output is values of
 corresponding q-function at generated points.</p></li>
 </ul>
-    <p>These names are chosen so as to follow <a href='https://rdrr.io/r/stats/Distributions.html'>base R convention</a> of naming distribution functions. All
+
+<p>These names are chosen so as to follow <a href='https://rdrr.io/r/stats/Distributions.html'>base R convention</a> of naming distribution functions. All
 pdqr-functions take only one argument with the same meaning as the first ones
 in base R. It has no other arguments specific to some parameters of
 distribution family. To emulate their other common arguments, use the
@@ -219,11 +221,13 @@ following transformations (here <code>d_f</code> means a function of class "d", 
 <li><p>For <code>q_f(p, lower.tail = FALSE)</code> use <code>q_f(1 - p)</code>.</p></li>
 <li><p>For <code>q_f(p, log.p = TRUE)</code> use <code>q_f(exp(p))</code>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="pdqr-type"><a class="anchor" href="#pdqr-type"></a>Pdqr type</h2>
 
     
-    <p>Pdqr type is returned by <code>meta_type()</code>. This can be one of "discrete" (short
+
+
+<p>Pdqr type is returned by <code>meta_type()</code>. This can be one of "discrete" (short
 for "finite") or "continuous". Represents <strong>type of underlying
 distribution</strong>:</p><ul>
 <li><p>Type "discrete" is used for distributions with finite number of outcomes.
@@ -234,22 +238,24 @@ Functions with "discrete" type has a fixed set of "x" values ("x" column in
 piecewise-linear density with finite values and on finite support. Density
 goes through points defined by "x" and "y" columns in "x_tbl" metadata.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="pdqr-support"><a class="anchor" href="#pdqr-support"></a>Pdqr support</h2>
 
     
-    <p>Pdqr support is returned by <code>meta_support()</code>. This is a numeric vector with
+
+<p>Pdqr support is returned by <code>meta_support()</code>. This is a numeric vector with
 two finite values. Represents <strong>support of underlying distribution</strong>: closed
 interval, outside of which d-function is equal to zero. <strong>Note</strong> that inside
 of support d-function can also be zero, which especially true for "discrete"
 functions.</p>
 <p>Technically, pdqr support is range of values from "x" column of "x_tbl"
 metadata.</p>
-    
     <h2 class="hasAnchor" id="-x-tbl-metadata"><a class="anchor" href="#-x-tbl-metadata"></a>"x_tbl" metadata</h2>
 
     
-    <p>Metadata "x_tbl" is returned by <code>meta_x_tbl()</code>. This is a key metadata which
+
+
+<p>Metadata "x_tbl" is returned by <code>meta_x_tbl()</code>. This is a key metadata which
 <strong>completely defines distribution</strong>. It is a data frame with three numeric
 columns, content of which partially depends on pdqr type.</p>
 <p>Type "discrete" functions have "x_tbl" with columns "x", "prob", "cumprob".
@@ -265,11 +271,12 @@ strictly less than minimum "x" and strictly more than maximum "x") output is
 zero.</p>
 <p>Column "cumprob" always represents the probability of underlying random
 variable being not more than corresponding value in "x" column.</p>
-    
     <h2 class="hasAnchor" id="change-of-metadata"><a class="anchor" href="#change-of-metadata"></a>Change of metadata</h2>
 
     
-    <p>All metadata of pdqr-functions are not meant to be changed directly. Also
+
+
+<p>All metadata of pdqr-functions are not meant to be changed directly. Also
 change of pdqr type, support, and "x_tbl" metadata will lead to a complete
 change of underlying distribution.</p>
 <p>To change <strong>pdqr class</strong>, for example to convert p-function to d-function,
@@ -282,7 +289,6 @@ creating completely new pdqr-function. To do that, supply data frame with
 "x_tbl" format suitable for desired "type" to appropriate <code>new_*()</code> function:
 <code><a href='new-pdqr.html'>new_p()</a></code>, <code><a href='new-pdqr.html'>new_d()</a></code>, <code><a href='new-pdqr.html'>new_q()</a></code>, <code><a href='new-pdqr.html'>new_r()</a></code>. Also, there is a <code><a href='form_regrid.html'>form_regrid()</a></code>
 function which will increase or decrease granularity of pdqr-function.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dunif</span>)
@@ -308,21 +314,13 @@ function which will increase or decrease granularity of pdqr-function.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#pdqr-class">Pdqr class</a></li>
-
       <li><a href="#pdqr-type">Pdqr type</a></li>
-
       <li><a href="#pdqr-support">Pdqr support</a></li>
-
       <li><a href="#-x-tbl-metadata">"x_tbl" metadata</a></li>
-
       <li><a href="#change-of-metadata">Change of metadata</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -336,7 +334,7 @@ function which will increase or decrease granularity of pdqr-function.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

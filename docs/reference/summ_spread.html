@@ -8,10 +8,12 @@
 
 <title>Summarize distribution with spread — summ_spread • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,12 +36,13 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Summarize distribution with spread — summ_spread" />
 
+<meta property="og:title" content="Summarize distribution with spread — summ_spread" />
 <meta property="og:description" content="Functions to compute spread (variability, dispersion) of distribution (i.e.
 &quot;how wide it is spread&quot;). summ_spread() is a wrapper for respective
 summ_*() functions (from this page) with default arguments." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -110,7 +113,6 @@ summ_*() functions (from this page) with default arguments." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -137,11 +139,9 @@ summ_*() functions (from this page) with default arguments." />
     </div>
 
     <div class="ref-description">
-    
     <p>Functions to compute spread (variability, dispersion) of distribution (i.e.
 "how wide it is spread"). <code>summ_spread()</code> is a wrapper for respective
 <code>summ_*()</code> functions (from this page) with default arguments.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>summ_spread</span>(<span class='no'>f</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"sd"</span>)
@@ -155,7 +155,7 @@ summ_*() functions (from this page) with default arguments." />
 <span class='fu'>summ_mad</span>(<span class='no'>f</span>)
 
 <span class='fu'>summ_range</span>(<span class='no'>f</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -169,12 +169,11 @@ summ_*() functions (from this page) with default arguments." />
 "iqr", "mad", "range".</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>All functions return a single number representing a spread of
 distribution.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>summ_sd()</code> computes distribution's standard deviation.</p>
@@ -187,7 +186,6 @@ distribution's <em>median</em>.</p>
 of "x" values within region of positive probability. <strong>Note</strong> that this might
 differ from length of <a href='meta.html'>support</a> because the latter might be
 affected by tails with zero probability (see Examples).</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='summ_center.html'>summ_center()</a></code> for computing distribution's center, <code><a href='summ_moment.html'>summ_moment()</a></code>
@@ -200,7 +198,6 @@ for general moments.</p>
   <code><a href='summ_prob_true.html'>summ_prob_true</a></code>, <code><a href='summ_pval.html'>summ_pval</a></code>,
   <code><a href='summ_quantile.html'>summ_quantile</a></code>, <code><a href='summ_roc.html'>summ_roc</a></code>,
   <code><a href='summ_separation.html'>summ_separation</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "continuous"</span>
@@ -222,13 +219,9 @@ for general moments.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -242,7 +235,7 @@ for general moments.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

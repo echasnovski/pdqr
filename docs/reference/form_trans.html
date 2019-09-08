@@ -8,10 +8,12 @@
 
 <title>Transform pdqr-function — form_trans • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,11 +36,12 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Transform pdqr-function — form_trans" />
 
+<meta property="og:title" content="Transform pdqr-function — form_trans" />
 <meta property="og:description" content="Perform a transformation of pdqr-function(s) (which assumed to be
 independent)." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -109,7 +112,6 @@ independent)." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -136,17 +138,15 @@ independent)." />
     </div>
 
     <div class="ref-description">
-    
     <p>Perform a transformation of pdqr-function(s) (which assumed to be
 independent).</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>form_trans</span>(<span class='no'>f_list</span>, <span class='no'>trans</span>, <span class='no'>...</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"random"</span>, <span class='kw'>n_sample</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
   <span class='kw'>args_new</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())
 
 <span class='fu'>form_trans_self</span>(<span class='no'>f</span>, <span class='no'>trans</span>, <span class='no'>...</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"random"</span>, <span class='kw'>args_new</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -183,11 +183,10 @@ arguments as there are elements in <code>f_list</code> or a single argument for
       <td><p>A pdqr-function.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A pdqr-function for transformed random variable.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><code>form_trans_self()</code> is a thin wrapper for <code>form_trans()</code> that
@@ -210,7 +209,8 @@ and probabilities of being false and true respectively). If output is
 numeric, one of <code>new_*()</code> (suitable for output class) is called with
 arguments from <code>args_new</code> list.</p></li>
 </ul>
-    <p>Method "bruteforce":</p><ul>
+
+<p>Method "bruteforce":</p><ul>
 <li><p><strong><a href='form_retype.html'>Retypes</a> input</strong> pdqr-function to "discrete"
 type (using "piecelin" method).</p></li>
 <li><p><strong>Computes output for every combination of "x" values</strong> (probability of
@@ -220,7 +220,8 @@ function.</p></li>
 <li><p><strong>Possibly retypes to "continuous" type</strong> if output should have it (also
 with "piecelin" method).</p></li>
 </ul>
-    <p><strong>Notes</strong> about "bruteforce" method:</p><ul>
+
+<p><strong>Notes</strong> about "bruteforce" method:</p><ul>
 <li><p>Its main advantage is that it is not random.</p></li>
 <li><p>It may start to be very memory consuming very quickly.</p></li>
 <li><p>It is usually useful when type of output function is "discrete". In case of
@@ -229,7 +230,7 @@ big errors.</p></li>
 <li><p>Used "discrete" probabilities shouldn't be very small because they will be
 directly multiplied, which might cause numerical accuracy issues.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><a href='methods-group-generic.html'>Pdqr methods for S3 group generic functions</a>
@@ -242,7 +243,6 @@ with "random" method.</p>
   <code><a href='form_mix.html'>form_mix</a></code>, <code><a href='form_regrid.html'>form_regrid</a></code>,
   <code><a href='form_resupport.html'>form_resupport</a></code>, <code><a href='form_retype.html'>form_retype</a></code>,
   <code><a href='form_smooth.html'>form_smooth</a></code>, <code><a href='form_tails.html'>form_tails</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Default "random" transformation</span>
@@ -285,13 +285,9 @@ with "random" method.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -305,7 +301,7 @@ with "random" method.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

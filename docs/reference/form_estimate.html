@@ -8,10 +8,12 @@
 
 <title>Create a pdqr-function for distribution of sample estimate — form_estimate • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,12 +36,13 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Create a pdqr-function for distribution of sample estimate — form_estimate" />
 
+<meta property="og:title" content="Create a pdqr-function for distribution of sample estimate — form_estimate" />
 <meta property="og:description" content="Based on pdqr-function, estimate function, and sample size describe the
 distribution of sample estimate. This might be useful for statistical
 inference." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -110,7 +113,6 @@ inference." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -137,16 +139,14 @@ inference." />
     </div>
 
     <div class="ref-description">
-    
     <p>Based on pdqr-function, estimate function, and sample size describe the
 distribution of sample estimate. This might be useful for statistical
 inference.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>form_estimate</span>(<span class='no'>f</span>, <span class='no'>estimate</span>, <span class='no'>sample_size</span>, <span class='no'>...</span>, <span class='kw'>n_sample</span> <span class='kw'>=</span> <span class='fl'>10000</span>,
   <span class='kw'>args_new</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>())</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -179,12 +179,11 @@ estimate.</p></td>
 control <code><a href='https://rdrr.io/r/stats/density.html'>density()</a></code>.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A pdqr-function of the same <a href='meta.html'>class</a> and
 <a href='meta.html'>type</a> (if not forced otherwise in <code>args_new</code>) as <code>f</code>.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>General idea is to create a sample from target distribution by
@@ -204,18 +203,17 @@ sample estimate. One useful technique for bias correction: compute mean value
 of estimate using big <code>sample_size</code> (with <code><a href='https://rdrr.io/r/base/mean.html'>mean(as_r(f)(sample_size))</a></code>) and
 then recenter distribution to actually have that as a mean.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other form functions: <code><a href='form_mix.html'>form_mix</a></code>,
   <code><a href='form_regrid.html'>form_regrid</a></code>, <code><a href='form_resupport.html'>form_resupport</a></code>,
   <code><a href='form_retype.html'>form_retype</a></code>, <code><a href='form_smooth.html'>form_smooth</a></code>,
   <code><a href='form_tails.html'>form_tails</a></code>, <code><a href='form_trans.html'>form_trans</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'># These examples take some time to run, so be cautious
-</div><span class='co'># NOT RUN {</span>
+    <pre class="examples"><code class = "r"><div class='input'><span class='co'># These examples take some time to run, so be cautious</span>
+<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
 <span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>101</span>)
 
 <span class='co'># Type "discrete"</span>
@@ -246,20 +244,15 @@ then recenter distribution to actually have that as a mean.</p></li>
 <span class='no'>all_positive</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>(<span class='no'>x</span>) {<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span>(<span class='no'>x</span> <span class='kw'>&gt;</span> <span class='fl'>0</span>)}
   <span class='co'># Probability of being true should be around 0.5^5</span>
 <span class='fu'>form_estimate</span>(<span class='no'>d_norm</span>, <span class='kw'>estimate</span> <span class='kw'>=</span> <span class='no'>all_positive</span>, <span class='kw'>sample_size</span> <span class='kw'>=</span> <span class='fl'>5</span>)
-<span class='co'># }</span><div class='input'>
-</div></code></pre>
+}</div></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -273,7 +266,7 @@ then recenter distribution to actually have that as a mean.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

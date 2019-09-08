@@ -8,10 +8,12 @@
 
 <title>Change support of pdqr-function — form_resupport • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,10 +36,11 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Change support of pdqr-function — form_resupport" />
 
+<meta property="og:title" content="Change support of pdqr-function — form_resupport" />
 <meta property="og:description" content="Modify support of pdqr-function using method of choice." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -108,7 +111,6 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -135,13 +137,11 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Modify support of pdqr-function using method of choice.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>form_resupport</span>(<span class='no'>f</span>, <span class='no'>support</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"reflect"</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -160,12 +160,11 @@ which case corresponding edge(s) are taken from <code>f</code>'s support.</p></t
       <td><p>Resupport method. One of "reflect", "trim", "winsor", "linear".</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A pdqr-function with modified support and the same
 <a href='meta.html'>class</a> and <a href='meta.html'>type</a> as <code>f</code>.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Method "reflect" takes a density "tails" to the left of <code>support[1]</code>
@@ -185,7 +184,8 @@ values of distribution.</p></li>
 <code>f</code>'s left edge of support. Reflection over <code>support[2]</code> - if <code>f</code>'s right
 edge is strictly smaller.</p></li>
 </ul>
-    <p>Method "trim" removes density "tails" outside of <code>support</code>, normalizes the
+
+<p>Method "trim" removes density "tails" outside of <code>support</code>, normalizes the
 rest and creates appropriate pdqr-function.</p>
 <p>Method "winsor" makes all density "tails" outside of input <code>support</code>
 "squashed" inside it in "dirac-like" fashion. It means that probability from
@@ -198,7 +198,6 @@ dirac-like distribution in case of "continuous" type.</p>
 example, if <code>f</code>'s support is [0; 1] and <code>support</code> is <code><a href='https://rdrr.io/r/base/c.html'>c(-1, 1)</a></code>, linear
 resupport is equivalent to <code>2*f - 1</code>. <strong>Note</strong> that <code>support</code> can represent
 single point with the same effect as in "winsor" method.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='form_regrid.html'>form_regrid()</a></code> for changing grid (rows of "x_tbl" metadata) of
@@ -208,7 +207,6 @@ pdqr-function.</p>
   <code><a href='form_mix.html'>form_mix</a></code>, <code><a href='form_regrid.html'>form_regrid</a></code>,
   <code><a href='form_retype.html'>form_retype</a></code>, <code><a href='form_smooth.html'>form_smooth</a></code>,
   <code><a href='form_tails.html'>form_tails</a></code>, <code><a href='form_trans.html'>form_trans</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>101</span>)
@@ -238,13 +236,9 @@ pdqr-function.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -258,7 +252,7 @@ pdqr-function.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

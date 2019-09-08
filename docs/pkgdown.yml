@@ -1,6 +1,6 @@
 pandoc: 2.3.1
-pkgdown: 1.3.0.9100
-pkgdown_sha: 04d3a76892320ac4bd918b39604c157e9f83507a
+pkgdown: 1.4.0
+pkgdown_sha: ~
 articles:
   pdqr-01-create: pdqr-01-create.html
   pdqr-02-convert: pdqr-02-convert.html

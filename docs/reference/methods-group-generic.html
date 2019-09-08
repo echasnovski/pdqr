@@ -8,10 +8,12 @@
 
 <title>Pdqr methods for S3 group generic functions — methods-group-generic • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,8 +36,8 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Pdqr methods for S3 group generic functions — methods-group-generic" />
 
+<meta property="og:title" content="Pdqr methods for S3 group generic functions — methods-group-generic" />
 <meta property="og:description" content="There are custom methods implemented for three out of four S3 group generic functions: Math, Ops, Summary. Note that many
 of them have random nature with an idea of generating samples from input
 pdqr-functions, performing certain operation on them (results in one
@@ -44,6 +46,7 @@ pdqr-function with appropriate new_*() function. This is done
 with form_trans(), so all rules for determining class and
 type of output is taken from it." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -114,7 +117,6 @@ type of output is taken from it." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -141,7 +143,6 @@ type of output is taken from it." />
     </div>
 
     <div class="ref-description">
-    
     <p>There are custom methods implemented for three out of four <a href='https://rdrr.io/r/base/groupGeneric.html'>S3 group generic functions</a>: <code>Math</code>, <code>Ops</code>, <code>Summary</code>. <strong>Note</strong> that many
 of them have random nature with an idea of generating samples from input
 pdqr-functions, performing certain operation on them (results in one
@@ -149,7 +150,6 @@ generated sample from desired random variable), and creating new
 pdqr-function with appropriate <a href='new-pdqr.html'>new_*()</a> function. This is done
 with <code><a href='form_trans.html'>form_trans()</a></code>, so all rules for determining <a href='meta.html'>class</a> and
 <a href='meta.html'>type</a> of output is taken from it.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='co'># S3 method for pdqr</span>
@@ -160,7 +160,7 @@ with <code><a href='form_trans.html'>form_trans()</a></code>, so all rules for d
 
 <span class='co'># S3 method for pdqr</span>
 <span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Summary</a></span>(<span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -177,14 +177,13 @@ with <code><a href='form_trans.html'>form_trans()</a></code>, so all rules for d
       <td><p>Logical: should missing values be removed?</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>All methods return pdqr-function which represents the result of
 applying certain function to random variable(s) described with input
 pdqr-function(s). <strong>Note</strong> that independence of input random variables is
 assumed, i.e. <code>f + f</code> is not the same as <code>2*f</code> (see Examples).</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Customization of method behavior may be done using mechanism of
@@ -204,11 +203,13 @@ generic function. But for some difficult cases, like <code><a href='https://rdrr
 <code><a href='https://rdrr.io/r/base/Special.html'>lgamma()</a></code>, <code><a href='https://rdrr.io/r/base/Special.html'>psigamma()</a></code>, <code>^</code>, and <code>%%</code> it is a result of simulation (i.e.
 slightly random, which slightly increases random nature of those methods).</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="math"><a class="anchor" href="#math"></a>Math</h2>
 
     
-    <p>This family of S3 generics represents mathematical functions. Most of the
+
+
+<p>This family of S3 generics represents mathematical functions. Most of the
 methods have <strong>random nature</strong>, except <code><a href='https://rdrr.io/r/base/MathFun.html'>abs()</a></code> and <code><a href='https://rdrr.io/r/base/sign.html'>sign()</a></code> which are
 computed directly. Output of <code><a href='https://rdrr.io/r/base/sign.html'>sign()</a></code> has "discrete" type with 3 "x" values:
 -1, 0, 1.</p>
@@ -216,11 +217,12 @@ computed directly. Output of <code><a href='https://rdrr.io/r/base/sign.html'>si
 don't make much sense in these implementations: their outputs represent
 random variable, sample of which is computed by applying <code>cum*()</code> function to
 a sample, generated from input pdqr-function.</p>
-    
     <h2 class="hasAnchor" id="ops"><a class="anchor" href="#ops"></a>Ops</h2>
 
     
-    <p>This family of S3 generics represents common operators. For all functions
+
+
+<p>This family of S3 generics represents common operators. For all functions
 (except <code>&amp;</code> and <code>|</code>) input can be a pdqr-function or single number.</p>
 <p>A list of methods with <strong>non-random nature</strong>:</p><ul>
 <li><p><code>!</code>, <code>+</code>, <code>-</code> in case of single input, i.e. <code>!f</code> or <code>-f</code>.</p></li>
@@ -256,12 +258,14 @@ product of those probabilities from input <code>e1</code> and <code>e2</code>. <
 probability of being false is a probability of being equal to 0; of being
 true - complementary to that.</p></li>
 </ul>
-    <p>All other methods are <strong>random</strong>. For example, <code>f + f</code>, <code>f^g</code> are random.</p>
-    
+
+<p>All other methods are <strong>random</strong>. For example, <code>f + f</code>, <code>f^g</code> are random.</p>
     <h2 class="hasAnchor" id="summary"><a class="anchor" href="#summary"></a>Summary</h2>
 
     
-    <p>Methods for <code><a href='https://rdrr.io/r/base/all.html'>all()</a></code> and <code><a href='https://rdrr.io/r/base/any.html'>any()</a></code> have <strong>non-random nature</strong>. Their input can
+
+
+<p>Methods for <code><a href='https://rdrr.io/r/base/all.html'>all()</a></code> and <code><a href='https://rdrr.io/r/base/any.html'>any()</a></code> have <strong>non-random nature</strong>. Their input can
 be only pdqr-functions, and if any of them is not boolean, a warning is
 thrown (because otherwise output doesn't make much sense). They return a
 boolean pdqr-function with the following probability of being true:</p><ul>
@@ -272,7 +276,8 @@ of being equal to 0).</p></li>
 complementary probability to product of all functions being false
 (implemented as probability of being equal to 0).</p></li>
 </ul>
-    <p>Methods for <code><a href='https://rdrr.io/r/base/sum.html'>sum()</a></code>, <code><a href='https://rdrr.io/r/base/prod.html'>prod()</a></code>, <code><a href='https://rdrr.io/r/base/Extremes.html'>min()</a></code>, <code><a href='https://rdrr.io/r/base/Extremes.html'>max()</a></code> have <strong>random nature</strong>. They
+
+<p>Methods for <code><a href='https://rdrr.io/r/base/sum.html'>sum()</a></code>, <code><a href='https://rdrr.io/r/base/prod.html'>prod()</a></code>, <code><a href='https://rdrr.io/r/base/Extremes.html'>min()</a></code>, <code><a href='https://rdrr.io/r/base/Extremes.html'>max()</a></code> have <strong>random nature</strong>. They
 are implemented to use vectorized version of certain generic, because
 transformation function for <code><a href='form_trans.html'>form_trans()</a></code> should be vectorized: for input
 samples which all have size n it should also return sample of size n (where
@@ -297,14 +302,13 @@ picture. For a more realistic output:</p><ul>
 <li><p>Instead of <code><a href='https://rdrr.io/r/base/prod.html'>prod(f, num)</a></code> use <code>f * num</code>.</p></li>
 </ul></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='summ_prob_true.html'>summ_prob_true()</a></code> and <code><a href='summ_prob_true.html'>summ_prob_false()</a></code> for extracting
 probability from boolean pdqr-functions.</p>
 <p>Other pdqr methods for generic functions: <code><a href='methods-plot.html'>methods-plot</a></code>,
   <code><a href='methods-print.html'>methods-print</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
@@ -366,19 +370,12 @@ probability from boolean pdqr-functions.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#math">Math</a></li>
-
       <li><a href="#ops">Ops</a></li>
-
       <li><a href="#summary">Summary</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -392,7 +389,7 @@ probability from boolean pdqr-functions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

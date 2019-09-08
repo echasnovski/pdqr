@@ -29,7 +29,7 @@
 <![endif]-->
 </head>
 <body>
-    <div class="container template-article">
+    <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
@@ -99,12 +99,7 @@
       
 
       </header><div class="row">
-  <div class="col-md-9 contents">
-    
-
-    
-    
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+  <div class="contents col-md-9">
 <div id="pdqr-work-with-custom-distribution-functions" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#pdqr-work-with-custom-distribution-functions" class="anchor"></a>pdqr: Work with Custom Distribution Functions</h1></div>
@@ -112,7 +107,7 @@
 
 <p>Create, transform, and summarize custom random variables with distribution functions (analogues of <code>p*()</code>, <code>d*()</code>, <code>q*()</code>, and <code>r*()</code> functions from base R), all of which called “pdqr-functions”. General idea is to work with manually created distributions which can be described in four interchangeable functional ways.</p>
 <p>Typical usage is to:</p>
-<ol style="list-style-type: decimal">
+<ol>
 <li>Create pdqr-function from sample or data frame (with <code>new_*()</code> family), and/or convert from some other existing distribution function (with <code>as_*()</code> family).</li>
 <li>Make necessary transformations with <code>form_*()</code> family.</li>
 <li>Compute summary values with <code>summ_*()</code> family.</li>
@@ -194,7 +189,7 @@
 <a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; Support: ~[-15.97734, 0.93274] (511 intervals)</span></a>
 <a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># Visualize with base `plot()`</span></a>
 <a class="sourceLine" id="cb4-24" data-line-number="24"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mpg_diffmean, <span class="dt">main =</span> <span class="st">"Distribution of difference of sample means"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-pdqr-quick_diff-means-1.png" width="624"></p>
+<p><img src="reference/figures/README-pdqr-quick_diff-means-1.png"><!-- --></p>
 <p>Compute and visualize 95% highest density region for mixture of normal distributions:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Create a list of pdqr-functions</span></a>
 <a class="sourceLine" id="cb5-2" data-line-number="2">norm_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
@@ -213,7 +208,7 @@
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># Visualize</span></a>
 <a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(norm_mix, <span class="dt">main =</span> <span class="st">"95% highest density region for normal mixture"</span>)</a>
 <a class="sourceLine" id="cb5-17" data-line-number="17"><span class="kw"><a href="reference/region.html">region_draw</a></span>(norm_hdr)</a></code></pre></div>
-<p><img src="reference/figures/README-pdqr-quick_mixture-hdr-1.png" width="624"></p>
+<p><img src="reference/figures/README-pdqr-quick_mixture-hdr-1.png"><!-- --></p>
 </div>
 <div id="create-with-new_" class="section level2">
 <h2 class="hasAnchor">
@@ -376,7 +371,7 @@
 <li>Possible infinite tails are removed to obtain finite support. Usually output support “loses” only around 1e-6 probability on each infinite tail.</li>
 <li>Possible infinite values of density are linearly approximated from neighborhood points.</li>
 </ul>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># "Honored" distributions</span></a>
+<!-- end list --><div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># "Honored" distributions</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm)</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Density function of continuous type</span></a>
 <a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Support: ~[-4.75342, 4.75342] (10000 intervals)</span></a>
@@ -425,7 +420,7 @@
 <a class="sourceLine" id="cb10-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(d_smpl_bounded, <span class="dt">col =</span> <span class="st">"blue"</span>)</a>
 <a class="sourceLine" id="cb10-8" data-line-number="8">  <span class="co"># Refernece uniform distribution</span></a>
 <a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dunif), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-pdqr-transform_form-1.png" width="624"></p>
+<p><img src="reference/figures/README-pdqr-transform_form-1.png"><!-- --></p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
 <a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Perform general transformation with `form_trans()`. This is usually done by</span></a>
 <a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># randomly simulating sample from output distribution and then calling one of</span></a>
@@ -435,7 +430,7 @@
 <a class="sourceLine" id="cb11-7" data-line-number="7">d_norm_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/form_trans.html">form_trans</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(d_norm, d_norm), <span class="dt">trans =</span> <span class="st">`</span><span class="dt">+</span><span class="st">`</span>)</a>
 <a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(d_norm_<span class="dv">2</span>, <span class="dt">col =</span> <span class="st">"black"</span>)</a>
 <a class="sourceLine" id="cb11-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">sd =</span> <span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">2</span>)), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
-<p><img src="reference/figures/README-pdqr-transform_form-2.png" width="624"></p>
+<p><img src="reference/figures/README-pdqr-transform_form-2.png"><!-- --></p>
 </div>
 <div id="base-operations" class="section level3">
 <h3 class="hasAnchor">
@@ -591,7 +586,7 @@
 <a class="sourceLine" id="cb18-10" data-line-number="10"><span class="kw"><a href="reference/summ_roc.html">summ_rocauc</a></span>(my_d, my_d_<span class="dv">2</span>)</a>
 <a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">#&gt; [1] 0.597307926</span></a>
 <a class="sourceLine" id="cb18-12" data-line-number="12"><span class="kw"><a href="reference/summ_roc.html">roc_plot</a></span>(my_roc)</a></code></pre></div>
-<p><img src="reference/figures/README-pdqr-summarize_roc-1.png" width="624"></p>
+<p><img src="reference/figures/README-pdqr-summarize_roc-1.png"><!-- --></p>
 </div>
 </div>
 <div id="similar-packages" class="section level2">
@@ -601,9 +596,9 @@
 <li>
 <a href="http://distr.r-forge.r-project.org/">“distrXXX”-family</a> of packages: S4 classes for distributions.</li>
 <li>
-<a href="https://github.com/alan-turing-institute/distr6">distr6</a>: Unified and Object Oriented Probability Distribution Interface for R written in R6.</li>
+<a href="https://alan-turing-institute.github.io/distr6/">distr6</a>: Unified and Object Oriented Probability Distribution Interface for R written in R6.</li>
 <li>
-<a href="https://github.com/alexpghayes/distributions">distributions</a>: Probability Distributions as S3 Objects (<em>work in progress</em>).</li>
+<a href="https://alexpghayes.github.io/distributions3/">distributions3</a>: Probability Distributions as S3 Objects.</li>
 <li>
 <a href="https://cran.r-project.org/web/packages/fitdistrplus/index.html">fitdistrplus</a>: Help to Fit of a Parametric Distribution to Non-Censored or Censored Data.</li>
 <li>
@@ -637,7 +632,7 @@
 </ul>
 </div>
 
-      <div class="dev-status">
+  <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
 <li><a href="http://cran.r-project.org/web/packages/pdqr/NEWS"><img src="http://www.r-pkg.org/badges/version/pdqr" alt="CRAN"></a></li>
@@ -646,9 +641,7 @@
 </ul>
 </div>
 </div>
-
 </div>
-
 
 
       <footer><div class="copyright">
@@ -656,7 +649,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

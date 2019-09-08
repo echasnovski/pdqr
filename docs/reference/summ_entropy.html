@@ -8,10 +8,12 @@
 
 <title>Summarize distribution with entropy — summ_entropy • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,13 +36,14 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Summarize distribution with entropy — summ_entropy" />
 
+<meta property="og:title" content="Summarize distribution with entropy — summ_entropy" />
 <meta property="og:description" content="summ_entropy() computes entropy of single distribution while
 summ_entropy2() - for a pair of distributions. For &quot;discrete&quot;
 pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
 &quot;continuous&quot; case a differential entropy is computed." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -111,7 +114,6 @@ pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -138,18 +140,16 @@ pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
     </div>
 
     <div class="ref-description">
-    
     <p><code>summ_entropy()</code> computes entropy of single distribution while
 <code>summ_entropy2()</code> - for a pair of distributions. For "discrete"
 pdqr-functions a classic formula <code>-sum(p * log(p))</code> (in nats) is used. In
 "continuous" case a differential entropy is computed.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>summ_entropy</span>(<span class='no'>f</span>)
 
 <span class='fu'>summ_entropy2</span>(<span class='no'>f</span>, <span class='no'>g</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"relative"</span>, <span class='kw'>clip</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(-<span class='fl'>20</span>))</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -172,18 +172,16 @@ pdqr-functions a classic formula <code>-sum(p * log(p))</code> (in nats) is used
 <code>-log(clip)</code> represents the maximum value of output entropy.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A single number representing entropy. If <code>clip</code> is strictly positive,
 then it will be finite.</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p><strong>Note</strong> that due to <a href='pdqr_approx_error.html'>pdqr approximation error</a>
 there can be a rather big error in entropy estimation in case original
 density goes to infinity.</p>
-    
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other summary functions: <code><a href='summ_center.html'>summ_center</a></code>,
@@ -194,7 +192,6 @@ density goes to infinity.</p>
   <code><a href='summ_pval.html'>summ_pval</a></code>, <code><a href='summ_quantile.html'>summ_quantile</a></code>,
   <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code>,
   <code><a href='summ_spread.html'>summ_spread</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
@@ -215,13 +212,9 @@ density goes to infinity.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -235,7 +228,7 @@ density goes to infinity.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

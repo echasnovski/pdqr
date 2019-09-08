@@ -8,10 +8,12 @@
 
 <title>Summarize distribution with Highest Density Region — summ_hdr • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,8 +36,8 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Summarize distribution with Highest Density Region — summ_hdr" />
 
+<meta property="og:title" content="Summarize distribution with Highest Density Region — summ_hdr" />
 <meta property="og:description" content="summ_hdr() computes a Highest Density Region (HDR) of some pdqr-function
 for a supplied level: a union of (closed) intervals total probability of
 which is not less than level and probability/density at any point inside it
@@ -44,6 +46,7 @@ of HDR having total probability not less than level). This also represents
 a set of intervals with the lowest total width among all sets with total
 probability not less than a level." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -114,7 +117,6 @@ probability not less than a level." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -141,7 +143,6 @@ probability not less than a level." />
     </div>
 
     <div class="ref-description">
-    
     <p><code>summ_hdr()</code> computes a Highest Density Region (HDR) of some pdqr-function
 for a supplied <code>level</code>: a union of (closed) intervals total probability of
 which is not less than <code>level</code> and probability/density at any point inside it
@@ -149,11 +150,10 @@ is bigger than some threshold (which should be maximum one with a property
 of HDR having total probability not less than <code>level</code>). This also represents
 a set of intervals with the lowest total width among all sets with total
 probability not less than a <code>level</code>.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>summ_hdr</span>(<span class='no'>f</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -167,7 +167,7 @@ probability not less than a <code>level</code>.</p>
 of intervals.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame with one row representing one closed interval of HDR and
@@ -176,7 +176,6 @@ the following columns:</p><ul>
 <li><p><strong>right</strong> &lt;dbl&gt; : Right end of intervals.</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>General algorithm of <code>summ_hdr()</code> consists from two steps:</p><ol>
@@ -187,7 +186,8 @@ other - with strictly less. The first set should also have total probability
 not less than <code>level</code>.</p></li>
 <li><p><strong>Form a HDR as a set of closed intervals</strong>.</p></li>
 </ol>
-    <p>If <code>f</code> has "discrete" type, target height is computed by looking at "x"
+
+<p>If <code>f</code> has "discrete" type, target height is computed by looking at "x"
 values of <a href='meta.html'>"x_tbl" metadata</a> in order of decreasing probability
 until their total probability is not less than <code>level</code>. After that, all "x"
 values with probability not less than height are considered to form a HDR.
@@ -213,7 +213,7 @@ be considerably bigger than <code>level</code> (see examples). However, this ali
 HDR definition, as density values should be <strong>not less</strong> than target height
 and total probability should be <strong>not less</strong> than <code>level</code>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='region.html'>region_*()</a></code> family of functions for working with output
@@ -227,7 +227,6 @@ HDR.</p>
   <code><a href='summ_pval.html'>summ_pval</a></code>, <code><a href='summ_quantile.html'>summ_quantile</a></code>,
   <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code>,
   <code><a href='summ_spread.html'>summ_spread</a></code></p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># "discrete" functions</span>
@@ -263,13 +262,9 @@ HDR.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -283,7 +278,7 @@ HDR.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>

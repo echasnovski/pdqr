@@ -8,10 +8,12 @@
 
 <title>Diagnose pdqr approximation — pdqr_approx_error • pdqr</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
@@ -34,13 +36,14 @@
 
   <link href="../extra.css" rel="stylesheet">
   <script src="../extra.js"></script>
-<meta property="og:title" content="Diagnose pdqr approximation — pdqr_approx_error" />
 
+<meta property="og:title" content="Diagnose pdqr approximation — pdqr_approx_error" />
 <meta property="og:description" content="pdqr_approx_error() computes errors that are results of 'pdqr'
 approximation, which occurs because of possible tail trimming and assuming
 piecewise linearity of density function in case of &quot;continuous&quot; type. For an
 easy view summary, use summary()." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -111,7 +114,6 @@ easy view summary, use summary()." />
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/echasnovski/pdqr">
@@ -138,16 +140,14 @@ easy view summary, use summary()." />
     </div>
 
     <div class="ref-description">
-    
     <p><code>pdqr_approx_error()</code> computes errors that are results of 'pdqr'
 approximation, which occurs because of possible tail trimming and assuming
 piecewise linearity of density function in case of "continuous" type. For an
 easy view summary, use <a href='https://rdrr.io/r/base/summary.html'>summary()</a>.</p>
-    
     </div>
 
     <pre class="usage"><code class = "r"><span class='fu'>pdqr_approx_error</span>(<span class='no'>f</span>, <span class='no'>ref_f</span>, <span class='no'>...</span>, <span class='kw'>gran</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>remove_infinity</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</code></pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -179,7 +179,7 @@ Should be not less than 1 (indicator that original column from
 error.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A data frame with the following columns:</p><ul>
@@ -188,7 +188,6 @@ error.</p></td>
 <li><p><strong>abserror</strong> &lt;dbl&gt; : Absolute value of "error" column.</p></li>
 </ul>
 
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Errors are computed as difference between "true" value (output of
@@ -204,12 +203,11 @@ and is because test grid is chosen to be quantiles of pdqr-distribution which
 due to renormalization can differ by one from reference ones. For example:
 <code><a href='https://rdrr.io/r/base/summary.html'>summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))</a></code>.</p></li>
 </ul>
-    
+
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='enpoint.html'>enpoint()</a></code> for representing pdqr-function as a set of points with
 desirable number of rows.</p></div>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
@@ -251,13 +249,9 @@ desirable number of rows.</p></div>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-
       <li><a href="#see-also">See also</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
@@ -271,7 +265,7 @@ desirable number of rows.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
 
       </footer>
