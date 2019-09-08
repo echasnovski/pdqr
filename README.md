@@ -660,12 +660,12 @@ roc_plot(my_roc)
 
   - [“distrXXX”-family](http://distr.r-forge.r-project.org/) of
     packages: S4 classes for distributions.
-  - [distr6](https://github.com/alan-turing-institute/distr6): Unified
+  - [distr6](https://alan-turing-institute.github.io/distr6/): Unified
     and Object Oriented Probability Distribution Interface for R written
     in R6.
-  - [distributions](https://github.com/alexpghayes/distributions):
-    Probability Distributions as S3 Objects (*work in
-    progress*).
+  - [distributions3](https://alexpghayes.github.io/distributions3/):
+    Probability Distributions as S3
+    Objects.
   - [fitdistrplus](https://cran.r-project.org/web/packages/fitdistrplus/index.html):
     Help to Fit of a Parametric Distribution to Non-Censored or Censored
     Data.
