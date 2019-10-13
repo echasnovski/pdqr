@@ -117,7 +117,7 @@ Compute and visualize distribution of difference of sample means:
 mpg_vs0 <- mtcars$mpg[mtcars$vs == 0]
 d_vs0 <- new_d(mpg_vs0, "continuous")
 (d_vs0_mean <- form_estimate(
-  d_vs0, estimate = mean, sample_size = length(mpg_vs0)
+  d_vs0, stat = mean, sample_size = length(mpg_vs0)
 ))
 #> Density function of continuous type
 #> Support: ~[12.14822, 20.63362] (511 intervals)
@@ -126,7 +126,7 @@ d_vs0 <- new_d(mpg_vs0, "continuous")
 mpg_vs1 <- mtcars$mpg[mtcars$vs == 1]
 d_vs1 <- new_d(mpg_vs1, "continuous")
 (d_vs1_mean <- form_estimate(
-  d_vs1, estimate = mean, sample_size = length(mpg_vs1)
+  d_vs1, stat = mean, sample_size = length(mpg_vs1)
 ))
 #> Density function of continuous type
 #> Support: ~[18.42035, 31.00767] (511 intervals)

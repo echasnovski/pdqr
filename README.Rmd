@@ -101,14 +101,14 @@ Compute and visualize distribution of difference of sample means:
 mpg_vs0 <- mtcars$mpg[mtcars$vs == 0]
 d_vs0 <- new_d(mpg_vs0, "continuous")
 (d_vs0_mean <- form_estimate(
-  d_vs0, estimate = mean, sample_size = length(mpg_vs0)
+  d_vs0, stat = mean, sample_size = length(mpg_vs0)
 ))
 
 # Compute distribution of second sample mean treating input as continuous
 mpg_vs1 <- mtcars$mpg[mtcars$vs == 1]
 d_vs1 <- new_d(mpg_vs1, "continuous")
 (d_vs1_mean <- form_estimate(
-  d_vs1, estimate = mean, sample_size = length(mpg_vs1)
+  d_vs1, stat = mean, sample_size = length(mpg_vs1)
 ))
 
 # Compute distribution of difference of sample means using random simulation

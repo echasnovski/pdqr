@@ -174,12 +174,12 @@ plot(as_p(mixed_both), main = 'CDF of mixture of "discrete" and "continuous"')
 
 ### `form_estimate()`
 
-`form_estimate()` computes distribution of sample estimate. For example, what distribution would have mean of 20 sample elements from uniform distribution? To answer this question, `form_estimate()` would use simulation. One randomly generate element from target distribution is achieved by generating 20 elements from input one and computing desired estimate. This is repeated many times with calling one of `new_*()` functions on resulted sample from target distribution. **Note** that this algorithm usually quite time consuming.
+`form_estimate()` computes distribution of sample estimate. For example, what distribution would have mean of 20 sample elements from uniform distribution? To answer this question, `form_estimate()` would use simulation. One randomly generate element from target distribution is achieved by generating 20 elements from input one and computing desired statistic. This is repeated many times with calling one of `new_*()` functions on resulted sample from target distribution. **Note** that this algorithm usually quite time consuming.
 
 ```{r form_estimate}
-(unif_mean <- form_estimate(d_unif, estimate = mean, sample_size = 20))
+(unif_mean <- form_estimate(d_unif, stat = mean, sample_size = 20))
 plot(
-  unif_mean, main = "Distribution of mean estimate for 20 elements of uniform"
+  unif_mean, main = "Distribution of mean statistic for 20 elements of uniform"
 )
 
   # Approximated normal output
@@ -189,11 +189,11 @@ lines(as_d(dnorm, mean = 0.5, sd = 1/sqrt(12*20)), col = "red")
 # property" of `density()` function used in `new_*()`, because right edge of
 # support is more than 1, which is impossible.
 (unif_quan <- form_estimate(
-  d_unif, estimate = quantile, sample_size = 20, probs = 0.75
+  d_unif, stat = quantile, sample_size = 20, probs = 0.75
 ))
 plot(
   unif_quan,
-  main = "Distribution of 75% quantile estimate for 20 elements of uniform"
+  main = "Distribution of 75% quantile statistic for 20 elements of uniform"
 )
 
   # "Correct" distribution of 15th order statistic of the uniform distribution

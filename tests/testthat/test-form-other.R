@@ -250,7 +250,7 @@ test_that("form_estimate works", {
   expect_true(abs(summ_sd(con_mean_est) - sd_d_unif / 4) <= 4e-3)
 })
 
-test_that("form_estimate works with logical output of `estimate`", {
+test_that("form_estimate works with logical output of `stat`", {
   d_unif <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)/2), "continuous")
 
   all_positive <- function(x) {all(x > 0)}
@@ -259,7 +259,7 @@ test_that("form_estimate works with logical output of `estimate`", {
   expect_equal(summ_prob_true(estim), 0.5^3, tolerance = 1e-2)
 
   # Handles `NA`s in logical output
-  na_lgl_estimate <- function(x) {
+  na_lgl_stat <- function(x) {
     if (any(x < 0.5)) {
       NA
     } else {
@@ -267,7 +267,7 @@ test_that("form_estimate works with logical output of `estimate`", {
     }
   }
   na_estim <- form_estimate(
-    d_unif, na_lgl_estimate, sample_size = 3, n_sample = 1000
+    d_unif, na_lgl_stat, sample_size = 3, n_sample = 1000
   )
   expect_true(is_boolean_pdqr_fun(na_estim))
   # Output here is 1 because probability is estimated using those values which
@@ -276,10 +276,10 @@ test_that("form_estimate works with logical output of `estimate`", {
   expect_equal(summ_prob_true(na_estim), 1)
 })
 
-test_that("form_estimate uses `...` as arguments to `estimate`", {
-  dummy_estimate <- function(x, y) {y}
+test_that("form_estimate uses `...` as arguments to `stat`", {
+  dummy_stat <- function(x, y) {y}
 
-  est <- form_estimate(d_dis, dummy_estimate, 10, y = 10)
+  est <- form_estimate(d_dis, dummy_stat, 10, y = 10)
   expect_ref_x_tbl(est, data.frame(x = 10, prob = 1))
 })
 
@@ -304,20 +304,20 @@ test_that("form_estimate allows `type` in `args_new`", {
   cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "discrete")
 
   mean_est <- form_estimate(
-    cur_d, estimate = mean, sample_size = 10,
+    cur_d, stat = mean, sample_size = 10,
     n_sample = 10, args_new = list(type = "continuous")
   )
   expect_equal(meta_type(mean_est), "continuous")
 })
 
-test_that("form_estimate checks that `estimate` returns single num or lgl", {
+test_that("form_estimate checks that `stat` returns single num or lgl", {
   expect_error(
     form_estimate(d_dis, function(x) {"a"}, 10),
-    "output.*`estimate`.*single.*numeric.*logical"
+    "output.*`stat`.*single.*numeric.*logical"
   )
   expect_error(
     form_estimate(d_dis, function(x) {1:3}, 10),
-    "output.*`estimate`.*single.*numeric.*logical"
+    "output.*`stat`.*single.*numeric.*logical"
   )
 })
 
@@ -325,9 +325,9 @@ test_that("form_estimate validates input", {
   expect_error(form_estimate("a", mean, 10), "`f`.*not pdqr-function")
   expect_error(
     form_estimate(d_dis, sample_size = 10),
-    "`estimate`.*missing.*estimate function"
+    "`stat`.*missing.*statistic function"
   )
-  expect_error(form_estimate(d_dis, "a", 10), "`estimate`.*function")
+  expect_error(form_estimate(d_dis, "a", 10), "`stat`.*function")
   expect_error(
     form_estimate(d_dis, mean), "`sample_size`.*missing.*size of sample"
   )

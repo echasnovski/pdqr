@@ -4,19 +4,19 @@
 \alias{form_estimate}
 \title{Create a pdqr-function for distribution of sample estimate}
 \usage{
-form_estimate(f, estimate, sample_size, ..., n_sample = 10000,
+form_estimate(f, stat, sample_size, ..., n_sample = 10000,
   args_new = list())
 }
 \arguments{
 \item{f}{A pdqr-function.}
 
-\item{estimate}{Estimate function. Should be able to accept numeric vector of
+\item{stat}{Statistic function. Should be able to accept numeric vector of
 size \code{sample_size} and return single numeric or logical output.}
 
 \item{sample_size}{Size of sample for which distribution of sample estimate
 is needed.}
 
-\item{...}{Other arguments for \code{estimate}.}
+\item{...}{Other arguments for \code{stat}.}
 
 \item{n_sample}{Number of elements to generate from distribution of sample
 estimate.}
@@ -29,14 +29,14 @@ A pdqr-function of the same \link[=meta_class]{class} and
 \link[=meta_type]{type} (if not forced otherwise in \code{args_new}) as \code{f}.
 }
 \description{
-Based on pdqr-function, estimate function, and sample size describe the
+Based on pdqr-function, statistic function, and sample size describe the
 distribution of sample estimate. This might be useful for statistical
 inference.
 }
 \details{
 General idea is to create a sample from target distribution by
 generating \code{n_sample} samples of size \code{sample_size} and compute for each of
-them its estimate by calling input \code{estimate} function. If created sample is
+them its estimate by calling input \code{stat} function. If created sample is
 logical, \strong{boolean} pdqr-function (type "discrete" with elements being
 exactly 0 and 1) is created with probability of being true estimated as share
 of \code{TRUE} values (after removing possible \code{NA}). If sample is numeric, it is
@@ -47,7 +47,7 @@ used as input to \code{new_*()} of appropriate class with \code{type} equal to t
 \itemize{
 \item This function may be very time consuming for large values of \code{n_sample} and
 \code{sample_size}, as total of \code{n_sample*sample_size} numbers are generated and
-\code{estimate} function is called \code{n_sample} times.
+\code{stat} function is called \code{n_sample} times.
 \item Output distribution might have a bias compared to true distribution of
 sample estimate. One useful technique for bias correction: compute mean value
 of estimate using big \code{sample_size} (with \code{mean(as_r(f)(sample_size))}) and
@@ -62,31 +62,31 @@ set.seed(101)
 # Type "discrete"
 d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
   # Estimate of distribution of mean
-form_estimate(d_dis, estimate = mean, sample_size = 10)
+form_estimate(d_dis, stat = mean, sample_size = 10)
   # To change type of output, supply it in `args_new`
 form_estimate(
-  d_dis, estimate = mean, sample_size = 10,
+  d_dis, stat = mean, sample_size = 10,
   args_new = list(type = "continuous")
 )
 
 # Type "continuous"
 d_unif <- as_d(dunif)
-  # Supply extra named arguments for `estimate` in `...`
-plot(form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.1))
+  # Supply extra named arguments for `stat` in `...`
+plot(form_estimate(d_unif, stat = mean, sample_size = 10, trim = 0.1))
 lines(
-  form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.3),
+  form_estimate(d_unif, stat = mean, sample_size = 10, trim = 0.3),
   col = "red"
 )
 lines(
-  form_estimate(d_unif, estimate = median, sample_size = 10),
+  form_estimate(d_unif, stat = median, sample_size = 10),
   col = "blue"
 )
 
-# Estimate can return single logical value
+# Statistic can return single logical value
 d_norm <- as_d(dnorm)
 all_positive <- function(x) {all(x > 0)}
   # Probability of being true should be around 0.5^5
-form_estimate(d_norm, estimate = all_positive, sample_size = 5)
+form_estimate(d_norm, stat = all_positive, sample_size = 5)
 }
 
 }

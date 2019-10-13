@@ -211,16 +211,16 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 # form_estimate -----------------------------------------------------------
 #' Create a pdqr-function for distribution of sample estimate
 #'
-#' Based on pdqr-function, estimate function, and sample size describe the
+#' Based on pdqr-function, statistic function, and sample size describe the
 #' distribution of sample estimate. This might be useful for statistical
 #' inference.
 #'
 #' @param f A pdqr-function.
-#' @param estimate Estimate function. Should be able to accept numeric vector of
+#' @param stat Statistic function. Should be able to accept numeric vector of
 #'   size `sample_size` and return single numeric or logical output.
 #' @param sample_size Size of sample for which distribution of sample estimate
 #'   is needed.
-#' @param ... Other arguments for `estimate`.
+#' @param ... Other arguments for `stat`.
 #' @param n_sample Number of elements to generate from distribution of sample
 #'   estimate.
 #' @param args_new List of extra arguments for [new_*()][new-pdqr] function to
@@ -228,7 +228,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'
 #' @details General idea is to create a sample from target distribution by
 #' generating `n_sample` samples of size `sample_size` and compute for each of
-#' them its estimate by calling input `estimate` function. If created sample is
+#' them its estimate by calling input `stat` function. If created sample is
 #' logical, **boolean** pdqr-function (type "discrete" with elements being
 #' exactly 0 and 1) is created with probability of being true estimated as share
 #' of `TRUE` values (after removing possible `NA`). If sample is numeric, it is
@@ -238,7 +238,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #' **Notes**:
 #' - This function may be very time consuming for large values of `n_sample` and
 #' `sample_size`, as total of `n_sample*sample_size` numbers are generated and
-#' `estimate` function is called `n_sample` times.
+#' `stat` function is called `n_sample` times.
 #' - Output distribution might have a bias compared to true distribution of
 #' sample estimate. One useful technique for bias correction: compute mean value
 #' of estimate using big `sample_size` (with `mean(as_r(f)(sample_size))`) and
@@ -257,39 +257,39 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #' # Type "discrete"
 #' d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
 #'   # Estimate of distribution of mean
-#' form_estimate(d_dis, estimate = mean, sample_size = 10)
+#' form_estimate(d_dis, stat = mean, sample_size = 10)
 #'   # To change type of output, supply it in `args_new`
 #' form_estimate(
-#'   d_dis, estimate = mean, sample_size = 10,
+#'   d_dis, stat = mean, sample_size = 10,
 #'   args_new = list(type = "continuous")
 #' )
 #'
 #' # Type "continuous"
 #' d_unif <- as_d(dunif)
-#'   # Supply extra named arguments for `estimate` in `...`
-#' plot(form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.1))
+#'   # Supply extra named arguments for `stat` in `...`
+#' plot(form_estimate(d_unif, stat = mean, sample_size = 10, trim = 0.1))
 #' lines(
-#'   form_estimate(d_unif, estimate = mean, sample_size = 10, trim = 0.3),
+#'   form_estimate(d_unif, stat = mean, sample_size = 10, trim = 0.3),
 #'   col = "red"
 #' )
 #' lines(
-#'   form_estimate(d_unif, estimate = median, sample_size = 10),
+#'   form_estimate(d_unif, stat = median, sample_size = 10),
 #'   col = "blue"
 #' )
 #'
-#' # Estimate can return single logical value
+#' # Statistic can return single logical value
 #' d_norm <- as_d(dnorm)
 #' all_positive <- function(x) {all(x > 0)}
 #'   # Probability of being true should be around 0.5^5
-#' form_estimate(d_norm, estimate = all_positive, sample_size = 5)
+#' form_estimate(d_norm, stat = all_positive, sample_size = 5)
 #' }
 #'
 #' @export
-form_estimate <- function(f, estimate, sample_size, ...,
+form_estimate <- function(f, stat, sample_size, ...,
                           n_sample = 10000, args_new = list()) {
   assert_pdqr_fun(f)
-  assert_missing(estimate, "estimate function")
-  assert_type(estimate, is.function)
+  assert_missing(stat, "statistic function")
+  assert_type(stat, is.function)
   assert_missing(sample_size, "size of sample")
   assert_type(
     sample_size, is_single_number,
@@ -301,13 +301,13 @@ form_estimate <- function(f, estimate, sample_size, ...,
   )
   assert_type(args_new, is.list)
 
-  # Producing sample of estimates
+  # Producing sample of statistics
   r_f <- as_r(f)
   est_smpl <- lapply(seq_len(n_sample), function(i) {
-    estimate(r_f(sample_size), ...)
+    stat(r_f(sample_size), ...)
   })
 
-  # Check outputs of `estimate`
+  # Check outputs of `stat`
   est_smpl_is_number <- vapply(est_smpl, is_single_number, logical(1))
   est_smpl_is_bool <- vapply(
     # Not using `is_truefalse()` here because `NA` output is allowed
@@ -315,7 +315,7 @@ form_estimate <- function(f, estimate, sample_size, ...,
   )
   if (!all(est_smpl_is_number | est_smpl_is_bool)) {
     stop_collapse(
-      "All outputs of `estimate` should be single numeric or logical values."
+      "All outputs of `stat` should be single numeric or logical values."
     )
   }
   est_smpl <- unlist(est_smpl)
