@@ -5,7 +5,8 @@
 
 <!-- badges: start -->
 
-[![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS)
+<!-- [![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS) -->
+
 [![Travis build
 status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travis-ci.org/echasnovski/pdqr)
 [![Coverage
@@ -664,12 +665,11 @@ roc_plot(my_roc)
     and Object Oriented Probability Distribution Interface for R written
     in R6.
   - [distributions3](https://alexpghayes.github.io/distributions3/):
-    Probability Distributions as S3
-    Objects.
-  - [fitdistrplus](https://cran.r-project.org/web/packages/fitdistrplus/index.html):
+    Probability Distributions as S3 Objects.
+  - [fitdistrplus](https://CRAN.R-project.org/package=fitdistrplus):
     Help to Fit of a Parametric Distribution to Non-Censored or Censored
     Data.
   - [Probability
-    Distributions](https://cran.r-project.org/web/views/Distributions.html)
-    CRAN Task View has more examples of packages intended to work with
+    Distributions](https://CRAN.R-project.org/view=Distributions) CRAN
+    Task View has more examples of packages intended to work with
     probability distributions.

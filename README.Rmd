@@ -23,7 +23,7 @@ set.seed(101)
 # pdqr: Work with Custom Distribution Functions
 
 <!-- badges: start -->
-[![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS)
+<!-- [![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS) -->
 [![Travis build status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travis-ci.org/echasnovski/pdqr)
 [![Coverage status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
 <!-- [![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr) -->
@@ -425,5 +425,5 @@ roc_plot(my_roc)
 - ["distrXXX"-family](http://distr.r-forge.r-project.org/) of packages: S4 classes for distributions.
 - [distr6](https://alan-turing-institute.github.io/distr6/): Unified and Object Oriented Probability Distribution Interface for R written in R6.
 - [distributions3](https://alexpghayes.github.io/distributions3/): Probability Distributions as S3 Objects.
-- [fitdistrplus](https://cran.r-project.org/web/packages/fitdistrplus/index.html): Help to Fit of a Parametric Distribution to Non-Censored or Censored Data.
-- [Probability Distributions](https://cran.r-project.org/web/views/Distributions.html) CRAN Task View has more examples of packages intended to work with probability distributions.
+- [fitdistrplus](https://CRAN.R-project.org/package=fitdistrplus): Help to Fit of a Parametric Distribution to Non-Censored or Censored Data.
+- [Probability Distributions](https://CRAN.R-project.org/view=Distributions) CRAN Task View has more examples of packages intended to work with probability distributions.
