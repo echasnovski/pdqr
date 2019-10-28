@@ -180,7 +180,12 @@ test_that("summ_median validates input", {
 test_that("summ_mode works with 'discrete' functions", {
   # Method "global" (default)
   expect_equal_stat(summ_mode, stat_list[["binom"]], "mode", thres = 1e-12)
-  expect_equal_stat(summ_mode, stat_list[["pois"]], "mode", thres = 1e-12)
+    # The expected output should be 4, but on low-precision i386 platform it
+    # seems that `which.max(dpois(4:5, 5))` returns 2 (instead of 1, which is
+    # the first one among two *equal* values). If test is not relaxed, CRAN
+    # check fails.
+  pois_mode <- summ_mode(as_d(dpois, lambda = 5L))
+  expect_true((abs(pois_mode - 4) < 1e-12) || (abs(pois_mode - 5) < 1e-12))
 
   # Method "local"
   expect_local_mode_equals_global(stat_list[["binom"]][["d_fun"]])
