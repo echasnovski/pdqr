@@ -1,7 +1,8 @@
 ## Test environments
-*** local OS X install, R 3.6.1
-*** ubuntu 14.04 (on travis-ci), R 3.6.1
-*** win-builder (devel and release)
+* Local Ubuntu 18.04 install, R 3.6.1
+* macOS 10.11 El Capitan (on R-hub), R 3.6.0
+*** R Development version
+* win-builder (devel and release)
 
 ## R CMD check results
 
