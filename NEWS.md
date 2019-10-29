@@ -1,4 +1,4 @@
-# pdqr (development version)
+# pdqr 0.2.0
 
 * `form_estimate()` gets argument `estimate` renamed to `stat` to avoid possibly confusing word duplication.
 * `form_retype()` gets default value `NULL` of `type`, which means taking opposite of input's type. This usage seems to be the most common.

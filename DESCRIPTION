@@ -1,6 +1,6 @@
 Package: pdqr
 Title: Work with Custom Distribution Functions
-Version: 0.1.0.9000
+Version: 0.2.0
 Authors@R: 
     person(given = "Evgeni",
            family = "Chasnovski",
@@ -17,7 +17,8 @@ Description: Create, transform, and summarize custom random
     assume finite support and finite values of density function; some
     methods implemented with simulation techniques.
 License: MIT + file LICENSE
-URL: https://github.com/echasnovski/pdqr
+URL: https://github.com/echasnovski/pdqr,
+    https://echasnovski.github.io/pdqr
 BugReports: https://github.com/echasnovski/pdqr/issues
 Depends: 
     R (>= 3.3)
