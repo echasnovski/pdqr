@@ -466,7 +466,7 @@ test_that("region_draw works", {
   vdiffr::expect_doppelganger(
     "region_draw-col-2", recordPlot({
       plot(cur_d)
-      region_draw(region, col = 2)
+      region_draw(region, col = "#FF0000")
     })
   )
 
