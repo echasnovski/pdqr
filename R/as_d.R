@@ -86,7 +86,9 @@ construct_p_f <- function(d_f, init) {
   # worse numerical accuracy
   init_p <- tryCatch(
     stats::integrate(d_f, -Inf, init)[["value"]],
-    error = function(e) {stop_collapse("Can't find initial point.")}
+    error = function(e) {
+      stop_collapse("Can't find initial point in `as_d.default()`.")
+    }
   )
 
   function(q) {
