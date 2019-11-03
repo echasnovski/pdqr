@@ -227,9 +227,9 @@ as_d(unknown, support = c(-4, NA))
 as_d(unknown, support = c(NA, 5))
 
   # If support is very small and very distant from zero, it probably won't
-  # get detected in `as_d()`
+  # get detected in `as_d()` (throwing a relevant error)
 \dontrun{
-as_d(function(x) {dnorm(x, mean = 1000, sd = 0.1)})
+as_d(function(x) {dnorm(x, mean = 10000, sd = 0.1)})
 }
 
 # Using different level of granularity
