@@ -251,7 +251,7 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
 #'
 #' @examples
 #' # These examples take some time to run, so be cautious
-#' \dontrun{
+#' \donttest{
 #' set.seed(101)
 #'
 #' # Type "discrete"

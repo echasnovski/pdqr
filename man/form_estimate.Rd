@@ -56,7 +56,7 @@ then recenter distribution to actually have that as a mean.
 }
 \examples{
 # These examples take some time to run, so be cautious
-\dontrun{
+\donttest{
 set.seed(101)
 
 # Type "discrete"

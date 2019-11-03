@@ -17,7 +17,7 @@
 #' @param ... Arguments to be passed to `predicate`.
 #'
 #' @examples
-#' \dontrun{
+#' \donttest{
 #' x <- 1
 #' assert_type(x, is.numeric)
 #' assert_type(x, is.logical)
