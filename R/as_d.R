@@ -99,11 +99,10 @@ construct_p_f <- function(d_f, init) {
 
 optim_for_quan <- function(p_f, quan, init) {
   tryCatch(
-    # Solve optimization problem. It is formally two-dimensional in order ot use
-    # method "Nelder-Mead" without warnings
     stats::optim(
-      par = c(init, 0), fn = function(q) {abs(p_f(q[1]) - quan)},
-      method = "Nelder-Mead", control = list(abstol = 1e-3)
+      par = init, fn = function(q) {abs(p_f(q) - quan)},
+      method = "Nelder-Mead",
+      control = list(warn.1d.NelderMead = FALSE)
     )[["par"]][1],
     error = function(e) {
       stop_collapse(
