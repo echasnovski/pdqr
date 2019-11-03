@@ -421,7 +421,11 @@ test_that("detect_support_d detects both edges of support", {
     supp <- detect_support_d(fam$d, c(NA_real_, NA_real_))
     p_on_supp <- fam$p(supp)
 
-    (p_on_supp[1] <= 1e-3) && (p_on_supp[2] >= 1 - 1e-3)
+    # Allowing bigger tolerance if at target edge d-function goes to infinity
+    is_d_inf <- is.infinite(fam$d(fam$support))
+    tol <- ifelse(is_d_inf, 1e-2, 1e-3)
+
+    (p_on_supp[1] <= tol[1]) && (p_on_supp[2] >= 1 - tol[2])
   }, logical(1))
 
   expect_true(all(edges_are_detected))
@@ -434,7 +438,11 @@ test_that("detect_support_d detects left edge of support", {
     supp <- detect_support_d(fam$d, c(NA, fam$support[2]))
     p_on_supp <- fam$p(supp)
 
-    p_on_supp[1] <= 1e-3
+    # Allowing bigger tolerance if at target edge d-function goes to infinity
+    is_d_inf <- is.infinite(fam$d(fam$support[1]))
+    tol <- ifelse(is_d_inf, 1e-2, 1e-3)
+
+    p_on_supp[1] <= tol
   }, logical(1))
 
   expect_true(all(left_edge_is_detected))
@@ -447,7 +455,11 @@ test_that("detect_support_d detects right edge of support", {
     supp <- detect_support_d(fam$d, c(fam$support[1], NA))
     p_on_supp <- fam$p(supp)
 
-    p_on_supp[2] >= 1 - 1e-3
+    # Allowing bigger tolerance if at target edge d-function goes to infinity
+    is_d_inf <- is.infinite(fam$d(fam$support[2]))
+    tol <- ifelse(is_d_inf, 1e-2, 1e-3)
+
+    p_on_supp[2] >= 1 - tol
   }, logical(1))
 
   expect_true(all(right_edge_is_detected))
@@ -466,7 +478,7 @@ test_that("detect_support_d returns input support if it's proper all numeric", {
 test_that("detect_support_d throws informative error on bad input function", {
   bad_d_f <- function(x) {dnorm(x, mean = 1e12, sd = 0.01)}
   expect_error(
-    detect_support_d(bad_d_f, c(NA_real_, NA_real_)), "support.*isn't proper"
+    detect_support_d(bad_d_f, c(NA_real_, NA_real_)), "Can't find initial point"
   )
 })
 

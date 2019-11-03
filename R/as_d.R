@@ -57,20 +57,20 @@ detect_support_d <- function(d_f, supp) {
     return(supp)
   }
 
-  # Initial value
+  # Initial values of `x` (the smallest and the biggest one could find)
   init_x <- detect_d_init_x(d_f)
 
   # Construct p-function from `d_f`
-  p_f <- construct_p_f(d_f, init_x)
+  p_f <- construct_p_f(d_f, init_x[1])
 
   if (is_supp_na[1]) {
-    supp[1] <- optim_for_quan(p_f, 1e-6, init_x)
+    supp[1] <- optim_for_quan(p_f, 1e-6, init_x[1])
   }
   if (is_supp_na[2]) {
-    supp[2] <- optim_for_quan(p_f, 1 - 1e-6, init_x)
+    supp[2] <- optim_for_quan(p_f, 1 - 1e-6, init_x[2])
   }
 
-  if (!is_support(supp) || (supp[1] == supp[2])) {
+  if (!is_support(supp) || is_near(supp[1], supp[2])) {
     stop_collapse(
       "Detected support isn't proper. Usually this is because supplied edge ",
       "is not compatible with actual support (left too high or right too low) ",
@@ -112,17 +112,26 @@ optim_for_quan <- function(p_f, quan, init) {
 }
 
 detect_d_init_x <- function(d_f) {
-  # Capturing and restoring state of random generation process helps to not
-  # affect upstream random generation in any way. It seems to be good here
-  # because this function isn't a part of random generation process but uses it
-  # for convenience.
-  state <- get_rand_state()
-  on.exit(set_rand_state(state))
-
   # Reproducible sequence of "try" points
-  set.seed(1)
-  smpl <- stats::rcauchy(10000, scale = 1000)
-  d_max_ind <- which.max(d_f(smpl))
+  powers <- seq(from = -5, to = 7, length.out = 5000)
+  modules <- 10^powers
+    # Using `rev()` to ensure that `try_points` is ordered increasingly, which
+    # is important to return the smallest and the biggest points with good
+    # values of `d_f`
+  try_points <- c(-rev(modules), 0, modules)
 
-  smpl[d_max_ind]
+  # Values of `d_f` at "try" points
+  d_vals <- d_f(try_points)
+
+  # Data about good values of `d_f` at "try" points
+  d_good_vals_inds <- which(is.finite(d_vals) & (d_vals > 0))
+  n_d_good_vals <- length(d_good_vals_inds)
+  if (n_d_good_vals == 0) {
+    stop_collapse("Can't find initial point in `as_d.default()`.")
+  }
+
+  # Take the smallest and the biggest points with good values of `d_f`
+  init_x_inds <- d_good_vals_inds[c(1, n_d_good_vals)]
+
+  try_points[init_x_inds]
 }
