@@ -401,12 +401,12 @@ my_d <- function(x) {ifelse(x >= -1 & x <= 1, 0.75 * (1 - x^2), 0)}
   # With algorithmic support detection
 as_d(my_d)
 #> Density function of continuous type
-#> Support: ~[-1.00002, 1.00002] (7338 intervals)
+#> Support: ~[-1.00018, 1.00019] (7588 intervals)
 
   # Providing custom, maybe only partially known, support
 as_d(my_d, support = c(-1, NA))
 #> Density function of continuous type
-#> Support: ~[-1, 1.00001] (9278 intervals)
+#> Support: ~[-1, 1.00007] (9327 intervals)
 as_d(my_d, support = c(-1, 1))
 #> Density function of continuous type
 #> Support: [-1, 1] (10000 intervals)
