@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -188,7 +188,7 @@
 <a class="sourceLine" id="cb2-40" data-line-number="40"><span class="co"># This isn't recognized as "honored", but output is very close to "honored"</span></a>
 <a class="sourceLine" id="cb2-41" data-line-number="41"><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(<span class="cf">function</span>(x) {<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(x)})</a>
 <a class="sourceLine" id="cb2-42" data-line-number="42"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">#&gt; Support: ~[-5.75643, 5.34214] (10000 intervals)</span></a></code></pre></div>
+<a class="sourceLine" id="cb2-43" data-line-number="43"><span class="co">#&gt; Support: ~[-38.41642, 38.41642] (10000 intervals)</span></a></code></pre></div>
 </div>
 <div id="support-detection" class="section level3">
 <h3 class="hasAnchor">
@@ -199,15 +199,15 @@
 <a class="sourceLine" id="cb3-3" data-line-number="3">  <span class="co"># With default support detection</span></a>
 <a class="sourceLine" id="cb3-4" data-line-number="4"><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(my_d)</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; Support: ~[-1.00002, 1.00002] (7338 intervals)</span></a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co">#&gt; Support: ~[-1.00018, 1.00019] (7588 intervals)</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"></a>
 <a class="sourceLine" id="cb3-8" data-line-number="8">  <span class="co"># Providing custom, maybe only partially known, support</span></a>
 <a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(my_d, <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="ot">NA</span>))</a>
 <a class="sourceLine" id="cb3-10" data-line-number="10"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; Support: ~[-1, 1.00001] (9278 intervals)</span></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; Support: ~[-1, 1.00007] (9327 intervals)</span></a>
 <a class="sourceLine" id="cb3-12" data-line-number="12"><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(my_d, <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="ot">NA</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb3-13" data-line-number="13"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; Support: ~[-1.00018, 1] (7783 intervals)</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="co">#&gt; Support: ~[-1.0002, 1] (8027 intervals)</span></a>
 <a class="sourceLine" id="cb3-15" data-line-number="15"><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(my_d, <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</a>
 <a class="sourceLine" id="cb3-16" data-line-number="16"><span class="co">#&gt; Density function of continuous type</span></a>
 <a class="sourceLine" id="cb3-17" data-line-number="17"><span class="co">#&gt; Support: [-1, 1] (10000 intervals)</span></a></code></pre></div>
@@ -217,7 +217,7 @@
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; Support: ~[-4.75343, 4.75342] (10000 intervals)</span></a>
 <a class="sourceLine" id="cb4-4" data-line-number="4">(d_norm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/as-pdqr.html">as_d</a></span>(<span class="cf">function</span>(x) {<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">dnorm</a></span>(x)}))</a>
 <a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; Support: ~[-5.75643, 5.34214] (10000 intervals)</span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; Support: ~[-38.41642, 38.41642] (10000 intervals)</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7">(q_norm &lt;-<span class="st"> </span><span class="kw"><a href="../reference/as-pdqr.html">as_q</a></span>(<span class="cf">function</span>(x) {<span class="kw"><a href="https://rdrr.io/r/stats/Normal.html">qnorm</a></span>(x)}))</a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; Quantile function of continuous type</span></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; Support: ~[-3.89971, 3.89971] (8204 intervals)</span></a>

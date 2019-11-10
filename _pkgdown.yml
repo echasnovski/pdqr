@@ -23,6 +23,7 @@ reference:
     contents:
     - form_estimate
     - form_mix
+    - form_recenter
     - form_regrid
     - form_resupport
     - form_retype
