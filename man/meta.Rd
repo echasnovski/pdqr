@@ -87,9 +87,8 @@ following transformations (here \code{d_f} means a function of class "d", etc.):
 \section{Pdqr type}{
 
 
-Pdqr type is returned by \code{meta_type()}. This can be one of "discrete" (short
-for "finite") or "continuous". Represents \strong{type of underlying
-distribution}:
+Pdqr type is returned by \code{meta_type()}. This can be one of "discrete" or
+"continuous". Represents \strong{type of underlying distribution}:
 \itemize{
 \item Type "discrete" is used for distributions with finite number of outcomes.
 Functions with "discrete" type has a fixed set of "x" values ("x" column in
