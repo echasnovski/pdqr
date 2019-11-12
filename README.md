@@ -5,13 +5,13 @@
 
 <!-- badges: start -->
 
-<!-- [![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS) -->
-
 [![Travis build
 status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travis-ci.org/echasnovski/pdqr)
 [![Coverage
 status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
-<!-- [![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr) -->
+[![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS)
+[![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
+<!-- [![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr) -->
 <!-- badges: end -->
 
 Create, transform, and summarize custom random variables with
