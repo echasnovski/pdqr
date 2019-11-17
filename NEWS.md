@@ -1,3 +1,5 @@
+# pdqr (development version)
+
 # pdqr 0.2.0
 
 * `form_estimate()` gets argument `estimate` renamed to `stat` to avoid possibly confusing word duplication.
