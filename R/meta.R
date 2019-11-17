@@ -136,7 +136,7 @@ NULL
 #' @rdname meta
 #' @export
 meta_all <- function(f) {
-  check_f_envir(f)
+  assert_f_envir(f)
 
   env_meta_names <- c("type", "support", "x_tbl")
 
@@ -166,7 +166,7 @@ meta_class <- function(f) {
 #' @rdname meta
 #' @export
 meta_type <- function(f) {
-  check_f_envir(f)
+  assert_f_envir(f)
 
   get0("type", envir = environment(f), inherits = FALSE)
 }
@@ -174,7 +174,7 @@ meta_type <- function(f) {
 #' @rdname meta
 #' @export
 meta_support <- function(f) {
-  check_f_envir(f)
+  assert_f_envir(f)
 
   get0("support", envir = environment(f), inherits = FALSE)
 }
@@ -182,7 +182,7 @@ meta_support <- function(f) {
 #' @rdname meta
 #' @export
 meta_x_tbl <- function(f) {
-  check_f_envir(f)
+  assert_f_envir(f)
 
   get0("x_tbl", envir = environment(f), inherits = FALSE)
 }
@@ -191,7 +191,7 @@ has_meta <- function(f, elem) {
   !is.null(meta_all(f)[[elem]])
 }
 
-check_f_envir <- function(f) {
+assert_f_envir <- function(f) {
   f_env <- environment(f)
 
   if (is.null(f_env)) {

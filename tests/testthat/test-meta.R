@@ -93,12 +93,12 @@ test_that("has_meta works", {
 })
 
 
-# check_f_envir -----------------------------------------------------------
-test_that("check_f_envir works", {
-  expect_silent(check_f_envir(p_dis))
-  expect_error(check_f_envir(1), "`f`.*environment")
+# assert_f_envir ----------------------------------------------------------
+test_that("assert_f_envir works", {
+  expect_silent(assert_f_envir(p_dis))
+  expect_error(assert_f_envir(1), "`f`.*environment")
 
   f_from_global <- function(x) {x}
   environment(f_from_global) <- globalenv()
-  expect_error(check_f_envir(f_from_global), "`f`.*[Gg]lobal")
+  expect_error(assert_f_envir(f_from_global), "`f`.*[Gg]lobal")
 })
