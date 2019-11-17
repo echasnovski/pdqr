@@ -787,7 +787,12 @@ test_that("Summary.pdqr validates input in general cases", {
 
 
 # assert_gen_single_input -------------------------------------------------
-# Tested in `Math.pdqr` and `Ops.pdqr`
+# Main tests are in `Math.pdqr` and `Ops.pdqr`
+test_that("assert_gen_single_input respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_gen_single_input("a", "b"))
+})
 
 
 # repair_group_gen_support ------------------------------------------------

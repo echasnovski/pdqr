@@ -193,6 +193,10 @@ is_roc <- function(roc) {
 }
 
 assert_roc <- function(roc) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   if (missing(roc)) {
     error_missing("`roc`", "data frame for ROC curve")
   }

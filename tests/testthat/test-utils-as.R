@@ -75,7 +75,12 @@ test_that("honored_distr_supp stops on not honored properly distribution", {
 
 
 # assert_as_def_args ------------------------------------------------------
-# Tested in `as_*.default()` functions
+# Main tests are in `as_*.default()` functions
+test_that("assert_as_def_args respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_as_def_args("a", "b", "c"))
+})
 
 
 # assert_tot_prob ---------------------------------------------------------

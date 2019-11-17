@@ -474,6 +474,10 @@ ensure_pdqr_functions <- function(gen, ...) {
 }
 
 assert_gen_single_input <- function(gen, input) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   if (!is_pdqr_fun(input)) {
     stop_collapse("Input to `", gen, "` should be pdqr-function.")
   }

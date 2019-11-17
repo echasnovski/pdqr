@@ -102,3 +102,9 @@ test_that("assert_f_envir works", {
   environment(f_from_global) <- globalenv()
   expect_error(assert_f_envir(f_from_global), "`f`.*[Gg]lobal")
 })
+
+test_that("assert_f_envir respects glopal options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_f_envir("a"))
+})

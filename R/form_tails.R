@@ -135,6 +135,10 @@ tails_trim_con <- function(f, level, direction) {
 }
 
 assert_form_tails_args <- function(f, level, method, direction) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   assert_pdqr_fun(f)
   assert_missing(level, "tail level to modify")
   assert_type(level, is_single_number, "single number")

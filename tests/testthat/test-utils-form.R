@@ -77,6 +77,12 @@ test_that("assert_f_list works",  {
   )
 })
 
+test_that("assert_f_list respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_f_list("a"))
+})
+
 
 # compute_f_list_meta -----------------------------------------------------
 test_that("compute_f_list_meta works",  {

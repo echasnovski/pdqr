@@ -256,6 +256,10 @@ region_new <- function(left, right) {
 }
 
 assert_region <- function(df) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   df_name <- enbacktick(deparse(substitute(df)))
 
   if (missing(df)) {

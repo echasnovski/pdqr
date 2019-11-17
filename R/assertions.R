@@ -32,6 +32,10 @@
 #' @noRd
 assert_type <- function(x, predicate, type_name = NULL, x_name = NULL,
                         allow_null = FALSE, ...) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   if (is.null(x_name)) {
     x_name <- deparse(substitute(x))
   }
@@ -74,6 +78,10 @@ parse_type <- function(f_name) {
 # Assert object being in set ----------------------------------------------
 assert_in_set <- function(x, set, x_name = NULL, quote_set = TRUE,
                           allow_null = FALSE) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   if (is.null(x_name)) {
     x_name <- deparse(substitute(x))
   }
@@ -140,6 +148,10 @@ match_in_set <- function(x, set) {
 
 # Assert missing arguments ------------------------------------------------
 assert_missing <- function(x, value_name) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   if (missing(x)) {
     x_name <- enbacktick(deparse(substitute(x)))
 
@@ -156,6 +168,10 @@ error_missing <- function(var_name, value_name) {
 
 # Assertions for pdqr-functions -------------------------------------------
 assert_pdqr_fun <- function(f, f_name = NULL) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   if (is.null(f_name)) {
     f_name <- deparse(substitute(f))
   }
@@ -207,6 +223,10 @@ assert_pdqr_fun <- function(f, f_name = NULL) {
 }
 
 assert_pdqr_type <- function(type, allow_null = FALSE) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   type_name <- deparse(substitute(type))
 
   assert_type(type, is_string, x_name = type_name, allow_null = allow_null)
@@ -219,6 +239,10 @@ assert_pdqr_type <- function(type, allow_null = FALSE) {
 }
 
 assert_support <- function(support, allow_na = FALSE) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   support_name <- enbacktick(deparse(substitute(support)))
 
   if (!(is.numeric(support) && (length(support) == 2))) {
@@ -243,6 +267,10 @@ assert_support <- function(support, allow_na = FALSE) {
 }
 
 assert_x_tbl <- function(x_tbl, type, err_header = "") {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   x_tbl_name <- enbacktick(deparse(substitute(x_tbl)))
 
   if (!is.data.frame(x_tbl)) {
@@ -259,6 +287,8 @@ assert_x_tbl <- function(x_tbl, type, err_header = "") {
 }
 
 assert_x_tbl_dis <- function(x_tbl, x_tbl_name, err_header = "") {
+  # There is no checking of `dont_assert()` because this is a helper function
+
   if (!("prob" %in% names(x_tbl))) {
     stop_collapse(err_header, x_tbl_name, ' should have "prob" column.')
   }
@@ -282,6 +312,8 @@ assert_x_tbl_dis <- function(x_tbl, x_tbl_name, err_header = "") {
 }
 
 assert_x_tbl_con <- function(x_tbl, x_tbl_name, err_header = "") {
+  # There is no checking of `dont_assert()` because this is a helper function
+
   if (nrow(x_tbl) < 2) {
     stop_collapse(err_header, x_tbl_name, " should have at least 2 rows.")
   }
@@ -312,6 +344,8 @@ assert_x_tbl_con <- function(x_tbl, x_tbl_name, err_header = "") {
 }
 
 assert_x_tbl_meta <- function(x_tbl, type, err_header = "") {
+  # There is no checking of `dont_assert()` because this is a helper function
+
   if (is.unsorted(x_tbl[["x"]])) {
     stop_collapse(
       err_header, '"x" column in "x_tbl" metadata should be sorted ",
@@ -355,6 +389,8 @@ assert_x_tbl_meta <- function(x_tbl, type, err_header = "") {
 }
 
 assert_num_col <- function(vec, col_name, x_tbl_name, err_header = "") {
+  # There is no checking of `dont_assert()` because this is a helper function
+
   if (is.null(vec)) {
     stop_collapse(err_header, x_tbl_name, " should have column ", col_name, ".")
   }
@@ -385,4 +421,10 @@ warning_boolean_pdqr_fun <- function(f = NULL, f_name = NULL) {
     f_name, ' is not a "boolean" pdqr-function (type "discrete" with "x" ',
     'values equal to 0 and 1). Proceed with caution.'
   )
+}
+
+
+# Assertion options -------------------------------------------------------
+dont_assert <- function() {
+  !isTRUE(getOption("pdqr.assert_args"))
 }

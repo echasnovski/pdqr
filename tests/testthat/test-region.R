@@ -557,6 +557,12 @@ test_that("assert_region works", {
   )
 })
 
+test_that("assert_region respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_region("a"))
+})
+
 
 # is_region_ordered -------------------------------------------------------
 test_that("is_region_ordered works", {

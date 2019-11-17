@@ -155,4 +155,9 @@ test_that("is_roc works", {
 
 
 # assert_roc --------------------------------------------------------------
-# Tested in `roc_plot()` and `roc_lines()`
+# Main tests are in `roc_plot()` and `roc_lines()`
+test_that("assert_roc respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_roc("a"))
+})

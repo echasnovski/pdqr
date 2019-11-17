@@ -235,7 +235,12 @@ test_that("form_tails validates input",  {
 
 
 # assert_form_tails_args --------------------------------------------------
-# Tested in `form_tails()`
+# Main tests are in `form_tails()`
+test_that("assert_form_tails_args respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_form_tails_args("a", "b", "c", "d"))
+})
 
 
 # trim_all ----------------------------------------------------------------

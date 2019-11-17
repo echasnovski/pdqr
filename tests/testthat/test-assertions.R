@@ -41,6 +41,12 @@ test_that("assert_type allows extra arguments for `predicate`", {
   expect_error(assert_type(1, is_geq, min_val = 2))
 })
 
+test_that("assert_type respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_type("a", "b"))
+})
+
 
 # get_type ----------------------------------------------------------------
 test_that("get_type works", {
@@ -107,6 +113,12 @@ test_that("assert_in_set uses `allow_null` argument", {
   expect_error(assert_in_set(NULL, c("a", "b")), "(instead of NULL)")
 })
 
+test_that("assert_in_set respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_in_set("a", "b"))
+})
+
 
 # is_in_set ---------------------------------------------------------------
 test_that("is_in_set works", {
@@ -128,6 +140,16 @@ test_that("assert_missing works", {
     assert_missing(y, value_name = "aaa")
   }
   expect_error(f(), "^Argument `y` is missing. Supply aaa.$")
+})
+
+test_that("assert_missing respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+
+  f <- function(y) {
+    assert_missing(y, value_name = "aaa")
+  }
+  expect_silent(assert_missing(f()))
 })
 
 
@@ -253,6 +275,12 @@ test_that("assert_pdqr_fun allows custom name for `f`", {
   expect_error(assert_pdqr_fun(input, f_name = "aaa"), "^`aaa`")
 })
 
+test_that("assert_pdqr_fun respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_pdqr_fun("a"))
+})
+
 
 # assert_pdqr_type --------------------------------------------------------
 test_that("assert_pdqr_type works", {
@@ -271,6 +299,12 @@ test_that("assert_pdqr_type suggests correctly", {
   expect_error(assert_pdqr_type("con"), 'mean "continuous"\\?')
 })
 
+test_that("assert_pdqr_type respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_pdqr_type("a"))
+})
+
 
 # assert_support ----------------------------------------------------------
 test_that("assert_support works", {
@@ -285,6 +319,12 @@ test_that("assert_support works", {
   expect_error(assert_support(c(-Inf, 1)), "finite")
   expect_error(assert_support(c(1, Inf)), "finite")
   expect_error(assert_support(c(-Inf, Inf)), "finite")
+})
+
+test_that("assert_support respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_support("a"))
 })
 
 
@@ -407,6 +447,12 @@ test_that("assert_x_tbl works with 'continuous' type", {
   )
 })
 
+test_that("assert_x_tbl respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_x_tbl("a", "b"))
+})
+
 
 # assert_x_tbl_dis --------------------------------------------------------
 # Tested in `assert_x_tbl()`
@@ -435,4 +481,15 @@ test_that("warning_boolean_pdqr_fun works", {
     warning_boolean_pdqr_fun(bool_f, f_name = "my_bool"),
     "my_bool.*not.*boolean"
   )
+})
+
+
+# dont_assert -------------------------------------------------------------
+test_that("dont_assert works", {
+  op <- options(pdqr.assert_args = TRUE)
+  on.exit(options(op))
+  expect_false(dont_assert())
+
+  options(pdqr.assert_args = FALSE)
+  expect_true(dont_assert())
 })

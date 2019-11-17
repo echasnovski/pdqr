@@ -338,6 +338,10 @@ y_from_p_grid <- function(x, p) {
 }
 
 assert_as_def_args <- function(f, support, n_grid) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   assert_missing(f, "distribution function")
   assert_type(f, is.function)
   # `support` in `as_*.default()` is allowed to be `NULL` or have `NA`s

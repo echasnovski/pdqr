@@ -192,6 +192,10 @@ has_meta <- function(f, elem) {
 }
 
 assert_f_envir <- function(f) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
   f_env <- environment(f)
 
   if (is.null(f_env)) {
