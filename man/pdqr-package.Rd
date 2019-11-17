@@ -41,6 +41,19 @@ functions work. A good place to start is \code{\link[=summ_center]{summ_center()
 to work with regions: data frames defining subset of one dimensional real
 line.
 }
+
+This package has the following options (should be set by
+\link[base:options]{options()}):
+\itemize{
+\item \emph{"pdqr.group_gen.args_new"}, \emph{"pdqr.group_gen.n_sample"},
+\emph{"pdqr.group_gen.repair_supp_method"}. They may be used to customize behavior
+of methods for S3 group generic functions. See \link[=methods-group-generic]{their help page} for more information.
+\item \emph{"pdqr.assert_args"}. This boolean option (default to \code{TRUE}) may be used
+to turn off sanity checks of function arguments (set it to \code{FALSE}), which
+will somewhat increase general execution speed. \strong{Use this option at your own
+risk in case you are confident that input arguments have correct type and
+structure}.
+}
 }
 \seealso{
 Useful links:

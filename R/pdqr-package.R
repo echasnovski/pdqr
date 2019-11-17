@@ -21,6 +21,18 @@
 #' to work with regions: data frames defining subset of one dimensional real
 #' line.
 #'
+#' This package has the following options (should be set by
+#' [options()][base::options()]):
+#' - *"pdqr.group_gen.args_new"*, *"pdqr.group_gen.n_sample"*,
+#' *"pdqr.group_gen.repair_supp_method"*. They may be used to customize behavior
+#' of methods for S3 group generic functions. See [their help
+#' page][methods-group-generic] for more information.
+#' - *"pdqr.assert_args"*. This boolean option (default to `TRUE`) may be used
+#' to turn off sanity checks of function arguments (set it to `FALSE`), which
+#' will somewhat increase general execution speed. **Use this option at your own
+#' risk in case you are confident that input arguments have correct type and
+#' structure**.
+#'
 "_PACKAGE"
 
 
