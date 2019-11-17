@@ -51,7 +51,7 @@ assert_type <- function(x, predicate, type_name = NULL, x_name = NULL,
     )
   }
 
-  x
+  TRUE
 }
 
 # This function is needed because `typeof()` on data frame returns "list"

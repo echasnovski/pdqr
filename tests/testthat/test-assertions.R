@@ -11,7 +11,6 @@ context("test-assertions")
 test_that("assert_type works", {
   x_var <- 1L
 
-  expect_equal(assert_type(x_var, is.integer), x_var)
   expect_silent(assert_type(x_var, is.integer))
 
   expect_error(assert_type(x_var, is.character), "x_var.*character.*integer")
