@@ -89,6 +89,9 @@ test_that("plot.p validates input", {
   f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(plot(f_no_type), "`x`.*not pdqr-function")
+
+  expect_error(plot(p_con, n_extra_grid = "a"), "`n_extra_grid`.*single number")
+  expect_error(plot(p_con, n_extra_grid = 1:2), "`n_extra_grid`.*single number")
 })
 
 
@@ -196,6 +199,9 @@ test_that("plot.d validates input", {
   expect_error(
     plot(structure(user_d, class = c("d", "pdqr"))), "`x`.*not pdqr-function"
   )
+
+  expect_error(plot(d_con, n_extra_grid = "a"), "`n_extra_grid`.*single number")
+  expect_error(plot(d_con, n_extra_grid = 1:2), "`n_extra_grid`.*single number")
 })
 
 
@@ -280,6 +286,9 @@ test_that("plot.q validates input", {
   expect_error(
     plot(structure(user_q, class = c("q", "pdqr"))), "`x`.*not pdqr-function"
   )
+
+  expect_error(plot(q_con, n_extra_grid = "a"), "`n_extra_grid`.*single number")
+  expect_error(plot(q_con, n_extra_grid = 1:2), "`n_extra_grid`.*single number")
 })
 
 
@@ -330,6 +339,8 @@ test_that("plot.r validates input", {
   expect_error(
     plot(structure(user_r, class = c("r", "pdqr"))), "`x`.*not pdqr-function"
   )
+  expect_error(plot(r_con, n_sample = "a"), "`n_sample`.*single number")
+  expect_error(plot(r_con, n_sample = 1:2), "`n_sample`.*single number")
 })
 
 
@@ -363,6 +374,13 @@ test_that("lines.p validates input", {
   f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(lines(f_no_type), "`x`.*not pdqr-function")
+
+  expect_error(
+    lines(p_con, n_extra_grid = "a"), "`n_extra_grid`.*single number"
+  )
+  expect_error(
+    lines(p_con, n_extra_grid = 1:2), "`n_extra_grid`.*single number"
+  )
 })
 
 
@@ -372,6 +390,13 @@ test_that("lines.d validates input", {
   expect_error(
     lines(structure(user_d, class = c("d", "pdqr"))), "`x`.*not pdqr-function"
   )
+
+  expect_error(
+    lines(d_con, n_extra_grid = "a"), "`n_extra_grid`.*single number"
+  )
+  expect_error(
+    lines(d_con, n_extra_grid = 1:2), "`n_extra_grid`.*single number"
+  )
 })
 
 
@@ -380,6 +405,13 @@ test_that("lines.d validates input", {
 test_that("lines.q validates input", {
   expect_error(
     lines(structure(user_q, class = c("q", "pdqr"))), "`x`.*not pdqr-function"
+  )
+
+  expect_error(
+    lines(q_con, n_extra_grid = "a"), "`n_extra_grid`.*single number"
+  )
+  expect_error(
+    lines(q_con, n_extra_grid = 1:2), "`n_extra_grid`.*single number"
   )
 })
 

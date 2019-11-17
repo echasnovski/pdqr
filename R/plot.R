@@ -70,6 +70,10 @@ NULL
 plot.p <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
+  assert_type(
+    n_extra_grid, is_single_number, type_name = "single number",
+    allow_null = TRUE
+  )
 
   dots <- make_plot_dots(
     ...,
@@ -98,6 +102,10 @@ plot.p <- function(x, y = NULL, n_extra_grid = 1001, ...) {
 plot.d <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
+  assert_type(
+    n_extra_grid, is_single_number, type_name = "single number",
+    allow_null = TRUE
+  )
 
   if (meta_type(x) == "discrete") {
     x_tbl <- meta_x_tbl(x)
@@ -132,6 +140,10 @@ plot.d <- function(x, y = NULL, n_extra_grid = 1001, ...) {
 plot.q <- function(x, y = NULL, n_extra_grid = 1001, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
+  assert_type(
+    n_extra_grid, is_single_number, type_name = "single number",
+    allow_null = TRUE
+  )
 
   dots <- make_plot_dots(
     ...,
@@ -160,6 +172,7 @@ plot.q <- function(x, y = NULL, n_extra_grid = 1001, ...) {
 plot.r <- function(x, y = NULL, n_sample = 1000, ...) {
   x_name <- deparse(substitute(x))
   assert_pdqr_fun(x)
+  assert_type(n_sample, is_single_number, type_name = "single number")
 
   smpl <- x(n_sample)
   hist_args <- make_plot_dots(
@@ -273,6 +286,10 @@ make_plot_dots <- function(...) {
 #' @export
 lines.p <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
+  assert_type(
+    n_extra_grid, is_single_number, type_name = "single number",
+    allow_null = TRUE
+  )
 
   if (meta_type(x) == "discrete") {
     add_p_dis_segments(x, list(...))
@@ -285,6 +302,10 @@ lines.p <- function(x, n_extra_grid = 1001, ...) {
 #' @export
 lines.d <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
+  assert_type(
+    n_extra_grid, is_single_number, type_name = "single number",
+    allow_null = TRUE
+  )
 
   if (meta_type(x) == "discrete") {
     x_tbl <- meta_x_tbl(x)
@@ -302,6 +323,10 @@ lines.d <- function(x, n_extra_grid = 1001, ...) {
 #' @export
 lines.q <- function(x, n_extra_grid = 1001, ...) {
   assert_pdqr_fun(x)
+  assert_type(
+    n_extra_grid, is_single_number, type_name = "single number",
+    allow_null = TRUE
+  )
 
   if (meta_type(x) == "discrete") {
     add_q_dis_segments(x, list(...))
