@@ -1,5 +1,7 @@
 # pdqr (development version)
 
+* New boolean option "pdqr.assert_args" may be used to turn off sanity checks of function arguments, which will somewhat increase general execution speed.
+
 # pdqr 0.2.0
 
 * `form_estimate()` gets argument `estimate` renamed to `stat` to avoid possibly confusing word duplication.
