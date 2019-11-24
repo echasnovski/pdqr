@@ -18,11 +18,11 @@
 #' "continuous" functions (with [form_retype(*, method =
 #' "dirac")][form_retype()]). **Note** that this approximation has consequences
 #' during computation of comparisons. For example, if original "discrete"
-#' function `f` is for distribution with one element `x`, then probability of `f
-#' >= x` being true is 1. After retyping to dirac-like function, this
+#' function `f` is for distribution with one element `x`, then probability of
+#' `f >= x` being true is 1. After retyping to dirac-like function, this
 #' probability will be 0.5, because of symmetrical dirac-like approximation.
-#' Using a little nudge to `x` of `1e-7` magnitude in the correct direction (`f
-#' >= x - 1e-7` in this case) will have expected output.
+#' Using a little nudge to `x` of `1e-7` magnitude in the correct direction
+#' (`f >= x - 1e-7` in this case) will have expected output.
 #'
 #' **Class of output mixture** is determined by the class of the first element
 #' of `f_list`. To change output class, use one of `as_*()` functions to change

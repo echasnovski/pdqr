@@ -88,7 +88,7 @@ lines(df[["x"]], df[["y"]], col = "blue")
 \code{\link[=pdqr_approx_error]{pdqr_approx_error()}} for diagnostics of pdqr-function approximation
 accuracy.
 
-\link[=methods-plot]{Pdqr methods for \code{plot()}} for a direct plotting of
+\link[=methods-plot]{Pdqr methods for plot()} for a direct plotting of
 pdqr-functions.
 
 \code{\link[=form_regrid]{form_regrid()}} to change underlying grid of pdqr-function.

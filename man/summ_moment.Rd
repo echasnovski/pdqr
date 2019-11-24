@@ -21,7 +21,7 @@ non-negative number (even fractional).}
 \item{central}{Whether to compute central moment (subtract
 \link[=summ_mean]{mean} of distribution).}
 
-\item{standard}{Whether to compute standard moment (divide by \link[=summ_sd]{standar deviation} of distribution).}
+\item{standard}{Whether to compute standard moment (divide by \link[=summ_sd]{standard deviation} of distribution).}
 
 \item{absolute}{Whether to compute absolute moment (take absolute value of
 random variable created after possible effect of \code{central} and \code{standard}).}

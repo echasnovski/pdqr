@@ -577,7 +577,7 @@ granulate_grid <- function(f, gran) {
 #' @seealso [pdqr_approx_error()] for diagnostics of pdqr-function approximation
 #' accuracy.
 #'
-#' [Pdqr methods for `plot()`][methods-plot] for a direct plotting of
+#' [Pdqr methods for plot()][methods-plot] for a direct plotting of
 #' pdqr-functions.
 #'
 #' [form_regrid()] to change underlying grid of pdqr-function.

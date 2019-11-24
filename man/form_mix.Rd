@@ -31,8 +31,12 @@ output will have "continuous" type. In this case all "discrete"
 pdqr-functions in \code{f_list} are approximated with corresponding dirac-like
 "continuous" functions (with \link[=form_retype]{form_retype(*, method = "dirac")}). \strong{Note} that this approximation has consequences
 during computation of comparisons. For example, if original "discrete"
-function \code{f} is for distribution with one element \code{x}, then probability of `f
-}= xbeing true is 1. After retyping to dirac-like function, this probability will be 0.5, because of symmetrical dirac-like approximation. Using a little nudge toxof1e-7 magnitude in the correct direction (f= x - 1e-7` in this case) will have expected output.
+function \code{f} is for distribution with one element \code{x}, then probability of
+\code{f >= x} being true is 1. After retyping to dirac-like function, this
+probability will be 0.5, because of symmetrical dirac-like approximation.
+Using a little nudge to \code{x} of \code{1e-7} magnitude in the correct direction
+(\code{f >= x - 1e-7} in this case) will have expected output.
+}
 
 \strong{Class of output mixture} is determined by the class of the first element
 of \code{f_list}. To change output class, use one of \verb{as_*()} functions to change

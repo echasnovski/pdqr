@@ -14,7 +14,7 @@
 #'     "Probability density function" for "continuous".
 #'     - Q-function is "Quantile function".
 #'     - R-function is "Random generation function".
-#' - [Type][meta_type()] of function in the form "of * type" where "\*" is
+#' - [Type][meta_type()] of function in the form "of * type" where "*" is
 #' "discrete" or "continuous" depending on actual type.
 #' - [Support][meta_support()] of function.
 #' - Number of elements in distribution for "discrete" type or number of

@@ -12,7 +12,7 @@
 #'   non-negative number (even fractional).
 #' @param central Whether to compute central moment (subtract
 #'   [mean][summ_mean()] of distribution).
-#' @param standard Whether to compute standard moment (divide by [standar
+#' @param standard Whether to compute standard moment (divide by [standard
 #'   deviation][summ_sd()] of distribution).
 #' @param absolute Whether to compute absolute moment (take absolute value of
 #'   random variable created after possible effect of `central` and `standard`).
