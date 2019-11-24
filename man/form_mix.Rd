@@ -32,13 +32,10 @@ pdqr-functions in \code{f_list} are approximated with corresponding dirac-like
 "continuous" functions (with \link[=form_retype]{form_retype(*, method = "dirac")}). \strong{Note} that this approximation has consequences
 during computation of comparisons. For example, if original "discrete"
 function \code{f} is for distribution with one element \code{x}, then probability of `f
-}
-
-= x\code{being true is 1. After retyping to dirac-like function, this probability will be 0.5, because of symmetrical dirac-like approximation. Using a little nudge to}x\code{of}1e-7\code{ magnitude in the correct direction (}f
-= x - 1e-7` in this case) will have expected output.
+}= xbeing true is 1. After retyping to dirac-like function, this probability will be 0.5, because of symmetrical dirac-like approximation. Using a little nudge toxof1e-7 magnitude in the correct direction (f= x - 1e-7` in this case) will have expected output.
 
 \strong{Class of output mixture} is determined by the class of the first element
-of \code{f_list}. To change output class, use one of \code{as_*()} functions to change
+of \code{f_list}. To change output class, use one of \verb{as_*()} functions to change
 class of first element in \code{f_list} or class of output.
 
 \strong{Note} that if output "continuous" pdqr-function for mixture distribution
@@ -80,9 +77,13 @@ all_x_tbl[(all_x_tbl$x >= 1.5) & (all_x_tbl$x <= 2.5), ]
 
 }
 \seealso{
-Other form functions: \code{\link{form_estimate}},
-  \code{\link{form_regrid}}, \code{\link{form_resupport}},
-  \code{\link{form_retype}}, \code{\link{form_smooth}},
-  \code{\link{form_tails}}, \code{\link{form_trans}}
+Other form functions: 
+\code{\link{form_estimate}()},
+\code{\link{form_regrid}()},
+\code{\link{form_resupport}()},
+\code{\link{form_retype}()},
+\code{\link{form_smooth}()},
+\code{\link{form_tails}()},
+\code{\link{form_trans}()}
 }
 \concept{form functions}

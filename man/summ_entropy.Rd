@@ -56,13 +56,19 @@ summ_entropy2(d_1, d_2, method = "cross", clip = 0)
 
 }
 \seealso{
-Other summary functions: \code{\link{summ_center}},
-  \code{\link{summ_classmetric}},
-  \code{\link{summ_distance}}, \code{\link{summ_hdr}},
-  \code{\link{summ_interval}}, \code{\link{summ_moment}},
-  \code{\link{summ_order}}, \code{\link{summ_prob_true}},
-  \code{\link{summ_pval}}, \code{\link{summ_quantile}},
-  \code{\link{summ_roc}}, \code{\link{summ_separation}},
-  \code{\link{summ_spread}}
+Other summary functions: 
+\code{\link{summ_center}()},
+\code{\link{summ_classmetric}()},
+\code{\link{summ_distance}()},
+\code{\link{summ_hdr}()},
+\code{\link{summ_interval}()},
+\code{\link{summ_moment}()},
+\code{\link{summ_order}()},
+\code{\link{summ_prob_true}()},
+\code{\link{summ_pval}()},
+\code{\link{summ_quantile}()},
+\code{\link{summ_roc}()},
+\code{\link{summ_separation}()},
+\code{\link{summ_spread}()}
 }
 \concept{summary functions}

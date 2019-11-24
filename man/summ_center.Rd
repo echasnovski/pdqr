@@ -22,13 +22,13 @@ summ_mode(f, method = "global")
 "mean", "median", "mode". For \code{summ_mode()} is one of "global" or "local".}
 }
 \value{
-\code{summ_center()}, \code{summ_mean()}, \code{summ_median()} and \code{summ_mode(*, method = "global")} always return a single number representing a center of
-distribution. \code{summ_mode(*, method = "local")} can return a numeric vector
+\code{summ_center()}, \code{summ_mean()}, \code{summ_median()} and \verb{summ_mode(*, method = "global")} always return a single number representing a center of
+distribution. \verb{summ_mode(*, method = "local")} can return a numeric vector
 with multiple values representing local maxima.
 }
 \description{
 Functions to compute center of distribution. \code{summ_center()} is a wrapper for
-respective \code{summ_*()} functions (from this page) with default arguments.
+respective \verb{summ_*()} functions (from this page) with default arguments.
 }
 \details{
 \code{summ_mean()} computes distribution's mean.
@@ -38,9 +38,9 @@ probability is not less than 0.5. Essentially, it is a \code{as_q(f)(0.5)}. This
 also means that for pdqr-functions with type "discrete" it always returns an
 entry of "x" column from \code{f}'s \link[=meta_x_tbl]{"x_tbl" metadata}.
 
-\code{summ_mode(*, method = "global")} computes a smallest \code{x} (which is an entry
+\verb{summ_mode(*, method = "global")} computes a smallest \code{x} (which is an entry
 of "x" column from \code{f}'s \code{x_tbl}) with the highest probability/density.
-\code{summ_mode(*, method = "local")} computes all \code{x} values which represent
+\verb{summ_mode(*, method = "local")} computes all \code{x} values which represent
 non-strict \strong{local maxima} of probability mass/density function.
 }
 \examples{
@@ -70,12 +70,19 @@ summ_mode(my_d, method = "local")
 \code{\link[=summ_spread]{summ_spread()}} for computing distribution's spread, \code{\link[=summ_moment]{summ_moment()}}
 for general moments.
 
-Other summary functions: \code{\link{summ_classmetric}},
-  \code{\link{summ_distance}}, \code{\link{summ_entropy}},
-  \code{\link{summ_hdr}}, \code{\link{summ_interval}},
-  \code{\link{summ_moment}}, \code{\link{summ_order}},
-  \code{\link{summ_prob_true}}, \code{\link{summ_pval}},
-  \code{\link{summ_quantile}}, \code{\link{summ_roc}},
-  \code{\link{summ_separation}}, \code{\link{summ_spread}}
+Other summary functions: 
+\code{\link{summ_classmetric}()},
+\code{\link{summ_distance}()},
+\code{\link{summ_entropy}()},
+\code{\link{summ_hdr}()},
+\code{\link{summ_interval}()},
+\code{\link{summ_moment}()},
+\code{\link{summ_order}()},
+\code{\link{summ_prob_true}()},
+\code{\link{summ_pval}()},
+\code{\link{summ_quantile}()},
+\code{\link{summ_roc}()},
+\code{\link{summ_separation}()},
+\code{\link{summ_spread}()}
 }
 \concept{summary functions}

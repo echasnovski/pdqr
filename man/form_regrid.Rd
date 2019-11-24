@@ -73,7 +73,7 @@ Special cases of \code{n_grid}:
 \itemize{
 \item If \code{n_grid} is the same as number of rows in "x_tbl" metadata, then input
 \code{f} is returned.
-\item If \code{n_grid} is 1, appropriate \code{new_*()} function is used with single
+\item If \code{n_grid} is 1, appropriate \verb{new_*()} function is used with single
 numeric input equal to distribution's median.
 }
 }
@@ -110,9 +110,13 @@ form_regrid(d_con, n_grid = 1)
 
 \code{\link[=form_retype]{form_retype()}} for changing type of pdqr-function.
 
-Other form functions: \code{\link{form_estimate}},
-  \code{\link{form_mix}}, \code{\link{form_resupport}},
-  \code{\link{form_retype}}, \code{\link{form_smooth}},
-  \code{\link{form_tails}}, \code{\link{form_trans}}
+Other form functions: 
+\code{\link{form_estimate}()},
+\code{\link{form_mix}()},
+\code{\link{form_resupport}()},
+\code{\link{form_retype}()},
+\code{\link{form_smooth}()},
+\code{\link{form_tails}()},
+\code{\link{form_trans}()}
 }
 \concept{form functions}

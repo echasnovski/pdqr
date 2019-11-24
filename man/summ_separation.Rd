@@ -48,8 +48,8 @@ left limit of points at which target supremum is reached (see Examples).
 Methods "GM", "OP", "F1", "MCC" compute threshold which maximizes
 corresponding \link[=summ_classmetric]{classification metric} for best suited
 classification setup. They evaluate metrics at equidistant grid (with
-\code{n_grid} elements) for both directions (\code{summ_classmetric(f, g, *)} and
-\code{summ_classmetric(g, f, *)}) and return threshold which results into maximum
+\code{n_grid} elements) for both directions (\verb{summ_classmetric(f, g, *)} and
+\verb{summ_classmetric(g, f, *)}) and return threshold which results into maximum
 of both setups. \strong{Note} that other \code{summ_classmetric()} methods are either
 useless here (always return one of the edges) or are equivalent to ones
 already present.
@@ -83,13 +83,19 @@ summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
 \code{\link[=summ_classmetric]{summ_classmetric()}} for computing of classification metric for ordered
 classification setup.
 
-Other summary functions: \code{\link{summ_center}},
-  \code{\link{summ_classmetric}},
-  \code{\link{summ_distance}}, \code{\link{summ_entropy}},
-  \code{\link{summ_hdr}}, \code{\link{summ_interval}},
-  \code{\link{summ_moment}}, \code{\link{summ_order}},
-  \code{\link{summ_prob_true}}, \code{\link{summ_pval}},
-  \code{\link{summ_quantile}}, \code{\link{summ_roc}},
-  \code{\link{summ_spread}}
+Other summary functions: 
+\code{\link{summ_center}()},
+\code{\link{summ_classmetric}()},
+\code{\link{summ_distance}()},
+\code{\link{summ_entropy}()},
+\code{\link{summ_hdr}()},
+\code{\link{summ_interval}()},
+\code{\link{summ_moment}()},
+\code{\link{summ_order}()},
+\code{\link{summ_prob_true}()},
+\code{\link{summ_pval}()},
+\code{\link{summ_quantile}()},
+\code{\link{summ_roc}()},
+\code{\link{summ_spread}()}
 }
 \concept{summary functions}

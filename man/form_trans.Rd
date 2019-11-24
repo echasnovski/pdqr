@@ -57,7 +57,7 @@ only single number.
 being true is estimated as share of \code{TRUE} in output, and boolean
 pdqr-function is created (type "discrete" with "x" values equal to 0 and 1,
 and probabilities of being false and true respectively). If output is
-numeric, one of \code{new_*()} (suitable for output class) is called with
+numeric, one of \verb{new_*()} (suitable for output class) is called with
 arguments from \code{args_new} list.
 }
 
@@ -67,7 +67,7 @@ Method "bruteforce":
 type (using "piecelin" method).
 \item \strong{Computes output for every combination of "x" values} (probability of
 which will be a product of corresponding probabilities).
-\item \strong{Creates pdqr-function of type "discrete"} with suitable \code{new_*()}
+\item \strong{Creates pdqr-function of type "discrete"} with suitable \verb{new_*()}
 function.
 \item \strong{Possibly retypes to "continuous" type} if output should have it (also
 with "piecelin" method).
@@ -127,9 +127,13 @@ with "random" method.
 \code{\link[=form_regrid]{form_regrid()}} to increase/decrease granularity of pdqr-functions for method
 "bruteforce".
 
-Other form functions: \code{\link{form_estimate}},
-  \code{\link{form_mix}}, \code{\link{form_regrid}},
-  \code{\link{form_resupport}}, \code{\link{form_retype}},
-  \code{\link{form_smooth}}, \code{\link{form_tails}}
+Other form functions: 
+\code{\link{form_estimate}()},
+\code{\link{form_mix}()},
+\code{\link{form_regrid}()},
+\code{\link{form_resupport}()},
+\code{\link{form_retype}()},
+\code{\link{form_smooth}()},
+\code{\link{form_tails}()}
 }
 \concept{form functions}

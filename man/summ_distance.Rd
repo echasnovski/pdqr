@@ -37,10 +37,10 @@ metric based, and entropy based.
 computed in the way that mostly based on probability:
 \itemize{
 \item \emph{Method "KS"} (short for Kolmogorov-Smirnov) computes the supremum of
-absolute difference between p-functions corresponding to \code{f} and \code{g} (\code{|F - G|}). Here "supremum" is meant to describe the fact that if input functions
+absolute difference between p-functions corresponding to \code{f} and \code{g} (\verb{|F - G|}). Here "supremum" is meant to describe the fact that if input functions
 have different \link[=meta_type]{types}, there can be no point at which "KS"
 distance is achieved. Instead, there might be a sequence of points from left
-to right with \code{|F - G|} values tending to the result (see Examples).
+to right with \verb{|F - G|} values tending to the result (see Examples).
 \item \emph{Method "totvar"} (short for "total variation") computes a biggest absolute
 difference of probabilities for any subset of real line. In other words,
 there is a set of points for "discrete" type and intervals for "continuous",
@@ -55,7 +55,7 @@ pdqr-functions). It is computed as
 \code{summ_prob_true(f > g)}). This is maximum of two values (\code{P(F > G) + 0.5*P(F = G)} and \code{P(F < G) + 0.5*P(F = G)}), normalized to return values from 0
 to 1. Other way to look at this measure is that it computes (before
 normalization) two \link[=summ_rocauc]{ROC AUC} values with method \code{"expected"}
-for two possible ordering (\code{f, g}, and \code{g, f}) and takes their maximum.
+for two possible ordering (\verb{f, g}, and \verb{g, f}) and takes their maximum.
 }
 
 \strong{Metric based} methods compute "how far" two distributions are apart on the
@@ -64,7 +64,7 @@ real line:
 \item \emph{Method "wass"} (short for "Wasserstein") computes a 1-Wasserstein
 distance: "minimum cost of 'moving' one density into another", or "average
 path density point should go while transforming from one into another". It is
-computed as integral of \code{|F - G|} (absolute difference between p-functions).
+computed as integral of \verb{|F - G|} (absolute difference between p-functions).
 If any of \code{f} and \code{g} has "continuous" type, \code{\link[stats:integrate]{stats::integrate()}} is used, so
 relatively small numerical errors can happen.
 \item \emph{Method "cramer"} computes Cramer distance: integral of \code{(F - G)^2}. This
@@ -113,13 +113,19 @@ summ_distance(d_dis, d_unif, method = "KS")
 \code{\link[=summ_separation]{summ_separation()}} for computation of optimal threshold separating
 pair of distributions.
 
-Other summary functions: \code{\link{summ_center}},
-  \code{\link{summ_classmetric}},
-  \code{\link{summ_entropy}}, \code{\link{summ_hdr}},
-  \code{\link{summ_interval}}, \code{\link{summ_moment}},
-  \code{\link{summ_order}}, \code{\link{summ_prob_true}},
-  \code{\link{summ_pval}}, \code{\link{summ_quantile}},
-  \code{\link{summ_roc}}, \code{\link{summ_separation}},
-  \code{\link{summ_spread}}
+Other summary functions: 
+\code{\link{summ_center}()},
+\code{\link{summ_classmetric}()},
+\code{\link{summ_entropy}()},
+\code{\link{summ_hdr}()},
+\code{\link{summ_interval}()},
+\code{\link{summ_moment}()},
+\code{\link{summ_order}()},
+\code{\link{summ_prob_true}()},
+\code{\link{summ_pval}()},
+\code{\link{summ_quantile}()},
+\code{\link{summ_roc}()},
+\code{\link{summ_separation}()},
+\code{\link{summ_spread}()}
 }
 \concept{summary functions}

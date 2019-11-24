@@ -77,9 +77,13 @@ known interval.
 
 \code{\link[=summ_center]{summ_center()}} and \code{\link[=summ_spread]{summ_spread()}} for computing summaries of distributions.
 
-Other form functions: \code{\link{form_estimate}},
-  \code{\link{form_mix}}, \code{\link{form_regrid}},
-  \code{\link{form_resupport}}, \code{\link{form_retype}},
-  \code{\link{form_smooth}}, \code{\link{form_trans}}
+Other form functions: 
+\code{\link{form_estimate}()},
+\code{\link{form_mix}()},
+\code{\link{form_regrid}()},
+\code{\link{form_resupport}()},
+\code{\link{form_retype}()},
+\code{\link{form_smooth}()},
+\code{\link{form_trans}()}
 }
 \concept{form functions}

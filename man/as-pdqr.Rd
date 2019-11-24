@@ -53,7 +53,7 @@ using specific algorithms (see Details).}
 
 \item{n_grid}{Number of grid points at which \code{f} will be evaluated (see
 Details). Bigger values lead to better approximation precision, but worse
-memory usage and evaluation speed (direct and in \code{summ_*()} functions).}
+memory usage and evaluation speed (direct and in \verb{summ_*()} functions).}
 
 \item{n_sample}{Number of points to sample from \code{f} inside \code{as_r()}.}
 
@@ -69,12 +69,12 @@ Convert some function to be a proper pdqr-function of specific
 support and finite values of probability/density.
 }
 \details{
-General purpose of \code{as_*()} functions is to create a proper
+General purpose of \verb{as_*()} functions is to create a proper
 pdqr-function of desired class from input which doesn't satisfy these
 conditions. Here is described sequence of steps which are taken to achieve
 that goal.
 
-If \strong{\code{f} is already a pdqr-function}, \code{as_*()} functions properly update it
+If \strong{\code{f} is already a pdqr-function}, \verb{as_*()} functions properly update it
 to have specific class. They take input's \link[=meta_x_tbl]{"x_tbl" metadata}
 and \link[=meta_type]{type} to use with corresponding \link[=new-pdqr]{new_*()}
 function. For example, \code{as_p(f)} in case of pdqr-function \code{f} is essentially
@@ -84,21 +84,21 @@ If \strong{\code{f} is a function describing "honored" distribution}, it is dete
 and output is created in predefined way taking into account extra arguments
 in \code{...}. For more details see "Honored distributions" section.
 
-If \strong{\code{f} is some other unknown function}, \code{as_*()} functions use heuristics
+If \strong{\code{f} is some other unknown function}, \verb{as_*()} functions use heuristics
 for approximating input distribution with a "proper" pdqr-function. Outputs
-of \code{as_*()} can be only pdqr-functions of type "continuous" (because of
+of \verb{as_*()} can be only pdqr-functions of type "continuous" (because of
 issues with support detection). It is assumed that \code{f} returns values
-appropriate for desired output class of \code{as_*()} function and output type
+appropriate for desired output class of \verb{as_*()} function and output type
 "continuous". For example, input for \code{as_p()} should return values of some
 continuous cumulative distribution function (monotonically non-increasing
 values from 0 to 1). To manually create function of type "discrete", supply
-data frame input describing it to appropriate \code{new_*()} function.
+data frame input describing it to appropriate \verb{new_*()} function.
 
-General algorithm of how \code{as_*()} functions work for unknown function is as
+General algorithm of how \verb{as_*()} functions work for unknown function is as
 follows:
 \itemize{
 \item \strong{Detect support}. See "Support detection" section for more details.
-\item \strong{Create data frame input for \code{new_*()}}. The exact process differs:
+\item \strong{Create data frame input for \verb{new_*()}}. The exact process differs:
 \itemize{
 \item In \code{as_p()} equidistant grid of \code{n_grid} points is created inside
 detected support. After that, input's values at the grid is taken as
@@ -123,7 +123,7 @@ list in \code{args_new} argument. In other words, density estimation is done
 based on sample, generated from input \code{f}. After that, its values are
 used to create data frame with \code{as_d()}.
 }
-\item \strong{Use appropriate \code{new_*()} function} with data frame from previous step
+\item \strong{Use appropriate \verb{new_*()} function} with data frame from previous step
 and \code{type = "continuous"}. This step implies that all tails outside detected
 support are trimmed and data frame is normalized to represent proper
 piecewise-linear density.
@@ -133,7 +133,7 @@ piecewise-linear density.
 
 
 For efficient workflow, some commonly used distributions are recognized as
-special ("honored"). Those receive different treatment in \code{as_*()} functions.
+special ("honored"). Those receive different treatment in \verb{as_*()} functions.
 
 Basically, there is a manually selected list of "honored" distributions with
 all their information enough to detect them. Currently that list has all
@@ -141,8 +141,8 @@ common univariate distributions \link[stats:Distributions]{from 'stats' package}
 i.e. all except multinomial and "less common distributions of test
 statistics".
 
-"Honored" distribution is \strong{recognized only if \code{f} is one of \code{p*()}, \code{d*()},
-\code{q*()}, or \code{r*()} function describing honored distribution and is supplied as
+"Honored" distribution is \strong{recognized only if \code{f} is one of \verb{p*()}, \verb{d*()},
+\verb{q*()}, or \verb{r*()} function describing honored distribution and is supplied as
 variable with original name}. For example, \code{as_d(dunif)} will be treated as
 "honored" distribution but \code{as_d(function(x) {dunif(x)})} will not.
 
@@ -153,14 +153,14 @@ density values) and supplied extra arguments in \code{...}. Usually output suppo
 "loses" only around \code{1e-6} probability on each infinite tail.
 
 After that, for "discrete" type output \code{new_d()} is used for appropriate data
-frame input and for "continuous" - \code{as_d()} with appropriate \code{d*()} function
-and support. D-function is then converted to desired class with \code{as_*()}.
+frame input and for "continuous" - \code{as_d()} with appropriate \verb{d*()} function
+and support. D-function is then converted to desired class with \verb{as_*()}.
 }
 
 \section{Support detection}{
 
 
-In case input is a function without any extra information, \code{as_*()} functions
+In case input is a function without any extra information, \verb{as_*()} functions
 must know which finite support its output should have. User can supply
 desired support directly with \code{support} argument, which can also be \code{NULL}
 (mean automatic detection of both edges) or have \code{NA} to detect only those
@@ -238,5 +238,5 @@ as_d(unknown, n_grid = 1001)
 }
 \seealso{
 \code{\link[=pdqr_approx_error]{pdqr_approx_error()}} for computing approximation errors compared to
-some reference function (usually input to \code{as_*()} family).
+some reference function (usually input to \verb{as_*()} family).
 }

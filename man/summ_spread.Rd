@@ -34,7 +34,7 @@ distribution.
 \description{
 Functions to compute spread (variability, dispersion) of distribution (i.e.
 "how wide it is spread"). \code{summ_spread()} is a wrapper for respective
-\code{summ_*()} functions (from this page) with default arguments.
+\verb{summ_*()} functions (from this page) with default arguments.
 }
 \details{
 \code{summ_sd()} computes distribution's standard deviation.
@@ -83,13 +83,19 @@ summ_range(zero_tails)
 \code{\link[=summ_center]{summ_center()}} for computing distribution's center, \code{\link[=summ_moment]{summ_moment()}}
 for general moments.
 
-Other summary functions: \code{\link{summ_center}},
-  \code{\link{summ_classmetric}},
-  \code{\link{summ_distance}}, \code{\link{summ_entropy}},
-  \code{\link{summ_hdr}}, \code{\link{summ_interval}},
-  \code{\link{summ_moment}}, \code{\link{summ_order}},
-  \code{\link{summ_prob_true}}, \code{\link{summ_pval}},
-  \code{\link{summ_quantile}}, \code{\link{summ_roc}},
-  \code{\link{summ_separation}}
+Other summary functions: 
+\code{\link{summ_center}()},
+\code{\link{summ_classmetric}()},
+\code{\link{summ_distance}()},
+\code{\link{summ_entropy}()},
+\code{\link{summ_hdr}()},
+\code{\link{summ_interval}()},
+\code{\link{summ_moment}()},
+\code{\link{summ_order}()},
+\code{\link{summ_prob_true}()},
+\code{\link{summ_pval}()},
+\code{\link{summ_quantile}()},
+\code{\link{summ_roc}()},
+\code{\link{summ_separation}()}
 }
 \concept{summary functions}

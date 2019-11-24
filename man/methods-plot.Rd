@@ -96,7 +96,8 @@ plot(as_r(d_norm_1))
 
 }
 \seealso{
-Other pdqr methods for generic functions: \code{\link{methods-group-generic}},
-  \code{\link{methods-print}}
+Other pdqr methods for generic functions: 
+\code{\link{methods-group-generic}},
+\code{\link{methods-print}}
 }
 \concept{pdqr methods for generic functions}

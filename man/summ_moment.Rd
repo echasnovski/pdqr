@@ -6,8 +6,7 @@
 \alias{summ_kurtosis}
 \title{Summarize distribution with moment}
 \usage{
-summ_moment(f, order, central = FALSE, standard = FALSE,
-  absolute = FALSE)
+summ_moment(f, order, central = FALSE, standard = FALSE, absolute = FALSE)
 
 summ_skewness(f)
 
@@ -64,13 +63,19 @@ summ_kurtosis(d_beta, excess = FALSE)
 \code{\link[=summ_center]{summ_center()}} for computing distribution's center, \code{\link[=summ_spread]{summ_spread()}}
 for spread.
 
-Other summary functions: \code{\link{summ_center}},
-  \code{\link{summ_classmetric}},
-  \code{\link{summ_distance}}, \code{\link{summ_entropy}},
-  \code{\link{summ_hdr}}, \code{\link{summ_interval}},
-  \code{\link{summ_order}}, \code{\link{summ_prob_true}},
-  \code{\link{summ_pval}}, \code{\link{summ_quantile}},
-  \code{\link{summ_roc}}, \code{\link{summ_separation}},
-  \code{\link{summ_spread}}
+Other summary functions: 
+\code{\link{summ_center}()},
+\code{\link{summ_classmetric}()},
+\code{\link{summ_distance}()},
+\code{\link{summ_entropy}()},
+\code{\link{summ_hdr}()},
+\code{\link{summ_interval}()},
+\code{\link{summ_order}()},
+\code{\link{summ_prob_true}()},
+\code{\link{summ_pval}()},
+\code{\link{summ_quantile}()},
+\code{\link{summ_roc}()},
+\code{\link{summ_separation}()},
+\code{\link{summ_spread}()}
 }
 \concept{summary functions}

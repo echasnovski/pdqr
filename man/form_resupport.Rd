@@ -96,9 +96,13 @@ pdqr-function.
 
 \code{\link[=form_retype]{form_retype()}} for changing type of pdqr-function.
 
-Other form functions: \code{\link{form_estimate}},
-  \code{\link{form_mix}}, \code{\link{form_regrid}},
-  \code{\link{form_retype}}, \code{\link{form_smooth}},
-  \code{\link{form_tails}}, \code{\link{form_trans}}
+Other form functions: 
+\code{\link{form_estimate}()},
+\code{\link{form_mix}()},
+\code{\link{form_regrid}()},
+\code{\link{form_retype}()},
+\code{\link{form_smooth}()},
+\code{\link{form_tails}()},
+\code{\link{form_trans}()}
 }
 \concept{form functions}

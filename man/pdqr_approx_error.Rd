@@ -11,9 +11,9 @@ pdqr_approx_error(f, ref_f, ..., gran = 10, remove_infinity = TRUE)
 \code{\link[=as_p]{as_p()}}, \code{\link[=as_d]{as_d()}}, or \code{\link[=as_q]{as_q()}} default methods.}
 
 \item{ref_f}{A "true" distribution function of the same \link[=meta_class]{class}
-as \code{f}. Usually the input to the aforementioned \code{as_*()} function.}
+as \code{f}. Usually the input to the aforementioned \verb{as_*()} function.}
 
-\item{...}{Other arguments to \code{ref_f}. If they were supplied to \code{as_*()}
+\item{...}{Other arguments to \code{ref_f}. If they were supplied to \verb{as_*()}
 function, then the exact same values must be supplied here.}
 
 \item{gran}{Degree of grid "granularity" in case of "continuous" type: number

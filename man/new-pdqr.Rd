@@ -87,7 +87,7 @@ of singular dirac distribution. Data frame has columns "x" with value
 total integral of "x"-"y" points of 1, "cumprob" \code{c(0, 0.5, 1)}.
 \item If \code{x} has more than 1 element, it serves as input to
 \link[stats:density]{density(x, ...)} for density estimation (here arguments in
-\code{...} of \code{new_*()} serve as extra arguments to \code{density()}). The output's "x"
+\code{...} of \verb{new_*()} serve as extra arguments to \code{density()}). The output's "x"
 element is used as "x" column in output data frame. Column "y" is taken as
 "y" element of \code{density()} output, normalized so that piecewise-linear
 function passing through "x"-"y" points has total integral of 1. Column
@@ -101,7 +101,7 @@ function passing through "x"-"y" points has total integral of 1. Column
 If \code{x} is a data frame, it should have numeric columns appropriate for
 \link[=meta_x_tbl]{"x_tbl" metadata} of input \code{type}: "x", "prob" for "discrete"
 \code{type} and "x", "y" for "continuous" type ("cumprob" column will be computed
-inside \code{new_*()}). To become an appropriate "x_tbl" metadata, input data
+inside \verb{new_*()}). To become an appropriate "x_tbl" metadata, input data
 frame is ordered in increasing order of "x" column and then \strong{imputed} in
 the way which depends on the \code{type} argument.
 

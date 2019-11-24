@@ -4,8 +4,7 @@
 \alias{form_estimate}
 \title{Create a pdqr-function for distribution of sample estimate}
 \usage{
-form_estimate(f, stat, sample_size, ..., n_sample = 10000,
-  args_new = list())
+form_estimate(f, stat, sample_size, ..., n_sample = 10000, args_new = list())
 }
 \arguments{
 \item{f}{A pdqr-function.}
@@ -40,7 +39,7 @@ them its estimate by calling input \code{stat} function. If created sample is
 logical, \strong{boolean} pdqr-function (type "discrete" with elements being
 exactly 0 and 1) is created with probability of being true estimated as share
 of \code{TRUE} values (after removing possible \code{NA}). If sample is numeric, it is
-used as input to \code{new_*()} of appropriate class with \code{type} equal to type of
+used as input to \verb{new_*()} of appropriate class with \code{type} equal to type of
 \code{f} (if not forced otherwise in \code{args_new}).
 
 \strong{Notes}:
@@ -91,9 +90,13 @@ form_estimate(d_norm, stat = all_positive, sample_size = 5)
 
 }
 \seealso{
-Other form functions: \code{\link{form_mix}},
-  \code{\link{form_regrid}}, \code{\link{form_resupport}},
-  \code{\link{form_retype}}, \code{\link{form_smooth}},
-  \code{\link{form_tails}}, \code{\link{form_trans}}
+Other form functions: 
+\code{\link{form_mix}()},
+\code{\link{form_regrid}()},
+\code{\link{form_resupport}()},
+\code{\link{form_retype}()},
+\code{\link{form_smooth}()},
+\code{\link{form_tails}()},
+\code{\link{form_trans}()}
 }
 \concept{form functions}

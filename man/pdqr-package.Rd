@@ -32,10 +32,10 @@ pdqr-functions.
 creating pdqr-functions.
 \item Documentation of \link[=as_p]{as_*()} functions describes the process of
 updating class of pdqr-functions.
-\item Documentation of \code{form_*()} functions describes how different
+\item Documentation of \verb{form_*()} functions describes how different
 transformation functions work. Important pages are for \code{\link[=form_trans]{form_trans()}} and
 \link[=methods-group-generic]{Pdqr methods for S3 group generic functions}.
-\item Documentation of \code{summ_*()} functions describes how different summary
+\item Documentation of \verb{summ_*()} functions describes how different summary
 functions work. A good place to start is \code{\link[=summ_center]{summ_center()}}.
 \item Documentation of \code{\link[=region]{region_*()}} functions describes functionality
 to work with regions: data frames defining subset of one dimensional real

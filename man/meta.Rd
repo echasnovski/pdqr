@@ -32,7 +32,7 @@ Tools for getting metadata of \strong{pdqr-function}: a function which represent
 distribution with finite support and finite values of probability/density.
 The key metadata which defines underline distribution is \strong{"x_tbl"}. If two
 pdqr-functions have the same "x_tbl" metadata, they represent the same
-distribution and can be converted to one another with \code{as_*()} family of
+distribution and can be converted to one another with \verb{as_*()} family of
 functions.
 }
 \details{
@@ -144,7 +144,7 @@ change of pdqr type, support, and "x_tbl" metadata will lead to a complete
 change of underlying distribution.
 
 To change \strong{pdqr class}, for example to convert p-function to d-function,
-use \code{as_*()} family of functions: \code{\link[=as_p]{as_p()}}, \code{\link[=as_d]{as_d()}}, \code{\link[=as_q]{as_q()}}, \code{\link[=as_r]{as_r()}}.
+use \verb{as_*()} family of functions: \code{\link[=as_p]{as_p()}}, \code{\link[=as_d]{as_d()}}, \code{\link[=as_q]{as_q()}}, \code{\link[=as_r]{as_r()}}.
 
 To change \strong{pdqr type}, use \code{\link[=form_retype]{form_retype()}}. It changes underlying
 distribution in the most suitable for user way.
@@ -153,7 +153,7 @@ To change \strong{pdqr support}, use \code{\link[=form_resupport]{form_resupport
 
 Change of \strong{"x_tbl" metadata} is not possible, because basically it means
 creating completely new pdqr-function. To do that, supply data frame with
-"x_tbl" format suitable for desired "type" to appropriate \code{new_*()} function:
+"x_tbl" format suitable for desired "type" to appropriate \verb{new_*()} function:
 \code{\link[=new_p]{new_p()}}, \code{\link[=new_d]{new_d()}}, \code{\link[=new_q]{new_q()}}, \code{\link[=new_r]{new_r()}}. Also, there is a \code{\link[=form_regrid]{form_regrid()}}
 function which will increase or decrease granularity of pdqr-function.
 }

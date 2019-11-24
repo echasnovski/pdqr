@@ -45,7 +45,7 @@ Customization of method behavior may be done using mechanism of
 \code{form_trans()} in methods with random nature. Default is 10000.
 \item \strong{\code{pdqr.group_gen.repair_supp_method}}. All methods that have random
 nature take care of output support by trying to "repair" it, because default
-use of \code{new_*()} functions returns a slightly bigger support than range of
+use of \verb{new_*()} functions returns a slightly bigger support than range of
 input sample (see Examples). Repairing is done with \code{\link[=form_resupport]{form_resupport()}} where
 target support is computed separately and \code{method} argument is controlled by
 this option (preferred ones are \code{"reflect"}, default, and \code{"trim"}). In most
@@ -65,7 +65,7 @@ computed directly. Output of \code{sign()} has "discrete" type with 3 "x" values
 
 \strong{Note} that \code{cumsum()}, \code{cumprod()}, \code{cummmax()}, and \code{cummin()} functions
 don't make much sense in these implementations: their outputs represent
-random variable, sample of which is computed by applying \code{cum*()} function to
+random variable, sample of which is computed by applying \verb{cum*()} function to
 a sample, generated from input pdqr-function.
 }
 
@@ -147,7 +147,7 @@ applied to pdqr-function.
 \item Although all \code{sum()}, \code{prod()}, \code{min()}, \code{max()} accept pdqr-functions or
 single numbers, using numbers and "continuous" functions simultaneously is
 not a great idea. This is because output will be automatically smoothed (as
-\code{form_trans()} will use some \code{new_*()} function) which will give a misleading
+\code{form_trans()} will use some \verb{new_*()} function) which will give a misleading
 picture. For a more realistic output:
 \itemize{
 \item Instead of \code{min(f, num)} use
@@ -230,7 +230,8 @@ form_trans(list(d_unif, d_unif), `+`)
 \code{\link[=summ_prob_true]{summ_prob_true()}} and \code{\link[=summ_prob_false]{summ_prob_false()}} for extracting
 probability from boolean pdqr-functions.
 
-Other pdqr methods for generic functions: \code{\link{methods-plot}},
-  \code{\link{methods-print}}
+Other pdqr methods for generic functions: 
+\code{\link{methods-plot}},
+\code{\link{methods-print}}
 }
 \concept{pdqr methods for generic functions}

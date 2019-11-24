@@ -60,8 +60,8 @@ These functions provide ways of working with a \strong{region}: a data frame wit
 numeric "left" and "right" columns, each row of which represents a unique
 finite interval (open, either type of half-open, or closed). Values of "left"
 and "right" columns should create an "ordered" set of intervals:
-\code{left[1] <= right[1] <= left[2] <= right[2] <= ...} (intervals with zero
-width are accepted). Originally, \code{region_*()} functions were designed to work
+\verb{left[1] <= right[1] <= left[2] <= right[2] <= ...} (intervals with zero
+width are accepted). Originally, \verb{region_*()} functions were designed to work
 with output of \code{\link[=summ_hdr]{summ_hdr()}} and \code{\link[=summ_interval]{summ_interval()}}, but can be used for any
 data frame which satisfies the definition of a region.
 }
@@ -78,7 +78,7 @@ pdqr-function \code{f}. If \code{f} has "discrete" \link[=meta_type]{type}, outp
 computed as sum of probabilities for all "x" values from \link[=meta_x_tbl]{"x_tbl" metadata} which lie inside a region (respecting \code{left_closed}
 and \code{right_closed} options while using \code{region_is_in()}). If \code{f} has
 "continuous" type, output is computed as integral of density over a region
-(\code{*_closed} options having any effect).
+(\verb{*_closed} options having any effect).
 
 \code{region_height()} computes "height" of a region (with respect to \code{f}):
 minimum value of corresponding to \code{f} d-function can return based on relevant
