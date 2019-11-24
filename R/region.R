@@ -141,7 +141,7 @@ region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
 
   # Inside intervals left index should be bigger than right by 1 because `x`
   # element should be more than left and less than right.
-  is_inside <- left_ind == right_ind + 1
+  is_inside <- left_ind == (right_ind + 1)
 
   # There are corner cases when consecutive intervals have common edge and `x`
   # has element equal to that edge. For example, for region [1; 2], [2; 3] and
