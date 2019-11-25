@@ -209,35 +209,60 @@ reflect_x_tbl <- function(x_tbl, around) {
   res
 }
 
-ground_x_tbl <- function(x_tbl, dir = "both", h = 1e-8) {
-  if (get_type_from_x_tbl(x_tbl) == "discrete") {
+ground_x_tbl <- function(x_tbl, direction = "both", h = 1e-8) {
+  if ((get_type_from_x_tbl(x_tbl) == "discrete") ||
+      !(direction %in% c("left", "right", "both"))) {
     return(x_tbl)
   }
 
   x <- x_tbl[["x"]]
   y <- x_tbl[["y"]]
   n <- nrow(x_tbl)
+  x_tbl_fun <- enfun_x_tbl(x_tbl)
 
-  add_left <- (dir %in% c("left", "both")) && !is_zero(y[1])
-  add_right <- (dir %in% c("right", "both")) && !is_zero(y[n])
+  ground_left <- (direction %in% c("left", "both")) && !is_zero(y[1])
+  ground_right <- (direction %in% c("right", "both")) && !is_zero(y[n])
 
-  if (add_left) {
-    if (add_right) {
-      res <- x_tbl[c(1, 1:n, n), ]
-      res[["x"]][c(1, n+2)] <- x[c(1, n)] + h*c(-1, 1)
-      res[["y"]][c(1, n+2)] <- 0
+  res <- x_tbl
+
+  # Grounding on certain edge is done by adding one point (close to edge)
+  # outside of support and, in case there isn't a "close" one present, one on
+  # the inside. Y-values are: zero for outside, respective density value for
+  # inside. Then y-value of edge knot is modified so as to preserve total
+  # probability of one.
+
+  if (ground_left) {
+    x_diff <- (x[2] - x[1])
+    # Using `2*h` instead of `h` to avoid numerical representation issues
+    if (x_diff > 2*h) {
+      # Case when inner point should be added because there is no "close" knot
+      # in input data
+      res <- res[c(1, 1, 1:n), ]
+      res[["x"]][c(1, 3)] <- x[1] + h*c(-1, 1)
+      res[["y"]][c(1, 2, 3)] <- c(0, 0.5*res[["y"]][2], x_tbl_fun(x[1]+h))
     } else {
-      res <- x_tbl[c(1, 1:n), ]
-      res[["x"]][1] <- x[1] - h
-      res[["y"]][1] <- 0
+      # Case when inner point shouldn't be added
+      res <- res[c(1, 1:n), ]
+      res[["x"]][c(1)] <- x[1] - h
+      res[["y"]][c(1, 2)] <- c(0, res[["y"]][2] * x_diff/(x_diff + h))
     }
-  } else {
-    if (add_right) {
-      res <- x_tbl[c(1:n, n), ]
-      res[["x"]][n+1] <- x[n] + h
-      res[["y"]][n+1] <- 0
+  }
+
+  if (ground_right) {
+    n_n <- nrow(res)
+    x_n <- res[["x"]]
+    x_diff <- (x_n[n_n] - x_n[n_n-1])
+    # Using `2*h` instead of `h` to avoid numerical representation issues
+    if (x_diff > 2*h) {
+      res <- res[c(1:n_n, n_n, n_n), ]
+      res[["x"]][n_n + c(0, 2)] <- x_n[n_n] + h*c(-1, 1)
+      res[["y"]][n_n + c(0, 1, 2)] <- c(
+        x_tbl_fun(x_n[n_n]), 0.5*res[["y"]][n_n+1], 0
+      )
     } else {
-      res <- x_tbl
+      res <- res[c(1:n_n, n_n), ]
+      res[["x"]][n_n + c(1)] <- x_n[n_n] + h
+      res[["y"]][n_n + c(0, 1)] <- c(res[["y"]][n_n] * x_diff/(x_diff + h), 0)
     }
   }
 
@@ -306,23 +331,41 @@ stack_x_tbl_dis <- function(x_tbl_list) {
 }
 
 stack_x_tbl_con <- function(x_tbl_list) {
-  x_tbl_funs <- lapply(x_tbl_list, enfun_x_tbl)
+  # Determine grounding direction for every 'x_tbl' so that resulting edges of
+  # output don't get unnecessary grounding
+  x_tbl_list_range <- lapply(x_tbl_list, function(x_tbl) {range(x_tbl[["x"]])})
+  res_range <- range(unlist(x_tbl_list_range))
+  ground_dir <- vapply(seq_along(x_tbl_list), function(i) {
+    cur_range <- x_tbl_list_range[[i]]
 
-  x <- unlist(lapply(x_tbl_list, function(x_tbl) {
-    # Grounding is needed to ensure that `x_tbl` doesn't affect its outside
-    ground_x_tbl(x_tbl)[["x"]]
-  }))
+    ground_left <- !is_near(cur_range[1], res_range[1])
+    ground_right <- !is_near(cur_range[2], res_range[2])
+
+    if (ground_left) {
+      res <- if (ground_right) {"both"} else {"left"}
+    } else {
+      res <- if (ground_right) {"right"} else {"none"}
+    }
+
+    res
+  }, character(1))
+
+  # Grounding is needed to ensure that `x_tbl` doesn't affect its outside
+  x_tbl_list_grounded <- lapply(seq_along(x_tbl_list), function(i) {
+    ground_x_tbl(x_tbl_list[[i]], direction = ground_dir[i])
+  })
+
+  # Compute grid 'x_tbl' stack
+  x <- unlist(lapply(x_tbl_list_grounded, `[[`, i = "x"))
   x <- sort(unique(x))
 
+  # Stack 'x_tbl' by evaluating grounded versions of 'x_tbl's at output x-grid
+  x_tbl_funs <- lapply(x_tbl_list_grounded, enfun_x_tbl)
   y_at_x <- lapply(x_tbl_funs, do.call, list(x))
   y_mat <- matrix(unlist(y_at_x), nrow = length(x))
   y <- rowSums(y_mat)
 
-  res <- data.frame(x = x, y = y)
-
-  # Ensure that zero probability edges (possibly created during "grounding")
-  # aren't newly created
-  remove_extra_edges(res, x_tbl_list)
+  data.frame(x = x, y = y)
 }
 
 remove_extra_edges <- function(x_tbl, x_tbl_list) {

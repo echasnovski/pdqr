@@ -242,7 +242,9 @@ test_that("Math.pdqr method for `abs()` works", {
   d_unif <- new_d(data.frame(x = c(-3, 1), y = c(0.25, 0.25)), "continuous")
   expect_ref_x_tbl(
     abs(d_unif),
-    data.frame(x = c(0, 1, 1+1e-8, 3), y = c(0.5, 0.5, 0.25, 0.25))
+    data.frame(
+      x = c(0, 1-1e-8, 1, 1+1e-8, 3), y = c(0.5, 0.5, 0.375, 0.25, 0.25)
+    )
   )
 })
 

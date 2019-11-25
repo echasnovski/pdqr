@@ -40,52 +40,51 @@ test_that("form_mix works when input is all 'discrete'", {
 
 test_that("form_mix works when input is all 'continuous'", {
   h <- 1e-8
+  tol <- 1e-9
 
   expect_ref_x_tbl(
     # By default equal-weight mix is done
     form_mix(cur_f_list[3:4]),
     data.frame(
-      x = c(  0, 0.5-h, 0.5, 0.75, 0.75+h,   1),
-      # Extra values are subtracted due to adding small grounding "triangles" on
-      # edges of mixed distributions which affect normalization during call to
-      # `new_*()` (result of stacking hasn't total integral of 1, but ~ 1+2*h).
-      y = c(0.5,   0.5, 2.5,  2.5,    0.5, 0.5) - h*c(1, 1, 5, 5, 1, 1)
-    )
+      x = c(  0, 0.5-h, 0.5, 0.5+h, 0.75-h, 0.75, 0.75+h,   1),
+      y = c(0.5,   0.5, 1.5,   2.5,    2.5,  1.5,    0.5, 0.5)
+    ),
+    tol = tol
   )
   expect_ref_x_tbl(
     form_mix(cur_f_list[3:4], weights = c(0.25, 0.75)),
     data.frame(
-      x = c(   0, 0.5-h,  0.5, 0.75, 0.75+h,   1),
-      # Extra values have the same meaning (total integral is ~ 1+3*h).
-      y = c(0.25,  0.25, 3.25, 3.25,   0.25, 0.25) -
-        h*c(0.75,  0.75, 9.75, 9.75,   0.75, 0.75)
-    )
+      x = c(   0, 0.5-h,  0.5, 0.5+h, 0.75-h, 0.75, 0.75+h,   1),
+      y = c(0.25,  0.25, 1.75,  3.25,   3.25, 1.75,   0.25, 0.25)
+    ),
+    tol = tol
   )
 })
 
 test_that("form_mix works when input has both pdqr types", {
   h <- 1e-8
+  tol <- 1e-9
 
   expect_ref_x_tbl(
     # By default equal-weight mix is done
     form_mix(cur_f_list[c(1, 4)]),
     data.frame(
-      x = c(-h,       0, h, 0.5-h, 0.5, 0.75, 0.75+h, 1-h,       1, 1+h),
-      # Extra values are subtracted due to adding small grounding "triangles" on
-      # edges of mixed distributions which affect normalization during call to
-      # `new_*()` (result of stacking hasn't total integral of 1, but ~ 1+2*h).
-      y = c( 0,   0.2/h, 0,     0,   2,    2,      0,   0,   0.3/h,   0) -
-          c( 0,     0.4, 0,     0, 4*h,  4*h,      0,   0,     0.6,   0)
-    )
+      x = c(0-h,     0, 0+h, 0.5-h, 0.5, 0.5+h,
+            0.75-h, 0.75, 0.75+h, 1-h,     1, 1+h),
+      y = c(  0, 0.2/h,   0,     0,   1,     2,
+                 2,    1,      0,   0, 0.3/h,   0)
+    ),
+    tol = tol
   )
   expect_ref_x_tbl(
     form_mix(cur_f_list[c(1, 4)], weights = c(0.25, 0.75)),
-    # Extra values have the same meaning (total integral is ~ 1+3*h).
     data.frame(
-      x = c(-h,        0, h, 0.5-h, 0.5, 0.75, 0.75+h, 1-h,      1, 1+h),
-      y = c( 0,    0.1/h, 0,     0,   3,    3,      0,   0, 0.15/h,   0) -
-          c( 0,      0.3, 0,     0, 9*h,  9*h,      0,   0,   0.45,   0)
-    )
+      x = c(-h,     0, h, 0.5-h, 0.5, 0.5+h,
+            0.75-h, 0.75, 0.75+h, 1-h,      1, 1+h),
+      y = c( 0, 0.1/h, 0,     0, 1.5,     3,
+                 3,  1.5,      0,   0, 0.15/h,   0)
+    ),
+    tol = tol
   )
 })
 
@@ -108,28 +107,18 @@ test_that("form_mix returns pdqr-function of correct class", {
   expect_is(form_mix(cur_f_list[4:1]), meta_class(cur_f_list[[4]]))
 })
 
-test_that("form_mix strictly treats supports as closed intervals", {
-  # This is mainly a regression test to demonstrate current position about the
-  # following matter: what should be a value of density mixture at point which
-  # is a support edge for multiple pdqr-functions? For example, what is a
-  # density value of equiweighted mixture of U(0; 1) and U(1; 2) at point 1?
-  # Current position is as follows: as distributions are defined on **closed**
-  # support intervals, value should be a weighted sum of separate density
-  # values. The problem with this approach is that it in some cases leads to
-  # discontinuity of "true" density: mixture of previous example is equal to 0.5
-  # on [0; 1) and (1; 2], but at point 1 density is 1 (0.5*1 + 0.5*1).
-  # In 'pdqr' implementation, this (consistently with other cases) means
-  # presence of dirac-like "spikes" (see test).
-
+test_that("form_mix 'stiches' functions with consecutive supports nicely", {
   d_unif_1 <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
   d_unif_2 <- new_d(data.frame(x = c(1, 2), y = c(1, 1)), "continuous")
+  h <- 1e-8
 
   expect_ref_x_tbl(
     form_mix(list(d_unif_1, d_unif_2)),
     data.frame(
-      x = c(  0, 1-1e-8, 1, 1+1e-8,   2),
-      y = c(0.5,    0.5, 1,    0.5, 0.5)
-    )
+      x = c(  0, 1-h,   1, 1+h,   2),
+      y = c(0.5, 0.5, 0.5, 0.5, 0.5)
+    ),
+    tol = 1e-9
   )
 })
 

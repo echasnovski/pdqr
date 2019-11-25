@@ -47,6 +47,8 @@ test_that("form_resupport works with `method='reflect'` and 'discrete' type", {
 test_that("form_resupport works with `method='reflect'`, 'continuous' type",  {
   p_f <- new_p(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
   p_f_x_tbl <- meta_x_tbl(p_f)
+  h <- 1e-8
+  tol <- 1e-9
 
   # Returns self when supplied support equals `f`'s support or wider
   expect_ref_x_tbl(form_resupport(p_f, c(0, 1), "reflect"), p_f_x_tbl)
@@ -55,21 +57,21 @@ test_that("form_resupport works with `method='reflect'`, 'continuous' type",  {
   # Left reflection
   expect_ref_x_tbl(
     form_resupport(p_f, c(0.2, 1), "reflect"),
-    data.frame(x = c(0.2, 0.4, 0.4+1e-8, 1), y = c(2, 2, 1, 1))
+    data.frame(x = c(0.2, 0.4-h, 0.4, 0.4+h, 1), y = c(2, 2, 1.5, 1, 1))
   )
 
   # Right reflection
   expect_ref_x_tbl(
     form_resupport(p_f, c(0, 0.6), "reflect"),
-    data.frame(x = c(0, 0.2-1e-8, 0.2, 0.6), y = c(1, 1, 2, 2))
+    data.frame(x = c(0, 0.2-h, 0.2, 0.2+h, 0.6), y = c(1, 1, 1.5, 2, 2))
   )
 
   # Reflection from both sides
   expect_ref_x_tbl(
     form_resupport(p_f, c(0.1, 0.9), "reflect"),
     data.frame(
-      x = c(0.1, 0.2, 0.2+1e-8, 0.8-1e-8, 0.8, 0.9),
-      y = c(  2,   2,        1,        1,   2,   2)
+      x = c(0.1, 0.2-h, 0.2, 0.2+h, 0.8-h, 0.8, 0.8+h, 0.9),
+      y = c(  2,     2, 1.5,     1,     1, 1.5,     2,   2)
     )
   )
 })

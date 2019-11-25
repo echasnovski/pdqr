@@ -1,6 +1,11 @@
 context("test-x_tbl")
 
 
+# Input data --------------------------------------------------------------
+h <- 1e-8
+tol <- 1e-9
+
+
 # compute_x_tbl -----------------------------------------------------------
 # Tested in `new_*()` functions
 
@@ -160,24 +165,25 @@ test_that("reflect_x_tbl works with 'continuous' type", {
 test_that("ground_x_tbl works", {
   expect_equal(ground_x_tbl(x_dis_x_tbl), x_dis_x_tbl)
 
-  x_tbl <- data.frame(
-    x = c(-1, 0.25, 2), y = c(1/1.25, 0, 1/1.75), cumprob = c(0, 0.5, 1)
+  x_tbl <- meta_x_tbl(
+    # A standard uniform distribution represented with three intervals
+    new_d(data.frame(x = c(0, 0.2, 1), y = c(1, 1, 1)), "continuous")
   )
   x <- x_tbl[["x"]]
   y <- x_tbl[["y"]]
   n <- nrow(x_tbl)
 
-  out_left <- ground_x_tbl(x_tbl, "left")
-  expect_equal(out_left[["x"]], c(x[1]-1e-8, x))
-  expect_equal(out_left[["y"]], c(        0, y))
+  gr_left <- ground_x_tbl(x_tbl, "left")
+  expect_equal(gr_left[["x"]], c(0-h,   0, 0+h, 0.2, 1), tol = tol)
+  expect_equal(gr_left[["y"]], c(  0, 0.5,   1,   1, 1), tol = tol)
 
-  out_right <- ground_x_tbl(x_tbl, "right")
-  expect_equal(out_right[["x"]], c(x, x[n]+1e-8))
-  expect_equal(out_right[["y"]], c(y,         0))
+  gr_right <- ground_x_tbl(x_tbl, "right")
+  expect_equal(gr_right[["x"]], c(0, 0.2, 1-h,   1, 1+h), tol = tol)
+  expect_equal(gr_right[["y"]], c(1,   1,   1, 0.5,   0), tol = tol)
 
-  out_both <- ground_x_tbl(x_tbl, "both")
-  expect_equal(out_both[["x"]], c(x[1]-1e-8, x, x[n]+1e-8))
-  expect_equal(out_both[["y"]], c(        0, y,         0))
+  gr_both <- ground_x_tbl(x_tbl, "both")
+  expect_equal(gr_both[["x"]], c(0-h,   0, 0+h, 0.2, 1-h,   1, 1+h), tol = tol)
+  expect_equal(gr_both[["y"]], c(  0, 0.5,   1,   1,   1, 0.5,   0), tol = tol)
 })
 
 test_that("ground_x_tbl doesn't add new zeros to 'y'",  {
@@ -186,6 +192,57 @@ test_that("ground_x_tbl doesn't add new zeros to 'y'",  {
   expect_equal(ground_x_tbl(x_tbl, "left"), x_tbl)
   expect_equal(ground_x_tbl(x_tbl, "right"), x_tbl)
   expect_equal(ground_x_tbl(x_tbl, "both"), x_tbl)
+})
+
+test_that("ground_x_tbl works with dirac-like 'x_tbl's", {
+  x_tbl_dirac <- meta_x_tbl(new_d(2, "continuous"))
+
+  expect_equal(ground_x_tbl(x_tbl_dirac, "left"), x_tbl_dirac, tol = tol)
+  expect_equal(ground_x_tbl(x_tbl_dirac, "right"), x_tbl_dirac, tol = tol)
+  expect_equal(ground_x_tbl(x_tbl_dirac, "both"), x_tbl_dirac, tol = tol)
+})
+
+test_that("ground_x_tbl works with winsorized 'x_tbl's", {
+  cur_d <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
+
+  # Winsorized from left
+  wins_left <- meta_x_tbl(
+    form_resupport(cur_d, c(0.25, NA), method = "winsor")
+  )
+
+  wins_left_gr_left <- ground_x_tbl(wins_left, "left")
+  expect_equal(
+    wins_left_gr_left[["x"]], c(0.25-h, 0.25, 0.25+h, 1),
+    tol = tol
+  )
+  expect_equal(wins_left_gr_left[["y"]], c(0, 0.5*wins_left[["y"]][1], 1, 1))
+
+  # Winsorized from right
+  wins_right <- meta_x_tbl(
+    form_resupport(cur_d, c(NA, 0.75), method = "winsor")
+  )
+
+  wins_right_gr_right <- ground_x_tbl(wins_right, "right")
+  expect_equal(
+    wins_right_gr_right[["x"]], c(0, 0.75-h, 0.75, 0.75+h),
+    tol = tol
+  )
+  expect_equal(wins_right_gr_right[["y"]], c(1, 1, 0.5*wins_right[["y"]][3], 0))
+
+  # Winsorized from both sides
+  wins_both <- meta_x_tbl(
+    form_resupport(cur_d, c(0.25, 0.75), method = "winsor")
+  )
+
+  wins_both_gr_both <- ground_x_tbl(wins_both, "both")
+  expect_equal(
+    wins_both_gr_both[["x"]], c(0.25-h, 0.25, 0.25+h, 0.75-h, 0.75, 0.75+h),
+    tol = tol
+  )
+  expect_equal(
+    wins_both_gr_both[["y"]],
+    c(0, 0.5*wins_both[["y"]][1], 1, 1, 0.5*wins_both[["y"]][4], 0)
+  )
 })
 
 test_that("ground_x_tbl works without column 'cumprob' present",  {
@@ -244,10 +301,27 @@ test_that("stack_x_tbl works with 'continuous' type",  {
 
   expect_equal(
     data.frame(
-      x = c(  1, 2-1e-8,    2,    3, 3+1e-8,    6, 6+1e-8, 7-1e-8, 7, 8),
-      y = c(0.5,    0.5, 0.75, 0.75,   0.25, 0.25,      0,      0, 1, 1)
+      x = c(  1, 2-h,     2,  2+h,  3-h,   3,  3+h,
+             6-h,     6, 6+h, 7-h,   7, 7+h, 8),
+      y = c(0.5, 0.5, 0.625, 0.75, 0.75, 0.5, 0.25,
+            0.25, 0.125,   0,   0, 0.5,   1, 1)
     ),
-    stack_x_tbl(list(x_tbl_con_1, x_tbl_con_2, x_tbl_con_3))
+    stack_x_tbl(list(x_tbl_con_1, x_tbl_con_2, x_tbl_con_3)),
+    tol = tol
+  )
+})
+
+test_that("stack_x_tbl 'stiches' consecutive 'x_tbl's nicely", {
+  x_tbl_con_1 <- data.frame(x = 1:2, y = c(1, 1))
+  x_tbl_con_2 <- data.frame(x = 0:1, y = c(1, 1))
+
+  expect_equal(
+    data.frame(
+      x = c(0, 1-h, 1, 1+h, 2),
+      y = c(1,   1, 1,   1, 1)
+    ),
+    stack_x_tbl(list(x_tbl_con_1, x_tbl_con_2)),
+    tol = tol
   )
 })
 
