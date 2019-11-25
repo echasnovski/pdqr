@@ -367,29 +367,3 @@ stack_x_tbl_con <- function(x_tbl_list) {
 
   data.frame(x = x, y = y)
 }
-
-remove_extra_edges <- function(x_tbl, x_tbl_list) {
-  n <- nrow(x_tbl)
-
-  x_left <- x_tbl[["x"]][1]
-  x_left_is_extra <- is_x_extra(x_left, x_tbl_list)
-
-  x_right <- x_tbl[["x"]][n]
-  x_right_is_extra <- is_x_extra(x_right, x_tbl_list)
-
-  rows_to_remove <- c(1, n)[c(x_left_is_extra, x_right_is_extra)]
-
-  if (length(rows_to_remove) > 0) {
-    x_tbl[-rows_to_remove, ]
-  } else {
-    x_tbl
-  }
-}
-
-is_x_extra <- function(x, x_tbl_list) {
-  x_is_present <- vapply(x_tbl_list, function(x_tbl) {
-    x %in% x_tbl[["x"]]
-  }, logical(1))
-
-  !any(x_is_present)
-}

@@ -340,11 +340,3 @@ test_that("stack_x_tbl handles zero density edges",  {
 
 # stack_x_tbl_con ---------------------------------------------------------
 # Tested in `stack_x_tbl()`
-
-
-# remove_extra_edges ------------------------------------------------------
-# Tested in `stack_x_tbl()`
-
-
-# is_x_extra --------------------------------------------------------------
-# Tested in `stack_x_tbl()`
