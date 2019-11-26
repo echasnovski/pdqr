@@ -1,5 +1,6 @@
 # pdqr (development version)
 
+* `form_mix()` now uses new algorithm of discontinuity approximation, which enables proper handling of distributions with "touching" supports.
 * New boolean option "pdqr.assert_args" may be used to turn off sanity checks of function arguments, which will somewhat increase general execution speed.
 
 # pdqr 0.2.0
