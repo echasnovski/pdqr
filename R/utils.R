@@ -440,10 +440,10 @@ capture_null <- function(x) {
 #' `summary(pdqr_approx_error(as_p(ppois, lambda = 10), ppois, lambda = 10))`.
 #'
 #' @return A data frame with the following columns:
-#' - **grid** <dbl> : A grid at which errors are computed.
-#' - **error** <dbl> : Errors which are computed as `ref_f(grid, ...) -
+#' - **grid** `<dbl>` : A grid at which errors are computed.
+#' - **error** `<dbl>` : Errors which are computed as `ref_f(grid, ...) -
 #' f(grid)`.
-#' - **abserror** <dbl> : Absolute value of "error" column.
+#' - **abserror** `<dbl>` : Absolute value of "error" column.
 #'
 #' @seealso [enpoint()] for representing pdqr-function as a set of points with
 #'   desirable number of rows.

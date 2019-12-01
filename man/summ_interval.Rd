@@ -23,8 +23,8 @@ Details).}
 A \link{region} with one row. That is a data frame with one row
 and the following columns:
 \itemize{
-\item \strong{left} <dbl> : Left end of interval.
-\item \strong{right} <dbl> : Right end of interval.
+\item \strong{left} \verb{<dbl>} : Left end of interval.
+\item \strong{right} \verb{<dbl>} : Right end of interval.
 }
 
 To return a simple numeric vector, call \link[base:unlist]{unlist()} on

@@ -16,8 +16,8 @@ of intervals.}
 A data frame with one row representing one closed interval of HDR and
 the following columns:
 \itemize{
-\item \strong{left} <dbl> : Left end of intervals.
-\item \strong{right} <dbl> : Right end of intervals.
+\item \strong{left} \verb{<dbl>} : Left end of intervals.
+\item \strong{right} \verb{<dbl>} : Right end of intervals.
 }
 }
 \description{

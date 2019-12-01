@@ -51,8 +51,8 @@
 #'
 #' @return A data frame with one row representing one closed interval of HDR and
 #' the following columns:
-#' - **left** <dbl> : Left end of intervals.
-#' - **right** <dbl> : Right end of intervals.
+#' - **left** `<dbl>` : Left end of intervals.
+#' - **right** `<dbl>` : Right end of intervals.
 #'
 #' @seealso [`region_*()`][region] family of functions for working with output
 #'   HDR.

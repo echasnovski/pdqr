@@ -27,9 +27,9 @@ error.}
 \value{
 A data frame with the following columns:
 \itemize{
-\item \strong{grid} <dbl> : A grid at which errors are computed.
-\item \strong{error} <dbl> : Errors which are computed as \code{ref_f(grid, ...) - f(grid)}.
-\item \strong{abserror} <dbl> : Absolute value of "error" column.
+\item \strong{grid} \verb{<dbl>} : A grid at which errors are computed.
+\item \strong{error} \verb{<dbl>} : Errors which are computed as \code{ref_f(grid, ...) - f(grid)}.
+\item \strong{abserror} \verb{<dbl>} : Absolute value of "error" column.
 }
 }
 \description{

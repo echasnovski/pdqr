@@ -40,8 +40,8 @@
 #'
 #' @return A [region][region] with one row. That is a data frame with one row
 #'   and the following columns:
-#' - **left** <dbl> : Left end of interval.
-#' - **right** <dbl> : Right end of interval.
+#' - **left** `<dbl>` : Left end of interval.
+#' - **right** `<dbl>` : Right end of interval.
 #'
 #' To return a simple numeric vector, call [unlist()][base::unlist()] on
 #' `summ_interval()`'s output (see Examples).
