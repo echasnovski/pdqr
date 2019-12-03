@@ -511,7 +511,7 @@ test_that("assert_region works", {
   expect_silent(assert_region(data.frame(left = 1:2, right = 1:2, c = -1:0)))
 
   input <- "a"
-  expect_error(assert_region(input), "`input`.*data frame")
+  expect_error(assert_region(input), "`input` is not a region.*data frame")
 
   # Presence and contents of "left" and "right" columns
   expect_error(assert_region(data.frame(right = 2:3)), 'have.*column.*"left"')
@@ -531,9 +531,9 @@ test_that("assert_region works", {
     assert_region(data.frame(left = 1:2, right = c(2, Inf))), 'finite'
   )
 
-  expect_error(assert_region(data.frame(left = 1, right = -1)), "all.*not less")
+  expect_error(assert_region(data.frame(left = 1, right = -1)), "All.*not less")
   expect_error(
-    assert_region(data.frame(left = 1:2, right = c(-1, 3))), "all.*not less"
+    assert_region(data.frame(left = 1:2, right = c(-1, 3))), "All.*not less"
   )
 
   # Orderliness and uniqueness of intervals
