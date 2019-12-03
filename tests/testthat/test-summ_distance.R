@@ -98,6 +98,7 @@ test_that("summ_distance returns 0 for identical inputs", {
 test_that("summ_distance validates input", {
   expect_error(summ_distance("a", d_dis), "`f`.*not pdqr-function")
   expect_error(summ_distance(d_dis, "a"), "`g`.*not pdqr-function")
+  expect_error(summ_distance(d_dis, d_dis, method = 1), "`method`.*string")
   expect_error(summ_distance(d_dis, d_dis, method = "a"), "`method`.*one of")
 })
 
