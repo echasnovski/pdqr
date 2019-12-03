@@ -258,7 +258,7 @@ distance_compare <- function(f, g) {
   f_geq_g <- prob_geq(f, g)
 
   # prob_geq(g, f) = 1 - prob_geq(f, g) + prob_equal(f, g)
-  2 * max(f_geq_g, 1 - f_geq_g + f_eq_g) - prob_equal(f, g) - 1
+  2 * max(f_geq_g, 1 - f_geq_g + f_eq_g) - f_eq_g - 1
 }
 
 
