@@ -9,7 +9,7 @@
 status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travis-ci.org/echasnovski/pdqr)
 [![Coverage
 status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
-[![CRAN](http://www.r-pkg.org/badges/version/pdqr)](http://cran.r-project.org/web/packages/pdqr/NEWS)
+[![CRAN](https://www.r-pkg.org/badges/version/pdqr?color=blue)](https://cran.r-project.org/package=pdqr)
 [![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
 <!-- [![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr) -->
 <!-- badges: end -->
@@ -157,8 +157,8 @@ norm_mix <- form_mix(norm_list, weights = c(0.6, 0.2, 0.2))
 # Compute 95% highest density region
 (norm_hdr <- summ_hdr(norm_mix, level = 0.95))
 #>          left      right
-#> 1 -1.82436425 2.53094176
-#> 2  3.19653241 4.79331185
+#> 1 -1.82442072 2.53095750
+#> 2  3.19649819 4.79334429
 
 # Visualize
 plot(norm_mix, main = "95% highest density region for normal mixture")
