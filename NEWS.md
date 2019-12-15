@@ -1,7 +1,9 @@
 # pdqr (development version)
 
+* Outputs of `new_p()` and `new_q()` now work more accurately in case of dirac-like functions.
 * `form_mix()` now uses new algorithm of discontinuity approximation, which enables proper handling of distributions with "touching" supports.
 * New boolean option "pdqr.assert_args" may be used to turn off sanity checks of function arguments, which will somewhat increase general execution speed.
+* Minor fixes to remove CRAN "additional issues".
 
 # pdqr 0.2.0
 
