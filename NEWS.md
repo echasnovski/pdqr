@@ -1,4 +1,4 @@
-# pdqr (development version)
+# pdqr 0.2.1
 
 * Outputs of `new_p()` and `new_q()` now work more accurately in case of dirac-like functions.
 * `form_mix()` now uses new algorithm of discontinuity approximation, which enables proper handling of distributions with "touching" supports.
