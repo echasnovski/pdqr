@@ -110,6 +110,16 @@ test_that("new_p's output is integration of new_d's if `type = 'continuous'`", {
   )
 })
 
+test_that("new_p's dirac-like output works with close to center values", {
+  p_dirac <- new_p(1000, "continuous")
+
+  # In case of not careful implementation, these will be not accuracte values
+  # due to numerical representation issues
+  close_vals <- p_dirac(1000 + seq(-1e-8, 1e-8, by = 1e-9))
+  expect_equal(order(close_vals), 1:21)
+  expect_equal(close_vals[c(1, 11, 21)], c(0, 0.5, 1), tol = 1e-12)
+})
+
 test_that("new_p warns about bad `x` elements", {
   expect_warning(new_p(c(1, 0, NA), "continuous"), "x.*NA.*removed")
   expect_warning(new_p(c(1, 0, NaN), "continuous"), "x.*NaN.*removed")

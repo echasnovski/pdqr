@@ -69,7 +69,9 @@ new_p_con <- function(x_tbl) {
     coeffs <- compute_piecelin_density_coeffs(x_tbl, q_ind_bet)
 
     res_between <- p_grid[q_ind_bet] +
-      0.5 * coeffs[["slope"]] * (q_bet * q_bet - x_bet * x_bet) +
+      # Using (q+x)*(q-x) instead of (q^2-x^2) helps to deal with very small
+      # `q-x` values in case of dirac-like functions
+      0.5 * coeffs[["slope"]] * (q_bet + x_bet) * (q_bet - x_bet) +
       coeffs[["intercept"]] * (q_bet - x_bet)
     # Extra cutoffs to respect floating point precision (~10^(-15))
     res[q_not_na][is_q_between] <- pmin(pmax(res_between, 0), 1)
