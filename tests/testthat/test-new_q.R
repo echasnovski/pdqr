@@ -90,6 +90,16 @@ test_that("new_q's output returns the smallest `x` with not exceeding `p`", {
   expect_equal(cur_q_con(c(0, 1)), c(1, 5))
 })
 
+test_that("new_q's dirac-like output works with close to 0.5 values", {
+  q_dirac <- new_q(1000, "continuous")
+
+  # In case of not careful implementation, these will be not accuracte values
+  # due to numerical representation issues
+  close_vals <- q_dirac(0:10/10)
+  expect_equal(order(close_vals), 1:11)
+  expect_equal(close_vals[c(1, 6, 11)], 1000 + c(-1e-8, 0, 1e-8))
+})
+
 test_that("new_q warns about bad `x` elements", {
   expect_warning(new_q(c(1, 0, NA), "continuous"), "x.*NA.*removed")
   expect_warning(new_q(c(1, 0, NaN), "continuous"), "x.*NaN.*removed")

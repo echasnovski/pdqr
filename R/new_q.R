@@ -69,7 +69,7 @@ new_q_con <- function(x_tbl) {
     res[p_not_na][is_inside] <- find_quant(
       p = p_prob,
       cdf_start = p_grid[p_ind],
-      x_start = x[p_ind],
+      x_l = x[p_ind],
       slope = coeffs[["slope"]],
       intercept = coeffs[["intercept"]]
     )
@@ -80,30 +80,31 @@ new_q_con <- function(x_tbl) {
   }
 }
 
-find_quant <- function(p, cdf_start, x_start, slope, intercept) {
+find_quant <- function(p, cdf_start, x_l, slope, intercept) {
   res <- numeric(length(p))
 
-  is_quadr <- !is_near(slope, 0)
-  is_lin <- !(is_quadr | is_near(intercept, 0))
-  is_const <- !(is_quadr | is_lin)
+  is_quad <- !is_near(slope, 0)
+  is_lin <- !(is_quad | is_near(intercept, 0))
+  is_const <- !(is_quad | is_lin)
 
   # Case of quadratic CDF curve (density is a line not parallel to x axis)
-  a <- 0.5 * slope[is_quadr]
-  b <- intercept[is_quadr]
-  c <- (cdf_start[is_quadr] - a * x_start[is_quadr] * x_start[is_quadr] -
-          b * x_start[is_quadr] - p[is_quadr])
-    # Equations have form of a * x^2 + b * x + c = 0
+  # The "true" quadratic curves are transformed in terms of `t = x - x_l` to
+  # handle dirac-like segments
+  a <- 0.5 * slope[is_quad]
+  b <- 2*a*x_l[is_quad] + intercept[is_quad]
+  c <- cdf_start[is_quad] - p[is_quad]
+    # Equations have form a*t^2 + t*x + c = 0
   # Theoretically, `discr` should always be >= 0. However, due to numerical
   # inaccuracies of magnitude ~10^(-15), here call to `pmax()` is needed.
-  discr <- pmax(b * b - 4 * a * c, 0)
-  res[is_quadr] <- (-b + sqrt(discr)) / (2 * a)
+  discr <- pmax(b*b - 4*a*c, 0)
+  res[is_quad] <- (-b + sqrt(discr)) / (2*a) + x_l[is_quad]
 
   # Case of linear CDF curve (density is non-zero constant)
-  res[is_lin] <- x_start[is_lin] +
+  res[is_lin] <- x_l[is_lin] +
     (p[is_lin] - cdf_start[is_lin]) / intercept[is_lin]
 
   # Case of plateau in CDF (density equals zero)
-  res[is_const] <- x_start[is_const]
+  res[is_const] <- x_l[is_const]
 
   res
 }
