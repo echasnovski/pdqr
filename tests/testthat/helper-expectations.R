@@ -1,3 +1,4 @@
+# Expectations ------------------------------------------------------------
 expect_distr_fun <- function(input, pdqr_class, type) {
   expect_true(is.function(input))
   expect_is(input, pdqr_class)
@@ -195,4 +196,13 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
 
 regex_scatter <- function(...) {
   paste0(c(...), collapse = ".*")
+}
+
+
+# Skips -------------------------------------------------------------------
+skip_if_noLD <- function() {
+  skip_if(
+    condition = !isTRUE(capabilities()[["long.double"]]),
+    message = "No long doubles."
+  )
 }

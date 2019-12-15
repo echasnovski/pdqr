@@ -121,6 +121,8 @@ expect_classmetric <- function(f, g, ref_df) {
 
 # summ_classmetric --------------------------------------------------------
 test_that("summ_classmetric works", {
+  skip_if_noLD()
+
   expect_classmetric(f_dis, g_dis, dis_classmetric_df)
   expect_classmetric(f_dis, f_con, mixed_classmetric_df)
   expect_classmetric(f_con, g_con, con_classmetric_df)
@@ -164,6 +166,8 @@ test_that("summ_classmetric validates input", {
 
 # summ_classmetric_df -----------------------------------------------------
 test_that("summ_classmetric_df works", {
+  skip_if_noLD()
+
   method_vec <- unique(classmetric_aliases)
 
   expect_equal(
