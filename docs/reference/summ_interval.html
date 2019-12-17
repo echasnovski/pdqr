@@ -72,7 +72,7 @@ choice." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -173,8 +173,8 @@ Details).</p></td>
 
     <p>A <a href='region.html'>region</a> with one row. That is a data frame with one row
 and the following columns:</p><ul>
-<li><p><strong>left</strong> &lt;dbl&gt; : Left end of interval.</p></li>
-<li><p><strong>right</strong> &lt;dbl&gt; : Right end of interval.</p></li>
+<li><p><strong>left</strong> <code>&lt;dbl&gt;</code> : Left end of interval.</p></li>
+<li><p><strong>right</strong> <code>&lt;dbl&gt;</code> : Right end of interval.</p></li>
 </ul>
 
 <p>To return a simple numeric vector, call <a href='https://rdrr.io/r/base/unlist.html'>unlist()</a> on
@@ -208,14 +208,20 @@ distribution's <a href='summ_center.html'>global mode</a>, "percentile" method -
 summarize distribution with multiple intervals.</p>
 <p><a href='region.html'>region_*()</a> family of functions for working with <code>summ_interval()</code>
 output.</p>
-<p>Other summary functions: <code><a href='summ_center.html'>summ_center</a></code>,
-  <code><a href='summ_classmetric.html'>summ_classmetric</a></code>,
-  <code><a href='summ_distance.html'>summ_distance</a></code>, <code><a href='summ_entropy.html'>summ_entropy</a></code>,
-  <code><a href='summ_hdr.html'>summ_hdr</a></code>, <code><a href='summ_moment.html'>summ_moment</a></code>,
-  <code><a href='summ_order.html'>summ_order</a></code>, <code><a href='summ_prob_true.html'>summ_prob_true</a></code>,
-  <code><a href='summ_pval.html'>summ_pval</a></code>, <code><a href='summ_quantile.html'>summ_quantile</a></code>,
-  <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code>,
-  <code><a href='summ_spread.html'>summ_spread</a></code></p></div>
+<p>Other summary functions: 
+<code><a href='summ_center.html'>summ_center</a>()</code>,
+<code><a href='summ_classmetric.html'>summ_classmetric</a>()</code>,
+<code><a href='summ_distance.html'>summ_distance</a>()</code>,
+<code><a href='summ_entropy.html'>summ_entropy</a>()</code>,
+<code><a href='summ_hdr.html'>summ_hdr</a>()</code>,
+<code><a href='summ_moment.html'>summ_moment</a>()</code>,
+<code><a href='summ_order.html'>summ_order</a>()</code>,
+<code><a href='summ_prob_true.html'>summ_prob_true</a>()</code>,
+<code><a href='summ_pval.html'>summ_pval</a>()</code>,
+<code><a href='summ_quantile.html'>summ_quantile</a>()</code>,
+<code><a href='summ_roc.html'>summ_roc</a>()</code>,
+<code><a href='summ_separation.html'>summ_separation</a>()</code>,
+<code><a href='summ_spread.html'>summ_spread</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "discrete"</span>

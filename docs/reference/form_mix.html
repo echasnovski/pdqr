@@ -72,7 +72,7 @@ for corresponding mixture distribution." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -173,11 +173,13 @@ output will have "continuous" type. In this case all "discrete"
 pdqr-functions in <code>f_list</code> are approximated with corresponding dirac-like
 "continuous" functions (with <a href='form_retype.html'>form_retype(*, method = "dirac")</a>). <strong>Note</strong> that this approximation has consequences
 during computation of comparisons. For example, if original "discrete"
-function <code>f</code> is for distribution with one element <code>x</code>, then probability of `f</p></li>
+function <code>f</code> is for distribution with one element <code>x</code>, then probability of
+<code>f &gt;= x</code> being true is 1. After retyping to dirac-like function, this
+probability will be 0.5, because of symmetrical dirac-like approximation.
+Using a little nudge to <code>x</code> of <code>1e-7</code> magnitude in the correct direction
+(<code>f &gt;= x - 1e-7</code> in this case) will have expected output.</p></li>
 </ul>
 
-<p>= x<code>being true is 1. After retyping to dirac-like function, this probability will be 0.5, because of symmetrical dirac-like approximation. Using a little nudge to</code>x<code>of</code>1e-7<code> magnitude in the correct direction (</code>f
-= x - 1e-7` in this case) will have expected output.</p>
 <p><strong>Class of output mixture</strong> is determined by the class of the first element
 of <code>f_list</code>. To change output class, use one of <code>as_*()</code> functions to change
 class of first element in <code>f_list</code> or class of output.</p>
@@ -187,10 +189,14 @@ continuously: discontinuities are represented as intervals in
 <a href='meta.html'>"x_tbl"</a> with extreme slopes (see Examples).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other form functions: <code><a href='form_estimate.html'>form_estimate</a></code>,
-  <code><a href='form_regrid.html'>form_regrid</a></code>, <code><a href='form_resupport.html'>form_resupport</a></code>,
-  <code><a href='form_retype.html'>form_retype</a></code>, <code><a href='form_smooth.html'>form_smooth</a></code>,
-  <code><a href='form_tails.html'>form_tails</a></code>, <code><a href='form_trans.html'>form_trans</a></code></p></div>
+    <div class='dont-index'><p>Other form functions: 
+<code><a href='form_estimate.html'>form_estimate</a>()</code>,
+<code><a href='form_regrid.html'>form_regrid</a>()</code>,
+<code><a href='form_resupport.html'>form_resupport</a>()</code>,
+<code><a href='form_retype.html'>form_retype</a>()</code>,
+<code><a href='form_smooth.html'>form_smooth</a>()</code>,
+<code><a href='form_tails.html'>form_tails</a>()</code>,
+<code><a href='form_trans.html'>form_trans</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># All "discrete"</span>
@@ -205,7 +211,7 @@ continuously: discontinuities are represented as intervals in
 <span class='no'>con_mix</span> <span class='kw'>&lt;-</span> <span class='fu'>form_mix</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>p_norm</span>, <span class='no'>d_unif</span>), <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.7</span>, <span class='fl'>0.3</span>))
   <span class='co'># Output is a p-function, as is first element of `f_list`</span>
 <span class='no'>con_mix</span></div><div class='output co'>#&gt; Cumulative distribution function of continuous type
-#&gt; Support: ~[-4.75342, 4.75342] (20003 intervals)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>con_mix</span>)</div><div class='img'><img src='form_mix-2.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; Support: ~[-4.75342, 4.75342] (20005 intervals)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>con_mix</span>)</div><div class='img'><img src='form_mix-2.png' alt='' width='700' height='433' /></div><div class='input'>
   <span class='co'># Use `as_*()` functions to change class</span>
 <span class='no'>d_con_mix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>con_mix</span>)
 
@@ -214,9 +220,10 @@ continuously: discontinuities are represented as intervals in
 <span class='no'>con_x_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>con_mix</span>)
 <span class='no'>con_x_tbl</span>[(<span class='no'>con_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&gt;=</span> -<span class='fl'>1e-4</span>) <span class='kw'>&amp;</span> (<span class='no'>con_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&lt;=</span> <span class='fl'>1e-4</span>), ]</div><div class='output co'>#&gt;                  x         y   cumprob
 #&gt; 5001 -1.000000e-08 0.2792602 0.3500000
-#&gt; 5002 -2.904343e-12 0.2792602 0.3500000
-#&gt; 5003  0.000000e+00 0.5792602 0.3500000
-#&gt; 5004  1.000000e-04 0.5792601 0.3500579</div><div class='input'>
+#&gt; 5002 -2.904343e-12 0.4292166 0.3500000
+#&gt; 5003  0.000000e+00 0.4292602 0.3500000
+#&gt; 5004  1.000000e-08 0.5792602 0.3500000
+#&gt; 5005  1.000000e-04 0.5792601 0.3500579</div><div class='input'>
 <span class='co'># Some "discrete", some "continuous"</span>
 <span class='no'>all_mix</span> <span class='kw'>&lt;-</span> <span class='fu'>form_mix</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>d_binom</span>, <span class='no'>d_unif</span>))
 <span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>all_mix</span>)</div><div class='img'><img src='form_mix-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>all_x_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>all_mix</span>)
@@ -225,7 +232,7 @@ continuously: discontinuities are represented as intervals in
 <span class='no'>all_x_tbl</span>[(<span class='no'>all_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&gt;=</span> <span class='fl'>1.5</span>) <span class='kw'>&amp;</span> (<span class='no'>all_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&lt;=</span> <span class='fl'>2.5</span>), ]</div><div class='output co'>#&gt;       x       y   cumprob
 #&gt; 10006 2       0 0.5053711
 #&gt; 10007 2 2197266 0.5163574
-#&gt; 10008 2       0 0.5273438</div><div class='input'>
+#&gt; 10008 2       0 0.5273437</div><div class='input'>
 </div></code></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -182,6 +182,18 @@ functions work. A good place to start is <code><a href='summ_center.html'>summ_c
 <li><p>Documentation of <code><a href='region.html'>region_*()</a></code> functions describes functionality
 to work with regions: data frames defining subset of one dimensional real
 line.</p></li>
+</ul>
+
+<p>This package has the following options (should be set by
+<a href='https://rdrr.io/r/base/options.html'>options()</a>):</p><ul>
+<li><p><em>"pdqr.group_gen.args_new"</em>, <em>"pdqr.group_gen.n_sample"</em>,
+<em>"pdqr.group_gen.repair_supp_method"</em>. They may be used to customize behavior
+of methods for S3 group generic functions. See <a href='methods-group-generic.html'>their help page</a> for more information.</p></li>
+<li><p><em>"pdqr.assert_args"</em>. This boolean option (default to <code>TRUE</code>) may be used
+to turn off sanity checks of function arguments (set it to <code>FALSE</code>), which
+will somewhat increase general execution speed. <strong>Use this option at your own
+risk in case you are confident that input arguments have correct type and
+structure</strong>.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>

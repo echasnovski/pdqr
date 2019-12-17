@@ -77,7 +77,7 @@ probability not less than a level." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -172,8 +172,8 @@ of intervals.</p></td>
 
     <p>A data frame with one row representing one closed interval of HDR and
 the following columns:</p><ul>
-<li><p><strong>left</strong> &lt;dbl&gt; : Left end of intervals.</p></li>
-<li><p><strong>right</strong> &lt;dbl&gt; : Right end of intervals.</p></li>
+<li><p><strong>left</strong> <code>&lt;dbl&gt;</code> : Left end of intervals.</p></li>
+<li><p><strong>right</strong> <code>&lt;dbl&gt;</code> : Right end of intervals.</p></li>
 </ul>
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
@@ -219,14 +219,20 @@ and total probability should be <strong>not less</strong> than <code>level</code
     <div class='dont-index'><p><code><a href='region.html'>region_*()</a></code> family of functions for working with output
 HDR.</p>
 <p><code><a href='summ_interval.html'>summ_interval()</a></code> for computing of single interval summary of distribution.</p>
-<p>Other summary functions: <code><a href='summ_center.html'>summ_center</a></code>,
-  <code><a href='summ_classmetric.html'>summ_classmetric</a></code>,
-  <code><a href='summ_distance.html'>summ_distance</a></code>, <code><a href='summ_entropy.html'>summ_entropy</a></code>,
-  <code><a href='summ_interval.html'>summ_interval</a></code>, <code><a href='summ_moment.html'>summ_moment</a></code>,
-  <code><a href='summ_order.html'>summ_order</a></code>, <code><a href='summ_prob_true.html'>summ_prob_true</a></code>,
-  <code><a href='summ_pval.html'>summ_pval</a></code>, <code><a href='summ_quantile.html'>summ_quantile</a></code>,
-  <code><a href='summ_roc.html'>summ_roc</a></code>, <code><a href='summ_separation.html'>summ_separation</a></code>,
-  <code><a href='summ_spread.html'>summ_spread</a></code></p></div>
+<p>Other summary functions: 
+<code><a href='summ_center.html'>summ_center</a>()</code>,
+<code><a href='summ_classmetric.html'>summ_classmetric</a>()</code>,
+<code><a href='summ_distance.html'>summ_distance</a>()</code>,
+<code><a href='summ_entropy.html'>summ_entropy</a>()</code>,
+<code><a href='summ_interval.html'>summ_interval</a>()</code>,
+<code><a href='summ_moment.html'>summ_moment</a>()</code>,
+<code><a href='summ_order.html'>summ_order</a>()</code>,
+<code><a href='summ_prob_true.html'>summ_prob_true</a>()</code>,
+<code><a href='summ_pval.html'>summ_pval</a>()</code>,
+<code><a href='summ_quantile.html'>summ_quantile</a>()</code>,
+<code><a href='summ_roc.html'>summ_roc</a>()</code>,
+<code><a href='summ_separation.html'>summ_separation</a>()</code>,
+<code><a href='summ_spread.html'>summ_spread</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># "discrete" functions</span>
