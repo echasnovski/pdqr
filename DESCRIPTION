@@ -40,7 +40,7 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE, old_usage = TRUE)
-RoxygenNote: 7.0.1
+RoxygenNote: 7.0.2
 Collate: 
     'as_p.R'
     'as_d.R'
