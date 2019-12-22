@@ -66,6 +66,7 @@ test_that("assert_f_list works",  {
 
   input <- list("a")
   expect_error(assert_f_list(input), "`input`.*pdqr-function")
+  expect_error(assert_f_list(input, f_list_name = "AAA"), "AAA")
   expect_error(
     assert_f_list(input, allow_numbers = TRUE),
     "`input`.*pdqr-function.*number"

@@ -16,7 +16,7 @@ make_unif <- function(min, max) {
 }
 
 validate_error <- function(op) {
-  paste0("All inputs.*`", op, "`.*pdqr-function.*number")
+  paste0("Input to.*`", op, "\\(\\)`.*pdqr-function.*number")
 }
 
 
@@ -694,8 +694,8 @@ test_that("Summary.pdqr warns about 'non-booleanness' in `all()` and `any()`", {
 })
 
 test_that("Summary.pdqr validates input in case of `all()` and `any()`", {
-  expect_error(all(d_dis, "a"), "All.*`all\\(\\)`.*pdqr")
-  expect_error(any(d_con >= 1, 1), "All.*`any\\(\\)`.*pdqr")
+  expect_error(all(d_dis, "a"), "Input to.*`all\\(\\)`.*pdqr")
+  expect_error(any(d_con >= 1, 1), "Input to.*`any\\(\\)`.*pdqr")
 })
 
 test_that("Summary.pdqr uses options", {
@@ -784,7 +784,7 @@ test_that("Summary.pdqr validates input in general cases", {
 # Tested in `Summary.pdqr`
 
 
-# ensure_pdqr_functions ---------------------------------------------------
+# convert_numbers_to_pdqr_functions ---------------------------------------
 # Tested in `Ops.pdqr`
 
 

@@ -33,12 +33,14 @@ boolean_pdqr <- function(prob_true, pdqr_class) {
 
 
 # Handling list of pdqr-functions -----------------------------------------
-assert_f_list <- function(f_list, allow_numbers = FALSE) {
+assert_f_list <- function(f_list, allow_numbers = FALSE, f_list_name = NULL) {
   if (dont_assert()) {
     return(TRUE)
   }
 
-  f_list_name <- enbacktick(deparse(substitute(f_list)))
+  if (is.null(f_list_name)) {
+    f_list_name <- enbacktick(deparse(substitute(f_list)))
+  }
 
   if (missing(f_list)) {
     if (allow_numbers) {
@@ -83,7 +85,13 @@ assert_f_list <- function(f_list, allow_numbers = FALSE) {
 }
 
 compute_f_list_meta <- function(f_list) {
-  is_elem_pdqr <- vapply(f_list, is_pdqr_fun, logical(1))
+  # Note that it is assumed that `f_list` contains only pdqr-functions or single
+  # numbers. Currently it should be pretested with
+  # `assert_f_list(f_list, allow_numbers = TRUE)`
+  # Main reason behind it is a wish to avoid usage of possibly "computantionally
+  # expensive" `is_pdqr_fun()`.
+  is_elem_number <- vapply(f_list, is_single_number, logical(1))
+  is_elem_pdqr <- !is_elem_number
   type_vec <- vapply(f_list[is_elem_pdqr], meta_type, character(1))
 
   # Combined type is "discrete" only if all inputs are "discrete"
