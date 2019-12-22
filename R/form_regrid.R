@@ -204,5 +204,15 @@ adjust_to_grid_con <- function(f, ref_grid) {
     x_tbl <- f_x_tbl[closest_x_inds, ]
   }
 
+  # Special test to catch case when all y-values at new grid is zero. Other
+  # violations of proper "x_tbl" structure are impossible because input `f` is
+  # tested to be a proper pdqr-function.
+  if (is_zero(sum(x_tbl[["y"]]))) {
+    stop_collapse(
+      'All y-values in `form_regrid()` output\'s "x_tbl" are zero. ',
+      'Try different `n_grid`.'
+    )
+  }
+
   new_pdqr_by_ref(f)(x_tbl, "continuous")
 }

@@ -146,12 +146,20 @@ test_that("form_regrid upgrids 'continuous' functions", {
   )
 })
 
-test_that("form_regrid errors if `n_grid=2`, zero edges, 'continuous' type", {
-  # Output `x` in case of `n_grid = 2` are edges of input "x_tbl". So if they
-  # are 0s then there should be an error.
+test_that("form_regrid throws error if all y-values in output are zero", {
   con_zero_edges <- new_d(data.frame(x = 0:2, y = c(0, 1, 0)), "continuous")
-  expect_error(form_regrid(con_zero_edges, n_grid = 2, method = "x"))
-  expect_error(form_regrid(con_zero_edges, n_grid = 2, method = "q"))
+  expect_error(
+    form_regrid(con_zero_edges, n_grid = 2, method = "x"), "y-values.*zero"
+  )
+  expect_error(
+    form_regrid(con_zero_edges, n_grid = 2, method = "q"), "y-values.*zero"
+  )
+
+  x_tbl_zero_plateau <- data.frame(x = 1:10, y = c(0, 1, 0, rep(0, 4), 0, 1, 0))
+  zero_plateau <- new_d(x_tbl_zero_plateau, "continuous")
+  expect_error(
+    form_regrid(zero_plateau, n_grid = 3, method = "x"), "y-values.*zero"
+  )
 })
 
 test_that("form_regrid works with different pdqr-functions", {
