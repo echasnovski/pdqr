@@ -326,11 +326,14 @@ math_abs <- function(f) {
 }
 
 math_sign <- function(f) {
-  d_f <- as_d(f)
+  p_f <- as_p(f)
+
+  prob_zero <- if (meta_type(f) == "discrete") {as_d(f)(0)} else {0}
+  prob_leq_zero <- p_f(0)
 
   x_tbl <- data.frame(
-    x    = c(          -1,             0,            1),
-    prob = c((d_f < 0)(1), (d_f == 0)(1), (d_f > 0)(1))
+    x    = c(                       -1,         0,                 1),
+    prob = c(prob_leq_zero - prob_zero, prob_zero, 1 - prob_leq_zero)
   )
 
   new_pdqr_by_ref(f)(x_tbl, "discrete")
