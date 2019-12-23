@@ -659,3 +659,23 @@ enpoint_q <- function(f, n_points) {
 enpoint_r <- function(f, n_points) {
   data.frame(n = seq_len(n_points), x = f(n_points))
 }
+
+
+# Other -------------------------------------------------------------------
+disable_asserting_locally <- function() {
+  op <- options(pdqr.assert_args = FALSE)
+
+  do.call(
+    on.exit, list(substitute(options(op)), add = TRUE),
+    envir = parent.frame()
+  )
+}
+
+enable_asserting_locally <- function() {
+  op <- options(pdqr.assert_args = TRUE)
+
+  do.call(
+    on.exit, list(substitute(options(op)), add = TRUE),
+    envir = parent.frame()
+  )
+}

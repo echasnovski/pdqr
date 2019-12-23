@@ -69,6 +69,9 @@
 form_tails <- function(f, level, method = "trim", direction = "both") {
   assert_form_tails_args(f, level, method, direction)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   switch(
     method,
     trim = tails_trim(f, level, direction),

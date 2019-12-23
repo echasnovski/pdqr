@@ -664,3 +664,31 @@ test_that("enpoint validates input", {
 
 # enpoint_r ---------------------------------------------------------------
 # Tested in `enpoint()`
+
+
+# disable_asserting_locally -----------------------------------------------
+test_that("disable_asserting_locally works", {
+  op <- options(pdqr.assert_args = TRUE)
+  on.exit(options(op))
+
+  test_fun <- function() {
+    disable_asserting_locally()
+
+    getOption("pdqr.assert_args")
+  }
+  expect_equal(test_fun(), FALSE)
+})
+
+
+# enable_asserting_locally ------------------------------------------------
+test_that("enable_asserting_locally works", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+
+  test_fun <- function() {
+    enable_asserting_locally()
+
+    getOption("pdqr.assert_args")
+  }
+  expect_equal(test_fun(), TRUE)
+})

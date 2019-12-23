@@ -31,6 +31,9 @@ as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
   # Detect support
   support <- detect_support_r(smpl, format_support(support))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   # Create density function from sample
   new_call_args <- c_dedupl(list(x = smpl, type = "continuous"), args_new)
   d_f <- do.call(new_d, new_call_args)
@@ -46,6 +49,9 @@ as_r.default <- function(f, support = NULL, ..., n_grid = 10001,
 #' @export
 as_r.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   new_r(x = meta_x_tbl(f), type = meta_type(f))
 }

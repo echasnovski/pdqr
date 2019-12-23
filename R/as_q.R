@@ -26,6 +26,9 @@ as_q.default <- function(f, support = NULL, ..., n_grid = 10001) {
 
   p_f <- inversing(q_f, c(0, 1), n_grid = n_grid)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   as_q(as_p(p_f, support, n_grid = n_grid))
 }
 
@@ -33,6 +36,9 @@ as_q.default <- function(f, support = NULL, ..., n_grid = 10001) {
 #' @export
 as_q.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   new_q(x = meta_x_tbl(f), type = meta_type(f))
 }

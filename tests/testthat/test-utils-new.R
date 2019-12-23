@@ -139,6 +139,12 @@ test_that("is_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   expect_false(is_pdqr_fun(f_bad_x_tbl_7))
 })
 
+test_that("is_pdqr_fun is not affected by 'pdqr.assert_args'", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_false(is_pdqr_fun("a"))
+})
+
 
 # is_pdqr_type ------------------------------------------------------------
 test_that("is_pdqr_type works", {
@@ -147,6 +153,12 @@ test_that("is_pdqr_type works", {
 
   expect_false(is_pdqr_type(1))
   expect_false(is_pdqr_type(c("discrete", "continuous")))
+  expect_false(is_pdqr_type("a"))
+})
+
+test_that("is_pdqr_type is not affected by 'pdqr.assert_args'", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
   expect_false(is_pdqr_type("a"))
 })
 
@@ -163,6 +175,12 @@ test_that("is_support works", {
   expect_false(is_support(c(-Inf, 1)))
   expect_false(is_support(c(-1, Inf)))
   expect_false(is_support(c(-Inf, Inf)))
+})
+
+test_that("is_support is not affected by 'pdqr.assert_args'", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_false(is_support("a"))
 })
 
 
@@ -225,6 +243,12 @@ test_that("is_x_tbl works with 'continuous' type", {
   )
   # Different column order is allowed
   expect_true(is_x_tbl(data.frame(y = c(1, 1), x = 1:2), type = "continuous"))
+})
+
+test_that("is_x_tbl is not affected by 'pdqr.assert_args'", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_false(is_x_tbl("a", "discrete"))
 })
 
 

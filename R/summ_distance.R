@@ -107,6 +107,9 @@ summ_distance <- function(f, g, method = "KS") {
     method, c("KS", "totvar", "compare", "wass", "cramer", "align", "entropy")
   )
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   switch(
     method,
     KS = distance_ks(f, g),

@@ -134,6 +134,9 @@ region_is_in <- function(region, x, left_closed = TRUE, right_closed = TRUE) {
   assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
   assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   # Using `findInterval()` is safe because `region` should represent ordered
   # distinct intervals
   left_ind <- findInterval(x, region[["left"]], left.open = !left_closed)
@@ -160,6 +163,9 @@ region_prob <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
   assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   if (meta_type(f) == "discrete") {
     x_tbl <- meta_x_tbl(f)
 
@@ -185,6 +191,9 @@ region_height <- function(region, f, left_closed = TRUE, right_closed = TRUE) {
   assert_pdqr_fun(f)
   assert_type(left_closed, is_truefalse, "`TRUE` or `FALSE`")
   assert_type(right_closed, is_truefalse, "`TRUE` or `FALSE`")
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   x <- meta_x_tbl(f)[["x"]]
   x_is_in_region <- region_is_in(

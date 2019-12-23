@@ -76,6 +76,9 @@ summ_separation <- function(f, g, method = "KS", n_grid = 10001) {
   assert_in_set(method, c("KS", "GM", "OP", "F1", "MCC"))
   assert_type(n_grid, is_single_number, type_name = "single number")
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   # Early returns in cases of non-overlapping supports
   f_supp <- meta_support(f)
   g_supp <- meta_support(g)

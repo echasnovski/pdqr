@@ -171,22 +171,40 @@ filter_numbers <- function(x) {
 
 # Predicates for pdqr-functions -------------------------------------------
 is_pdqr_fun <- function(f) {
+  # Force performing assertions in order to have chance of getting `FALSE` in
+  # case option "pdqr.assert_args" is disabled
+  enable_asserting_locally()
+
   tryCatch(assert_pdqr_fun(f), error = function(e) {FALSE})
 }
 
 is_pdqr_type <- function(type) {
+  # Force performing assertions in order to have chance of getting `FALSE` in
+  # case option "pdqr.assert_args" is disabled
+  enable_asserting_locally()
+
   tryCatch(assert_pdqr_type(type), error = function(e) {FALSE})
 }
 
 is_support <- function(supp, allow_na = FALSE) {
+  # Force performing assertions in order to have chance of getting `FALSE` in
+  # case option "pdqr.assert_args" is disabled
+  enable_asserting_locally()
+
   tryCatch(assert_support(supp, allow_na), error = function(e) {FALSE})
 }
 
 is_x_tbl <- function(x, type) {
+  # Force performing assertions in order to have chance of getting `FALSE` in
+  # case option "pdqr.assert_args" is disabled
+  enable_asserting_locally()
+
   tryCatch(assert_x_tbl(x, type), error = function(e) {FALSE})
 }
 
 is_x_tbl_meta <- function(x, type) {
+  # There is no `enable_asserting_locally()` because this is a helper function
+
   tryCatch(assert_x_tbl_meta(x, type), error = function(e) {FALSE})
 }
 

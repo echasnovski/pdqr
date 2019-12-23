@@ -48,6 +48,9 @@ NULL
 summ_entropy <- function(f) {
   assert_pdqr_fun(f)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   cross_entropy(f, f)
 }
 
@@ -59,6 +62,9 @@ summ_entropy2 <- function(f, g, method = "relative", clip = exp(-20)) {
   assert_type(method, is_string)
   assert_in_set(method, c("relative", "cross"))
   assert_type(clip, is_single_number, "single non-negative number", min_val = 0)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   switch(
     method,

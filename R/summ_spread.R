@@ -63,9 +63,12 @@ NULL
 #' @rdname summ_spread
 #' @export
 summ_spread <- function(f, method = "sd") {
-  # `f` is validated inside `summ_*()` calls
+  assert_pdqr_fun(f)
   assert_type(method, is_string)
   assert_in_set(method, c("var", "sd", "iqr", "mad", "range"))
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   switch(
     method,
@@ -97,6 +100,9 @@ summ_var <- function(f) {
 summ_iqr <- function(f) {
   assert_pdqr_fun(f)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   quarts <- as_q(f)(c(0.25, 0.75))
 
   quarts[2] - quarts[1]
@@ -107,6 +113,9 @@ summ_iqr <- function(f) {
 summ_mad <- function(f) {
   # `f` is validated inside `summ_median(f)`
   med <- summ_median(f)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   summ_median(abs(f - med))
 }

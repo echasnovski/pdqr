@@ -104,6 +104,9 @@ summ_roc <- function(f, g, n_grid = 1001) {
     min_val = 1
   )
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   # This is needed to achieve [0; 1] range of both `fpr` and `tpr` in case of
   # "discrete" type input
   t_range <- stretch_range(union_support(f, g))
@@ -124,6 +127,9 @@ summ_rocauc <- function(f, g, method = "expected") {
   assert_pdqr_fun(g)
   assert_type(method, is_string)
   assert_in_set(method, c("expected", "pessimistic", "optimistic"))
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   method_coef <- switch(method, expected = 0.5, pessimistic = 0, optimistic = 1)
 

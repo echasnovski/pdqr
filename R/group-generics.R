@@ -205,6 +205,9 @@ NULL
 Math.pdqr <- function(x, ...) {
   assert_gen_single_input(gen = .Generic, x)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   switch(
     .Generic,
     abs = math_abs(x),
@@ -218,6 +221,9 @@ Math.pdqr <- function(x, ...) {
 Ops.pdqr <- function(e1, e2) {
   if (missing(e2)) {
     assert_gen_single_input(gen = .Generic, e1)
+
+    # Speed optimization (skips possibly expensive assertions)
+    disable_asserting_locally()
 
     switch(
       .Generic,
@@ -237,6 +243,9 @@ Ops.pdqr <- function(e1, e2) {
       f_list = e_list, allow_numbers = TRUE,
       f_list_name = paste0("Input to `", .Generic, "()`")
     )
+
+    # Speed optimization (skips possibly expensive assertions)
+    disable_asserting_locally()
 
     e_list <- convert_numbers_to_pdqr_functions(e_list)
     e1 <- e_list[[1]]
@@ -287,6 +296,9 @@ Summary.pdqr <- function(..., na.rm = FALSE) {
     f_list = e_list, allow_numbers = TRUE,
     f_list_name = e_list_name
   )
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   e_list <- convert_numbers_to_pdqr_functions(e_list)
 
@@ -401,6 +413,9 @@ ops_linear <- function(gen, e1, e2) {
     ops_meta <- list(e1_num = meta_support(e1), e2_num = e2, pdqr = e1)
   }
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   if ((gen == "-") && e1_is_number) {
     # This relies on custom implementations of `-` which takes one argument and
     # `+` which takes two arguments and goes into the next clause
@@ -421,6 +436,9 @@ ops_logic <- function(gen, e1, e2) {
   if (!is_boolean_pdqr_fun(e1) || !is_boolean_pdqr_fun(e2)) {
     warning_boolean_pdqr_fun(f_name = paste0("One of `", gen, "` input"))
   }
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   d_zero <- new_d(0, "discrete")
 

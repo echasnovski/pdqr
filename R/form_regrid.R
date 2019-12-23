@@ -100,6 +100,9 @@ form_regrid <- function(f, n_grid, method = "x") {
   assert_type(method, is_string)
   assert_in_set(method, c("x", "q"))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   n_grid <- as.integer(n_grid)
 
   # Early regridding

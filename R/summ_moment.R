@@ -61,6 +61,9 @@ summ_moment <- function(f, order, central = FALSE, standard = FALSE,
   assert_type(absolute, is_truefalse, "`TRUE` or `FALSE`")
   assert_type(standard, is_truefalse, "`TRUE` or `FALSE`")
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   if (central) {
     f <- f - summ_mean(f)
   }

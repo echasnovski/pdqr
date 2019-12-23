@@ -77,6 +77,9 @@ form_mix <- function(f_list, weights = NULL) {
   assert_type(weights, is.numeric, allow_null = TRUE)
   weights <- impute_weights(weights, length(f_list))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   f_list_meta <- compute_f_list_meta(f_list)
   res_type <- f_list_meta[["type"]]
 
@@ -175,6 +178,9 @@ form_smooth <- function(f, n_sample = 10000, args_new = list()) {
     min_val = 2
   )
   assert_type(args_new, is.list)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   f_x_tbl <- meta_x_tbl(f)
   pdqr_fun <- new_pdqr_by_ref(f)
@@ -301,6 +307,9 @@ form_estimate <- function(f, stat, sample_size, ...,
   )
   assert_type(args_new, is.list)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   # Producing sample of statistics
   r_f <- as_r(f)
   est_smpl <- lapply(seq_len(n_sample), function(i) {
@@ -384,8 +393,13 @@ NULL
 #' @rdname form_recenter
 #' @export
 form_recenter <- function(f, to, method = "mean") {
-  # `f` and `method` are checked in subsequent `summ_center()` call
+  assert_pdqr_fun(f)
   assert_type(to, is_single_number, type_name = "single number")
+  assert_type(method, is_string)
+  assert_in_set(method, c("mean", "median", "mode"))
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   f - summ_center(f, method) + to
 }
@@ -395,14 +409,18 @@ form_recenter <- function(f, to, method = "mean") {
 form_respread <- function(f, to, method = "sd", center_method = "mean") {
   # `f` and `method` are checked in subsequent `summ_center()` and
   # `summ_spread()` calls
+  assert_pdqr_fun(f)
   assert_type(
     to, is_single_number, type_name = "single non-negative number",
     min_val = 0
   )
-  # `center_method` needs its own check to preserve variable name in possible
-  # error output
+  assert_type(method, is_string)
+  assert_in_set(method, c("sd", "var", "iqr", "mad", "range"))
   assert_type(center_method, is_string)
   assert_in_set(center_method, c("mean", "median", "mode"))
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   center <- summ_center(f, center_method)
 

@@ -64,6 +64,9 @@ summ_pval <- function(f, obs, method = "both", adjust = "holm") {
   assert_type(adjust, is_string)
   assert_in_set(adjust, stats::p.adjust.methods)
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   f <- as_p(f)
 
   res <- switch(

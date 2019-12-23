@@ -25,6 +25,9 @@ summ_quantile <- function(f, probs) {
     stop_collapse("`probs` should have values inside [0; 1].")
   }
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   as_q(f)(probs)
 }
 

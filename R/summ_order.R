@@ -91,6 +91,9 @@ summ_order <- function(f_list, method = "compare", decreasing = FALSE) {
   assert_in_set(method, c("compare", "mean", "median", "mode"))
   assert_type(decreasing, is_truefalse, "`TRUE` or `FALSE`")
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   switch(
     method,
     compare = order_compare(f_list, decreasing = decreasing),

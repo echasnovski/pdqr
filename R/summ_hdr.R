@@ -98,6 +98,9 @@ summ_hdr <- function(f, level = 0.95) {
     min_val = 0, max_val = 1
   )
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   # Early returns for special `level`s
   if (level == 0) {
     f_mode <- summ_mode(f, method = "global")

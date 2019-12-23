@@ -107,6 +107,9 @@ summ_interval <- function(f, level = 0.95, method = "minwidth",
     min_val = 1
   )
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   edge_probs <- 0.5 * c(1-level, 1+level)
   res <- switch(
     method,

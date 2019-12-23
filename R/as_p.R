@@ -43,6 +43,9 @@ as_p.default <- function(f, support = NULL, ..., n_grid = 10001) {
   # approximation of q-function in case `as_q()` is called
   x_tbl <- remove_zero_edge_y(data.frame(x = x, y = y))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   new_p(x_tbl, "continuous")
 }
 
@@ -50,6 +53,9 @@ as_p.default <- function(f, support = NULL, ..., n_grid = 10001) {
 #' @export
 as_p.pdqr <- function(f, ...) {
   assert_pdqr_fun(f)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   new_p(x = meta_x_tbl(f), type = meta_type(f))
 }

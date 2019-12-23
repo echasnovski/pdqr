@@ -139,6 +139,9 @@ summ_classmetric <- function(f, g, threshold, method = "F1") {
   assert_type(method, is_string)
   assert_in_set(method, names(classmetric_aliases))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   classmetric(
     p_f_t = as_p(f)(threshold),
     p_g_t = as_p(g)(threshold),
@@ -159,6 +162,9 @@ summ_classmetric_df <- function(f, g, threshold, method = "F1") {
       "`method` should contain only values allowed in `summ_classmetric()`."
     )
   }
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   p_f_t <- as_p(f)(threshold)
   p_g_t <- as_p(g)(threshold)

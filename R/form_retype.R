@@ -93,6 +93,9 @@ form_retype <- function(f, type = NULL, method = "value") {
   assert_type(method, is_string)
   assert_in_set(method, c("piecelin", "dirac", "value"))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   if (is.null(type)) {
     type <- switch(
       meta_type(f),

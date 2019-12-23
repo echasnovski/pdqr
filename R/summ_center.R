@@ -57,9 +57,12 @@ NULL
 #' @rdname summ_center
 #' @export
 summ_center <- function(f, method = "mean") {
-  # `f` is validated inside `summ_*()` calls
+  assert_pdqr_fun(f)
   assert_type(method, is_string)
   assert_in_set(method, c("mean", "median", "mode"))
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   switch(
     method,
@@ -88,6 +91,9 @@ summ_mean <- function(f) {
 #' @export
 summ_median <- function(f) {
   assert_pdqr_fun(f)
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
 
   as_q(f)(0.5)
 }

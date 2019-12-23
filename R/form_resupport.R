@@ -91,6 +91,9 @@ form_resupport <- function(f, support, method = "reflect") {
   assert_type(method, is_string)
   assert_in_set(method, c("reflect", "trim", "winsor", "linear"))
 
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
   if (all(is.na(support))) {
     return(f)
   }
