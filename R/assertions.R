@@ -320,8 +320,8 @@ assert_x_tbl_con <- function(x_tbl, x_tbl_name, err_header = "") {
 
   if (anyDuplicated(x_tbl[["x"]]) != 0) {
     stop_collapse(
-      err_header, '"x" column in ', x_tbl_name, ' should not have duplicate ",
-      "values.'
+      err_header, '"x" column in ', x_tbl_name, ' should not have duplicate ',
+      'values.'
     )
   }
 
@@ -329,14 +329,14 @@ assert_x_tbl_con <- function(x_tbl, x_tbl_name, err_header = "") {
 
   if (any(x_tbl[["y"]] < 0)) {
     stop_collapse(
-      err_header, '"y" column in ', x_tbl_name, ' should not have negative ",
-      "values.'
+      err_header, '"y" column in ', x_tbl_name, ' should not have negative ',
+      'values.'
     )
   }
   if (!any(x_tbl[["y"]] > 0)) {
     stop_collapse(
-      err_header, '"y" column in ', x_tbl_name, ' should have at least one ",
-      "positive value.'
+      err_header, '"y" column in ', x_tbl_name, ' should have at least one ',
+      'positive value.'
     )
   }
 
