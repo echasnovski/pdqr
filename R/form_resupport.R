@@ -115,6 +115,8 @@ form_resupport <- function(f, support, method = "reflect") {
   )
 }
 
+methods_resupport <- c("reflect", "trim", "winsor", "linear")
+
 
 # "reflect" ---------------------------------------------------------------
 resupport_reflect <- function(f, support) {

@@ -72,6 +72,8 @@ summ_center <- function(f, method = "mean") {
   )
 }
 
+methods_center <- c("mean", "median", "mode")
+
 #' @rdname summ_center
 #' @export
 summ_mean <- function(f) {
@@ -122,6 +124,8 @@ summ_mode <- function(f, method = "global") {
     x[col_geq_right & col_geq_left]
   }
 }
+
+methods_mode <- c("global", "local")
 
 summ_mean_con <- function(x_tbl) {
   n <- nrow(x_tbl)

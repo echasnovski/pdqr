@@ -111,6 +111,8 @@ form_retype <- function(f, type = NULL, method = "value") {
   )
 }
 
+methods_retype <- c("piecelin", "dirac", "value")
+
 retype_dis <- function(f, method) {
   if (meta_type(f) == "discrete") {
     return(f)

@@ -79,6 +79,8 @@ form_tails <- function(f, level, method = "trim", direction = "both") {
   )
 }
 
+methods_tails <- c("trim", "winsor")
+
 tails_trim <- function(f, level, direction = "both") {
   is_all_trimmed <- ((direction %in% c("left", "right")) && (level == 1)) ||
     ((direction == "both") && (level == 0.5))

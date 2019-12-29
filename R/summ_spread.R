@@ -80,6 +80,8 @@ summ_spread <- function(f, method = "sd") {
   )
 }
 
+methods_spread <- c("var", "sd", "iqr", "mad", "range")
+
 #' @rdname summ_spread
 #' @export
 summ_sd <- function(f) {

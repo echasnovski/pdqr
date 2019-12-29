@@ -117,6 +117,8 @@ form_regrid <- function(f, n_grid, method = "x") {
   adjust_to_grid(f, ref_grid)
 }
 
+methods_regrid <- c("x", "q")
+
 early_regrid <- function(f, n_grid) {
   # Return dirac-like function at median if `n_grid == 1`
   if (n_grid == 1) {

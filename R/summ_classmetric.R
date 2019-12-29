@@ -149,6 +149,40 @@ summ_classmetric <- function(f, g, threshold, method = "F1") {
   )
 }
 
+#' Aliases of methods for `summ_classmetric()`
+#'
+#' This is a vector of aliases for possible values of `method` argument in
+#' `summ_classmetric()`. Its names are all possible values of `method`, and
+#' values - "canonical" method name.
+#'
+#' @noRd
+classmetric_aliases <- c(
+  # Simple metrics
+  TPR   = "TPR", TP = "TPR", sensitivity = "TPR", recall = "TPR",
+  TNR   = "TNR", TN = "TNR", specificity = "TNR",
+  FPR   = "FPR", FP = "FPR", `fall-out` = "FPR",
+  FNR   = "FNR", FN = "FNR", miss_rate = "FNR",
+  PPV   = "PPV", precision = "PPV",
+  NPV   = "NPV",
+  FDR   = "FDR",
+  FOR   = "FOR",
+  `LR+` = "LR+",
+  `LR-` = "LR-",
+  # Combined metrics
+  Acc   = "Acc", accuracy = "Acc",
+  ER    = "ER", error_rate = "ER",
+  GM    = "GM",
+  F1    = "F1",
+  OP    = "OP",
+  MCC   = "MCC", corr = "MCC",
+  YI    = "YI", youden = "YI", informedness = "YI",
+  MK    = "MK", markedness = "MK",
+  Jaccard = "Jaccard",
+  DOR   = "DOR", odds_ratio = "DOR"
+)
+
+methods_classmetric <- names(classmetric_aliases)
+
 #' @rdname summ_classmetric
 #' @export
 summ_classmetric_df <- function(f, g, threshold, method = "F1") {
@@ -258,35 +292,3 @@ classmetric_mcc <- function(p_f_t, p_g_t) {
   # TP + FN = 1; TN + FP = 1
   (tp*tn - fp*fn) / sqrt((tp + fp) * (tn + fn))
 }
-
-#' Aliases of methods for `summ_classmetric()`
-#'
-#' This is a vector of aliases for possible values of `method` argument in
-#' `summ_classmetric()`. Its names are all possible values of `method`, and
-#' values - "canonical" method name.
-#'
-#' @noRd
-classmetric_aliases <- c(
-  # Simple metrics
-  TPR   = "TPR", TP = "TPR", sensitivity = "TPR", recall = "TPR",
-  TNR   = "TNR", TN = "TNR", specificity = "TNR",
-  FPR   = "FPR", FP = "FPR", `fall-out` = "FPR",
-  FNR   = "FNR", FN = "FNR", miss_rate = "FNR",
-  PPV   = "PPV", precision = "PPV",
-  NPV   = "NPV",
-  FDR   = "FDR",
-  FOR   = "FOR",
-  `LR+` = "LR+",
-  `LR-` = "LR-",
-  # Combined metrics
-  Acc   = "Acc", accuracy = "Acc",
-  ER    = "ER", error_rate = "ER",
-  GM    = "GM",
-  F1    = "F1",
-  OP    = "OP",
-  MCC   = "MCC", corr = "MCC",
-  YI    = "YI", youden = "YI", informedness = "YI",
-  MK    = "MK", markedness = "MK",
-  Jaccard = "Jaccard",
-  DOR   = "DOR", odds_ratio = "DOR"
-)

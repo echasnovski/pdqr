@@ -122,6 +122,10 @@ summ_distance <- function(f, g, method = "KS") {
   )
 }
 
+methods_distance <- c(
+  "KS", "totvar", "compare", "wass", "cramer", "align", "entropy"
+)
+
 
 # Method "KS" -------------------------------------------------------------
 distance_ks <- function(f, g) {

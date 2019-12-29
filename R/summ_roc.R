@@ -136,6 +136,8 @@ summ_rocauc <- function(f, g, method = "expected") {
   prob_greater(g, f) + method_coef * prob_equal(g, f)
 }
 
+methods_rocauc <- c("expected", "pessimistic", "optimistic")
+
 #' @rdname summ_roc
 #' @export
 roc_plot <- function(roc, ..., add_bisector = TRUE) {

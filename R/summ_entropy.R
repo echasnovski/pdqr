@@ -73,6 +73,8 @@ summ_entropy2 <- function(f, g, method = "relative", clip = exp(-20)) {
   )
 }
 
+methods_entropy2 <- c("relative", "cross")
+
 cross_entropy <- function(f, g, clip = exp(-20)) {
   d_f <- as_d(f)
   d_g <- as_d(g)

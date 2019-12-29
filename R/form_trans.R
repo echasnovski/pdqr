@@ -129,6 +129,8 @@ form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
   )
 }
 
+methods_trans <- c("random", "bruteforce")
+
 #' @rdname form_trans
 #' @export
 form_trans_self <- function(f, trans, ..., method = "random",

@@ -122,6 +122,8 @@ summ_interval <- function(f, level = 0.95, method = "minwidth",
   region_new(left = max(f_supp[1], res[1]), right = min(f_supp[2], res[2]))
 }
 
+methods_interval <- c("minwidth", "percentile", "sigma")
+
 interval_minwidth <- function(f, level = 0.95, n_grid = 10001) {
   if (level == 0) {
     mode <- summ_mode(f, method = "global")

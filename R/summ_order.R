@@ -103,6 +103,8 @@ summ_order <- function(f_list, method = "compare", decreasing = FALSE) {
   )
 }
 
+methods_order <- c("compare", "mean", "median", "mode")
+
 #' @export
 #' @rdname summ_order
 summ_sort <- function(f_list, method = "compare", decreasing = FALSE) {

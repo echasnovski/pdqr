@@ -98,6 +98,8 @@ summ_separation <- function(f, g, method = "KS", n_grid = 10001) {
   )
 }
 
+methods_separation <- c("KS", "GM", "OP", "F1", "MCC")
+
 separation_ks <- function(f, g) {
   p_f <- as_p(f)
   p_g <- as_p(g)

@@ -79,6 +79,8 @@ summ_pval <- function(f, obs, method = "both", adjust = "holm") {
   stats::p.adjust(res, method = adjust)
 }
 
+methods_pval <- c("both", "right", "left")
+
 both_pval <- function(p_f, obs) {
   res <- 2 * pmin(right_pval(p_f, obs), left_pval(p_f, obs))
 
