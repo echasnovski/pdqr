@@ -3,7 +3,7 @@ context("test-form_tails")
 
 # Custom expectations -----------------------------------------------------
 expect_self_x_tbl <- function(pdqr_f) {
-  for (method in c("trim", "winsor")) {
+  for (method in methods_tails) {
     for (dir in c("both", "left", "right")) {
       expect_equal_x_tbl(form_tails(pdqr_f, 0, method, dir), pdqr_f)
     }
@@ -13,7 +13,7 @@ expect_self_x_tbl <- function(pdqr_f) {
 expect_dirac <- function(pdqr_f, x_vec) {
   max_levels <- c("both" = 0.5, "left" = 1, "right" = 1)
 
-  for (method in c("trim", "winsor")) {
+  for (method in methods_tails) {
     for (dir in c("both", "left", "right")) {
       expect_equal_x_tbl(
         form_tails(pdqr_f, max_levels[dir], method, dir),
@@ -24,7 +24,7 @@ expect_dirac <- function(pdqr_f, x_vec) {
 }
 
 expect_error_negative_level <- function(pdqr_f) {
-  for (method in c("trim", "winsor")) {
+  for (method in methods_tails) {
     for (dir in c("both", "left", "right")) {
       expect_error(
         form_tails(pdqr_f, -0.1, method = method, direction = dir),

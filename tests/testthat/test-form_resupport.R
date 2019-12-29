@@ -326,7 +326,7 @@ test_that("form_resupport returns self when appropriate", {
   output_1 <- form_resupport(p_dis, c(NA_real_, NA_real_))
   expect_close_f(p_dis, output_1, x_dis_vec)
 
-  for (method in c("trim", "linear", "reflect", "winsor")) {
+  for (method in methods_resupport) {
     output_dis <- form_resupport(p_dis, meta_support(p_dis), method)
     expect_close_f(p_dis, output_dis, x_dis_vec)
 

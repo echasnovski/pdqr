@@ -8,13 +8,13 @@ test_that("summ_order works", {
   f_list <- lapply(mean_vec, function(m) {as_d(dnorm, mean = m)})
   ref_order <- order(mean_vec)
 
-  for (meth in c("compare", "mean", "median", "mode")) {
+  for (meth in methods_order) {
     expect_equal(summ_order(f_list, method = meth), ref_order)
   }
 
   # Works with different types
   f_list <- list(as_d(dnorm), new_d(1:10, "discrete"))
-  for (meth in c("compare", "mean", "median", "mode")) {
+  for (meth in methods_order) {
     expect_equal(summ_order(f_list, method = meth), 1:2)
   }
 })
@@ -112,14 +112,14 @@ test_that("summ_sort works", {
   f_list <- lapply(mean_vec, function(m) {as_d(dnorm, mean = m)})
   ref_list <- f_list[order(mean_vec)]
 
-  for (meth in c("compare", "mean", "median", "mode")) {
+  for (meth in methods_order) {
     expect_equal(summ_sort(f_list, method = meth), ref_list)
   }
 
   # Works with different types
   f_list <- list(as_d(dnorm), new_d(1:10, "discrete"))
   ref_list <- f_list
-  for (meth in c("compare", "mean", "median", "mode")) {
+  for (meth in methods_order) {
     expect_equal(summ_sort(f_list, method = meth), ref_list)
   }
 })
@@ -154,13 +154,13 @@ test_that("summ_rank works", {
   f_list <- lapply(mean_vec, function(m) {as_d(dnorm, mean = m)})
   ref_rank <- rank(mean_vec)
 
-  for (meth in c("compare", "mean", "median", "mode")) {
+  for (meth in methods_order) {
     expect_equal(summ_rank(f_list, method = meth), ref_rank)
   }
 
   # Works with different types
   f_list <- list(as_d(dnorm), new_d(1:10, "discrete"))
-  for (meth in c("compare", "mean", "median", "mode")) {
+  for (meth in methods_order) {
     expect_equal(summ_rank(f_list, method = meth), 1:2)
   }
 })

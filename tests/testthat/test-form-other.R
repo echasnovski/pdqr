@@ -337,7 +337,7 @@ test_that("form_estimate validates input", {
 # form_recenter -----------------------------------------------------------
 test_that("form_recenter works", {
   expect_recenter_works <- function(f, to) {
-    for (meth in c("mean", "median", "mode")) {
+    for (meth in methods_center) {
       out <- form_recenter(f, to = to, method = meth)
 
       expect_equal(summ_center(out, method = meth), to)
@@ -369,10 +369,10 @@ test_that("form_recenter validates input", {
 # form_respread -----------------------------------------------------------
 test_that("form_respread works", {
   expect_respread_works <- function(f, to) {
-    for (center_meth in c("mean", "median", "mode")) {
+    for (center_meth in methods_center) {
       f_center <- summ_center(f, method = center_meth)
 
-      for (meth in c("sd", "var", "iqr", "mad", "range")) {
+      for (meth in methods_spread) {
         # Respreading to `to`
         out <- form_respread(
           f, to = to, method = meth, center_method = center_meth
