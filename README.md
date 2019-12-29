@@ -673,3 +673,5 @@ roc_plot(my_roc)
     Distributions](https://CRAN.R-project.org/view=Distributions) CRAN
     Task View has more examples of packages intended to work with
     probability distributions.
+  - [hdrcde](https://CRAN.R-project.org/package=hdrcde): Highest Density
+    Regions and Conditional Density Estimation.

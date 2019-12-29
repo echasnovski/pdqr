@@ -428,3 +428,4 @@ roc_plot(my_roc)
 - [distributions3](https://alexpghayes.github.io/distributions3/): Probability Distributions as S3 Objects.
 - [fitdistrplus](https://CRAN.R-project.org/package=fitdistrplus): Help to Fit of a Parametric Distribution to Non-Censored or Censored Data.
 - [Probability Distributions](https://CRAN.R-project.org/view=Distributions) CRAN Task View has more examples of packages intended to work with probability distributions.
+- [hdrcde](https://CRAN.R-project.org/package=hdrcde): Highest Density Regions and Conditional Density Estimation.
