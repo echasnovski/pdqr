@@ -59,8 +59,7 @@ summ_entropy <- function(f) {
 summ_entropy2 <- function(f, g, method = "relative", clip = exp(-20)) {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
-  assert_type(method, is_string)
-  assert_in_set(method, c("relative", "cross"))
+  assert_method(method, methods_entropy2)
   assert_type(clip, is_single_number, "single non-negative number", min_val = 0)
 
   # Speed optimization (skips possibly expensive assertions)

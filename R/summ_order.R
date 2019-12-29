@@ -87,8 +87,7 @@ NULL
 #' @rdname summ_order
 summ_order <- function(f_list, method = "compare", decreasing = FALSE) {
   assert_f_list(f_list, allow_numbers = FALSE)
-  assert_type(method, is_string)
-  assert_in_set(method, c("compare", "mean", "median", "mode"))
+  assert_method(method, methods_order)
   assert_type(decreasing, is_truefalse, "`TRUE` or `FALSE`")
 
   # Speed optimization (skips possibly expensive assertions)

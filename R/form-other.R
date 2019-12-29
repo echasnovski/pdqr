@@ -395,8 +395,7 @@ NULL
 form_recenter <- function(f, to, method = "mean") {
   assert_pdqr_fun(f)
   assert_type(to, is_single_number, type_name = "single number")
-  assert_type(method, is_string)
-  assert_in_set(method, c("mean", "median", "mode"))
+  assert_method(method, methods_center)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()
@@ -414,10 +413,8 @@ form_respread <- function(f, to, method = "sd", center_method = "mean") {
     to, is_single_number, type_name = "single non-negative number",
     min_val = 0
   )
-  assert_type(method, is_string)
-  assert_in_set(method, c("sd", "var", "iqr", "mad", "range"))
-  assert_type(center_method, is_string)
-  assert_in_set(center_method, c("mean", "median", "mode"))
+  assert_method(method, methods_spread)
+  assert_method(center_method, methods_center)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

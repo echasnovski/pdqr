@@ -88,8 +88,7 @@ form_resupport <- function(f, support, method = "reflect") {
   assert_pdqr_fun(f)
   assert_missing(support, "vector for support")
   assert_support(support, allow_na = TRUE)
-  assert_type(method, is_string)
-  assert_in_set(method, c("reflect", "trim", "winsor", "linear"))
+  assert_method(method, methods_resupport)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

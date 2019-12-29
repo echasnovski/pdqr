@@ -470,6 +470,23 @@ test_that("assert_x_tbl respects global options", {
 # Tested in `assert_x_tbl()`
 
 
+# assert_method -----------------------------------------------------------
+test_that("assert_method works", {
+  expect_silent(assert_method("a", c("a", "b")))
+
+  x <- 1
+  expect_error(assert_method(x, c("a", "b")), "`x`.*string")
+  y <- "c"
+  expect_error(assert_method(y, c("a", "b")), '`y`.*one of.*"a", "b"')
+})
+
+test_that("assert_method respects global options", {
+  op <- options(pdqr.assert_args = FALSE)
+  on.exit(options(op))
+  expect_silent(assert_method(1, "a"))
+})
+
+
 # warning_boolean_pdqr_fun ------------------------------------------------
 test_that("warning_boolean_pdqr_fun works", {
   my_f <- new_d(data.frame(x = c(-1, 0, 1), prob = 1:3/6), "discrete")

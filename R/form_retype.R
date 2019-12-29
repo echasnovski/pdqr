@@ -90,8 +90,7 @@
 form_retype <- function(f, type = NULL, method = "value") {
   assert_pdqr_fun(f)
   assert_pdqr_type(type, allow_null = TRUE)
-  assert_type(method, is_string)
-  assert_in_set(method, c("piecelin", "dirac", "value"))
+  assert_method(method, methods_retype)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

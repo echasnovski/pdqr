@@ -151,11 +151,9 @@ assert_form_tails_args <- function(f, level, method, direction) {
     stop_collapse("`level` should not be negative.")
   }
 
-  assert_type(method, is_string)
-  assert_in_set(method, c("trim", "winsor"))
+  assert_method(method, methods_tails)
 
-  assert_type(direction, is_string)
-  assert_in_set(direction, c("left", "right", "both"))
+  assert_method(direction, c("left", "right", "both"))
 
   if (direction == "both") {
     if (level > 0.5) {

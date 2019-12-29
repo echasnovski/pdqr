@@ -64,8 +64,7 @@ NULL
 #' @export
 summ_spread <- function(f, method = "sd") {
   assert_pdqr_fun(f)
-  assert_type(method, is_string)
-  assert_in_set(method, c("var", "sd", "iqr", "mad", "range"))
+  assert_method(method, methods_spread)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

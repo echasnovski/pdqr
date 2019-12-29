@@ -125,8 +125,7 @@ summ_roc <- function(f, g, n_grid = 1001) {
 summ_rocauc <- function(f, g, method = "expected") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
-  assert_type(method, is_string)
-  assert_in_set(method, c("expected", "pessimistic", "optimistic"))
+  assert_method(method, methods_rocauc)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

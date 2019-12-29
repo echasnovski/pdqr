@@ -72,8 +72,7 @@
 summ_separation <- function(f, g, method = "KS", n_grid = 10001) {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
-  assert_type(method, is_string)
-  assert_in_set(method, c("KS", "GM", "OP", "F1", "MCC"))
+  assert_method(method, methods_separation)
   assert_type(n_grid, is_single_number, type_name = "single number")
 
   # Speed optimization (skips possibly expensive assertions)

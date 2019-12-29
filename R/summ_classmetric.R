@@ -136,8 +136,7 @@ summ_classmetric <- function(f, g, threshold, method = "F1") {
   assert_pdqr_fun(g)
   assert_missing(threshold, "classification threshold")
   assert_type(threshold, is.numeric)
-  assert_type(method, is_string)
-  assert_in_set(method, names(classmetric_aliases))
+  assert_method(method, methods_classmetric)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

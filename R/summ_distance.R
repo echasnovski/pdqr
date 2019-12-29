@@ -102,10 +102,7 @@
 summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
   assert_pdqr_fun(g)
-  assert_type(method, is_string)
-  assert_in_set(
-    method, c("KS", "totvar", "compare", "wass", "cramer", "align", "entropy")
-  )
+  assert_method(method, methods_distance)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

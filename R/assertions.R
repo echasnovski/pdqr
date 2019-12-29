@@ -410,6 +410,19 @@ assert_num_col <- function(vec, col_name, x_tbl_name, err_header = "") {
   TRUE
 }
 
+assert_method <- function(method, choices) {
+  if (dont_assert()) {
+    return(TRUE)
+  }
+
+  method_name <- deparse(substitute(method))
+
+  assert_type(method, is_string, x_name = method_name)
+  assert_in_set(method, choices, x_name = method_name)
+
+  TRUE
+}
+
 
 # Warnings for pdqr-functions ---------------------------------------------
 warning_boolean_pdqr_fun <- function(f = NULL, f_name = NULL) {

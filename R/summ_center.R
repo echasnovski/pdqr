@@ -58,8 +58,7 @@ NULL
 #' @export
 summ_center <- function(f, method = "mean") {
   assert_pdqr_fun(f)
-  assert_type(method, is_string)
-  assert_in_set(method, c("mean", "median", "mode"))
+  assert_method(method, methods_center)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()
@@ -104,8 +103,7 @@ summ_median <- function(f) {
 #' @export
 summ_mode <- function(f, method = "global") {
   assert_pdqr_fun(f)
-  assert_type(method, is_string)
-  assert_in_set(method, c("global", "local"))
+  assert_method(method, methods_mode)
 
   f_x_tbl <- meta_x_tbl(f)
   x <- f_x_tbl[["x"]]

@@ -57,12 +57,8 @@ summ_pval <- function(f, obs, method = "both", adjust = "holm") {
   assert_pdqr_fun(f)
   assert_missing(obs, "numeric vector of observation(s)")
   assert_type(obs, is.numeric)
-
-  assert_type(method, is_string)
-  assert_in_set(method, c("both", "right", "left"))
-
-  assert_type(adjust, is_string)
-  assert_in_set(adjust, stats::p.adjust.methods)
+  assert_method(method, methods_pval)
+  assert_method(adjust, stats::p.adjust.methods)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

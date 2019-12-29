@@ -97,8 +97,7 @@ form_regrid <- function(f, n_grid, method = "x") {
     type_name = "single positive number",
     min_val = 1
   )
-  assert_type(method, is_string)
-  assert_in_set(method, c("x", "q"))
+  assert_method(method, methods_regrid)
 
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()

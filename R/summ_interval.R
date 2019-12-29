@@ -99,8 +99,7 @@ summ_interval <- function(f, level = 0.95, method = "minwidth",
     type_name = "single number between 0 and 1",
     min_val = 0, max_val = 1
   )
-  assert_type(method, is_string)
-  assert_in_set(method, c("minwidth", "percentile", "sigma"))
+  assert_method(method, methods_interval)
   assert_type(
     n_grid, is_single_number,
     type_name = "single number more than 1",

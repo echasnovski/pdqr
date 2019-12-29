@@ -111,8 +111,7 @@ form_trans <- function(f_list, trans, ..., method = "random", n_sample = 10000,
   assert_f_list(f_list, allow_numbers = TRUE)
   assert_missing(trans, "transformation function")
   assert_type(trans, is.function)
-  assert_type(method, is_string)
-  assert_in_set(method, c("random", "bruteforce"))
+  assert_method(method, methods_trans)
   assert_type(n_sample, is_single_number, type_name = "single number")
   assert_type(args_new, is.list)
 
