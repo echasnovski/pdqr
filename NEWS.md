@@ -1,5 +1,7 @@
 # pdqr (development version)
 
+* `summ_center()` gets new method "midrange" with corresponding new `summ_midrange()` function. It returns a mean of left and right edges of support.
+
 # pdqr 0.2.1
 
 * Outputs of `new_p()` and `new_q()` now work more accurately in case of dirac-like functions.
