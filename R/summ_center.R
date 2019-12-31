@@ -67,11 +67,12 @@ summ_center <- function(f, method = "mean") {
     method,
     mean = summ_mean(f),
     median = summ_median(f),
-    mode = summ_mode(f, method = "global")
+    mode = summ_mode(f, method = "global"),
+    midrange = summ_midrange(f)
   )
 }
 
-methods_center <- c("mean", "median", "mode")
+methods_center <- c("mean", "median", "mode", "midrange")
 
 #' @rdname summ_center
 #' @export
@@ -124,6 +125,14 @@ summ_mode <- function(f, method = "global") {
 }
 
 methods_mode <- c("global", "local")
+
+summ_midrange <- function(f) {
+  assert_pdqr_fun(f)
+
+  supp <- meta_support(f)
+
+  (supp[1] + supp[2]) / 2
+}
 
 summ_mean_con <- function(x_tbl) {
   n <- nrow(x_tbl)

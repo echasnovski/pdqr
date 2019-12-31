@@ -16,11 +16,13 @@ test_that("summ_center works", {
   expect_equal(summ_center(d_dis, "mean"), summ_mean(d_dis))
   expect_equal(summ_center(d_dis, "median"), summ_median(d_dis))
   expect_equal(summ_center(d_dis, "mode"), summ_mode(d_dis))
+  expect_equal(summ_center(d_dis, "midrange"), summ_midrange(d_dis))
 
   # "continuous"
   expect_equal(summ_center(d_con, "mean"), summ_mean(d_con))
   expect_equal(summ_center(d_con, "median"), summ_median(d_con))
   expect_equal(summ_center(d_con, "mode"), summ_mode(d_con))
+  expect_equal(summ_center(d_con, "midrange"), summ_midrange(d_con))
 })
 
 test_that("summ_center validates input", {
@@ -288,6 +290,20 @@ test_that("summ_mode validates input", {
   expect_error(summ_mode("a"), "`f`.*not pdqr-function")
   expect_error(summ_mode(d_dis, method = 1), "`method`.*string")
   expect_error(summ_mode(d_dis, method = "a"), "`method`.*one of")
+})
+
+
+# summ_midrange -----------------------------------------------------------
+test_that("summ_midrange works", {
+  expect_equal(summ_midrange(d_dis), 0.5*sum(x_dis_support))
+  expect_equal(summ_midrange(d_con), 0.5*sum(x_con_support), tol = 1e-10)
+
+  d_dirac <- new_d(10, "continuous")
+  expect_equal(summ_midrange(d_dirac), 10, tol = 1e-10)
+})
+
+test_that("summ_midrange validates input", {
+  expect_error(summ_midrange("a"), "`f`.*not pdqr-function")
 })
 
 
