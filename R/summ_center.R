@@ -5,7 +5,8 @@
 #'
 #' @param f A pdqr-function representing distribution.
 #' @param method Method of center computation. For `summ_center()` is one of
-#'   "mean", "median", "mode". For `summ_mode()` is one of "global" or "local".
+#'   "mean", "median", "mode", "midrange". For `summ_mode()` is one of "global"
+#'   or "local".
 #'
 #' @details `summ_mean()` computes distribution's mean.
 #'
@@ -18,6 +19,9 @@
 #' of "x" column from `f`'s `x_tbl`) with the highest probability/density.
 #' `summ_mode(*, method = "local")` computes all `x` values which represent
 #' non-strict **local maxima** of probability mass/density function.
+#'
+#' `summ_midrange()` computes middle point of `f`'s [support][meta_support()]
+#' (average of left and right edges).
 #'
 #' @return `summ_center()`, `summ_mean()`, `summ_median()` and `summ_mode(*,
 #'   method = "global")` always return a single number representing a center of
@@ -36,6 +40,8 @@
 #' summ_mean(d_norm)
 #' summ_median(d_norm)
 #' summ_mode(d_norm)
+#'   # As pdqr-functions always have finite support, output here is finite
+#' summ_midrange(d_norm)
 #'
 #' # Type "discrete"
 #' d_pois <- as_d(dpois, lambda = 10)
@@ -45,6 +51,8 @@
 #' summ_mode(d_pois)
 #'   # Returns all values which are non-strict local maxima
 #' summ_mode(d_pois, method = "local")
+#'   # As pdqr-functions always have finite support, output here is finite
+#' summ_midrange(d_pois)
 #'
 #' # Details of computing local modes
 #' my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "continuous")
@@ -126,6 +134,8 @@ summ_mode <- function(f, method = "global") {
 
 methods_mode <- c("global", "local")
 
+#' @rdname summ_center
+#' @export
 summ_midrange <- function(f) {
   assert_pdqr_fun(f)
 

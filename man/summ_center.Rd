@@ -5,6 +5,7 @@
 \alias{summ_mean}
 \alias{summ_median}
 \alias{summ_mode}
+\alias{summ_midrange}
 \title{Summarize distribution with center}
 \usage{
 summ_center(f, method = "mean")
@@ -14,12 +15,15 @@ summ_mean(f)
 summ_median(f)
 
 summ_mode(f, method = "global")
+
+summ_midrange(f)
 }
 \arguments{
 \item{f}{A pdqr-function representing distribution.}
 
 \item{method}{Method of center computation. For \code{summ_center()} is one of
-"mean", "median", "mode". For \code{summ_mode()} is one of "global" or "local".}
+"mean", "median", "mode", "midrange". For \code{summ_mode()} is one of "global"
+or "local".}
 }
 \value{
 \code{summ_center()}, \code{summ_mean()}, \code{summ_median()} and \verb{summ_mode(*, method = "global")} always return a single number representing a center of
@@ -42,6 +46,9 @@ entry of "x" column from \code{f}'s \link[=meta_x_tbl]{"x_tbl" metadata}.
 of "x" column from \code{f}'s \code{x_tbl}) with the highest probability/density.
 \verb{summ_mode(*, method = "local")} computes all \code{x} values which represent
 non-strict \strong{local maxima} of probability mass/density function.
+
+\code{summ_midrange()} computes middle point of \code{f}'s \link[=meta_support]{support}
+(average of left and right edges).
 }
 \examples{
 # Type "continuous"
@@ -50,6 +57,8 @@ d_norm <- as_d(dnorm)
 summ_mean(d_norm)
 summ_median(d_norm)
 summ_mode(d_norm)
+  # As pdqr-functions always have finite support, output here is finite
+summ_midrange(d_norm)
 
 # Type "discrete"
 d_pois <- as_d(dpois, lambda = 10)
@@ -59,6 +68,8 @@ summ_median(d_pois)
 summ_mode(d_pois)
   # Returns all values which are non-strict local maxima
 summ_mode(d_pois, method = "local")
+  # As pdqr-functions always have finite support, output here is finite
+summ_midrange(d_pois)
 
 # Details of computing local modes
 my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "continuous")
