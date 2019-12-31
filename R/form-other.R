@@ -400,7 +400,7 @@ form_recenter <- function(f, to, method = "mean") {
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()
 
-  f - summ_center(f, method) + to
+  f + (to - summ_center(f, method))
 }
 
 #' @rdname form_recenter
