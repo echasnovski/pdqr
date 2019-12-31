@@ -16,7 +16,7 @@ summ_rank(f_list, method = "compare")
 \item{f_list}{List of pdqr-functions.}
 
 \item{method}{Method to be used for ordering. Should be one of "compare",
-"mean", "median", "mode".}
+"mean", "median", "mode", "midrange".}
 
 \item{decreasing}{If \code{TRUE} ordering is done decreasingly.}
 }
@@ -55,9 +55,9 @@ based on method "mean" and then calling \code{order()}.
 becomes rather slow as number of \code{f_list} elements grows.
 }
 
-Methods "mean", "median", and "mode" are based on \code{\link[=summ_center]{summ_center()}}:
-ordering of \code{f_list} is defined as ordering of corresponding measures of
-distribution's center.
+Methods "mean", "median", "mode", and "midrange" are based on
+\code{\link[=summ_center]{summ_center()}}: ordering of \code{f_list} is defined as ordering of corresponding
+measures of distribution's center.
 }
 \examples{
 d_fun <- as_d(dunif)

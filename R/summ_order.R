@@ -6,7 +6,7 @@
 #'
 #' @param f_list List of pdqr-functions.
 #' @param method Method to be used for ordering. Should be one of "compare",
-#'   "mean", "median", "mode".
+#'   "mean", "median", "mode", "midrange".
 #' @param decreasing If `TRUE` ordering is done decreasingly.
 #'
 #' @details Ties for all methods are handled so as to preserve the original
@@ -27,9 +27,9 @@
 #' - Because comparing two pdqr-functions can be time consuming, this method
 #' becomes rather slow as number of `f_list` elements grows.
 #'
-#' Methods "mean", "median", and "mode" are based on [summ_center()]:
-#' ordering of `f_list` is defined as ordering of corresponding measures of
-#' distribution's center.
+#' Methods "mean", "median", "mode", and "midrange" are based on
+#' [summ_center()]: ordering of `f_list` is defined as ordering of corresponding
+#' measures of distribution's center.
 #'
 #' @return `summ_order()` works essentially like [order()][base::order()]. It
 #' returns an integer vector representing a permutation which rearranges
@@ -98,11 +98,12 @@ summ_order <- function(f_list, method = "compare", decreasing = FALSE) {
     compare = order_compare(f_list, decreasing = decreasing),
     mean = ,
     median = ,
-    mode = order_center(f_list, method, decreasing = decreasing)
+    mode = ,
+    midrange = order_center(f_list, method, decreasing = decreasing)
   )
 }
 
-methods_order <- c("compare", "mean", "median", "mode")
+methods_order <- c("compare", methods_center)
 
 #' @export
 #' @rdname summ_order

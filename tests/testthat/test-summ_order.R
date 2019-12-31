@@ -69,6 +69,10 @@ test_that("summ_order works with methods from `summ_center()`", {
   expect_equal(summ_order(f_list, method = "mean"), order(exp(m + 0.5*s^2)))
   expect_equal(summ_order(f_list, method = "median"), order(exp(m)))
   expect_equal(summ_order(f_list, method = "mode"), order(exp(m - s^2)))
+  expect_equal(
+    summ_order(f_list, method = "midrange"),
+    order(vapply(f_list, function(f) {0.5*sum(meta_support(f))}, numeric(1)))
+  )
 })
 
 test_that("summ_order uses `decreasing` argument", {
