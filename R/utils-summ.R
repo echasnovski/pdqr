@@ -201,20 +201,29 @@ pair_cdf_data <- function(x_grid, f, g) {
 
 
 # Piecewise-quadratic crossings -------------------------------------------
-#' `piecequad_*` - list of `x` (interval breaks), `a`, `b`, and `c` (all are
-#' coefficients of quadratic equations), defining piecewise-quadratic on n+1
-#' intervals (`n` is length of `x`) function on the whole real line in the
-#' following way:
-#' - `a[1]*t^2+b[1]*t+c[1]` when `t` is in `c(-Inf, x[1])`.
-#' - `a[i]*t^2+b[i]*t+c[i]` when `t` is in `c(x[i-1], x[i])` (`i` in `2:n`).
-#' - `a[n+1]*t^2+b[n+1]*t+c[n+1]` when `t` is in `c(x[n], Inf)`.
+#' `piecequad_*` - list of `x` (interval breaks with length at least 2), `a`,
+#' `b`, and `c` (all are coefficients of quadratic equations), defining
+#' piecewise-quadratic on n-1 intervals (`n` is length of `x`) function on the
+#' finite subset of real line in the following way:
+#' - `a[i]*t^2+b[i]*t+c[i]` when `t` is in `c(x[i-1], x[i])` (`i` in `1:(n-1)`).
 #'
-#' @return X-values of points where intersections of piecewise-quadratics occur.
+#' @return X-values of points where intersections of piecewise-quadratics occur
+#' inside of intersection support (common subinterval of both `piecequad`s).
+#' The reason behind this is that inside 'pdqr' framework it is non-trivial to
+#' analyse crossings inside intersection support.
+#'
+#' If intersection support is empty, `numeric(0)` is returned. If supports
+#' intersect on one point, it is returned only in case it is a crossing.
 #'
 #' @noRd
 compute_piecequad_crossings <- function(piecequad_1, piecequad_2) {
   # Regrid both `piecequad`s to have the same grid
   pair <- piecequad_pair_regrid(piecequad_1, piecequad_2)
+
+  # Construct interval breaks to determine if roots lie inside intervals
+  grid <- pair[[1]][["x"]]
+  x_l <- grid[-length(grid)]
+  x_r <- grid[-1]
 
   # Inside regridded intervals input piecewise quadratic functions are
   # quadratic. This means that all their crossings can be found as union of
@@ -224,11 +233,6 @@ compute_piecequad_crossings <- function(piecequad_1, piecequad_2) {
   a <- pair[[1]][["a"]] - pair[[2]][["a"]]
   b <- pair[[1]][["b"]] - pair[[2]][["b"]]
   c <- pair[[1]][["c"]] - pair[[2]][["c"]]
-
-  # Construct interval breaks to determine if roots lie inside intervals
-  grid <- c(-Inf, pair[[1]][["x"]], Inf)
-  x_l <- grid[-length(grid)]
-  x_r <- grid[-1]
 
   # Compute candidates for quadratic solutions (`NA` if outside of interval)
   quad_solutions <- solve_piecequad(a, b, c, x_l, x_r)
@@ -260,12 +264,27 @@ compute_piecequad_crossings <- function(piecequad_1, piecequad_2) {
 }
 
 # Modify representation of both `piecequad_1` and `piecequad_2` so that they
-# have the same interval breaks `x`
+# have the same interval breaks `x` which lie inside intersection support
 piecequad_pair_regrid <- function(piecequad_1, piecequad_2) {
   x_1 <- piecequad_1[["x"]]
   x_2 <- piecequad_2[["x"]]
 
+  # Compute edges of intersection support
+  left <- max(min(x_1), min(x_2))
+  right <- min(max(x_1), max(x_2))
+
+  # Account for edge case of no intersection
+  if (left > right) {
+    num <- numeric(0)
+
+    return(list(
+      piecequad_1 = list(x = num, a = num, b = num, c = num),
+      piecequad_2 = list(x = num, a = num, b = num, c = num)
+    ))
+  }
+
   grid <- sort(union(x_1, x_2))
+  grid <- grid[(grid >= left) & (grid <= right)]
 
   list(
     piecequad_1 = piecequad_regrid(grid, piecequad_1),
@@ -273,12 +292,15 @@ piecequad_pair_regrid <- function(piecequad_1, piecequad_2) {
   )
 }
 
-# This is designed to be used in case when `grid` contains all points from
-# `piecequad[["x"]]` plus some new ones
+# This is designed to be used in case when `grid` contains some points from
+# `piecequad[["x"]]` plus, possibly, some new ones (which lie inside range of
+# `piecequad[["x"]]`). `grid` can also have one point, in which case output
+# describes piecequad at that point (with "x" element having two equal values).
 piecequad_regrid <- function(grid, piecequad) {
-  x <- piecequad[["x"]]
+  # Ensure that `grid` has at least two elements
+  grid <- rep(grid, length.out = max(2, length(grid)))
   mids <- 0.5*(grid[-1] + grid[-length(grid)])
-  inds <- c(1, findInterval(mids, x)+1, length(x)+1)
+  inds <- findInterval(mids, piecequad[["x"]], all.inside = TRUE)
 
   list(
     x = grid,
@@ -289,21 +311,14 @@ piecequad_regrid <- function(grid, piecequad) {
 }
 
 solve_piecequad <- function(a, b, c, x_l, x_r) {
-  # First step is to modifiy equations so that they become with respect to `t =
-  # x - x_ref` variable, where reference point `x_ref` is left edge `x_l` if it
-  # is finite and right edge otherwise.
-  # This step helps to deal with high values of `a`, `b`, and `c`, which is the
-  # case with existence of dirac-like functions.
+  # First step is to modifiy equations so that they become with respect to
+  # `t = x - x_l` variable. This step helps to deal with high values of `a`,
+  # `b`, and `c`, which is the case with existence of dirac-like functions.
 
-  # Create reference points
-  x_l_is_inf <- is.infinite(x_l)
-  x_ref <- x_l
-  x_ref[x_l_is_inf] <- x_r[x_l_is_inf]
-
-  # Compute coefficients for new equation with respect to `t = x - x_ref`
+  # Compute coefficients for new equation with respect to `t = x - x_l`
   a_new <- a
-  b_new <- 2*a*x_ref + b
-  c_new <- (a*x_ref + b)*x_ref + c
+  b_new <- 2*a*x_l + b
+  c_new <- (a*x_l + b)*x_l + c
 
   # Solve modified equations
   discr_sqrt <- na_sqrt(b_new^2 - 4*a_new*c_new)
@@ -311,8 +326,8 @@ solve_piecequad <- function(a, b, c, x_l, x_r) {
   t_sol_2 <- (-b_new - discr_sqrt) / (2*a_new)
 
   # Make reverse change of variables and check if answers lie inside intervals
-  x_sol_1 <- na_outside(x_ref + t_sol_1, x_l, x_r)
-  x_sol_2 <- na_outside(x_ref + t_sol_2, x_l, x_r)
+  x_sol_1 <- na_outside(x_l + t_sol_1, x_l, x_r)
+  x_sol_2 <- na_outside(x_l + t_sol_2, x_l, x_r)
 
   # For each equation two solutions are possible. Here `NA`s indicate absence of
   # solutions inside intervals.

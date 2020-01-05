@@ -213,52 +213,72 @@ test_that("compute_cdf_crossings works with real world cases", {
 # compute_piecequad_crossings ---------------------------------------------
 test_that("compute_piecequad_crossings works", {
   piecequad_1 <- list(
-    x = c( 0,  1, 2),
-    a = c(1,  0, 0, 0),
-    b = c(1,  1, 0, 1),
-    c = c(1, -1, 1, 0)
+    x = c(0,  0.75,  1,    2,  2.75),
+    a = c(  0,     1,     0,   0),
+    b = c(  1,     -1,    0,   0),
+    c = c( -1,     -0.64, 1, 2.5)
   )
   piecequad_2 <- list(
-    x = c( 0,  1, 2, 3),
-    a = c(0,  0, 0, 0, 0),
-    b = c(1, -1, 0, 1, 2),
-    c = c(5,  0, 1, 0, -9)
+    x = c(0,  1,  2, 3),
+    a = c(  0,  0,  0),
+    b = c( -1,  0,  1),
+    c = c(  0,  1,  0)
   )
   # Here:
-  # 1. -2 is x-value of intersection `x^2+x+1` and `x+5` on (-Inf; 0]. They also
-  #   intersect at x=2, but it is not inside (-Inf; 0].
-  # 2. 0.5 is x-value of intersection `x-1` and `-x` on [0; 1].
+  # 1. 0.5 is x-value of intersection `x-1` and `-x` on [0; 0.75].
+  # 2. 0.8 is x-value of intersection `x^2-x-0.64` and `-x` on [0.75, 1].
   # 3. 1 and 2 are interval edges of [1; 2], on which `piecequad`s have the same
   #   curve `y = 1`.
-  # 4. 2 and 3 are interval edges of [2; 3], on which `piecequad`s have the same
-  #   curve `y = x`.
-  # 5. 9 is x-value of intersection `x` and `2x-9` on [3; Inf)
+  # 4. 2.5 is x-value of intersection `y=2.5` and `y=x` on [2; 2.75].
+  # **Note** that 3 is not a solution because it is outside of intersection
+  # support.
   expect_equal(
     compute_piecequad_crossings(piecequad_1, piecequad_2),
-    c(-2, 0.5, 1, 2, 3, 9)
+    c(0.5, 0.8, 1, 2, 2.5)
   )
 })
 
 test_that("compute_piecequad_crossings works with identical curves", {
-  # If on some interval curves are the same, both finite edges of interval
-  # should be returned
-  piecequad_1 <- list(
-    x = c(0, 1), a = c(1, 0, 0), b = c(1, 1, 0), c = c(1, 1, 1)
-  )
+  # If on some finite interval curves are the same, both its edges should be
+  # returned
+  piecequad_1 <- list(x = c(0, 1), a = 1, b = 1, c = 1)
   expect_equal(
     compute_piecequad_crossings(piecequad_1, piecequad_1),
     c(0, 1)
   )
 
   piecequad_2 <- list(
-    x = c( 0, 1, 2, 3),
-    a = c(1, 0, 0, 0, 0),
-    b = c(1, 0, 0, 0, 0),
-    c = c(1, 0, 0, 0, 1)
+    x = c(-1,  0.5, 0.75,  2),
+    a = c(   1,   1,    0),
+    b = c(   0,   1,    0),
+    c = c(   0,   1,    1)
   )
   expect_equal(
     compute_piecequad_crossings(piecequad_1, piecequad_2),
-    c(0, 3)
+    c(0.5, 0.75)
+  )
+})
+
+test_that("compute_piecequad_crossings works with non-intersecting supports", {
+  piecequad_1 <- list(x = 0:1, a = 1, b = 1, c = 1)
+  piecequad_2 <- list(x = 2:3, a = 1, b = 1, c = 1)
+
+  expect_equal(
+    compute_piecequad_crossings(piecequad_1, piecequad_2),
+    numeric(0)
+  )
+})
+
+test_that("compute_piecequad_crossings works with 'touching' supports", {
+  piecequad_1 <- list(x = 0:1, a = 1, b = 1, c = 1)
+  piecequad_2 <- list(x = 1:2, a = 1, b = 1, c = 1)
+
+  expect_equal(compute_piecequad_crossings(piecequad_1, piecequad_2), 1)
+
+  piecequad_3 <- list(x = 1:2, a = 0, b = 0, c = 0)
+  expect_equal(
+    compute_piecequad_crossings(piecequad_1, piecequad_3),
+    numeric(0)
   )
 })
 
@@ -267,34 +287,49 @@ test_that("compute_piecequad_crossings works with identical curves", {
 # Main tests are done in `compute_piecequad_crossings()`
 test_that("piecequad_pair_regrid works", {
   piecequad_1 <- list(
-    x = c( 0,     1,   3),
-    a = c(1,     2,   3, 4),
-    b = c(10,   20,  30, 40),
-    c = c(100, 200, 300, 400)
+    x = c(0,  1,   3),
+    a = c(  1,   2),
+    b = c( 10,  20),
+    c = c(100, 200)
   )
   piecequad_2 <- list(
-    x = c( 0,     1,   3) + 0.5,
-    a = -c(1,     2,   3, 4),
-    b = -c(10,   20,  30, 40),
-    c = -c(100, 200, 300, 400)
+    x =  c(0,  1,   3) + 0.5,
+    a = -c(  1,   2),
+    b = -c( 10,  20),
+    c = -c(100, 200)
   )
 
   out <- piecequad_pair_regrid(piecequad_1, piecequad_2)
   out_ref <- list(
     piecequad_1 = list(
-      x = c(0, 0.5, 1, 1.5, 3, 3.5),
-      a = c(1, 2, 2, 3, 3, 4, 4),
-      b = c(10, 20, 20, 30, 30, 40, 40),
-      c = c(100, 200, 200, 300, 300, 400, 400)
+      x = c(0.5, 1, 1.5, 3),
+      a = c(1, 2, 2),
+      b = c(10, 20, 20),
+      c = c(100, 200, 200)
     ),
     piecequad_2 = list(
-      x = c(0, 0.5, 1, 1.5, 3, 3.5),
-      a = -c(1, 1, 2, 2, 3, 3, 4),
-      b = -c(10, 10, 20, 20, 30, 30, 40),
-      c = -c(100, 100, 200, 200, 300, 300, 400)
+      x =  c(0.5, 1, 1.5, 3),
+      a = -c(1, 1, 2),
+      b = -c(10, 10, 20),
+      c = -c(100, 100, 200)
     )
   )
   expect_equal(out, out_ref)
+})
+
+test_that("piecequad_pair_regrid works with non-intersecting supports", {
+  piecequad_1 <- list(x = 0:1, a = 1, b = 1, c = 1)
+  piecequad_2 <- list(x = 2:3, a = 1, b = 1, c = 1)
+
+  num <- numeric(0)
+  out_ref <- list(
+    piecequad_1 = list(x = num, a = num, b = num, c = num),
+    piecequad_2 = list(x = num, a = num, b = num, c = num)
+  )
+  expect_equal(
+    piecequad_pair_regrid(piecequad_1, piecequad_2),
+    out_ref
+  )
 })
 
 
