@@ -210,9 +210,105 @@ test_that("compute_cdf_crossings works with real world cases", {
 # Tested in `compute_cdf_crossings()`
 
 
+# compute_piecequad_crossings ---------------------------------------------
+test_that("compute_piecequad_crossings works", {
+  piecequad_1 <- list(
+    x = c( 0,  1, 2),
+    a = c(1,  0, 0, 0),
+    b = c(1,  1, 0, 1),
+    c = c(1, -1, 1, 0)
+  )
+  piecequad_2 <- list(
+    x = c( 0,  1, 2, 3),
+    a = c(0,  0, 0, 0, 0),
+    b = c(1, -1, 0, 1, 2),
+    c = c(5,  0, 1, 0, -9)
+  )
+  # Here:
+  # 1. -2 is x-value of intersection `x^2+x+1` and `x+5` on (-Inf; 0]. They also
+  #   intersect at x=2, but it is not inside (-Inf; 0].
+  # 2. 0.5 is x-value of intersection `x-1` and `-x` on [0; 1].
+  # 3. 1 and 2 are interval edges of [1; 2], on which `piecequad`s have the same
+  #   curve `y = 1`.
+  # 4. 2 and 3 are interval edges of [2; 3], on which `piecequad`s have the same
+  #   curve `y = x`.
+  # 5. 9 is x-value of intersection `x` and `2x-9` on [3; Inf)
+  expect_equal(
+    compute_piecequad_crossings(piecequad_1, piecequad_2),
+    c(-2, 0.5, 1, 2, 3, 9)
+  )
+})
+
+test_that("compute_piecequad_crossings works with identical curves", {
+  # If on some interval curves are the same, both finite edges of interval
+  # should be returned
+  piecequad_1 <- list(
+    x = c(0, 1), a = c(1, 0, 0), b = c(1, 1, 0), c = c(1, 1, 1)
+  )
+  expect_equal(
+    compute_piecequad_crossings(piecequad_1, piecequad_1),
+    c(0, 1)
+  )
+
+  piecequad_2 <- list(
+    x = c( 0, 1, 2, 3),
+    a = c(1, 0, 0, 0, 0),
+    b = c(1, 0, 0, 0, 0),
+    c = c(1, 0, 0, 0, 1)
+  )
+  expect_equal(
+    compute_piecequad_crossings(piecequad_1, piecequad_2),
+    c(0, 3)
+  )
+})
+
+
+# piecequad_pair_regrid ---------------------------------------------------
+# Main tests are done in `compute_piecequad_crossings()`
+test_that("piecequad_pair_regrid works", {
+  piecequad_1 <- list(
+    x = c( 0,     1,   3),
+    a = c(1,     2,   3, 4),
+    b = c(10,   20,  30, 40),
+    c = c(100, 200, 300, 400)
+  )
+  piecequad_2 <- list(
+    x = c( 0,     1,   3) + 0.5,
+    a = -c(1,     2,   3, 4),
+    b = -c(10,   20,  30, 40),
+    c = -c(100, 200, 300, 400)
+  )
+
+  out <- piecequad_pair_regrid(piecequad_1, piecequad_2)
+  out_ref <- list(
+    piecequad_1 = list(
+      x = c(0, 0.5, 1, 1.5, 3, 3.5),
+      a = c(1, 2, 2, 3, 3, 4, 4),
+      b = c(10, 20, 20, 30, 30, 40, 40),
+      c = c(100, 200, 200, 300, 300, 400, 400)
+    ),
+    piecequad_2 = list(
+      x = c(0, 0.5, 1, 1.5, 3, 3.5),
+      a = -c(1, 1, 2, 2, 3, 3, 4),
+      b = -c(10, 10, 20, 20, 30, 30, 40),
+      c = -c(100, 100, 200, 200, 300, 300, 400)
+    )
+  )
+  expect_equal(out, out_ref)
+})
+
+
+# piecequad_regrid --------------------------------------------------------
+# Tested in `compute_piecequad_crossings()`
+
+
+# solve_piecequad ---------------------------------------------------------
+# Tested in `compute_piecequad_crossings()`
+
+
 # na_sqrt -----------------------------------------------------------------
 test_that("na_sqrt works", {
-  expect_equal(na_sqrt(c(-4, 0, 4)), c(NA, 0, 2))
+  expect_equal(na_sqrt(c(-4, 0, 4, NA)), c(NA, 0, 2, NA))
 })
 
 
@@ -221,6 +317,7 @@ test_that("na_outside works", {
   expect_equal(na_outside(1:5, 2, 4), c(NA, 2:4, NA))
   expect_equal(na_outside(1:5, 0, 6), 1:5)
   expect_equal(na_outside(1:5, 2.5, 2.5), rep(NA_integer_, 5))
+  expect_equal(na_outside(c(1, NA), 0, 2), c(1, NA))
 })
 
 

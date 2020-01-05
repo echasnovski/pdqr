@@ -199,16 +199,136 @@ pair_cdf_data <- function(x_grid, f, g) {
   )
 }
 
+
+# Piecewise-quadratic crossings -------------------------------------------
+#' `piecequad_*` - list of `x` (interval breaks), `a`, `b`, and `c` (all are
+#' coefficients of quadratic equations), defining piecewise-quadratic on n+1
+#' intervals (`n` is length of `x`) function on the whole real line in the
+#' following way:
+#' - `a[1]*t^2+b[1]*t+c[1]` when `t` is in `c(-Inf, x[1])`.
+#' - `a[i]*t^2+b[i]*t+c[i]` when `t` is in `c(x[i-1], x[i])` (`i` in `2:n`).
+#' - `a[n+1]*t^2+b[n+1]*t+c[n+1]` when `t` is in `c(x[n], Inf)`.
+#'
+#' @return X-values of points where intersections of piecewise-quadratics occur.
+#'
+#' @noRd
+compute_piecequad_crossings <- function(piecequad_1, piecequad_2) {
+  # Regrid both `piecequad`s to have the same grid
+  pair <- piecequad_pair_regrid(piecequad_1, piecequad_2)
+
+  # Inside regridded intervals input piecewise quadratic functions are
+  # quadratic. This means that all their crossings can be found as union of
+  # roots for difference of quadratics (which is itself quadratic) inside every
+  # interval. **Note** that root(s) based on certain interval should lie inside
+  # that interval.
+  a <- pair[[1]][["a"]] - pair[[2]][["a"]]
+  b <- pair[[1]][["b"]] - pair[[2]][["b"]]
+  c <- pair[[1]][["c"]] - pair[[2]][["c"]]
+
+  # Construct interval breaks to determine if roots lie inside intervals
+  grid <- c(-Inf, pair[[1]][["x"]], Inf)
+  x_l <- grid[-length(grid)]
+  x_r <- grid[-1]
+
+  # Compute candidates for quadratic solutions (`NA` if outside of interval)
+  quad_solutions <- solve_piecequad(a, b, c, x_l, x_r)
+  x_quad_1 <- quad_solutions[["solution_1"]]
+  x_quad_2 <- quad_solutions[["solution_2"]]
+
+  # Compute candidates for linear solutions (`NA` if outside of interval)
+  x_lin <- na_outside(-c / b, x_l, x_r)
+
+  # Compute candidates for constant solutions: both edges of interval in case
+  # constants of original piecewise-quadratics are equal
+  is_const_sol <- is_zero(c)
+  is_const_sol[!is_const_sol] <- NA
+  x_const_1 <- x_l[is_const_sol]
+  x_const_2 <- x_r[is_const_sol]
+
+  # Combine all solutions, filtering them by the type of equation on each
+  # interval
+  is_quad <- !is_zero(a)
+  is_lin <- !(is_quad | is_zero(b))
+  is_const <- !(is_quad | is_lin)
+  res <- c(
+    x_quad_1[is_quad], x_quad_2[is_quad],
+    x_lin[is_lin],
+    x_const_1[is_const], x_const_2[is_const]
+  )
+
+  sort(unique(res[is.finite(res)]))
+}
+
+# Modify representation of both `piecequad_1` and `piecequad_2` so that they
+# have the same interval breaks `x`
+piecequad_pair_regrid <- function(piecequad_1, piecequad_2) {
+  x_1 <- piecequad_1[["x"]]
+  x_2 <- piecequad_2[["x"]]
+
+  grid <- sort(union(x_1, x_2))
+
+  list(
+    piecequad_1 = piecequad_regrid(grid, piecequad_1),
+    piecequad_2 = piecequad_regrid(grid, piecequad_2)
+  )
+}
+
+# This is designed to be used in case when `grid` contains all points from
+# `piecequad[["x"]]` plus some new ones
+piecequad_regrid <- function(grid, piecequad) {
+  x <- piecequad[["x"]]
+  mids <- 0.5*(grid[-1] + grid[-length(grid)])
+  inds <- c(1, findInterval(mids, x)+1, length(x)+1)
+
+  list(
+    x = grid,
+    a = piecequad[["a"]][inds],
+    b = piecequad[["b"]][inds],
+    c = piecequad[["c"]][inds]
+  )
+}
+
+solve_piecequad <- function(a, b, c, x_l, x_r) {
+  # First step is to modifiy equations so that they become with respect to `t =
+  # x - x_ref` variable, where reference point `x_ref` is left edge `x_l` if it
+  # is finite and right edge otherwise.
+  # This step helps to deal with high values of `a`, `b`, and `c`, which is the
+  # case with existence of dirac-like functions.
+
+  # Create reference points
+  x_l_is_inf <- is.infinite(x_l)
+  x_ref <- x_l
+  x_ref[x_l_is_inf] <- x_r[x_l_is_inf]
+
+  # Compute coefficients for new equation with respect to `t = x - x_ref`
+  a_new <- a
+  b_new <- 2*a*x_ref + b
+  c_new <- (a*x_ref + b)*x_ref + c
+
+  # Solve modified equations
+  discr_sqrt <- na_sqrt(b_new^2 - 4*a_new*c_new)
+  t_sol_1 <- (-b_new + discr_sqrt) / (2*a_new)
+  t_sol_2 <- (-b_new - discr_sqrt) / (2*a_new)
+
+  # Make reverse change of variables and check if answers lie inside intervals
+  x_sol_1 <- na_outside(x_ref + t_sol_1, x_l, x_r)
+  x_sol_2 <- na_outside(x_ref + t_sol_2, x_l, x_r)
+
+  # For each equation two solutions are possible. Here `NA`s indicate absence of
+  # solutions inside intervals.
+  list(solution_1 = x_sol_1, solution_2 = x_sol_2)
+}
+
 na_sqrt <- function(x) {
   res <- rep(NA_real_, length(x))
-  x_is_pos <- x >= 0
+  x_is_pos <- is.finite(x) & (x >= 0)
   res[x_is_pos] <- sqrt(x[x_is_pos])
 
   res
 }
 
 na_outside <- function(x, left, right) {
-  x[(x < left) | (x > right)] <- NA
+  x[!is.na(x) & ((x < left) | (x > right))] <- NA
 
   x
 }
