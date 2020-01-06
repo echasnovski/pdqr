@@ -81,8 +81,9 @@ test_that("compute_density_crossings works", {
 })
 
 test_that("compute_density_crossings handles 'intervals of identity'", {
-  # All consecutive intervals on which densities are identical should be treated
-  # as a single identity interval and be represented in output with its edges.
+  # If on some interval of intersection of 'x_tbl' grids densities are
+  # represented by identical lines, both interval edges are considered to be
+  # crossings
 
   # "Partial" identity
   cur_d_1 <- new_d(data.frame(x = 1:5, y = c(0, 0, 0, 1, 0)), "continuous")
@@ -90,11 +91,13 @@ test_that("compute_density_crossings handles 'intervals of identity'", {
     data.frame(x = c(1:4, 4.5, 5.5, 6), y = c(0, 0, 0, 1, 0, 0, 1)),
     "continuous"
   )
-  expect_equal(compute_density_crossings(cur_d_1, cur_d_2), c(1, 4, 5))
+  # Here 1, 2, 3, 4 represent edges of "identity intervals", and 5 - ordinary
+  # intersection
+  expect_equal(compute_density_crossings(cur_d_1, cur_d_2), c(1, 2, 3, 4, 5))
 
   # Total identity
   cur_d <- new_d(data.frame(x = 1:6, y = c(0, 1, 1, 0, 1, 0)), "continuous")
-  expect_equal(compute_density_crossings(cur_d, cur_d), c(1, 6))
+  expect_equal(compute_density_crossings(cur_d, cur_d), 1:6)
 })
 
 test_that("compute_density_crossings handles single intervals in 'x_tbl'", {
@@ -149,6 +152,10 @@ test_that("compute_density_crossings works with real world cases", {
   d_unif <- as_d(dunif, min = 2, max = 5)
   expect_equal(compute_density_crossings(d_norm, d_unif), numeric(0))
 })
+
+
+# piecequad_density -------------------------------------------------------
+# Tested in `compute_density_crossings()`
 
 
 # compute_cdf_crossings ---------------------------------------------------
