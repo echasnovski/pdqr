@@ -172,8 +172,8 @@ test_that("compute_cdf_crossings works", {
 })
 
 test_that("compute_cdf_crossings handles 'intervals of identity'", {
-  # All consecutive intervals on which CDFs are identical should be treated as a
-  # single identity interval and be represented in output with its edges.
+  # If on some interval of intersection of 'x_tbl' grids CDFs are represented by
+  # identical lines, both interval edges are considered to be crossings
 
   # "Partial" identity
   cur_p_1 <- new_p(
@@ -184,7 +184,7 @@ test_that("compute_cdf_crossings handles 'intervals of identity'", {
   expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), c(1, 2, 3, 4))
 
   # Total identity
-  expect_equal(compute_cdf_crossings(d_con, d_con), meta_support(d_con))
+  expect_equal(compute_cdf_crossings(d_con, d_con), meta_x_tbl(d_con)[["x"]])
 })
 
 test_that("compute_cdf_crossings handles no intersections", {
@@ -197,6 +197,16 @@ test_that("compute_cdf_crossings handles no intersections", {
   # Intersection support consists from one value
   cur_p_3 <- new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(compute_cdf_crossings(cur_p_1, cur_p_3), numeric(0))
+})
+
+test_that("compute_cdf_crossings works with dirac-like functions", {
+  f_dirac <- new_d(10, "continuous")
+  g <- new_d(data.frame(x = c(5, 15), y = c(1, 1)), "continuous")
+
+  # All returned x-values lie within 1e-8 neighborhood of true crossing
+  expect_true(
+    all(abs(compute_cdf_crossings(f_dirac, g) - 10) <= 1.01e-8)
+  )
 })
 
 test_that("compute_cdf_crossings works with real world cases", {
@@ -213,7 +223,7 @@ test_that("compute_cdf_crossings works with real world cases", {
 })
 
 
-# pair_cdf_data -----------------------------------------------------------
+# piecequad_cdf -----------------------------------------------------------
 # Tested in `compute_cdf_crossings()`
 
 
