@@ -1,6 +1,8 @@
 # pdqr (development version)
 
 * `summ_center()` gets new method "midrange" with corresponding new `summ_midrange()` function. It returns a mean of left and right edges of support.
+* `summ_distance()` gets new method "avgdist". It computes average distance between sample values from inputs.
+* New single-number option "pdqr.approx_discrete_n_grid" may be used to tweak degree of granularity of how continuous pdqr-function is approximated with discrete one during some complicated tasks (like in `summ_distance()` with method "avgdist").
 
 # pdqr 0.2.1
 
