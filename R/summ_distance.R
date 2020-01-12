@@ -5,7 +5,8 @@
 #' pdqr-functions. Here "distance" is used in a broad sense: a single
 #' non-negative number representing how much two distributions differ from one
 #' another. Bigger values indicate bigger difference. Zero value means that
-#' input distributions are equivalent based on the method used. The notion of
+#' input distributions are equivalent based on the method used (except method
+#' "avgdist" which is almost always returns positive value). The notion of
 #' "distance" is useful for doing statistical inference about similarity of two
 #' groups of numbers.
 #'
@@ -13,7 +14,7 @@
 #'   [class][meta_class()].
 #' @param g A pdqr-function of any type and class.
 #' @param method Method for computing distance. Should be one of "KS", "totvar",
-#'   "compare", "wass", "cramer", "align", "entropy".
+#'   "compare", "wass", "cramer", "align", "avgdist", "entropy".
 #'
 #' @details Methods can be separated into three categories: probability based,
 #' metric based, and entropy based.
@@ -64,6 +65,16 @@
 #' method is somewhat slow (compared to all others). To increase speed, use less
 #' elements in ["x_tbl" metadata][meta_x_tbl()]. For example, with
 #' [form_retype()] or smaller `n_grid` argument in [as_*()][as_p()] functions.
+#' - *Method "avgdist"* computes average distance between sample values from
+#' inputs. Basically, it is a deterministically computed approximation of
+#' expected value of absolute difference between random variables, or in 'pdqr'
+#' code: `summ_mean(abs(f - g))` (but computed without randomness). Computation
+#' is done by approximating possibly present continuous pdqr-functions with
+#' discrete ones (see description of ["pdqr.approx_discrete_n_grid"
+#' option][pdqr-package] for more information) and then computing output value
+#' directly based on two discrete pdqr-functions. **Note** that this method
+#' almost never returns zero, even for identical inputs (except the case of
+#' discrete pdqr-functions with identical one value).
 #'
 #' **Entropy based** methods compute output based on entropy characteristics:
 #' - *Method "entropy"* computes sum of two Kullback-Leibler divergences:
@@ -75,7 +86,7 @@
 #'
 #' @return A single non-negative number representing distance between pair of
 #'   distributions. For methods "KS", "totvar", and "compare" it is not bigger
-#'   than 1.
+#'   than 1. For method "avgdist" it is almost always bigger than 0.
 #'
 #' @seealso [summ_separation()] for computation of optimal threshold separating
 #'   pair of distributions.
@@ -87,7 +98,11 @@
 #' d_norm <- as_d(dnorm, mean = 1)
 #'
 #' vapply(
-#'   c("KS", "totvar", "compare", "wass", "cramer", "align", "entropy"),
+#'   c(
+#'     "KS", "totvar", "compare",
+#'     "wass", "cramer", "align", "avgdist",
+#'     "entropy"
+#'   ),
 #'   function(meth) {summ_distance(d_unif, d_norm, method = meth)},
 #'   numeric(1)
 #' )

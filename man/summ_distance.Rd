@@ -13,19 +13,20 @@ summ_distance(f, g, method = "KS")
 \item{g}{A pdqr-function of any type and class.}
 
 \item{method}{Method for computing distance. Should be one of "KS", "totvar",
-"compare", "wass", "cramer", "align", "entropy".}
+"compare", "wass", "cramer", "align", "avgdist", "entropy".}
 }
 \value{
 A single non-negative number representing distance between pair of
 distributions. For methods "KS", "totvar", and "compare" it is not bigger
-than 1.
+than 1. For method "avgdist" it is almost always bigger than 0.
 }
 \description{
 This function computes distance between two distributions represented by
 pdqr-functions. Here "distance" is used in a broad sense: a single
 non-negative number representing how much two distributions differ from one
 another. Bigger values indicate bigger difference. Zero value means that
-input distributions are equivalent based on the method used. The notion of
+input distributions are equivalent based on the method used (except method
+"avgdist" which is almost always returns positive value). The notion of
 "distance" is useful for doing statistical inference about similarity of two
 groups of numbers.
 }
@@ -78,6 +79,15 @@ so relatively small numerical errors can happen. Also \strong{note} that this
 method is somewhat slow (compared to all others). To increase speed, use less
 elements in \link[=meta_x_tbl]{"x_tbl" metadata}. For example, with
 \code{\link[=form_retype]{form_retype()}} or smaller \code{n_grid} argument in \link[=as_p]{as_*()} functions.
+\item \emph{Method "avgdist"} computes average distance between sample values from
+inputs. Basically, it is a deterministically computed approximation of
+expected value of absolute difference between random variables, or in 'pdqr'
+code: \code{summ_mean(abs(f - g))} (but computed without randomness). Computation
+is done by approximating possibly present continuous pdqr-functions with
+discrete ones (see description of \link[=pdqr-package]{"pdqr.approx_discrete_n_grid" option} for more information) and then computing output value
+directly based on two discrete pdqr-functions. \strong{Note} that this method
+almost never returns zero, even for identical inputs (except the case of
+discrete pdqr-functions with identical one value).
 }
 
 \strong{Entropy based} methods compute output based on entropy characteristics:
@@ -97,7 +107,11 @@ d_unif <- as_d(dunif, max = 2)
 d_norm <- as_d(dnorm, mean = 1)
 
 vapply(
-  c("KS", "totvar", "compare", "wass", "cramer", "align", "entropy"),
+  c(
+    "KS", "totvar", "compare",
+    "wass", "cramer", "align", "avgdist",
+    "entropy"
+  ),
   function(meth) {summ_distance(d_unif, d_norm, method = meth)},
   numeric(1)
 )

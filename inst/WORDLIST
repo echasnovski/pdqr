@@ -2,10 +2,12 @@ abserror
 Acc
 args
 AUROC
+avgdist
 bruteforce
 cramer
 Cramer
 cumprob
+deterministically
 dirac
 discriminative
 distr
