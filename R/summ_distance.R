@@ -115,12 +115,13 @@ summ_distance <- function(f, g, method = "KS") {
     wass = distance_wass(f, g),
     cramer = distance_cramer(f, g),
     align = distance_align(f, g),
+    avgdist = distance_avgdist(f, g),
     entropy = distance_entropy(f, g)
   )
 }
 
 methods_distance <- c(
-  "KS", "totvar", "compare", "wass", "cramer", "align", "entropy"
+  "KS", "totvar", "compare", "wass", "cramer", "align", "avgdist", "entropy"
 )
 
 
@@ -278,7 +279,7 @@ distance_cramer <- function(f, g) {
 }
 
 
-# distance_align() --------------------------------------------------------
+# Method "align" ----------------------------------------------------------
 distance_align <- function(f, g) {
   f_supp <- meta_support(f)
   g_supp <- meta_support(g)
@@ -308,6 +309,27 @@ distance_align <- function(f, g) {
   )[["root"]]
 
   abs(res)
+}
+
+
+# Method "avgdist" --------------------------------------------------------
+distance_avgdist <- function(f, g) {
+  f <- approx_discrete(f)
+  f_x_tbl <- meta_x_tbl(f)
+  f_x <- f_x_tbl[["x"]]
+  f_prob <- f_x_tbl[["prob"]]
+
+  g <- approx_discrete(g)
+  g_x_tbl <- meta_x_tbl(g)
+  g_x <- g_x_tbl[["x"]]
+  g_prob <- g_x_tbl[["prob"]]
+
+  # Compute average distance between two discrete distributions
+  f_x_avgdist <- vapply(f_x, function(cur_x) {
+    sum(abs(cur_x - g_x) * g_prob)
+  }, numeric(1))
+
+  sum(f_x_avgdist * f_prob)
 }
 
 

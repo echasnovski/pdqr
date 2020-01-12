@@ -55,6 +55,9 @@ test_that("summ_distance works", {
   # Method "align"
   expect_equal(summ_distance(p_f, p_g, method = "align"), 0.25)
 
+  # Method "avgdist"
+  expect_equal(summ_distance(p_f, p_g, method = "avgdist"), 1/3, tol = 1e-7)
+
   # Method "entropy"
   expect_equal(
     summ_distance(p_f, p_g, method = "entropy"),
@@ -89,6 +92,10 @@ test_that("summ_distance returns 0 for identical inputs", {
   expect_equal(summ_distance(d_dis, d_dis, method = "align"), 0)
   expect_equal(summ_distance(d_con, d_con, method = "align"), 0)
   expect_equal(summ_distance(d_dirac, d_dirac, method = "align"), 0)
+
+  # Method "avgdist" almost never returns 0 for identical inputs because
+  # `E[|X-Y|]` can be zero only in case of identical discrete `X` and `Y` with
+  # one value
 
   expect_equal(summ_distance(d_dis, d_dis, method = "entropy"), 0)
   expect_equal(summ_distance(d_con, d_con, method = "entropy"), 0)
@@ -687,6 +694,106 @@ test_that("distance_align works with different pdqr classes", {
   expect_equal(
     distance_align(d_dis, d_con), distance_align(p_dis, q_con)
   )
+})
+
+
+# distance_avgdist --------------------------------------------------------
+test_that("distance_avgdist works with two 'discrete' functions", {
+  f <- new_d(1:4, "discrete")
+  g <- new_d(c(2, 5), "discrete")
+
+  out_ref <- (1 + 4 + 0 + 3 + 1 + 2 + 2 + 1) * 0.25 * 0.5
+  expect_equal(distance_avgdist(f, g), out_ref)
+})
+
+test_that("distance avgdist works with mixed-type functions", {
+  f_dis <- new_d(0:3, "discrete")
+  g_con <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
+
+  out_ref <- (0.5 + 0.5 + 1.5 + 2.5) * 0.25
+  expect_equal(distance_avgdist(f_dis, g_con), out_ref)
+})
+
+test_that("distance_avgdist works with two 'continuous' functions", {
+  # Distance of uniform distribution with itself is equal to L/3
+  f <- as_d(dunif, min = -1, max = 11)
+  expect_equal(distance_avgdist(f, f), 12/3, tol = 1e-5)
+
+  # Difference between two normal variables F~N(a,c) and G~N(b,d) is gaussian
+  # Z~N(a-b, sqrt(c^2+d^2)). Its absolute value has "folded normal"
+  # distribution FN(m,s) with mean that can be computed analytically
+  f <- as_d(dnorm)
+  g <- as_d(dnorm, mean = 1, sd = sqrt(3))
+  # Compute reference output
+  m <- 1
+  s <- 2
+  out_ref <- s*sqrt(2/pi)*exp(-m^2 / (2*s^2)) - m*(1 - 2*pnorm(m/s))
+  expect_equal(distance_avgdist(f, g), out_ref, tol = 1e-4)
+})
+
+test_that("distance_avgdist works with dirac-like functions", {
+  f_dirac <- new_d(10, "continuous")
+  g_dirac <- new_d(20, "continuous")
+
+  expect_equal(distance_avgdist(f_dirac, g_dirac), 10)
+
+  h_con <- new_d(data.frame(x = 0:1, y = c(0, 1)), "continuous")
+  expect_equal(
+    distance_avgdist(f_dirac, h_con),
+    distance_avgdist(new_d(10, "discrete"), h_con)
+  )
+})
+
+test_that("distance_avgdist works with mixtures", {
+  f_mix <- form_mix(
+    list(
+      new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
+      new_d(data.frame(x = 2:3, y = c(1, 1)), "continuous")
+    )
+  )
+  g <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
+
+  expect_equal(distance_avgdist(f_mix, g), 0.5*1 + 0.5*1)
+})
+
+test_that("distance_avgdist handles wide zero plateaus in density", {
+  skip_on_cran()
+
+  f <- new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous")
+  g <- form_mix(
+    list(
+      new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
+      new_d(data.frame(x = 0:1+200, y = c(1, 1)), "continuous")
+    )
+  )
+
+  # Accuracy isn't high because of wide "zero plateau" in `g`, which affects
+  # current implementation using discrete approximation with
+  # `form_regrid(*, method = "x")`
+  expect_equal(distance_avgdist(f, g), 0.5*1/3 + 0.5*200, tol = 1e-2)
+
+  # Increasing approximation grid increases accuracy
+  op <- options(pdqr.approx_discrete_n_grid = 1e4)
+  on.exit(options(op))
+  expect_equal(distance_avgdist(f, g), 0.5*1/3 + 0.5*200, tol = 1e-4)
+})
+
+test_that("distance_avgdist works in case 'con' function has few intervals", {
+  f <- new_d(data.frame(x = 0:1, y = c(1, 0)), "continuous")
+  g <- new_d(data.frame(x = c(1, 3), y = c(0, 1)), "continuous")
+  expect_equal(distance_avgdist(f, g), 2)
+})
+
+test_that("distance_avgdist returns zero for one-valued discrete function", {
+  d_1 <- new_d(100, "discrete")
+  expect_equal(distance_avgdist(d_1, d_1), 0, tol = 1e-12)
+})
+
+test_that("distance_avgdist respects 'pdqr.approx_discrete_n_grid' option", {
+  op <- options(pdqr.approx_discrete_n_grid = 1)
+  on.exit(options(op))
+
+  expect_equal(distance_avgdist(d_con, d_con), 0)
 })
 
 
