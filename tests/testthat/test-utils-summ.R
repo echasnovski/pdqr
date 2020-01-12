@@ -373,3 +373,46 @@ test_that("na_outside works", {
 })
 
 
+# approx_discrete ---------------------------------------------------------
+test_that("approx_discrete works", {
+  # Discrete pdqr-functions should be left untouched
+  expect_identical(approx_discrete(d_dis), d_dis)
+
+  # Continuous functions should be regridded and retyped using designated option
+  expect_equal_x_tbl(
+    approx_discrete(d_con),
+    form_retype(
+      form_regrid(
+        d_con, n_grid = get_approx_discrete_n_grid_option(), method = "x"
+      ),
+      type = "discrete", method = "piecelin"
+    )
+  )
+})
+
+# get_approx_discrete_n_grid_option ---------------------------------------
+test_that("get_approx_discrete_n_grid_option works", {
+  op <- options(pdqr.approx_discrete_n_grid = 200)
+  on.exit(options(op))
+
+  expect_equal(get_approx_discrete_n_grid_option(), 200)
+})
+
+test_that("get_approx_discrete_n_grid_option always checks its output", {
+  op <- options(
+    pdqr.assert_args = FALSE,
+    pdqr.approx_discrete_n_grid = "a"
+  )
+  on.exit(options(op))
+
+  expect_error(
+    get_approx_discrete_n_grid_option(),
+    'Option "pdqr.approx_discrete_n_grid".*single number'
+  )
+
+  options(pdqr.approx_discrete_n_grid = 0)
+  expect_error(
+    get_approx_discrete_n_grid_option(),
+    'Option "pdqr.approx_discrete_n_grid".*not less than 1'
+  )
+})

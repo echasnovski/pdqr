@@ -254,3 +254,43 @@ na_outside <- function(x, left, right) {
 
   x
 }
+
+
+# Discrete approximation --------------------------------------------------
+#' Approximate with discrete pdqr-function
+#'
+#' Approximate continuous pdqr-function with discrete with ensured appropriate
+#' number of elements (controlled by "pdqr.approx_discrete_n_grid" option),
+#' which should be big enough for high accuracy and small enough for high
+#' computation speed. Discrete pdqr-functions returned untouched.
+#'
+#' @param f Pdqr-function.
+#'
+#' @noRd
+approx_discrete <- function(f) {
+  assert_pdqr_fun(f)
+  n_grid <- get_approx_discrete_n_grid_option()
+
+  if (meta_type(f) == "continuous") {
+    disable_asserting_locally()
+    f <- form_retype(
+      form_regrid(f, n_grid = n_grid, method = "x"),
+      type = "discrete", method = "piecelin"
+    )
+  }
+
+  f
+}
+
+get_approx_discrete_n_grid_option <- function() {
+  n_grid <- getOption("pdqr.approx_discrete_n_grid")
+
+  enable_asserting_locally()
+  assert_type(
+    n_grid, is_single_number, min_val = 1,
+    x_name = 'Option "pdqr.approx_discrete_n_grid"',
+    type_name = "single number not less than 1"
+  )
+
+  n_grid
+}

@@ -2,6 +2,7 @@
 .onLoad <- function(libname, pkgname) {
   # Set default options
   default_options <- list(
+    pdqr.approx_discrete_n_grid = 1000,
     pdqr.assert_args = TRUE,
     pdqr.group_gen.n_sample = 10000,
     pdqr.group_gen.args_new = list(),

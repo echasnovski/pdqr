@@ -23,16 +23,23 @@
 #'
 #' This package has the following options (should be set by
 #' [options()][base::options()]):
-#' - *"pdqr.group_gen.args_new"*, *"pdqr.group_gen.n_sample"*,
-#' *"pdqr.group_gen.repair_supp_method"*. They may be used to customize behavior
-#' of methods for S3 group generic functions. See [their help
-#' page][methods-group-generic] for more information.
+#' - *"pdqr.approx_discrete_n_grid"*. This single number (default to 1000)
+#' determines degree of granularity of how continuous pdqr-function is
+#' approximated with discrete one during some complicated tasks. Approximation
+#' is done by first using [form_regrid()] with `n_grid` argument equal to this
+#' option and `method = "x"`, and then [form_retype()] is used with `type =
+#' "discrete"` and `method = "piecelin"`. Value of this option should be big
+#' enough for high accuracy and small enough for high computation
+#' speed, for which value 1000 showed to be fairly appropriate.
 #' - *"pdqr.assert_args"*. This boolean option (default to `TRUE`) may be used
 #' to turn off sanity checks of function arguments (set it to `FALSE`), which
 #' will somewhat increase general execution speed. **Use this option at your own
 #' risk in case you are confident that input arguments have correct type and
 #' structure**.
-#'
+#' - *"pdqr.group_gen.args_new"*, *"pdqr.group_gen.n_sample"*,
+#' *"pdqr.group_gen.repair_supp_method"*. They may be used to customize behavior
+#' of methods for S3 group generic functions. See [their help
+#' page][methods-group-generic] for more information.
 "_PACKAGE"
 
 
