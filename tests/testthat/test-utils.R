@@ -666,6 +666,50 @@ test_that("enpoint validates input", {
 # Tested in `enpoint()`
 
 
+# mean_unif_dist ----------------------------------------------------------
+test_that("mean_unif_dist works with non-overlapping supports", {
+  expect_equal(mean_unif_dist(0, 1, 2, 3), 2.5-0.5)
+  expect_equal(mean_unif_dist(2, 3, 0, 1), 2.5-0.5)
+
+  expect_equal(mean_unif_dist(0, 1, 1, 1.5), 1.25-0.5)
+  expect_equal(mean_unif_dist(1, 1.5, 0, 1), 1.25-0.5)
+})
+
+test_that("mean_unif_dist works with overlapping supports", {
+  expect_equal(mean_unif_dist(0, 1, 0.5, 1.5), 1.625/3)
+  expect_equal(mean_unif_dist(0.5, 1.5, 0, 1), 1.625/3)
+})
+
+test_that("mean_unif_dist works with 'swallowed' supports", {
+  # Direct 'swallowing'
+  expect_equal(mean_unif_dist(0, 1, 0.25, 0.75), 3.25/12)
+  expect_equal(mean_unif_dist(0.25, 0.75, 0, 1), 3.25/12)
+  expect_equal(mean_unif_dist(0, 1, 0.25, 0.5), 3.25/12)
+  expect_equal(mean_unif_dist(0.25, 0.5, 0, 1), 3.25/12)
+  expect_equal(mean_unif_dist(0, 1, 0.5, 0.75), 3.25/12)
+  expect_equal(mean_unif_dist(0.5, 0.75, 0, 1), 3.25/12)
+
+  # Identical supports. Mean distance of U(a, b) with self is equal to `(b-a)/3`
+  expect_equal(mean_unif_dist(0, 3, 0, 3), 3/3)
+
+  # Equal corresponding edges
+  expect_equal(mean_unif_dist(0, 1, 0.5, 1), 1/3)
+  expect_equal(mean_unif_dist(0.5, 1, 0, 1), 1/3)
+  expect_equal(mean_unif_dist(0, 1, 0, 0.5), 1/3)
+  expect_equal(mean_unif_dist(0, 0.5, 0, 1), 1/3)
+})
+
+test_that("mean_unif_dist works with point supports", {
+  # Single point
+  expect_equal(mean_unif_dist(0, 1, 0.25, 0.25), 5/16)
+  expect_equal(mean_unif_dist(0.25, 0.25, 0, 1), 5/16)
+
+  # Both are points
+  expect_equal(mean_unif_dist(0, 0, 1, 1), 1)
+  expect_equal(mean_unif_dist(1, 1, 0, 0), 1)
+})
+
+
 # disable_asserting_locally -----------------------------------------------
 test_that("disable_asserting_locally works", {
   op <- options(pdqr.assert_args = TRUE)

@@ -292,7 +292,7 @@ copy_attrs <- function(to, from) {
 }
 
 
-# Distance functions ------------------------------------------------------
+# Compute neighbors -------------------------------------------------------
 find_nearest_ind <- function(x, set) {
   # Returns `length(x)` **indicies of `set`** which are closest to respective
   # `x` elements.
@@ -658,6 +658,60 @@ enpoint_q <- function(f, n_points) {
 
 enpoint_r <- function(f, n_points) {
   data.frame(n = seq_len(n_points), x = f(n_points))
+}
+
+
+# Distance between two uniform distributions ------------------------------
+# E[|X - Y|], where X ~ U(a, b) and Y ~ U(c, d). Here `a <= b` and `c <= d`
+# should be both true, and support of distribution can be single point.
+# **Note** that this is not vectorized.
+mean_unif_dist <- function(a, b, c, d) {
+  if ((b <= c) || (d <= a)) {
+    # Case of no intersection. Here expected absolute difference of
+    # non-overlapping uniforms is equal to absolute difference of their centers.
+    0.5 * abs(a + b - c - d)
+  } else {
+    points <- sort(c(a, b, c, d))
+    lens <- diff(points)
+    mids <- 0.5*(points[-4] + points[-1])
+
+    if (((a < c) && (b < d)) || ((c < a) && (d < b))) {
+      # Case of "overlapping" intersection. This case can be viewed as three
+      # intervals: "left end"-"intersection"-"right end". Then, one distribution
+      # can be viewed as mixture of "left end" and "intersection" (with
+      # probabilities equal to proportions of their lengths to their sum), and
+      # the other is the same but with "intersection" and "right end".
+      # Example: X ~ U(0, 1), Y ~ U(0.6, 1.5). Then X can be views as mixture of
+      # U(0, 0.6) ("left") and U(0.6, 1) ("intersection") with probabilities
+      # 0.6/(0.6+0.4) and 0.4/(0.6+0.4). And Y as U(0.6, 1) and U(1, 1.5)
+      # ("right") with probabilities 0.4/(0.4+0.5) and 0.5/(0.4+0.5).
+
+      # Proportions of "intersection" with respect to two initial supports
+      share_left <- lens[2] / (lens[1] + lens[2])
+      share_right <- lens[2] / (lens[2] + lens[3])
+
+      # Treating uniforms as mixtures helps to compute expected value of
+      # abs.diff. by expanding mixture elements with respect to their
+      # probabilities.
+      (1-share_left) * (
+        share_right*(mids[2] - mids[1]) + (1-share_right)*(mids[3] - mids[1])
+      ) +
+        share_left * (
+          # Expected abs.diff. of uniform with itself is equal to L/3 (L -
+          # length of its support).
+          share_right * lens[2]/3 + (1-share_right)*(mids[3] - mids[2])
+        )
+    } else {
+      # Case of "swallowing" intersection. One interval is a subset of another.
+      # The bigger one then can be viewed as mixture of three uniform, and the
+      # same technique can be applied as in "overlapping" case.
+      # Example: X ~ U(0, 1), Y ~ (0.5, 0.75). The X is a mixture of U(0, 0.5),
+      # U(0.5, 0.75) and U(0.75, 1) with probabilites 0.5, 0.25 and 0.25.
+      (lens[1] * (mids[2] - mids[1]) + lens[2] * lens[2] / 3 +
+         lens[3] * (mids[3] - mids[2])) /
+        (lens[1] + lens[2] + lens[3])
+    }
+  }
 }
 
 
