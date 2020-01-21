@@ -578,3 +578,43 @@ test_that("is_region_ordered works", {
     is_region_ordered(data.frame(left = c(1, 2, -1), right = c(1.5, 2.5, 3)))
   )
 })
+
+
+# region_as_pdqr ----------------------------------------------------------
+test_that("region_as_pdqr works with 'all-continuous' region", {
+  region <- data.frame(left = c(1, 3), right = c(1.5, 8))
+
+  out <- region_as_pdqr(region)
+  out_ref <- form_mix(
+    f_list = list(
+      new_d(data.frame(x = c(1, 1.5), y = c(1, 1)), "continuous"),
+      new_d(data.frame(x = c(3, 8), y = c(1, 1)), "continuous")
+    ),
+    weights = c(0.5, 5) / 5.5
+  )
+  expect_equal(meta_x_tbl(out), meta_x_tbl(out_ref))
+})
+
+test_that("region_as_pdqr works with 'all-discrete' region", {
+  x <- sort(runif(10))
+  region <- data.frame(left = x, right = x)
+
+  out <- region_as_pdqr(region)
+  out_ref <- new_d(x, "discrete")
+  expect_equal(meta_x_tbl(out), meta_x_tbl(out_ref))
+})
+
+test_that("region_as_pdqr works with 'mixed-type' region", {
+  region <- data.frame(left = c(1, 2, 3, 10), right = c(1.5, 2, 8, 10))
+
+  out <- region_as_pdqr(region)
+  # Only intervals with positive lengths are used
+  out_ref <- form_mix(
+    f_list = list(
+      new_d(data.frame(x = c(1, 1.5), y = c(1, 1)), "continuous"),
+      new_d(data.frame(x = c(3, 8), y = c(1, 1)), "continuous")
+    ),
+    weights = c(0.5, 5) / 5.5
+  )
+  expect_equal(meta_x_tbl(out), meta_x_tbl(out_ref))
+})

@@ -257,6 +257,8 @@ region_draw <- function(region, col = "blue", alpha = 0.2) {
   )
 }
 
+
+# Helpers -----------------------------------------------------------------
 region_new <- function(left, right) {
   output_region <- data.frame(left = left, right = right)
   assert_region(output_region)
@@ -317,4 +319,38 @@ is_region_ordered <- function(df) {
   all(order(comb) == seq_len(2*nrow(df))) &&
     # Uniqueness condition
     !any(duplicated(df[, c("left", "right")]))
+}
+
+# Region is transformed into a random variable based on the following algorithm:
+# - If all intervals have "zero" lengths (based on 1e-10 tolerance), output is a
+#   uniform discrete discrete distribution over their values (left edges).
+# - If there is at least one interval with positive length, output is a uniform
+#   continuous distribution over the region. This means that intervals with zero
+#   length don't affect output, because their probability with respect to output
+#   random variable is zero.
+region_as_pdqr <- function(region) {
+  interval_is_point <- is_zero(region[["right"]] - region[["left"]])
+
+  if (all(interval_is_point)) {
+    res <- new_d(region[["left"]], "discrete")
+  } else {
+    region_con <- region[!interval_is_point, , drop = FALSE]
+
+    interval_width <- region_con[["right"]] - region_con[["left"]]
+    mix_weights <- interval_width / sum(interval_width)
+
+    f_list <- lapply(seq_len(nrow(region_con)), function(i) {
+      new_d(
+        x = data.frame(
+          x = c(region_con[["left"]][i], region_con[["right"]][i]),
+          y = c(1, 1)
+        ),
+        type = "continuous"
+      )
+    })
+
+    res <- form_mix(f_list, weights = mix_weights)
+  }
+
+  res
 }
