@@ -337,7 +337,7 @@ region_as_pdqr <- function(region) {
     region_con <- region[!interval_is_point, , drop = FALSE]
 
     interval_width <- region_con[["right"]] - region_con[["left"]]
-    mix_weights <- interval_width / sum(interval_width)
+    mix_weights <- to_weights(interval_width)
 
     f_list <- lapply(seq_len(nrow(region_con)), function(i) {
       new_d(

@@ -278,6 +278,19 @@ test_that("alternate works", {
 })
 
 
+# to_weights --------------------------------------------------------------
+test_that("to_weights works", {
+  expect_equal(to_weights(1:10), 1:10 / 55)
+  expect_equal(to_weights(c(0, 10, 0)), c(0, 1, 0))
+  expect_equal(to_weights(rep(0, 10)), rep(0.1, 10))
+})
+
+test_that("to_weights validates input", {
+  expect_error(to_weights(c("a", "b")), "number")
+  expect_error(to_weights(c(-1, 0, 10)), "positive")
+})
+
+
 # c_dedupl ----------------------------------------------------------------
 test_that("c_dedupl works", {
   input_1 <- list(1, 2)

@@ -248,6 +248,20 @@ alternate <- function(x, y) {
   comb[inds]
 }
 
+to_weights <- function(x) {
+  if (!is.numeric(x) || !all(x >= 0)) {
+    stop_collapse("All input to `to_weights()` should be positive numbers.")
+  }
+
+  x_sum <- sum(x, na.rm = TRUE)
+
+  if (x_sum > 0) {
+    x / x_sum
+  } else {
+    rep(1, length(x)) / length(x)
+  }
+}
+
 
 # List manipulations ------------------------------------------------------
 c_dedupl <- function(...) {
