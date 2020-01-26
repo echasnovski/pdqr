@@ -225,6 +225,55 @@ region_width <- function(region) {
   sum(region[["right"]] - region[["left"]])
 }
 
+region_distance <- function(region, region2, method = "Jaccard") {
+  assert_region(region)
+  assert_region(region2)
+  assert_method(method, c("Jaccard", methods_distance))
+
+  # Speed optimization (skips possibly expensive assertions)
+  disable_asserting_locally()
+
+  switch(
+    method,
+    Jaccard = region_distance_jaccard(region, region2),
+    entropy = {
+      region_pdqr <- region_as_pdqr(region)
+      region2_pdqr <- region_as_pdqr(region2)
+      if (meta_type(region_pdqr) != meta_type(region2_pdqr)) {
+        stop_collapse(
+          'For method "entropy", regions should represent distribution of the ',
+          'same type (either both have zero width or both have positive width).'
+        )
+      }
+
+      summ_distance(region_pdqr, region2_pdqr, method)
+    },
+    summ_distance(region_as_pdqr(region), region_as_pdqr(region2), method)
+  )
+}
+
+region_distance_jaccard <- function(region, region2) {
+  # Compute grid of all possible breaks from either `region` or `region2`
+  breaks <- sort(unique(c(unlist(region), unlist(region2))))
+  names(breaks) <- NULL
+  l <- breaks[-length(breaks)]
+  r <- breaks[-1]
+  mids <- (l + r) / 2
+  lens <- r - l
+
+  # Determine if intervals of grid are in input regions
+  interval_is_in_1 <- region_is_in(region, mids)
+  interval_is_in_2 <- region_is_in(region2, mids)
+
+  # Determine if intervals of grid are in intersection and union of regions
+  interval_is_in_intercept <- interval_is_in_1 & interval_is_in_2
+  interval_is_in_union     <- interval_is_in_1 | interval_is_in_2
+
+  # Compute result based on fact that length of intersection/union is equal to
+  # sum of lengths of grid intervals that are their part
+  1 - sum(lens[interval_is_in_intercept]) / sum(lens[interval_is_in_union])
+}
+
 #' @rdname region
 #' @export
 region_draw <- function(region, col = "blue", alpha = 0.2) {

@@ -8,6 +8,47 @@ library(grDevices)
 # function.
 
 
+# Input data --------------------------------------------------------------
+region_dis_1 <- data.frame(left = c(0, 0.5, 1), right = c(0, 0.5, 1))
+region_dis_2 <- data.frame(left = c(0, 0.75, 1), right = c(0, 0.75, 1))
+region_con_1 <- data.frame(left = c(0, 2), right = c(1, 3))
+region_con_2 <- data.frame(left = c(0.5, 2.5), right = c(1.5, 3.5))
+region_mix <- data.frame(left = c(0, 0.5), right = c(0, 1))
+region_mix_as_con <- data.frame(left = 0.5, right = 1)
+
+region_dis_1_pdqr <- region_as_pdqr(region_dis_1)
+region_dis_2_pdqr <- region_as_pdqr(region_dis_2)
+region_con_1_pdqr <- region_as_pdqr(region_con_1)
+region_con_2_pdqr <- region_as_pdqr(region_con_2)
+region_mix_pdqr <- region_as_pdqr(region_mix)
+
+
+# Custom expectations -----------------------------------------------------
+expect_region_distance_other_methods <- function(region, region2) {
+  region_pdqr <- region_as_pdqr(region)
+  region2_pdqr <- region_as_pdqr(region2)
+
+  for (meth in methods_distance[methods_distance != "entropy"]) {
+    expect_equal(
+      region_distance(region, region2, method = meth),
+      summ_distance(region_pdqr, region2_pdqr, method = meth)
+    )
+  }
+
+  if (meta_type(region_pdqr) != meta_type(region2_pdqr)) {
+    expect_error(
+      region_distance(region, region2, method = "entropy"),
+      '"entropy".*same type'
+    )
+  } else {
+    expect_equal(
+      region_distance(region, region2, method = "entropy"),
+      summ_distance(region_pdqr, region2_pdqr, method = "entropy")
+    )
+  }
+}
+
+
 # region_is_in ------------------------------------------------------------
 test_that("region_is_in works", {
   region_1 <- data.frame(left = 1:2, right = 1:2 + 0.5)
@@ -437,6 +478,81 @@ test_that("region_width validates input", {
   expect_error(region_width("a"), "`region`.*data frame")
   expect_error(region_width(data.frame(a = 1)), '`region`.*"left"')
 })
+
+
+# region_distance ---------------------------------------------------------
+test_that("region_distance works with 'Jaccard' method", {
+  # "Discrete" regions
+  # If both inputs are purely "discrete" regions, widths of intersection and
+  # union are zero, so output is `NaN`.
+  expect_equal(
+    region_distance(region_dis_1, region_dis_2, method = "Jaccard"), NaN
+  )
+  # If only one input is purely "discrete", then width of intersection is zero,
+  # but width of union is not zero, so output is 1-0.
+  expect_equal(
+    region_distance(region_dis_1, region_con_2, method = "Jaccard"), 1
+  )
+  expect_equal(
+    region_distance(region_con_1, region_dis_2, method = "Jaccard"), 1
+  )
+
+  # "Continuous" regions
+  expect_equal(
+    region_distance(region_con_1, region_con_2, method = "Jaccard"), 1 - 1/3
+  )
+  expect_equal(
+    region_distance(region_con_1, region_con_1, method = "Jaccard"), 0
+  )
+  # Case of consecutive intervals in region
+  expect_equal(
+    region_distance(
+      data.frame(left = c(0, 1),     right = c(1, 2)),
+      data.frame(left = c(0, 1)+0.5, right = c(1, 2)+0.5),
+      method = "Jaccard"
+    ),
+    1 - 1.5/2.5
+  )
+
+  # "Mixed" regions
+  expect_equal(
+    region_distance(region_dis_1, region_mix, method = "Jaccard"),
+    region_distance(region_dis_1, region_mix_as_con, method = "Jaccard")
+  )
+  expect_equal(
+    region_distance(region_con_1, region_mix, method = "Jaccard"),
+    region_distance(region_con_1, region_mix_as_con, method = "Jaccard")
+  )
+})
+
+test_that("region_distance works with `summ_distance()` methods", {
+  # "Discrete" regions
+  expect_region_distance_other_methods(region_dis_1, region_dis_2)
+  expect_region_distance_other_methods(region_dis_1, region_con_2)
+
+  # "Continuous" regions
+  expect_region_distance_other_methods(region_con_1, region_con_2)
+
+  # "Mixed" regions
+  expect_region_distance_other_methods(region_dis_1, region_mix)
+  expect_region_distance_other_methods(region_con_1, region_mix)
+})
+
+test_that("region_distance validates input", {
+  region <- data.frame(left = c(0, 2), right = c(1, 3))
+  region2 <- data.frame(left = c(0, 2)+0.5, right = c(1, 3)+0.5)
+
+  expect_error(region_distance(list(0:1, 1:2), region2), "`region`")
+  expect_error(region_distance(region, list(0:1, 1:2)), "`region2`")
+  expect_error(region_distance(region, region2, method = 1), "`method`.*string")
+  expect_error(
+    region_distance(region, region2, method = "a"), "`method`.*one of"
+  )
+})
+
+
+# region_distance_jaccard -------------------------------------------------
+# Tested in `region_distance()`
 
 
 # region_draw -------------------------------------------------------------
