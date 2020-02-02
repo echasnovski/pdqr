@@ -28,7 +28,8 @@ expect_region_distance_other_methods <- function(region, region2) {
   region_pdqr <- region_as_pdqr(region)
   region2_pdqr <- region_as_pdqr(region2)
 
-  for (meth in methods_distance[methods_distance != "entropy"]) {
+  is_other_method <- !(methods_distance %in% c("avgdist", "entropy"))
+  for (meth in methods_distance[is_other_method]) {
     expect_equal(
       region_distance(region, region2, method = meth),
       summ_distance(region_pdqr, region2_pdqr, method = meth)
@@ -525,7 +526,47 @@ test_that("region_distance works with 'Jaccard' method", {
   )
 })
 
-test_that("region_distance works with `summ_distance()` methods", {
+test_that("region_distance works with 'avgdist' method", {
+  # Output for "avgdist" method should be equivalent to when treating regions
+  # as distributions and applying `summ_distance(*, method = "avgdist")` (but
+  # more accurate for "continuous" case).
+
+  # "Discrete" regions
+  expect_equal(
+    region_distance(region_dis_1, region_dis_2, method = "avgdist"),
+    summ_distance(region_dis_1_pdqr, region_dis_2_pdqr, method = "avgdist")
+  )
+  expect_equal(
+    region_distance(region_dis_1, region_con_2, method = "avgdist"),
+    summ_distance(region_dis_1_pdqr, region_con_2_pdqr, method = "avgdist"),
+    tol = 1e-6
+  )
+  expect_equal(
+    region_distance(region_con_1, region_dis_2, method = "avgdist"),
+    summ_distance(region_con_1_pdqr, region_dis_2_pdqr, method = "avgdist"),
+    tol = 1e-6
+  )
+
+  # "Continuous" regions
+  expect_equal(
+    region_distance(region_con_1, region_con_2, method = "avgdist"),
+    summ_distance(region_con_1_pdqr, region_con_2_pdqr, method = "avgdist"),
+    tol = 1e-6
+  )
+
+  # "Mixed" regions
+  expect_equal(
+    region_distance(region_dis_1, region_mix, method = "avgdist"),
+    summ_distance(region_dis_1_pdqr, region_mix_pdqr, method = "avgdist")
+  )
+  expect_equal(
+    region_distance(region_con_1, region_mix, method = "avgdist"),
+    summ_distance(region_con_1_pdqr, region_mix_pdqr, method = "avgdist"),
+    tol = 1e-6
+  )
+})
+
+test_that("region_distance works with the rest of `summ_distance()` methods", {
   # "Discrete" regions
   expect_region_distance_other_methods(region_dis_1, region_dis_2)
   expect_region_distance_other_methods(region_dis_1, region_con_2)
@@ -552,6 +593,10 @@ test_that("region_distance validates input", {
 
 
 # region_distance_jaccard -------------------------------------------------
+# Tested in `region_distance()`
+
+
+# region_distance_avgdist -------------------------------------------------
 # Tested in `region_distance()`
 
 

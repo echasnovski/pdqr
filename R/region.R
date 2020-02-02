@@ -236,6 +236,9 @@ region_distance <- function(region, region2, method = "Jaccard") {
   switch(
     method,
     Jaccard = region_distance_jaccard(region, region2),
+    # Method "avgdist" is implemented separately for accuracy and performance
+    avgdist = region_distance_avgdist(region, region2),
+    # Method "entropy" is implemented separately to throw informative error
     entropy = {
       region_pdqr <- region_as_pdqr(region)
       region2_pdqr <- region_as_pdqr(region2)
@@ -272,6 +275,32 @@ region_distance_jaccard <- function(region, region2) {
   # Compute result based on fact that length of intersection/union is equal to
   # sum of lengths of grid intervals that are their part
   1 - sum(lens[interval_is_in_intercept]) / sum(lens[interval_is_in_union])
+}
+
+region_distance_avgdist <- function(region, region2) {
+  left <- region[["left"]]
+  right <- region[["right"]]
+  left2 <- region2[["left"]]
+  right2 <- region2[["right"]]
+
+  # For every interval in `region` compute its distance to `region2`
+  interval_region2 <- vapply(seq_len(nrow(region)), function(i) {
+    # For every interval in `region2` compute its distance to current interval
+    # in `region`
+    interval_interval2 <- vapply(seq_len(nrow(region2)), function(j) {
+      mean_unif_dist(left[i], right[i], left2[j], right2[j])
+    }, numeric(1))
+
+    # Distance from interval to `region2` is a weighted sum of
+    # "interval-interval" distances. This aligns with treating regions as
+    # uniform distributions on them. **Note** that it means zero length
+    # intervals are not used if there is at least one interval with positive
+    # length.
+    sum(interval_interval2 * to_weights(right2 - left2))
+  }, numeric(1))
+
+  # "region-region" distance is a weighted sum of "interval-region" distances
+  sum(interval_region2 * to_weights(right - left))
 }
 
 #' @rdname region
