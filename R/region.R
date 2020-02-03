@@ -16,6 +16,10 @@
 #' @param right_closed A single logical value representing whether to treat
 #'   right ends of intervals as their parts.
 #' @param f A pdqr-function.
+#' @param region2 A data frame representing region.
+#' @param method Method for computing distance between regions in
+#'   `region_distance()`. Should be one of "Jaccard" or methods of
+#'   [summ_distance()].
 #' @param col Single color of rectangles to be used. Should be appropriate for
 #'   `col` argument of [col2rgb()][grDevices::col2rgb()].
 #' @param alpha Single number representing factor modifying the opacity alpha;
@@ -51,6 +55,18 @@
 #'
 #' `region_width()` computes total width of a region, i.e. sum of differences
 #' between "right" and "left" columns.
+#'
+#' `region_distance()` computes distance between a pair of regions. As in
+#' [summ_distance()], it is a single non-negative number representing how much
+#' two regions differ from one another (bigger values indicate bigger
+#' difference). Argument `method` represents method of computing distance.
+#' Method "Jaccard" computes Jaccard distance: one minus ratio of intersection
+#' width and union width. Other methods come from `summ_distance()` and
+#' represent distance between regions as probability distributions:
+#' - If total width of region is zero (i.e. it consists only from points),
+#' distribution is a uniform discrete one based on points from region.
+#' - If total width is positive, then distribution is a uniform continuous one
+#' based on intervals with positive width.
 #'
 #' `region_draw()` draws (on current plot) intervals stored in `region` as
 #' colored rectangles vertically starting from zero and ending in the top of the
@@ -116,6 +132,12 @@
 #' region_is_in(region, 1, right_closed = FALSE)
 #'   # Only this will return `FALSE`
 #' region_is_in(region, 1, left_closed = FALSE, right_closed = FALSE)
+#'
+#' # Distance between regions
+#' region1 <- data.frame(left = c(0, 2), right = c(1, 2))
+#' region2 <- data.frame(left = 0.5, right = 1.5)
+#' region_distance(region1, region2, method = "Jaccard")
+#' region_distance(region1, region2, method = "KS")
 #'
 #' # Drawing
 #' d_mix <- form_mix(list(as_d(dnorm), as_d(dnorm, mean = 5)))
@@ -225,6 +247,8 @@ region_width <- function(region) {
   sum(region[["right"]] - region[["left"]])
 }
 
+#' @rdname region
+#' @export
 region_distance <- function(region, region2, method = "Jaccard") {
   assert_region(region)
   assert_region(region2)

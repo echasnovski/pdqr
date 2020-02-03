@@ -6,6 +6,7 @@
 \alias{region_prob}
 \alias{region_height}
 \alias{region_width}
+\alias{region_distance}
 \alias{region_draw}
 \title{Work with regions}
 \usage{
@@ -16,6 +17,8 @@ region_prob(region, f, left_closed = TRUE, right_closed = TRUE)
 region_height(region, f, left_closed = TRUE, right_closed = TRUE)
 
 region_width(region)
+
+region_distance(region, region2, method = "Jaccard")
 
 region_draw(region, col = "blue", alpha = 0.2)
 }
@@ -31,6 +34,12 @@ ends of intervals as their parts.}
 right ends of intervals as their parts.}
 
 \item{f}{A pdqr-function.}
+
+\item{region2}{A data frame representing region.}
+
+\item{method}{Method for computing distance between regions in
+\code{region_distance()}. Should be one of "Jaccard" or methods of
+\code{\link[=summ_distance]{summ_distance()}}.}
 
 \item{col}{Single color of rectangles to be used. Should be appropriate for
 \code{col} argument of \link[grDevices:col2rgb]{col2rgb()}.}
@@ -96,6 +105,20 @@ than target height and total probability of the set being not less than
 \code{region_width()} computes total width of a region, i.e. sum of differences
 between "right" and "left" columns.
 
+\code{region_distance()} computes distance between a pair of regions. As in
+\code{\link[=summ_distance]{summ_distance()}}, it is a single non-negative number representing how much
+two regions differ from one another (bigger values indicate bigger
+difference). Argument \code{method} represents method of computing distance.
+Method "Jaccard" computes Jaccard distance: one minus ratio of intersection
+width and union width. Other methods come from \code{summ_distance()} and
+represent distance between regions as probability distributions:
+\itemize{
+\item If total width of region is zero (i.e. it consists only from points),
+distribution is a uniform discrete one based on points from region.
+\item If total width is positive, then distribution is a uniform continuous one
+based on intervals with positive width.
+}
+
 \code{region_draw()} draws (on current plot) intervals stored in \code{region} as
 colored rectangles vertically starting from zero and ending in the top of the
 plot (technically, at "y" value of \code{2e8}).
@@ -140,6 +163,12 @@ region_is_in(region, 1, left_closed = FALSE)
 region_is_in(region, 1, right_closed = FALSE)
   # Only this will return `FALSE`
 region_is_in(region, 1, left_closed = FALSE, right_closed = FALSE)
+
+# Distance between regions
+region1 <- data.frame(left = c(0, 2), right = c(1, 2))
+region2 <- data.frame(left = 0.5, right = 1.5)
+region_distance(region1, region2, method = "Jaccard")
+region_distance(region1, region2, method = "KS")
 
 # Drawing
 d_mix <- form_mix(list(as_d(dnorm), as_d(dnorm, mean = 5)))
