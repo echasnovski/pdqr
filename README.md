@@ -11,7 +11,7 @@ status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travi
 status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/pdqr?color=blue)](https://cran.r-project.org/package=pdqr)
 [![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
-<!-- [![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr) -->
+[![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr)
 <!-- badges: end -->
 
 Create, transform, and summarize custom random variables with
@@ -423,8 +423,7 @@ pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-03-transform.ht
 
 ### `form_*()` family
 
-There are several `form_*()` functions. Here are some
-examples:
+There are several `form_*()` functions. Here are some examples:
 
 ``` r
 # Transform support of pdqr-function with `form_resupport()`. Usually useful

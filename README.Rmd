@@ -27,7 +27,7 @@ set.seed(101)
 [![Coverage status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/pdqr?color=blue)](https://cran.r-project.org/package=pdqr)
 [![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
-<!-- [![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr) -->
+[![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr)
 <!-- badges: end -->
 
 Create, transform, and summarize custom random variables with distribution functions (analogues of `p*()`, `d*()`, `q*()`, and `r*()` functions from base R), all of which called "pdqr-functions". General idea is to work with manually created distributions which can be described in four interchangeable functional ways.
