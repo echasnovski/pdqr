@@ -10,7 +10,7 @@ status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travi
 [![Coverage
 status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/pdqr?color=blue)](https://cran.r-project.org/package=pdqr)
-[![status](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
+[![Dependencies](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
 [![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr)
 <!-- badges: end -->
 
