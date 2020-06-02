@@ -4,11 +4,13 @@ language: R
 sudo: false
 cache: packages
 
-r:
-- 3.3
-- oldrel
-- release
-- devel
+matrix:
+  include:
+  - r: oldrel
+    # Don't use vdiffr on old R release
+    env: VDIFFR_RUN_TESTS=false
+  - r: release
+  - r: devel
 
 branches:
   only:
