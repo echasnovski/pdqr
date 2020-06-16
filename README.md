@@ -7,6 +7,8 @@
 
 [![Travis build
 status](https://travis-ci.org/echasnovski/pdqr.svg?branch=master)](https://travis-ci.org/echasnovski/pdqr)
+[![R build
+status](https://github.com/echasnovski/pdqr/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/pdqr/actions)
 [![Coverage
 status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/pdqr?color=blue)](https://cran.r-project.org/package=pdqr)
