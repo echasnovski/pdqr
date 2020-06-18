@@ -83,7 +83,7 @@ both input pdqr-functions have "discrete" type. See \link[=methods-group-generic
 functions.
 
 \code{roc_plot()} and \code{roc_lines()} perform plotting (with
-\link[graphics:plot]{plot()}) and adding (with \link[graphics:lines]{lines()})
+\link[graphics:plot.default]{plot()}) and adding (with \link[graphics:lines]{lines()})
 ROC curves respectively.
 }
 \examples{

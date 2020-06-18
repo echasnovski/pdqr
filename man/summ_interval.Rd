@@ -49,7 +49,7 @@ Method "percentile" returns an interval with edges being \code{0.5*(1-level)} an
 Method "sigma" computes an interval symmetrically centered at
 \link[=summ_mean]{mean} of distribution. Left and right edges are distant from
 center by the amount of \link[=summ_sd]{standard deviation} multiplied by
-\code{level}'s critical value. Critical value is computed using \link[stats:qnorm]{normal distribution} as \code{qnorm(1 - 0.5*(1-level))}, which
+\code{level}'s critical value. Critical value is computed using \link[stats:Normal]{normal distribution} as \code{qnorm(1 - 0.5*(1-level))}, which
 corresponds to a way of computing sample confidence interval with known
 standard deviation. The final output interval is possibly cut so that not to
 be out of \code{f}'s \link[=meta_support]{support}.
