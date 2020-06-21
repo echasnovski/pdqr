@@ -26,7 +26,6 @@ jobs:
           - {os: macOS-latest,   r: 'release', vdiffr: true}
           - {os: windows-latest, r: 'devel',   vdiffr: false}
           - {os: windows-latest, r: 'release', vdiffr: true}
-          - {os: ubuntu-16.04,   r: 'devel',   vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
           - {os: ubuntu-16.04,   r: 'release', vdiffr: true,  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
           - {os: ubuntu-16.04,   r: 'oldrel',  vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
@@ -60,7 +59,7 @@ jobs:
           key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
           restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
 
-      - name: Install system dependencies
+      - name: Install system dependencies on Linux
         if: runner.os == 'Linux'
         env:
           RHUB_PLATFORM: linux-x86_64-ubuntu-gcc
@@ -68,6 +67,18 @@ jobs:
           Rscript -e "remotes::install_github('r-hub/sysreqs')"
           sysreqs=$(Rscript -e "cat(sysreqs::sysreq_commands('DESCRIPTION'))")
           sudo -s eval "$sysreqs"
+
+      - name: Install system dependencies on macOS
+        if: runner.os == 'macOS'
+        run: |
+          # XQuartz is needed by vdiffr
+          brew cask install xquartz
+
+          # To install vdiffr, these three libraries/tools are needed in addition to XQuartz
+          # - freetype (already installed, needed by systemfonts)
+          # - cairo (not installed, needed by gdtools)
+          # - pkg-config (not installed, needed to set proper build settings)
+          brew install pkg-config cairo
 
       - name: Install dependencies
         run: |
