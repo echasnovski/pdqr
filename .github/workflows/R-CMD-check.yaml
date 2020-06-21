@@ -18,18 +18,23 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macOS-latest,   r: 'devel'}
-          - {os: macOS-latest,   r: 'release'}
-          - {os: windows-latest, r: 'devel'}
-          - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-16.04,   r: 'devel',   rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: 'release', rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
-          - {os: ubuntu-16.04,   r: 'oldrel',  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          # Temporarily don't use 'vdiffr' on R-devel until R-release becomes 4.1.0
+          # This is because of some breaking change after 4.0.0 which changes
+          # some lines in .svg test figures without any visual change.
+          # TODO: start again using 'vdiffr' tests after R-release becomes 4.1.0
+          - {os: macOS-latest,   r: 'devel',   vdiffr: false}
+          - {os: macOS-latest,   r: 'release', vdiffr: true}
+          - {os: windows-latest, r: 'devel',   vdiffr: false}
+          - {os: windows-latest, r: 'release', vdiffr: true}
+          - {os: ubuntu-16.04,   r: 'devel',   vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04,   r: 'release', vdiffr: true,  rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
+          - {os: ubuntu-16.04,   r: 'oldrel',  vdiffr: false, rspm: "https://packagemanager.rstudio.com/cran/__linux__/xenial/latest"}
 
     env:
       R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      VDIFFR_RUN_TESTS: ${{ matrix.config.vdiffr }}
 
     steps:
       - uses: actions/checkout@v2
