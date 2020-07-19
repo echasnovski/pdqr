@@ -5,7 +5,8 @@ Authors@R:
     person(given = "Evgeni",
            family = "Chasnovski",
            role = c("aut", "cre"),
-           email = "evgeni.chasnovski@gmail.com")
+           email = "evgeni.chasnovski@gmail.com",
+           comment = c(ORCID = "0000-0002-1617-4019"))
 Description: Create, transform, and summarize custom random
     variables with distribution functions (analogues of 'p*()', 'd*()',
     'q*()', and 'r*()' functions from base R). Two types of distributions
@@ -40,7 +41,7 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE, old_usage = TRUE)
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 Collate: 
     'as_p.R'
     'as_d.R'
