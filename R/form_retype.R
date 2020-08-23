@@ -59,10 +59,10 @@
 #' @family form functions
 #'
 #' @examples
-#' my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
+#' my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1) / 9), "continuous")
 #' meta_x_tbl(my_con)
 #'
-#'   # By default, conversion is done to the opposite type
+#' # By default, conversion is done to the opposite type
 #' my_dis <- form_retype(my_con)
 #' meta_x_tbl(my_dis)
 #'
@@ -76,16 +76,15 @@
 #' meta_x_tbl(my_dirac)
 #'
 #' # Method "piecelin"
-#'   # From "continuous" to "discrete" (preferred direction)
+#' ## From "continuous" to "discrete" (preferred direction)
 #' my_dis_piece <- form_retype(my_con, "discrete", method = "piecelin")
 #' meta_x_tbl(my_dis_piece)
-#'   # Conversion from "discrete" to "continuous" is very approximate
+#' ## Conversion from "discrete" to "continuous" is very approximate
 #' my_con_piece <- form_retype(my_dis_piece, "continuous", method = "piecelin")
 #' meta_x_tbl(my_con_piece)
 #'
 #' plot(my_con, main = 'Approximate nature of method "piecelin"')
 #' lines(my_con_piece, col = "blue")
-#'
 #' @export
 form_retype <- function(f, type = NULL, method = "value") {
   assert_pdqr_fun(f)
@@ -145,7 +144,7 @@ retype_dis_piecelin <- function(f) {
 
   # Output `x` values are computed as intervals' centers of mass
   x_mass <- (x_lag * (y_lag + y_sum) + x_lead * (y_lead + y_sum)) / (3 * y_sum)
-    # If interval has zero probability then its centre is set to the middle
+  ## If interval has zero probability then its centre is set to the middle
   x_mass_bad <- !is.finite(x_mass)
   x_mass[x_mass_bad] <- (x_lag[x_mass_bad] + x_lead[x_mass_bad]) / 2
 
@@ -239,16 +238,16 @@ retype_con_piecelin <- function(f) {
   # *Assumption 2*: if locally "true" values of `x` are equidistant then `alpha`
   # lie inside [1/3; 2/3] interval.
   # Final approximation is formed by combining these conclusions
-  prob_sum <- prob[1:(n-1)] + prob[2:n]
-  alpha <- pmin(pmax(prob[1:(n-1)] / prob_sum, 1/3), 2/3)
+  prob_sum <- prob[1:(n - 1)] + prob[2:n]
+  alpha <- pmin(pmax(prob[1:(n - 1)] / prob_sum, 1 / 3), 2 / 3)
   alpha[!is.finite(alpha)] <- 0.5
 
   x_grid <- numeric(n + 1)
-  x_grid[2:n] <- (1 - alpha) * x[1:(n-1)] + alpha * x[2:n]
+  x_grid[2:n] <- (1 - alpha) * x[1:(n - 1)] + alpha * x[2:n]
   # First and last `x` are approximated so that first and last `x` triplets are
   # equidistant
   x_grid[1] <- x_grid[2] - (x_grid[3] - x_grid[2])
-  x_grid[n+1] <- x_grid[n] + (x_grid[n] - x_grid[n-1])
+  x_grid[n + 1] <- x_grid[n] + (x_grid[n] - x_grid[n - 1])
 
   # Output `y` grid is approximated in 'pdqr' fashion
   p_grid <- c(0, cumsum(prob))
@@ -271,8 +270,8 @@ retype_con_dirac <- function(f, h = 1e-8) {
   h_vec <- pmin(left_h_vec, right_h_vec)
 
   y_zero <- rep(0, length(x))
-  new_x <- c(x - h_vec,                       x, x + h_vec)
-  new_y <- c(   y_zero, x_tbl[["prob"]] / h_vec,    y_zero)
+  new_x <- c(x - h_vec, x,                       x + h_vec)
+  new_y <- c(y_zero,    x_tbl[["prob"]] / h_vec, y_zero)
 
   new_pdqr_by_ref(f)(data.frame(x = new_x, y = new_y), "continuous")
 }

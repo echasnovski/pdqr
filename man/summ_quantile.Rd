@@ -23,7 +23,6 @@ in \code{probs} is outside of segment \[0; 1\], an error is thrown.
 d_norm <- as_d(dnorm)
 probs <- c(0.25, 0.5, 0.75)
 all.equal(summ_quantile(d_norm, probs), as_q(d_norm)(probs))
-
 }
 \seealso{
 Other summary functions: 

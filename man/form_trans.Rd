@@ -87,20 +87,22 @@ directly multiplied, which might cause numerical accuracy issues.
 \examples{
 # Default "random" transformation
 d_norm <- as_d(dnorm)
-  # More accurate result would give use of `+` directly with: d_norm + d_norm
+## More accurate result would give use of `+` directly with: d_norm + d_norm
 d_norm_2 <- form_trans(list(d_norm, d_norm), trans = `+`)
 plot(d_norm_2)
 lines(as_d(dnorm, sd = sqrt(2)), col = "red")
 
-  # Input list can have single numbers
+## Input list can have single numbers
 form_trans(list(d_norm, 100), trans = `+`)
 
-  # Output of `trans` can be logical. Next example is random version of
-  # `d_norm >= 0`.
+## Output of `trans` can be logical. Next example is random version of
+## `d_norm >= 0`.
 form_trans(list(d_norm, 0), trans = `>=`)
 
 # Transformation with "bruteforce" method
-power <- function(x, n = 1) {x^n}
+power <- function(x, n = 1) {
+  x^n
+}
 p_dis <- new_p(
   data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)),
   type = "discrete"
@@ -110,13 +112,14 @@ p_dis_sq <- form_trans_self(
   p_dis, trans = power, n = 2, method = "bruteforce"
 )
 meta_x_tbl(p_dis_sq)
-  # Compare with "random" method
+## Compare with "random" method
 p_dis_sq_rand <- form_trans_self(p_dis, trans = power, n = 2)
 meta_x_tbl(p_dis_sq_rand)
 
 # `form_trans_self()` is a wrapper for `form_trans()`
-form_trans_self(d_norm, trans = function(x) {2*x})
-
+form_trans_self(d_norm, trans = function(x) {
+  2 * x
+})
 }
 \seealso{
 \link[=methods-group-generic]{Pdqr methods for S3 group generic functions}

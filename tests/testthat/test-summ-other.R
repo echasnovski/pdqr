@@ -17,7 +17,7 @@ test_that("summ_quantile validates input", {
   expect_error(summ_quantile(d_dis), "`probs`.*quantile probabilities")
   expect_error(summ_quantile(d_dis, "a"), "`probs`.*numeric")
   expect_error(summ_quantile(d_dis, c(-1e-6, 0)), "`probs`.*\\[0; 1\\]")
-  expect_error(summ_quantile(d_dis, c(1, 1+1e-6)), "`probs`.*\\[0; 1\\]")
+  expect_error(summ_quantile(d_dis, c(1, 1 + 1e-6)), "`probs`.*\\[0; 1\\]")
 })
 
 
@@ -38,7 +38,7 @@ test_that("summ_prob_true warns about non-boolean pdqr-function", {
 })
 
 test_that("summ_prob_true handles absence of 0 in 'x' column of 'x_tbl'", {
-  cur_dis <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1)/2), "discrete")
+  cur_dis <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1) / 2), "discrete")
   expect_equal(expect_warning(summ_prob_true(cur_dis)), 1)
 
   cur_con <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "continuous")
@@ -67,7 +67,7 @@ test_that("summ_prob_false warns about non-boolean pdqr-function", {
 })
 
 test_that("summ_prob_false handles absence of 0 in 'x' column of 'x_tbl'", {
-  cur_dis <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1)/2), "discrete")
+  cur_dis <- new_d(data.frame(x = c(-1, 1), prob = c(1, 1) / 2), "discrete")
   expect_equal(expect_warning(summ_prob_false(cur_dis)), 0)
 
   cur_con <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)), "continuous")

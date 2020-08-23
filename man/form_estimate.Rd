@@ -59,10 +59,10 @@ then recenter distribution to actually have that as a mean.
 set.seed(101)
 
 # Type "discrete"
-d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
-  # Estimate of distribution of mean
+d_dis <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
+## Estimate of distribution of mean
 form_estimate(d_dis, stat = mean, sample_size = 10)
-  # To change type of output, supply it in `args_new`
+## To change type of output, supply it in `args_new`
 form_estimate(
   d_dis, stat = mean, sample_size = 10,
   args_new = list(type = "continuous")
@@ -70,7 +70,7 @@ form_estimate(
 
 # Type "continuous"
 d_unif <- as_d(dunif)
-  # Supply extra named arguments for `stat` in `...`
+## Supply extra named arguments for `stat` in `...`
 plot(form_estimate(d_unif, stat = mean, sample_size = 10, trim = 0.1))
 lines(
   form_estimate(d_unif, stat = mean, sample_size = 10, trim = 0.3),
@@ -83,8 +83,10 @@ lines(
 
 # Statistic can return single logical value
 d_norm <- as_d(dnorm)
-all_positive <- function(x) {all(x > 0)}
-  # Probability of being true should be around 0.5^5
+all_positive <- function(x) {
+  all(x > 0)
+}
+## Probability of being true should be around 0.5^5
 form_estimate(d_norm, stat = all_positive, sample_size = 5)
 }
 

@@ -60,7 +60,9 @@ test_that("as_d.default honors special 'discrete' distributions", {
 test_that("as_d.default honors special 'continuous' distributions", {
   # Standard uniform
   out_unif <- as_d(dunif)
-  out_unif_ref <- as_d(function(x) {dunif(x)}, c(0, 1))
+  out_unif_ref <- as_d(function(x) {
+    dunif(x)
+  }, c(0, 1))
   expect_equal_x_tbl(out_unif, out_unif_ref)
 
   # Partially set support is used
@@ -72,7 +74,7 @@ test_that("as_d.default honors special 'continuous' distributions", {
   # prefix.
   out_norm <- as_d(stats::dnorm, mean = 100, sd = 0.1)
   expect_equal(
-    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+    meta_support(out_norm), qnorm(c(1e-6, 1 - 1e-6), mean = 100, sd = 0.1)
   )
 
   # Distribution function of other "p-d-q-r" type is repaired with warning
@@ -86,9 +88,13 @@ test_that("as_d.default honors special 'continuous' distributions", {
 
   # Function environment is used to not pick "honored" function when another
   # object with the same name is found "earlier"
-  dgamma <- function(x) {dunif(x)}
+  dgamma <- function(x) {
+    dunif(x)
+  }
   out_bad_gamma <- as_d(dgamma)
-  out_bad_gamma_ref <- as_d(function(x) {dunif(x)})
+  out_bad_gamma_ref <- as_d(function(x) {
+    dunif(x)
+  })
   expect_equal_x_tbl(out_bad_gamma, out_bad_gamma_ref)
 })
 
@@ -276,7 +282,9 @@ test_that("as_d.default doesn't affect upstream random generation process", {
   # it searches initial point of non-zero density by randomly generating broad
   # sequence of points, which (if done carelessly) affects upstream random
   # generation but it shouldn't.
-  d_f <- function(x) {dnorm(x)}
+  d_f <- function(x) {
+    dnorm(x)
+  }
 
   # Reference
   set.seed(101)
@@ -296,7 +304,7 @@ test_that("as_d.default doesn't affect upstream random generation process", {
 
 test_that("as_d.default removes edge `y` with zero density", {
   x_tbl <- meta_x_tbl(d_unif)
-  expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
+  expect_true(all(x_tbl$y[c(2, nrow(x_tbl) - 1)] != 0))
 })
 
 test_that("as_d.default uses `n_grid` argument", {
@@ -310,7 +318,9 @@ test_that("as_d.default uses `n_grid` argument", {
 test_that("as_d.default uses `...` to forward arguments to `f`", {
   # This function is used to workaround the "honored" special distribution
   # functions
-  my_dunif <- function(x, ...) {dunif(x, ...)}
+  my_dunif <- function(x, ...) {
+    dunif(x, ...)
+  }
 
   output_1 <- as_d(my_dunif, support = c(0, 10), max = 10)
   expect_true(output_1(9) > 0)
@@ -321,7 +331,9 @@ test_that("as_d.default uses `...` to forward arguments to `f`", {
 test_that("as_d.default properly adjusts to support", {
   supp <- c(-0.5, 1.5)
   out_d <- as_d(fam_norm[["d"]], supp)
-  ref_d <- function(x) {fam_norm[["d"]](x) / diff(fam_norm[["p"]](supp))}
+  ref_d <- function(x) {
+    fam_norm[["d"]](x) / diff(fam_norm[["p"]](supp))
+  }
   expect_close_f(
     out_d, ref_d, seq(supp[1], supp[2], length.out = 1e5)
   )
@@ -349,8 +361,8 @@ test_that("as.d.default properly imputes infinity values", {
   expect_equal(
     d_y[zero_ind],
     extrap_lin(
-      x_1 = d_x[zero_ind+1], x_2 = d_x[zero_ind+2],
-      y_1 = d_y[zero_ind+1], y_2 = d_y[zero_ind+2],
+      x_1 = d_x[zero_ind + 1], x_2 = d_x[zero_ind + 2],
+      y_1 = d_y[zero_ind + 1], y_2 = d_y[zero_ind + 2],
       x_target = d_x[zero_ind]
     )
   )
@@ -360,8 +372,8 @@ test_that("as.d.default properly imputes infinity values", {
   expect_equal(
     d_y[one_ind],
     extrap_lin(
-      x_1 = d_x[one_ind-2], x_2 = d_x[one_ind-1],
-      y_1 = d_y[one_ind-2], y_2 = d_y[one_ind-1],
+      x_1 = d_x[one_ind - 2], x_2 = d_x[one_ind - 1],
+      y_1 = d_y[one_ind - 2], y_2 = d_y[one_ind - 1],
       x_target = d_x[one_ind]
     )
   )
@@ -476,7 +488,9 @@ test_that("detect_support_d returns input support if it's proper all numeric", {
 })
 
 test_that("detect_support_d throws informative error on bad input function", {
-  bad_d_f <- function(x) {dnorm(x, mean = 1e12, sd = 0.01)}
+  bad_d_f <- function(x) {
+    dnorm(x, mean = 1e12, sd = 0.01)
+  }
   expect_error(
     detect_support_d(bad_d_f, c(NA_real_, NA_real_)), "Can't find initial point"
   )
@@ -486,7 +500,9 @@ test_that("detect_support_d throws informative error on bad input function", {
 # construct_p_f -----------------------------------------------------------
 # Main functionality is tested in `detect_support_d()`
 test_that("construct_p_f throws informative error", {
-  d_f <- function(x) {rep(Inf, length.out = length(x))}
+  d_f <- function(x) {
+    rep(Inf, length.out = length(x))
+  }
   expect_error(construct_p_f(d_f, 0), "[Cc]an't")
 })
 
@@ -494,7 +510,9 @@ test_that("construct_p_f throws informative error", {
 # optim_for_quan ----------------------------------------------------------
 # Main functionality is tested in `detect_support_d()`
 test_that("optim_for_quan throws informative error", {
-  p_f <- function(q) {rep(Inf, length.out = length(q))}
+  p_f <- function(q) {
+    rep(Inf, length.out = length(q))
+  }
   expect_error(optim_for_quan(p_f, 0.5, 0), "[Cc]an't.*for.*0.5")
 })
 

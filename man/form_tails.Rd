@@ -39,7 +39,7 @@ left and right tail respectively.
 }
 \examples{
 # Type "discrete"
-my_dis <- new_d(data.frame(x = 1:4, prob = (1:4)/10), type = "discrete")
+my_dis <- new_d(data.frame(x = 1:4, prob = (1:4) / 10), type = "discrete")
 meta_x_tbl(form_tails(my_dis, level = 0.1))
 meta_x_tbl(
   form_tails(my_dis, level = 0.35, method = "winsor", direction = "left")
@@ -57,7 +57,7 @@ lines(
 # Use `form_resupport()` and `as_q()` to remove different levels from both
 # directions. Here 0.1 level tail from left is removed, and 0.05 level from
 # right
-new_supp <- as_q(d_norm)(c(0.1, 1-0.05))
+new_supp <- as_q(d_norm)(c(0.1, 1 - 0.05))
 form_resupport(d_norm, support = new_supp)
 
 # Examples of robust mean
@@ -65,11 +65,10 @@ set.seed(101)
 x <- rcauchy(1000)
 d_x <- new_d(x, "continuous")
 summ_mean(d_x)
-  # Trimmed mean
+## Trimmed mean
 summ_mean(form_tails(d_x, level = 0.1, method = "trim"))
-  # Winsorized mean
+## Winsorized mean
 summ_mean(form_tails(d_x, level = 0.1, method = "winsor"))
-
 }
 \seealso{
 \code{\link[=form_resupport]{form_resupport()}} for changing \link[=meta_support]{support} to some

@@ -61,16 +61,16 @@ single point with the same effect as in "winsor" method.
 \examples{
 set.seed(101)
 d_norm <- as_d(dnorm)
-d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
+d_dis <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
 
 # Method "reflect"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
 
-  # For "discrete" functions it might create new values
+# For "discrete" functions it might create new values
 meta_x_tbl(form_resupport(d_dis, c(NA, 2.25), "reflect"))
 
-  # This is often useful to ensure constraints after `new_()`
+# This is often useful to ensure constraints after `new_()`
 x <- runif(1e4)
 d_x <- new_d(x, "continuous")
 plot(d_x)
@@ -88,7 +88,6 @@ lines(form_resupport(d_norm, c(-2, 1.5), "winsor"), col = "blue")
 # Method "linear"
 plot(d_norm)
 lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
-
 }
 \seealso{
 \code{\link[=form_regrid]{form_regrid()}} for changing grid (rows of "x_tbl" metadata) of

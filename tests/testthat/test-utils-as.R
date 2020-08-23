@@ -34,7 +34,7 @@ test_that("honored_distr_supp supports all honored distributions", {
 
   # "discrete"
   expect_honored("binom", qbinom, c(0, 1), size = 10, prob = 0.1)
-  expect_honored("geom", qgeom, c(0, 1-p), prob = 0.1)
+  expect_honored("geom", qgeom, c(0, 1 - p), prob = 0.1)
   expect_honored("hyper", qhyper, c(0, 1), m = 3, n = 3, k = 2)
   expect_honored("nbinom", qnbinom, c(p, 1 - p), size = 10, prob = 0.1)
   expect_honored("pois", qpois, c(p, 1 - p), lambda = 5)

@@ -57,7 +57,7 @@ test_that("summ_entropy works with dirac-like functions", {
 
 test_that("summ_entropy handles zero probabilities/densities", {
   cur_d_dis <- new_d(data.frame(x = 1:3, prob = c(0, 0.5, 0.5)), "discrete")
-  expect_equal(summ_entropy(cur_d_dis), -2*0.5*log(0.5))
+  expect_equal(summ_entropy(cur_d_dis), -2 * 0.5 * log(0.5))
 
   cur_d_con <- new_d(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "continuous")
   ref_d_con <- new_d(data.frame(x = 1:3, y = c(0, 1, 0)), "continuous")
@@ -80,29 +80,32 @@ test_that("summ_entropy2 works with 'discrete' functions", {
 
   # Method "cross"
   expect_equal(
-    summ_entropy2(f, g, method = "cross"), -2*0.25*log(0.2) + 2*0.25*max_entropy
+    summ_entropy2(f, g, method = "cross"),
+    -2 * 0.25 * log(0.2) + 2 * 0.25 * max_entropy
   )
   expect_equal(
-    summ_entropy2(g, f, method = "cross"), -2*0.2*log(0.25) + 3*0.2*max_entropy
+    summ_entropy2(g, f, method = "cross"),
+    -2 * 0.2 * log(0.25) + 3 * 0.2 * max_entropy
   )
 })
 
 test_that("summ_entropy2 works with 'continuous' functions", {
-  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "continuous")
-  g <- new_d(data.frame(x = c(-1, 9), y = c(1, 1)/10), "continuous")
+  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1) / 4), "continuous")
+  g <- new_d(data.frame(x = c(-1, 9), y = c(1, 1) / 10), "continuous")
 
   # Method "relative"
   expect_relative_summ_entropy2_works(f, g)
 
   # Method "cross"
-  expect_equal(summ_entropy2(f, g, method = "cross"), -4*0.25*log(0.1))
+  expect_equal(summ_entropy2(f, g, method = "cross"), -4 * 0.25 * log(0.1))
   expect_equal(
-    summ_entropy2(g, f, method = "cross"), -4*0.1*log(0.25) + 6*0.1*max_entropy
+    summ_entropy2(g, f, method = "cross"),
+    -4 * 0.1 * log(0.25) + 6 * 0.1 * max_entropy
   )
 })
 
 test_that("summ_entropy2 works with dirac-like 'continuous' functions", {
-  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "continuous")
+  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1) / 4), "continuous")
   g_dirac <- new_d(2, "continuous")
 
   # Method "relative"
@@ -116,7 +119,7 @@ test_that("summ_entropy2 works with dirac-like 'continuous' functions", {
 test_that("summ_entropy2 handles numerical representation accuracy", {
   # More info in corresponding `cross_entropy()` test
   approx_unif <- new_d(
-    data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "continuous"
+    data.frame(x = 0:1, y = c(0.5 - 0.3, 0.3 - 0.1) / 2), "continuous"
   )
   beta <- as_d(dbeta, shape1 = 1, shape2 = 2)
 
@@ -147,40 +150,49 @@ test_that("summ_entropy2 validates input", {
 test_that("cross_entropy works with 'discrete' functions", {
   # Simple uniform discrete distribution
   f <- new_d(1:15, "discrete")
-  expect_equal(cross_entropy(f, f), -log(1/15))
+  expect_equal(cross_entropy(f, f), -log(1 / 15))
 
   # Two distributions with different `x`s
   f <- new_d(1:4, "discrete")
   g <- new_d(3:7, "discrete")
-  expect_equal(cross_entropy(f, g), -2*0.25*log(0.2) + 2*0.25*max_entropy)
-  expect_equal(cross_entropy(g, f), -2*0.2*log(0.25) + 3*0.2*max_entropy)
+  expect_equal(
+    cross_entropy(f, g),
+    -2 * 0.25 * log(0.2) + 2 * 0.25 * max_entropy
+  )
+  expect_equal(
+    cross_entropy(g, f),
+    -2 * 0.2 * log(0.25) + 3 * 0.2 * max_entropy
+  )
 })
 
 test_that("cross_entropy works with 'continuous' functions", {
   # Simple uniform distribution
-  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "continuous")
-  g <- new_d(data.frame(x = c(-1, 9), y = c(1, 1)/10), "continuous")
+  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1) / 4), "continuous")
+  g <- new_d(data.frame(x = c(-1, 9), y = c(1, 1) / 10), "continuous")
   expect_equal(cross_entropy(f, f), log(4))
   expect_equal(cross_entropy(g, g), log(10))
-  expect_equal(cross_entropy(f, g), -4*0.25*log(0.1))
-  expect_equal(cross_entropy(g, f), -4*0.1*log(0.25) + 6*0.1*max_entropy)
+  expect_equal(cross_entropy(f, g), -4 * 0.25 * log(0.1))
+  expect_equal(
+    cross_entropy(g, f),
+    -4 * 0.1 * log(0.25) + 6 * 0.1 * max_entropy
+  )
 
   # Real world examples
   f <- as_d(dbeta, shape1 = 1, shape2 = 2, support = c(0, 1))
   g <- as_d(dbeta, shape1 = 2, shape2 = 1, support = c(0, 1))
   expect_equal(cross_entropy(f, f), log(beta(1, 2)) - psigamma(2) + psigamma(3))
   expect_equal(cross_entropy(g, g), log(beta(2, 1)) - psigamma(2) + psigamma(3))
-  expect_equal(cross_entropy(f, g), 1.5-log(2))
-  expect_equal(cross_entropy(g, f), 1.5-log(2))
+  expect_equal(cross_entropy(f, g), 1.5 - log(2))
+  expect_equal(cross_entropy(g, f), 1.5 - log(2))
 })
 
 test_that("cross_entropy handles zero plateaus in 'continuous' functions", {
-  d_unif <- new_d(data.frame(x = c(1, 6), y = c(1, 1)/5), "continuous")
+  d_unif <- new_d(data.frame(x = c(1, 6), y = c(1, 1) / 5), "continuous")
   f <- new_d(data.frame(x = 1:4, y = c(0, 1, 0, 0)), "continuous")
   g <- new_d(data.frame(x = 3:6, y = c(0, 0, 1, 0)), "continuous")
   expect_equal(cross_entropy(f, d_unif), -log(0.2))
   # `-integral{log(f(x))}` on `[1; 3]` equals 2
-  expect_equal(cross_entropy(d_unif, f), 0.2*2 + 3*0.2*max_entropy)
+  expect_equal(cross_entropy(d_unif, f), 0.2 * 2 + 3 * 0.2 * max_entropy)
   # These are equal to `max_entropy` because `f` and `g` intersect only on
   # zero plateau.
   expect_equal(cross_entropy(f, g), max_entropy)
@@ -188,7 +200,7 @@ test_that("cross_entropy handles zero plateaus in 'continuous' functions", {
 })
 
 test_that("cross_entropy works with dirac-like 'continuous' functions", {
-  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1)/4), "continuous")
+  f <- new_d(data.frame(x = c(0, 4), y = c(1, 1) / 4), "continuous")
   g_dirac <- new_d(2, "continuous")
   expect_equal(cross_entropy(f, g_dirac), max_entropy)
   expect_equal(cross_entropy(g_dirac, f), -log(0.25))
@@ -224,7 +236,7 @@ test_that("cross_entropy handles numerical representation accuracy", {
   # Here `y` values are not **exactly** equal but differ by ~1.38e-17 (on most
   # platforms, according to "Note" from `==`'s help page).
   approx_unif <- new_d(
-    data.frame(x = 0:1, y = c(0.5-0.3, 0.3-0.1)/2), "continuous"
+    data.frame(x = 0:1, y = c(0.5 - 0.3, 0.3 - 0.1) / 2), "continuous"
   )
   beta <- as_d(dbeta, shape1 = 1, shape2 = 2)
 

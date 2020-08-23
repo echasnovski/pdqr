@@ -128,7 +128,7 @@ plot (technically, at "y" value of \code{2e8}).
 d_binom <- as_d(dbinom, size = 10, prob = 0.7)
 hdr_dis <- summ_hdr(d_binom, level = 0.6)
 region_is_in(hdr_dis, 0:10)
-  # This should be not less than 0.6
+## This should be not less than 0.6
 region_prob(hdr_dis, d_binom)
 region_height(hdr_dis, d_binom)
 region_width(hdr_dis)
@@ -137,31 +137,31 @@ region_width(hdr_dis)
 d_norm <- as_d(dnorm)
 hdr_con <- summ_hdr(d_norm, level = 0.95)
 region_is_in(hdr_con, c(-Inf, -2, 0, 2, Inf))
-  # This should be approximately equal to 0.95
+## This should be approximately equal to 0.95
 region_prob(hdr_con, d_norm)
-  # This should be equal to `d_norm(hdr_con[["left"]][1])`
+## This should be equal to `d_norm(hdr_con[["left"]][1])`
 region_height(hdr_con, d_norm)
 region_width(hdr_con)
 
 # Usage of `*_closed` options
 region <- data.frame(left = 1, right = 3)
-  # Closed intervals
+## Closed intervals
 region_is_in(region, 1:3)
-  # Open from left, closed from right
+## Open from left, closed from right
 region_is_in(region, 1:3, left_closed = FALSE)
-  # Closed from left, open from right
+## Closed from left, open from right
 region_is_in(region, 1:3, right_closed = FALSE)
-  # Open intervals
+## Open intervals
 region_is_in(region, 1:3, left_closed = FALSE, right_closed = FALSE)
 
 # Handling of intervals with zero width
 region <- data.frame(left = 1, right = 1)
-  # If at least one of `*_closed` options is `TRUE`, 1 will be considered as
-  # "in a region"
+## If at least one of `*_closed` options is `TRUE`, 1 will be considered as
+## "in a region"
 region_is_in(region, 1)
 region_is_in(region, 1, left_closed = FALSE)
 region_is_in(region, 1, right_closed = FALSE)
-  # Only this will return `FALSE`
+## Only this will return `FALSE`
 region_is_in(region, 1, left_closed = FALSE, right_closed = FALSE)
 
 # Distance between regions
@@ -174,7 +174,6 @@ region_distance(region1, region2, method = "KS")
 d_mix <- form_mix(list(as_d(dnorm), as_d(dnorm, mean = 5)))
 plot(d_mix)
 region_draw(summ_hdr(d_mix, 0.95))
-
 }
 \seealso{
 \code{\link[=summ_hdr]{summ_hdr()}} for computing of Highest Density Region.

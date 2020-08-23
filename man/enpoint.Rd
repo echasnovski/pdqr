@@ -79,10 +79,9 @@ colnames(enpoint(new_r(1:2, "continuous")))
 
 # Manual way with different output structure
 df <- meta_x_tbl(form_regrid(d_norm, 5))
-  # Difference in values due to `form_regrid()` renormalization
+## Difference in values due to `form_regrid()` renormalization
 plot(enpoint(d_norm, 5), type = "l")
 lines(df[["x"]], df[["y"]], col = "blue")
-
 }
 \seealso{
 \code{\link[=pdqr_approx_error]{pdqr_approx_error()}} for diagnostics of pdqr-function approximation

@@ -52,7 +52,6 @@ summ_center(my_beta2)
 
 my_beta3 <- form_respread(my_beta2, to = 10, method = "range")
 summ_spread(my_beta3, method = "range")
-  # Center remains unchainged
+## Center remains unchainged
 summ_center(my_beta3)
-
 }

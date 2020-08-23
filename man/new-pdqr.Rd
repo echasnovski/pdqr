@@ -135,9 +135,9 @@ head(meta_x_tbl(my_d_con))
 plot(my_d_con)
 
 # Data frame input
-  # Values in "prob" column will be normalized automatically
+## Values in "prob" column will be normalized automatically
 my_p_dis <- new_p(data.frame(x = 1:4, prob = 1:4), "discrete")
-  # As are values in "y" column
+## As are values in "y" column
 my_p_con <- new_p(data.frame(x = 1:3, y = c(0, 10, 0)), "continuous")
 
 # Using bigger bandwidth in `density()`
@@ -147,5 +147,4 @@ lines(my_d_con_2, col = "red")
 
 # Dirac-like "continuous" pdqr-function is created if `x` is a single number
 meta_x_tbl(new_d(1, "continuous"))
-
 }

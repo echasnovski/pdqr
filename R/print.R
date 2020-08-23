@@ -39,7 +39,6 @@
 #'
 #' # Printing of boolean pdqr-function
 #' print(r_unif >= 0.3)
-#'
 #' @name methods-print
 NULL
 
@@ -81,7 +80,7 @@ n_x_tbl_info <- function(x) {
   x_tbl <- meta_x_tbl(x)
 
   if (is.null(x_type) || !is.character(x_type) ||
-      is.null(x_tbl) || !is.data.frame(x_tbl)) {
+    is.null(x_tbl) || !is.data.frame(x_tbl)) {
     return("")
   }
 
@@ -111,7 +110,9 @@ n_x_tbl_info <- function(x) {
     )
   } else if (x_type == "continuous") {
     paste0(
-      " (", n_x_tbl-1, " ", ngettext(n_x_tbl-1, "interval", "intervals"), ")"
+      " (",
+      n_x_tbl - 1, " ", ngettext(n_x_tbl - 1, "interval", "intervals"),
+      ")"
     )
   } else {
     ""

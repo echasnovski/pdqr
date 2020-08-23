@@ -65,8 +65,8 @@ p_dis <- new_p(1, "discrete")
 p_unif <- as_p(punif)
 thres <- summ_separation(p_dis, p_unif)
 abs(p_dis(thres) - p_unif(thres))
-  # Actual difference at `thres` is 0. However, supremum (equal to 1) as
-  # limit value is # reached there.
+## Actual difference at `thres` is 0. However, supremum (equal to 1) as
+## limit value is # reached there.
 x_grid <- seq(0, 1, by = 1e-3)
 plot(x_grid, abs(p_dis(x_grid) - p_unif(x_grid)), type = "b")
 
@@ -75,7 +75,6 @@ summ_separation(new_d(2, "discrete"), new_d(3, "discrete"))
 
 # The smallest "x" value is returned in case of several optimal thresholds
 summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
-
 }
 \seealso{
 \code{\link[=summ_roc]{summ_roc()}} for computing ROC curve related summaries.

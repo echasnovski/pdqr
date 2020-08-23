@@ -55,16 +55,16 @@
 #' @examples
 #' set.seed(101)
 #' d_norm <- as_d(dnorm)
-#' d_dis <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
+#' d_dis <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
 #'
 #' # Method "reflect"
 #' plot(d_norm)
 #' lines(form_resupport(d_norm, c(-2, 1.5), "reflect"), col = "blue")
 #'
-#'   # For "discrete" functions it might create new values
+#' # For "discrete" functions it might create new values
 #' meta_x_tbl(form_resupport(d_dis, c(NA, 2.25), "reflect"))
 #'
-#'   # This is often useful to ensure constraints after `new_()`
+#' # This is often useful to ensure constraints after `new_()`
 #' x <- runif(1e4)
 #' d_x <- new_d(x, "continuous")
 #' plot(d_x)
@@ -82,7 +82,6 @@
 #' # Method "linear"
 #' plot(d_norm)
 #' lines(form_resupport(d_norm, c(-2, 1.5), "linear"), col = "blue")
-#'
 #' @export
 form_resupport <- function(f, support, method = "reflect") {
   assert_pdqr_fun(f)
@@ -248,9 +247,9 @@ increase_tail_weight <- function(x_tbl, by_prob, edge) {
     to_prob <- present_prob + by_prob
     y[1] <- 2 * to_prob / (x[2] - x[1]) - y[2]
   } else if (edge == "right") {
-    present_prob <- (y[n-1] + y[n]) * (x[n] - x[n-1]) / 2
+    present_prob <- (y[n - 1] + y[n]) * (x[n] - x[n - 1]) / 2
     to_prob <- present_prob + by_prob
-    y[n] <- 2 * to_prob / (x[n] - x[n-1]) - y[n-1]
+    y[n] <- 2 * to_prob / (x[n] - x[n - 1]) - y[n - 1]
   }
 
   data.frame(x = x, y = y)
@@ -286,6 +285,6 @@ resupport_linear <- function(f, support) {
 # Other -------------------------------------------------------------------
 stop_resupport_zero_tot_prob <- function() {
   stop_collapse(
-    'Output of `form_resupport()` will not have positive total probability.'
+    "Output of `form_resupport()` will not have positive total probability."
   )
 }

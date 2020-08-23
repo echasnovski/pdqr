@@ -3,10 +3,10 @@ context("test-summ_interval")
 
 # summ_interval -----------------------------------------------------------
 test_that("summ_interval works with 'discrete' functions", {
-  cur_d <- new_d(data.frame(x = 1:10, prob = c(5:0, 1:4)/25), "discrete")
+  cur_d <- new_d(data.frame(x = 1:10, prob = c(5:0, 1:4) / 25), "discrete")
   cur_q <- as_q(cur_d)
-  cur_d_mean <- sum((1:10) * c(5:0, 1:4)/25)
-  cur_d_sd <- sqrt(sum((1:10)^2 * c(5:0, 1:4)/25) - cur_d_mean^2)
+  cur_d_mean <- sum((1:10) * c(5:0, 1:4) / 25)
+  cur_d_sd <- sqrt(sum((1:10)^2 * c(5:0, 1:4) / 25) - cur_d_mean^2)
 
   # Default method is "minwidth"
   expect_equal(
@@ -38,15 +38,15 @@ test_that("summ_interval works with 'discrete' functions", {
   expect_equal(
     summ_interval(cur_d, 0.5, method = "sigma"),
     data.frame(
-      left  = cur_d_mean + stats::qnorm(0.25)*cur_d_sd,
-      right = cur_d_mean + stats::qnorm(0.75)*cur_d_sd
+      left  = cur_d_mean + stats::qnorm(0.25) * cur_d_sd,
+      right = cur_d_mean + stats::qnorm(0.75) * cur_d_sd
     )
   )
   expect_equal(
     summ_interval(cur_d, 0.75, method = "sigma"),
     data.frame(
-      left  = cur_d_mean + stats::qnorm(0.125)*cur_d_sd,
-      right = cur_d_mean + stats::qnorm(0.875)*cur_d_sd
+      left  = cur_d_mean + stats::qnorm(0.125) * cur_d_sd,
+      right = cur_d_mean + stats::qnorm(0.875) * cur_d_sd
     )
   )
 })
@@ -89,15 +89,15 @@ test_that("summ_interval works with 'continuous' functions", {
   expect_equal(
     summ_interval(cur_d, 0.5, method = "sigma"),
     data.frame(
-      left  = cur_d_mean + stats::qnorm(0.25)*cur_d_sd,
-      right = cur_d_mean + stats::qnorm(0.75)*cur_d_sd
+      left  = cur_d_mean + stats::qnorm(0.25) * cur_d_sd,
+      right = cur_d_mean + stats::qnorm(0.75) * cur_d_sd
     )
   )
   expect_equal(
     summ_interval(cur_d, 0.75, method = "sigma"),
     data.frame(
-      left  = cur_d_mean + stats::qnorm(0.125)*cur_d_sd,
-      right = cur_d_mean + stats::qnorm(0.875)*cur_d_sd
+      left  = cur_d_mean + stats::qnorm(0.125) * cur_d_sd,
+      right = cur_d_mean + stats::qnorm(0.875) * cur_d_sd
     )
   )
 })
@@ -122,7 +122,7 @@ test_that("summ_interval works with dirac-like functions", {
   )
 
   # Type "continuous"
-    # Single dirac-like peak
+  ## Single dirac-like peak
   d_dirac_1 <- new_d(1, "continuous")
   expect_equal(
     summ_interval(d_dirac_1, 0.95, method = "minwidth"),
@@ -140,22 +140,22 @@ test_that("summ_interval works with dirac-like functions", {
     tolerance = 1e-7
   )
 
-    # Two dirac-like peaks
+  ## Two dirac-like peaks
   d_dirac_2 <- form_mix(
     list(new_d(1, "continuous"), new_d(2, "continuous")),
     weights = c(0.25, 0.75)
   )
-  d_dirac_2_mean <- 1*0.25 + 2*0.75
-  d_dirac_2_sd <- sqrt(1^2*0.25 + 2^2*0.75 - d_dirac_2_mean^2)
+  d_dirac_2_mean <- 1 * 0.25 + 2 * 0.75
+  d_dirac_2_sd <- sqrt(1^2 * 0.25 + 2^2 * 0.75 - d_dirac_2_mean^2)
   d_dirac_2_supp <- meta_support(d_dirac_2)
 
   expect_equal(
-    summ_interval(d_dirac_2, 0.75-1e-8, method = "minwidth"),
+    summ_interval(d_dirac_2, 0.75 - 1e-8, method = "minwidth"),
     data.frame(left = 2, right = 2),
     tolerance = 1e-7
   )
   expect_equal(
-    summ_interval(d_dirac_2, 0.75+1e-8, method = "minwidth"),
+    summ_interval(d_dirac_2, 0.75 + 1e-8, method = "minwidth"),
     data.frame(left = 1, right = 2),
     tolerance = 1e-7
   )
@@ -171,11 +171,11 @@ test_that("summ_interval works with dirac-like functions", {
     data.frame(
       left = max(
         d_dirac_2_supp[1],
-        d_dirac_2_mean + stats::qnorm(0.125)*d_dirac_2_sd
+        d_dirac_2_mean + stats::qnorm(0.125) * d_dirac_2_sd
       ),
       right = min(
         d_dirac_2_supp[2],
-        d_dirac_2_mean + stats::qnorm(0.875)*d_dirac_2_sd
+        d_dirac_2_mean + stats::qnorm(0.875) * d_dirac_2_sd
       )
     ),
     tolerance = 1e-9
@@ -201,15 +201,15 @@ test_that("summ_interval works with real world cases", {
   expect_equal(
     summ_interval(d_unif, 0.5, method = "sigma"),
     data.frame(
-      left  = d_unif_mean + stats::qnorm(0.25)*d_unif_sd,
-      right = d_unif_mean + stats::qnorm(0.75)*d_unif_sd
+      left  = d_unif_mean + stats::qnorm(0.25) * d_unif_sd,
+      right = d_unif_mean + stats::qnorm(0.75) * d_unif_sd
     )
   )
 
   d_norm <- as_d(dnorm)
   d_norm_mean <- 0
   d_norm_sd <- 1
-    # For normal distribution all three methods should give the same result
+  ## For normal distribution all three methods should give the same result
   ref_interval <- data.frame(left = qnorm(0.25), right = qnorm(0.75))
   expect_equal(
     summ_interval(d_norm, 0.5, method = "minwidth"), ref_interval,
@@ -256,8 +256,8 @@ test_that("summ_interval works with `level` equal to 0 and 1", {
     summ_interval(cur_d, 0, method = "sigma"),
     data.frame(left = cur_d_mean, right = cur_d_mean)
   )
-    # This is also a test for output not being outside of input's support,
-    # because `stats::qnorm(c(0, 1))` is `c(-Inf, Inf)`
+  ## This is also a test for output not being outside of input's support,
+  ## because `stats::qnorm(c(0, 1))` is `c(-Inf, Inf)`
   expect_equal(
     summ_interval(cur_d, 1, method = "sigma"),
     lev_1_output

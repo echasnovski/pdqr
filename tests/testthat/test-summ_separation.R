@@ -11,8 +11,8 @@ test_that("summ_separation works with method 'KS'", {
   # Checking everything twice to test independece of result from function order
 
   # Two "discrete" functions
-  p_f <- new_p(data.frame(x = 1:4, prob = 1:4/10), "discrete")
-  p_g <- new_p(data.frame(x = 1:4, prob = 4:1/10), "discrete")
+  p_f <- new_p(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
+  p_g <- new_p(data.frame(x = 1:4, prob = 4:1 / 10), "discrete")
   expect_equal(summ_separation(p_f, p_g, method = "KS"), 2)
   expect_equal(summ_separation(p_g, p_f, method = "KS"), 2)
 
@@ -37,7 +37,7 @@ test_that("summ_separation works with methods from `summ_classmetric`", {
 
   # Two "discrete" functions
   p_f <- new_d(1:4, "discrete")
-  p_g <- new_d(2:6+0.1, "discrete")
+  p_g <- new_d(2:6 + 0.1, "discrete")
   expect_equal(summ_separation(p_f, p_g, "GM"), 3, tolerance = 4e-4)
   expect_equal(summ_separation(p_g, p_f, "GM"), 3, tolerance = 4e-4)
 
@@ -67,7 +67,7 @@ test_that("summ_separation returns smallest among alternatives", {
 
 test_that("summ_separation uses `n_grid` argument", {
   f_con <- new_d(data.frame(x = c(0, 1), y = c(1, 1)), "continuous")
-  g_con <- new_d(data.frame(x = c(0, 1.5), y = c(1, 1)/1.5), "continuous")
+  g_con <- new_d(data.frame(x = c(0, 1.5), y = c(1, 1) / 1.5), "continuous")
   expect_equal(
     # Correct answer is 0.75 but it is not very near any grid element
     summ_separation(f_con, g_con, method = "GM", n_grid = 4), 0.5
@@ -77,7 +77,7 @@ test_that("summ_separation uses `n_grid` argument", {
 test_that("summ_separation works with non-overlapping supports", {
   cur_dis_1 <- new_p(1:4, "discrete")
   cur_dis_2 <- new_p(5:6, "discrete")
-  cur_con_1 <- new_p(data.frame(x = 1:4, y = c(1, 1)/3), "continuous")
+  cur_con_1 <- new_p(data.frame(x = 1:4, y = c(1, 1) / 3), "continuous")
   cur_con_2 <- new_p(data.frame(x = 5:6, y = c(1, 1)), "continuous")
   cur_con_3 <- new_p(data.frame(x = 4:5, y = c(1, 1)), "continuous")
   cur_dirac_1 <- new_d(1, "continuous")
@@ -86,7 +86,7 @@ test_that("summ_separation works with non-overlapping supports", {
   # "Two discrete"
   expect_equal(summ_separation(cur_dis_1, cur_dis_2), 4.5)
   expect_equal(summ_separation(cur_dis_2, cur_dis_1), 4.5)
-    # "Touching" supports
+  ## "Touching" supports
   expect_equal(
     summ_separation(new_p(1:2, "discrete"), new_p(2:3, "discrete")), 2
   )
@@ -97,14 +97,14 @@ test_that("summ_separation works with non-overlapping supports", {
   # "Mixed-typed"
   expect_equal(summ_separation(cur_dis_1, cur_con_2), 4.5)
   expect_equal(summ_separation(cur_con_2, cur_dis_1), 4.5)
-    # "Touching" supports
+  ## "Touching" supports
   expect_equal(summ_separation(cur_dis_1, cur_con_3), 4)
   expect_equal(summ_separation(cur_con_3, cur_dis_1), 4)
 
   # "Two continuous"
   expect_equal(summ_separation(cur_con_1, cur_con_2), 4.5)
   expect_equal(summ_separation(cur_con_2, cur_con_1), 4.5)
-    # "Touching" supports
+  ## "Touching" supports
   expect_equal(summ_separation(cur_con_1, cur_con_3), 4)
   expect_equal(summ_separation(cur_con_3, cur_con_1), 4)
 
@@ -133,15 +133,15 @@ test_that("summ_separation validates input", {
 test_that("separation_ks works with two 'discrete' functions", {
   # Returns the smallest value on which maximum of |F - G| is located
   p_f <- new_d(1:3, "discrete")
-  p_g <- new_d(1:3+1.5, "discrete")
+  p_g <- new_d(1:3 + 1.5, "discrete")
   expect_equal(separation_ks(p_f, p_g), 3)
   # Checking twice to test independence of argument order
   expect_equal(separation_ks(p_g, p_f), 3)
 
   expect_equal(
     separation_ks(
-      new_p(data.frame(x = 1:4, prob = 1:4/10), "discrete"),
-      new_p(data.frame(x = 1:4, prob = 4:1/10), "discrete")
+      new_p(data.frame(x = 1:4, prob = 1:4 / 10), "discrete"),
+      new_p(data.frame(x = 1:4, prob = 4:1 / 10), "discrete")
     ),
     2
   )
@@ -155,7 +155,7 @@ test_that("separation_ks works with mixed-type functions", {
   # These two cases represent "supremum-not-maximum" quality of K-S distatnce,
   # when actual distance is achieved as limit of distances from left side
   cur_dis <- new_p(1:10, "discrete")
-  cur_con <- new_p(data.frame(x = c(0, 10), y = c(1, 1)/10), "continuous")
+  cur_con <- new_p(data.frame(x = c(0, 10), y = c(1, 1) / 10), "continuous")
   expect_equal(separation_ks(cur_dis, cur_con), 1)
   # Checking twice to test independence of argument order
   expect_equal(separation_ks(cur_con, cur_dis), 1)
@@ -184,9 +184,9 @@ test_that("separation_ks works with two 'continuous' functions", {
   # Maximum at density crossings
   p_f <- new_p(data.frame(x = 0:1, y = c(2, 0)), "continuous")
   p_g <- new_p(data.frame(x = c(0.5, 1, 1.5), y = c(0, 2, 0)), "continuous")
-  expect_equal(separation_ks(p_f, p_g), 2/3)
+  expect_equal(separation_ks(p_f, p_g), 2 / 3)
   # Checking twice to test independence of argument order
-  expect_equal(separation_ks(p_g, p_f), 2/3)
+  expect_equal(separation_ks(p_g, p_f), 2 / 3)
 
   # Multiple density crossings in real-world example
   p_f <- new_p(
@@ -204,7 +204,7 @@ test_that("separation_ks works with two 'continuous' functions", {
 
   # Common y-zero plateau. Maximum difference on both edges of one of support.
   p_f <- new_p(data.frame(x = 1:4, y = c(1, 0, 0, 1)), "continuous")
-  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0)/2), "continuous")
+  p_g <- new_p(data.frame(x = 0:5, y = c(0, 1, 0, 0, 1, 0) / 2), "continuous")
   # Output should be the smallest x value
   expect_equal(separation_ks(p_f, p_g), 1)
 
@@ -259,7 +259,7 @@ test_that("separation_ks works with dirac-like functions", {
 # separation_classmetric --------------------------------------------------
 test_that("separation_classmetric works with two 'discrete' functions", {
   f_dis <- new_d(1:4, "discrete")
-  g_dis <- new_d(2:6+0.1, "discrete")
+  g_dis <- new_d(2:6 + 0.1, "discrete")
 
   separations <- vapply(
     classmetric_sep_methods, separation_classmetric, numeric(1),

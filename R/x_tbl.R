@@ -31,8 +31,8 @@ compute_x_tbl_con <- function(x, ...) {
 }
 
 dirac_x_tbl <- function(at_x, h = 1e-8) {
-  x <- at_x + h*c(-1, 0, 1)
-  y <- c(0, 1, 0)/h
+  x <- at_x + h * c(-1, 0, 1)
+  y <- c(0, 1, 0) / h
   # Normalization is needed to ensure that total integral is 1. If omit this,
   # then, for example, `new_d(1e8, "continuous")` will have total integral of
   # around `1.49`.
@@ -133,7 +133,11 @@ impute_prob <- function(prob) {
 impute_y <- function(y, x) {
   tot_prob <- trapez_integral(x, y)
 
-  if (is_near(tot_prob, 1)) {y} else {y / tot_prob}
+  if (is_near(tot_prob, 1)) {
+    y
+  } else {
+    y / tot_prob
+  }
 }
 
 impute_vec <- function(vec, new_vec) {
@@ -211,7 +215,7 @@ reflect_x_tbl <- function(x_tbl, around) {
 
 ground_x_tbl <- function(x_tbl, direction = "both", h = 1e-8) {
   if ((get_type_from_x_tbl(x_tbl) == "discrete") ||
-      !(direction %in% c("left", "right", "both"))) {
+    !(direction %in% c("left", "right", "both"))) {
     return(x_tbl)
   }
 
@@ -234,35 +238,35 @@ ground_x_tbl <- function(x_tbl, direction = "both", h = 1e-8) {
   if (ground_left) {
     x_diff <- (x[2] - x[1])
     # Using `2*h` instead of `h` to avoid numerical representation issues
-    if (x_diff > 2*h) {
+    if (x_diff > 2 * h) {
       # Case when inner point should be added because there is no "close" knot
       # in input data
       res <- res[c(1, 1, 1:n), ]
-      res[["x"]][c(1, 3)] <- x[1] + h*c(-1, 1)
-      res[["y"]][c(1, 2, 3)] <- c(0, 0.5*res[["y"]][2], x_tbl_fun(x[1]+h))
+      res[["x"]][c(1, 3)] <- x[1] + h * c(-1, 1)
+      res[["y"]][c(1, 2, 3)] <- c(0, 0.5 * res[["y"]][2], x_tbl_fun(x[1] + h))
     } else {
       # Case when inner point shouldn't be added
       res <- res[c(1, 1:n), ]
       res[["x"]][c(1)] <- x[1] - h
-      res[["y"]][c(1, 2)] <- c(0, res[["y"]][2] * x_diff/(x_diff + h))
+      res[["y"]][c(1, 2)] <- c(0, res[["y"]][2] * x_diff / (x_diff + h))
     }
   }
 
   if (ground_right) {
     n_n <- nrow(res)
     x_n <- res[["x"]]
-    x_diff <- (x_n[n_n] - x_n[n_n-1])
+    x_diff <- (x_n[n_n] - x_n[n_n - 1])
     # Using `2*h` instead of `h` to avoid numerical representation issues
-    if (x_diff > 2*h) {
+    if (x_diff > 2 * h) {
       res <- res[c(1:n_n, n_n, n_n), ]
-      res[["x"]][n_n + c(0, 2)] <- x_n[n_n] + h*c(-1, 1)
+      res[["x"]][n_n + c(0, 2)] <- x_n[n_n] + h * c(-1, 1)
       res[["y"]][n_n + c(0, 1, 2)] <- c(
-        x_tbl_fun(x_n[n_n]), 0.5*res[["y"]][n_n+1], 0
+        x_tbl_fun(x_n[n_n]), 0.5 * res[["y"]][n_n + 1], 0
       )
     } else {
       res <- res[c(1:n_n, n_n), ]
       res[["x"]][n_n + c(1)] <- x_n[n_n] + h
-      res[["y"]][n_n + c(0, 1)] <- c(res[["y"]][n_n] * x_diff/(x_diff + h), 0)
+      res[["y"]][n_n + c(0, 1)] <- c(res[["y"]][n_n] * x_diff / (x_diff + h), 0)
     }
   }
 
@@ -333,7 +337,9 @@ stack_x_tbl_dis <- function(x_tbl_list) {
 stack_x_tbl_con <- function(x_tbl_list) {
   # Determine grounding direction for every 'x_tbl' so that resulting edges of
   # output don't get unnecessary grounding
-  x_tbl_list_range <- lapply(x_tbl_list, function(x_tbl) {range(x_tbl[["x"]])})
+  x_tbl_list_range <- lapply(x_tbl_list, function(x_tbl) {
+    range(x_tbl[["x"]])
+  })
   res_range <- range(unlist(x_tbl_list_range))
   ground_dir <- vapply(seq_along(x_tbl_list), function(i) {
     cur_range <- x_tbl_list_range[[i]]
@@ -342,9 +348,17 @@ stack_x_tbl_con <- function(x_tbl_list) {
     ground_right <- !is_near(cur_range[2], res_range[2])
 
     if (ground_left) {
-      res <- if (ground_right) {"both"} else {"left"}
+      res <- if (ground_right) {
+        "both"
+      } else {
+        "left"
+      }
     } else {
-      res <- if (ground_right) {"right"} else {"none"}
+      res <- if (ground_right) {
+        "right"
+      } else {
+        "none"
+      }
     }
 
     res

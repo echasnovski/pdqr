@@ -188,7 +188,7 @@ prob_geq_con_con <- function(f, g) {
 }
 
 con_geq_piece_integral <- function(diff_x, y_f_left, y_g_left,
-                                     slope_f, slope_g, cumprob_g_left) {
+                                   slope_f, slope_g, cumprob_g_left) {
   # Output probability is equal to definite integral of `d_f(x) * p_g(x)` over
   # intersection support. On each interval, where both densities have linear
   # nature, definite integral is over (x_left, x_right) interval of a function
@@ -204,10 +204,12 @@ con_geq_piece_integral <- function(diff_x, y_f_left, y_g_left,
 
   # Having powers of `h` inside every term avoids issues with numerical
   # representation accuracy when `h` is too small (as in dirac-like entries).
+  # styler: off
   piece_integrals <- slope_f*slope_g*h^4 / 8 +
     (2*slope_f*y_g_left*h^3 + slope_g*y_f_left*h^3) / 6 +
     (slope_f*cumprob_g_left*h^2 + y_f_left*y_g_left*h^2) / 2 +
     y_f_left*cumprob_g_left*h
+  # styler: on
 
   sum(piece_integrals)
 }

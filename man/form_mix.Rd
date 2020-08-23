@@ -59,15 +59,15 @@ p_norm <- as_p(pnorm)
 d_unif <- as_d(dunif)
 
 con_mix <- form_mix(list(p_norm, d_unif), weights = c(0.7, 0.3))
-  # Output is a p-function, as is first element of `f_list`
+## Output is a p-function, as is first element of `f_list`
 con_mix
 plot(con_mix)
 
-  # Use `as_*()` functions to change class
+## Use `as_*()` functions to change class
 d_con_mix <- as_d(con_mix)
 
-  # Theoretical output density should be discontinuous, but here it is
-  # approximated with continuous function
+## Theoretical output density should be discontinuous, but here it is
+## approximated with continuous function
 con_x_tbl <- meta_x_tbl(con_mix)
 con_x_tbl[(con_x_tbl$x >= -1e-4) & (con_x_tbl$x <= 1e-4), ]
 
@@ -76,9 +76,8 @@ all_mix <- form_mix(list(d_binom, d_unif))
 plot(all_mix)
 all_x_tbl <- meta_x_tbl(all_mix)
 
-  # What dirac-like approximation looks like
+## What dirac-like approximation looks like
 all_x_tbl[(all_x_tbl$x >= 1.5) & (all_x_tbl$x <= 2.5), ]
-
 }
 \seealso{
 Other form functions: 

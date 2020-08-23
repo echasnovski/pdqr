@@ -44,8 +44,8 @@ x_custom_trunc <- runif(1000, 0.05, 0.95)
 p_vec <- sample(0:1000 / 1000)
 
 # Sequences for testing `as_q()` methods
-  # **Note** that step is ~1e-4, but in `as_d()` and `as_p()` tests it is ~1e-5.
-  # This is done because of slower `as_q.default()` performance.
+## **Note** that step is ~1e-4, but in `as_d()` and `as_p()` tests it is ~1e-5.
+## This is done because of slower `as_q.default()` performance.
 p_seq <- seq(0, 1, length.out = 1e4)
 
 # Sequences of probabilities used to test quantile functions that go to infinity

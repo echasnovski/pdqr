@@ -1,7 +1,7 @@
 Package: pdqr
 Title: Work with Custom Distribution Functions
 Version: 0.2.1.9000
-Authors@R: 
+Authors@R:
     person(given = "Evgeni",
            family = "Chasnovski",
            role = c("aut", "cre"),
@@ -21,12 +21,12 @@ License: MIT + file LICENSE
 URL: https://github.com/echasnovski/pdqr,
     https://echasnovski.github.io/pdqr
 BugReports: https://github.com/echasnovski/pdqr/issues
-Depends: 
+Depends:
     R (>= 3.3)
 Imports:
     graphics,
     stats
-Suggests: 
+Suggests:
     covr,
     grDevices,
     knitr,
@@ -35,14 +35,14 @@ Suggests:
     spelling,
     testthat,
     vdiffr
-VignetteBuilder: 
+VignetteBuilder:
     knitr
 Encoding: UTF-8
 Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE, old_usage = TRUE)
 RoxygenNote: 7.1.1
-Collate: 
+Collate:
     'as_p.R'
     'as_d.R'
     'as_q.R'

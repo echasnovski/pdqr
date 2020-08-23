@@ -57,7 +57,6 @@ summ_skewness(d_beta)
 # Return the same number representing non-excess kurtosis
 summ_moment(d_beta, order = 4, central = TRUE, standard = TRUE)
 summ_kurtosis(d_beta, excess = FALSE)
-
 }
 \seealso{
 \code{\link[=summ_center]{summ_center()}} for computing distribution's center, \code{\link[=summ_spread]{summ_spread()}}

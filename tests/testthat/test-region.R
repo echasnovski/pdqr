@@ -140,7 +140,7 @@ test_that("region_is_in validates input", {
 
 # region_prob -------------------------------------------------------------
 test_that("region_prob works with 'discrete' functions", {
-  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
+  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
 
   region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
   expect_equal(region_prob(region_1, cur_d), 0.1 + 0.3)
@@ -314,7 +314,7 @@ test_that("region_prob validates input", {
 
 # region_height -----------------------------------------------------------
 test_that("region_height works with 'discrete' functions", {
-  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
+  cur_d <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
 
   region_1 <- data.frame(left = c(1, 3) - 0.25, right = c(1, 3) + 0.25)
   expect_equal(region_height(region_1, cur_d), 0.1)
@@ -393,7 +393,7 @@ test_that("region_height works with 'discrete' functions", {
 })
 
 test_that("region_height works with 'continuous' functions", {
-  cur_d <- new_d(data.frame(x = 1:5, y = c(0, 2, 1, 2, 0)/5), "continuous")
+  cur_d <- new_d(data.frame(x = 1:5, y = c(0, 2, 1, 2, 0) / 5), "continuous")
 
   expect_equal(
     region_height(data.frame(left = 1.5, right = 2.5), cur_d), cur_d(1.5)
@@ -500,7 +500,7 @@ test_that("region_distance works with 'Jaccard' method", {
 
   # "Continuous" regions
   expect_equal(
-    region_distance(region_con_1, region_con_2, method = "Jaccard"), 1 - 1/3
+    region_distance(region_con_1, region_con_2, method = "Jaccard"), 1 - 1 / 3
   )
   expect_equal(
     region_distance(region_con_1, region_con_1, method = "Jaccard"), 0
@@ -509,10 +509,10 @@ test_that("region_distance works with 'Jaccard' method", {
   expect_equal(
     region_distance(
       data.frame(left = c(0, 1),     right = c(1, 2)),
-      data.frame(left = c(0, 1)+0.5, right = c(1, 2)+0.5),
+      data.frame(left = c(0, 1) + 0.5, right = c(1, 2) + 0.5),
       method = "Jaccard"
     ),
-    1 - 1.5/2.5
+    1 - 1.5 / 2.5
   )
 
   # "Mixed" regions
@@ -581,7 +581,7 @@ test_that("region_distance works with the rest of `summ_distance()` methods", {
 
 test_that("region_distance validates input", {
   region <- data.frame(left = c(0, 2), right = c(1, 3))
-  region2 <- data.frame(left = c(0, 2)+0.5, right = c(1, 3)+0.5)
+  region2 <- data.frame(left = c(0, 2) + 0.5, right = c(1, 3) + 0.5)
 
   expect_error(region_distance(list(0:1, 1:2), region2), "`region`")
   expect_error(region_distance(region, list(0:1, 1:2)), "`region2`")
@@ -668,7 +668,7 @@ test_that("region_new works", {
 test_that("assert_region works", {
   expect_silent(assert_region(data.frame(left = 1, right = 1)))
   expect_silent(assert_region(data.frame(left = 1:2, right = 1:2)))
-  expect_silent(assert_region(data.frame(left = 1:2, right = 1:2+0.5)))
+  expect_silent(assert_region(data.frame(left = 1:2, right = 1:2 + 0.5)))
   expect_silent(assert_region(data.frame(left = 1:2, right = 1:2, c = -1:0)))
 
   input <- "a"
@@ -681,7 +681,7 @@ test_that("assert_region works", {
     'have.*numeric.*"left"'
   )
   expect_error(
-    assert_region(data.frame(left = c(-Inf, 2), right = 2:3)), 'finite'
+    assert_region(data.frame(left = c(-Inf, 2), right = 2:3)), "finite"
   )
   expect_error(assert_region(data.frame(left = 1:2)), 'have.*column.*"right"')
   expect_error(
@@ -689,7 +689,7 @@ test_that("assert_region works", {
     'have.*numeric.*"right"'
   )
   expect_error(
-    assert_region(data.frame(left = 1:2, right = c(2, Inf))), 'finite'
+    assert_region(data.frame(left = 1:2, right = c(2, Inf))), "finite"
   )
 
   expect_error(assert_region(data.frame(left = 1, right = -1)), "All.*not less")

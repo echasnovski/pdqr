@@ -30,11 +30,14 @@ test_that("form_mix works when input is all 'discrete'", {
   expect_ref_x_tbl(
     # By default equal-weight mix is done
     form_mix(cur_f_list[1:2]),
-    data.frame(x = 0:2, prob = c(0.5*0.4, 0.5*0.6+0.5*0.5, 0.5*0.5))
+    data.frame(x = 0:2, prob = c(0.5 * 0.4, 0.5 * 0.6 + 0.5 * 0.5, 0.5 * 0.5))
   )
   expect_ref_x_tbl(
     form_mix(cur_f_list[1:2], weights = c(0.25, 0.75)),
-    data.frame(x = 0:2, prob = c(0.25*0.4, 0.25*0.6+0.75*0.5, 0.75*0.5))
+    data.frame(
+      x = 0:2,
+      prob = c(0.25 * 0.4, 0.25 * 0.6 + 0.75 * 0.5, 0.75 * 0.5)
+    )
   )
 })
 
@@ -46,16 +49,16 @@ test_that("form_mix works when input is all 'continuous'", {
     # By default equal-weight mix is done
     form_mix(cur_f_list[3:4]),
     data.frame(
-      x = c(  0, 0.5-h, 0.5, 0.5+h, 0.75-h, 0.75, 0.75+h,   1),
-      y = c(0.5,   0.5, 1.5,   2.5,    2.5,  1.5,    0.5, 0.5)
+      x = c(0,   0.5 - h, 0.5, 0.5 + h, 0.75 - h, 0.75, 0.75 + h, 1),
+      y = c(0.5, 0.5,     1.5, 2.5,     2.5,      1.5,  0.5,      0.5)
     ),
     tol = tol
   )
   expect_ref_x_tbl(
     form_mix(cur_f_list[3:4], weights = c(0.25, 0.75)),
     data.frame(
-      x = c(   0, 0.5-h,  0.5, 0.5+h, 0.75-h, 0.75, 0.75+h,   1),
-      y = c(0.25,  0.25, 1.75,  3.25,   3.25, 1.75,   0.25, 0.25)
+      x = c(0,    0.5 - h, 0.5,  0.5 + h, 0.75 - h, 0.75, 0.75 + h, 1),
+      y = c(0.25, 0.25,    1.75, 3.25,    3.25,     1.75, 0.25,     0.25)
     ),
     tol = tol
   )
@@ -69,20 +72,20 @@ test_that("form_mix works when input has both pdqr types", {
     # By default equal-weight mix is done
     form_mix(cur_f_list[c(1, 4)]),
     data.frame(
-      x = c(0-h,     0, 0+h, 0.5-h, 0.5, 0.5+h,
-            0.75-h, 0.75, 0.75+h, 1-h,     1, 1+h),
-      y = c(  0, 0.2/h,   0,     0,   1,     2,
-                 2,    1,      0,   0, 0.3/h,   0)
+      x = c(0 - h, 0,       0 + h,    0.5 - h, 0.5,     0.5 + h,
+        0.75 - h,  0.75,    0.75 + h, 1 - h,   1,       1 + h),
+      y = c(0,     0.2 / h, 0,        0,       1,       2,
+        2,         1,       0,        0,       0.3 / h, 0)
     ),
     tol = tol
   )
   expect_ref_x_tbl(
     form_mix(cur_f_list[c(1, 4)], weights = c(0.25, 0.75)),
     data.frame(
-      x = c(-h,     0, h, 0.5-h, 0.5, 0.5+h,
-            0.75-h, 0.75, 0.75+h, 1-h,      1, 1+h),
-      y = c( 0, 0.1/h, 0,     0, 1.5,     3,
-                 3,  1.5,      0,   0, 0.15/h,   0)
+      x = c(-h,   0,       h,        0.5 - h, 0.5,      0.5 + h,
+        0.75 - h, 0.75,    0.75 + h, 1 - h,   1,        1 + h),
+      y = c(0,    0.1 / h, 0,        0,       1.5,      3,
+        3,        1.5,     0,        0,       0.15 / h, 0)
     ),
     tol = tol
   )
@@ -115,8 +118,8 @@ test_that("form_mix 'stiches' functions with consecutive supports nicely", {
   expect_ref_x_tbl(
     form_mix(list(d_unif_1, d_unif_2)),
     data.frame(
-      x = c(  0, 1-h,   1, 1+h,   2),
-      y = c(0.5, 0.5, 0.5, 0.5, 0.5)
+      x = c(0,   1 - h, 1,   1 + h, 2),
+      y = c(0.5, 0.5,   0.5, 0.5,   0.5)
     ),
     tol = 1e-9
   )
@@ -127,7 +130,9 @@ test_that("form_mix validates input", {
   expect_error(form_mix("a"), "`f_list`.*list")
   expect_error(form_mix(list()), "`f_list`.*empty")
   expect_error(form_mix(list(1)), "`f_list`.*pdqr-functions")
-  expect_error(form_mix(list(function(x) {x})), "`f_list`.*pdqr-functions")
+  expect_error(form_mix(list(function(x) {
+    x
+  })), "`f_list`.*pdqr-functions")
   expect_error(form_mix(list(cur_f_list[[1]], 1)), "`f_list`.*pdqr-functions")
 
   expect_error(form_mix(cur_f_list[1:2], weights = "a"), "`weights`.*numeric")
@@ -214,14 +219,14 @@ test_that("form_estimate works", {
 
   # Type "discrete"
   cur_d <- new_d(data.frame(x = 0:2, prob = c(0.3, 0.4, 0.3)), "discrete")
-  mean_cur_d <- 0.4*1 + 0.3*2
-  sd_cur_d <- sqrt((0.4*1^2 + 0.3*2^2) - (mean_cur_d)^2)
+  mean_cur_d <- 0.4 * 1 + 0.3 * 2
+  sd_cur_d <- sqrt((0.4 * 1^2 + 0.3 * 2^2) - (mean_cur_d)^2)
 
   dis_mean_est <- form_estimate(cur_d, mean, sample_size = 16, n_sample = 1000)
   expect_is(dis_mean_est, "d")
   expect_true(meta_type(dis_mean_est) == "discrete")
 
-    # Testing Central limit theorem
+  ## Testing Central limit theorem
   expect_true(abs(summ_mean(dis_mean_est) - mean_cur_d) <= 2e-2)
   expect_true(abs(summ_sd(dis_mean_est) - sd_cur_d / 4) <= 1e-3)
 
@@ -234,15 +239,17 @@ test_that("form_estimate works", {
   expect_is(con_mean_est, "d")
   expect_true(meta_type(con_mean_est) == "continuous")
 
-    # Testing Central limit theorem
+  ## Testing Central limit theorem
   expect_true(abs(summ_mean(con_mean_est) - mean_d_unif) <= 1e-2)
   expect_true(abs(summ_sd(con_mean_est) - sd_d_unif / 4) <= 4e-3)
 })
 
 test_that("form_estimate works with logical output of `stat`", {
-  d_unif <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)/2), "continuous")
+  d_unif <- new_d(data.frame(x = c(-1, 1), y = c(1, 1) / 2), "continuous")
 
-  all_positive <- function(x) {all(x > 0)}
+  all_positive <- function(x) {
+    all(x > 0)
+  }
   estim <- form_estimate(d_unif, all_positive, sample_size = 3, n_sample = 1000)
   expect_true(is_boolean_pdqr_fun(estim))
   expect_equal(summ_prob_true(estim), 0.5^3, tolerance = 1e-2)
@@ -266,7 +273,9 @@ test_that("form_estimate works with logical output of `stat`", {
 })
 
 test_that("form_estimate uses `...` as arguments to `stat`", {
-  dummy_stat <- function(x, y) {y}
+  dummy_stat <- function(x, y) {
+    y
+  }
 
   est <- form_estimate(d_dis, dummy_stat, 10, y = 10)
   expect_ref_x_tbl(est, data.frame(x = 10, prob = 1))
@@ -301,11 +310,15 @@ test_that("form_estimate allows `type` in `args_new`", {
 
 test_that("form_estimate checks that `stat` returns single num or lgl", {
   expect_error(
-    form_estimate(d_dis, function(x) {"a"}, 10),
+    form_estimate(d_dis, function(x) {
+      "a"
+    }, 10),
     "output.*`stat`.*single.*numeric.*logical"
   )
   expect_error(
-    form_estimate(d_dis, function(x) {1:3}, 10),
+    form_estimate(d_dis, function(x) {
+      1:3
+    }, 10),
     "output.*`stat`.*single.*numeric.*logical"
   )
 })

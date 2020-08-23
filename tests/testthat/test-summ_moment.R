@@ -96,7 +96,7 @@ test_that("summ_moment works with dirac-like functions", {
     lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
   expect_equal(summ_moment(d_dirac_2, 1), 1.3)
-  expect_equal(summ_moment(d_dirac_2, 10), 0.7*1^10 + 0.3*2^10)
+  expect_equal(summ_moment(d_dirac_2, 10), 0.7 * 1^10 + 0.3 * 2^10)
 })
 
 test_that("summ_moment agrees with other `summ_*()` functions", {
@@ -179,7 +179,7 @@ test_that("summ_skewness works with dirac-like functions", {
   )
   expect_equal(
     summ_skewness(d_dirac_2),
-    (0.7*(1-1.3)^3 + 0.3*(2-1.3)^3) / summ_sd(d_dirac_2)^3
+    (0.7 * (1 - 1.3)^3 + 0.3 * (2 - 1.3)^3) / summ_sd(d_dirac_2)^3
   )
 })
 
@@ -239,7 +239,7 @@ test_that("summ_kurtosis works with dirac-like functions", {
   )
   expect_equal(
     summ_kurtosis(d_dirac_2),
-    (0.7*(1-1.3)^4 + 0.3*(2-1.3)^4) / summ_sd(d_dirac_2)^4 - 3
+    (0.7 * (1 - 1.3)^4 + 0.3 * (2 - 1.3)^4) / summ_sd(d_dirac_2)^4 - 3
   )
 })
 

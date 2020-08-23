@@ -43,7 +43,6 @@
 #' # Return the same number representing non-excess kurtosis
 #' summ_moment(d_beta, order = 4, central = TRUE, standard = TRUE)
 #' summ_kurtosis(d_beta, excess = FALSE)
-#'
 #' @name summ_moment
 NULL
 

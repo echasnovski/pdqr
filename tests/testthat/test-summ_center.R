@@ -69,7 +69,7 @@ test_that("summ_mean works with winsorized 'continuous' functions", {
     support = c(0.25, 0.85),
     method = "winsor"
   )
-  expect_equal(summ_mean(d_wins), 0.25*0.25 + 0.55*0.6 + 0.85*0.15)
+  expect_equal(summ_mean(d_wins), 0.25 * 0.25 + 0.55 * 0.6 + 0.85 * 0.15)
 })
 
 test_that("summ_mean works with zero probability spaces in distribution", {
@@ -89,7 +89,7 @@ test_that("summ_mean works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_mean(d_unif_1), 1.5)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
   expect_equal(summ_mean(d_unif_2), 1)
 })
 
@@ -169,7 +169,7 @@ test_that("summ_median works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_median(d_unif_1), 1.5)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
   expect_equal(summ_median(d_unif_2), 1)
 })
 
@@ -182,17 +182,17 @@ test_that("summ_median validates input", {
 test_that("summ_mode works with 'discrete' functions", {
   # Method "global" (default)
   expect_equal_stat(summ_mode, stat_list[["binom"]], "mode", thres = 1e-12)
-    # The expected output should be 4, but on low-precision i386 platform it
-    # seems that `which.max(dpois(4:5, 5))` returns 2 (instead of 1, which is
-    # the first one among two *equal* values). If test is not relaxed, CRAN
-    # check fails.
+  ## The expected output should be 4, but on low-precision i386 platform it
+  ## seems that `which.max(dpois(4:5, 5))` returns 2 (instead of 1, which is
+  ## the first one among two *equal* values). If test is not relaxed, CRAN
+  ## check fails.
   pois_mode <- summ_mode(as_d(dpois, lambda = 5L))
   expect_true((abs(pois_mode - 4) < 1e-12) || (abs(pois_mode - 5) < 1e-12))
 
   # Method "local"
   expect_local_mode_equals_global(stat_list[["binom"]][["d_fun"]])
-    # Poisson distribution's number of local modes depends on "integerishness"
-    # of `labmda` parameter
+  ## Poisson distribution's number of local modes depends on "integerishness"
+  ## of `labmda` parameter
   expect_equal(summ_mode(as_d(dpois, lambda = 10.1), method = "local"), 10)
   expect_equal(summ_mode(as_d(dpois, lambda = 10), method = "local"), c(9, 10))
 })
@@ -210,7 +210,7 @@ test_that("summ_mode works with common 'continuous' functions", {
 
   # Method "local"
   expect_local_mode_equals_global(stat_list[["beta"]][["d_fun"]])
-    # Both "infinities" are local modes
+  ## Both "infinities" are local modes
   expect_equal(
     summ_mode(stat_list[["beta_inf"]][["d_fun"]], method = "local"),
     c(0, 1)
@@ -220,7 +220,7 @@ test_that("summ_mode works with common 'continuous' functions", {
   expect_local_mode_equals_global(stat_list[["exp"]][["d_fun"]])
   expect_local_mode_equals_global(stat_list[["norm"]][["d_fun"]])
   expect_local_mode_equals_global(stat_list[["norm_2"]][["d_fun"]])
-    # All points in "x_tbl" are local modes
+  ## All points in "x_tbl" are local modes
   expect_equal(
     summ_mode(stat_list[["unif"]][["d_fun"]], method = "local"),
     meta_x_tbl(stat_list[["unif"]][["d_fun"]])[["x"]]
@@ -273,10 +273,10 @@ test_that("summ_mode works with plateaus in distribution", {
 
   # Method "global" (default)
   expect_equal(summ_mode(d_plateau_dis), 5)
-    # Returns the smallest "x" with highest probability
+  ## Returns the smallest "x" with highest probability
   expect_equal(summ_mode(d_plateau_dis_2), 2)
   expect_equal(summ_mode(d_plateau_con), 5)
-    # Returns the smallest "x" with highest probability
+  ## Returns the smallest "x" with highest probability
   expect_equal(summ_mode(d_plateau_con_2), 2)
 
   # Method "local"
@@ -295,8 +295,8 @@ test_that("summ_mode validates input", {
 
 # summ_midrange -----------------------------------------------------------
 test_that("summ_midrange works", {
-  expect_equal(summ_midrange(d_dis), 0.5*sum(x_dis_support))
-  expect_equal(summ_midrange(d_con), 0.5*sum(x_con_support), tol = 1e-10)
+  expect_equal(summ_midrange(d_dis), 0.5 * sum(x_dis_support))
+  expect_equal(summ_midrange(d_con), 0.5 * sum(x_con_support), tol = 1e-10)
 
   d_dirac <- new_d(10, "continuous")
   expect_equal(summ_midrange(d_dirac), 10, tol = 1e-10)

@@ -62,12 +62,12 @@ distribution's \link[=summ_mode]{global mode}, "percentile" method -
 }
 \examples{
 # Type "discrete"
-d_dis <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2)/9), "discrete")
+d_dis <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2) / 9), "discrete")
 summ_interval(d_dis, level = 0.5, method = "minwidth")
 summ_interval(d_dis, level = 0.5, method = "percentile")
 summ_interval(d_dis, level = 0.5, method = "sigma")
 
-  # Visual difference between methods
+## Visual difference between methods
 plot(d_dis)
 region_draw(summ_interval(d_dis, 0.5, method = "minwidth"), col = "blue")
 region_draw(summ_interval(d_dis, 0.5, method = "percentile"), col = "red")
@@ -82,7 +82,7 @@ summ_interval(d_con, level = 0.5, method = "minwidth")
 summ_interval(d_con, level = 0.5, method = "percentile")
 summ_interval(d_con, level = 0.5, method = "sigma")
 
-  # Visual difference between methods
+## Visual difference between methods
 plot(d_con)
 region_draw(summ_interval(d_con, 0.5, method = "minwidth"), col = "blue")
 region_draw(summ_interval(d_con, 0.5, method = "percentile"), col = "red")
@@ -95,7 +95,6 @@ summ_interval(d_con, level = 1, method = "sigma")
 
 # To get vector output, use `unlist()`
 unlist(summ_interval(d_con))
-
 }
 \seealso{
 \code{\link[=summ_hdr]{summ_hdr()}} for computing of Highest Density Region, which can

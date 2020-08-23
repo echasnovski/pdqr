@@ -51,11 +51,11 @@ test_that("raw_moment works with dirac-like 'continuous' functions", {
 test_that("raw_moment works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(raw_moment(d_unif_1, 1), 1.5)
-  expect_equal(raw_moment(d_unif_1, 2), 1/12 + 1.5^2)
+  expect_equal(raw_moment(d_unif_1, 2), 1 / 12 + 1.5^2)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
   expect_equal(raw_moment(d_unif_2, 1), 1)
-  expect_equal(raw_moment(d_unif_2, 2), 1/3 + 1^2)
+  expect_equal(raw_moment(d_unif_2, 2), 1 / 3 + 1^2)
 })
 
 
@@ -67,7 +67,7 @@ test_that("raw_moment works with 'continuous' functions with few intervals", {
 test_that("compute_density_crossings works", {
   cur_d_1 <- new_d(data.frame(x = 1:6, y = c(0, 1, 0, 0, 1, 0)), "continuous")
   cur_d_2 <- new_d(
-    data.frame(x = 1:6+0.5, y = c(0, 1, 0, 0, 1, 0)), "continuous"
+    data.frame(x = 1:6 + 0.5, y = c(0, 1, 0, 0, 1, 0)), "continuous"
   )
   expect_equal(
     compute_density_crossings(cur_d_1, cur_d_2), c(2.25, 3.5, 4, 5.25)
@@ -107,8 +107,8 @@ test_that("compute_density_crossings handles single intervals in 'x_tbl'", {
 })
 
 test_that("compute_density_crossings handles intersection on grid", {
-  cur_d_1 <- new_d(data.frame(x = 1:3, y = c(2, 1, 2)/3), "continuous")
-  cur_d_2 <- new_d(data.frame(x = 0:4, y = c(2, 0, 1, 0, 2)/3), "continuous")
+  cur_d_1 <- new_d(data.frame(x = 1:3, y = c(2, 1, 2) / 3), "continuous")
+  cur_d_2 <- new_d(data.frame(x = 0:4, y = c(2, 0, 1, 0, 2) / 3), "continuous")
   expect_equal(compute_density_crossings(cur_d_1, cur_d_2), 2)
 })
 
@@ -127,7 +127,7 @@ test_that("compute_density_crossings handles intersection on edge", {
 test_that("compute_density_crossings handles no intersections", {
   # Non-trivial intersection support
   cur_d_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
-  cur_d_2 <- new_d(data.frame(x = c(0, 3), y = c(1, 1)/3), "continuous")
+  cur_d_2 <- new_d(data.frame(x = c(0, 3), y = c(1, 1) / 3), "continuous")
   expect_equal(compute_density_crossings(cur_d_1, cur_d_2), numeric(0))
 
   # No intersection support
@@ -136,7 +136,7 @@ test_that("compute_density_crossings handles no intersections", {
   expect_equal(compute_density_crossings(cur_d_3, cur_d_1), numeric(0))
 
   # Intersection support consists from one value
-  cur_d_4 <- new_d(data.frame(x = c(-1, 1), y = c(1, 1)/2), "continuous")
+  cur_d_4 <- new_d(data.frame(x = c(-1, 1), y = c(1, 1) / 2), "continuous")
   expect_equal(compute_density_crossings(cur_d_1, cur_d_4), numeric(0))
 })
 
@@ -161,8 +161,8 @@ test_that("compute_density_crossings works with real world cases", {
 # compute_cdf_crossings ---------------------------------------------------
 test_that("compute_cdf_crossings works", {
   cur_p_1 <- new_p(data.frame(x = 1:2, y = c(1, 1)), "continuous")
-  cur_p_2 <- new_p(data.frame(x = c(0, 4), y = c(1, 1)/4), "continuous")
-  expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), 4/3)
+  cur_p_2 <- new_p(data.frame(x = c(0, 4), y = c(1, 1) / 4), "continuous")
+  expect_equal(compute_cdf_crossings(cur_p_1, cur_p_2), 4 / 3)
 
   # Acceptence of different pdqr-functions
   expect_equal(
@@ -231,15 +231,15 @@ test_that("compute_cdf_crossings works with real world cases", {
 test_that("compute_piecequad_crossings works", {
   piecequad_1 <- list(
     x = c(0,  0.75,  1,    2,  2.75),
-    a = c(  0,     1,     0,   0),
-    b = c(  1,     -1,    0,   0),
-    c = c( -1,     -0.64, 1, 2.5)
+    a = c(0,  1,     0, 0),
+    b = c(1,  -1,    0, 0),
+    c = c(-1, -0.64, 1, 2.5)
   )
   piecequad_2 <- list(
     x = c(0,  1,  2, 3),
-    a = c(  0,  0,  0),
-    b = c( -1,  0,  1),
-    c = c(  0,  1,  0)
+    a = c(0,  0, 0),
+    b = c(-1, 0, 1),
+    c = c(0,  1, 0)
   )
   # Here:
   # 1. 0.5 is x-value of intersection `x-1` and `-x` on [0; 0.75].
@@ -266,9 +266,9 @@ test_that("compute_piecequad_crossings works with identical curves", {
 
   piecequad_2 <- list(
     x = c(-1,  0.5, 0.75,  2),
-    a = c(   1,   1,    0),
-    b = c(   0,   1,    0),
-    c = c(   0,   1,    1)
+    a = c(1, 1, 0),
+    b = c(0, 1, 0),
+    c = c(0, 1, 1)
   )
   expect_equal(
     compute_piecequad_crossings(piecequad_1, piecequad_2),
@@ -305,14 +305,14 @@ test_that("compute_piecequad_crossings works with 'touching' supports", {
 test_that("piecequad_pair_regrid works", {
   piecequad_1 <- list(
     x = c(0,  1,   3),
-    a = c(  1,   2),
-    b = c( 10,  20),
+    a = c(1,   2),
+    b = c(10,  20),
     c = c(100, 200)
   )
   piecequad_2 <- list(
     x =  c(0,  1,   3) + 0.5,
-    a = -c(  1,   2),
-    b = -c( 10,  20),
+    a = -c(1,   2),
+    b = -c(10,  20),
     c = -c(100, 200)
   )
 
@@ -320,14 +320,14 @@ test_that("piecequad_pair_regrid works", {
   out_ref <- list(
     piecequad_1 = list(
       x = c(0.5, 1, 1.5, 3),
-      a = c(1, 2, 2),
-      b = c(10, 20, 20),
+      a = c(1,   2,   2),
+      b = c(10,  20,  20),
       c = c(100, 200, 200)
     ),
     piecequad_2 = list(
       x =  c(0.5, 1, 1.5, 3),
-      a = -c(1, 1, 2),
-      b = -c(10, 10, 20),
+      a = -c(1,   1,   2),
+      b = -c(10,  10,  20),
       c = -c(100, 100, 200)
     )
   )

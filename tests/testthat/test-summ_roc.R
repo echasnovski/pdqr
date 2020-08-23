@@ -13,7 +13,9 @@ test_that("summ_roc works", {
   output <- summ_roc(d_dis, d_con)
   expect_named(output, c("threshold", "fpr", "tpr"))
 
-  expect_decreasing <- function(x) {expect_false(is.unsorted(-x))}
+  expect_decreasing <- function(x) {
+    expect_false(is.unsorted(-x))
+  }
   expect_decreasing(output[["threshold"]])
 
   # "fpr" column should be sorted non-decreasingly

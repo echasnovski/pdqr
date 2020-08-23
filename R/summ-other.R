@@ -15,7 +15,6 @@
 #' d_norm <- as_d(dnorm)
 #' probs <- c(0.25, 0.5, 0.75)
 #' all.equal(summ_quantile(d_norm, probs), as_q(d_norm)(probs))
-#'
 #' @export
 summ_quantile <- function(f, probs) {
   assert_pdqr_fun(f)
@@ -48,13 +47,12 @@ summ_quantile <- function(f, probs) {
 #' d_unif <- as_d(dunif)
 #' d_norm <- as_d(dnorm)
 #' summ_prob_true(d_unif > d_norm)
-#' summ_prob_false(2*d_norm > d_unif)
+#' summ_prob_false(2 * d_norm > d_unif)
 #'
 #' # When input is "continuous" function or doesn't have 0 as distribution
 #' # element, probability of being false is returned as 0.
 #' summ_prob_false(d_unif)
 #' summ_prob_true(new_d(2, "discrete"))
-#'
 #' @name summ_prob_true
 NULL
 

@@ -77,9 +77,8 @@
 #'   new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "continuous")
 #' )
 #' summ_sort(non_trans_list)
-#'   # Output doesn't depend on initial order
+#' ## Output doesn't depend on initial order
 #' summ_sort(non_trans_list[c(2, 3, 1)])
-#'
 #' @name summ_order
 NULL
 
@@ -128,7 +127,7 @@ order_compare <- function(f_list, decreasing) {
   # non-transitivity issue of `>.pdqr_list` by removing dependence of output
   # based on the order of the input.
   # Example of the effect of non-transitivity:
-  #```
+  # ```
   # # Here P(d1 <= d2) >= 0.5, P(d2 <= d3) >= 0.5, but P(d1 <= d3) < 0.5
   # d1 <- new_d(
   #   data.frame(x = c(0.39, 0.44, 0.46), y = c(17, 14, 0)), "continuous"

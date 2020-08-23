@@ -112,16 +112,17 @@ vapply(
     "wass", "cramer", "align", "avgdist",
     "entropy"
   ),
-  function(meth) {summ_distance(d_unif, d_norm, method = meth)},
+  function(meth) {
+    summ_distance(d_unif, d_norm, method = meth)
+  },
   numeric(1)
 )
 
 # "Supremum" quality of "KS" distance
 d_dis <- new_d(2, "discrete")
-  # Distance is 1, which is a limit of |F - G| at points which tend to 2 from
-  # left
+## Distance is 1, which is a limit of |F - G| at points which tend to 2 from
+## left
 summ_distance(d_dis, d_unif, method = "KS")
-
 }
 \seealso{
 \code{\link[=summ_separation]{summ_separation()}} for computation of optimal threshold separating

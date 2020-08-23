@@ -76,29 +76,29 @@ expect_x_tbl_imputation <- function(f) {
   # Type "discrete"
   n_dis <- nrow(x_dis_x_tbl)
 
-    # Reordering rows
+  ## Reordering rows
   bad_dis_input_1 <- x_dis_x_tbl[n_dis:1, ]
   output_1 <- f(bad_dis_input_1, "discrete")
   expect_equal(meta_x_tbl(output_1), x_dis_x_tbl)
 
-    # Reordering columns
+  ## Reordering columns
   bad_dis_input_2 <- x_dis_x_tbl[, c("cumprob", "x", "prob")]
   output_2 <- f(bad_dis_input_2, "discrete")
   expect_equal(meta_x_tbl(output_2), x_dis_x_tbl)
 
-    # Normalising "prob" column
+  ## Normalising "prob" column
   bad_dis_input_3 <- x_dis_x_tbl
   bad_dis_input_3[["prob"]] <- bad_dis_input_3[["prob"]] * 10
   output_3 <- f(bad_dis_input_3, "discrete")
   expect_equal(meta_x_tbl(output_3), x_dis_x_tbl)
 
-    # Recomputing "cumprob" column
+  ## Recomputing "cumprob" column
   bad_dis_input_4 <- x_dis_x_tbl
   bad_dis_input_4[["cumprob"]] <- bad_dis_input_4[["cumprob"]] * 10
   output_4 <- f(bad_dis_input_4, "discrete")
   expect_equal(meta_x_tbl(output_4), x_dis_x_tbl)
 
-    # Collapsing duplicate `x` values
+  ## Collapsing duplicate `x` values
   bad_dis_input_5 <- data.frame(x = c(1, -2, 1, 3), prob = c(0, 0.6, 0.3, 0.1))
   output_5 <- f(bad_dis_input_5, "discrete")
   expect_equal(
@@ -111,23 +111,23 @@ expect_x_tbl_imputation <- function(f) {
   # Type "continuous"
   n_con <- nrow(x_con_x_tbl)
 
-    # Reordering rows
+  ## Reordering rows
   bad_con_input_1 <- x_con_x_tbl[n_con:1, ]
   output_1 <- new_d(bad_con_input_1, "continuous")
   expect_equal(meta_x_tbl(output_1), x_con_x_tbl)
 
-    # Reordering columns
+  ## Reordering columns
   bad_con_input_2 <- x_con_x_tbl[, c("y", "x")]
   output_2 <- f(bad_con_input_2, "continuous")
   expect_equal(meta_x_tbl(output_2), x_con_x_tbl)
 
-    # Normalizing
+  ## Normalizing
   bad_con_input_3 <- x_con_x_tbl
   bad_con_input_3[["y"]] <- bad_con_input_3[["y"]] * 10
   output_3 <- new_d(bad_con_input_3, "continuous")
   expect_equal(meta_x_tbl(output_3), x_con_x_tbl)
 
-    # Recomputing "cumprob" column
+  ## Recomputing "cumprob" column
   bad_con_input_4 <- x_con_x_tbl
   bad_con_input_4[["cumprob"]] <- bad_con_input_4[["cumprob"]] * 10
   output_4 <- f(bad_con_input_4, "continuous")
@@ -157,14 +157,14 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
   expect_output(
     print(f_con),
     regex_scatter(
-      con_name, "continuous type", supp_regex, n_con-1, "intervals"
+      con_name, "continuous type", supp_regex, n_con - 1, "intervals"
     )
   )
 
   # Test of approximation sign in support printing
-  f_pi_1 <- f(data.frame(x = c(0, pi), y = c(1, 1)/pi), "continuous")
+  f_pi_1 <- f(data.frame(x = c(0, pi), y = c(1, 1) / pi), "continuous")
   expect_output(print(f_pi_1), "Support: ~\\[0, ")
-  f_pi_2 <- f(data.frame(x = c(pi, 4), y = c(1, 1)/(4-pi)), "continuous")
+  f_pi_2 <- f(data.frame(x = c(pi, 4), y = c(1, 1) / (4 - pi)), "continuous")
   expect_output(print(f_pi_2), "Support: ~\\[3\\.14159, ")
   f_pi_3 <- f(data.frame(x = pi + 0:1, y = c(1, 1)), "continuous")
   expect_output(print(f_pi_3), "Support: ~\\[3\\.14159, ")
@@ -190,7 +190,7 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
   f_bool_3 <- f(data.frame(x = c(0, 1), prob = c(0, 1)), "discrete")
   expect_output(print(f_bool_3), "probability of 1: 1.0")
   # Rounding
-  f_bool_4 <- f(data.frame(x = c(0, 1), prob = c(1/3, 2/3)), "discrete")
+  f_bool_4 <- f(data.frame(x = c(0, 1), prob = c(1 / 3, 2 / 3)), "discrete")
   expect_output(print(f_bool_4), "probability of 1: ~0.66667")
 }
 

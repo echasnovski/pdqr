@@ -6,7 +6,9 @@ set.seed(4444)
 # Custom functions --------------------------------------------------------
 # This function is used to workaround the case of "honored" special distribution
 # functions
-my_runif <- function(n, ...) {runif(n, ...)}
+my_runif <- function(n, ...) {
+  runif(n, ...)
+}
 
 
 # Computation of r-functions ----------------------------------------------
@@ -78,7 +80,7 @@ test_that("as_r.default honors special 'continuous' distributions", {
   # prefix.
   out_norm <- as_r(stats::rnorm, mean = 100, sd = 0.1)
   expect_equal(
-    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+    meta_support(out_norm), qnorm(c(1e-6, 1 - 1e-6), mean = 100, sd = 0.1)
   )
 
   # Distribution function of other "p-d-q-r" type is repaired with warning
@@ -92,9 +94,13 @@ test_that("as_r.default honors special 'continuous' distributions", {
 
   # Function environment is used to not pick "honored" function when another
   # object with the same name is found "earlier"
-  rgamma <- function(n) {runif(n)}
+  rgamma <- function(n) {
+    runif(n)
+  }
   out_bad_gamma <- as_r(rgamma)
-  out_bad_gamma_ref <- as_r(function(n) {runif(n)})
+  out_bad_gamma_ref <- as_r(function(n) {
+    runif(n)
+  })
   expect_close_r_f(out_bad_gamma, out_bad_gamma_ref)
 })
 
@@ -345,7 +351,7 @@ test_that("as_r.default detects support", {
 
 test_that("as_r.default removes edge `y` with zero density", {
   x_tbl <- meta_x_tbl(r_unif)
-  expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
+  expect_true(all(x_tbl$y[c(2, nrow(x_tbl) - 1)] != 0))
 })
 
 test_that("as_r.default uses `n_grid` and `n_sample` arguments", {
@@ -485,7 +491,9 @@ test_that("detect_support_r returns input support if it's proper all numeric", {
 })
 
 test_that("detect_support_r throws informative error on bad input function", {
-  bad_r_f <- function(n) {rep(NA, length.out = n)}
+  bad_r_f <- function(n) {
+    rep(NA, length.out = n)
+  }
   expect_error(
     detect_support_r(bad_r_f(100), c(NA_real_, NA_real_)),
     "support.*isn't proper"

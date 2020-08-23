@@ -19,7 +19,9 @@ test_that("new_pdqr_by_ref works", {
   expect_equal(new_pdqr_by_ref(q_dis), new_q)
   expect_equal(new_pdqr_by_ref(r_con), new_r)
 
-  expect_error(new_pdqr_by_ref(function(x) {x}), "class")
+  expect_error(new_pdqr_by_ref(function(x) {
+    x
+  }), "class")
 })
 
 
@@ -41,7 +43,9 @@ test_that("as_pdqr_by_ref works", {
   expect_equal(as_pdqr_by_ref(q_dis), as_q)
   expect_equal(as_pdqr_by_ref(r_con), as_r)
 
-  expect_error(as_pdqr_by_ref(function(x) {x}), "class")
+  expect_error(as_pdqr_by_ref(function(x) {
+    x
+  }), "class")
 })
 
 

@@ -53,29 +53,28 @@ non-strict \strong{local maxima} of probability mass/density function.
 \examples{
 # Type "continuous"
 d_norm <- as_d(dnorm)
-  # The same as `summ_center(d_norm, method = "mean")`
+## The same as `summ_center(d_norm, method = "mean")`
 summ_mean(d_norm)
 summ_median(d_norm)
 summ_mode(d_norm)
-  # As pdqr-functions always have finite support, output here is finite
+## As pdqr-functions always have finite support, output here is finite
 summ_midrange(d_norm)
 
 # Type "discrete"
 d_pois <- as_d(dpois, lambda = 10)
 summ_mean(d_pois)
 summ_median(d_pois)
-  # Returns the smallest `x` with highest probability
+## Returns the smallest `x` with highest probability
 summ_mode(d_pois)
-  # Returns all values which are non-strict local maxima
+## Returns all values which are non-strict local maxima
 summ_mode(d_pois, method = "local")
-  # As pdqr-functions always have finite support, output here is finite
+## As pdqr-functions always have finite support, output here is finite
 summ_midrange(d_pois)
 
 # Details of computing local modes
-my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0)/3), "continuous")
-  # Several values, which are entries of `x_tbl`, are returned as local modes
+my_d <- new_d(data.frame(x = 11:15, y = c(0, 1, 0, 2, 0) / 3), "continuous")
+## Several values, which are entries of `x_tbl`, are returned as local modes
 summ_mode(my_d, method = "local")
-
 }
 \seealso{
 \code{\link[=summ_spread]{summ_spread()}} for computing distribution's spread, \code{\link[=summ_moment]{summ_moment()}}

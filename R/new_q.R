@@ -91,13 +91,13 @@ find_quant <- function(p, cdf_start, x_l, slope, intercept) {
   # The "true" quadratic curves are transformed in terms of `t = x - x_l` to
   # handle dirac-like segments
   a <- 0.5 * slope[is_quad]
-  b <- 2*a*x_l[is_quad] + intercept[is_quad]
+  b <- 2 * a * x_l[is_quad] + intercept[is_quad]
   c <- cdf_start[is_quad] - p[is_quad]
-    # Equations have form a*t^2 + t*x + c = 0
+  # Equations have form a*t^2 + t*x + c = 0
   # Theoretically, `discr` should always be >= 0. However, due to numerical
   # inaccuracies of magnitude ~10^(-15), here call to `pmax()` is needed.
-  discr <- pmax(b*b - 4*a*c, 0)
-  res[is_quad] <- (-b + sqrt(discr)) / (2*a) + x_l[is_quad]
+  discr <- pmax(b * b - 4 * a * c, 0)
+  res[is_quad] <- (-b + sqrt(discr)) / (2 * a) + x_l[is_quad]
 
   # Case of linear CDF curve (density is non-zero constant)
   res[is_lin] <- x_l[is_lin] +

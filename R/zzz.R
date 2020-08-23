@@ -1,4 +1,4 @@
-#nocov start
+# nocov start
 .onLoad <- function(libname, pkgname) {
   # Set default options
   default_options <- list(
@@ -15,15 +15,15 @@
   }
 
   # Register external methods
-    # Pretty printing of pdqr-functions inside tibble list-columns. Not
-    # exporting because it would mean listing 'pillar' in 'Imports' field of
-    # 'DESCRIPTION', which is unnecessary with this trick.
+  ## Pretty printing of pdqr-functions inside tibble list-columns. Not
+  ## exporting because it would mean listing 'pillar' in 'Imports' field of
+  ## 'DESCRIPTION', which is unnecessary with this trick.
   if (requireNamespace("pillar", quietly = TRUE)) {
     register_s3_method("pillar", "type_sum", "pdqr", fun = type_sum.pdqr)
   }
 
-    # Methods for ordering list of pdqr-functions. Not exporting because it is
-    # for internal use only.
+  ## Methods for ordering list of pdqr-functions. Not exporting because it is
+  ## for internal use only.
   register_s3_method("base", "[",  "pdqr_list", fun = `[.pdqr_list`)
   register_s3_method("base", ">",  "pdqr_list", fun = `>.pdqr_list`)
   register_s3_method("base", "==", "pdqr_list", fun = `==.pdqr_list`)
@@ -47,4 +47,4 @@ register_s3_method <- function(pkg, generic, class, fun) {
     }
   )
 }
-#nocov end
+# nocov end

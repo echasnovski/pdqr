@@ -57,8 +57,8 @@
 #' p_unif <- as_p(punif)
 #' thres <- summ_separation(p_dis, p_unif)
 #' abs(p_dis(thres) - p_unif(thres))
-#'   # Actual difference at `thres` is 0. However, supremum (equal to 1) as
-#'   # limit value is # reached there.
+#' ## Actual difference at `thres` is 0. However, supremum (equal to 1) as
+#' ## limit value is # reached there.
 #' x_grid <- seq(0, 1, by = 1e-3)
 #' plot(x_grid, abs(p_dis(x_grid) - p_unif(x_grid)), type = "b")
 #'
@@ -67,7 +67,6 @@
 #'
 #' # The smallest "x" value is returned in case of several optimal thresholds
 #' summ_separation(d_norm_1, d_norm_1) == meta_support(d_norm_1)[1]
-#'
 #' @export
 summ_separation <- function(f, g, method = "KS", n_grid = 10001) {
   assert_pdqr_fun(f)
@@ -168,8 +167,8 @@ separation_ks_mixed <- function(p_dis, p_con) {
   # Take into account CDF values at "x" elements of "continuous" pdqr-function
   con_x_tbl <- meta_x_tbl(p_con)
   con_x <- con_x_tbl[["x"]]
-    # No need taking into account "left limits" because if they matter, they are
-    # already accounted for in previous step
+  ## No need taking into account "left limits" because if they matter, they are
+  ## already accounted for in previous step
   cdf_absdiff_con <- round(
     abs(con_x_tbl[["cumprob"]] - p_dis(con_x)),
     digits = 12

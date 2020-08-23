@@ -70,10 +70,10 @@ essentially represents a mixture of dirac-like distributions.
 }
 }
 \examples{
-my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1)/9), "continuous")
+my_con <- new_d(data.frame(x = 1:5, y = c(1, 2, 3, 2, 1) / 9), "continuous")
 meta_x_tbl(my_con)
 
-  # By default, conversion is done to the opposite type
+# By default, conversion is done to the opposite type
 my_dis <- form_retype(my_con)
 meta_x_tbl(my_dis)
 
@@ -87,16 +87,15 @@ my_dirac <- form_retype(my_dis, "continuous", method = "dirac")
 meta_x_tbl(my_dirac)
 
 # Method "piecelin"
-  # From "continuous" to "discrete" (preferred direction)
+## From "continuous" to "discrete" (preferred direction)
 my_dis_piece <- form_retype(my_con, "discrete", method = "piecelin")
 meta_x_tbl(my_dis_piece)
-  # Conversion from "discrete" to "continuous" is very approximate
+## Conversion from "discrete" to "continuous" is very approximate
 my_con_piece <- form_retype(my_dis_piece, "continuous", method = "piecelin")
 meta_x_tbl(my_con_piece)
 
 plot(my_con, main = 'Approximate nature of method "piecelin"')
 lines(my_con_piece, col = "blue")
-
 }
 \seealso{
 \code{\link[=form_regrid]{form_regrid()}} for changing grid (rows of "x_tbl" metadata) of

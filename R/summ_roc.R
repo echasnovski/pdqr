@@ -81,15 +81,14 @@
 #' summ_rocauc(d_dis_1, d_dis_2)
 #' summ_rocauc(d_dis_1, d_dis_2, method = "pessimistic")
 #' summ_rocauc(d_dis_1, d_dis_2, method = "optimistic")
-#'   # These methods correspond to different ways of plotting ROC curves
+#' ## These methods correspond to different ways of plotting ROC curves
 #' roc <- summ_roc(d_dis_1, d_dis_2)
-#'   # Default line plot for "expected" method
+#' ## Default line plot for "expected" method
 #' roc_plot(roc, main = "Different type of plotting ROC curve")
-#'   # Method "pessimistic"
+#' ## Method "pessimistic"
 #' roc_lines(roc, type = "s", col = "blue")
-#'   # Method "optimistic"
+#' ## Method "optimistic"
 #' roc_lines(roc, type = "S", col = "green")
-#'
 #' @name summ_roc
 NULL
 

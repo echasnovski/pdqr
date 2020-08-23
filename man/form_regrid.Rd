@@ -79,31 +79,30 @@ numeric input equal to distribution's median.
 }
 \examples{
 # Type "discrete"
-d_dis <- new_d(data.frame(x = 1:10, prob = 1:10/55), type = "discrete")
+d_dis <- new_d(data.frame(x = 1:10, prob = 1:10 / 55), type = "discrete")
 
-  # Downgridding
+# Downgridding
 meta_x_tbl(form_regrid(d_dis, n_grid = 4))
 meta_x_tbl(form_regrid(d_dis, n_grid = 4, method = "q"))
 
-  # Upgridding for "discrete" type isn't possible. Input is returned
+# Upgridding for "discrete" type isn't possible. Input is returned
 identical(d_dis, form_regrid(d_dis, n_grid = 100))
 
 # Type "continuous"
-  # Downgridding
+# Downgridding
 d_norm <- as_d(dnorm)
 plot(d_norm)
 lines(form_regrid(d_norm, n_grid = 10), col = "blue")
 lines(form_regrid(d_norm, n_grid = 10, method = "q"), col = "green")
 
-  # Upgridding
+# Upgridding
 d_con <- new_d(data.frame(x = 1:3, y = rep(0.5, 3)), type = "continuous")
 meta_x_tbl(form_regrid(d_con, n_grid = 6))
 
 # Pdqr-function with center at median is returned in case `n_grid` is 1
 form_regrid(d_dis, n_grid = 1)
-  # Dirac-like function is returned
+# Dirac-like function is returned
 form_regrid(d_con, n_grid = 1)
-
 }
 \seealso{
 \code{\link[=form_resupport]{form_resupport()}} for changing support of pdqr-function.

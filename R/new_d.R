@@ -66,7 +66,8 @@ new_d_con <- function(x_tbl) {
 
     # `rightmost.closed = TRUE` is to account for case `x` equals `support[2]`
     x_ind <- findInterval(x[is_inside], x_vec, rightmost.closed = TRUE)
-    slopes <- (y_vec[x_ind+1] - y_vec[x_ind]) / (x_vec[x_ind+1] - x_vec[x_ind])
+    slopes <- (y_vec[x_ind + 1] - y_vec[x_ind]) /
+      (x_vec[x_ind + 1] - x_vec[x_ind])
     res[x_not_na][is_inside] <- slopes * (x[is_inside] - x_vec[x_ind]) +
       y_vec[x_ind]
 

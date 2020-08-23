@@ -170,25 +170,25 @@ set.seed(101)
 
 # Math
 plot(d_norm, main = "Math methods")
-  # `abs()` and `sign()` are not random
+## `abs()` and `sign()` are not random
 lines(abs(d_norm), col = "red")
-  # All others are random
+## All others are random
 lines(cos(d_norm), col = "green")
 lines(cos(d_norm), col = "blue")
 
-  # Although here distribution shouldn't change, it changes slightly due to
-  # random implementation
+## Although here distribution shouldn't change, it changes slightly due to
+## random implementation
 meta_x_tbl(d_dis)
 meta_x_tbl(floor(d_dis))
 
 # Ops
-  # Single input, linear transformations, and logical are not random
+## Single input, linear transformations, and logical are not random
 d_dis > 1
 !(d_dis > 1)
-d_norm >= (2*d_norm+1)
-  # All others are random
+d_norm >= (2 * d_norm + 1)
+## All others are random
 plot(d_norm + d_norm)
-  # This is an exact reference curve
+## This is an exact reference curve
 lines(as_d(dnorm, sd = sqrt(2)), col = "red")
 
 plot(d_dis + d_norm)
@@ -196,16 +196,16 @@ plot(d_dis + d_norm)
 plot(d_unif^d_unif)
 
 # Summary
-  # `all()` and `any()` are non-random
+## `all()` and `any()` are non-random
 all(d_dis > 1, d_dis > 1)
-  # Others are random
+## Others are random
 plot(max(d_norm, d_norm, d_norm))
 
 plot(d_norm + d_norm + d_norm)
 lines(sum(d_norm, d_norm, d_norm), col = "red")
 
-  # Using single numbers is allowed, but gives misleading output in case of
-  # "continuous" functions. Use other functions instead (see documentation).
+## Using single numbers is allowed, but gives misleading output in case of
+## "continuous" functions. Use other functions instead (see documentation).
 plot(min(d_unif, 0.5))
 lines(form_resupport(d_unif, c(NA, 0.5), method = "winsor"), col = "blue")
 
@@ -216,15 +216,14 @@ op <- options(
   pdqr.group_gen.args_new = list(adjust = 0.5)
 )
 lines(d_unif + d_unif, col = "red")
-  # `f + f` is different from `2*f` due to independency assumption. Also the
-  # latter implemented non-randomly.
+## `f + f` is different from `2*f` due to independency assumption. Also the
+## latter implemented non-randomly.
 lines(2 * d_unif, col = "blue")
 
 # Methods for generics attempt to repair support, so they are more reasonable
 # to use than direct use of `form_trans()`
 d_unif + d_unif
 form_trans(list(d_unif, d_unif), `+`)
-
 }
 \seealso{
 \code{\link[=summ_prob_true]{summ_prob_true()}} and \code{\link[=summ_prob_false]{summ_prob_false()}} for extracting

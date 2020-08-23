@@ -22,7 +22,7 @@ test_that("new_d returns dirac-like function with length-one numeric input",  {
   expect_ref_x_tbl(new_d(0.1, "discrete"), data.frame(x = 0.1, prob = 1))
   expect_ref_x_tbl(
     new_d(0.1, "continuous"),
-    data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
+    data.frame(x = 0.1 + 1e-8 * c(-1, 0, 1), y = 1e8 * c(0, 1, 0))
   )
 
   # With big center value there can be problems with total integral being 1
@@ -129,7 +129,7 @@ test_that("new_d uses `...` as arguments for `density()`", {
     round(d_con_cosine(seq(from = -1, to = 1, by = 0.1)), 2),
     c(
       0.09, 0.11, 0.13, 0.17, 0.22, 0.28, 0.34, 0.39, 0.44, 0.48, 0.5,
-       0.5, 0.49, 0.47, 0.44,  0.4, 0.37, 0.34, 0.32,  0.3, 0.28
+      0.5,  0.49, 0.47, 0.44, 0.4,  0.37, 0.34, 0.32, 0.3,  0.28
     )
   )
 })

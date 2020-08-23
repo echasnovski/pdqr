@@ -94,9 +94,8 @@ non_trans_list <- list(
   new_d(data.frame(x = c(0.03, 0.40, 0.80), y = c(1, 1, 1)), "continuous")
 )
 summ_sort(non_trans_list)
-  # Output doesn't depend on initial order
+## Output doesn't depend on initial order
 summ_sort(non_trans_list[c(2, 3, 1)])
-
 }
 \seealso{
 Other summary functions: 

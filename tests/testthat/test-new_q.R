@@ -12,11 +12,11 @@ test_that("new_q works with numeric input", {
   expect_distr_fun(q_con, "q", "continuous")
   expect_equal(round(meta_support(q_con), 2), round(x_con_support, 2))
   expect_equal(
-    round(q_con(0:20/20), 3),
+    round(q_con(0:20 / 20), 3),
     c(
       -2.919, -1.816, -1.434, -0.922, -0.579, -0.399, -0.267, -0.154,
-      -0.052,  0.047,  0.144,  0.244,  0.351,  0.467,  0.598,  0.745,
-       0.909,  1.087,  1.285,  1.533,  2.519
+      -0.052, 0.047,  0.144,  0.244,  0.351,  0.467,  0.598,  0.745,
+      0.909,  1.087,  1.285,  1.533,  2.519
     )
   )
 })
@@ -25,7 +25,7 @@ test_that("new_q returns dirac-like function with length-one numeric input",  {
   expect_ref_x_tbl(new_q(0.1, "discrete"), data.frame(x = 0.1, prob = 1))
   expect_ref_x_tbl(
     new_q(0.1, "continuous"),
-    data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
+    data.frame(x = 0.1 + 1e-8 * c(-1, 0, 1), y = 1e8 * c(0, 1, 0))
   )
 
   # With big center value there can be problems with total integral being 1
@@ -95,7 +95,7 @@ test_that("new_q's dirac-like output works with close to 0.5 values", {
 
   # In case of not careful implementation, these will be not accuracte values
   # due to numerical representation issues
-  close_vals <- q_dirac(0:10/10)
+  close_vals <- q_dirac(0:10 / 10)
   expect_equal(order(close_vals), 1:11)
   expect_equal(close_vals[c(1, 6, 11)], 1000 + c(-1e-8, 0, 1e-8))
 })
@@ -133,11 +133,11 @@ test_that("new_q handles metadata", {
 test_that("new_q uses `...` as arguments for `density()`", {
   q_con_cosine <- new_q(x_con, type = "continuous", kernel = "cosine")
   expect_equal(
-    round(q_con_cosine(0:20/20), 3),
+    round(q_con_cosine(0:20 / 20), 3),
     c(
       -2.919, -1.82, -1.427, -0.91, -0.589, -0.408, -0.273, -0.158,
-      -0.053, 0.048,  0.148,  0.25,  0.357,  0.473,    0.6,  0.743,
-       0.903, 1.083,  1.286,  1.54,  2.476
+      -0.053, 0.048, 0.148,  0.25,  0.357,  0.473,  0.6,    0.743,
+      0.903,  1.083, 1.286,  1.54,  2.476
     )
   )
 })

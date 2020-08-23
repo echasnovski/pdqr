@@ -55,7 +55,7 @@ affected by tails with zero probability (see Examples).
 \examples{
 # Type "continuous"
 d_norm <- as_d(dnorm)
-  # The same as `summ_spread(d_norm, method = "sd")`
+## The same as `summ_spread(d_norm, method = "sd")`
 summ_sd(d_norm)
 summ_var(d_norm)
 summ_iqr(d_norm)
@@ -72,12 +72,11 @@ summ_range(d_pois)
 
 # Difference of `summ_range(f)` and `diff(meta_support(f))`
 zero_tails <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 0)), "continuous")
-  # This returns difference between 5 and 1
+## This returns difference between 5 and 1
 diff(meta_support(zero_tails))
-  # This returns difference between 2 and 4 as there are zero-probability
-  # tails
+## This returns difference between 2 and 4 as there are zero-probability
+## tails
 summ_range(zero_tails)
-
 }
 \seealso{
 \code{\link[=summ_center]{summ_center()}} for computing distribution's center, \code{\link[=summ_moment]{summ_moment()}}

@@ -67,13 +67,13 @@
 #' summ_hdr(d_dis, 0.3)
 #' summ_hdr(d_dis, 0.5)
 #' summ_hdr(d_dis, 0.9)
-#'   # Zero width interval at global mode
+#' ## Zero width interval at global mode
 #' summ_hdr(d_dis, 0)
 #'
 #' # "continuous" functions
 #' d_norm <- as_d(dnorm)
 #' summ_hdr(d_norm, 0.95)
-#'   # Zero width interval at global mode
+#' ## Zero width interval at global mode
 #' summ_hdr(d_norm, 0)
 #'
 #' # Works well with mixture distributions
@@ -82,13 +82,12 @@
 #'
 #' # Plateaus
 #' d_unif <- as_d(dunif)
-#'   # Returns all support because of density "plateau"
+#' ## Returns all support because of density "plateau"
 #' summ_hdr(d_unif, 0.1)
 #'
 #' # Draw HDR
 #' plot(d_mix)
 #' region_draw(summ_hdr(d_mix, 0.95))
-#'
 #' @export
 summ_hdr <- function(f, level = 0.95) {
   assert_pdqr_fun(f)
@@ -202,7 +201,7 @@ compute_target_height <- function(x_tbl, level) {
   x_vec <- unique(c(x_tbl[["x"]], grid_on_pos_prob(x_tbl, n_grid = 10001)))
   y_vec <- sort(d_f(x_vec))
   quan_ind <- findInterval(
-    1-level, cumsum(y_vec) / sum(y_vec),
+    1 - level, cumsum(y_vec) / sum(y_vec),
     # `all.inside = TRUE` is needed to ensure that too small values of `1-level`
     # won't cause `quan_ind` equal to 0
     all.inside = TRUE
@@ -242,7 +241,7 @@ compute_hdr_intervals <- function(f, height) {
   n <- length(x_height)
 
   # Determining which intervals are `>= height`
-  intervals_center <- 0.5*(x_height[-1] + x_height[-n])
+  intervals_center <- 0.5 * (x_height[-1] + x_height[-n])
   interval_is_high <- as_d(f)(intervals_center) >= height
   high_inds <- which(interval_is_high)
   x_l <- x_height[high_inds]

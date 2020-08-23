@@ -60,7 +60,6 @@ print(r_unif)
 
 # Printing of boolean pdqr-function
 print(r_unif >= 0.3)
-
 }
 \seealso{
 Other pdqr methods for generic functions: 

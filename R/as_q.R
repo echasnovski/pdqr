@@ -19,7 +19,9 @@ as_q.default <- function(f, support = NULL, ..., n_grid = 10001) {
   }
 
   # Treate `f` as unknown q-function
-  q_f <- function(p) {f(p, ...)}
+  q_f <- function(p) {
+    f(p, ...)
+  }
 
   # Detect support
   support <- detect_support_q(q_f, format_support(support))

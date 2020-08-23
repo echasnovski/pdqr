@@ -9,7 +9,7 @@ empty_hdr <- data.frame(left = numeric(0), right = numeric(0))
 test_that("summ_hdr works with 'discrete' functions", {
   skip_if_noLD()
 
-  cur_d_1 <- new_d(data.frame(x = 1:4, prob = 1:4/10), "discrete")
+  cur_d_1 <- new_d(data.frame(x = 1:4, prob = 1:4 / 10), "discrete")
   expect_equal(summ_hdr(cur_d_1, 0.1), data.frame(left = 4, right = 4))
   expect_equal(summ_hdr(cur_d_1, 0.4), data.frame(left = 4, right = 4))
   expect_equal(summ_hdr(cur_d_1, 0.4001), data.frame(left = 3, right = 4))
@@ -50,7 +50,7 @@ test_that("summ_hdr works with basic 'continuous' functions", {
 
   # Several global modes
   cur_d_3 <- new_d(
-    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous"
+    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0) / 3), "continuous"
   )
   expect_equal(
     summ_hdr(cur_d_3, 0.75),
@@ -58,10 +58,10 @@ test_that("summ_hdr works with basic 'continuous' functions", {
   )
 
   # Several local modes
-  cur_d_4 <- new_d(data.frame(x = 1:5, y = c(1, 0, 2, 0, 1)/3), "continuous")
-    # Here target height is equal to density at local edge modes (at 1 and 5).
-    # The output should have only intervals of non-zero width, i.e. no `[1; 1]`
-    # and no `[5; 5]`.
+  cur_d_4 <- new_d(data.frame(x = 1:5, y = c(1, 0, 2, 0, 1) / 3), "continuous")
+  ## Here target height is equal to density at local edge modes (at 1 and 5).
+  ## The output should have only intervals of non-zero width, i.e. no `[1; 1]`
+  ## and no `[5; 5]`.
   expect_equal(summ_hdr(cur_d_4, 0.5), data.frame(left = 2.5, right = 3.5))
 })
 
@@ -70,7 +70,7 @@ test_that("summ_hdr works with extreme 'continuous' functions", {
 
   # Wide zero probability interval. Tests adequacy of `compute_target_height()`
   zero_left <- new_d(
-    data.frame(x = c(1, 100000+0:2), y = c(0, 0, 1, 0)), "continuous"
+    data.frame(x = c(1, 100000 + 0:2), y = c(0, 0, 1, 0)), "continuous"
   )
   expect_equal(
     summ_hdr(zero_left, level = 0.75),
@@ -78,7 +78,7 @@ test_that("summ_hdr works with extreme 'continuous' functions", {
   )
 
   zero_mid <- new_d(
-    data.frame(x = c(1:3, 100000+0:2), y = c(0, 1, 0, 0, 1, 0)), "continuous"
+    data.frame(x = c(1:3, 100000 + 0:2), y = c(0, 1, 0, 0, 1, 0)), "continuous"
   )
   expect_equal(
     summ_hdr(zero_mid, level = 0.75),
@@ -161,14 +161,14 @@ test_that("summ_hdr handles plateaus", {
   expect_equal(summ_hdr(d_unif, 0.05), hdr_unif)
   expect_equal(summ_hdr(d_unif, 0.95), hdr_unif)
 
-  d_plateau <- new_d(data.frame(x = 1:4, y = c(2, 1, 1, 2)/4), "continuous")
+  d_plateau <- new_d(data.frame(x = 1:4, y = c(2, 1, 1, 2) / 4), "continuous")
   # Here target height is equal to 1/4, the plateau height. So the output is
   # equal to the whole support because there is no region with less total width
   # and total probability not less than 0.75.
   expect_equal(summ_hdr(d_plateau, 0.75), data.frame(left = 1, right = 4))
   # However, if level is slightly (with respect to accuracy of target height
   # computation) less than 0.75, then there are two intervals in output
-  expect_equal(nrow(summ_hdr(d_plateau, 0.75-1e-3)), 2)
+  expect_equal(nrow(summ_hdr(d_plateau, 0.75 - 1e-3)), 2)
 })
 
 test_that("summ_hdr works with real world cases", {
@@ -259,7 +259,7 @@ test_that("compute_hdr_intervals works", {
     compute_hdr_intervals(cur_d_1, 0), data.frame(left = 0, right = 2)
   )
   expect_equal(
-    compute_hdr_intervals(cur_d_1, 1/3), data.frame(left = 2/3, right = 2)
+    compute_hdr_intervals(cur_d_1, 1 / 3), data.frame(left = 2 / 3, right = 2)
   )
   # Here empty HDR is returned because otherwise output would have zero width
   expect_equal(compute_hdr_intervals(cur_d_1, 1), empty_hdr)
@@ -279,7 +279,7 @@ test_that("compute_hdr_intervals works", {
   expect_equal(compute_hdr_intervals(cur_d_2, 1), empty_hdr)
 
   cur_d_3 <- new_d(
-    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous"
+    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0) / 3), "continuous"
   )
   # Whole support in single row is returned because consecutive intervals in
   # output rows should be "collapsed" to one. In other words, there should be
@@ -288,17 +288,17 @@ test_that("compute_hdr_intervals works", {
     compute_hdr_intervals(cur_d_3, 0), data.frame(left = 0, right = 6)
   )
   expect_equal(
-    compute_hdr_intervals(cur_d_3, 1/6),
+    compute_hdr_intervals(cur_d_3, 1 / 6),
     data.frame(left = c(0.5, 2.5, 4.5), right = c(1.5, 3.5, 5.5))
   )
-  expect_equal(compute_hdr_intervals(cur_d_3, 1/3), empty_hdr)
+  expect_equal(compute_hdr_intervals(cur_d_3, 1 / 3), empty_hdr)
 
 
-  cur_d_4 <- new_d(data.frame(x = 1:5, y = c(1, 0, 2, 0, 1)/3), "continuous")
+  cur_d_4 <- new_d(data.frame(x = 1:5, y = c(1, 0, 2, 0, 1) / 3), "continuous")
   # Although 1 and 5 also cross height `1/3`, they can only contribute a zero
   # width intervals to output
   expect_equal(
-    compute_hdr_intervals(cur_d_4, 1/3), data.frame(left = 2.5, right = 3.5)
+    compute_hdr_intervals(cur_d_4, 1 / 3), data.frame(left = 2.5, right = 3.5)
   )
 })
 
@@ -323,7 +323,7 @@ test_that("compute_hdr_intervals works with dirac-like intervals", {
   )
   expect_equal(
     compute_hdr_intervals(d_winsor, 1.2),
-    data.frame(left = c(0.05, 0.95-1e-8), right = c(0.05+1e-8, 0.95)),
+    data.frame(left = c(0.05, 0.95 - 1e-8), right = c(0.05 + 1e-8, 0.95)),
     tolerance = 1e-12
   )
 })
@@ -343,14 +343,14 @@ test_that("compute_hdr_intervals handles plateaus", {
 
   cur_d_3 <- new_d(
     data.frame(
-      x = c(0, 1, 1.5, 2, 3, 4, 4.2, 5, 6), y = c(0, 1, 1, 1, 0, 1, 1, 1, 0)/4
+      x = c(0, 1, 1.5, 2, 3, 4, 4.2, 5, 6), y = c(0, 1, 1, 1, 0, 1, 1, 1, 0) / 4
     ),
     "continuous"
   )
   # Only left and right edges of plateaus (that may stretch over several
   # consecutive intervals) should be returned.
   expect_equal(
-    compute_hdr_intervals(cur_d_3, 1/4),
+    compute_hdr_intervals(cur_d_3, 1 / 4),
     data.frame(left = c(1, 4), right = c(2, 5))
   )
 })
@@ -360,7 +360,7 @@ test_that("compute_hdr_intervals handles plateaus", {
 test_that("compute_density_height_points works", {
   cur_d_1 <- new_d(data.frame(x = c(0, 2), y = c(0, 1)), "continuous")
   expect_equal(compute_density_height_points(cur_d_1, 0), 0)
-  expect_equal(compute_density_height_points(cur_d_1, 1/3), 2/3)
+  expect_equal(compute_density_height_points(cur_d_1, 1 / 3), 2 / 3)
   expect_equal(compute_density_height_points(cur_d_1, 1), 2)
   expect_equal(compute_density_height_points(cur_d_1, -1), numeric(0))
   expect_equal(compute_density_height_points(cur_d_1, 2), numeric(0))
@@ -371,27 +371,27 @@ test_that("compute_density_height_points works", {
   expect_equal(compute_density_height_points(cur_d_2, 1), 1)
 
   cur_d_3 <- new_d(
-    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0)/3), "continuous"
+    data.frame(x = 0:6, y = c(0, 1, 0, 1, 0, 1, 0) / 3), "continuous"
   )
   expect_equal(compute_density_height_points(cur_d_3, 0), c(0, 2, 4, 6))
-  expect_equal(compute_density_height_points(cur_d_3, 1/6), 0.5 + 0:5)
-  expect_equal(compute_density_height_points(cur_d_3, 1/3), c(1, 3, 5))
+  expect_equal(compute_density_height_points(cur_d_3, 1 / 6), 0.5 + 0:5)
+  expect_equal(compute_density_height_points(cur_d_3, 1 / 3), c(1, 3, 5))
 
-  cur_d_4 <- new_d(data.frame(x = 1:5, y = c(1, 0, 2, 0, 1)/3), "continuous")
-  expect_equal(compute_density_height_points(cur_d_4, 1/3), c(1, 2.5, 3.5, 5))
+  cur_d_4 <- new_d(data.frame(x = 1:5, y = c(1, 0, 2, 0, 1) / 3), "continuous")
+  expect_equal(compute_density_height_points(cur_d_4, 1 / 3), c(1, 2.5, 3.5, 5))
 })
 
 test_that("compute_density_height_points works with dirac-like intervals", {
   d_dirac_1 <- new_d(1, "continuous")
   expect_equal(
-    compute_density_height_points(d_dirac_1, 0.5e8), 1 + c(-1, 1)*0.5e-8,
+    compute_density_height_points(d_dirac_1, 0.5e8), 1 + c(-1, 1) * 0.5e-8,
     tolerance = 1e-12
   )
 
   d_dirac_2 <- form_mix(list(new_d(1, "continuous"), new_d(2, "continuous")))
   expect_equal(
     compute_density_height_points(d_dirac_2, 0.25e8),
-    c(1 + c(-1, 1)*0.5e-8, 2 + c(-1, 1)*0.5e-8),
+    c(1 + c(-1, 1) * 0.5e-8, 2 + c(-1, 1) * 0.5e-8),
     tolerance = 1e-12
   )
 
@@ -418,9 +418,9 @@ test_that("compute_density_height_points handles plateaus", {
 
   cur_d_3 <- new_d(
     data.frame(
-      x = c(0, 1, 1.5, 2, 3, 4, 4.2, 5, 6), y = c(0, 1, 1, 1, 0, 1, 1, 1, 0)/4
+      x = c(0, 1, 1.5, 2, 3, 4, 4.2, 5, 6), y = c(0, 1, 1, 1, 0, 1, 1, 1, 0) / 4
     ),
     "continuous"
   )
-  expect_equal(compute_density_height_points(cur_d_3, 1/4), c(1, 2, 4, 5))
+  expect_equal(compute_density_height_points(cur_d_3, 1 / 4), c(1, 2, 4, 5))
 })

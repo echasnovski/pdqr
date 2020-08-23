@@ -36,7 +36,9 @@ test_that("assert_type allows custom name for `x`", {
 })
 
 test_that("assert_type allows extra arguments for `predicate`", {
-  is_geq <- function(x, min_val) {x >= min_val}
+  is_geq <- function(x, min_val) {
+    x >= min_val
+  }
   expect_silent(assert_type(1, is_geq, min_val = 0))
   expect_error(assert_type(1, is_geq, min_val = 2))
 })
@@ -80,7 +82,7 @@ test_that("assert_in_set works",  {
   )
   expect_error(
     assert_in_set(1, 2:3, quote_set = FALSE),
-    'one of: 2, 3 \\(instead of 1\\)\\.'
+    "one of: 2, 3 \\(instead of 1\\)\\."
   )
 })
 
@@ -179,7 +181,9 @@ test_that("assert_pdqr_fun works", {
   )
 
   # "type" metadata
-  f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
+  f_no_type <- structure(function(q) {
+    user_p(q)
+  }, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(assert_pdqr_fun(f_no_type), "not pdqr-function.*proper.*type")
 
@@ -204,16 +208,16 @@ test_that("assert_pdqr_fun works", {
   )
 
   # "x_tbl" metadata
-    # "x_tbl" is completely missing
+  ## "x_tbl" is completely missing
   f_no_x_tbl <- as_p(p_con)
   rm("x_tbl", envir = environment(f_no_x_tbl))
   expect_error(assert_pdqr_fun(f_no_x_tbl), "not pdqr-function.*have.*x_tbl")
 
-    # "x_tbl" has not proper structure
+  ## "x_tbl" has not proper structure
   f_bad_x_tbl <- as_p(p_dis)
   assign("x_tbl", "a", environment(f_bad_x_tbl))
   expect_error(
-    assert_pdqr_fun(f_bad_x_tbl), 'not pdqr-function.*x_tbl.*data.*frame'
+    assert_pdqr_fun(f_bad_x_tbl), "not pdqr-function.*x_tbl.*data.*frame"
   )
 })
 
@@ -226,28 +230,28 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   expect_error(assert_pdqr_fun(f_bad_x_tbl_1), '"x".*"x_tbl".*sorted')
 
   # "discrete" `type`
-    # Column "prob" is mandatory
+  ## Column "prob" is mandatory
   bad_x_tbl_2 <- x_dis_x_tbl
   bad_x_tbl_2[["prob"]] <- NULL
   f_bad_x_tbl_2 <- as_p(p_dis)
   assign("x_tbl", bad_x_tbl_2, environment(f_bad_x_tbl_2))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_2), 'x_tbl.*have.*"prob"')
 
-    # Sum of "prob" is 1
+  ## Sum of "prob" is 1
   bad_x_tbl_3 <- x_dis_x_tbl
   bad_x_tbl_3[["prob"]] <- 10 * bad_x_tbl_3[["prob"]]
   f_bad_x_tbl_3 <- as_p(p_dis)
   assign("x_tbl", bad_x_tbl_3, environment(f_bad_x_tbl_3))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_3), '"prob".*"x_tbl".*sum.*1')
 
-    # Column "cumprob" is mandatory
+  ## Column "cumprob" is mandatory
   bad_x_tbl_4 <- x_dis_x_tbl
   bad_x_tbl_4[["cumprob"]] <- NULL
   f_bad_x_tbl_4 <- as_p(p_dis)
   assign("x_tbl", bad_x_tbl_4, environment(f_bad_x_tbl_4))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_4), '"x_tbl".*have.*"cumprob"')
 
-    # Column "x" shouldn't have duplicate values
+  ## Column "x" shouldn't have duplicate values
   bad_x_tbl_5 <- x_dis_x_tbl
   bad_x_tbl_5[["x"]] <- 1
   f_bad_x_tbl_5 <- as_p(p_dis)
@@ -255,14 +259,14 @@ test_that("assert_pdqr_fun checks extra properties of 'x_tbl' metadata", {
   expect_error(assert_pdqr_fun(f_bad_x_tbl_5), '"x".*"x_tbl".*duplicate')
 
   # "continuous" type
-    # Total integral is 1
+  ## Total integral is 1
   bad_x_tbl_6 <- x_con_x_tbl
   bad_x_tbl_6[["y"]] <- 10 * bad_x_tbl_6[["y"]]
   f_bad_x_tbl_6 <- as_p(p_con)
   assign("x_tbl", bad_x_tbl_6, environment(f_bad_x_tbl_6))
   expect_error(assert_pdqr_fun(f_bad_x_tbl_6), '[Tt]otal integral.*"x_tbl".*1')
 
-    # Column "cumprob" is mandatory
+  ## Column "cumprob" is mandatory
   bad_x_tbl_7 <- x_con_x_tbl
   bad_x_tbl_7[["cumprob"]] <- NULL
   f_bad_x_tbl_7 <- as_p(p_con)
@@ -489,7 +493,7 @@ test_that("assert_method respects global options", {
 
 # warning_boolean_pdqr_fun ------------------------------------------------
 test_that("warning_boolean_pdqr_fun works", {
-  my_f <- new_d(data.frame(x = c(-1, 0, 1), prob = 1:3/6), "discrete")
+  my_f <- new_d(data.frame(x = c(-1, 0, 1), prob = 1:3 / 6), "discrete")
   expect_warning(warning_boolean_pdqr_fun(my_f), "`my_f`.*not.*boolean")
 
   bool_f <- boolean_pdqr(0.5, "d")

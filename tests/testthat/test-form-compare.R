@@ -7,7 +7,7 @@ set.seed(8888)
 f_dis_1 <- new_d(data.frame(x = 0:2, prob = c(0.2, 0.3, 0.5)), "discrete")
 f_dis_2 <- new_d(data.frame(x = 1:3, prob = c(0.3, 0.2, 0.5)), "discrete")
 f_dis_3 <- new_d(data.frame(x = 100:101, prob = c(0.5, 0.5)), "discrete")
-f_con_1 <- new_d(data.frame(x = 0:2, y = c(0, 2/3, 2/3)), "continuous")
+f_con_1 <- new_d(data.frame(x = 0:2, y = c(0, 2 / 3, 2 / 3)), "continuous")
 f_con_2 <- new_d(data.frame(x = 0:2 + 0.5, y = c(0, 1, 0)), "continuous")
 f_con_3 <- new_d(data.frame(x = 100:101, y = c(1, 1)), "continuous")
 

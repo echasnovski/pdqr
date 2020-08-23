@@ -138,7 +138,6 @@ summ_classmetric_df(
 summ_classmetric_df(
   d_unif, d_norm, threshold = t_vec, method = c("TPR", "sensitivity")
 )
-
 }
 \seealso{
 \link{summ_separation} for computing optimal separation threshold (which

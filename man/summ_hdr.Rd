@@ -76,13 +76,13 @@ d_dis <- new_d(data.frame(x = 1:4, prob = c(0.4, 0.2, 0.3, 0.1)), "discrete")
 summ_hdr(d_dis, 0.3)
 summ_hdr(d_dis, 0.5)
 summ_hdr(d_dis, 0.9)
-  # Zero width interval at global mode
+## Zero width interval at global mode
 summ_hdr(d_dis, 0)
 
 # "continuous" functions
 d_norm <- as_d(dnorm)
 summ_hdr(d_norm, 0.95)
-  # Zero width interval at global mode
+## Zero width interval at global mode
 summ_hdr(d_norm, 0)
 
 # Works well with mixture distributions
@@ -91,13 +91,12 @@ summ_hdr(d_mix, 0.95)
 
 # Plateaus
 d_unif <- as_d(dunif)
-  # Returns all support because of density "plateau"
+## Returns all support because of density "plateau"
 summ_hdr(d_unif, 0.1)
 
 # Draw HDR
 plot(d_mix)
 region_draw(summ_hdr(d_mix, 0.95))
-
 }
 \seealso{
 \code{\link[=region]{region_*()}} family of functions for working with output

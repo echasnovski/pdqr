@@ -86,7 +86,9 @@ test_that("plot.p and lines.p use `n_extra_grid` argument", {
 })
 
 test_that("plot.p validates input", {
-  f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
+  f_no_type <- structure(function(q) {
+    user_p(q)
+  }, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(plot(f_no_type), "`x`.*not pdqr-function")
 
@@ -371,7 +373,9 @@ test_that("plot.r validates input", {
 # lines.p -----------------------------------------------------------------
 # Main functionality is tested in `plot()` methods
 test_that("lines.p validates input", {
-  f_no_type <- structure(function(q) {user_p(q)}, class = c("p", "pdqr"))
+  f_no_type <- structure(function(q) {
+    user_p(q)
+  }, class = c("p", "pdqr"))
   environment(f_no_type) <- new.env(parent = emptyenv())
   expect_error(lines(f_no_type), "`x`.*not pdqr-function")
 

@@ -47,13 +47,12 @@ summ_entropy2(d_norm, d_norm_2, method = "cross")
 d_1 <- new_d(1:10, "discrete")
 d_2 <- new_d(20:21, "discrete")
 
-  # Formally, output isn't clearly defined because functions don't have the
-  # same support. Direct use of entropy formulas gives infinity output, but
-  # here maximum value is `-log(clip)`.
+## Formally, output isn't clearly defined because functions don't have the
+## same support. Direct use of entropy formulas gives infinity output, but
+## here maximum value is `-log(clip)`.
 summ_entropy2(d_1, d_2, method = "cross")
 summ_entropy2(d_1, d_2, method = "cross", clip = exp(-10))
 summ_entropy2(d_1, d_2, method = "cross", clip = 0)
-
 }
 \seealso{
 Other summary functions: 

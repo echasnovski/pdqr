@@ -56,12 +56,12 @@
 #'
 #' @examples
 #' # Type "discrete"
-#' d_dis <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2)/9), "discrete")
+#' d_dis <- new_d(data.frame(x = 1:6, prob = c(3:1, 0:2) / 9), "discrete")
 #' summ_interval(d_dis, level = 0.5, method = "minwidth")
 #' summ_interval(d_dis, level = 0.5, method = "percentile")
 #' summ_interval(d_dis, level = 0.5, method = "sigma")
 #'
-#'   # Visual difference between methods
+#' ## Visual difference between methods
 #' plot(d_dis)
 #' region_draw(summ_interval(d_dis, 0.5, method = "minwidth"), col = "blue")
 #' region_draw(summ_interval(d_dis, 0.5, method = "percentile"), col = "red")
@@ -76,7 +76,7 @@
 #' summ_interval(d_con, level = 0.5, method = "percentile")
 #' summ_interval(d_con, level = 0.5, method = "sigma")
 #'
-#'   # Visual difference between methods
+#' ## Visual difference between methods
 #' plot(d_con)
 #' region_draw(summ_interval(d_con, 0.5, method = "minwidth"), col = "blue")
 #' region_draw(summ_interval(d_con, 0.5, method = "percentile"), col = "red")
@@ -89,7 +89,6 @@
 #'
 #' # To get vector output, use `unlist()`
 #' unlist(summ_interval(d_con))
-#'
 #' @export
 summ_interval <- function(f, level = 0.95, method = "minwidth",
                           n_grid = 10001) {
@@ -109,7 +108,7 @@ summ_interval <- function(f, level = 0.95, method = "minwidth",
   # Speed optimization (skips possibly expensive assertions)
   disable_asserting_locally()
 
-  edge_probs <- 0.5 * c(1-level, 1+level)
+  edge_probs <- 0.5 * c(1 - level, 1 + level)
   res <- switch(
     method,
     minwidth = interval_minwidth(f, level, n_grid),
@@ -132,7 +131,7 @@ interval_minwidth <- function(f, level = 0.95, n_grid = 10001) {
 
   n_seq <- seq_len(n_grid)
 
-  left_prob_seq <- seq(0, 1-level, length.out = n_grid)
+  left_prob_seq <- seq(0, 1 - level, length.out = n_grid)
   prob_seq <- c(left_prob_seq, left_prob_seq + level)
   quants <- as_q(f)(prob_seq)
 

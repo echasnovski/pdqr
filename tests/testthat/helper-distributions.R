@@ -2,13 +2,21 @@ set.seed(18345)
 
 # Helpers -----------------------------------------------------------------
 curry <- function(f, ...) {
-  function(t) {f(t, ...)}
+  function(t) {
+    f(t, ...)
+  }
 }
 
 # To use instead of `max()` in case of infinity is involved
-quan999 <- function(x) {stats::quantile(x, probs = 0.999)}
-quan99 <- function(x) {stats::quantile(x, probs = 0.99)}
-quan90 <- function(x) {stats::quantile(x, probs = 0.90)}
+quan999 <- function(x) {
+  stats::quantile(x, probs = 0.999)
+}
+quan99 <- function(x) {
+  stats::quantile(x, probs = 0.99)
+}
+quan90 <- function(x) {
+  stats::quantile(x, probs = 0.90)
+}
 
 
 # Distributions -----------------------------------------------------------
@@ -36,10 +44,18 @@ fam_exp <- list(
 
 # "Reversed" exponential. Support is unbounded from left and bounded from right.
 fam_exp_rev <- list(
-  p = function(q) {1 - stats::pexp(-q)},
-  d = function(x) {stats::dexp(-x)},
-  q = function(p) {-stats::qexp(1 - p)},
-  r = function(n) {-stats::rexp(n)},
+  p = function(q) {
+    1 - stats::pexp(-q)
+  },
+  d = function(x) {
+    stats::dexp(-x)
+  },
+  q = function(p) {
+    -stats::qexp(1 - p)
+  },
+  r = function(n) {
+    -stats::rexp(n)
+  },
   support = c(-20, 0), grid = seq(-20, 0, length.out = 1e5)
 )
 
@@ -61,7 +77,7 @@ fam_beta_inf <- list(
   r = curry(stats::rbeta, shape1 = 0.7, shape2 = 0.3),
   support = c(0, 1),
   # Step away a little from edges where density goes to infinity
-  grid = seq(0.001, 1-0.001, length.out = 1e5)
+  grid = seq(0.001, 1 - 0.001, length.out = 1e5)
 )
 
 # Beta-based distribution. Has infinity density point inside support.

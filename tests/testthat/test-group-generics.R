@@ -6,8 +6,12 @@ set.seed(654321)
 # Input data --------------------------------------------------------------
 x_norm_seq <- seq(-10, 10, by = 0.01)
 
-bad_pdqr <- structure(function(x) {x}, class = c("p", "pdqr", "function"))
-bad_pdqr_2 <- structure(function(x) {x+1}, class = c("p", "pdqr", "function"))
+bad_pdqr <- structure(function(x) {
+  x
+}, class = c("p", "pdqr", "function"))
+bad_pdqr_2 <- structure(function(x) {
+  x + 1
+}, class = c("p", "pdqr", "function"))
 
 
 # Custom functions --------------------------------------------------------
@@ -32,14 +36,14 @@ expect_prob_true <- function(f, val) {
 }
 
 expect_op_support <- function(op, in_supp, ref_supp, inds = 1:2) {
-  f <- new_d(data.frame(x = in_supp, y = c(1, 1)/diff(in_supp)), "continuous")
+  f <- new_d(data.frame(x = in_supp, y = c(1, 1) / diff(in_supp)), "continuous")
   out_supp <- suppressWarnings(meta_support(op(f)))
 
   expect_equal(out_supp[inds], ref_supp)
 }
 
 expect_close_op_support <- function(op, in_supp, ref_supp, thres) {
-  f <- new_d(data.frame(x = in_supp, y = c(1, 1)/diff(in_supp)), "continuous")
+  f <- new_d(data.frame(x = in_supp, y = c(1, 1) / diff(in_supp)), "continuous")
   out_supp <- meta_support(op(f))
 
   expect_true(all(abs(out_supp - ref_supp) < thres))
@@ -116,86 +120,86 @@ test_that("Math.pdqr repairs support in general cases", {
   expect_equal(meta_support(log1p(d_unif))[1],  0)
 
   # Trigonometric
-    # cos()
+  ## cos()
   expect_op_support(cos, in_supp = c(0, 1), ref_supp = range(cos(c(0, 1))))
-  expect_op_support(cos, in_supp = c(-1, 1)*0.5*pi, ref_supp = c(0, 1))
-  expect_op_support(cos, in_supp = c(1, 3)*0.5*pi, ref_supp = c(-1, 0))
+  expect_op_support(cos, in_supp = c(-1, 1) * 0.5 * pi, ref_supp = c(0, 1))
+  expect_op_support(cos, in_supp = c(1, 3) * 0.5 * pi, ref_supp = c(-1, 0))
   expect_op_support(cos, in_supp = c(0, 10), ref_supp = c(-1, 1))
 
-    # sin()
+  ## sin()
   expect_op_support(sin, in_supp = c(0, 1), ref_supp = range(sin(c(0, 1))))
-  expect_op_support(sin, in_supp = c(0, 1)*pi, ref_supp = c(0, 1))
-  expect_op_support(sin, in_supp = c(1, 2)*pi, ref_supp = c(-1, 0))
+  expect_op_support(sin, in_supp = c(0, 1) * pi, ref_supp = c(0, 1))
+  expect_op_support(sin, in_supp = c(1, 2) * pi, ref_supp = c(-1, 0))
   expect_op_support(sin, in_supp = c(0, 10), ref_supp = c(-1, 1))
 
-    # tan()
+  ## tan()
   expect_op_support(tan, in_supp = c(0, 1), ref_supp = range(tan(c(0, 1))))
   # If `0.5*pi + k*pi` family is inside input support, then output should have
   # very big support (based on actual points generated inside `form_trans()`)
   tan_supp <- meta_support(tan(make_unif(0, pi)))
   expect_true(all(abs(tan_supp) > 100))
 
-    # cospi()
+  ## cospi()
   expect_op_support(cospi, in_supp = c(0, 0.5), ref_supp = c(0, 1))
-  expect_op_support(cospi, in_supp = c(-1, 1)*0.5, ref_supp = c(0, 1))
-  expect_op_support(cospi, in_supp = c(1, 3)*0.5, ref_supp = c(-1, 0))
+  expect_op_support(cospi, in_supp = c(-1, 1) * 0.5, ref_supp = c(0, 1))
+  expect_op_support(cospi, in_supp = c(1, 3) * 0.5, ref_supp = c(-1, 0))
   expect_op_support(cospi, in_supp = c(0, 10), ref_supp = c(-1, 1))
 
-    # sinpi()
+  ## sinpi()
   expect_op_support(sinpi, in_supp = c(0, 0.5), ref_supp = c(0, 1))
   expect_op_support(sinpi, in_supp = c(0, 1), ref_supp = c(0, 1))
   expect_op_support(sinpi, in_supp = c(1, 2), ref_supp = c(-1, 0))
   expect_op_support(sinpi, in_supp = c(0, 10), ref_supp = c(-1, 1))
 
-    # tanpi()
+  ## tanpi()
   expect_op_support(tanpi, in_supp = c(0, 0.25), ref_supp = c(0, 1))
   # If `0.5 + k` family is inside input support, then output should have very
   # big support (based on actual points generated inside `form_trans()`)
   tanpi_supp <- meta_support(tanpi(make_unif(0, 1)))
   expect_true(all(abs(tanpi_supp) > 100))
 
-    # acos()
+  ## acos()
   expect_op_support(acos, in_supp = c(-0.5, 0.5), ref_supp = acos(c(0.5, -0.5)))
   expect_op_support(acos, in_supp = c(-1, 1), ref_supp = acos(c(1, -1)))
-      # Applying `acos()` to this uniform gives warning which is suppressed
-      # inside `expect_op_support()`
+  ### Applying `acos()` to this uniform gives warning which is suppressed
+  ### inside `expect_op_support()`
   expect_op_support(acos, in_supp = c(-10, 10), ref_supp = acos(c(1, -1)))
 
-    # asin()
+  ## asin()
   expect_op_support(asin, in_supp = c(-0.5, 0.5), ref_supp = asin(c(-0.5, 0.5)))
   expect_op_support(asin, in_supp = c(-1, 1), ref_supp = asin(c(-1, 1)))
-      # Applying `asin()` to this uniform gives warning which is suppressed
-      # inside `expect_op_support()`
+  ### Applying `asin()` to this uniform gives warning which is suppressed
+  ### inside `expect_op_support()`
   expect_op_support(asin, in_supp = c(-10, 10), ref_supp = asin(c(-1, 1)))
 
-    # atan()
+  ## atan()
   expect_op_support(atan, in_supp = c(0, 1), ref_supp = atan(c(0, 1)))
 
   # Hyperbolic
-    # cosh()
+  ## cosh()
   expect_op_support(cosh, in_supp = c(1, 2), ref_supp = cosh(c(1, 2)))
   expect_op_support(cosh, in_supp = c(-2, 1), ref_supp = c(1, cosh(-2)))
 
-    # sinh()
+  ## sinh()
   expect_op_support(sinh, in_supp = c(1, 2), ref_supp = sinh(c(1, 2)))
 
-    # tanh()
+  ## tanh()
   expect_op_support(tanh, in_supp = c(1, 2), ref_supp = tanh(c(1, 2)))
 
-    # acosh()
+  ## acosh()
   expect_op_support(acosh, in_supp = c(1, 2), ref_supp = acosh(c(1, 2)))
   expect_op_support(acosh, in_supp = c(-1, 2), ref_supp = c(0, acosh(2)))
 
-    # asinh()
+  ## asinh()
   expect_op_support(asinh, in_supp = c(1, 2), ref_supp = asinh(c(1, 2)))
 
-    # atanh()
+  ## atanh()
   expect_op_support(
     atanh, in_supp = c(-0.5, 0.5), ref_supp = atanh(c(-0.5, 0.5))
   )
   atanh_supp <- suppressWarnings(meta_support(atanh(make_unif(-2, 2))))
-      # Output should have large support. Here modulus `3` is "large" because of
-      # slow nature of `atanh()`
+  ### Output should have large support. Here modulus `3` is "large" because of
+  ### slow nature of `atanh()`
   expect_true(all(abs(atanh_supp) > 3))
 
   # Gamma. All supports are repaired with simulation, so tests aren't exact
@@ -219,14 +223,14 @@ test_that("Math.pdqr method for `abs()` works", {
   # Type "discrete"
   cur_d_dis <- new_d(
     data.frame(
-      x    = c(-1.5,  -1,   0,    1, 1.25),
-      prob = c( 0.1, 0.2, 0.3, 0.25, 0.15)
+      x    = c(-1.5, -1,  0,   1,    1.25),
+      prob = c(0.1,  0.2, 0.3, 0.25, 0.15)
     ),
     "discrete"
   )
   expect_ref_x_tbl(
     abs(cur_d_dis),
-    data.frame(x = c(0, 1, 1.25, 1.5), prob = c(0.3, 0.2+0.25, 0.15, 0.1))
+    data.frame(x = c(0, 1, 1.25, 1.5), prob = c(0.3, 0.2 + 0.25, 0.15, 0.1))
   )
 
   # Type "continuous"
@@ -238,12 +242,12 @@ test_that("Math.pdqr method for `abs()` works", {
   }
   expect_close_f(abs(d_con), d_abs_ref, c(x_con_vec_ext, -x_con_vec_ext))
 
-    # Case with discontinuity
+  ## Case with discontinuity
   d_unif <- new_d(data.frame(x = c(-3, 1), y = c(0.25, 0.25)), "continuous")
   expect_ref_x_tbl(
     abs(d_unif),
     data.frame(
-      x = c(0, 1-1e-8, 1, 1+1e-8, 3), y = c(0.5, 0.5, 0.375, 0.25, 0.25)
+      x = c(0, 1 - 1e-8, 1, 1 + 1e-8, 3), y = c(0.5, 0.5, 0.375, 0.25, 0.25)
     )
   )
 })
@@ -252,14 +256,14 @@ test_that("Math.pdqr method for `sign()` works", {
   # Type "discrete"
   cur_d_dis <- new_d(
     data.frame(
-      x    = c(-1.5,  -1,   0,    1, 1.25),
-      prob = c( 0.1, 0.2, 0.3, 0.25, 0.15)
+      x    = c(-1.5, -1,  0,   1,    1.25),
+      prob = c(0.1,  0.2, 0.3, 0.25, 0.15)
     ),
     "discrete"
   )
   expect_ref_x_tbl(
     sign(cur_d_dis),
-    data.frame(x = c(-1, 0, 1), prob = c(0.1+0.2, 0.3, 0.25+0.15))
+    data.frame(x = c(-1, 0, 1), prob = c(0.1 + 0.2, 0.3, 0.25 + 0.15))
   )
 
   cur_d_dis_2 <- new_d(
@@ -267,7 +271,7 @@ test_that("Math.pdqr method for `sign()` works", {
   )
   expect_ref_x_tbl(
     sign(cur_d_dis_2),
-    data.frame(x = c(-1, 0, 1), prob = c(0, 0.1, 0.3+0.6))
+    data.frame(x = c(-1, 0, 1), prob = c(0, 0.1, 0.3 + 0.6))
   )
 
   # Type "continuous"
@@ -355,7 +359,7 @@ test_that("Ops.pdqr repairs support in general cases", {
   )
 
   # `/`
-  expect_equal(meta_support(d_unif_1 / d_unif_2), c(-2, 1/50))
+  expect_equal(meta_support(d_unif_1 / d_unif_2), c(-2, 1 / 50))
   division_supp_2 <- meta_support(d_unif_2 / d_unif_1)
   expect_true(all(abs(division_supp_2) > 100))
   division_supp_3 <- meta_support(d_unif / d_unif)
@@ -409,8 +413,8 @@ test_that("Ops.pdqr works with generics which take one argument", {
   )
   expect_equal(d_negate(1), 0.2)
 
-    # Probability of type "continuous" pdqr-function being exactly 0 is equal to
-    # zero
+  ## Probability of type "continuous" pdqr-function being exactly 0 is equal to
+  ## zero
   expect_equal((!d_con)(1), 0)
 })
 
@@ -575,24 +579,24 @@ test_that("Ops.pdqr works in case of logical AND/OR", {
   )
 
   # `&`
-  expect_prob_true(expect_warning(cur_d_dis & cur_d_dis), (1-0.2)*(1-0.2))
-  expect_prob_true(expect_warning(cur_d_dis & new_d(1, "discrete")), 1-0.2)
-  expect_prob_true(expect_warning(new_d(2, "discrete") & cur_d_dis), 1-0.2)
+  expect_prob_true(expect_warning(cur_d_dis & cur_d_dis), (1 - 0.2) * (1 - 0.2))
+  expect_prob_true(expect_warning(cur_d_dis & new_d(1, "discrete")), 1 - 0.2)
+  expect_prob_true(expect_warning(new_d(2, "discrete") & cur_d_dis), 1 - 0.2)
   expect_prob_true(expect_warning(cur_d_dis & new_d(0, "discrete")), 0)
 
-    # Probability of `d_con` being 0 is always 0 (i.e. it is always
-    # "`TRUE`"), so presence of "continuous" terms is irrelevant
-  expect_prob_true(expect_warning(d_con & cur_d_dis), 1-0.2)
+  ## Probability of `d_con` being 0 is always 0 (i.e. it is always
+  ## "`TRUE`"), so presence of "continuous" terms is irrelevant
+  expect_prob_true(expect_warning(d_con & cur_d_dis), 1 - 0.2)
   expect_prob_true(expect_warning(d_con & d_con), 1)
 
   # `|`
-  expect_prob_true(expect_warning(cur_d_dis | cur_d_dis), 1 - 0.2*0.2)
-  expect_prob_true(expect_warning(cur_d_dis | new_d(0, "discrete")), 1-0.2)
-  expect_prob_true(expect_warning(new_d(0, "discrete") | cur_d_dis), 1-0.2)
+  expect_prob_true(expect_warning(cur_d_dis | cur_d_dis), 1 - 0.2 * 0.2)
+  expect_prob_true(expect_warning(cur_d_dis | new_d(0, "discrete")), 1 - 0.2)
+  expect_prob_true(expect_warning(new_d(0, "discrete") | cur_d_dis), 1 - 0.2)
   expect_prob_true(expect_warning(cur_d_dis | new_d(2, "discrete")), 1)
 
-    # Probability of `d_con` being 0 is always 0 (i.e. it is always
-    # "`TRUE`"), so presence of "continuous" terms  always results into 1
+  ## Probability of `d_con` being 0 is always 0 (i.e. it is always
+  ## "`TRUE`"), so presence of "continuous" terms  always results into 1
   expect_prob_true(expect_warning(d_con | cur_d_dis), 1)
   expect_prob_true(expect_warning(d_con | d_con), 1)
 })
@@ -657,24 +661,24 @@ test_that("Summary.pdqr works in case of `all()` and `any()`", {
 
   # all()
   expect_prob_true(all(bool_d_1), 0.8)
-  expect_prob_true(all(bool_d_1, bool_p_2), 0.8*0.7)
-  expect_prob_true(all(bool_d_1, bool_p_2, bool_q_3), 0.8*0.7*1)
-    # Works when 1 is not present in input's 'x' levels
+  expect_prob_true(all(bool_d_1, bool_p_2), 0.8 * 0.7)
+  expect_prob_true(all(bool_d_1, bool_p_2, bool_q_3), 0.8 * 0.7 * 1)
+  ## Works when 1 is not present in input's 'x' levels
   expect_prob_true(expect_warning(all(new_d(0, "discrete"))), 0)
-    # Works for "continuous" functions, which are always `TRUE`
+  ## Works for "continuous" functions, which are always `TRUE`
   expect_prob_true(expect_warning(all(d_con)), 1)
-    # Class of output is taken from the first input
+  ## Class of output is taken from the first input
   expect_is(all(bool_p_2, bool_q_3), "p")
 
   # any()
   expect_prob_true(any(bool_d_1), 0.8)
-  expect_prob_true(any(bool_d_1, bool_p_2), 1 - (1-0.8)*(1-0.7))
-  expect_prob_true(any(bool_d_1, bool_p_2, bool_q_3), 1 - (1-0.8)*(1-0.7)*(1-1))
-    # Works when 1 is not present in input's 'x' levels
+  expect_prob_true(any(bool_d_1, bool_p_2), 1 - (1 - 0.8) * (1 - 0.7))
+  expect_prob_true(any(bool_d_1, bool_p_2, bool_q_3), 1 - (1 - 0.8) * (1 - 0.7) * (1 - 1))
+  ## Works when 1 is not present in input's 'x' levels
   expect_prob_true(expect_warning(any(new_d(0, "discrete"))), 0)
-    # Works for "continuous" functions, which are always `TRUE`
+  ## Works for "continuous" functions, which are always `TRUE`
   expect_prob_true(expect_warning(any(d_con)), 1)
-    # Class of output is taken from the first input
+  ## Class of output is taken from the first input
   expect_is(any(bool_p_2, bool_q_3), "p")
 })
 

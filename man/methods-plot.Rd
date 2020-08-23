@@ -93,7 +93,6 @@ lines(simple_p, n_extra_grid = 0, col = "red")
 
 # R-functions are plotted with histogram
 plot(as_r(d_norm_1))
-
 }
 \seealso{
 Other pdqr methods for generic functions: 

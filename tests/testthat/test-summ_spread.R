@@ -53,7 +53,7 @@ test_that("summ_sd works with dirac-like 'continuous' functions", {
   d_dirac_2 <- form_mix(
     lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
-  expect_equal(summ_sd(d_dirac_2), sqrt(1^2*0.7+2^2*0.3 - 1.3^2))
+  expect_equal(summ_sd(d_dirac_2), sqrt(1^2 * 0.7 + 2^2 * 0.3 - 1.3^2))
 })
 
 test_that("summ_sd works with winsorized 'continuous' functions", {
@@ -67,10 +67,10 @@ test_that("summ_sd works with winsorized 'continuous' functions", {
 
 test_that("summ_sd works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
-  expect_equal(summ_sd(d_unif_1), sqrt(1/12))
+  expect_equal(summ_sd(d_unif_1), sqrt(1 / 12))
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
-  expect_equal(summ_sd(d_unif_2), sqrt(1/3))
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
+  expect_equal(summ_sd(d_unif_2), sqrt(1 / 3))
 })
 
 test_that("summ_sd validates input", {
@@ -112,7 +112,7 @@ test_that("summ_var works with dirac-like 'continuous' functions", {
   d_dirac_2 <- form_mix(
     lapply(1:2, new_d, type = "continuous"), weights = c(0.7, 0.3)
   )
-  expect_equal(summ_var(d_dirac_2), 1^2*0.7+2^2*0.3 - 1.3^2)
+  expect_equal(summ_var(d_dirac_2), 1^2 * 0.7 + 2^2 * 0.3 - 1.3^2)
 })
 
 test_that("summ_var works with winsorized 'continuous' functions", {
@@ -126,10 +126,10 @@ test_that("summ_var works with winsorized 'continuous' functions", {
 
 test_that("summ_var works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
-  expect_equal(summ_var(d_unif_1), 1/12)
+  expect_equal(summ_var(d_unif_1), 1 / 12)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
-  expect_equal(summ_var(d_unif_2), 1/3)
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
+  expect_equal(summ_var(d_unif_2), 1 / 3)
 })
 
 test_that("summ_var validates input", {
@@ -179,7 +179,7 @@ test_that("summ_iqr works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_iqr(d_unif_1), 0.5)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
   expect_equal(summ_iqr(d_unif_2), 1)
 })
 
@@ -230,7 +230,7 @@ test_that("summ_mad works with 'continuous' functions with few intervals", {
   d_unif_1 <- new_d(data.frame(x = 1:2, y = c(1, 1)), "continuous")
   expect_equal(summ_mad(d_unif_1), 0.25)
 
-  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1)/2), "continuous")
+  d_unif_2 <- new_d(data.frame(x = 0:2, y = c(1, 1, 1) / 2), "continuous")
   expect_equal(summ_mad(d_unif_2), 0.5)
 })
 
@@ -242,16 +242,16 @@ test_that("summ_mad validates input", {
 # summ_range --------------------------------------------------------------
 test_that("summ_range works with 'discrete' functions", {
   cur_dis_1 <- new_d(data.frame(x = 1:4, prob = c(0.5, 0, 0, 0.5)), "discrete")
-  expect_equal(summ_range(cur_dis_1), 4-1)
+  expect_equal(summ_range(cur_dis_1), 4 - 1)
 
   cur_dis_2 <- new_d(data.frame(x = 1:4, prob = c(0.5, 0, 0.5, 0)), "discrete")
-  expect_equal(summ_range(cur_dis_2), 3-1)
+  expect_equal(summ_range(cur_dis_2), 3 - 1)
 
   cur_dis_3 <- new_d(data.frame(x = 1:4, prob = c(0, 0.5, 0, 0.5)), "discrete")
-  expect_equal(summ_range(cur_dis_3), 4-2)
+  expect_equal(summ_range(cur_dis_3), 4 - 2)
 
   cur_dis_4 <- new_d(data.frame(x = 1:4, prob = c(0, 0.5, 0.5, 0)), "discrete")
-  expect_equal(summ_range(cur_dis_4), 3-2)
+  expect_equal(summ_range(cur_dis_4), 3 - 2)
 
   cur_dis_5 <- new_d(data.frame(x = 1:4, prob = c(0, 0.5, 0, 0)), "discrete")
   expect_equal(summ_range(cur_dis_5), 0)
@@ -259,24 +259,24 @@ test_that("summ_range works with 'discrete' functions", {
 
 test_that("summ_range works with 'continuous' functions", {
   cur_con_1 <- new_d(data.frame(x = 1:5, y = c(1, 0, 0, 0, 1)), "continuous")
-  expect_equal(summ_range(cur_con_1), 5-1)
+  expect_equal(summ_range(cur_con_1), 5 - 1)
 
   cur_con_2 <- new_d(data.frame(x = 1:5, y = c(1, 0, 1, 0, 0)), "continuous")
-    # Here range of positive probability is [1; 4] because of piecewise-linear
-    # nature of density
-  expect_equal(summ_range(cur_con_2), 4-1)
+  ## Here range of positive probability is [1; 4] because of piecewise-linear
+  ## nature of density
+  expect_equal(summ_range(cur_con_2), 4 - 1)
 
   cur_con_3 <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 1)), "continuous")
-    # Here range of positive probability is [2; 5]
-  expect_equal(summ_range(cur_con_3), 5-2)
+  ## Here range of positive probability is [2; 5]
+  expect_equal(summ_range(cur_con_3), 5 - 2)
 
   cur_con_4 <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 1, 0)), "continuous")
-    # Here range of positive probability is [2; 5]
-  expect_equal(summ_range(cur_con_4), 5-2)
+  ## Here range of positive probability is [2; 5]
+  expect_equal(summ_range(cur_con_4), 5 - 2)
 
   cur_con_5 <- new_d(data.frame(x = 1:5, y = c(0, 0, 1, 0, 0)), "continuous")
-    # Here range of positive probability is [2; 4]
-  expect_equal(summ_range(cur_con_5), 4-2)
+  ## Here range of positive probability is [2; 4]
+  expect_equal(summ_range(cur_con_5), 4 - 2)
 })
 
 test_that("summ_range validates input", {

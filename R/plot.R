@@ -59,7 +59,6 @@
 #'
 #' # R-functions are plotted with histogram
 #' plot(as_r(d_norm_1))
-#'
 #' @name methods-plot
 NULL
 

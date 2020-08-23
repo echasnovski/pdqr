@@ -3,7 +3,7 @@ context("test-form_resupport")
 
 # form_resupport ----------------------------------------------------------
 test_that("form_resupport works with `method='reflect'` and 'discrete' type", {
-  p_f <- new_p(data.frame(x = 1:4, prob = (1:4)/10), "discrete")
+  p_f <- new_p(data.frame(x = 1:4, prob = (1:4) / 10), "discrete")
   p_f_x_tbl <- meta_x_tbl(p_f)
 
   # Returns self when supplied support equals `f`'s support or wider
@@ -13,7 +13,7 @@ test_that("form_resupport works with `method='reflect'` and 'discrete' type", {
   # Left reflection
   expect_ref_x_tbl(
     form_resupport(p_f, c(1.1, 5), "reflect"),
-    data.frame(x = c(1.2, 2:4), prob = (1:4)/10)
+    data.frame(x = c(1.2, 2:4), prob = (1:4) / 10)
   )
 
   # Right reflection
@@ -40,7 +40,7 @@ test_that("form_resupport works with `method='reflect'` and 'discrete' type", {
   # itself
   expect_ref_x_tbl(
     form_resupport(p_f, c(2, 5), "reflect"),
-    data.frame(x = 2:4, prob = c(0.2+0.2, 0.3+0.1, 0.4)/1.2)
+    data.frame(x = 2:4, prob = c(0.2 + 0.2, 0.3 + 0.1, 0.4) / 1.2)
   )
 })
 
@@ -57,21 +57,21 @@ test_that("form_resupport works with `method='reflect'`, 'continuous' type",  {
   # Left reflection
   expect_ref_x_tbl(
     form_resupport(p_f, c(0.2, 1), "reflect"),
-    data.frame(x = c(0.2, 0.4-h, 0.4, 0.4+h, 1), y = c(2, 2, 1.5, 1, 1))
+    data.frame(x = c(0.2, 0.4 - h, 0.4, 0.4 + h, 1), y = c(2, 2, 1.5, 1, 1))
   )
 
   # Right reflection
   expect_ref_x_tbl(
     form_resupport(p_f, c(0, 0.6), "reflect"),
-    data.frame(x = c(0, 0.2-h, 0.2, 0.2+h, 0.6), y = c(1, 1, 1.5, 2, 2))
+    data.frame(x = c(0, 0.2 - h, 0.2, 0.2 + h, 0.6), y = c(1, 1, 1.5, 2, 2))
   )
 
   # Reflection from both sides
   expect_ref_x_tbl(
     form_resupport(p_f, c(0.1, 0.9), "reflect"),
     data.frame(
-      x = c(0.1, 0.2-h, 0.2, 0.2+h, 0.8-h, 0.8, 0.8+h, 0.9),
-      y = c(  2,     2, 1.5,     1,     1, 1.5,     2,   2)
+      x = c(0.1, 0.2 - h, 0.2, 0.2 + h, 0.8 - h, 0.8, 0.8 + h, 0.9),
+      y = c(2,   2,       1.5, 1,       1,       1.5, 2,       2)
     )
   )
 })
@@ -197,7 +197,7 @@ test_that("form_resupport works with `method='winsor'`, 'continuous' type",  {
     form_resupport(d_f, c(0.3, 1), "winsor"),
     # Here `+1.032` in `y[1]` seems to be because of numerical representation
     # accuracy.
-    data.frame(x = c(0.3, 0.3+1e-8, 1), y = c(6e7+1.032, 1, 1))
+    data.frame(x = c(0.3, 0.3 + 1e-8, 1), y = c(6e7 + 1.032, 1, 1))
   )
 
   # Right
@@ -205,7 +205,7 @@ test_that("form_resupport works with `method='winsor'`, 'continuous' type",  {
     form_resupport(d_f, c(0, 0.7), "winsor"),
     # Here `+0.696` in `y[3]` seems to be because of numerical representation
     # accuracy.
-    data.frame(x = c(0, 0.7-1e-8, 0.7), y = c(1, 1, 6e7+0.696))
+    data.frame(x = c(0, 0.7 - 1e-8, 0.7), y = c(1, 1, 6e7 + 0.696))
   )
 
   # Both
@@ -214,8 +214,8 @@ test_that("form_resupport works with `method='winsor'`, 'continuous' type",  {
     # Adding of "small" values to edges explained in tests for left and right
     # winsoring
     data.frame(
-      x = c(0.3, 0.3+1e-8, 0.7-1e-8, 0.7),
-      y = c(6e7+1.03, 1, 1, 6e7+0.696)
+      x = c(0.3,        0.3 + 1e-8, 0.7 - 1e-8, 0.7),
+      y = c(6e7 + 1.03, 1,          1,          6e7 + 0.696)
     )
   )
 })

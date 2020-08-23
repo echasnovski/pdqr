@@ -71,20 +71,22 @@
 #' @examples
 #' # Default "random" transformation
 #' d_norm <- as_d(dnorm)
-#'   # More accurate result would give use of `+` directly with: d_norm + d_norm
+#' ## More accurate result would give use of `+` directly with: d_norm + d_norm
 #' d_norm_2 <- form_trans(list(d_norm, d_norm), trans = `+`)
 #' plot(d_norm_2)
 #' lines(as_d(dnorm, sd = sqrt(2)), col = "red")
 #'
-#'   # Input list can have single numbers
+#' ## Input list can have single numbers
 #' form_trans(list(d_norm, 100), trans = `+`)
 #'
-#'   # Output of `trans` can be logical. Next example is random version of
-#'   # `d_norm >= 0`.
+#' ## Output of `trans` can be logical. Next example is random version of
+#' ## `d_norm >= 0`.
 #' form_trans(list(d_norm, 0), trans = `>=`)
 #'
 #' # Transformation with "bruteforce" method
-#' power <- function(x, n = 1) {x^n}
+#' power <- function(x, n = 1) {
+#'   x^n
+#' }
 #' p_dis <- new_p(
 #'   data.frame(x = 1:3, prob = c(0.1, 0.2, 0.7)),
 #'   type = "discrete"
@@ -94,13 +96,14 @@
 #'   p_dis, trans = power, n = 2, method = "bruteforce"
 #' )
 #' meta_x_tbl(p_dis_sq)
-#'   # Compare with "random" method
+#' ## Compare with "random" method
 #' p_dis_sq_rand <- form_trans_self(p_dis, trans = power, n = 2)
 #' meta_x_tbl(p_dis_sq_rand)
 #'
 #' # `form_trans_self()` is a wrapper for `form_trans()`
-#' form_trans_self(d_norm, trans = function(x) {2*x})
-#'
+#' form_trans_self(d_norm, trans = function(x) {
+#'   2 * x
+#' })
 #' @name form_trans
 NULL
 
@@ -152,7 +155,9 @@ trans_random <- function(f_list, trans, ..., n_sample, args_new) {
     if (is_pdqr_fun(f)) {
       as_r(f)
     } else {
-      function(n) {rep(f, length.out = n)}
+      function(n) {
+        rep(f, length.out = n)
+      }
     }
   })
 
@@ -194,10 +199,14 @@ trans_bruteforce <- function(f_list, trans, ..., args_new) {
   x_tbl_list <- lapply(f_list, meta_x_tbl)
 
   # Create grids for `x` and `prob`
-  x_list <- lapply(x_tbl_list, function(x_tbl) {x_tbl[["x"]]})
+  x_list <- lapply(x_tbl_list, function(x_tbl) {
+    x_tbl[["x"]]
+  })
   x_grid <- list_grid(x_list)
 
-  prob_list <- lapply(x_tbl_list, function(x_tbl) {x_tbl[["prob"]]})
+  prob_list <- lapply(x_tbl_list, function(x_tbl) {
+    x_tbl[["prob"]]
+  })
   prob_grid <- list_grid(prob_list)
 
   # Compute "x_tbl" for output "discrete" function

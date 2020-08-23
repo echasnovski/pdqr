@@ -156,10 +156,10 @@ test_that("form_tails works with `method='winsor'` and 'continuous' type", {
   expect_ref_x_tbl(
     form_tails(cur_con, 0.1, "winsor", "both"),
     data.frame(
-      x = c(  0.1, 0.1+1e-8, 0.9-1e-8,   0.9),
+      x = c(0.1,     0.1 + 1e-8, 0.9 - 1e-8, 0.9),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
       # representation issues
-      y = c(2e7+1,        1,        1, 2e7+1)
+      y = c(2e7 + 1, 1,          1,          2e7 + 1)
     )
   )
 
@@ -167,10 +167,10 @@ test_that("form_tails works with `method='winsor'` and 'continuous' type", {
   expect_ref_x_tbl(
     form_tails(cur_con, 0.1, "winsor", "left"),
     data.frame(
-      x = c(  0.1, 0.1+1e-8, 1),
+      x = c(0.1,     0.1 + 1e-8, 1),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
       # representation issues
-      y = c(2e7+1,        1, 1)
+      y = c(2e7 + 1, 1,          1)
     )
   )
 
@@ -178,10 +178,10 @@ test_that("form_tails works with `method='winsor'` and 'continuous' type", {
   expect_ref_x_tbl(
     form_tails(cur_con, 0.1, "winsor", "right"),
     data.frame(
-      x = c(0, 0.9-1e-8,   0.9),
+      x = c(0, 0.9 - 1e-8, 0.9),
       # Here `2e7+1` is used instead of `2e7` due to (seems like) numerical
       # representation issues
-      y = c(1,        1, 2e7+1)
+      y = c(1, 1,          2e7 + 1)
     )
   )
 })

@@ -74,7 +74,6 @@ error_beta_2 <- pdqr_approx_error(
   d_beta, dbeta, shape1 = 0.3, shape2 = 0.7, remove_infinity = FALSE
 )
 summary(error_beta_2)
-
 }
 \seealso{
 \code{\link[=enpoint]{enpoint()}} for representing pdqr-function as a set of points with

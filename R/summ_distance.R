@@ -103,16 +103,17 @@
 #'     "wass", "cramer", "align", "avgdist",
 #'     "entropy"
 #'   ),
-#'   function(meth) {summ_distance(d_unif, d_norm, method = meth)},
+#'   function(meth) {
+#'     summ_distance(d_unif, d_norm, method = meth)
+#'   },
 #'   numeric(1)
 #' )
 #'
 #' # "Supremum" quality of "KS" distance
 #' d_dis <- new_d(2, "discrete")
-#'   # Distance is 1, which is a limit of |F - G| at points which tend to 2 from
-#'   # left
+#' ## Distance is 1, which is a limit of |F - G| at points which tend to 2 from
+#' ## left
 #' summ_distance(d_dis, d_unif, method = "KS")
-#'
 #' @export
 summ_distance <- function(f, g, method = "KS") {
   assert_pdqr_fun(f)
@@ -242,7 +243,7 @@ distance_totvar_two_con <- function(d_f, d_g) {
   # case both `x_lim_left` and `x_lim_right` are empty and `sum()` later will
   # return 0, which is correct answer.
   x_lim_left <- x_lim[pos_sign_inds]
-  x_lim_right <- x_lim[pos_sign_inds+1]
+  x_lim_right <- x_lim[pos_sign_inds + 1]
 
   p_f <- as_p(d_f)
   p_g <- as_p(d_g)
@@ -372,7 +373,9 @@ integrate_cdf_absdiff <- function(p_f, p_g, power) {
     integr_range <- union_support(p_f, p_g)
 
     stats::integrate(
-      f = function(x) {abs(p_f(x) - p_g(x))^power},
+      f = function(x) {
+        abs(p_f(x) - p_g(x))^power
+      },
       lower = integr_range[1],
       upper = integr_range[2],
       subdivisions = 1e3

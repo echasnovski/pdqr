@@ -167,5 +167,4 @@ meta_class(d_unif)
 meta_type(d_unif)
 meta_support(d_unif)
 head(meta_x_tbl(d_unif))
-
 }

@@ -59,7 +59,6 @@ bad_con <- new_d(
 smoothed_con <- form_smooth(bad_con)
 plot(bad_con)
 lines(smoothed_con, col = "blue")
-
 }
 \seealso{
 Other form functions: 

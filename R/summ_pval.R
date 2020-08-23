@@ -49,9 +49,8 @@
 #'
 #' # Adjustment is made for multiple observed values
 #' summ_pval(d_norm, seq(0, 2, by = 0.1))
-#'   # Use `adjust = "none"` for to not do any adjustment
+#' ## Use `adjust = "none"` for to not do any adjustment
 #' summ_pval(d_norm, seq(0, 2, by = 0.1), adjust = "none")
-#'
 #' @export
 summ_pval <- function(f, obs, method = "both", adjust = "holm") {
   assert_pdqr_fun(f)

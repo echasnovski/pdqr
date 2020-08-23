@@ -52,7 +52,7 @@
 # "p", "d", "q", "r" from some other package. This implmementation has not very
 # big overhead (around 4 microseconds).
 
-#nocov start
+# nocov start
 # Function `pillar::type_sum()` is used in 'tibble' package. This method is
 # registered in `.onLoad()` to avoid explicit import of 'pillar'.
 type_sum.pdqr <- function(x) {
@@ -64,13 +64,13 @@ type_sum.pdqr <- function(x) {
 toString.pdqr <- function(x, ...) {
   paste0(meta_class(x), "-function")
 }
-#nocov end
+# nocov end
 
 
 # Other methods -----------------------------------------------------------
-#nocov start
+# nocov start
 #' @export
 summary.pdqr <- function(object, ...) {
   print(object)
 }
-#nocov end
+# nocov end

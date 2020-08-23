@@ -19,7 +19,9 @@ as_p.default <- function(f, support = NULL, ..., n_grid = 10001) {
   }
 
   # Treate `f` as unknown p-function
-  p_f <- function(q) {f(q, ...)}
+  p_f <- function(q) {
+    f(q, ...)
+  }
 
   # Format support as vector with length two where `NA` indicates value to be
   # detected
@@ -82,7 +84,9 @@ solve_for_quan <- function(p_f, quan) {
   tryCatch(
     # Solve equation on interval (-10^100; 10^100)
     stats::uniroot(
-      function(q) {p_f(q) - quan}, 1e100 * c(-1, 1)
+      function(q) {
+        p_f(q) - quan
+      }, 1e100 * c(-1, 1)
     )[["root"]],
     error = function(e) {
       stop_collapse("Can't find quantile ", quan, " during support detection.")

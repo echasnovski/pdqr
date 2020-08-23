@@ -25,10 +25,10 @@ raw_moment_con <- function(x_tbl, k) {
   y_l <- x_tbl[["y"]][-n]
   y_r <- x_tbl[["y"]][-1]
 
-  coeffs <- compute_piecelin_density_coeffs(x_tbl, seq_len(n-1))
+  coeffs <- compute_piecelin_density_coeffs(x_tbl, seq_len(n - 1))
 
-  piece_moments <- coeffs[["slope"]] * (x_r_k1*x_r - x_l_k1*x_l) / (k+2) +
-    coeffs[["intercept"]] * (x_r_k1 - x_l_k1) / (k+1)
+  piece_moments <- coeffs[["slope"]] * (x_r_k1 * x_r - x_l_k1 * x_l) / (k + 2) +
+    coeffs[["intercept"]] * (x_r_k1 - x_l_k1) / (k + 1)
 
   # If `x_r-x_l << 1` and `pmax(y_l, y_r) >> 1` (which happens in case of
   # dirac-like approximations), above expression suffer from numerical
@@ -64,11 +64,11 @@ piecequad_density <- function(f) {
   x_tbl <- meta_x_tbl(f)
   n <- nrow(x_tbl)
 
-  coeffs <- compute_piecelin_density_coeffs(x_tbl, seq_len(n-1))
+  coeffs <- compute_piecelin_density_coeffs(x_tbl, seq_len(n - 1))
 
   list(
     x = x_tbl[["x"]],
-    a = rep(0, n-1),
+    a = rep(0, n - 1),
     b = coeffs[["slope"]],
     c = coeffs[["intercept"]]
   )
@@ -94,15 +94,15 @@ piecequad_cdf <- function(f) {
   x_tbl <- meta_x_tbl(f)
   n <- nrow(x_tbl)
   x_l <- x_tbl[["x"]][-n]
-  coeffs <- compute_piecelin_density_coeffs(x_tbl, seq_len(n-1))
+  coeffs <- compute_piecelin_density_coeffs(x_tbl, seq_len(n - 1))
   slope <- coeffs[["slope"]]
   inter <- coeffs[["intercept"]]
 
   list(
     x = x_tbl[["x"]],
-    a = 0.5*slope,
+    a = 0.5 * slope,
     b = inter,
-    c = x_tbl[["cumprob"]][-n] - (0.5*slope*x_l + inter)*x_l
+    c = x_tbl[["cumprob"]][-n] - (0.5 * slope * x_l + inter) * x_l
   )
 }
 
@@ -206,7 +206,7 @@ piecequad_pair_regrid <- function(piecequad_1, piecequad_2) {
 piecequad_regrid <- function(grid, piecequad) {
   # Ensure that `grid` has at least two elements
   grid <- rep(grid, length.out = max(2, length(grid)))
-  mids <- 0.5*(grid[-1] + grid[-length(grid)])
+  mids <- 0.5 * (grid[-1] + grid[-length(grid)])
   inds <- findInterval(mids, piecequad[["x"]], all.inside = TRUE)
 
   list(
@@ -224,13 +224,13 @@ solve_piecequad <- function(a, b, c, x_l, x_r) {
 
   # Compute coefficients for new equation with respect to `t = x - x_l`
   a_new <- a
-  b_new <- 2*a*x_l + b
-  c_new <- (a*x_l + b)*x_l + c
+  b_new <- 2 * a * x_l + b
+  c_new <- (a * x_l + b) * x_l + c
 
   # Solve modified equations
-  discr_sqrt <- na_sqrt(b_new^2 - 4*a_new*c_new)
-  t_sol_1 <- (-b_new + discr_sqrt) / (2*a_new)
-  t_sol_2 <- (-b_new - discr_sqrt) / (2*a_new)
+  discr_sqrt <- na_sqrt(b_new^2 - 4 * a_new * c_new)
+  t_sol_1 <- (-b_new + discr_sqrt) / (2 * a_new)
+  t_sol_2 <- (-b_new - discr_sqrt) / (2 * a_new)
 
   # Make reverse change of variables and check if answers lie inside intervals
   x_sol_1 <- na_outside(x_l + t_sol_1, x_l, x_r)

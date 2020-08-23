@@ -70,8 +70,10 @@ test_that("form_retype works with `method='dirac'`", {
   expect_ref_x_tbl(
     d_con_dirac,
     data.frame(
-      x = c(1-1e-8,   1, 1+1e-8, 2-1e-8,   2, 2+1e-8, 3-1e-8,   3, 3+1e-8),
-      y = c(     0, 1e7,      0,      0, 2e7,      0,      0, 7e7,      0)
+      x = c(1 - 1e-8, 1,   1 + 1e-8, 2 - 1e-8, 2,   2 + 1e-8, 3 - 1e-8, 3,
+        3 + 1e-8),
+      y = c(0,        1e7, 0,        0,        2e7, 0,        0,        7e7,
+        0)
     )
   )
 
@@ -133,7 +135,7 @@ test_that("form_retype returns input when types match", {
 test_that("form_retype validates input", {
   expect_error(form_retype("a", "discrete"), "`f`.*not pdqr-function")
   expect_error(form_retype(d_dis, "a"), '`type`.*"discrete".*"continuous"')
-  expect_error(form_retype(d_dis, "continuous", 1), '`method`.*string')
+  expect_error(form_retype(d_dis, "continuous", 1), "`method`.*string")
   expect_error(
     form_retype(d_dis, "continuous", "a"), '`method`.*"piecelin".*"dirac"'
   )

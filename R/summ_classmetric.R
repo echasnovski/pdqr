@@ -125,7 +125,6 @@
 #' summ_classmetric_df(
 #'   d_unif, d_norm, threshold = t_vec, method = c("TPR", "sensitivity")
 #' )
-#'
 #' @name summ_classmetric
 NULL
 
@@ -256,7 +255,7 @@ classmetric <- function(p_f_t, p_g_t, method) {
     # GM = sqrt(TPR * TNR)
     GM = sqrt((1 - p_g_t) * p_f_t),
     # F1 = 2*TP / (2*TP + FP + FN)
-    F1 = 2 * (1 - p_g_t) / (2*(1 - p_g_t) + (1 - p_f_t) + p_g_t),
+    F1 = 2 * (1 - p_g_t) / (2 * (1 - p_g_t) + (1 - p_f_t) + p_g_t),
     # OP = Acc - abs(TPR - TNR) / (TPR + TNR)
     OP = classmetric_op(p_f_t, p_g_t),
     # MCC is computed based on explicit formula in `classmetric_mcc()`
@@ -264,7 +263,8 @@ classmetric <- function(p_f_t, p_g_t, method) {
     # YI = TPR + TNR - 1
     YI = (1 - p_g_t) + p_f_t - 1,
     # MK = PPV + NPV - 1
-    MK = classmetric(p_f_t, p_g_t, "PPV")+classmetric(p_f_t, p_g_t, "NPV")-1,
+    MK = classmetric(p_f_t, p_g_t, "PPV") +
+      classmetric(p_f_t, p_g_t, "NPV") - 1,
     # Jaccard = TP / (TP + FN + FP)
     Jaccard = (1 - p_g_t) / (1 + (1 - p_f_t)),
     # DOR = LR+ / LR-
@@ -289,5 +289,5 @@ classmetric_mcc <- function(p_f_t, p_g_t) {
   fn <- p_g_t
 
   # TP + FN = 1; TN + FP = 1
-  (tp*tn - fp*fn) / sqrt((tp + fp) * (tn + fn))
+  (tp * tn - fp * fn) / sqrt((tp + fp) * (tn + fn))
 }

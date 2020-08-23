@@ -206,35 +206,42 @@ p_unif <- as_p(punif)
 r_beta <- as_r(rbeta, shape1 = 2, shape2 = 2)
 d_pois <- as_d(dpois, lambda = 5)
 
-  # `pdqr_approx_error()` computes pdqr approximation error
+## `pdqr_approx_error()` computes pdqr approximation error
 summary(pdqr_approx_error(as_d(dnorm), dnorm))
 
-  # This will work as if input is unkonw function because of unsupported
-  # variable name
-my_runif <- function(n) {runif(n)}
+## This will work as if input is unkonw function because of unsupported
+## variable name
+my_runif <- function(n) {
+  runif(n)
+}
 r_unif_2 <- as_r(my_runif)
 plot(as_d(r_unif_2))
 
 # Convert some other function to be a "proper" pdqr-function
-my_d_quadr <- as_d(function(x) {0.75*(1 - x^2)}, support = c(-1, 1))
+my_d_quadr <- as_d(function(x) {
+  0.75 * (1 - x^2)
+}, support = c(-1, 1))
 
 # Support detection
-unknown <- function(x) {dnorm(x, mean = 1)}
-  # Completely automatic support detection
+unknown <- function(x) {
+  dnorm(x, mean = 1)
+}
+## Completely automatic support detection
 as_d(unknown)
-  # Semi-automatic support detection
+## Semi-automatic support detection
 as_d(unknown, support = c(-4, NA))
 as_d(unknown, support = c(NA, 5))
 
-  # If support is very small and very distant from zero, it probably won't
-  # get detected in `as_d()` (throwing a relevant error)
+## If support is very small and very distant from zero, it probably won't
+## get detected in `as_d()` (throwing a relevant error)
 \dontrun{
-as_d(function(x) {dnorm(x, mean = 10000, sd = 0.1)})
+as_d(function(x) {
+  dnorm(x, mean = 10000, sd = 0.1)
+})
 }
 
 # Using different level of granularity
 as_d(unknown, n_grid = 1001)
-
 }
 \seealso{
 \code{\link[=pdqr_approx_error]{pdqr_approx_error()}} for computing approximation errors compared to

@@ -26,7 +26,7 @@ as_pdqr_by_ref <- function(f) {
 
 # Custom constructors -----------------------------------------------------
 boolean_pdqr <- function(prob_true, pdqr_class) {
-  x_tbl <- data.frame(x = c(0, 1), prob = c(1-prob_true, prob_true))
+  x_tbl <- data.frame(x = c(0, 1), prob = c(1 - prob_true, prob_true))
 
   new_pdqr_by_class(pdqr_class)(x_tbl, "discrete")
 }
@@ -95,7 +95,11 @@ compute_f_list_meta <- function(f_list) {
   type_vec <- vapply(f_list[is_elem_pdqr], meta_type, character(1))
 
   # Combined type is "discrete" only if all inputs are "discrete"
-  res_type <- if (all(type_vec == "discrete")) {"discrete"} else {"continuous"}
+  res_type <- if (all(type_vec == "discrete")) {
+    "discrete"
+  } else {
+    "continuous"
+  }
 
   # Combined class is the class of first pdqr-function (which should be present
   # due to call to `assert_f_list()`)

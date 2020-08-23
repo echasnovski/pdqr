@@ -23,7 +23,7 @@ test_that("new_p returns dirac-like function with length-one numeric input",  {
   expect_ref_x_tbl(new_p(0.1, "discrete"), data.frame(x = 0.1, prob = 1))
   expect_ref_x_tbl(
     new_p(0.1, "continuous"),
-    data.frame(x = 0.1 + 1e-8*c(-1, 0, 1), y = 1e8*c(0, 1, 0))
+    data.frame(x = 0.1 + 1e-8 * c(-1, 0, 1), y = 1e8 * c(0, 1, 0))
   )
 
   # With big center value there can be problems with total integral being 1

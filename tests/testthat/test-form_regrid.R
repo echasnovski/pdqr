@@ -46,11 +46,11 @@ test_that("form_regrid downgrids 'discrete' functions", {
   # ordinary distance. Probabilities are sum of respective nearest input `x`.
   expect_ref_x_tbl(
     form_regrid(cur_dis, n_grid = 2, method = "x"),
-    data.frame(x = c(1, 3.4), prob = c(5+4+3, 2+1) / 15)
+    data.frame(x = c(1, 3.4), prob = c(5 + 4 + 3, 2 + 1) / 15)
   )
   expect_ref_x_tbl(
     form_regrid(cur_dis, n_grid = 2, method = "q"),
-    data.frame(x = c(1, 3.4), prob = c(5+4+3, 2+1) / 15)
+    data.frame(x = c(1, 3.4), prob = c(5 + 4 + 3, 2 + 1) / 15)
   )
 
   # Output `x` are from rows **matched** to method grids. Output `prob` come
@@ -62,23 +62,23 @@ test_that("form_regrid downgrids 'discrete' functions", {
   # Grid is c(1, 2.2, 3.4).
   expect_ref_x_tbl(
     form_regrid(cur_dis, n_grid = 3, method = "x"),
-    data.frame(x = c(1, 2, 3.4), prob = c(5+4, 3+2, 1) / 15)
+    data.frame(x = c(1, 2, 3.4), prob = c(5 + 4, 3 + 2, 1) / 15)
   )
   # Grid is c(1, 1.1, 3.4).
   expect_ref_x_tbl(
     form_regrid(cur_dis, n_grid = 3, method = "q"),
-    data.frame(x = c(1, 1.1, 3.4), prob = c(5, 4+3, 2+1) / 15)
+    data.frame(x = c(1, 1.1, 3.4), prob = c(5, 4 + 3, 2 + 1) / 15)
   )
   # Grid is c(1, 1.8, 2.6, 3.4).
   expect_ref_x_tbl(
     form_regrid(cur_dis, n_grid = 4, method = "x"),
-    data.frame(x = c(1, 2, 2.5, 3.4), prob = c(5+4, 3, 2, 1) / 15)
+    data.frame(x = c(1, 2, 2.5, 3.4), prob = c(5 + 4, 3, 2, 1) / 15)
   )
   # Grid is c(1, 1, 2, 3.4). Note that output `x` is computed by
   # **matching** needed amount of input `x` elements to the c(1, 2, 3.4).
   expect_ref_x_tbl(
     form_regrid(cur_dis, n_grid = 4, method = "q"),
-    data.frame(x = c(1, 1.1, 2, 3.4), prob = c(5, 4, 3+2, 1) / 15)
+    data.frame(x = c(1, 1.1, 2, 3.4), prob = c(5, 4, 3 + 2, 1) / 15)
   )
 })
 
@@ -91,11 +91,11 @@ test_that("form_regrid downgrids 'continuous' functions", {
   # Output `x` are edges of input "x_tbl" in case `n_grid = 2`
   expect_ref_x_tbl(
     form_regrid(cur_con, n_grid = 2, method = "x"),
-    data.frame(x = c(0, 3), y = c(0, 2/3))
+    data.frame(x = c(0, 3), y = c(0, 2 / 3))
   )
   expect_ref_x_tbl(
     form_regrid(cur_con, n_grid = 2, method = "q"),
-    data.frame(x = c(0, 3), y = c(0, 2/3))
+    data.frame(x = c(0, 3), y = c(0, 2 / 3))
   )
 
   # Output `x` are from rows **matched** to method grids. Other rows are dropped
@@ -176,7 +176,7 @@ test_that("form_regrid handles difficult cases", {
     form_regrid(difficult_dis, n_grid = 3, method = "x"),
     # Output `x` shouldn't be squashed near c(0.98, 0.99, 1.01). At least, that
     # is a current reasoning taking into account speed of computations.
-    data.frame(x = c(0.98, 2.2, 3.1), prob = c(1+2+3, 4, 5) / 15)
+    data.frame(x = c(0.98, 2.2, 3.1), prob = c(1 + 2 + 3, 4, 5) / 15)
   )
 })
 

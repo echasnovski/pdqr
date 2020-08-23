@@ -33,13 +33,12 @@
 #' d_1 <- new_d(1:10, "discrete")
 #' d_2 <- new_d(20:21, "discrete")
 #'
-#'   # Formally, output isn't clearly defined because functions don't have the
-#'   # same support. Direct use of entropy formulas gives infinity output, but
-#'   # here maximum value is `-log(clip)`.
+#' ## Formally, output isn't clearly defined because functions don't have the
+#' ## same support. Direct use of entropy formulas gives infinity output, but
+#' ## here maximum value is `-log(clip)`.
 #' summ_entropy2(d_1, d_2, method = "cross")
 #' summ_entropy2(d_1, d_2, method = "cross", clip = exp(-10))
 #' summ_entropy2(d_1, d_2, method = "cross", clip = 0)
-#'
 #' @name summ_entropy
 NULL
 
@@ -124,7 +123,7 @@ cross_entropy_con <- function(d_f, d_g, clip) {
   inters_right <- inters_x[-1]
   d <- inters_right - inters_left
 
-  inters_mid <- (inters_left + inters_right)/2
+  inters_mid <- (inters_left + inters_right) / 2
   f_x_tbl <- meta_x_tbl(d_f)
   sl_f <- compute_piecelin_density_coeffs(
     x_tbl = f_x_tbl, ind_vec = findInterval(inters_mid, f_x_tbl[["x"]])
@@ -145,14 +144,16 @@ cross_entropy_con <- function(d_f, d_g, clip) {
   # Compute integrals. Here using `g_y_r_clipped` instead of `g_y_r` ensures
   # that no `NaN` happens because of `log(0)` (they can happen, though, if
   # `sl_g == 0`).
+  # styler: off
   piece_entropy_with_log <- -(
     log(g_y_r_clipped) *
       (0.5*sl_f*d^2 + d*f_y_l + f_y_l*g_y_l/sl_g - 0.5*sl_f*(g_y_l/sl_g)^2) +
       log(g_y_l_clipped) *
       (-f_y_l*g_y_l/sl_g + 0.5*sl_f*(g_y_l/sl_g)^2) +
       0.5*sl_f*d*g_y_l / sl_g - 0.25*sl_f*d^2 - d*f_y_l
+    # styler: on
   )
-  piece_entropy_no_log <- -log(g_y_l_clipped) * (0.5*sl_f*d^2 + f_y_l*d)
+  piece_entropy_no_log <- -log(g_y_l_clipped) * (0.5 * sl_f * d^2 + f_y_l * d)
 
   piece_entropy <- numeric(n - 1)
   # Usage of `is_zero()` instead of `sl_g != 0` is crucial as latter introduced

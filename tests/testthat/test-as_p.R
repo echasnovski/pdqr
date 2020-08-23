@@ -60,7 +60,9 @@ test_that("as_p.default honors special 'discrete' distributions", {
 test_that("as_p.default honors special 'continuous' distributions", {
   # Standard uniform
   out_unif <- as_p(punif)
-  out_unif_ref <- as_p(function(x) {punif(x)}, c(0, 1))
+  out_unif_ref <- as_p(function(x) {
+    punif(x)
+  }, c(0, 1))
   expect_equal_x_tbl(out_unif, out_unif_ref)
 
   # Partially set support is used
@@ -72,7 +74,7 @@ test_that("as_p.default honors special 'continuous' distributions", {
   # prefix.
   out_norm <- as_p(stats::pnorm, mean = 100, sd = 0.1)
   expect_equal(
-    meta_support(out_norm), qnorm(c(1e-6, 1-1e-6), mean = 100, sd = 0.1)
+    meta_support(out_norm), qnorm(c(1e-6, 1 - 1e-6), mean = 100, sd = 0.1)
   )
 
   # Distribution function of other "p-d-q-r" type is repaired with warning
@@ -86,9 +88,13 @@ test_that("as_p.default honors special 'continuous' distributions", {
 
   # Function environment is used to not pick "honored" function when another
   # object with the same name is found "earlier"
-  pgamma <- function(q) {punif(q)}
+  pgamma <- function(q) {
+    punif(q)
+  }
   out_bad_gamma <- as_p(pgamma)
-  out_bad_gamma_ref <- as_p(function(q) {punif(q)})
+  out_bad_gamma_ref <- as_p(function(q) {
+    punif(q)
+  })
   expect_equal_x_tbl(out_bad_gamma, out_bad_gamma_ref)
 })
 
@@ -249,7 +255,7 @@ test_that("as_p.default detects support", {
 
 test_that("as_p.default removes edge `y` with zero density", {
   x_tbl <- meta_x_tbl(p_unif)
-  expect_true(all(x_tbl$y[c(2, nrow(x_tbl)-1)] != 0))
+  expect_true(all(x_tbl$y[c(2, nrow(x_tbl) - 1)] != 0))
 })
 
 test_that("as_p.default uses `n_grid` argument", {
@@ -263,7 +269,9 @@ test_that("as_p.default uses `n_grid` argument", {
 test_that("as_p.default uses `...` to forward arguments to `f`", {
   # This function is used to workaround the "honored" special distribution
   # functions
-  my_punif <- function(q, ...) {punif(q, ...)}
+  my_punif <- function(q, ...) {
+    punif(q, ...)
+  }
 
   output_1 <- as_p(my_punif, support = c(0, 10), max = 10)
   expect_true(output_1(9) > 0)
@@ -383,7 +391,9 @@ test_that("detect_support_p returns input support if it's proper all numeric", {
 })
 
 test_that("detect_support_p throws informative error on bad input function", {
-  bad_p_f <- function(q) {fam_norm$p(q) - 10}
+  bad_p_f <- function(q) {
+    fam_norm$p(q) - 10
+  }
   expect_error(
     detect_support_p(bad_p_f, c(NA_real_, NA_real_)), "[Cc]an't find"
   )

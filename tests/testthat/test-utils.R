@@ -86,10 +86,10 @@ test_that("is_truefalse works", {
 
 # neigh_dist --------------------------------------------------------------
 test_that("neigh_dist works",  {
-  vec      <- c(  2,   1, 2.5,  2.6, -100,  100)
+  vec      <- c(2,   1,   2.5, 2.6,  -100, 100)
 
-  min_dist <- c(0.5,   1, 0.1,  0.1,  101, 97.4)
-  max_dist <- c(  1, 101, 0.5, 97.4,  101, 97.4)
+  min_dist <- c(0.5, 1,   0.1, 0.1,  101,  97.4)
+  max_dist <- c(1,   101, 0.5, 97.4, 101,  97.4)
 
   expect_equal(neigh_dist(vec, "min"), min_dist)
   expect_equal(neigh_dist(vec, "max"), max_dist)
@@ -123,7 +123,9 @@ test_that("recycle_vec works", {
 
 # inversing ---------------------------------------------------------------
 test_that("inversing works", {
-  square <- function(x) {x^2}
+  square <- function(x) {
+    x^2
+  }
   inv_square <- inversing(square, c(0.5, 10))
   x_vec <- sample(seq(0.5, 10, by = 0.01))
 
@@ -132,13 +134,17 @@ test_that("inversing works", {
 })
 
 test_that("inversing linearly imputes infinite values", {
-  f_inv <- inversing(function(x) {1 / x}, c(0, 1), n_grid = 11)
+  f_inv <- inversing(function(x) {
+    1 / x
+  }, c(0, 1), n_grid = 11)
   expect_equal(f_inv(10:15), seq(0.1, 0, by = -0.02))
 })
 
 test_that("inversing accepts extra arguments for input function", {
   f_inv <- inversing(qunif, c(0, 1), min = 10, max = 11)
-  f_ref <- function(q) {punif(q, min = 10, max = 11)}
+  f_ref <- function(q) {
+    punif(q, min = 10, max = 11)
+  }
   expect_close_f(f_inv, f_ref, seq(-9, 12, by = 0.001))
 })
 
@@ -189,8 +195,8 @@ test_that("extrap_lin works", {
   # True are: y = -x, y = 10, y = 2x + 2
   expect_equal(
     extrap_lin(
-      x_1 = c(-1,  0, 1), x_2 = c( 2,  3,  4),
-      y_1 = c( 1, 10, 4), y_2 = c(-2, 10, 10),
+      x_1 = c(-1, 0,  1), x_2 = c(2,  3,  4),
+      y_1 = c(1,  10, 4), y_2 = c(-2, 10, 10),
       x_target = c(-10, 0, 10)
     ),
     c(10, 10, 22)
@@ -247,7 +253,9 @@ test_that("integrate_safely integrates when `stats::integrate()` can't", {
 })
 
 test_that("integrate_safely throws informative error", {
-  f <- function(x) {rep(Inf, length.out = length(x))}
+  f <- function(x) {
+    rep(Inf, length.out = length(x))
+  }
   expect_error(integrate_safely(f, -1, 1), "Can't")
 })
 
@@ -579,7 +587,7 @@ test_that("pdqr_approx_error validates input", {
 
 # granulate_grid ----------------------------------------------------------
 test_that("granulate_grid works", {
-  cur_d <- new_d(data.frame(x = 1:3, y = c(1, 1, 1)/2), "continuous")
+  cur_d <- new_d(data.frame(x = 1:3, y = c(1, 1, 1) / 2), "continuous")
   expect_equal(granulate_grid(cur_d, 1), 1:3)
   expect_equal(granulate_grid(cur_d, 10), seq(1, 3, length.out = 21))
 
@@ -681,41 +689,41 @@ test_that("enpoint validates input", {
 
 # mean_unif_dist ----------------------------------------------------------
 test_that("mean_unif_dist works with non-overlapping supports", {
-  expect_equal(mean_unif_dist(0, 1, 2, 3), 2.5-0.5)
-  expect_equal(mean_unif_dist(2, 3, 0, 1), 2.5-0.5)
+  expect_equal(mean_unif_dist(0, 1, 2, 3), 2.5 - 0.5)
+  expect_equal(mean_unif_dist(2, 3, 0, 1), 2.5 - 0.5)
 
-  expect_equal(mean_unif_dist(0, 1, 1, 1.5), 1.25-0.5)
-  expect_equal(mean_unif_dist(1, 1.5, 0, 1), 1.25-0.5)
+  expect_equal(mean_unif_dist(0, 1, 1, 1.5), 1.25 - 0.5)
+  expect_equal(mean_unif_dist(1, 1.5, 0, 1), 1.25 - 0.5)
 })
 
 test_that("mean_unif_dist works with overlapping supports", {
-  expect_equal(mean_unif_dist(0, 1, 0.5, 1.5), 1.625/3)
-  expect_equal(mean_unif_dist(0.5, 1.5, 0, 1), 1.625/3)
+  expect_equal(mean_unif_dist(0, 1, 0.5, 1.5), 1.625 / 3)
+  expect_equal(mean_unif_dist(0.5, 1.5, 0, 1), 1.625 / 3)
 })
 
 test_that("mean_unif_dist works with 'swallowed' supports", {
   # Direct 'swallowing'
-  expect_equal(mean_unif_dist(0, 1, 0.25, 0.75), 3.25/12)
-  expect_equal(mean_unif_dist(0.25, 0.75, 0, 1), 3.25/12)
-  expect_equal(mean_unif_dist(0, 1, 0.25, 0.5), 3.25/12)
-  expect_equal(mean_unif_dist(0.25, 0.5, 0, 1), 3.25/12)
-  expect_equal(mean_unif_dist(0, 1, 0.5, 0.75), 3.25/12)
-  expect_equal(mean_unif_dist(0.5, 0.75, 0, 1), 3.25/12)
+  expect_equal(mean_unif_dist(0, 1, 0.25, 0.75), 3.25 / 12)
+  expect_equal(mean_unif_dist(0.25, 0.75, 0, 1), 3.25 / 12)
+  expect_equal(mean_unif_dist(0, 1, 0.25, 0.5), 3.25 / 12)
+  expect_equal(mean_unif_dist(0.25, 0.5, 0, 1), 3.25 / 12)
+  expect_equal(mean_unif_dist(0, 1, 0.5, 0.75), 3.25 / 12)
+  expect_equal(mean_unif_dist(0.5, 0.75, 0, 1), 3.25 / 12)
 
   # Identical supports. Mean distance of U(a, b) with self is equal to `(b-a)/3`
-  expect_equal(mean_unif_dist(0, 3, 0, 3), 3/3)
+  expect_equal(mean_unif_dist(0, 3, 0, 3), 3 / 3)
 
   # Equal corresponding edges
-  expect_equal(mean_unif_dist(0, 1, 0.5, 1), 1/3)
-  expect_equal(mean_unif_dist(0.5, 1, 0, 1), 1/3)
-  expect_equal(mean_unif_dist(0, 1, 0, 0.5), 1/3)
-  expect_equal(mean_unif_dist(0, 0.5, 0, 1), 1/3)
+  expect_equal(mean_unif_dist(0, 1, 0.5, 1), 1 / 3)
+  expect_equal(mean_unif_dist(0.5, 1, 0, 1), 1 / 3)
+  expect_equal(mean_unif_dist(0, 1, 0, 0.5), 1 / 3)
+  expect_equal(mean_unif_dist(0, 0.5, 0, 1), 1 / 3)
 })
 
 test_that("mean_unif_dist works with point supports", {
   # Single point
-  expect_equal(mean_unif_dist(0, 1, 0.25, 0.25), 5/16)
-  expect_equal(mean_unif_dist(0.25, 0.25, 0, 1), 5/16)
+  expect_equal(mean_unif_dist(0, 1, 0.25, 0.25), 5 / 16)
+  expect_equal(mean_unif_dist(0.25, 0.25, 0, 1), 5 / 16)
 
   # Both are points
   expect_equal(mean_unif_dist(0, 0, 1, 1), 1)
