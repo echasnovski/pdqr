@@ -24,10 +24,10 @@
 #' after renormalization (so that total integral of piecewise-linear density is
 #' equal to 1).
 #'
-#' Method "piecelin" (default) should be used mostly for converting from
-#' "continuous" to "discrete" type. It uses the fact that 'pdqr' densities are
-#' piecewise-linear (linear in intervals between values of "x" column of
-#' ["x_tbl" metadata][meta_x_tbl()]) on their [support][meta_support()]:
+#' Method "piecelin" should be used mostly for converting from "continuous" to
+#' "discrete" type. It uses the fact that 'pdqr' densities are piecewise-linear
+#' (linear in intervals between values of "x" column of ["x_tbl"
+#' metadata][meta_x_tbl()]) on their [support][meta_support()]:
 #' - Retyping from "continuous" to `type` "discrete" is done by computing "x"
 #' values as centers of interval masses with probabilities equal to interval
 #' total probabilities.
