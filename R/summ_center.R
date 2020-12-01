@@ -145,16 +145,15 @@ summ_midrange <- function(f) {
 
 summ_mean_con <- function(x_tbl) {
   n <- nrow(x_tbl)
-  x_lag <- x_tbl[["x"]][-n]
-  x_lead <- x_tbl[["x"]][-1]
-  y_lag <- x_tbl[["y"]][-n]
-  y_lead <- x_tbl[["y"]][-1]
-  y_sum <- y_lag + y_lead
-  x_mass <- (x_lag * (y_lag + y_sum) + x_lead * (y_lead + y_sum)) / (3 * y_sum)
+  x_left <- x_tbl[["x"]][-n]
+  x_right <- x_tbl[["x"]][-1]
+  dx  <- x_right - x_left
+  y_left <- x_tbl[["y"]][-n]
+  y_right <- x_tbl[["y"]][-1]
 
-  x_mass_is_good <- is.finite(x_mass)
-
-  prob <- diff(x_tbl[["cumprob"]])
-
-  dotprod(x_mass[x_mass_is_good], prob[x_mass_is_good])
+  # Not putting `dx` out of brackets to be more sure about the case of
+  # dirac-like functions
+  sum(
+    dx * (2 * y_left + y_right) * x_left + dx * (y_left + 2 * y_right) * x_right
+  ) / 6
 }
