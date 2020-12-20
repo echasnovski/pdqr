@@ -395,8 +395,8 @@ test_that("Ops.pdqr repairs support in general cases", {
 
 test_that("Ops.pdqr works with generics which take one argument", {
   # `+`
-  expect_equal(+d_dis, d_dis)
-  expect_equal(+d_con, d_con)
+  expect_equal_meta(+d_dis, d_dis)
+  expect_equal_meta(+d_con, d_con)
 
   # `-`
   d_dis_minus <- -d_dis

@@ -3,10 +3,10 @@ context("test-utils-form")
 
 # new_pdqr_by_class -------------------------------------------------------
 test_that("new_pdqr_by_class works",  {
-  expect_equal(new_pdqr_by_class("p"), new_p)
-  expect_equal(new_pdqr_by_class("d"), new_d)
-  expect_equal(new_pdqr_by_class("q"), new_q)
-  expect_equal(new_pdqr_by_class("r"), new_r)
+  expect_equal_meta(new_pdqr_by_class("p"), new_p)
+  expect_equal_meta(new_pdqr_by_class("d"), new_d)
+  expect_equal_meta(new_pdqr_by_class("q"), new_q)
+  expect_equal_meta(new_pdqr_by_class("r"), new_r)
 
   expect_error(new_pdqr_by_class("aaa"), "class")
 })
@@ -14,10 +14,10 @@ test_that("new_pdqr_by_class works",  {
 
 # new_pdqr_by_ref ---------------------------------------------------------
 test_that("new_pdqr_by_ref works", {
-  expect_equal(new_pdqr_by_ref(p_dis), new_p)
-  expect_equal(new_pdqr_by_ref(d_con), new_d)
-  expect_equal(new_pdqr_by_ref(q_dis), new_q)
-  expect_equal(new_pdqr_by_ref(r_con), new_r)
+  expect_equal_meta(new_pdqr_by_ref(p_dis), new_p)
+  expect_equal_meta(new_pdqr_by_ref(d_con), new_d)
+  expect_equal_meta(new_pdqr_by_ref(q_dis), new_q)
+  expect_equal_meta(new_pdqr_by_ref(r_con), new_r)
 
   expect_error(new_pdqr_by_ref(function(x) {
     x
@@ -27,10 +27,10 @@ test_that("new_pdqr_by_ref works", {
 
 # as_pdqr_by_class --------------------------------------------------------
 test_that("as_pdqr_by_class works",  {
-  expect_equal(as_pdqr_by_class("p"), as_p)
-  expect_equal(as_pdqr_by_class("d"), as_d)
-  expect_equal(as_pdqr_by_class("q"), as_q)
-  expect_equal(as_pdqr_by_class("r"), as_r)
+  expect_equal_meta(as_pdqr_by_class("p"), as_p)
+  expect_equal_meta(as_pdqr_by_class("d"), as_d)
+  expect_equal_meta(as_pdqr_by_class("q"), as_q)
+  expect_equal_meta(as_pdqr_by_class("r"), as_r)
 
   expect_error(as_pdqr_by_class("aaa"), "class")
 })
@@ -38,10 +38,10 @@ test_that("as_pdqr_by_class works",  {
 
 # as_pdqr_by_ref ----------------------------------------------------------
 test_that("as_pdqr_by_ref works", {
-  expect_equal(as_pdqr_by_ref(p_dis), as_p)
-  expect_equal(as_pdqr_by_ref(d_con), as_d)
-  expect_equal(as_pdqr_by_ref(q_dis), as_q)
-  expect_equal(as_pdqr_by_ref(r_con), as_r)
+  expect_equal_meta(as_pdqr_by_ref(p_dis), as_p)
+  expect_equal_meta(as_pdqr_by_ref(d_con), as_d)
+  expect_equal_meta(as_pdqr_by_ref(q_dis), as_q)
+  expect_equal_meta(as_pdqr_by_ref(r_con), as_r)
 
   expect_error(as_pdqr_by_ref(function(x) {
     x

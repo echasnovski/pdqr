@@ -21,19 +21,19 @@ expect_regrid_to_one <- function(f) {
 }
 
 expect_pdqr_commute <- function(f, n_grid, method) {
-  expect_equal(
+  expect_equal_meta(
     form_regrid(as_p(f), n_grid, method),
     as_p(form_regrid(f, n_grid, method))
   )
-  expect_equal(
+  expect_equal_meta(
     form_regrid(as_d(f), n_grid, method),
     as_d(form_regrid(f, n_grid, method))
   )
-  expect_equal(
+  expect_equal_meta(
     form_regrid(as_q(f), n_grid, method),
     as_q(form_regrid(f, n_grid, method))
   )
-  expect_equal(
+  expect_equal_meta(
     form_regrid(as_r(f), n_grid, method),
     as_r(form_regrid(f, n_grid, method))
   )
@@ -83,8 +83,8 @@ test_that("form_regrid downgrids 'discrete' functions", {
 })
 
 test_that("form_regrid returns self when upgridding 'discrete' function", {
-  expect_equal(form_regrid(cur_dis, 10, method = "x"), cur_dis)
-  expect_equal(form_regrid(cur_dis, 10, method = "q"), cur_dis)
+  expect_equal_meta(form_regrid(cur_dis, 10, method = "x"), cur_dis)
+  expect_equal_meta(form_regrid(cur_dis, 10, method = "q"), cur_dis)
 })
 
 test_that("form_regrid downgrids 'continuous' functions", {
@@ -186,10 +186,10 @@ test_that("form_regrid returns dirac-like function at median if `n_grid = 1`", {
 })
 
 test_that("form_regrid returns self when `n_grid` = number of present points", {
-  expect_equal(form_regrid(cur_dis, 5, method = "x"), cur_dis)
-  expect_equal(form_regrid(cur_dis, 5, method = "q"), cur_dis)
-  expect_equal(form_regrid(cur_con, 4, method = "x"), cur_con)
-  expect_equal(form_regrid(cur_con, 4, method = "q"), cur_con)
+  expect_equal_meta(form_regrid(cur_dis, 5, method = "x"), cur_dis)
+  expect_equal_meta(form_regrid(cur_dis, 5, method = "q"), cur_dis)
+  expect_equal_meta(form_regrid(cur_con, 4, method = "x"), cur_con)
+  expect_equal_meta(form_regrid(cur_con, 4, method = "q"), cur_con)
 })
 
 test_that("form_regrid validates input", {

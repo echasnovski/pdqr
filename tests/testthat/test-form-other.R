@@ -93,15 +93,15 @@ test_that("form_mix works when input has both pdqr types", {
 
 test_that("form_mix normalizes `weights` argument", {
   n <- length(cur_f_list)
-  expect_equal(
+  expect_equal_meta(
     form_mix(cur_f_list, weights = rep(1, n) / n),
     form_mix(cur_f_list, weights = rep(1, n))
   )
 })
 
 test_that("form_mix handles length-one list", {
-  expect_equal(form_mix(cur_f_list[1]), cur_f_list[[1]])
-  expect_equal(form_mix(cur_f_list[3]), cur_f_list[[3]])
+  expect_equal_meta(form_mix(cur_f_list[1]), cur_f_list[[1]])
+  expect_equal_meta(form_mix(cur_f_list[3]), cur_f_list[[3]])
 })
 
 test_that("form_mix returns pdqr-function of correct class", {
@@ -161,7 +161,7 @@ test_that("form_smooth works with 'discrete' functions", {
 
   # Handling of one-point edge case
   d_one_point <- new_d(0.37, "discrete")
-  expect_equal(form_smooth(d_one_point), d_one_point)
+  expect_equal_meta(form_smooth(d_one_point), d_one_point)
 })
 
 test_that("form_smooth works with 'continuous' functions", {

@@ -220,23 +220,27 @@ test_that("form_trans uses `args_new` as arguments for `new_*()`",  {
   expect_equal(nrow(meta_x_tbl(output)), 3)
 
   # Currently there is no effect in using `args_new` in case `method =
-  # "bruteforce"` because in computes data frame input for `new_*()` functions,
+  # "bruteforce"` because it computes data frame input for `new_*()` functions,
   # in which case extra arguments are currently not used. However, `args_new`
   # are passed to `new_*()` in the code.
-  expect_equal(
+  expect_equal_meta(
     form_trans(list(p_dis), sq, method = "bruteforce", args_new = list(n = 3)),
     form_trans(list(p_dis), sq, method = "bruteforce")
   )
 
   # Supplying `x` or `type` doesn't affect the output
-  expect_equal(
-    form_trans(
-      list(p_con), sq, method = "random",
-      args_new = list(x = 1, type = "discrete")
-    ),
-    form_trans(list(p_con), sq, method = "random")
+  set.seed(101)
+  f <- form_trans(
+    list(p_con),
+    sq,
+    method = "random",
+    args_new = list(x = 1, type = "discrete")
   )
-  expect_equal(
+  set.seed(101)
+  g <- form_trans(list(p_con), sq, method = "random")
+  expect_equal_meta(f, g)
+
+  expect_equal_meta(
     form_trans(
       list(p_dis), sq, method = "bruteforce",
       args_new = list(x = 1, type = "continuous")
@@ -271,8 +275,8 @@ test_that("form_trans validates input", {
 # This is a thin wrapper for `form_trans()` so main tests are done in
 # `form_trans()`
 test_that("form_trans_self works",  {
-  expect_equal(
-    form_trans_self(p_dis, sq),
+  expect_equal_meta(
+    form_trans_self(p_dis, sq, method = "bruteforce"),
     form_trans(list(p_dis), sq, method = "bruteforce")
   )
 
