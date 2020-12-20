@@ -25,10 +25,10 @@ Depends:
     R (>= 3.3)
 Imports:
     graphics,
+    grDevices,
     stats
 Suggests:
     covr,
-    grDevices,
     knitr,
     pillar,
     rmarkdown,
