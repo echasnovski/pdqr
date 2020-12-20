@@ -87,11 +87,11 @@ Compute winsorized mean:
 # Import 'magrittr' to use pipe operator `%>%`
 library(magrittr)
 # Take a sample
-mtcars$mpg %>% 
+mtcars$mpg %>%
   # Create pdqr-function of any class treating input as discrete
-  new_d(type = "discrete") %>% 
+  new_d(type = "discrete") %>%
   # Winsorize tails
-  form_tails(level = 0.1, method = "winsor", direction = "both") %>% 
+  form_tails(level = 0.1, method = "winsor", direction = "both") %>%
   # Compute mean of distribution
   summ_mean()
 ```
@@ -165,7 +165,7 @@ For more details see [vignette about creating pdqr-functions](https://echasnovsk
 (q_mpg_dis <- new_q(mtcars$mpg, type = "discrete"))
 (r_mpg_dis <- new_r(mtcars$mpg, type = "discrete"))
 
-  # "x_tbl" metadata is the same for all `*_mpg_dis()` pdqr-functions
+## "x_tbl" metadata is the same for all `*_mpg_dis()` pdqr-functions
 head(meta_x_tbl(p_mpg_dis), n = 3)
 
 # Treat input as continuous
@@ -174,13 +174,13 @@ head(meta_x_tbl(p_mpg_dis), n = 3)
 (q_mpg_con <- new_q(mtcars$mpg, type = "continuous"))
 (r_mpg_con <- new_r(mtcars$mpg, type = "continuous"))
 
-  # "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions
+## "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions
 head(meta_x_tbl(p_mpg_con), n = 3)
 
 # Output of `new_*()` is actually a function
 p_mpg_dis(15:20)
 
-  # Random generation. "discrete" type generates only values from input
+## Random generation. "discrete" type generates only values from input
 r_mpg_dis(10)
 r_mpg_con(10)
 
@@ -247,18 +247,20 @@ General conversion algorithm is as follows:
 # "Honored" distributions
 as_d(dnorm)
 
-  # Different picewise-linear approximation precision
+## Different picewise-linear approximation precision
 as_d(dnorm, n_grid = 101)
 
-  # Different extra arguments for input
+## Different extra arguments for input
 as_d(dnorm, mean = 10, sd = 0.1)
 
 # Custom functions
-my_d <- function(x) {ifelse(x >= -1 & x <= 1, 0.75 * (1 - x^2), 0)}
-  # With algorithmic support detection
+my_d <- function(x) {
+  ifelse(x >= -1 & x <= 1, 0.75 * (1 - x^2), 0)
+}
+## With algorithmic support detection
 as_d(my_d)
 
-  # Providing custom, maybe only partially known, support
+## Providing custom, maybe only partially known, support
 as_d(my_d, support = c(-1, NA))
 as_d(my_d, support = c(-1, 1))
 ```
@@ -281,14 +283,14 @@ d_smpl_bounded <- form_resupport(d_smpl, support = c(0, 1), method = "reflect")
 
 plot(d_smpl, main = "Estimating density of bounded quantity", col = "black")
 lines(d_smpl_bounded, col = "blue")
-  # Refernece uniform distribution
+## Reference uniform distribution
 lines(as_d(dunif), col = "red")
 
 # Perform general transformation with `form_trans()`. This is usually done by
 # randomly simulating sample from output distribution and then calling one of
 # `new_*()` functions.
 d_norm <- as_d(dnorm)
-  # More accurate result would give use of `+` directly with: d_norm + d_norm
+## More accurate result would give use of `+` directly with: d_norm + d_norm
 d_norm_2 <- form_trans(list(d_norm, d_norm), trans = `+`)
 plot(d_norm_2, col = "black")
 lines(as_d(dnorm, sd = sqrt(2)), col = "red")
@@ -350,8 +352,8 @@ Distributions can be summarized with regions: union of closed intervals. They ar
 # 90% highest density region (HDR)
 summ_hdr(my_d, level = 0.9)
 
-  # In case of unimodal distribution HDR is essentially the same as 90% interval
-  # of minimum width
+## In case of unimodal distribution HDR is essentially the same as 90% interval
+## of minimum width
 summ_interval(my_d, level = 0.9, method = "minwidth")
 
 summ_interval(my_d, level = 0.9, method = "percentile")
