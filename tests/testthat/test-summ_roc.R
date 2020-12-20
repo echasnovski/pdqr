@@ -82,14 +82,14 @@ test_that("roc_plot works", {
   roc_2 <- summ_roc(new_d(3:7, "continuous"), new_d(2:5, "continuous"))
 
   # Basic usage of `roc_plot()` and `roc_lines()`
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "roc-basic-1", recordPlot({
       roc_plot(roc_1)
       roc_lines(roc_2, col = "blue")
     })
   )
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "roc-basic-2", recordPlot({
       cur_dis_1 <- new_d(1:2, "discrete")
       cur_dis_2 <- new_d(2:3, "discrete")
@@ -99,7 +99,7 @@ test_that("roc_plot works", {
   )
 
   # Usage of `...` argument
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "roc-ellipsis", recordPlot({
       roc_plot(
         roc_1, xlab = "Other text", main = "Other title",
@@ -110,14 +110,14 @@ test_that("roc_plot works", {
   )
 
   # Usage of `add_bisector` argument
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "roc-bisector", recordPlot({
       roc_plot(roc_1, add_bisector = FALSE)
     })
   )
 
   # Ordering of ROC curve points
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "roc-ordering", recordPlot({
       roc_1_reordered <- roc_1[sample(seq_len(nrow(roc_1))), ]
       roc_2_reordered <- roc_2[sample(seq_len(nrow(roc_1))), ]

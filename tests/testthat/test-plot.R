@@ -9,60 +9,61 @@ set.seed(5555)
 # it `print()`s its input (resulting here with `NULL`), unless wrapped in
 # function.
 
+
 # plot.p --------------------------------------------------------------
 test_that("plot.p works", {
   # These are also tests for `lines.p()`
   p_dis_2 <- new_p(c(1.5, 1.75), "discrete")
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-discrete-1", recordPlot({
       plot(p_dis)
       lines(p_dis_2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-discrete-2", recordPlot({
       plot(p_dis, y = NA)
       lines(p_dis_2, col = "red")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-discrete-3", recordPlot({
       plot(p_dis, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(p_dis_2, xlab = "q")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-discrete-4", recordPlot({
       plot(p_dis, xlim = c(0, 2), col = "blue")
       lines(p_dis_2, lwd = 2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-discrete-5", recordPlot({
       plot(p_dis, lty = 2, lwd = 2, pch = 17, cex = 2)
       lines(p_dis_2, lty = 3, lwd = 3, pch = 18, cex = 3)
     })
   )
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-continuous-1", recordPlot({
       plot(p_con)
       lines(p_custom)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-continuous-2", recordPlot({
       plot(p_con, y = NA)
       lines(p_custom, y = NA)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-continuous-3", recordPlot({
       plot(p_con, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(p_custom, lwd = 2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-continuous-4", recordPlot({
       plot(p_con, xlim = c(0, 2), col = "blue")
       lines(p_custom)
@@ -71,7 +72,7 @@ test_that("plot.p works", {
 })
 
 test_that("plot.p and lines.p use `n_extra_grid` argument", {
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-p-continuous-n-extra-grid", recordPlot({
       plot(
         new_p(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
@@ -101,31 +102,31 @@ test_that("plot.p validates input", {
 test_that("plot.d works", {
   # These are also tests for `lines.p()`
   d_dis_2 <- new_d(c(1.5, 1.75), "discrete")
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-discrete-1", recordPlot({
       plot(d_dis)
       lines(d_dis_2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-discrete-2", recordPlot({
       plot(d_dis, y = NA)
       lines(d_dis_2, col = "red")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-discrete-3", recordPlot({
       plot(d_dis, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(d_dis_2, xlab = "q")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-discrete-4", recordPlot({
       plot(d_dis, xlim = c(0, 2), col = "blue")
       lines(d_dis_2, lwd = 2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-discrete-5", recordPlot({
       plot(d_dis, lty = 2, lwd = 2, pch = 17, cex = 2)
       lines(d_dis_2, lty = 3, lwd = 3, pch = 18, cex = 3)
@@ -133,25 +134,25 @@ test_that("plot.d works", {
   )
 
   # These are also tests for `lines.d()`
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-continuous-1", recordPlot({
       plot(d_con)
       lines(d_custom)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-continuous-2", recordPlot({
       plot(d_con, y = NA)
       lines(d_custom, y = NA)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-continuous-3", recordPlot({
       plot(d_con, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(d_custom, lwd = 2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-continuous-4", recordPlot({
       plot(d_con, xlim = c(0, 2), col = "blue")
       lines(d_custom)
@@ -160,7 +161,7 @@ test_that("plot.d works", {
 })
 
 test_that("plot.d and lines.d use `n_extra_grid` argument", {
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-d-continuous-n-extra-grid", recordPlot({
       plot(
         new_d(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
@@ -175,22 +176,22 @@ test_that("plot.d and lines.d use `n_extra_grid` argument", {
 })
 
 test_that("plot.d handles dirac-like 'continuous' functions",  {
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "dirac-like-1", recordPlot({
       plot(form_retype(d_dis, "continuous", method = "dirac"))
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "dirac-like-2", recordPlot({
       plot(form_resupport(d_con, c(-2, 1), method = "winsor"))
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "dirac-like-3", recordPlot({
       plot(form_mix(list(d_dis, d_con)))
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "dirac-like-4", recordPlot({
       plot(new_d(1, "continuous"))
     })
@@ -211,31 +212,31 @@ test_that("plot.d validates input", {
 test_that("plot.q works", {
   # These are also tests for `lines.p()`
   q_dis_2 <- new_q(c(1.5, 1.75), "discrete")
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-discrete-1", recordPlot({
       plot(q_dis)
       lines(q_dis_2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-discrete-2", recordPlot({
       plot(q_dis, y = NA)
       lines(q_dis_2, col = "red")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-discrete-3", recordPlot({
       plot(q_dis, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(q_dis_2, xlab = "q")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-discrete-4", recordPlot({
       plot(q_dis, xlim = c(0, 2), col = "blue")
       lines(q_dis_2, lwd = 2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-discrete-5", recordPlot({
       plot(q_dis, lty = 2, lwd = 2, pch = 17, cex = 2)
       lines(q_dis_2, lty = 3, lwd = 3, pch = 18, cex = 3)
@@ -243,25 +244,25 @@ test_that("plot.q works", {
   )
 
   # These are also tests for `lines.q()`
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-continuous-1", recordPlot({
       plot(q_con)
       lines(q_custom)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-continuous-2", recordPlot({
       plot(q_con, y = NA)
       lines(q_custom, y = NA)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-continuous-3", recordPlot({
       plot(q_con, xlab = "a", ylab = "b", main = "c", type = "p")
       lines(q_custom, lwd = 2)
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-continuous-4", recordPlot({
       plot(q_con, xlim = c(0, 2), col = "blue")
       lines(q_custom)
@@ -270,7 +271,7 @@ test_that("plot.q works", {
 })
 
 test_that("plot.q and lines.q use `n_extra_grid` argument", {
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-q-continuous-n-extra-grid", recordPlot({
       plot(
         new_q(data.frame(x = 0:1, y = c(1, 1)), "continuous"),
@@ -296,34 +297,34 @@ test_that("plot.q validates input", {
 
 # plot.r ------------------------------------------------------------------
 test_that("plot.r works", {
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-discrete-1", recordPlot(plot(r_dis))
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-discrete-2", recordPlot(plot(r_dis, y = NA))
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-discrete-3", recordPlot(
       plot(r_dis, xlab = "a", main = "c")
     )
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-discrete-4", recordPlot(
       plot(r_dis, xlim = c(0, 2), col = "blue", freq = FALSE)
     )
   )
 
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-continuous-1", recordPlot(plot(r_con))
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-continuous-2", recordPlot(plot(r_con, y = NA))
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-continuous-3",
     recordPlot(plot(r_con, xlab = "a", main = "c"))
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-continuous-4",
     recordPlot(
       plot(r_con, xlim = c(0, 2), col = "blue", freq = FALSE)
@@ -332,7 +333,7 @@ test_that("plot.r works", {
 })
 
 test_that("plot.r uses `n_sample` argument", {
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "plot-r-n-sample", recordPlot(plot(r_con, n_sample = 10))
   )
 })

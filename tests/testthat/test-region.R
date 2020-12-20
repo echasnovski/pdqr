@@ -610,7 +610,7 @@ test_that("region_draw works", {
 
   # Basic usage. Also if `region_draw()` is implemented with
   # `rect(*, ytop = 2e8, *)`, will give incorrect output
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "region_draw-basic", recordPlot({
       plot(cur_d)
       region_draw(region)
@@ -618,13 +618,13 @@ test_that("region_draw works", {
   )
 
   # Setting different color
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "region_draw-col-1", recordPlot({
       plot(cur_d)
       region_draw(region, col = "green")
     })
   )
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "region_draw-col-2", recordPlot({
       plot(cur_d)
       region_draw(region, col = "#FF0000")
@@ -632,7 +632,7 @@ test_that("region_draw works", {
   )
 
   # Setting different `alpha`
-  vdiffr::expect_doppelganger(
+  expect_doppelganger_2(
     "region_draw-alpha", recordPlot({
       plot(cur_d)
       region_draw(region, alpha = 0.7)

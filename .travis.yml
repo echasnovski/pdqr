@@ -7,15 +7,22 @@ cache: packages
 matrix:
   include:
   - r: oldrel
-    # Don't use 'vdiffr' on old R release
-    env: VDIFFR_RUN_TESTS=false
+    env:
+      # Don't use 'vdiffr' on old R release
+      VDIFFR_RUN_TESTS=false
+      # Force checking without installed 'Suggested' pakcages.
+      _R_CHECK_DEPENDS_ONLY_=true
   - r: release
+    env:
+      _R_CHECK_DEPENDS_ONLY_=true
   - r: devel
-    # Temporarily don't use 'vdiffr' on R-devel until R-release becomes 4.1.0
-    # This is because of some breaking change after 4.0.0 which changes some
-    # lines in .svg test figures without any visual change.
-    # TODO: start again using 'vdiffr' tests after R-release becomes 4.1.0
-    env: VDIFFR_RUN_TESTS=false
+    env:
+      # Temporarily don't use 'vdiffr' on R-devel until R-release becomes 4.1.0
+      # This is because of some breaking change after 4.0.0 which changes some
+      # lines in .svg test figures without any visual change.
+      # TODO: start again using 'vdiffr' tests after R-release becomes 4.1.0
+      VDIFFR_RUN_TESTS=false
+      _R_CHECK_DEPENDS_ONLY_=true
 
 branches:
   only:
