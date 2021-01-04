@@ -66,7 +66,7 @@ of methods for S3 group generic functions. See \link[=methods-group-generic]{the
 Useful links:
 \itemize{
   \item \url{https://github.com/echasnovski/pdqr}
-  \item \url{https://echasnovski.github.io/pdqr}
+  \item \url{https://echasnovski.github.io/pdqr/}
   \item Report bugs at \url{https://github.com/echasnovski/pdqr/issues}
 }
 

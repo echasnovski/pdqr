@@ -19,7 +19,7 @@ Description: Create, transform, and summarize custom random
     methods implemented with simulation techniques.
 License: MIT + file LICENSE
 URL: https://github.com/echasnovski/pdqr,
-    https://echasnovski.github.io/pdqr
+    https://echasnovski.github.io/pdqr/
 BugReports: https://github.com/echasnovski/pdqr/issues
 Depends:
     R (>= 3.3)
