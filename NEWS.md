@@ -1,4 +1,4 @@
-# pdqr (development version)
+# pdqr 0.3.0
 
 * New function `region_distance()` computes distance between pair of regions.
 * `summ_center()` gets new method "midrange" with corresponding new `summ_midrange()` function. It returns a mean of left and right edges of support.
