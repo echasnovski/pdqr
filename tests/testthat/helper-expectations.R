@@ -194,6 +194,7 @@ expect_pdqr_print <- function(f, dis_name, con_name = dis_name) {
   expect_output(print(f_bool_4), "probability of 1: ~0.66667")
 }
 
+# Other -------------------------------------------------------------------
 regex_scatter <- function(...) {
   paste0(c(...), collapse = ".*")
 }
@@ -206,11 +207,6 @@ expect_doppelganger_2 <- function(title, fig, path = NULL, ...) {
   vdiffr::expect_doppelganger(title, fig, path = path, ...)
 }
 
-
-# Skips -------------------------------------------------------------------
-skip_if_noLD <- function() {
-  skip_if(
-    condition = !isTRUE(capabilities()[["long.double"]]),
-    message = "No long doubles."
-  )
+is_noLD <- function() {
+  !isTRUE(capabilities()[["long.double"]])
 }
