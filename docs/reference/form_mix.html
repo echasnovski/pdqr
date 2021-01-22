@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 <meta property="og:title" content="Form mixture of distributions — form_mix" />
 <meta property="og:description" content="Based on a list of pdqr-functions and vector of weights form a pdqr-function
 for corresponding mixture distribution." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -58,7 +61,7 @@ for corresponding mixture distribution." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +75,7 @@ for corresponding mixture distribution." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -80,7 +83,7 @@ for corresponding mixture distribution." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -114,8 +117,8 @@ for corresponding mixture distribution." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -142,7 +145,7 @@ for corresponding mixture distribution." />
 for corresponding mixture distribution.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>form_mix</span>(<span class='no'>f_list</span>, <span class='kw'>weights</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</code></pre>
+    <pre class="usage"><code class = "r"><span class='fu'>form_mix</span><span class='op'>(</span><span class='va'>f_list</span>, weights <span class='op'>=</span> <span class='cn'>NULL</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,51 +203,50 @@ continuously: discontinuities are represented as intervals in
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># All "discrete"</span>
-<span class='no'>d_binom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dbinom</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-<span class='no'>r_pois</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_r</a></span>(<span class='no'>rpois</span>, <span class='kw'>lambda</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='no'>dis_mix</span> <span class='kw'>&lt;-</span> <span class='fu'>form_mix</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>d_binom</span>, <span class='no'>r_pois</span>))
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>dis_mix</span>)</div><div class='img'><img src='form_mix-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>d_binom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dbinom</span>, size <span class='op'>=</span> <span class='fl'>10</span>, prob <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+<span class='va'>r_pois</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_r</a></span><span class='op'>(</span><span class='va'>rpois</span>, lambda <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='va'>dis_mix</span> <span class='op'>&lt;-</span> <span class='fu'>form_mix</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>d_binom</span>, <span class='va'>r_pois</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>dis_mix</span><span class='op'>)</span>
+</div><div class='img'><img src='form_mix-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># All "continuous"</span>
-<span class='no'>p_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_p</a></span>(<span class='no'>pnorm</span>)
-<span class='no'>d_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dunif</span>)
+<span class='va'>p_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_p</a></span><span class='op'>(</span><span class='va'>pnorm</span><span class='op'>)</span>
+<span class='va'>d_unif</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dunif</span><span class='op'>)</span>
 
-<span class='no'>con_mix</span> <span class='kw'>&lt;-</span> <span class='fu'>form_mix</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>p_norm</span>, <span class='no'>d_unif</span>), <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.7</span>, <span class='fl'>0.3</span>))
-  <span class='co'># Output is a p-function, as is first element of `f_list`</span>
-<span class='no'>con_mix</span></div><div class='output co'>#&gt; Cumulative distribution function of continuous type
-#&gt; Support: ~[-4.75342, 4.75342] (20005 intervals)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>con_mix</span>)</div><div class='img'><img src='form_mix-2.png' alt='' width='700' height='433' /></div><div class='input'>
-  <span class='co'># Use `as_*()` functions to change class</span>
-<span class='no'>d_con_mix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>con_mix</span>)
+<span class='va'>con_mix</span> <span class='op'>&lt;-</span> <span class='fu'>form_mix</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>p_norm</span>, <span class='va'>d_unif</span><span class='op'>)</span>, weights <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.7</span>, <span class='fl'>0.3</span><span class='op'>)</span><span class='op'>)</span>
+<span class='co'>## Output is a p-function, as is first element of `f_list`</span>
+<span class='va'>con_mix</span>
+</div><div class='output co'>#&gt; Cumulative distribution function of continuous type
+#&gt; Support: ~[-4.75342, 4.75342] (20005 intervals)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>con_mix</span><span class='op'>)</span>
+</div><div class='img'><img src='form_mix-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## Use `as_*()` functions to change class</span>
+<span class='va'>d_con_mix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>con_mix</span><span class='op'>)</span>
 
-  <span class='co'># Theoretical output density should be discontinuous, but here it is</span>
-  <span class='co'># approximated with continuous function</span>
-<span class='no'>con_x_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>con_mix</span>)
-<span class='no'>con_x_tbl</span>[(<span class='no'>con_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&gt;=</span> -<span class='fl'>1e-4</span>) <span class='kw'>&amp;</span> (<span class='no'>con_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&lt;=</span> <span class='fl'>1e-4</span>), ]</div><div class='output co'>#&gt;                  x         y   cumprob
+<span class='co'>## Theoretical output density should be discontinuous, but here it is</span>
+<span class='co'>## approximated with continuous function</span>
+<span class='va'>con_x_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='va'>con_mix</span><span class='op'>)</span>
+<span class='va'>con_x_tbl</span><span class='op'>[</span><span class='op'>(</span><span class='va'>con_x_tbl</span><span class='op'>$</span><span class='va'>x</span> <span class='op'>&gt;=</span> <span class='op'>-</span><span class='fl'>1e-4</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='op'>(</span><span class='va'>con_x_tbl</span><span class='op'>$</span><span class='va'>x</span> <span class='op'>&lt;=</span> <span class='fl'>1e-4</span><span class='op'>)</span>, <span class='op'>]</span>
+</div><div class='output co'>#&gt;                  x         y   cumprob
 #&gt; 5001 -1.000000e-08 0.2792602 0.3500000
 #&gt; 5002 -2.904343e-12 0.4292166 0.3500000
 #&gt; 5003  0.000000e+00 0.4292602 0.3500000
 #&gt; 5004  1.000000e-08 0.5792602 0.3500000
 #&gt; 5005  1.000000e-04 0.5792601 0.3500579</div><div class='input'>
 <span class='co'># Some "discrete", some "continuous"</span>
-<span class='no'>all_mix</span> <span class='kw'>&lt;-</span> <span class='fu'>form_mix</span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>d_binom</span>, <span class='no'>d_unif</span>))
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>all_mix</span>)</div><div class='img'><img src='form_mix-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='no'>all_x_tbl</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>all_mix</span>)
+<span class='va'>all_mix</span> <span class='op'>&lt;-</span> <span class='fu'>form_mix</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>d_binom</span>, <span class='va'>d_unif</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>all_mix</span><span class='op'>)</span>
+</div><div class='img'><img src='form_mix-3.png' alt='' width='700' height='433' /></div><div class='input'><span class='va'>all_x_tbl</span> <span class='op'>&lt;-</span> <span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='va'>all_mix</span><span class='op'>)</span>
 
-  <span class='co'># What dirac-like approximation looks like</span>
-<span class='no'>all_x_tbl</span>[(<span class='no'>all_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&gt;=</span> <span class='fl'>1.5</span>) <span class='kw'>&amp;</span> (<span class='no'>all_x_tbl</span>$<span class='no'>x</span> <span class='kw'>&lt;=</span> <span class='fl'>2.5</span>), ]</div><div class='output co'>#&gt;       x       y   cumprob
+<span class='co'>## What dirac-like approximation looks like</span>
+<span class='va'>all_x_tbl</span><span class='op'>[</span><span class='op'>(</span><span class='va'>all_x_tbl</span><span class='op'>$</span><span class='va'>x</span> <span class='op'>&gt;=</span> <span class='fl'>1.5</span><span class='op'>)</span> <span class='op'>&amp;</span> <span class='op'>(</span><span class='va'>all_x_tbl</span><span class='op'>$</span><span class='va'>x</span> <span class='op'>&lt;=</span> <span class='fl'>2.5</span><span class='op'>)</span>, <span class='op'>]</span>
+</div><div class='output co'>#&gt;       x       y   cumprob
 #&gt; 10006 2       0 0.5053711
 #&gt; 10007 2 2197266 0.5163574
-#&gt; 10008 2       0 0.5273437</div><div class='input'>
-</div></code></pre>
+#&gt; 10008 2       0 0.5273437</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -255,7 +257,7 @@ continuously: discontinuities are represented as intervals in
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

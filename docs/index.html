@@ -6,10 +6,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Work with Custom Distribution Functions • pdqr</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <script src="extra.js"></script><meta property="og:title" content="Work with Custom Distribution Functions">
 <meta property="og:description" content='Create, transform, and summarize custom random
@@ -22,13 +23,12 @@
     often emphasize approximate and numerical solutions: all distributions
     assume finite support and finite values of density function; some
     methods implemented with simulation techniques.'>
-<meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -41,7 +41,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -49,7 +49,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -83,8 +83,8 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -139,85 +139,90 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>‘pdqr’ is not yet on CRAN. You can install the development version from <a href="https://github.com/">GitHub</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="co"># install.packages("devtools")</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">"echasnovski/pdqr"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
+<span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span><span class="op">(</span><span class="st">"echasnovski/pdqr"</span><span class="op">)</span></code></code></pre></div>
 </div>
-<div id="quick-examples" class="section level2">
+<div id="-quick-examples" class="section level2">
 <h2 class="hasAnchor">
-<a href="#quick-examples" class="anchor"></a><a id="pdqr-quick"></a> Quick examples</h2>
+<a href="#-quick-examples" class="anchor"></a><a id="pdqr-quick"></a> Quick examples</h2>
 <p>Generate a sample from a distribution defined by some reference sample:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># Treat input sample as coming from a continuous distribution</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">r_mpg &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"continuous"</span>)</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="kw">r_mpg</span>(<span class="dt">n =</span> <span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5"><span class="co">#&gt;  [1] 17.3792362 10.4822955 22.8221407 21.8118788 15.5166760 16.3005293</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6"><span class="co">#&gt;  [7] 20.5809388 16.8043292 21.1901692 19.9680967</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Treat input sample as coming from a continuous distribution</span>
+<span class="va">r_mpg</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_r</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span>
+
+<span class="fu">r_mpg</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 17.3792362 10.4822955 22.8221407 21.8118788 15.5166760 16.3005293 20.5809388 16.8043292 21.1901692</span>
+<span class="co">#&gt; [10] 19.9680967</span></code></code></pre></div>
 <p>Compute winsorized mean:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="co"># Import 'magrittr' to use pipe operator `%&gt;%`</span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(magrittr)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># Take a sample</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">mtcars<span class="op">$</span>mpg <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st">  </span><span class="co"># Create pdqr-function of any class treating input as discrete</span></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"><span class="st">  </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(<span class="dt">type =</span> <span class="st">"discrete"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">  </span><span class="co"># Winsorize tails</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="st">  </span><span class="kw"><a href="reference/form_tails.html">form_tails</a></span>(<span class="dt">level =</span> <span class="fl">0.1</span>, <span class="dt">method =</span> <span class="st">"winsor"</span>, <span class="dt">direction =</span> <span class="st">"both"</span>) <span class="op">%&gt;%</span><span class="st"> </span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="st">  </span><span class="co"># Compute mean of distribution</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="st">  </span><span class="kw"><a href="reference/summ_center.html">summ_mean</a></span>()</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="co">#&gt; [1] 20.19375</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Import 'magrittr' to use pipe operator `%&gt;%`</span>
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://magrittr.tidyverse.org">magrittr</a></span><span class="op">)</span>
+<span class="co"># Take a sample</span>
+<span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span> <span class="op">%&gt;%</span>
+  <span class="co"># Create pdqr-function of any class treating input as discrete</span>
+  <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span>type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="co"># Winsorize tails</span>
+  <span class="fu"><a href="reference/form_tails.html">form_tails</a></span><span class="op">(</span>level <span class="op">=</span> <span class="fl">0.1</span>, method <span class="op">=</span> <span class="st">"winsor"</span>, direction <span class="op">=</span> <span class="st">"both"</span><span class="op">)</span> <span class="op">%&gt;%</span>
+  <span class="co"># Compute mean of distribution</span>
+  <span class="fu"><a href="reference/summ_center.html">summ_mean</a></span><span class="op">(</span><span class="op">)</span>
+<span class="co">#&gt; [1] 20.19375</span></code></code></pre></div>
 <p>Compute and visualize distribution of difference of sample means:</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="co"># Compute distribution of first sample mean treating input as continuous</span></a>
-<a class="sourceLine" id="cb4-2" data-line-number="2">mpg_vs0 &lt;-<span class="st"> </span>mtcars<span class="op">$</span>mpg[mtcars<span class="op">$</span>vs <span class="op">==</span><span class="st"> </span><span class="dv">0</span>]</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">d_vs0 &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(mpg_vs0, <span class="st">"continuous"</span>)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">(d_vs0_mean &lt;-<span class="st"> </span><span class="kw"><a href="reference/form_estimate.html">form_estimate</a></span>(</a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">  d_vs0, <span class="dt">stat =</span> mean, <span class="dt">sample_size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(mpg_vs0)</a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">))</a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; Support: ~[12.14822, 20.63362] (511 intervals)</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"><span class="co"># Compute distribution of second sample mean treating input as continuous</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11">mpg_vs1 &lt;-<span class="st"> </span>mtcars<span class="op">$</span>mpg[mtcars<span class="op">$</span>vs <span class="op">==</span><span class="st"> </span><span class="dv">1</span>]</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12">d_vs1 &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(mpg_vs1, <span class="st">"continuous"</span>)</a>
-<a class="sourceLine" id="cb4-13" data-line-number="13">(d_vs1_mean &lt;-<span class="st"> </span><span class="kw"><a href="reference/form_estimate.html">form_estimate</a></span>(</a>
-<a class="sourceLine" id="cb4-14" data-line-number="14">  d_vs1, <span class="dt">stat =</span> mean, <span class="dt">sample_size =</span> <span class="kw"><a href="https://rdrr.io/r/base/length.html">length</a></span>(mpg_vs1)</a>
-<a class="sourceLine" id="cb4-15" data-line-number="15">))</a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co">#&gt; Support: ~[18.42035, 31.00767] (511 intervals)</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="co"># Compute distribution of difference of sample means using random simulation</span></a>
-<a class="sourceLine" id="cb4-20" data-line-number="20">(mpg_diffmean &lt;-<span class="st"> </span>d_vs0_mean <span class="op">-</span><span class="st"> </span>d_vs1_mean)</a>
-<a class="sourceLine" id="cb4-21" data-line-number="21"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22"><span class="co">#&gt; Support: ~[-15.97734, 0.93274] (511 intervals)</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="co"># Visualize with base `plot()`</span></a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(mpg_diffmean, <span class="dt">main =</span> <span class="st">"Distribution of difference of sample means"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Compute distribution of first sample mean treating input as continuous</span>
+<span class="va">mpg_vs0</span> <span class="op">&lt;-</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">[</span><span class="va">mtcars</span><span class="op">$</span><span class="va">vs</span> <span class="op">==</span> <span class="fl">0</span><span class="op">]</span>
+<span class="va">d_vs0</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="va">mpg_vs0</span>, <span class="st">"continuous"</span><span class="op">)</span>
+<span class="op">(</span><span class="va">d_vs0_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/form_estimate.html">form_estimate</a></span><span class="op">(</span>
+  <span class="va">d_vs0</span>, stat <span class="op">=</span> <span class="va">mean</span>, sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">mpg_vs0</span><span class="op">)</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[12.14822, 20.63362] (511 intervals)</span>
+
+<span class="co"># Compute distribution of second sample mean treating input as continuous</span>
+<span class="va">mpg_vs1</span> <span class="op">&lt;-</span> <span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span><span class="op">[</span><span class="va">mtcars</span><span class="op">$</span><span class="va">vs</span> <span class="op">==</span> <span class="fl">1</span><span class="op">]</span>
+<span class="va">d_vs1</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="va">mpg_vs1</span>, <span class="st">"continuous"</span><span class="op">)</span>
+<span class="op">(</span><span class="va">d_vs1_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/form_estimate.html">form_estimate</a></span><span class="op">(</span>
+  <span class="va">d_vs1</span>, stat <span class="op">=</span> <span class="va">mean</span>, sample_size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">mpg_vs1</span><span class="op">)</span>
+<span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[18.42035, 31.00767] (511 intervals)</span>
+
+<span class="co"># Compute distribution of difference of sample means using random simulation</span>
+<span class="op">(</span><span class="va">mpg_diffmean</span> <span class="op">&lt;-</span> <span class="va">d_vs0_mean</span> <span class="op">-</span> <span class="va">d_vs1_mean</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-15.97734, 0.93274] (511 intervals)</span>
+<span class="co"># Visualize with base `plot()`</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">mpg_diffmean</span>, main <span class="op">=</span> <span class="st">"Distribution of difference of sample means"</span><span class="op">)</span></code></code></pre></div>
 <p><img src="reference/figures/README-pdqr-quick_diff-means-1.png"><!-- --></p>
 <p>Compute and visualize 95% highest density region for mixture of normal distributions:</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="co"># Create a list of pdqr-functions</span></a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">norm_list &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm), <span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="dv">2</span>, <span class="dt">sd =</span> <span class="fl">0.25</span>), <span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="dv">4</span>, <span class="dt">sd =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co"># Form a mixture with custom weights</span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">norm_mix &lt;-<span class="st"> </span><span class="kw"><a href="reference/form_mix.html">form_mix</a></span>(norm_list, <span class="dt">weights =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span>))</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co"># Compute 95% highest density region</span></a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">(norm_hdr &lt;-<span class="st"> </span><span class="kw"><a href="reference/summ_hdr.html">summ_hdr</a></span>(norm_mix, <span class="dt">level =</span> <span class="fl">0.95</span>))</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co">#&gt;          left      right</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="co">#&gt; 1 -1.82442072 2.53095750</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; 2  3.19649819 4.79334429</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># Visualize</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(norm_mix, <span class="dt">main =</span> <span class="st">"95% highest density region for normal mixture"</span>)</a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="kw"><a href="reference/region.html">region_draw</a></span>(norm_hdr)</a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Create a list of pdqr-functions</span>
+<span class="va">norm_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>
+  <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span><span class="op">)</span>, <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span>, mean <span class="op">=</span> <span class="fl">2</span>, sd <span class="op">=</span> <span class="fl">0.25</span><span class="op">)</span>, <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span>, mean <span class="op">=</span> <span class="fl">4</span>, sd <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+<span class="op">)</span>
+
+<span class="co"># Form a mixture with custom weights</span>
+<span class="va">norm_mix</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/form_mix.html">form_mix</a></span><span class="op">(</span><span class="va">norm_list</span>, weights <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="fl">0.2</span>, <span class="fl">0.2</span><span class="op">)</span><span class="op">)</span>
+
+<span class="co"># Compute 95% highest density region</span>
+<span class="op">(</span><span class="va">norm_hdr</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/summ_hdr.html">summ_hdr</a></span><span class="op">(</span><span class="va">norm_mix</span>, level <span class="op">=</span> <span class="fl">0.95</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;          left      right</span>
+<span class="co">#&gt; 1 -1.82442072 2.53095750</span>
+<span class="co">#&gt; 2  3.19649819 4.79334429</span>
+
+<span class="co"># Visualize</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">norm_mix</span>, main <span class="op">=</span> <span class="st">"95% highest density region for normal mixture"</span><span class="op">)</span>
+<span class="fu"><a href="reference/region.html">region_draw</a></span><span class="op">(</span><span class="va">norm_hdr</span><span class="op">)</span></code></code></pre></div>
 <p><img src="reference/figures/README-pdqr-quick_mixture-hdr-1.png"><!-- --></p>
 </div>
-<div id="create-with-new_" class="section level2">
+<div id="-create-with-new_" class="section level2">
 <h2 class="hasAnchor">
-<a href="#create-with-new_" class="anchor"></a><a id="pdqr-create"></a> Create with <code>new_*()</code>
+<a href="#-create-with-new_" class="anchor"></a><a id="pdqr-create"></a> Create with <code>new_*()</code>
 </h2>
 <p>All <code>new_*()</code> functions create a pdqr-function of certain class (“p”, “d”, “q”, or “r”) and type (“discrete” or “continuous”) based on sample or data frame (with appropriate structure):</p>
 <ul>
 <li>
-<strong>Sample input</strong> is converted into data frame of appropriate structure that defines distribution (see next list item). It is done based on type. For “discrete” type it gets tabulated with frequency of unique values serving as their probability. For “continuous” type distribution density is estimated using <a href="https://rdrr.io/r/stats/density.html"><code><a href="https://rdrr.io/r/stats/density.html">density()</a></code></a> function if input has at least 2 elements. For 1 element special “dirac-like” pdqr-function is created: an <em>approximation of single number</em> as triangular distribution with very narrow support (1e-8 order of magnitude).</li>
+<strong>Sample input</strong> is converted into data frame of appropriate structure that defines distribution (see next list item). It is done based on type. For “discrete” type it gets tabulated with frequency of unique values serving as their probability. For “continuous” type distribution density is estimated using <a href="https://rdrr.io/r/stats/density.html"><code>density()</code></a> function if input has at least 2 elements. For 1 element special “dirac-like” pdqr-function is created: an <em>approximation of single number</em> as triangular distribution with very narrow support (1e-8 order of magnitude).</li>
 <li>
 <strong>Data frame input</strong> should completely define distribution. For “discrete” type it should have “x” and “prob” columns for output values and their probabilities. For “continuous” type - “x” and “y” columns for points, which define piecewise-linear continuous density function. Columns “prob” and “y” will be automatically normalized to represent proper distribution: sum of “prob” will be 1 and total square under graph of piecewise-linear function will be 1.</li>
 </ul>
@@ -225,106 +230,108 @@
 <p>Pdqr class correspond to the following functions describing distribution:</p>
 <ul>
 <li>
-<strong>P-function</strong> is a cumulative distribution function. Created with <code><a href="reference/new-pdqr.html">new_p()</a></code>.</li>
+<strong>P-function</strong> is a cumulative distribution function. Created with <code><a href="reference/new_p.html">new_p()</a></code>.</li>
 <li>
-<strong>D-function</strong> is a probability mass function for “discrete” type and density function for “continuous”. Created with <code><a href="reference/new-pdqr.html">new_d()</a></code>. Generally speaking, it is a derivative of distribution’s p-function.</li>
+<strong>D-function</strong> is a probability mass function for “discrete” type and density function for “continuous”. Created with <code><a href="reference/new_p.html">new_d()</a></code>. Generally speaking, it is a derivative of distribution’s p-function.</li>
 <li>
-<strong>Q-function</strong> is a quantile function. Created with <code><a href="reference/new-pdqr.html">new_q()</a></code>. Inverse of distribution’s p-function.</li>
+<strong>Q-function</strong> is a quantile function. Created with <code><a href="reference/new_p.html">new_q()</a></code>. Inverse of distribution’s p-function.</li>
 <li>
-<strong>R-function</strong> is a random generation function. Created with <code><a href="reference/new-pdqr.html">new_r()</a></code>. Generates a random sample from distribution.</li>
+<strong>R-function</strong> is a random generation function. Created with <code><a href="reference/new_p.html">new_r()</a></code>. Generates a random sample from distribution.</li>
 </ul>
 <p>For more details see <a href="https://echasnovski.github.io/pdqr/articles/pdqr-01-create.html">vignette about creating pdqr-functions</a>.</p>
 <div id="create-pdqr-function-from-sample" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-pdqr-function-from-sample" class="anchor"></a>Create pdqr-function from sample</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="co"># Treat input as discrete</span></a>
-<a class="sourceLine" id="cb6-2" data-line-number="2">(p_mpg_dis &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_p</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"discrete"</span>))</a>
-<a class="sourceLine" id="cb6-3" data-line-number="3"><span class="co">#&gt; Cumulative distribution function of discrete type</span></a>
-<a class="sourceLine" id="cb6-4" data-line-number="4"><span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span></a>
-<a class="sourceLine" id="cb6-5" data-line-number="5">(d_mpg_dis &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"discrete"</span>))</a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; Probability mass function of discrete type</span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8">(q_mpg_dis &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_q</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"discrete"</span>))</a>
-<a class="sourceLine" id="cb6-9" data-line-number="9"><span class="co">#&gt; Quantile function of discrete type</span></a>
-<a class="sourceLine" id="cb6-10" data-line-number="10"><span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span></a>
-<a class="sourceLine" id="cb6-11" data-line-number="11">(r_mpg_dis &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"discrete"</span>))</a>
-<a class="sourceLine" id="cb6-12" data-line-number="12"><span class="co">#&gt; Random generation function of discrete type</span></a>
-<a class="sourceLine" id="cb6-13" data-line-number="13"><span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span></a>
-<a class="sourceLine" id="cb6-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb6-15" data-line-number="15">  <span class="co"># "x_tbl" metadata is the same for all `*_mpg_dis()` pdqr-functions</span></a>
-<a class="sourceLine" id="cb6-16" data-line-number="16"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="reference/meta.html">meta_x_tbl</a></span>(p_mpg_dis), <span class="dt">n =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb6-17" data-line-number="17"><span class="co">#&gt;      x    prob cumprob</span></a>
-<a class="sourceLine" id="cb6-18" data-line-number="18"><span class="co">#&gt; 1 10.4 0.06250 0.06250</span></a>
-<a class="sourceLine" id="cb6-19" data-line-number="19"><span class="co">#&gt; 2 13.3 0.03125 0.09375</span></a>
-<a class="sourceLine" id="cb6-20" data-line-number="20"><span class="co">#&gt; 3 14.3 0.03125 0.12500</span></a>
-<a class="sourceLine" id="cb6-21" data-line-number="21"></a>
-<a class="sourceLine" id="cb6-22" data-line-number="22"><span class="co"># Treat input as continuous</span></a>
-<a class="sourceLine" id="cb6-23" data-line-number="23">(p_mpg_con &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_p</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"continuous"</span>))</a>
-<a class="sourceLine" id="cb6-24" data-line-number="24"><span class="co">#&gt; Cumulative distribution function of continuous type</span></a>
-<a class="sourceLine" id="cb6-25" data-line-number="25"><span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span></a>
-<a class="sourceLine" id="cb6-26" data-line-number="26">(d_mpg_con &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"continuous"</span>))</a>
-<a class="sourceLine" id="cb6-27" data-line-number="27"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb6-28" data-line-number="28"><span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span></a>
-<a class="sourceLine" id="cb6-29" data-line-number="29">(q_mpg_con &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_q</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"continuous"</span>))</a>
-<a class="sourceLine" id="cb6-30" data-line-number="30"><span class="co">#&gt; Quantile function of continuous type</span></a>
-<a class="sourceLine" id="cb6-31" data-line-number="31"><span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span></a>
-<a class="sourceLine" id="cb6-32" data-line-number="32">(r_mpg_con &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(mtcars<span class="op">$</span>mpg, <span class="dt">type =</span> <span class="st">"continuous"</span>))</a>
-<a class="sourceLine" id="cb6-33" data-line-number="33"><span class="co">#&gt; Random generation function of continuous type</span></a>
-<a class="sourceLine" id="cb6-34" data-line-number="34"><span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span></a>
-<a class="sourceLine" id="cb6-35" data-line-number="35"></a>
-<a class="sourceLine" id="cb6-36" data-line-number="36">  <span class="co"># "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions</span></a>
-<a class="sourceLine" id="cb6-37" data-line-number="37"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="kw"><a href="reference/meta.html">meta_x_tbl</a></span>(p_mpg_con), <span class="dt">n =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb6-38" data-line-number="38"><span class="co">#&gt;            x              y        cumprob</span></a>
-<a class="sourceLine" id="cb6-39" data-line-number="39"><span class="co">#&gt; 1 2.96996269 0.000114133557 0.00000000e+00</span></a>
-<a class="sourceLine" id="cb6-40" data-line-number="40"><span class="co">#&gt; 2 3.04503133 0.000125168087 8.98202438e-06</span></a>
-<a class="sourceLine" id="cb6-41" data-line-number="41"><span class="co">#&gt; 3 3.12009996 0.000136934574 1.88198694e-05</span></a>
-<a class="sourceLine" id="cb6-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb6-43" data-line-number="43"><span class="co"># Output of `new_*()` is actually a function</span></a>
-<a class="sourceLine" id="cb6-44" data-line-number="44"><span class="kw">p_mpg_dis</span>(<span class="dv">15</span><span class="op">:</span><span class="dv">20</span>)</a>
-<a class="sourceLine" id="cb6-45" data-line-number="45"><span class="co">#&gt; [1] 0.18750 0.31250 0.34375 0.40625 0.46875 0.56250</span></a>
-<a class="sourceLine" id="cb6-46" data-line-number="46"></a>
-<a class="sourceLine" id="cb6-47" data-line-number="47">  <span class="co"># Random generation. "discrete" type generates only values from input</span></a>
-<a class="sourceLine" id="cb6-48" data-line-number="48"><span class="kw">r_mpg_dis</span>(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb6-49" data-line-number="49"><span class="co">#&gt;  [1] 10.4 33.9 26.0 19.2 24.4 18.7 17.8 18.7 15.5 21.4</span></a>
-<a class="sourceLine" id="cb6-50" data-line-number="50"><span class="kw">r_mpg_con</span>(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb6-51" data-line-number="51"><span class="co">#&gt;  [1] 35.7089680 33.3634914 31.1541225 15.6482281 20.8554689 13.7275908</span></a>
-<a class="sourceLine" id="cb6-52" data-line-number="52"><span class="co">#&gt;  [7] 11.3686051 16.7155604 20.6710197 20.5132727</span></a>
-<a class="sourceLine" id="cb6-53" data-line-number="53"></a>
-<a class="sourceLine" id="cb6-54" data-line-number="54"><span class="co"># Special case of dirac-like pdqr-function, which numerically approximates</span></a>
-<a class="sourceLine" id="cb6-55" data-line-number="55"><span class="co"># single number with distribution with narrow support</span></a>
-<a class="sourceLine" id="cb6-56" data-line-number="56">(r_dirac &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(<span class="fl">3.14</span>, <span class="st">"continuous"</span>))</a>
-<a class="sourceLine" id="cb6-57" data-line-number="57"><span class="co">#&gt; Random generation function of continuous type</span></a>
-<a class="sourceLine" id="cb6-58" data-line-number="58"><span class="co">#&gt; Support: ~[3.14, 3.14] (2 intervals)</span></a>
-<a class="sourceLine" id="cb6-59" data-line-number="59"><span class="kw"><a href="reference/meta.html">meta_x_tbl</a></span>(r_dirac)</a>
-<a class="sourceLine" id="cb6-60" data-line-number="60"><span class="co">#&gt;            x         y cumprob</span></a>
-<a class="sourceLine" id="cb6-61" data-line-number="61"><span class="co">#&gt; 1 3.13999999         0     0.0</span></a>
-<a class="sourceLine" id="cb6-62" data-line-number="62"><span class="co">#&gt; 2 3.14000000 100000001     0.5</span></a>
-<a class="sourceLine" id="cb6-63" data-line-number="63"><span class="co">#&gt; 3 3.14000001         0     1.0</span></a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Treat input as discrete</span>
+<span class="op">(</span><span class="va">p_mpg_dis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_p</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Cumulative distribution function of discrete type</span>
+<span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span>
+<span class="op">(</span><span class="va">d_mpg_dis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Probability mass function of discrete type</span>
+<span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span>
+<span class="op">(</span><span class="va">q_mpg_dis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_q</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Quantile function of discrete type</span>
+<span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span>
+<span class="op">(</span><span class="va">r_mpg_dis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_r</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Random generation function of discrete type</span>
+<span class="co">#&gt; Support: [10.4, 33.9] (25 elements)</span>
+
+<span class="co">## "x_tbl" metadata is the same for all `*_mpg_dis()` pdqr-functions</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="reference/meta.html">meta_x_tbl</a></span><span class="op">(</span><span class="va">p_mpg_dis</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="co">#&gt;      x    prob cumprob</span>
+<span class="co">#&gt; 1 10.4 0.06250 0.06250</span>
+<span class="co">#&gt; 2 13.3 0.03125 0.09375</span>
+<span class="co">#&gt; 3 14.3 0.03125 0.12500</span>
+
+<span class="co"># Treat input as continuous</span>
+<span class="op">(</span><span class="va">p_mpg_con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_p</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Cumulative distribution function of continuous type</span>
+<span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span>
+<span class="op">(</span><span class="va">d_mpg_con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span>
+<span class="op">(</span><span class="va">q_mpg_con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_q</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Quantile function of continuous type</span>
+<span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span>
+<span class="op">(</span><span class="va">r_mpg_con</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_r</a></span><span class="op">(</span><span class="va">mtcars</span><span class="op">$</span><span class="va">mpg</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Random generation function of continuous type</span>
+<span class="co">#&gt; Support: ~[2.96996, 41.33004] (511 intervals)</span>
+
+<span class="co">## "x_tbl" metadata is the same for all `*_mpg_con()` pdqr-functions</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fu"><a href="reference/meta.html">meta_x_tbl</a></span><span class="op">(</span><span class="va">p_mpg_con</span><span class="op">)</span>, n <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+<span class="co">#&gt;            x              y        cumprob</span>
+<span class="co">#&gt; 1 2.96996269 0.000114133557 0.00000000e+00</span>
+<span class="co">#&gt; 2 3.04503133 0.000125168087 8.98202438e-06</span>
+<span class="co">#&gt; 3 3.12009996 0.000136934574 1.88198694e-05</span>
+
+<span class="co"># Output of `new_*()` is actually a function</span>
+<span class="fu">p_mpg_dis</span><span class="op">(</span><span class="fl">15</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.18750 0.31250 0.34375 0.40625 0.46875 0.56250</span>
+
+<span class="co">## Random generation. "discrete" type generates only values from input</span>
+<span class="fu">r_mpg_dis</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 10.4 33.9 26.0 19.2 24.4 18.7 17.8 18.7 15.5 21.4</span>
+<span class="fu">r_mpg_con</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 35.7089680 33.3634914 31.1541225 15.6482281 20.8554689 13.7275908 11.3686051 16.7155604 20.6710197</span>
+<span class="co">#&gt; [10] 20.5132727</span>
+
+<span class="co"># Special case of dirac-like pdqr-function, which numerically approximates</span>
+<span class="co"># single number with distribution with narrow support</span>
+<span class="op">(</span><span class="va">r_dirac</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_r</a></span><span class="op">(</span><span class="fl">3.14</span>, <span class="st">"continuous"</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Random generation function of continuous type</span>
+<span class="co">#&gt; Support: ~[3.14, 3.14] (2 intervals)</span>
+<span class="fu"><a href="reference/meta.html">meta_x_tbl</a></span><span class="op">(</span><span class="va">r_dirac</span><span class="op">)</span>
+<span class="co">#&gt;            x         y cumprob</span>
+<span class="co">#&gt; 1 3.13999999         0     0.0</span>
+<span class="co">#&gt; 2 3.14000000 100000001     0.5</span>
+<span class="co">#&gt; 3 3.14000001         0     1.0</span></code></code></pre></div>
 </div>
 <div id="create-pdqr-function-from-data-frame" class="section level3">
 <h3 class="hasAnchor">
 <a href="#create-pdqr-function-from-data-frame" class="anchor"></a>Create pdqr-function from data frame</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="co"># Type "discrete"</span></a>
-<a class="sourceLine" id="cb7-2" data-line-number="2">dis_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">prob =</span> <span class="dv">4</span><span class="op">:</span><span class="dv">1</span> <span class="op">/</span><span class="st"> </span><span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(dis_tbl, <span class="dt">type =</span> <span class="st">"discrete"</span>)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; Probability mass function of discrete type</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; Support: [1, 4] (4 elements)</span></a>
-<a class="sourceLine" id="cb7-6" data-line-number="6"><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(dis_tbl, <span class="dt">type =</span> <span class="st">"discrete"</span>)(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb7-7" data-line-number="7"><span class="co">#&gt;  [1] 4 1 3 1 2 4 3 2 4 1</span></a>
-<a class="sourceLine" id="cb7-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb7-9" data-line-number="9"><span class="co"># Type "continuous"</span></a>
-<a class="sourceLine" id="cb7-10" data-line-number="10">con_tbl &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span>(<span class="dt">x =</span> <span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="dt">y =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb7-11" data-line-number="11"><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(con_tbl, <span class="dt">type =</span> <span class="st">"continuous"</span>)</a>
-<a class="sourceLine" id="cb7-12" data-line-number="12"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb7-13" data-line-number="13"><span class="co">#&gt; Support: [1, 4] (3 intervals)</span></a>
-<a class="sourceLine" id="cb7-14" data-line-number="14"><span class="kw"><a href="reference/new-pdqr.html">new_r</a></span>(con_tbl, <span class="dt">type =</span> <span class="st">"continuous"</span>)(<span class="dv">10</span>)</a>
-<a class="sourceLine" id="cb7-15" data-line-number="15"><span class="co">#&gt;  [1] 2.21323986 1.58190910 2.85635049 2.32440194 2.44538842 2.89743821</span></a>
-<a class="sourceLine" id="cb7-16" data-line-number="16"><span class="co">#&gt;  [7] 3.29852362 2.43084969 2.81580878 2.79585280</span></a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Type "discrete"</span>
+<span class="va">dis_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, prob <span class="op">=</span> <span class="fl">4</span><span class="op">:</span><span class="fl">1</span> <span class="op">/</span> <span class="fl">10</span><span class="op">)</span>
+<span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="va">dis_tbl</span>, type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span>
+<span class="co">#&gt; Probability mass function of discrete type</span>
+<span class="co">#&gt; Support: [1, 4] (4 elements)</span>
+<span class="fu"><a href="reference/new_p.html">new_r</a></span><span class="op">(</span><span class="va">dis_tbl</span>, type <span class="op">=</span> <span class="st">"discrete"</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 4 1 3 1 2 4 3 2 4 1</span>
+
+<span class="co"># Type "continuous"</span>
+<span class="va">con_tbl</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, y <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="va">con_tbl</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: [1, 4] (3 intervals)</span>
+<span class="fu"><a href="reference/new_p.html">new_r</a></span><span class="op">(</span><span class="va">con_tbl</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span><span class="op">(</span><span class="fl">10</span><span class="op">)</span>
+<span class="co">#&gt;  [1] 2.21323986 1.58190910 2.85635049 2.32440194 2.44538842 2.89743821 3.29852362 2.43084969 2.81580878</span>
+<span class="co">#&gt; [10] 2.79585280</span></code></code></pre></div>
 </div>
 </div>
-<div id="convert-with-as_" class="section level2">
+<div id="-convert-with-as_" class="section level2">
 <h2 class="hasAnchor">
-<a href="#convert-with-as_" class="anchor"></a><a id="pdqr-convert"></a> Convert with <code>as_*()</code>
+<a href="#-convert-with-as_" class="anchor"></a><a id="pdqr-convert"></a> Convert with <code>as_*()</code>
 </h2>
 <p>Family of <code>as_*()</code> functions should be used to convert existing distribution functions into desired class (“p”, “d”, “q”, or “r”). Roughly, this is a <code>new_*()</code> family but with function as an input.</p>
 <p>There are two main use cases:</p>
@@ -337,24 +344,25 @@
 <h3 class="hasAnchor">
 <a href="#existing-pdqr-functions" class="anchor"></a>Existing pdqr-functions</h3>
 <p>Converting existing pdqr-function to desired type is done straightforwardly by changing function’s class without touching the underlying distribution (“x_tbl” metadata is the same):</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1">d_dis &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>, <span class="st">"discrete"</span>)</a>
-<a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="reference/meta.html">meta_x_tbl</a></span>(d_dis)</a>
-<a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt;   x prob cumprob</span></a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; 1 1 0.25    0.25</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; 2 2 0.25    0.50</span></a>
-<a class="sourceLine" id="cb8-6" data-line-number="6"><span class="co">#&gt; 3 3 0.25    0.75</span></a>
-<a class="sourceLine" id="cb8-7" data-line-number="7"><span class="co">#&gt; 4 4 0.25    1.00</span></a>
-<a class="sourceLine" id="cb8-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb8-9" data-line-number="9"><span class="co"># This is equivalent to `new_p(1:4, "discrete")`</span></a>
-<a class="sourceLine" id="cb8-10" data-line-number="10">(p_dis &lt;-<span class="st"> </span><span class="kw"><a href="reference/as-pdqr.html">as_p</a></span>(d_dis))</a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; Cumulative distribution function of discrete type</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; Support: [1, 4] (4 elements)</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="kw"><a href="reference/meta.html">meta_x_tbl</a></span>(p_dis)</a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt;   x prob cumprob</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; 1 1 0.25    0.25</span></a>
-<a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt; 2 2 0.25    0.50</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; 3 3 0.25    0.75</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; 4 4 0.25    1.00</span></a></code></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">d_dis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">4</span>, <span class="st">"discrete"</span><span class="op">)</span>
+<span class="fu"><a href="reference/meta.html">meta_x_tbl</a></span><span class="op">(</span><span class="va">d_dis</span><span class="op">)</span>
+<span class="co">#&gt;   x prob cumprob</span>
+<span class="co">#&gt; 1 1 0.25    0.25</span>
+<span class="co">#&gt; 2 2 0.25    0.50</span>
+<span class="co">#&gt; 3 3 0.25    0.75</span>
+<span class="co">#&gt; 4 4 0.25    1.00</span>
+
+<span class="co"># This is equivalent to `new_p(1:4, "discrete")`</span>
+<span class="op">(</span><span class="va">p_dis</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_p.html">as_p</a></span><span class="op">(</span><span class="va">d_dis</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Cumulative distribution function of discrete type</span>
+<span class="co">#&gt; Support: [1, 4] (4 elements)</span>
+<span class="fu"><a href="reference/meta.html">meta_x_tbl</a></span><span class="op">(</span><span class="va">p_dis</span><span class="op">)</span>
+<span class="co">#&gt;   x prob cumprob</span>
+<span class="co">#&gt; 1 1 0.25    0.25</span>
+<span class="co">#&gt; 2 2 0.25    0.50</span>
+<span class="co">#&gt; 3 3 0.25    0.75</span>
+<span class="co">#&gt; 4 4 0.25    1.00</span></code></code></pre></div>
 </div>
 <div id="other-distribution-functions" class="section level3">
 <h3 class="hasAnchor">
@@ -363,7 +371,7 @@
 <p>General conversion algorithm is as follows:</p>
 <ul>
 <li>If user didn’t supply support, detect it using algorithms targeted for every pdqr class separately. If <em>input function belongs to a certain set of “honored” distributions</em> (currently, it is all common univariate distributions <a href="https://rdrr.io/r/stats/Distributions.html">from ‘stats’ package</a>), support is detected in predefined way.</li>
-<li>Using detected support, data frame input for corresponding <code>new_*()</code> function is created which approximates input function. Approximation precision can be tweaked with <code>n_grid</code> (and <code>n_sample</code> for <code><a href="reference/as-pdqr.html">as_r()</a></code>) argument.</li>
+<li>Using detected support, data frame input for corresponding <code>new_*()</code> function is created which approximates input function. Approximation precision can be tweaked with <code>n_grid</code> (and <code>n_sample</code> for <code><a href="reference/as_p.html">as_r()</a></code>) argument.</li>
 </ul>
 <p><strong>Note</strong> that output is usually an approximation of input due to the following facts:</p>
 <ul>
@@ -371,227 +379,238 @@
 <li>Possible infinite tails are removed to obtain finite support. Usually output support “loses” only around 1e-6 probability on each infinite tail.</li>
 <li>Possible infinite values of density are linearly approximated from neighborhood points.</li>
 </ul>
-<!-- end list --><div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="co"># "Honored" distributions</span></a>
-<a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm)</a>
-<a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb9-4" data-line-number="4"><span class="co">#&gt; Support: ~[-4.75342, 4.75342] (10000 intervals)</span></a>
-<a class="sourceLine" id="cb9-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb9-6" data-line-number="6">  <span class="co"># Different picewise-linear approximation precision</span></a>
-<a class="sourceLine" id="cb9-7" data-line-number="7"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">n_grid =</span> <span class="dv">101</span>)</a>
-<a class="sourceLine" id="cb9-8" data-line-number="8"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb9-9" data-line-number="9"><span class="co">#&gt; Support: ~[-4.75342, 4.75342] (100 intervals)</span></a>
-<a class="sourceLine" id="cb9-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb9-11" data-line-number="11">  <span class="co"># Different extra arguments for input</span></a>
-<a class="sourceLine" id="cb9-12" data-line-number="12"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="dv">10</span>, <span class="dt">sd =</span> <span class="fl">0.1</span>)</a>
-<a class="sourceLine" id="cb9-13" data-line-number="13"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb9-14" data-line-number="14"><span class="co">#&gt; Support: ~[9.52466, 10.47534] (10000 intervals)</span></a>
-<a class="sourceLine" id="cb9-15" data-line-number="15"></a>
-<a class="sourceLine" id="cb9-16" data-line-number="16"><span class="co"># Custom functions</span></a>
-<a class="sourceLine" id="cb9-17" data-line-number="17">my_d &lt;-<span class="st"> </span><span class="cf">function</span>(x) {<span class="kw"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span>(x <span class="op">&gt;=</span><span class="st"> </span><span class="dv">-1</span> <span class="op">&amp;</span><span class="st"> </span>x <span class="op">&lt;=</span><span class="st"> </span><span class="dv">1</span>, <span class="fl">0.75</span> <span class="op">*</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">-</span><span class="st"> </span>x<span class="op">^</span><span class="dv">2</span>), <span class="dv">0</span>)}</a>
-<a class="sourceLine" id="cb9-18" data-line-number="18">  <span class="co"># With algorithmic support detection</span></a>
-<a class="sourceLine" id="cb9-19" data-line-number="19"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(my_d)</a>
-<a class="sourceLine" id="cb9-20" data-line-number="20"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb9-21" data-line-number="21"><span class="co">#&gt; Support: ~[-1.00018, 1.00019] (7588 intervals)</span></a>
-<a class="sourceLine" id="cb9-22" data-line-number="22"></a>
-<a class="sourceLine" id="cb9-23" data-line-number="23">  <span class="co"># Providing custom, maybe only partially known, support</span></a>
-<a class="sourceLine" id="cb9-24" data-line-number="24"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(my_d, <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="ot">NA</span>))</a>
-<a class="sourceLine" id="cb9-25" data-line-number="25"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb9-26" data-line-number="26"><span class="co">#&gt; Support: ~[-1, 1.00007] (9327 intervals)</span></a>
-<a class="sourceLine" id="cb9-27" data-line-number="27"><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(my_d, <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</a>
-<a class="sourceLine" id="cb9-28" data-line-number="28"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb9-29" data-line-number="29"><span class="co">#&gt; Support: [-1, 1] (10000 intervals)</span></a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># "Honored" distributions</span>
+<span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-4.75342, 4.75342] (10000 intervals)</span>
+
+<span class="co">## Different picewise-linear approximation precision</span>
+<span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span>, n_grid <span class="op">=</span> <span class="fl">101</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-4.75342, 4.75342] (100 intervals)</span>
+
+<span class="co">## Different extra arguments for input</span>
+<span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span>, mean <span class="op">=</span> <span class="fl">10</span>, sd <span class="op">=</span> <span class="fl">0.1</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[9.52466, 10.47534] (10000 intervals)</span>
+
+<span class="co"># Custom functions</span>
+<span class="va">my_d</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span>
+  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;=</span> <span class="op">-</span><span class="fl">1</span> <span class="op">&amp;</span> <span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">1</span>, <span class="fl">0.75</span> <span class="op">*</span> <span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">x</span><span class="op">^</span><span class="fl">2</span><span class="op">)</span>, <span class="fl">0</span><span class="op">)</span>
+<span class="op">}</span>
+<span class="co">## With algorithmic support detection</span>
+<span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">my_d</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-1.00018, 1.00019] (7588 intervals)</span>
+
+<span class="co">## Providing custom, maybe only partially known, support</span>
+<span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">my_d</span>, support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-1, 1.00007] (9327 intervals)</span>
+<span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">my_d</span>, support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: [-1, 1] (10000 intervals)</span></code></code></pre></div>
 </div>
 </div>
-<div id="transform-with-form_-and-base-operations" class="section level2">
+<div id="-transform-with-form_-and-base-operations" class="section level2">
 <h2 class="hasAnchor">
-<a href="#transform-with-form_-and-base-operations" class="anchor"></a><a id="pdqr-transform"></a> Transform with <code>form_*()</code> and base operations</h2>
+<a href="#-transform-with-form_-and-base-operations" class="anchor"></a><a id="pdqr-transform"></a> Transform with <code>form_*()</code> and base operations</h2>
 <p>Concept of form functions is to take one or more pdqr-function(s) and return a transformed pdqr-function. Argument <code>method</code> is used to choose function-specific algorithm of computation.</p>
 <p>For more details see <a href="https://echasnovski.github.io/pdqr/articles/pdqr-03-transform.html">vignette about transforming pdqr-functions</a>.</p>
 <div id="form_-family" class="section level3">
 <h3 class="hasAnchor">
 <a href="#form_-family" class="anchor"></a><code>form_*()</code> family</h3>
 <p>There are several <code>form_*()</code> functions. Here are some examples:</p>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="co"># Transform support of pdqr-function with `form_resupport()`. Usually useful</span></a>
-<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="co"># for dealing with bounded values.</span></a>
-<a class="sourceLine" id="cb10-3" data-line-number="3">d_smpl &lt;-<span class="st"> </span><span class="kw"><a href="reference/new-pdqr.html">new_d</a></span>(<span class="kw"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span>(<span class="dv">1000</span>), <span class="dt">type =</span> <span class="st">"continuous"</span>)</a>
-<a class="sourceLine" id="cb10-4" data-line-number="4">d_smpl_bounded &lt;-<span class="st"> </span><span class="kw"><a href="reference/form_resupport.html">form_resupport</a></span>(d_smpl, <span class="dt">support =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="dt">method =</span> <span class="st">"reflect"</span>)</a>
-<a class="sourceLine" id="cb10-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb10-6" data-line-number="6"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(d_smpl, <span class="dt">main =</span> <span class="st">"Estimating density of bounded quantity"</span>, <span class="dt">col =</span> <span class="st">"black"</span>)</a>
-<a class="sourceLine" id="cb10-7" data-line-number="7"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(d_smpl_bounded, <span class="dt">col =</span> <span class="st">"blue"</span>)</a>
-<a class="sourceLine" id="cb10-8" data-line-number="8">  <span class="co"># Refernece uniform distribution</span></a>
-<a class="sourceLine" id="cb10-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dunif), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Transform support of pdqr-function with `form_resupport()`. Usually useful</span>
+<span class="co"># for dealing with bounded values.</span>
+<span class="va">d_smpl</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/new_p.html">new_d</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html">runif</a></span><span class="op">(</span><span class="fl">1000</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"continuous"</span><span class="op">)</span>
+<span class="va">d_smpl_bounded</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/form_resupport.html">form_resupport</a></span><span class="op">(</span><span class="va">d_smpl</span>, support <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span>, method <span class="op">=</span> <span class="st">"reflect"</span><span class="op">)</span>
+
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">d_smpl</span>, main <span class="op">=</span> <span class="st">"Estimating density of bounded quantity"</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="va">d_smpl_bounded</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span>
+<span class="co">## Reference uniform distribution</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dunif</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code></code></pre></div>
 <p><img src="reference/figures/README-pdqr-transform_form-1.png"><!-- --></p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"></a>
-<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="co"># Perform general transformation with `form_trans()`. This is usually done by</span></a>
-<a class="sourceLine" id="cb11-3" data-line-number="3"><span class="co"># randomly simulating sample from output distribution and then calling one of</span></a>
-<a class="sourceLine" id="cb11-4" data-line-number="4"><span class="co"># `new_*()` functions.</span></a>
-<a class="sourceLine" id="cb11-5" data-line-number="5">d_norm &lt;-<span class="st"> </span><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm)</a>
-<a class="sourceLine" id="cb11-6" data-line-number="6">  <span class="co"># More accurate result would give use of `+` directly with: d_norm + d_norm</span></a>
-<a class="sourceLine" id="cb11-7" data-line-number="7">d_norm_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/form_trans.html">form_trans</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(d_norm, d_norm), <span class="dt">trans =</span> <span class="st">`</span><span class="dt">+</span><span class="st">`</span>)</a>
-<a class="sourceLine" id="cb11-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/graphics/plot.html">plot</a></span>(d_norm_<span class="dv">2</span>, <span class="dt">col =</span> <span class="st">"black"</span>)</a>
-<a class="sourceLine" id="cb11-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span>(<span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">sd =</span> <span class="kw"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span>(<span class="dv">2</span>)), <span class="dt">col =</span> <span class="st">"red"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Perform general transformation with `form_trans()`. This is usually done by</span>
+<span class="co"># randomly simulating sample from output distribution and then calling one of</span>
+<span class="co"># `new_*()` functions.</span>
+<span class="va">d_norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span><span class="op">)</span>
+<span class="co">## More accurate result would give use of `+` directly with: d_norm + d_norm</span>
+<span class="va">d_norm_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/form_trans.html">form_trans</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">d_norm</span>, <span class="va">d_norm</span><span class="op">)</span>, trans <span class="op">=</span> <span class="va">`+`</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span><span class="va">d_norm_2</span>, col <span class="op">=</span> <span class="st">"black"</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/graphics/lines.html">lines</a></span><span class="op">(</span><span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span>, sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html">sqrt</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></code></code></pre></div>
 <p><img src="reference/figures/README-pdqr-transform_form-2.png"><!-- --></p>
 </div>
 <div id="base-operations" class="section level3">
 <h3 class="hasAnchor">
 <a href="#base-operations" class="anchor"></a>Base operations</h3>
 <p>Almost all basic R operations (implemented with <a href="https://rdrr.io/r/base/groupGeneric.html">S3 group generic functions</a>) has methods for pdqr-functions. Operations are done as if applied to independent random variables with distributions represented by input pdqr-function(s). Many of methods have random nature and are implemented with <code><a href="reference/form_trans.html">form_trans()</a></code>, but have little tweaks that make their direct usage better than <code><a href="reference/form_trans.html">form_trans()</a></code>.</p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb12-1" data-line-number="1">d_norm &lt;-<span class="st"> </span><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm)</a>
-<a class="sourceLine" id="cb12-2" data-line-number="2">d_unif &lt;-<span class="st"> </span><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dunif)</a>
-<a class="sourceLine" id="cb12-3" data-line-number="3"></a>
-<a class="sourceLine" id="cb12-4" data-line-number="4"><span class="co"># Distribution of difference of random variables. Computed with random</span></a>
-<a class="sourceLine" id="cb12-5" data-line-number="5"><span class="co"># simulation.</span></a>
-<a class="sourceLine" id="cb12-6" data-line-number="6">d_norm <span class="op">-</span><span class="st"> </span>d_unif</a>
-<a class="sourceLine" id="cb12-7" data-line-number="7"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb12-8" data-line-number="8"><span class="co">#&gt; Support: ~[-5.02445, 3.65236] (511 intervals)</span></a>
-<a class="sourceLine" id="cb12-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb12-10" data-line-number="10"><span class="co"># Comparing random variables results into boolean random variable represented</span></a>
-<a class="sourceLine" id="cb12-11" data-line-number="11"><span class="co"># by boolean pdqr-function (type "discrete" with values 0 for FALSE and 1 for</span></a>
-<a class="sourceLine" id="cb12-12" data-line-number="12"><span class="co"># TRUE). Here it means that random value of `d_norm` will be greater than random</span></a>
-<a class="sourceLine" id="cb12-13" data-line-number="13"><span class="co"># value of `d_unif` with probability around 0.316. This is computed directly,</span></a>
-<a class="sourceLine" id="cb12-14" data-line-number="14"><span class="co"># without random simulation.</span></a>
-<a class="sourceLine" id="cb12-15" data-line-number="15">d_norm <span class="op">&gt;</span><span class="st"> </span>d_unif</a>
-<a class="sourceLine" id="cb12-16" data-line-number="16"><span class="co">#&gt; Probability mass function of discrete type</span></a>
-<a class="sourceLine" id="cb12-17" data-line-number="17"><span class="co">#&gt; Support: [0, 1] (2 elements, probability of 1: ~0.31563)</span></a>
-<a class="sourceLine" id="cb12-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb12-19" data-line-number="19"><span class="co"># Distribution of maximum of three random variables. Computed with random</span></a>
-<a class="sourceLine" id="cb12-20" data-line-number="20"><span class="co"># simulation.</span></a>
-<a class="sourceLine" id="cb12-21" data-line-number="21"><span class="kw"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span>(d_norm, d_norm, d_norm)</a>
-<a class="sourceLine" id="cb12-22" data-line-number="22"><span class="co">#&gt; Density function of continuous type</span></a>
-<a class="sourceLine" id="cb12-23" data-line-number="23"><span class="co">#&gt; Support: ~[-2.3575, 4.11583] (511 intervals)</span></a></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">d_norm</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span><span class="op">)</span>
+<span class="va">d_unif</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dunif</span><span class="op">)</span>
+
+<span class="co"># Distribution of difference of random variables. Computed with random</span>
+<span class="co"># simulation.</span>
+<span class="va">d_norm</span> <span class="op">-</span> <span class="va">d_unif</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-5.02445, 3.65236] (511 intervals)</span>
+
+<span class="co"># Comparing random variables results into boolean random variable represented</span>
+<span class="co"># by boolean pdqr-function (type "discrete" with values 0 for FALSE and 1 for</span>
+<span class="co"># TRUE). Here it means that random value of `d_norm` will be greater than random</span>
+<span class="co"># value of `d_unif` with probability around 0.316. This is computed directly,</span>
+<span class="co"># without random simulation.</span>
+<span class="va">d_norm</span> <span class="op">&gt;</span> <span class="va">d_unif</span>
+<span class="co">#&gt; Probability mass function of discrete type</span>
+<span class="co">#&gt; Support: [0, 1] (2 elements, probability of 1: ~0.31563)</span>
+
+<span class="co"># Distribution of maximum of three random variables. Computed with random</span>
+<span class="co"># simulation.</span>
+<span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">d_norm</span>, <span class="va">d_norm</span>, <span class="va">d_norm</span><span class="op">)</span>
+<span class="co">#&gt; Density function of continuous type</span>
+<span class="co">#&gt; Support: ~[-2.3575, 4.11583] (511 intervals)</span></code></code></pre></div>
 </div>
 </div>
-<div id="summarize-with-summ_" class="section level2">
+<div id="-summarize-with-summ_" class="section level2">
 <h2 class="hasAnchor">
-<a href="#summarize-with-summ_" class="anchor"></a><a id="pdqr-summarize"></a> Summarize with <code>summ_*()</code>
+<a href="#-summarize-with-summ_" class="anchor"></a><a id="pdqr-summarize"></a> Summarize with <code>summ_*()</code>
 </h2>
 <p>Concept of summary functions is to take one or more pdqr-function(s) and return a summary value. Argument <code>method</code> is used to choose function-specific algorithm of computation.</p>
 <p>For more details see <a href="https://echasnovski.github.io/pdqr/articles/pdqr-04-summarize.html">vignette about summarizing pdqr-functions</a>.</p>
 <div id="basic-summary" class="section level3">
 <h3 class="hasAnchor">
 <a href="#basic-summary" class="anchor"></a>Basic summary</h3>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">my_d &lt;-<span class="st"> </span><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dbeta, <span class="dt">shape1 =</span> <span class="dv">1</span>, <span class="dt">shape2 =</span> <span class="dv">3</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3"><span class="co"># There are wrappers for all center summaries</span></a>
-<a class="sourceLine" id="cb13-4" data-line-number="4"><span class="kw"><a href="reference/summ_center.html">summ_center</a></span>(my_d, <span class="dt">method =</span> <span class="st">"mean"</span>)</a>
-<a class="sourceLine" id="cb13-5" data-line-number="5"><span class="co">#&gt; [1] 0.249999259</span></a>
-<a class="sourceLine" id="cb13-6" data-line-number="6"><span class="kw"><a href="reference/summ_center.html">summ_center</a></span>(my_d, <span class="dt">method =</span> <span class="st">"median"</span>)</a>
-<a class="sourceLine" id="cb13-7" data-line-number="7"><span class="co">#&gt; [1] 0.20629921</span></a>
-<a class="sourceLine" id="cb13-8" data-line-number="8"><span class="kw"><a href="reference/summ_center.html">summ_center</a></span>(my_d, <span class="dt">method =</span> <span class="st">"mode"</span>)</a>
-<a class="sourceLine" id="cb13-9" data-line-number="9"><span class="co">#&gt; [1] 0</span></a>
-<a class="sourceLine" id="cb13-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb13-11" data-line-number="11"><span class="co"># There are wrappers for spread summaries</span></a>
-<a class="sourceLine" id="cb13-12" data-line-number="12"><span class="kw"><a href="reference/summ_spread.html">summ_spread</a></span>(my_d, <span class="dt">method =</span> <span class="st">"sd"</span>)</a>
-<a class="sourceLine" id="cb13-13" data-line-number="13"><span class="co">#&gt; [1] 0.193647842</span></a>
-<a class="sourceLine" id="cb13-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb13-15" data-line-number="15"><span class="co"># These return essentially the same result</span></a>
-<a class="sourceLine" id="cb13-16" data-line-number="16"><span class="kw"><a href="reference/summ_moment.html">summ_moment</a></span>(my_d, <span class="dt">order =</span> <span class="dv">2</span>, <span class="dt">central =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb13-17" data-line-number="17"><span class="co">#&gt; [1] 0.0374994867</span></a>
-<a class="sourceLine" id="cb13-18" data-line-number="18"><span class="kw"><a href="reference/summ_spread.html">summ_spread</a></span>(my_d, <span class="dt">method =</span> <span class="st">"var"</span>)</a>
-<a class="sourceLine" id="cb13-19" data-line-number="19"><span class="co">#&gt; [1] 0.0374994867</span></a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">my_d</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dbeta</span>, shape1 <span class="op">=</span> <span class="fl">1</span>, shape2 <span class="op">=</span> <span class="fl">3</span><span class="op">)</span>
+
+<span class="co"># There are wrappers for all center summaries</span>
+<span class="fu"><a href="reference/summ_center.html">summ_center</a></span><span class="op">(</span><span class="va">my_d</span>, method <span class="op">=</span> <span class="st">"mean"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.249999259</span>
+<span class="fu"><a href="reference/summ_center.html">summ_center</a></span><span class="op">(</span><span class="va">my_d</span>, method <span class="op">=</span> <span class="st">"median"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.20629921</span>
+<span class="fu"><a href="reference/summ_center.html">summ_center</a></span><span class="op">(</span><span class="va">my_d</span>, method <span class="op">=</span> <span class="st">"mode"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0</span>
+
+<span class="co"># There are wrappers for spread summaries</span>
+<span class="fu"><a href="reference/summ_spread.html">summ_spread</a></span><span class="op">(</span><span class="va">my_d</span>, method <span class="op">=</span> <span class="st">"sd"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.193647842</span>
+
+<span class="co"># These return essentially the same result</span>
+<span class="fu"><a href="reference/summ_moment.html">summ_moment</a></span><span class="op">(</span><span class="va">my_d</span>, order <span class="op">=</span> <span class="fl">2</span>, central <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.0374994867</span>
+<span class="fu"><a href="reference/summ_spread.html">summ_spread</a></span><span class="op">(</span><span class="va">my_d</span>, method <span class="op">=</span> <span class="st">"var"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.0374994867</span></code></code></pre></div>
 </div>
 <div id="regions" class="section level3">
 <h3 class="hasAnchor">
 <a href="#regions" class="anchor"></a>Regions</h3>
 <p>Distributions can be summarized with regions: union of closed intervals. They are represented as data frame with rows representing intervals and two columns “left” and “right” with left and right interval edges respectively.</p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="co"># 90% highest density region (HDR)</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"><span class="kw"><a href="reference/summ_hdr.html">summ_hdr</a></span>(my_d, <span class="dt">level =</span> <span class="fl">0.9</span>)</a>
-<a class="sourceLine" id="cb14-3" data-line-number="3"><span class="co">#&gt;   left    right</span></a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="co">#&gt; 1    0 0.535887</span></a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6">  <span class="co"># In case of unimodal distribution HDR is essentially the same as 90% interval</span></a>
-<a class="sourceLine" id="cb14-7" data-line-number="7">  <span class="co"># of minimum width</span></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8"><span class="kw"><a href="reference/summ_interval.html">summ_interval</a></span>(my_d, <span class="dt">level =</span> <span class="fl">0.9</span>, <span class="dt">method =</span> <span class="st">"minwidth"</span>)</a>
-<a class="sourceLine" id="cb14-9" data-line-number="9"><span class="co">#&gt;   left       right</span></a>
-<a class="sourceLine" id="cb14-10" data-line-number="10"><span class="co">#&gt; 1    0 0.535839727</span></a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb14-12" data-line-number="12"><span class="kw"><a href="reference/summ_interval.html">summ_interval</a></span>(my_d, <span class="dt">level =</span> <span class="fl">0.9</span>, <span class="dt">method =</span> <span class="st">"percentile"</span>)</a>
-<a class="sourceLine" id="cb14-13" data-line-number="13"><span class="co">#&gt;           left       right</span></a>
-<a class="sourceLine" id="cb14-14" data-line-number="14"><span class="co">#&gt; 1 0.0169524103 0.631594521</span></a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># 90% highest density region (HDR)</span>
+<span class="fu"><a href="reference/summ_hdr.html">summ_hdr</a></span><span class="op">(</span><span class="va">my_d</span>, level <span class="op">=</span> <span class="fl">0.9</span><span class="op">)</span>
+<span class="co">#&gt;   left    right</span>
+<span class="co">#&gt; 1    0 0.535887</span>
+
+<span class="co">## In case of unimodal distribution HDR is essentially the same as 90% interval</span>
+<span class="co">## of minimum width</span>
+<span class="fu"><a href="reference/summ_interval.html">summ_interval</a></span><span class="op">(</span><span class="va">my_d</span>, level <span class="op">=</span> <span class="fl">0.9</span>, method <span class="op">=</span> <span class="st">"minwidth"</span><span class="op">)</span>
+<span class="co">#&gt;   left       right</span>
+<span class="co">#&gt; 1    0 0.535839727</span>
+
+<span class="fu"><a href="reference/summ_interval.html">summ_interval</a></span><span class="op">(</span><span class="va">my_d</span>, level <span class="op">=</span> <span class="fl">0.9</span>, method <span class="op">=</span> <span class="st">"percentile"</span><span class="op">)</span>
+<span class="co">#&gt;           left       right</span>
+<span class="co">#&gt; 1 0.0169524103 0.631594521</span></code></code></pre></div>
 </div>
 <div id="distance" class="section level3">
 <h3 class="hasAnchor">
 <a href="#distance" class="anchor"></a>Distance</h3>
 <p>Function <code><a href="reference/summ_distance.html">summ_distance()</a></code> takes two pdqr-functions and returns a distance between two distributions they represent. Many methods of computation are available. This might be useful for doing comparative statistical inference.</p>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">my_d_<span class="dv">2</span> &lt;-<span class="st"> </span><span class="kw"><a href="reference/as-pdqr.html">as_d</a></span>(dnorm, <span class="dt">mean =</span> <span class="fl">0.5</span>)</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb15-3" data-line-number="3"><span class="co"># Kolmogorov-Smirnov distance</span></a>
-<a class="sourceLine" id="cb15-4" data-line-number="4"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"KS"</span>)</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"><span class="co">#&gt; [1] 0.397684098</span></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"><span class="co"># Total variation distance</span></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"totvar"</span>)</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"><span class="co">#&gt; [1] 0.706221267</span></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="co"># Probability of one distribution be bigger than the other, normalized to [0;1]</span></a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"compare"</span>)</a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="co">#&gt; [1] 0.194615851</span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb15-15" data-line-number="15"><span class="co"># Wassertein distance: "average path density point should go while transforming</span></a>
-<a class="sourceLine" id="cb15-16" data-line-number="16"><span class="co"># from one into another"</span></a>
-<a class="sourceLine" id="cb15-17" data-line-number="17"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"wass"</span>)</a>
-<a class="sourceLine" id="cb15-18" data-line-number="18"><span class="co">#&gt; [1] 0.685534883</span></a>
-<a class="sourceLine" id="cb15-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb15-20" data-line-number="20"><span class="co"># Cramer distance: integral of squared difference of p-functions</span></a>
-<a class="sourceLine" id="cb15-21" data-line-number="21"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"cramer"</span>)</a>
-<a class="sourceLine" id="cb15-22" data-line-number="22"><span class="co">#&gt; [1] 0.165921075</span></a>
-<a class="sourceLine" id="cb15-23" data-line-number="23"></a>
-<a class="sourceLine" id="cb15-24" data-line-number="24"><span class="co"># "Align" distance: path length for which one of distribution should be "moved"</span></a>
-<a class="sourceLine" id="cb15-25" data-line-number="25"><span class="co"># towards the other so that they become "aligned" (probability of one being</span></a>
-<a class="sourceLine" id="cb15-26" data-line-number="26"><span class="co"># greater than the other is 0.5)</span></a>
-<a class="sourceLine" id="cb15-27" data-line-number="27"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"align"</span>)</a>
-<a class="sourceLine" id="cb15-28" data-line-number="28"><span class="co">#&gt; [1] 0.251020429</span></a>
-<a class="sourceLine" id="cb15-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb15-30" data-line-number="30"><span class="co"># "Entropy" distance: `KL(f, g) + KL(g, f)`, where `KL()` is Kullback-Leibler</span></a>
-<a class="sourceLine" id="cb15-31" data-line-number="31"><span class="co"># divergence. Usually should be used for distributions with same support, but</span></a>
-<a class="sourceLine" id="cb15-32" data-line-number="32"><span class="co"># works even if they are different (with big numerical penalty).</span></a>
-<a class="sourceLine" id="cb15-33" data-line-number="33"><span class="kw"><a href="reference/summ_distance.html">summ_distance</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"entropy"</span>)</a>
-<a class="sourceLine" id="cb15-34" data-line-number="34"><span class="co">#&gt; [1] 12.6930974</span></a></code></pre></div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">my_d_2</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/as_p.html">as_d</a></span><span class="op">(</span><span class="va">dnorm</span>, mean <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>
+
+<span class="co"># Kolmogorov-Smirnov distance</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"KS"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.397684098</span>
+
+<span class="co"># Total variation distance</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"totvar"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.706221267</span>
+
+<span class="co"># Probability of one distribution be bigger than the other, normalized to [0;1]</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"compare"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.194615851</span>
+
+<span class="co"># Wassertein distance: "average path density point should go while transforming</span>
+<span class="co"># from one into another"</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"wass"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.685534883</span>
+
+<span class="co"># Cramer distance: integral of squared difference of p-functions</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"cramer"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.165921075</span>
+
+<span class="co"># "Align" distance: path length for which one of distribution should be "moved"</span>
+<span class="co"># towards the other so that they become "aligned" (probability of one being</span>
+<span class="co"># greater than the other is 0.5)</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"align"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.251020429</span>
+
+<span class="co"># "Entropy" distance: `KL(f, g) + KL(g, f)`, where `KL()` is Kullback-Leibler</span>
+<span class="co"># divergence. Usually should be used for distributions with same support, but</span>
+<span class="co"># works even if they are different (with big numerical penalty).</span>
+<span class="fu"><a href="reference/summ_distance.html">summ_distance</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"entropy"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 12.6930974</span></code></code></pre></div>
 </div>
 <div id="separation-classification-and-roc-curve" class="section level3">
 <h3 class="hasAnchor">
 <a href="#separation-classification-and-roc-curve" class="anchor"></a>Separation, classification, and ROC curve</h3>
 <p>Function <code><a href="reference/summ_separation.html">summ_separation()</a></code> computes a threshold that optimally separates distributions represented by pair of input pdqr-functions. In other words, <code><a href="reference/summ_separation.html">summ_separation()</a></code> solves a binary classification problem with one-dimensional linear classifier: values not more than some threshold are classified as one class, and more than threshold - as another. Order of input functions doesn’t matter.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1"><span class="kw"><a href="reference/summ_separation.html">summ_separation</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"KS"</span>)</a>
-<a class="sourceLine" id="cb16-2" data-line-number="2"><span class="co">#&gt; [1] 0.637042714</span></a>
-<a class="sourceLine" id="cb16-3" data-line-number="3"><span class="kw"><a href="reference/summ_separation.html">summ_separation</a></span>(my_d, my_d_<span class="dv">2</span>, <span class="dt">method =</span> <span class="st">"F1"</span>)</a>
-<a class="sourceLine" id="cb16-4" data-line-number="4"><span class="co">#&gt; [1] -6.02372908e-05</span></a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="fu"><a href="reference/summ_separation.html">summ_separation</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"KS"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.637042714</span>
+<span class="fu"><a href="reference/summ_separation.html">summ_separation</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span>, method <span class="op">=</span> <span class="st">"F1"</span><span class="op">)</span>
+<span class="co">#&gt; [1] -6.02372908e-05</span></code></code></pre></div>
 <p>Functions <code><a href="reference/summ_classmetric.html">summ_classmetric()</a></code> and <code><a href="reference/summ_classmetric.html">summ_classmetric_df()</a></code> compute metric of classification setup, similar to one used in <code><a href="reference/summ_separation.html">summ_separation()</a></code>. Here classifier threshold should be supplied and order of input matters. Classification is assumed to be done as follows: any x value not more than threshold value is classified as “negative”; if strictly greater - “positive”. Classification metrics are computed based on two pdqr-functions: <code>f</code>, which represents the distribution of values which should be classified as “negative” (“true negative”), and <code>g</code> - the same for “positive” (“true positive”).</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="co"># Many threshold values can be supplied</span></a>
-<a class="sourceLine" id="cb17-2" data-line-number="2">thres_vec &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/seq.html">seq</a></span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dt">by =</span> <span class="fl">0.2</span>)</a>
-<a class="sourceLine" id="cb17-3" data-line-number="3"><span class="kw"><a href="reference/summ_classmetric.html">summ_classmetric</a></span>(<span class="dt">f =</span> my_d, <span class="dt">g =</span> my_d_<span class="dv">2</span>, <span class="dt">threshold =</span> thres_vec, <span class="dt">method =</span> <span class="st">"F1"</span>)</a>
-<a class="sourceLine" id="cb17-4" data-line-number="4"><span class="co">#&gt; [1] 0.513819342 0.580222932 0.614898704 0.603832562 0.549732861 0.471575705</span></a>
-<a class="sourceLine" id="cb17-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb17-6" data-line-number="6"><span class="co"># In `summ_classmetric_df()` many methods can be supplied</span></a>
-<a class="sourceLine" id="cb17-7" data-line-number="7"><span class="kw"><a href="reference/summ_classmetric.html">summ_classmetric_df</a></span>(</a>
-<a class="sourceLine" id="cb17-8" data-line-number="8">  <span class="dt">f =</span> my_d, <span class="dt">g =</span> my_d_<span class="dv">2</span>, <span class="dt">threshold =</span> thres_vec, <span class="dt">method =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="st">"GM"</span>, <span class="st">"F1"</span>, <span class="st">"MCC"</span>)</a>
-<a class="sourceLine" id="cb17-9" data-line-number="9">)</a>
-<a class="sourceLine" id="cb17-10" data-line-number="10"><span class="co">#&gt;   threshold          GM          F1          MCC</span></a>
-<a class="sourceLine" id="cb17-11" data-line-number="11"><span class="co">#&gt; 1       0.0 0.000000000 0.513819342 -0.427093061</span></a>
-<a class="sourceLine" id="cb17-12" data-line-number="12"><span class="co">#&gt; 2       0.2 0.549127659 0.580222932  0.106817345</span></a>
-<a class="sourceLine" id="cb17-13" data-line-number="13"><span class="co">#&gt; 3       0.4 0.650557843 0.614898704  0.333936376</span></a>
-<a class="sourceLine" id="cb17-14" data-line-number="14"><span class="co">#&gt; 4       0.6 0.656293762 0.603832562  0.450433146</span></a>
-<a class="sourceLine" id="cb17-15" data-line-number="15"><span class="co">#&gt; 5       0.8 0.615655766 0.549732861  0.472055694</span></a>
-<a class="sourceLine" id="cb17-16" data-line-number="16"><span class="co">#&gt; 6       1.0 0.555461222 0.471575705  0.427093061</span></a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="co"># Many threshold values can be supplied</span>
+<span class="va">thres_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, by <span class="op">=</span> <span class="fl">0.2</span><span class="op">)</span>
+<span class="fu"><a href="reference/summ_classmetric.html">summ_classmetric</a></span><span class="op">(</span>f <span class="op">=</span> <span class="va">my_d</span>, g <span class="op">=</span> <span class="va">my_d_2</span>, threshold <span class="op">=</span> <span class="va">thres_vec</span>, method <span class="op">=</span> <span class="st">"F1"</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.513819342 0.580222932 0.614898704 0.603832562 0.549732861 0.471575705</span>
+
+<span class="co"># In `summ_classmetric_df()` many methods can be supplied</span>
+<span class="fu"><a href="reference/summ_classmetric.html">summ_classmetric_df</a></span><span class="op">(</span>
+  f <span class="op">=</span> <span class="va">my_d</span>, g <span class="op">=</span> <span class="va">my_d_2</span>, threshold <span class="op">=</span> <span class="va">thres_vec</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"GM"</span>, <span class="st">"F1"</span>, <span class="st">"MCC"</span><span class="op">)</span>
+<span class="op">)</span>
+<span class="co">#&gt;   threshold          GM          F1          MCC</span>
+<span class="co">#&gt; 1       0.0 0.000000000 0.513819342 -0.427093061</span>
+<span class="co">#&gt; 2       0.2 0.549127659 0.580222932  0.106817345</span>
+<span class="co">#&gt; 3       0.4 0.650557843 0.614898704  0.333936376</span>
+<span class="co">#&gt; 4       0.6 0.656293762 0.603832562  0.450433146</span>
+<span class="co">#&gt; 5       0.8 0.615655766 0.549732861  0.472055694</span>
+<span class="co">#&gt; 6       1.0 0.555461222 0.471575705  0.427093061</span></code></code></pre></div>
 <p>With <code><a href="reference/summ_roc.html">summ_roc()</a></code> and <code><a href="reference/summ_roc.html">summ_rocauc()</a></code> one can compute data frame of ROC curve points and ROC AUC value respectively. There is also a <code><a href="reference/summ_roc.html">roc_plot()</a></code> function for predefined plotting of ROC curve.</p>
-<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb18-1" data-line-number="1">my_roc &lt;-<span class="st"> </span><span class="kw"><a href="reference/summ_roc.html">summ_roc</a></span>(my_d, my_d_<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb18-2" data-line-number="2"><span class="kw"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(my_roc)</a>
-<a class="sourceLine" id="cb18-3" data-line-number="3"><span class="co">#&gt;    threshold fpr            tpr</span></a>
-<a class="sourceLine" id="cb18-4" data-line-number="4"><span class="co">#&gt; 1 5.25342531   0 0.00000000e+00</span></a>
-<a class="sourceLine" id="cb18-5" data-line-number="5"><span class="co">#&gt; 2 5.24391846   0 4.81164585e-08</span></a>
-<a class="sourceLine" id="cb18-6" data-line-number="6"><span class="co">#&gt; 3 5.23441161   0 9.84577933e-08</span></a>
-<a class="sourceLine" id="cb18-7" data-line-number="7"><span class="co">#&gt; 4 5.22490476   0 1.51116706e-07</span></a>
-<a class="sourceLine" id="cb18-8" data-line-number="8"><span class="co">#&gt; 5 5.21539791   0 2.06194913e-07</span></a>
-<a class="sourceLine" id="cb18-9" data-line-number="9"><span class="co">#&gt; 6 5.20589106   0 2.63798357e-07</span></a>
-<a class="sourceLine" id="cb18-10" data-line-number="10"><span class="kw"><a href="reference/summ_roc.html">summ_rocauc</a></span>(my_d, my_d_<span class="dv">2</span>)</a>
-<a class="sourceLine" id="cb18-11" data-line-number="11"><span class="co">#&gt; [1] 0.597307926</span></a>
-<a class="sourceLine" id="cb18-12" data-line-number="12"><span class="kw"><a href="reference/summ_roc.html">roc_plot</a></span>(my_roc)</a></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r"><code class = "r">
+<code class="sourceCode R"><span class="va">my_roc</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/summ_roc.html">summ_roc</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span><span class="op">)</span>
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">my_roc</span><span class="op">)</span>
+<span class="co">#&gt;    threshold fpr            tpr</span>
+<span class="co">#&gt; 1 5.25342531   0 0.00000000e+00</span>
+<span class="co">#&gt; 2 5.24391846   0 4.81164585e-08</span>
+<span class="co">#&gt; 3 5.23441161   0 9.84577933e-08</span>
+<span class="co">#&gt; 4 5.22490476   0 1.51116706e-07</span>
+<span class="co">#&gt; 5 5.21539791   0 2.06194913e-07</span>
+<span class="co">#&gt; 6 5.20589106   0 2.63798357e-07</span>
+<span class="fu"><a href="reference/summ_roc.html">summ_rocauc</a></span><span class="op">(</span><span class="va">my_d</span>, <span class="va">my_d_2</span><span class="op">)</span>
+<span class="co">#&gt; [1] 0.597307926</span>
+<span class="fu"><a href="reference/summ_roc.html">roc_plot</a></span><span class="op">(</span><span class="va">my_roc</span><span class="op">)</span></code></code></pre></div>
 <p><img src="reference/figures/README-pdqr-summarize_roc-1.png"><!-- --></p>
 </div>
 </div>
-<div id="similar-packages" class="section level2">
+<div id="-similar-packages" class="section level2">
 <h2 class="hasAnchor">
-<a href="#similar-packages" class="anchor"></a><a id="similar-packages"></a> Similar packages</h2>
+<a href="#-similar-packages" class="anchor"></a><a id="similar-packages"></a> Similar packages</h2>
 <ul>
 <li>
 <a href="http://distr.r-forge.r-project.org/">“distrXXX”-family</a> of packages: S4 classes for distributions.</li>
@@ -603,18 +622,20 @@
 <a href="https://CRAN.R-project.org/package=fitdistrplus">fitdistrplus</a>: Help to Fit of a Parametric Distribution to Non-Censored or Censored Data.</li>
 <li>
 <a href="https://CRAN.R-project.org/view=Distributions">Probability Distributions</a> CRAN Task View has more examples of packages intended to work with probability distributions.</li>
+<li>
+<a href="https://CRAN.R-project.org/package=hdrcde">hdrcde</a>: Highest Density Regions and Conditional Density Estimation.</li>
 </ul>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
 <li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=pdqr">https://​cloud.r-project.org/​package=pdqr</a>
 </li>
-<li>Browse source code at <br><a href="https://github.com/echasnovski/pdqr">https://​github.com/​echasnovski/​pdqr</a>
+<li>Browse source code at <br><a href="https://github.com/echasnovski/pdqr/">https://​github.com/​echasnovski/​pdqr/​</a>
 </li>
 <li>Report a bug at <br><a href="https://github.com/echasnovski/pdqr/issues">https://​github.com/​echasnovski/​pdqr/​issues</a>
 </li>
@@ -630,17 +651,18 @@
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Evgeni Chasnovski <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Evgeni Chasnovski <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-1617-4019" target="orcid.widget" aria-label="ORCID"><span class="fab fa-orcid orcid" aria-hidden="true"></span></a> </li>
 </ul>
 </div>
 
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/echasnovski/pdqr"><img src="https://travis-ci.org/echasnovski/pdqr.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://github.com/echasnovski/pdqr/actions"><img src="https://github.com/echasnovski/pdqr/workflows/R-CMD-check/badge.svg" alt="R build status"></a></li>
 <li><a href="https://codecov.io/github/echasnovski/pdqr?branch=master"><img src="https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg" alt="Coverage status"></a></li>
 <li><a href="https://cran.r-project.org/package=pdqr"><img src="https://www.r-pkg.org/badges/version/pdqr?color=blue" alt="CRAN"></a></li>
-<li><a href="https://CRAN.R-project.org/package=pdqr"><img src="https://tinyverse.netlify.com/badge/pdqr" alt="status"></a></li>
+<li><a href="https://CRAN.R-project.org/package=pdqr"><img src="https://tinyverse.netlify.com/badge/pdqr" alt="Dependencies"></a></li>
+<li><a href="https://cran.r-project.org/package=pdqr"><img src="http://cranlogs.r-pkg.org/badges/pdqr" alt="Downloads"></a></li>
 </ul>
 </div>
 </div>
@@ -652,7 +674,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

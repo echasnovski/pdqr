@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -41,7 +45,6 @@
 <meta property="og:description" content="Modify tail(s) of distribution defined by certain cutoff level using method
 of choice. This function is useful for doing robust analysis in presence of
 possible outliers." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -59,7 +62,7 @@ possible outliers." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +76,7 @@ possible outliers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -81,7 +84,7 @@ possible outliers." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,8 +118,8 @@ possible outliers." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -144,7 +147,7 @@ of choice. This function is useful for doing robust analysis in presence of
 possible outliers.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>form_tails</span>(<span class='no'>f</span>, <span class='no'>level</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"trim"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</code></pre>
+    <pre class="usage"><code class = "r"><span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>level</span>, method <span class='op'>=</span> <span class='st'>"trim"</span>, direction <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -198,46 +201,48 @@ known interval.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "discrete"</span>
-<span class='no'>my_dis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>prob</span> <span class='kw'>=</span> (<span class='fl'>1</span>:<span class='fl'>4</span>)/<span class='fl'>10</span>), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"discrete"</span>)
-<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='fu'>form_tails</span>(<span class='no'>my_dis</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.1</span>))</div><div class='output co'>#&gt;   x  prob cumprob
+<span class='va'>my_dis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, prob <span class='op'>=</span> <span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>my_dis</span>, level <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   x  prob cumprob
 #&gt; 1 2 0.250   0.250
 #&gt; 2 3 0.375   0.625
-#&gt; 3 4 0.375   1.000</div><div class='input'><span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(
-  <span class='fu'>form_tails</span>(<span class='no'>my_dis</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.35</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"winsor"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"left"</span>)
-)</div><div class='output co'>#&gt;   x prob cumprob
+#&gt; 3 4 0.375   1.000</div><div class='input'><span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span>
+  <span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>my_dis</span>, level <span class='op'>=</span> <span class='fl'>0.35</span>, method <span class='op'>=</span> <span class='st'>"winsor"</span>, direction <span class='op'>=</span> <span class='st'>"left"</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt;   x prob cumprob
 #&gt; 1 3  0.6     0.6
 #&gt; 2 4  0.4     1.0</div><div class='input'>
 <span class='co'># Type "continuous"</span>
-<span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_norm</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'>form_tails</span>(<span class='no'>d_norm</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.1</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(
-  <span class='fu'>form_tails</span>(<span class='no'>d_norm</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"winsor"</span>, <span class='kw'>direction</span> <span class='kw'>=</span> <span class='st'>"right"</span>),
-  <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>
-)</div><div class='img'><img src='form_tails-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>d_norm</span>, level <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span>
+  <span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>d_norm</span>, level <span class='op'>=</span> <span class='fl'>0.1</span>, method <span class='op'>=</span> <span class='st'>"winsor"</span>, direction <span class='op'>=</span> <span class='st'>"right"</span><span class='op'>)</span>,
+  col <span class='op'>=</span> <span class='st'>"green"</span>
+<span class='op'>)</span>
+</div><div class='img'><img src='form_tails-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use `form_resupport()` and `as_q()` to remove different levels from both</span>
 <span class='co'># directions. Here 0.1 level tail from left is removed, and 0.05 level from</span>
 <span class='co'># right</span>
-<span class='no'>new_supp</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_q</a></span>(<span class='no'>d_norm</span>)(<span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0.1</span>, <span class='fl'>1</span>-<span class='fl'>0.05</span>))
-<span class='fu'><a href='form_resupport.html'>form_resupport</a></span>(<span class='no'>d_norm</span>, <span class='kw'>support</span> <span class='kw'>=</span> <span class='no'>new_supp</span>)</div><div class='output co'>#&gt; Density function of continuous type
+<span class='va'>new_supp</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_q</a></span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0.1</span>, <span class='fl'>1</span> <span class='op'>-</span> <span class='fl'>0.05</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='form_resupport.html'>form_resupport</a></span><span class='op'>(</span><span class='va'>d_norm</span>, support <span class='op'>=</span> <span class='va'>new_supp</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Density function of continuous type
 #&gt; Support: ~[-1.28155, 1.64485] (9236 intervals)</div><div class='input'>
 <span class='co'># Examples of robust mean</span>
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>101</span>)
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Cauchy.html'>rcauchy</a></span>(<span class='fl'>1000</span>)
-<span class='no'>d_x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='no'>x</span>, <span class='st'>"continuous"</span>)
-<span class='fu'><a href='summ_center.html'>summ_mean</a></span>(<span class='no'>d_x</span>)</div><div class='output co'>#&gt; [1] 0.6504152</div><div class='input'>  <span class='co'># Trimmed mean</span>
-<span class='fu'><a href='summ_center.html'>summ_mean</a></span>(<span class='fu'>form_tails</span>(<span class='no'>d_x</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"trim"</span>))</div><div class='output co'>#&gt; [1] 0.1094364</div><div class='input'>  <span class='co'># Winsorized mean</span>
-<span class='fu'><a href='summ_center.html'>summ_mean</a></span>(<span class='fu'>form_tails</span>(<span class='no'>d_x</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.1</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"winsor"</span>))</div><div class='output co'>#&gt; [1] 0.1563657</div><div class='input'>
-</div></code></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>101</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Cauchy.html'>rcauchy</a></span><span class='op'>(</span><span class='fl'>1000</span><span class='op'>)</span>
+<span class='va'>d_x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"continuous"</span><span class='op'>)</span>
+<span class='fu'><a href='summ_center.html'>summ_mean</a></span><span class='op'>(</span><span class='va'>d_x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.6504152</div><div class='input'><span class='co'>## Trimmed mean</span>
+<span class='fu'><a href='summ_center.html'>summ_mean</a></span><span class='op'>(</span><span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>d_x</span>, level <span class='op'>=</span> <span class='fl'>0.1</span>, method <span class='op'>=</span> <span class='st'>"trim"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.1094364</div><div class='input'><span class='co'>## Winsorized mean</span>
+<span class='fu'><a href='summ_center.html'>summ_mean</a></span><span class='op'>(</span><span class='fu'>form_tails</span><span class='op'>(</span><span class='va'>d_x</span>, level <span class='op'>=</span> <span class='fl'>0.1</span>, method <span class='op'>=</span> <span class='st'>"winsor"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.1563657</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -248,7 +253,7 @@ known interval.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

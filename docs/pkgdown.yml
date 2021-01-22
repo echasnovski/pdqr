@@ -1,9 +1,10 @@
-pandoc: 2.3.1
-pkgdown: 1.4.1
+pandoc: 2.11.2
+pkgdown: 1.6.1
 pkgdown_sha: ~
 articles:
   pdqr-01-create: pdqr-01-create.html
   pdqr-02-convert: pdqr-02-convert.html
   pdqr-03-transform: pdqr-03-transform.html
   pdqr-04-summarize: pdqr-04-summarize.html
+last_built: 2021-01-22T18:59Z
 

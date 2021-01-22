@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,7 +46,6 @@
 approximation, which occurs because of possible tail trimming and assuming
 piecewise linearity of density function in case of &quot;continuous&quot; type. For an
 easy view summary, use summary()." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -60,7 +63,7 @@ easy view summary, use summary()." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +77,7 @@ easy view summary, use summary()." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -82,7 +85,7 @@ easy view summary, use summary()." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,8 +119,8 @@ easy view summary, use summary()." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,7 +149,7 @@ piecewise linearity of density function in case of "continuous" type. For an
 easy view summary, use <a href='https://rdrr.io/r/base/summary.html'>summary()</a>.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>pdqr_approx_error</span>(<span class='no'>f</span>, <span class='no'>ref_f</span>, <span class='no'>...</span>, <span class='kw'>gran</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>remove_infinity</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</code></pre>
+    <pre class="usage"><code class = "r"><span class='fu'>pdqr_approx_error</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>ref_f</span>, <span class='va'>...</span>, gran <span class='op'>=</span> <span class='fl'>10</span>, remove_infinity <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -154,7 +157,7 @@ easy view summary, use <a href='https://rdrr.io/r/base/summary.html'>summary()</
     <tr>
       <th>f</th>
       <td><p>A p-, d-, or q-function to diagnose. Usually the output of one of
-<code><a href='as-pdqr.html'>as_p()</a></code>, <code><a href='as-pdqr.html'>as_d()</a></code>, or <code><a href='as-pdqr.html'>as_q()</a></code> default methods.</p></td>
+<code><a href='as_p.html'>as_p()</a></code>, <code><a href='as_p.html'>as_d()</a></code>, or <code><a href='as_p.html'>as_q()</a></code> default methods.</p></td>
     </tr>
     <tr>
       <th>ref_f</th>
@@ -210,9 +213,10 @@ due to renormalization can differ by one from reference ones. For example:
 desirable number of rows.</p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='no'>error_norm</span> <span class='kw'>&lt;-</span> <span class='fu'>pdqr_approx_error</span>(<span class='no'>d_norm</span>, <span class='no'>dnorm</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>error_norm</span>)</div><div class='output co'>#&gt;       grid            error               abserror        
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='va'>error_norm</span> <span class='op'>&lt;-</span> <span class='fu'>pdqr_approx_error</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='va'>dnorm</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>error_norm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       grid            error               abserror        
 #&gt;  Min.   :-4.753   Min.   :-7.979e-07   Min.   :9.900e-12  
 #&gt;  1st Qu.:-2.377   1st Qu.:-4.000e-07   1st Qu.:1.975e-09  
 #&gt;  Median : 0.000   Median :-5.552e-08   Median :5.552e-08  
@@ -220,12 +224,14 @@ desirable number of rows.</p></div>
 #&gt;  3rd Qu.: 2.377   3rd Qu.:-1.975e-09   3rd Qu.:4.000e-07  
 #&gt;  Max.   : 4.753   Max.   :-9.900e-12   Max.   :7.979e-07  </div><div class='input'>
 <span class='co'># Setting `gran` results into different number of rows in output</span>
-<span class='no'>error_norm_2</span> <span class='kw'>&lt;-</span> <span class='fu'>pdqr_approx_error</span>(<span class='no'>d_norm</span>, <span class='no'>dnorm</span>, <span class='kw'>gran</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>d_norm</span>)) <span class='kw'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span>(<span class='no'>error_norm_2</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
+<span class='va'>error_norm_2</span> <span class='op'>&lt;-</span> <span class='fu'>pdqr_approx_error</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='va'>dnorm</span>, gran <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span><span class='op'>)</span> <span class='op'>==</span> <span class='fu'><a href='https://rdrr.io/r/base/nrow.html'>nrow</a></span><span class='op'>(</span><span class='va'>error_norm_2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
 <span class='co'># By default infinity errors are removed</span>
-<span class='no'>d_beta</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dbeta</span>, <span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>shape2</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
-<span class='no'>error_beta_1</span> <span class='kw'>&lt;-</span> <span class='fu'>pdqr_approx_error</span>(<span class='no'>d_beta</span>, <span class='no'>dbeta</span>, <span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>shape2</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>error_beta_1</span>)</div><div class='output co'>#&gt;       grid             error             abserror       
+<span class='va'>d_beta</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dbeta</span>, shape1 <span class='op'>=</span> <span class='fl'>0.3</span>, shape2 <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
+<span class='va'>error_beta_1</span> <span class='op'>&lt;-</span> <span class='fu'>pdqr_approx_error</span><span class='op'>(</span><span class='va'>d_beta</span>, <span class='va'>dbeta</span>, shape1 <span class='op'>=</span> <span class='fl'>0.3</span>, shape2 <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>error_beta_1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       grid             error             abserror       
 #&gt;  Min.   :0.00001   Min.   :-13.9547   Min.   :  0.0167  
 #&gt;  1st Qu.:0.25000   1st Qu.: -0.0278   1st Qu.:  0.0174  
 #&gt;  Median :0.50000   Median : -0.0199   Median :  0.0199  
@@ -233,28 +239,22 @@ desirable number of rows.</p></div>
 #&gt;  3rd Qu.:0.74999   3rd Qu.: -0.0174   3rd Qu.:  0.0278  
 #&gt;  Max.   :0.99999   Max.   :587.9396   Max.   :587.9396  </div><div class='input'>
 <span class='co'># To not remove them, set `remove_infinity` to `FALSE`</span>
-<span class='no'>error_beta_2</span> <span class='kw'>&lt;-</span> <span class='fu'>pdqr_approx_error</span>(
-  <span class='no'>d_beta</span>, <span class='no'>dbeta</span>, <span class='kw'>shape1</span> <span class='kw'>=</span> <span class='fl'>0.3</span>, <span class='kw'>shape2</span> <span class='kw'>=</span> <span class='fl'>0.7</span>, <span class='kw'>remove_infinity</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>error_beta_2</span>)</div><div class='output co'>#&gt;       grid          error              abserror      
+<span class='va'>error_beta_2</span> <span class='op'>&lt;-</span> <span class='fu'>pdqr_approx_error</span><span class='op'>(</span>
+  <span class='va'>d_beta</span>, <span class='va'>dbeta</span>, shape1 <span class='op'>=</span> <span class='fl'>0.3</span>, shape2 <span class='op'>=</span> <span class='fl'>0.7</span>, remove_infinity <span class='op'>=</span> <span class='cn'>FALSE</span>
+<span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>error_beta_2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       grid          error              abserror      
 #&gt;  Min.   :0.00   Min.   :-13.95467   Min.   :0.01671  
 #&gt;  1st Qu.:0.25   1st Qu.: -0.02783   1st Qu.:0.01736  
 #&gt;  Median :0.50   Median : -0.01987   Median :0.01987  
 #&gt;  Mean   :0.50   Mean   :      Inf   Mean   :    Inf  
 #&gt;  3rd Qu.:0.75   3rd Qu.: -0.01736   3rd Qu.:0.02784  
-#&gt;  Max.   :1.00   Max.   :      Inf   Max.   :    Inf  </div><div class='input'>
-</div></code></pre>
+#&gt;  Max.   :1.00   Max.   :      Inf   Max.   :    Inf  </div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -265,7 +265,7 @@ desirable number of rows.</p></div>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

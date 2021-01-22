@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -40,7 +44,6 @@
 <meta property="og:title" content="Pdqr methods for base plotting functions — methods-plot" />
 <meta property="og:description" content="Pdqr-functions have their own methods for plot() and lines() (except
 r-functions, see Details)." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -58,7 +61,7 @@ r-functions, see Details)." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -72,7 +75,7 @@ r-functions, see Details)." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -80,7 +83,7 @@ r-functions, see Details)." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -114,8 +117,8 @@ r-functions, see Details)." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -138,30 +141,30 @@ r-functions, see Details)." />
     </div>
 
     <div class="ref-description">
-    <p>Pdqr-functions have their own methods for <code><a href='https://rdrr.io/r/graphics/plot.html'>plot()</a></code> and <code><a href='https://rdrr.io/r/graphics/lines.html'>lines()</a></code> (except
+    <p>Pdqr-functions have their own methods for <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> and <code><a href='https://rdrr.io/r/graphics/lines.html'>lines()</a></code> (except
 r-functions, see Details).</p>
     </div>
 
     <pre class="usage"><code class = "r"><span class='co'># S3 method for p</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, y <span class='op'>=</span> <span class='cn'>NULL</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>1001</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for d</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, y <span class='op'>=</span> <span class='cn'>NULL</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>1001</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for q</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, y <span class='op'>=</span> <span class='cn'>NULL</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>1001</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for r</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>n_sample</span> <span class='kw'>=</span> <span class='fl'>1000</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x</span>, y <span class='op'>=</span> <span class='cn'>NULL</span>, n_sample <span class='op'>=</span> <span class='fl'>1000</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for p</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>x</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>x</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>1001</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for d</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>x</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>x</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>1001</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for q</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>x</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>1001</span>, <span class='no'>...</span>)</code></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>x</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>1001</span>, <span class='va'>...</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -172,7 +175,7 @@ r-functions, see Details).</p>
     </tr>
     <tr>
       <th>y</th>
-      <td><p>Argument for compatibility with <code><a href='https://rdrr.io/r/graphics/plot.html'>plot()</a></code> signature. Doesn't used.</p></td>
+      <td><p>Argument for compatibility with <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> signature. Doesn't used.</p></td>
     </tr>
     <tr>
       <th>n_extra_grid</th>
@@ -181,7 +184,7 @@ pdqr-function (see Details). Supply <code>NULL</code> or <code>0</code> to not u
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments for <code><a href='https://rdrr.io/r/graphics/plot.html'>plot()</a></code> or <a href='https://rdrr.io/r/graphics/hist.html'>hist()</a> (in
+      <td><p>Other arguments for <code><a href='https://rdrr.io/r/graphics/plot.default.html'>plot()</a></code> or <a href='https://rdrr.io/r/graphics/hist.html'>hist()</a> (in
 case of plotting r-function).</p></td>
     </tr>
     <tr>
@@ -231,28 +234,26 @@ of generated sample of size <code>n_sample</code>.</p></li>
 <code><a href='methods-print.html'>methods-print</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='no'>d_norm_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_norm_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='va'>d_norm_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span>, mean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_norm_1</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>d_norm_2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='methods-plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_norm_1</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>d_norm_2</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-plot-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Usage of `n_extra_grid` is important in case of "continuous" p- and</span>
 <span class='co'># q-functions</span>
-<span class='no'>simple_p</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_p</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>), <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>)), <span class='st'>"continuous"</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>simple_p</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Case study of n_extra_grid argument"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>simple_p</span>, <span class='kw'>n_extra_grid</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='methods-plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>simple_p</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_p</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"continuous"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>simple_p</span>, main <span class='op'>=</span> <span class='st'>"Case study of n_extra_grid argument"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>simple_p</span>, n_extra_grid <span class='op'>=</span> <span class='fl'>0</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-plot-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># R-functions are plotted with histogram</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fu'><a href='as-pdqr.html'>as_r</a></span>(<span class='no'>d_norm_1</span>))</div><div class='img'><img src='methods-plot-3.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></code></pre>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='as_p.html'>as_r</a></span><span class='op'>(</span><span class='va'>d_norm_1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-plot-3.png' alt='' width='700' height='433' /></div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -263,7 +264,7 @@ of generated sample of size <code>n_sample</code>.</p></li>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

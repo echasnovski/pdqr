@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -41,7 +45,6 @@
 <meta property="og:description" content="Functions for creating new pdqr-functions based on numeric sample or data
 frame describing distribution. They construct appropriate &quot;x_tbl&quot; metadata based on the input and then create pdqr-function (of
 corresponding pdqr class) defined by that &quot;x_tbl&quot;." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -59,7 +62,7 @@ corresponding pdqr class) defined by that &quot;x_tbl&quot;." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -73,7 +76,7 @@ corresponding pdqr class) defined by that &quot;x_tbl&quot;." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -81,7 +84,7 @@ corresponding pdqr class) defined by that &quot;x_tbl&quot;." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -115,8 +118,8 @@ corresponding pdqr class) defined by that &quot;x_tbl&quot;." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -134,7 +137,7 @@ corresponding pdqr class) defined by that &quot;x_tbl&quot;." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Create new pdqr-function</h1>
-    <small class="dont-index">Source: <a href='https://github.com/echasnovski/pdqr/blob/master/R/new_p.R'><code>R/new_p.R</code></a>, <a href='https://github.com/echasnovski/pdqr/blob/master/R/new_d.R'><code>R/new_d.R</code></a>, <a href='https://github.com/echasnovski/pdqr/blob/master/R/new_q.R'><code>R/new_q.R</code></a>, and 3 more</small>
+    <small class="dont-index">Source: <a href='https://github.com/echasnovski/pdqr/blob/master/R/new_p.R'><code>R/new_p.R</code></a>, <a href='https://github.com/echasnovski/pdqr/blob/master/R/new_d.R'><code>R/new_d.R</code></a>, <a href='https://github.com/echasnovski/pdqr/blob/master/R/new_q.R'><code>R/new_q.R</code></a>, and 2 more</small>
     <div class="hidden name"><code>new-pdqr.Rd</code></div>
     </div>
 
@@ -144,13 +147,13 @@ frame describing distribution. They construct appropriate <a href='meta.html'>"x
 corresponding <a href='meta.html'>pdqr class</a>) defined by that "x_tbl".</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>new_p</span>(<span class='no'>x</span>, <span class='no'>type</span>, <span class='no'>...</span>)
+    <pre class="usage"><code class = "r"><span class='fu'>new_p</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>type</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>new_d</span>(<span class='no'>x</span>, <span class='no'>type</span>, <span class='no'>...</span>)
+<span class='fu'>new_d</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>type</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>new_q</span>(<span class='no'>x</span>, <span class='no'>type</span>, <span class='no'>...</span>)
+<span class='fu'>new_q</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>type</span>, <span class='va'>...</span><span class='op'>)</span>
 
-<span class='fu'>new_r</span>(<span class='no'>x</span>, <span class='no'>type</span>, <span class='no'>...</span>)</code></pre>
+<span class='fu'>new_r</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>type</span>, <span class='va'>...</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -255,12 +258,13 @@ function passing through "x"-"y" points has total integral of 1. Column
 "cumprob" has cumulative probability of piecewise-linear d-function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>101</span>)
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span>(<span class='fl'>10</span>)
+    <pre class="examples"><code class = "r"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>101</span><span class='op'>)</span>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Normal.html'>rnorm</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
 
 <span class='co'># Type "discrete": `x` values are directly tabulated</span>
-<span class='no'>my_d_dis</span> <span class='kw'>&lt;-</span> <span class='fu'>new_d</span>(<span class='no'>x</span>, <span class='st'>"discrete"</span>)
-<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>my_d_dis</span>)</div><div class='output co'>#&gt;             x prob cumprob
+<span class='va'>my_d_dis</span> <span class='op'>&lt;-</span> <span class='fu'>new_d</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='va'>my_d_dis</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;             x prob cumprob
 #&gt; 1  -0.6749438  0.1     0.1
 #&gt; 2  -0.3260365  0.1     0.2
 #&gt; 3  -0.2232594  0.1     0.3
@@ -270,43 +274,41 @@ function passing through "x"-"y" points has total integral of 1. Column
 #&gt; 7   0.5524619  0.1     0.7
 #&gt; 8   0.6187899  0.1     0.8
 #&gt; 9   0.9170283  0.1     0.9
-#&gt; 10  1.1739663  0.1     1.0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>my_d_dis</span>)</div><div class='img'><img src='new-pdqr-1.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; 10  1.1739663  0.1     1.0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>my_d_dis</span><span class='op'>)</span>
+</div><div class='img'><img src='new-pdqr-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Type "continuous": `x` serves as input to `density()`</span>
-<span class='no'>my_d_con</span> <span class='kw'>&lt;-</span> <span class='fu'>new_d</span>(<span class='no'>x</span>, <span class='st'>"continuous"</span>)
-<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>my_d_con</span>))</div><div class='output co'>#&gt;           x           y      cumprob
+<span class='va'>my_d_con</span> <span class='op'>&lt;-</span> <span class='fu'>new_d</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"continuous"</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='va'>my_d_con</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;           x           y      cumprob
 #&gt; 1 -1.670523 0.001394314 0.000000e+00
 #&gt; 2 -1.663008 0.001491008 1.084133e-05
 #&gt; 3 -1.655493 0.001597622 2.244656e-05
 #&gt; 4 -1.647979 0.001708323 3.486833e-05
 #&gt; 5 -1.640464 0.001826333 4.814947e-05
-#&gt; 6 -1.632949 0.001952627 6.234855e-05</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>my_d_con</span>)</div><div class='img'><img src='new-pdqr-2.png' alt='' width='700' height='433' /></div><div class='input'>
+#&gt; 6 -1.632949 0.001952627 6.234855e-05</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>my_d_con</span><span class='op'>)</span>
+</div><div class='img'><img src='new-pdqr-2.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Data frame input</span>
-  <span class='co'># Values in "prob" column will be normalized automatically</span>
-<span class='no'>my_p_dis</span> <span class='kw'>&lt;-</span> <span class='fu'>new_p</span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>), <span class='st'>"discrete"</span>)
-  <span class='co'># As are values in "y" column</span>
-<span class='no'>my_p_con</span> <span class='kw'>&lt;-</span> <span class='fu'>new_p</span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>y</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>0</span>)), <span class='st'>"continuous"</span>)
+<span class='co'>## Values in "prob" column will be normalized automatically</span>
+<span class='va'>my_p_dis</span> <span class='op'>&lt;-</span> <span class='fu'>new_p</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, prob <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span><span class='op'>)</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='co'>## As are values in "y" column</span>
+<span class='va'>my_p_con</span> <span class='op'>&lt;-</span> <span class='fu'>new_p</span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, y <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>10</span>, <span class='fl'>0</span><span class='op'>)</span><span class='op'>)</span>, <span class='st'>"continuous"</span><span class='op'>)</span>
 
 <span class='co'># Using bigger bandwidth in `density()`</span>
-<span class='no'>my_d_con_2</span> <span class='kw'>&lt;-</span> <span class='fu'>new_d</span>(<span class='no'>x</span>, <span class='st'>"continuous"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>my_d_con</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Comparison of density bandwidths"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>my_d_con_2</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='new-pdqr-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>my_d_con_2</span> <span class='op'>&lt;-</span> <span class='fu'>new_d</span><span class='op'>(</span><span class='va'>x</span>, <span class='st'>"continuous"</span>, adjust <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>my_d_con</span>, main <span class='op'>=</span> <span class='st'>"Comparison of density bandwidths"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>my_d_con_2</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='img'><img src='new-pdqr-3.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Dirac-like "continuous" pdqr-function is created if `x` is a single number</span>
-<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='fu'>new_d</span>(<span class='fl'>1</span>, <span class='st'>"continuous"</span>))</div><div class='output co'>#&gt;   x     y cumprob
+<span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='fu'>new_d</span><span class='op'>(</span><span class='fl'>1</span>, <span class='st'>"continuous"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   x     y cumprob
 #&gt; 1 1 0e+00     0.0
 #&gt; 2 1 1e+08     0.5
-#&gt; 3 1 0e+00     1.0</div><div class='input'>
-</div></code></pre>
+#&gt; 3 1 0e+00     1.0</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#numeric-input">Numeric input</a></li>
-      <li><a href="#data-frame-input">Data frame input</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -317,7 +319,7 @@ function passing through "x"-"y" points has total integral of 1. Column
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

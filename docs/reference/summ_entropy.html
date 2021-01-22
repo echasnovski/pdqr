@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,7 +46,6 @@
 summ_entropy2() - for a pair of distributions. For &quot;discrete&quot;
 pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
 &quot;continuous&quot; case a differential entropy is computed." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -60,7 +63,7 @@ pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +77,7 @@ pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -82,7 +85,7 @@ pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,8 +119,8 @@ pdqr-functions a classic formula -sum(p * log(p)) (in nats) is used. In
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,9 +149,9 @@ pdqr-functions a classic formula <code>-sum(p * log(p))</code> (in nats) is used
 "continuous" case a differential entropy is computed.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>summ_entropy</span>(<span class='no'>f</span>)
+    <pre class="usage"><code class = "r"><span class='fu'>summ_entropy</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='fu'>summ_entropy2</span>(<span class='no'>f</span>, <span class='no'>g</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"relative"</span>, <span class='kw'>clip</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(-<span class='fl'>20</span>))</code></pre>
+<span class='fu'>summ_entropy2</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>g</span>, method <span class='op'>=</span> <span class='st'>"relative"</span>, clip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>20</span><span class='op'>)</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,30 +203,29 @@ density goes to infinity.</p>
 <code><a href='summ_spread.html'>summ_spread</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='no'>d_norm_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>2</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='va'>d_norm_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span>, mean <span class='op'>=</span> <span class='fl'>2</span>, sd <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
 
-<span class='fu'>summ_entropy</span>(<span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 1.418913</div><div class='input'><span class='fu'>summ_entropy2</span>(<span class='no'>d_norm</span>, <span class='no'>d_norm_2</span>)</div><div class='output co'>#&gt; [1] 9.006174</div><div class='input'><span class='fu'>summ_entropy2</span>(<span class='no'>d_norm</span>, <span class='no'>d_norm_2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cross"</span>)</div><div class='output co'>#&gt; [1] 10.42509</div><div class='input'>
+<span class='fu'>summ_entropy</span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1.418913</div><div class='input'><span class='fu'>summ_entropy2</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='va'>d_norm_2</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 9.006174</div><div class='input'><span class='fu'>summ_entropy2</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='va'>d_norm_2</span>, method <span class='op'>=</span> <span class='st'>"cross"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 10.42509</div><div class='input'>
 <span class='co'># Increasing `clip` leads to decreasing maximum output value</span>
-<span class='no'>d_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fl'>1</span>:<span class='fl'>10</span>, <span class='st'>"discrete"</span>)
-<span class='no'>d_2</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fl'>20</span>:<span class='fl'>21</span>, <span class='st'>"discrete"</span>)
+<span class='va'>d_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='va'>d_2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fl'>20</span><span class='op'>:</span><span class='fl'>21</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
 
-  <span class='co'># Formally, output isn't clearly defined because functions don't have the</span>
-  <span class='co'># same support. Direct use of entropy formulas gives infinity output, but</span>
-  <span class='co'># here maximum value is `-log(clip)`.</span>
-<span class='fu'>summ_entropy2</span>(<span class='no'>d_1</span>, <span class='no'>d_2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cross"</span>)</div><div class='output co'>#&gt; [1] 20</div><div class='input'><span class='fu'>summ_entropy2</span>(<span class='no'>d_1</span>, <span class='no'>d_2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cross"</span>, <span class='kw'>clip</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span>(-<span class='fl'>10</span>))</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='fu'>summ_entropy2</span>(<span class='no'>d_1</span>, <span class='no'>d_2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"cross"</span>, <span class='kw'>clip</span> <span class='kw'>=</span> <span class='fl'>0</span>)</div><div class='output co'>#&gt; [1] Inf</div><div class='input'>
-</div></code></pre>
+<span class='co'>## Formally, output isn't clearly defined because functions don't have the</span>
+<span class='co'>## same support. Direct use of entropy formulas gives infinity output, but</span>
+<span class='co'>## here maximum value is `-log(clip)`.</span>
+<span class='fu'>summ_entropy2</span><span class='op'>(</span><span class='va'>d_1</span>, <span class='va'>d_2</span>, method <span class='op'>=</span> <span class='st'>"cross"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 20</div><div class='input'><span class='fu'>summ_entropy2</span><span class='op'>(</span><span class='va'>d_1</span>, <span class='va'>d_2</span>, method <span class='op'>=</span> <span class='st'>"cross"</span>, clip <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Log.html'>exp</a></span><span class='op'>(</span><span class='op'>-</span><span class='fl'>10</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 10</div><div class='input'><span class='fu'>summ_entropy2</span><span class='op'>(</span><span class='va'>d_1</span>, <span class='va'>d_2</span>, method <span class='op'>=</span> <span class='st'>"cross"</span>, clip <span class='op'>=</span> <span class='fl'>0</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] Inf</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -234,7 +236,7 @@ density goes to infinity.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

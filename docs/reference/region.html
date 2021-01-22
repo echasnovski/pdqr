@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -46,7 +50,6 @@ left[1] &amp;lt;= right[1] &amp;lt;= left[2] &amp;lt;= right[2] &amp;lt;= ... (i
 width are accepted). Originally, region_*() functions were designed to work
 with output of summ_hdr() and summ_interval(), but can be used for any
 data frame which satisfies the definition of a region." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -64,7 +67,7 @@ data frame which satisfies the definition of a region." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -78,7 +81,7 @@ data frame which satisfies the definition of a region." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -86,7 +89,7 @@ data frame which satisfies the definition of a region." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -120,8 +123,8 @@ data frame which satisfies the definition of a region." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -154,15 +157,17 @@ with output of <code><a href='summ_hdr.html'>summ_hdr()</a></code> and <code><a 
 data frame which satisfies the definition of a region.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='no'>x</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+    <pre class="usage"><code class = "r"><span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='va'>x</span>, left_closed <span class='op'>=</span> <span class='cn'>TRUE</span>, right_closed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>region_prob</span>(<span class='no'>region</span>, <span class='no'>f</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>region_prob</span><span class='op'>(</span><span class='va'>region</span>, <span class='va'>f</span>, left_closed <span class='op'>=</span> <span class='cn'>TRUE</span>, right_closed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>region_height</span>(<span class='no'>region</span>, <span class='no'>f</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)
+<span class='fu'>region_height</span><span class='op'>(</span><span class='va'>region</span>, <span class='va'>f</span>, left_closed <span class='op'>=</span> <span class='cn'>TRUE</span>, right_closed <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
 
-<span class='fu'>region_width</span>(<span class='no'>region</span>)
+<span class='fu'>region_width</span><span class='op'>(</span><span class='va'>region</span><span class='op'>)</span>
 
-<span class='fu'>region_draw</span>(<span class='no'>region</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>, <span class='kw'>alpha</span> <span class='kw'>=</span> <span class='fl'>0.2</span>)</code></pre>
+<span class='fu'>region_distance</span><span class='op'>(</span><span class='va'>region</span>, <span class='va'>region2</span>, method <span class='op'>=</span> <span class='st'>"Jaccard"</span><span class='op'>)</span>
+
+<span class='fu'>region_draw</span><span class='op'>(</span><span class='va'>region</span>, col <span class='op'>=</span> <span class='st'>"blue"</span>, alpha <span class='op'>=</span> <span class='fl'>0.2</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -188,6 +193,16 @@ right ends of intervals as their parts.</p></td>
     <tr>
       <th>f</th>
       <td><p>A pdqr-function.</p></td>
+    </tr>
+    <tr>
+      <th>region2</th>
+      <td><p>A data frame representing region.</p></td>
+    </tr>
+    <tr>
+      <th>method</th>
+      <td><p>Method for computing distance between regions in
+<code>region_distance()</code>. Should be one of "Jaccard" or methods of
+<code><a href='summ_distance.html'>summ_distance()</a></code>.</p></td>
     </tr>
     <tr>
       <th>col</th>
@@ -242,6 +257,19 @@ than target height and total probability of the set being not less than
 <code>level</code>.</p>
 <p><code>region_width()</code> computes total width of a region, i.e. sum of differences
 between "right" and "left" columns.</p>
+<p><code>region_distance()</code> computes distance between a pair of regions. As in
+<code><a href='summ_distance.html'>summ_distance()</a></code>, it is a single non-negative number representing how much
+two regions differ from one another (bigger values indicate bigger
+difference). Argument <code>method</code> represents method of computing distance.
+Method "Jaccard" computes Jaccard distance: one minus ratio of intersection
+width and union width. Other methods come from <code><a href='summ_distance.html'>summ_distance()</a></code> and
+represent distance between regions as probability distributions:</p><ul>
+<li><p>If total width of region is zero (i.e. it consists only from points),
+distribution is a uniform discrete one based on points from region.</p></li>
+<li><p>If total width is positive, then distribution is a uniform continuous one
+based on intervals with positive width.</p></li>
+</ul>
+
 <p><code>region_draw()</code> draws (on current plot) intervals stored in <code>region</code> as
 colored rectangles vertically starting from zero and ending in the top of the
 plot (technically, at "y" value of <code>2e8</code>).</p>
@@ -252,44 +280,61 @@ plot (technically, at "y" value of <code>2e8</code>).</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "discrete"</span>
-<span class='no'>d_binom</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dbinom</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>10</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>0.7</span>)
-<span class='no'>hdr_dis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='summ_hdr.html'>summ_hdr</a></span>(<span class='no'>d_binom</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.6</span>)
-<span class='fu'>region_is_in</span>(<span class='no'>hdr_dis</span>, <span class='fl'>0</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE</div><div class='input'>  <span class='co'># This should be not less than 0.6</span>
-<span class='fu'>region_prob</span>(<span class='no'>hdr_dis</span>, <span class='no'>d_binom</span>)</div><div class='output co'>#&gt; [1] 0.7004233</div><div class='input'><span class='fu'>region_height</span>(<span class='no'>hdr_dis</span>, <span class='no'>d_binom</span>)</div><div class='output co'>#&gt; [1] 0.2001209</div><div class='input'><span class='fu'>region_width</span>(<span class='no'>hdr_dis</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'>
+<span class='va'>d_binom</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dbinom</span>, size <span class='op'>=</span> <span class='fl'>10</span>, prob <span class='op'>=</span> <span class='fl'>0.7</span><span class='op'>)</span>
+<span class='va'>hdr_dis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summ_hdr.html'>summ_hdr</a></span><span class='op'>(</span><span class='va'>d_binom</span>, level <span class='op'>=</span> <span class='fl'>0.6</span><span class='op'>)</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>hdr_dis</span>, <span class='fl'>0</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] FALSE FALSE FALSE FALSE FALSE FALSE  TRUE  TRUE  TRUE FALSE FALSE</div><div class='input'><span class='co'>## This should be not less than 0.6</span>
+<span class='fu'>region_prob</span><span class='op'>(</span><span class='va'>hdr_dis</span>, <span class='va'>d_binom</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.7004233</div><div class='input'><span class='fu'>region_height</span><span class='op'>(</span><span class='va'>hdr_dis</span>, <span class='va'>d_binom</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.2001209</div><div class='input'><span class='fu'>region_width</span><span class='op'>(</span><span class='va'>hdr_dis</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2</div><div class='input'>
 <span class='co'># Type "continuous"</span>
-<span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='no'>hdr_con</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='summ_hdr.html'>summ_hdr</a></span>(<span class='no'>d_norm</span>, <span class='kw'>level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)
-<span class='fu'>region_is_in</span>(<span class='no'>hdr_con</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(-<span class='fl'>Inf</span>, -<span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='fl'>Inf</span>))</div><div class='output co'>#&gt; [1] FALSE FALSE  TRUE FALSE FALSE</div><div class='input'>  <span class='co'># This should be approximately equal to 0.95</span>
-<span class='fu'>region_prob</span>(<span class='no'>hdr_con</span>, <span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.9500426</div><div class='input'>  <span class='co'># This should be equal to `d_norm(hdr_con[["left"]][1])`</span>
-<span class='fu'>region_height</span>(<span class='no'>hdr_con</span>, <span class='no'>d_norm</span>)</div><div class='output co'>#&gt; [1] 0.05840531</div><div class='input'><span class='fu'>region_width</span>(<span class='no'>hdr_con</span>)</div><div class='output co'>#&gt; [1] 3.920624</div><div class='input'>
+<span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='va'>hdr_con</span> <span class='op'>&lt;-</span> <span class='fu'><a href='summ_hdr.html'>summ_hdr</a></span><span class='op'>(</span><span class='va'>d_norm</span>, level <span class='op'>=</span> <span class='fl'>0.95</span><span class='op'>)</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>hdr_con</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='op'>-</span><span class='cn'>Inf</span>, <span class='op'>-</span><span class='fl'>2</span>, <span class='fl'>0</span>, <span class='fl'>2</span>, <span class='cn'>Inf</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE FALSE  TRUE FALSE FALSE</div><div class='input'><span class='co'>## This should be approximately equal to 0.95</span>
+<span class='fu'>region_prob</span><span class='op'>(</span><span class='va'>hdr_con</span>, <span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.9500426</div><div class='input'><span class='co'>## This should be equal to `d_norm(hdr_con[["left"]][1])`</span>
+<span class='fu'>region_height</span><span class='op'>(</span><span class='va'>hdr_con</span>, <span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.05840531</div><div class='input'><span class='fu'>region_width</span><span class='op'>(</span><span class='va'>hdr_con</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 3.920624</div><div class='input'>
 <span class='co'># Usage of `*_closed` options</span>
-<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>left</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>right</span> <span class='kw'>=</span> <span class='fl'>3</span>)
-  <span class='co'># Closed intervals</span>
-<span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>:<span class='fl'>3</span>)</div><div class='output co'>#&gt; [1] TRUE TRUE TRUE</div><div class='input'>  <span class='co'># Open from left, closed from right</span>
-<span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] FALSE  TRUE  TRUE</div><div class='input'>  <span class='co'># Closed from left, open from right</span>
-<span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1]  TRUE  TRUE FALSE</div><div class='input'>  <span class='co'># Open intervals</span>
-<span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>:<span class='fl'>3</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] FALSE  TRUE FALSE</div><div class='input'>
+<span class='va'>region</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>left <span class='op'>=</span> <span class='fl'>1</span>, right <span class='op'>=</span> <span class='fl'>3</span><span class='op'>)</span>
+<span class='co'>## Closed intervals</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE TRUE TRUE</div><div class='input'><span class='co'>## Open from left, closed from right</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, left_closed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE  TRUE  TRUE</div><div class='input'><span class='co'>## Closed from left, open from right</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, right_closed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1]  TRUE  TRUE FALSE</div><div class='input'><span class='co'>## Open intervals</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span><span class='op'>:</span><span class='fl'>3</span>, left_closed <span class='op'>=</span> <span class='cn'>FALSE</span>, right_closed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE  TRUE FALSE</div><div class='input'>
 <span class='co'># Handling of intervals with zero width</span>
-<span class='no'>region</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>left</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>right</span> <span class='kw'>=</span> <span class='fl'>1</span>)
-  <span class='co'># If at least one of `*_closed` options is `TRUE`, 1 will be considered as</span>
-  <span class='co'># "in a region"</span>
-<span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>  <span class='co'># Only this will return `FALSE`</span>
-<span class='fu'>region_is_in</span>(<span class='no'>region</span>, <span class='fl'>1</span>, <span class='kw'>left_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>right_closed</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='va'>region</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>left <span class='op'>=</span> <span class='fl'>1</span>, right <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
+<span class='co'>## If at least one of `*_closed` options is `TRUE`, 1 will be considered as</span>
+<span class='co'>## "in a region"</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span>, left_closed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span>, right_closed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'><span class='co'>## Only this will return `FALSE`</span>
+<span class='fu'>region_is_in</span><span class='op'>(</span><span class='va'>region</span>, <span class='fl'>1</span>, left_closed <span class='op'>=</span> <span class='cn'>FALSE</span>, right_closed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
+<span class='co'># Distance between regions</span>
+<span class='va'>region1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>left <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>2</span><span class='op'>)</span>, right <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>
+<span class='va'>region2</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>left <span class='op'>=</span> <span class='fl'>0.5</span>, right <span class='op'>=</span> <span class='fl'>1.5</span><span class='op'>)</span>
+<span class='fu'>region_distance</span><span class='op'>(</span><span class='va'>region1</span>, <span class='va'>region2</span>, method <span class='op'>=</span> <span class='st'>"Jaccard"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.6666667</div><div class='input'><span class='fu'>region_distance</span><span class='op'>(</span><span class='va'>region1</span>, <span class='va'>region2</span>, method <span class='op'>=</span> <span class='st'>"KS"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.5</div><div class='input'>
 <span class='co'># Drawing</span>
-<span class='no'>d_mix</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='form_mix.html'>form_mix</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>), <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>5</span>)))
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_mix</span>)</div><div class='input'><span class='fu'>region_draw</span>(<span class='fu'><a href='summ_hdr.html'>summ_hdr</a></span>(<span class='no'>d_mix</span>, <span class='fl'>0.95</span>))</div><div class='img'><img src='region-1.png' alt='' width='700' height='433' /></div><div class='input'>
-</div></code></pre>
+<span class='va'>d_mix</span> <span class='op'>&lt;-</span> <span class='fu'><a href='form_mix.html'>form_mix</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>, <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span>, mean <span class='op'>=</span> <span class='fl'>5</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_mix</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'>region_draw</span><span class='op'>(</span><span class='fu'><a href='summ_hdr.html'>summ_hdr</a></span><span class='op'>(</span><span class='va'>d_mix</span>, <span class='fl'>0.95</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='region-1.png' alt='' width='700' height='433' /></div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -300,7 +345,7 @@ plot (technically, at "y" value of <code>2e8</code>).</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

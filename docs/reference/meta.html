@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -44,7 +48,6 @@ The key metadata which defines underline distribution is &quot;x_tbl&quot;. If t
 pdqr-functions have the same &quot;x_tbl&quot; metadata, they represent the same
 distribution and can be converted to one another with as_*() family of
 functions." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -62,7 +65,7 @@ functions." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -76,7 +79,7 @@ functions." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -84,7 +87,7 @@ functions." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -118,8 +121,8 @@ functions." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -150,15 +153,15 @@ distribution and can be converted to one another with <code>as_*()</code> family
 functions.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>meta_all</span>(<span class='no'>f</span>)
+    <pre class="usage"><code class = "r"><span class='fu'>meta_all</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='fu'>meta_class</span>(<span class='no'>f</span>)
+<span class='fu'>meta_class</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='fu'>meta_type</span>(<span class='no'>f</span>)
+<span class='fu'>meta_type</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='fu'>meta_support</span>(<span class='no'>f</span>)
+<span class='fu'>meta_support</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span>
 
-<span class='fu'>meta_x_tbl</span>(<span class='no'>f</span>)</code></pre>
+<span class='fu'>meta_x_tbl</span><span class='op'>(</span><span class='va'>f</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -279,20 +282,21 @@ variable being not more than corresponding value in "x" column.</p>
 change of pdqr type, support, and "x_tbl" metadata will lead to a complete
 change of underlying distribution.</p>
 <p>To change <strong>pdqr class</strong>, for example to convert p-function to d-function,
-use <code>as_*()</code> family of functions: <code><a href='as-pdqr.html'>as_p()</a></code>, <code><a href='as-pdqr.html'>as_d()</a></code>, <code><a href='as-pdqr.html'>as_q()</a></code>, <code><a href='as-pdqr.html'>as_r()</a></code>.</p>
+use <code>as_*()</code> family of functions: <code><a href='as_p.html'>as_p()</a></code>, <code><a href='as_p.html'>as_d()</a></code>, <code><a href='as_p.html'>as_q()</a></code>, <code><a href='as_p.html'>as_r()</a></code>.</p>
 <p>To change <strong>pdqr type</strong>, use <code><a href='form_retype.html'>form_retype()</a></code>. It changes underlying
 distribution in the most suitable for user way.</p>
 <p>To change <strong>pdqr support</strong>, use <code><a href='form_resupport.html'>form_resupport()</a></code> or <code><a href='form_tails.html'>form_tails()</a></code>.</p>
 <p>Change of <strong>"x_tbl" metadata</strong> is not possible, because basically it means
 creating completely new pdqr-function. To do that, supply data frame with
 "x_tbl" format suitable for desired "type" to appropriate <code>new_*()</code> function:
-<code><a href='new-pdqr.html'>new_p()</a></code>, <code><a href='new-pdqr.html'>new_d()</a></code>, <code><a href='new-pdqr.html'>new_q()</a></code>, <code><a href='new-pdqr.html'>new_r()</a></code>. Also, there is a <code><a href='form_regrid.html'>form_regrid()</a></code>
+<code><a href='new_p.html'>new_p()</a></code>, <code><a href='new_p.html'>new_d()</a></code>, <code><a href='new_p.html'>new_q()</a></code>, <code><a href='new_p.html'>new_r()</a></code>. Also, there is a <code><a href='form_regrid.html'>form_regrid()</a></code>
 function which will increase or decrease granularity of pdqr-function.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dunif</span>)
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_unif</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dunif</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span>(<span class='fu'>meta_all</span>(<span class='no'>d_unif</span>))</div><div class='output co'>#&gt; List of 4
+<span class='fu'><a href='https://rdrr.io/r/utils/str.html'>str</a></span><span class='op'>(</span><span class='fu'>meta_all</span><span class='op'>(</span><span class='va'>d_unif</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; List of 4
 #&gt;  $ class  : chr "d"
 #&gt;  $ type   : chr "continuous"
 #&gt;  $ support: num [1:2] 0 1
@@ -300,29 +304,22 @@ function which will increase or decrease granularity of pdqr-function.</p>
 #&gt;   ..$ x      : num [1:10001] 0e+00 1e-04 2e-04 3e-04 4e-04 5e-04 6e-04 7e-04 8e-04 9e-04 ...
 #&gt;   ..$ y      : num [1:10001] 1 1 1 1 1 1 1 1 1 1 ...
 #&gt;   ..$ cumprob: num [1:10001] 0e+00 1e-04 2e-04 3e-04 4e-04 5e-04 6e-04 7e-04 8e-04 9e-04 ...</div><div class='input'>
-<span class='fu'>meta_class</span>(<span class='no'>d_unif</span>)</div><div class='output co'>#&gt; [1] "d"</div><div class='input'><span class='fu'>meta_type</span>(<span class='no'>d_unif</span>)</div><div class='output co'>#&gt; [1] "continuous"</div><div class='input'><span class='fu'>meta_support</span>(<span class='no'>d_unif</span>)</div><div class='output co'>#&gt; [1] 0 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span>(<span class='fu'>meta_x_tbl</span>(<span class='no'>d_unif</span>))</div><div class='output co'>#&gt;       x y cumprob
+<span class='fu'>meta_class</span><span class='op'>(</span><span class='va'>d_unif</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "d"</div><div class='input'><span class='fu'>meta_type</span><span class='op'>(</span><span class='va'>d_unif</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "continuous"</div><div class='input'><span class='fu'>meta_support</span><span class='op'>(</span><span class='va'>d_unif</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0 1</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/utils/head.html'>head</a></span><span class='op'>(</span><span class='fu'>meta_x_tbl</span><span class='op'>(</span><span class='va'>d_unif</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;       x y cumprob
 #&gt; 1 0e+00 1   0e+00
 #&gt; 2 1e-04 1   1e-04
 #&gt; 3 2e-04 1   2e-04
 #&gt; 4 3e-04 1   3e-04
 #&gt; 5 4e-04 1   4e-04
-#&gt; 6 5e-04 1   5e-04</div><div class='input'>
-</div></code></pre>
+#&gt; 6 5e-04 1   5e-04</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#pdqr-class">Pdqr class</a></li>
-      <li><a href="#pdqr-type">Pdqr type</a></li>
-      <li><a href="#pdqr-support">Pdqr support</a></li>
-      <li><a href="#-x-tbl-metadata">"x_tbl" metadata</a></li>
-      <li><a href="#change-of-metadata">Change of metadata</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -333,7 +330,7 @@ function which will increase or decrease granularity of pdqr-function.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

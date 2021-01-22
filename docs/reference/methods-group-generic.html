@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -45,7 +49,6 @@ generated sample from desired random variable), and creating new
 pdqr-function with appropriate new_*() function. This is done
 with form_trans(), so all rules for determining class and
 type of output is taken from it." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +66,7 @@ type of output is taken from it." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +80,7 @@ type of output is taken from it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -85,7 +88,7 @@ type of output is taken from it." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -119,8 +122,8 @@ type of output is taken from it." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -147,19 +150,19 @@ type of output is taken from it." />
 of them have random nature with an idea of generating samples from input
 pdqr-functions, performing certain operation on them (results in one
 generated sample from desired random variable), and creating new
-pdqr-function with appropriate <a href='new-pdqr.html'>new_*()</a> function. This is done
+pdqr-function with appropriate <a href='new_p.html'>new_*()</a> function. This is done
 with <code><a href='form_trans.html'>form_trans()</a></code>, so all rules for determining <a href='meta.html'>class</a> and
 <a href='meta.html'>type</a> of output is taken from it.</p>
     </div>
 
     <pre class="usage"><code class = "r"><span class='co'># S3 method for pdqr</span>
-<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Math</a></span>(<span class='no'>x</span>, <span class='no'>...</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Math</a></span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>...</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pdqr</span>
-<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Ops</a></span>(<span class='no'>e1</span>, <span class='no'>e2</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Ops</a></span><span class='op'>(</span><span class='va'>e1</span>, <span class='va'>e2</span><span class='op'>)</span>
 
 <span class='co'># S3 method for pdqr</span>
-<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Summary</a></span>(<span class='no'>...</span>, <span class='kw'>na.rm</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</code></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/groupGeneric.html'>Summary</a></span><span class='op'>(</span><span class='va'>...</span>, na.rm <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -200,7 +203,7 @@ target support is computed separately and <code>method</code> argument is contro
 this option (preferred ones are <code>"reflect"</code>, default, and <code>"trim"</code>). In most
 cases output support is computed directly based on special features of
 generic function. But for some difficult cases, like <code><a href='https://rdrr.io/r/base/Special.html'>gamma()</a></code>, <code><a href='https://rdrr.io/r/base/Special.html'>digamma()</a></code>,
-<code><a href='https://rdrr.io/r/base/Special.html'>lgamma()</a></code>, <code><a href='https://rdrr.io/r/base/Special.html'>psigamma()</a></code>, <code>^</code>, and <code>%%</code> it is a result of simulation (i.e.
+<code><a href='https://rdrr.io/r/base/Special.html'>lgamma()</a></code>, <code><a href='https://rdrr.io/r/base/Special.html'>psigamma()</a></code>, <code><a href='https://rdrr.io/r/base/Arithmetic.html'>^</a></code>, and <code><a href='https://rdrr.io/r/base/Arithmetic.html'>%%</a></code> it is a result of simulation (i.e.
 slightly random, which slightly increases random nature of those methods).</p></li>
 </ul>
 
@@ -223,14 +226,14 @@ a sample, generated from input pdqr-function.</p>
 
 
 <p>This family of S3 generics represents common operators. For all functions
-(except <code>&amp;</code> and <code>|</code>) input can be a pdqr-function or single number.</p>
+(except <code>&amp;</code> and <code><a href='https://rdrr.io/r/base/Logic.html'>|</a></code>) input can be a pdqr-function or single number.</p>
 <p>A list of methods with <strong>non-random nature</strong>:</p><ul>
-<li><p><code>!</code>, <code>+</code>, <code>-</code> in case of single input, i.e. <code>!f</code> or <code>-f</code>.</p></li>
+<li><p><code><a href='https://rdrr.io/r/base/Logic.html'>!</a></code>, <code><a href='https://rdrr.io/r/base/Arithmetic.html'>+</a></code>, <code><a href='https://rdrr.io/r/base/Arithmetic.html'>-</a></code> in case of single input, i.e. <code>!f</code> or <code>-f</code>.</p></li>
 <li><p>Functions representing linear transformation, i.e. adding, subtracting,
 multiplying, and dividing by a single number. For example, all <code>f + 1</code>,
 <code>2 - f</code> (which is actually <code>(-f) + 2</code>), <code>3*f</code> and <code>f/2</code> are linear
 transformations, but <code>1 / f</code>, <code>f + g</code> are not.</p></li>
-<li><p>Functions for comparing: <code>==</code>, <code>!=</code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>. Their output is
+<li><p>Functions for comparing: <code><a href='https://rdrr.io/r/base/Comparison.html'>==</a></code>, <code><a href='https://rdrr.io/r/base/Comparison.html'>!=</a></code>, <code>&lt;</code>, <code>&lt;=</code>, <code>&gt;=</code>, <code>&gt;</code>. Their output is
 <strong>boolean pdqr-function</strong>: "discrete" type function with elements being
 exactly 0 and 1. Probability of 0 represents probability of operator output
 being false, and 1 - being true. Probability of being true is computed
@@ -240,20 +243,20 @@ might be approximated by simulating two big samples of same size from input
 <code>e1</code> and <code>e2</code> (one of which can be a single number), and estimating
 probability as share of those pairs from samples for which comparison is
 true. <strong>Note</strong> that if at least one input has "continuous" type, then:</p><ul>
-<li><p><code>==</code> will always have probability 0 of being true because probability
+<li><p><code><a href='https://rdrr.io/r/base/Comparison.html'>==</a></code> will always have probability 0 of being true because probability
 of generating a certain exact one or two numbers from continuous random
 variable is zero.</p></li>
-<li><p><code>!=</code> will always have probability 1 of being true for the same reason
+<li><p><code><a href='https://rdrr.io/r/base/Comparison.html'>!=</a></code> will always have probability 1 of being true for the same reason
 as above.</p></li>
 <li><p>Pairs <code>&gt;=</code> and <code>&gt;</code>, <code>&lt;=</code> and <code>&lt;</code> will return the same input because
 probability of being equal is always zero.</p></li>
 </ul></li>
-<li><p>Logical functions <code>&amp;</code> and <code>|</code>. Their input can be only pdqr-functions
+<li><p>Logical functions <code>&amp;</code> and <code><a href='https://rdrr.io/r/base/Logic.html'>|</a></code>. Their input can be only pdqr-functions
 (because single number input doesn't make much sense). They are most useful
 for applying to boolean pdqr-functions (see description of functions for
 comparing), and warning is thrown in case any input is not a boolean
 pdqr-function. <code>&amp;</code>'s probability of being true is a product of those
-probabilities from input <code>e1</code> and <code>e2</code>. <code>|</code>'s probability of being false is a
+probabilities from input <code>e1</code> and <code>e2</code>. <code><a href='https://rdrr.io/r/base/Logic.html'>|</a></code>'s probability of being false is a
 product of those probabilities from input <code>e1</code> and <code>e2</code>. <strong>Note</strong> that
 probability of being false is a probability of being equal to 0; of being
 true - complementary to that.</p></li>
@@ -312,74 +315,88 @@ probability from boolean pdqr-functions.</p>
 <code><a href='methods-print.html'>methods-print</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='no'>d_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dunif</span>)
-<span class='no'>d_dis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>4</span> / <span class='fl'>10</span>), <span class='st'>"discrete"</span>)
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='va'>d_unif</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dunif</span><span class='op'>)</span>
+<span class='va'>d_dis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span>, prob <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>4</span> <span class='op'>/</span> <span class='fl'>10</span><span class='op'>)</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span>(<span class='fl'>101</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/Random.html'>set.seed</a></span><span class='op'>(</span><span class='fl'>101</span><span class='op'>)</span>
 
 <span class='co'># Math</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_norm</span>, <span class='kw'>main</span> <span class='kw'>=</span> <span class='st'>"Math methods"</span>)</div><div class='input'>  <span class='co'># `abs()` and `sign()` are not random</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='no'>d_norm</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'>  <span class='co'># All others are random</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='no'>d_norm</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"green"</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span>(<span class='no'>d_norm</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</div><div class='img'><img src='methods-group-generic-1.png' alt='' width='700' height='433' /></div><div class='input'>
-  <span class='co'># Although here distribution shouldn't change, it changes slightly due to</span>
-  <span class='co'># random implementation</span>
-<span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='no'>d_dis</span>)</div><div class='output co'>#&gt;   x prob cumprob
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_norm</span>, main <span class='op'>=</span> <span class='st'>"Math methods"</span><span class='op'>)</span>
+</div><div class='input'><span class='co'>## `abs()` and `sign()` are not random</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='input'><span class='co'>## All others are random</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"green"</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Trig.html'>cos</a></span><span class='op'>(</span><span class='va'>d_norm</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## Although here distribution shouldn't change, it changes slightly due to</span>
+<span class='co'>## random implementation</span>
+<span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='va'>d_dis</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   x prob cumprob
 #&gt; 1 1  0.1     0.1
 #&gt; 2 2  0.2     0.3
 #&gt; 3 3  0.3     0.6
-#&gt; 4 4  0.4     1.0</div><div class='input'><span class='fu'><a href='meta.html'>meta_x_tbl</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span>(<span class='no'>d_dis</span>))</div><div class='output co'>#&gt;   x   prob cumprob
+#&gt; 4 4  0.4     1.0</div><div class='input'><span class='fu'><a href='meta.html'>meta_x_tbl</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Round.html'>floor</a></span><span class='op'>(</span><span class='va'>d_dis</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;   x   prob cumprob
 #&gt; 1 1 0.0996  0.0996
 #&gt; 2 2 0.2051  0.3047
 #&gt; 3 3 0.2934  0.5981
 #&gt; 4 4 0.4019  1.0000</div><div class='input'>
 <span class='co'># Ops</span>
-  <span class='co'># Single input, linear transformations, and logical are not random</span>
-<span class='no'>d_dis</span> <span class='kw'>&gt;</span> <span class='fl'>1</span></div><div class='output co'>#&gt; Probability mass function of discrete type
-#&gt; Support: [0, 1] (2 elements, probability of 1: 0.9)</div><div class='input'>!(<span class='no'>d_dis</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Probability mass function of discrete type
-#&gt; Support: [0, 1] (2 elements, probability of 1: 0.1)</div><div class='input'><span class='no'>d_norm</span> <span class='kw'>&gt;=</span> (<span class='fl'>2</span>*<span class='no'>d_norm</span>+<span class='fl'>1</span>)</div><div class='output co'>#&gt; Probability mass function of discrete type
-#&gt; Support: [0, 1] (2 elements, probability of 1: ~0.32736)</div><div class='input'>  <span class='co'># All others are random</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_norm</span> + <span class='no'>d_norm</span>)</div><div class='input'>  <span class='co'># This is an exact reference curve</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>, <span class='kw'>sd</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span>(<span class='fl'>2</span>)), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='methods-group-generic-2.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_dis</span> + <span class='no'>d_norm</span>)</div><div class='img'><img src='methods-group-generic-3.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_unif</span>^<span class='no'>d_unif</span>)</div><div class='img'><img src='methods-group-generic-4.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## Single input, linear transformations, and logical are not random</span>
+<span class='va'>d_dis</span> <span class='op'>&gt;</span> <span class='fl'>1</span>
+</div><div class='output co'>#&gt; Probability mass function of discrete type
+#&gt; Support: [0, 1] (2 elements, probability of 1: 0.9)</div><div class='input'><span class='op'>!</span><span class='op'>(</span><span class='va'>d_dis</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Probability mass function of discrete type
+#&gt; Support: [0, 1] (2 elements, probability of 1: 0.1)</div><div class='input'><span class='va'>d_norm</span> <span class='op'>&gt;=</span> <span class='op'>(</span><span class='fl'>2</span> <span class='op'>*</span> <span class='va'>d_norm</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Probability mass function of discrete type
+#&gt; Support: [0, 1] (2 elements, probability of 1: ~0.32736)</div><div class='input'><span class='co'>## All others are random</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_norm</span> <span class='op'>+</span> <span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='input'><span class='co'>## This is an exact reference curve</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span>, sd <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>sqrt</a></span><span class='op'>(</span><span class='fl'>2</span><span class='op'>)</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-2.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_dis</span> <span class='op'>+</span> <span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-3.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_unif</span><span class='op'>^</span><span class='va'>d_unif</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-4.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Summary</span>
-  <span class='co'># `all()` and `any()` are non-random</span>
-<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span>(<span class='no'>d_dis</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>, <span class='no'>d_dis</span> <span class='kw'>&gt;</span> <span class='fl'>1</span>)</div><div class='output co'>#&gt; Probability mass function of discrete type
-#&gt; Support: [0, 1] (2 elements, probability of 1: 0.81)</div><div class='input'>  <span class='co'># Others are random</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span>(<span class='no'>d_norm</span>, <span class='no'>d_norm</span>, <span class='no'>d_norm</span>))</div><div class='img'><img src='methods-group-generic-5.png' alt='' width='700' height='433' /></div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_norm</span> + <span class='no'>d_norm</span> + <span class='no'>d_norm</span>)</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span>(<span class='no'>d_norm</span>, <span class='no'>d_norm</span>, <span class='no'>d_norm</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='img'><img src='methods-group-generic-6.png' alt='' width='700' height='433' /></div><div class='input'>
-  <span class='co'># Using single numbers is allowed, but gives misleading output in case of</span>
-  <span class='co'># "continuous" functions. Use other functions instead (see documentation).</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span>(<span class='no'>d_unif</span>, <span class='fl'>0.5</span>))</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fu'><a href='form_resupport.html'>form_resupport</a></span>(<span class='no'>d_unif</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>NA</span>, <span class='fl'>0.5</span>), <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"winsor"</span>), <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</div><div class='img'><img src='methods-group-generic-7.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## `all()` and `any()` are non-random</span>
+<span class='fu'><a href='https://rdrr.io/r/base/all.html'>all</a></span><span class='op'>(</span><span class='va'>d_dis</span> <span class='op'>&gt;</span> <span class='fl'>1</span>, <span class='va'>d_dis</span> <span class='op'>&gt;</span> <span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Probability mass function of discrete type
+#&gt; Support: [0, 1] (2 elements, probability of 1: 0.81)</div><div class='input'><span class='co'>## Others are random</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>max</a></span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='va'>d_norm</span>, <span class='va'>d_norm</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-5.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_norm</span> <span class='op'>+</span> <span class='va'>d_norm</span> <span class='op'>+</span> <span class='va'>d_norm</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/sum.html'>sum</a></span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='va'>d_norm</span>, <span class='va'>d_norm</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-6.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='co'>## Using single numbers is allowed, but gives misleading output in case of</span>
+<span class='co'>## "continuous" functions. Use other functions instead (see documentation).</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/Extremes.html'>min</a></span><span class='op'>(</span><span class='va'>d_unif</span>, <span class='fl'>0.5</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fu'><a href='form_resupport.html'>form_resupport</a></span><span class='op'>(</span><span class='va'>d_unif</span>, <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='cn'>NA</span>, <span class='fl'>0.5</span><span class='op'>)</span>, method <span class='op'>=</span> <span class='st'>"winsor"</span><span class='op'>)</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-7.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Use `options()` to control methods</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>d_unif</span> + <span class='no'>d_unif</span>)</div><div class='input'><span class='no'>op</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span>(
-  <span class='kw'>pdqr.group_gen.n_sample</span> <span class='kw'>=</span> <span class='fl'>100</span>,
-  <span class='kw'>pdqr.group_gen.args_new</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>adjust</span> <span class='kw'>=</span> <span class='fl'>0.5</span>)
-)
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='no'>d_unif</span> + <span class='no'>d_unif</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"red"</span>)</div><div class='input'>  <span class='co'># `f + f` is different from `2*f` due to independency assumption. Also the</span>
-  <span class='co'># latter implemented non-randomly.</span>
-<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span>(<span class='fl'>2</span> * <span class='no'>d_unif</span>, <span class='kw'>col</span> <span class='kw'>=</span> <span class='st'>"blue"</span>)</div><div class='img'><img src='methods-group-generic-8.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>d_unif</span> <span class='op'>+</span> <span class='va'>d_unif</span><span class='op'>)</span>
+</div><div class='input'><span class='va'>op</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/options.html'>options</a></span><span class='op'>(</span>
+  pdqr.group_gen.n_sample <span class='op'>=</span> <span class='fl'>100</span>,
+  pdqr.group_gen.args_new <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>adjust <span class='op'>=</span> <span class='fl'>0.5</span><span class='op'>)</span>
+<span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='va'>d_unif</span> <span class='op'>+</span> <span class='va'>d_unif</span>, col <span class='op'>=</span> <span class='st'>"red"</span><span class='op'>)</span>
+</div><div class='input'><span class='co'>## `f + f` is different from `2*f` due to independency assumption. Also the</span>
+<span class='co'>## latter implemented non-randomly.</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/lines.html'>lines</a></span><span class='op'>(</span><span class='fl'>2</span> <span class='op'>*</span> <span class='va'>d_unif</span>, col <span class='op'>=</span> <span class='st'>"blue"</span><span class='op'>)</span>
+</div><div class='img'><img src='methods-group-generic-8.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Methods for generics attempt to repair support, so they are more reasonable</span>
 <span class='co'># to use than direct use of `form_trans()`</span>
-<span class='no'>d_unif</span> + <span class='no'>d_unif</span></div><div class='output co'>#&gt; Density function of continuous type
-#&gt; Support: [0, 2] (517 intervals)</div><div class='input'><span class='fu'><a href='form_trans.html'>form_trans</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='no'>d_unif</span>, <span class='no'>d_unif</span>), <span class='no'>`+`</span>)</div><div class='output co'>#&gt; Density function of continuous type
-#&gt; Support: ~[-0.1643, 2.16721] (511 intervals)</div><div class='input'>
-</div></code></pre>
+<span class='va'>d_unif</span> <span class='op'>+</span> <span class='va'>d_unif</span>
+</div><div class='output co'>#&gt; Density function of continuous type
+#&gt; Support: [0, 2] (517 intervals)</div><div class='input'><span class='fu'><a href='form_trans.html'>form_trans</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>d_unif</span>, <span class='va'>d_unif</span><span class='op'>)</span>, <span class='va'>`+`</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; Density function of continuous type
+#&gt; Support: ~[-0.1643, 2.16721] (511 intervals)</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#math">Math</a></li>
-      <li><a href="#ops">Ops</a></li>
-      <li><a href="#summary">Summary</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -390,7 +407,7 @@ probability from boolean pdqr-functions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

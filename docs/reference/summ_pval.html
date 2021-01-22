@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,7 +46,6 @@
 value(s). There are several methods of computing p-values (&quot;both&quot;, &quot;right&quot;,
 and &quot;left&quot;) as well as several types of multiple comparison adjustments
 (using on stats::p.adjust())." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -60,7 +63,7 @@ and &quot;left&quot;) as well as several types of multiple comparison adjustment
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -74,7 +77,7 @@ and &quot;left&quot;) as well as several types of multiple comparison adjustment
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -82,7 +85,7 @@ and &quot;left&quot;) as well as several types of multiple comparison adjustment
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -116,8 +119,8 @@ and &quot;left&quot;) as well as several types of multiple comparison adjustment
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -146,7 +149,7 @@ and "left") as well as several types of multiple comparison adjustments
 (using on <code><a href='https://rdrr.io/r/stats/p.adjust.html'>stats::p.adjust()</a></code>).</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>summ_pval</span>(<span class='no'>f</span>, <span class='no'>obs</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>, <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"holm"</span>)</code></pre>
+    <pre class="usage"><code class = "r"><span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>obs</span>, method <span class='op'>=</span> <span class='st'>"both"</span>, adjust <span class='op'>=</span> <span class='st'>"holm"</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -208,31 +211,32 @@ which is a left one-sided p-value.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><code class = "r"><div class='input'><span class='co'># Type "discrete"</span>
-<span class='no'>d_dis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span>(<span class='kw'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>:<span class='fl'>5</span>, <span class='kw'>prob</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span>) / <span class='fl'>9</span>), <span class='st'>"discrete"</span>)
-<span class='fu'>summ_pval</span>(<span class='no'>d_dis</span>, <span class='fl'>3</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'>summ_pval</span>(<span class='no'>d_dis</span>, <span class='fl'>3</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='output co'>#&gt; [1] 0.6666667</div><div class='input'><span class='fu'>summ_pval</span>(<span class='no'>d_dis</span>, <span class='fl'>3</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"left"</span>)</div><div class='output co'>#&gt; [1] 0.6666667</div><div class='input'>
+<span class='va'>d_dis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/data.frame.html'>data.frame</a></span><span class='op'>(</span>x <span class='op'>=</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>5</span>, prob <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='fl'>2</span>, <span class='fl'>3</span>, <span class='fl'>2</span>, <span class='fl'>1</span><span class='op'>)</span> <span class='op'>/</span> <span class='fl'>9</span><span class='op'>)</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_dis</span>, <span class='fl'>3</span>, method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div><div class='input'><span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_dis</span>, <span class='fl'>3</span>, method <span class='op'>=</span> <span class='st'>"right"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.6666667</div><div class='input'><span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_dis</span>, <span class='fl'>3</span>, method <span class='op'>=</span> <span class='st'>"left"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.6666667</div><div class='input'>
 <span class='co'># Type "continuous"</span>
-<span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='fu'>summ_pval</span>(<span class='no'>d_norm</span>, <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"both"</span>)</div><div class='output co'>#&gt; [1] 0.04549837</div><div class='input'><span class='fu'>summ_pval</span>(<span class='no'>d_norm</span>, <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"right"</span>)</div><div class='output co'>#&gt; [1] 0.02274919</div><div class='input'><span class='fu'>summ_pval</span>(<span class='no'>d_norm</span>, <span class='fl'>2</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"left"</span>)</div><div class='output co'>#&gt; [1] 0.9772508</div><div class='input'>
+<span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='fl'>2</span>, method <span class='op'>=</span> <span class='st'>"both"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.04549837</div><div class='input'><span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='fl'>2</span>, method <span class='op'>=</span> <span class='st'>"right"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.02274919</div><div class='input'><span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='fl'>2</span>, method <span class='op'>=</span> <span class='st'>"left"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.9772508</div><div class='input'>
 <span class='co'># Adjustment is made for multiple observed values</span>
-<span class='fu'>summ_pval</span>(<span class='no'>d_norm</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>2</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>))</div><div class='output co'>#&gt;  [1] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
+<span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>2</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
 #&gt;  [8] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000
-#&gt; [15] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.9554658</div><div class='input'>  <span class='co'># Use `adjust = "none"` for to not do any adjustment</span>
-<span class='fu'>summ_pval</span>(<span class='no'>d_norm</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>2</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>0.1</span>), <span class='kw'>adjust</span> <span class='kw'>=</span> <span class='st'>"none"</span>)</div><div class='output co'>#&gt;  [1] 1.00000000 0.92034417 0.84148028 0.76417670 0.68915592 0.61707434
+#&gt; [15] 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 1.0000000 0.9554658</div><div class='input'><span class='co'>## Use `adjust = "none"` for to not do any adjustment</span>
+<span class='fu'>summ_pval</span><span class='op'>(</span><span class='va'>d_norm</span>, <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>2</span>, by <span class='op'>=</span> <span class='fl'>0.1</span><span class='op'>)</span>, adjust <span class='op'>=</span> <span class='st'>"none"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;  [1] 1.00000000 0.92034417 0.84148028 0.76417670 0.68915592 0.61707434
 #&gt;  [7] 0.54850536 0.48392631 0.42370968 0.36811902 0.31730918 0.27133070
 #&gt; [13] 0.23013784 0.19359939 0.16151167 0.13361270 0.10959683 0.08912913
-#&gt; [19] 0.07185880 0.05743125 0.04549837</div><div class='input'>
-</div></code></pre>
+#&gt; [19] 0.07185880 0.05743125 0.04549837</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -243,7 +247,7 @@ which is a left one-sided p-value.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

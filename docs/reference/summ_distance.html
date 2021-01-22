@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -42,10 +46,10 @@
 pdqr-functions. Here &quot;distance&quot; is used in a broad sense: a single
 non-negative number representing how much two distributions differ from one
 another. Bigger values indicate bigger difference. Zero value means that
-input distributions are equivalent based on the method used. The notion of
+input distributions are equivalent based on the method used (except method
+&quot;avgdist&quot; which is almost always returns positive value). The notion of
 &quot;distance&quot; is useful for doing statistical inference about similarity of two
 groups of numbers." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -63,7 +67,7 @@ groups of numbers." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -77,7 +81,7 @@ groups of numbers." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -85,7 +89,7 @@ groups of numbers." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -119,8 +123,8 @@ groups of numbers." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -147,12 +151,13 @@ groups of numbers." />
 pdqr-functions. Here "distance" is used in a broad sense: a single
 non-negative number representing how much two distributions differ from one
 another. Bigger values indicate bigger difference. Zero value means that
-input distributions are equivalent based on the method used. The notion of
+input distributions are equivalent based on the method used (except method
+"avgdist" which is almost always returns positive value). The notion of
 "distance" is useful for doing statistical inference about similarity of two
 groups of numbers.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>summ_distance</span>(<span class='no'>f</span>, <span class='no'>g</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"KS"</span>)</code></pre>
+    <pre class="usage"><code class = "r"><span class='fu'>summ_distance</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>g</span>, method <span class='op'>=</span> <span class='st'>"KS"</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -169,7 +174,7 @@ groups of numbers.</p>
     <tr>
       <th>method</th>
       <td><p>Method for computing distance. Should be one of "KS", "totvar",
-"compare", "wass", "cramer", "align", "entropy".</p></td>
+"compare", "wass", "cramer", "align", "avgdist", "entropy".</p></td>
     </tr>
     </table>
 
@@ -177,7 +182,7 @@ groups of numbers.</p>
 
     <p>A single non-negative number representing distance between pair of
 distributions. For methods "KS", "totvar", and "compare" it is not bigger
-than 1.</p>
+than 1. For method "avgdist" it is almost always bigger than 0.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Methods can be separated into three categories: probability based,
@@ -224,7 +229,16 @@ reasonably possible. Solution is found numerically with <code><a href='https://r
 so relatively small numerical errors can happen. Also <strong>note</strong> that this
 method is somewhat slow (compared to all others). To increase speed, use less
 elements in <a href='meta.html'>"x_tbl" metadata</a>. For example, with
-<code><a href='form_retype.html'>form_retype()</a></code> or smaller <code>n_grid</code> argument in <a href='as-pdqr.html'>as_*()</a> functions.</p></li>
+<code><a href='form_retype.html'>form_retype()</a></code> or smaller <code>n_grid</code> argument in <a href='as_p.html'>as_*()</a> functions.</p></li>
+<li><p><em>Method "avgdist"</em> computes average distance between sample values from
+inputs. Basically, it is a deterministically computed approximation of
+expected value of absolute difference between random variables, or in 'pdqr'
+code: <code><a href='summ_center.html'>summ_mean(abs(f - g))</a></code> (but computed without randomness). Computation
+is done by approximating possibly present continuous pdqr-functions with
+discrete ones (see description of <a href='pdqr-package.html'>"pdqr.approx_discrete_n_grid" option</a> for more information) and then computing output value
+directly based on two discrete pdqr-functions. <strong>Note</strong> that this method
+almost never returns zero, even for identical inputs (except the case of
+discrete pdqr-functions with identical one value).</p></li>
 </ul>
 
 <p><strong>Entropy based</strong> methods compute output based on entropy characteristics:</p><ul>
@@ -257,32 +271,33 @@ pair of distributions.</p>
 <code><a href='summ_spread.html'>summ_spread</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dunif</span>, <span class='kw'>max</span> <span class='kw'>=</span> <span class='fl'>2</span>)
-<span class='no'>d_norm</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>, <span class='kw'>mean</span> <span class='kw'>=</span> <span class='fl'>1</span>)
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_unif</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dunif</span>, max <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
+<span class='va'>d_norm</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span>, mean <span class='op'>=</span> <span class='fl'>1</span><span class='op'>)</span>
 
-<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>vapply</a></span>(
-  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"KS"</span>, <span class='st'>"totvar"</span>, <span class='st'>"compare"</span>, <span class='st'>"wass"</span>, <span class='st'>"cramer"</span>, <span class='st'>"align"</span>, <span class='st'>"entropy"</span>),
-  <span class='kw'>function</span>(<span class='no'>meth</span>) {<span class='fu'>summ_distance</span>(<span class='no'>d_unif</span>, <span class='no'>d_norm</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='no'>meth</span>)},
-  <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span>(<span class='fl'>1</span>)
-)</div><div class='output co'>#&gt;        KS    totvar   compare      wass    cramer     align   entropy 
-#&gt; 0.1586546 0.3173092 0.0000000 0.2978750 0.0271365 0.0000000 5.7929318 </div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/lapply.html'>vapply</a></span><span class='op'>(</span>
+  <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span><span class='op'>(</span>
+    <span class='st'>"KS"</span>, <span class='st'>"totvar"</span>, <span class='st'>"compare"</span>,
+    <span class='st'>"wass"</span>, <span class='st'>"cramer"</span>, <span class='st'>"align"</span>, <span class='st'>"avgdist"</span>,
+    <span class='st'>"entropy"</span>
+  <span class='op'>)</span>,
+  <span class='kw'>function</span><span class='op'>(</span><span class='va'>meth</span><span class='op'>)</span> <span class='op'>{</span>
+    <span class='fu'>summ_distance</span><span class='op'>(</span><span class='va'>d_unif</span>, <span class='va'>d_norm</span>, method <span class='op'>=</span> <span class='va'>meth</span><span class='op'>)</span>
+  <span class='op'>}</span>,
+  <span class='fu'><a href='https://rdrr.io/r/base/numeric.html'>numeric</a></span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+<span class='op'>)</span>
+</div><div class='output co'>#&gt;        KS    totvar   compare      wass    cramer     align   avgdist   entropy 
+#&gt; 0.1586546 0.3173092 0.0000000 0.2978750 0.0271365 0.0000000 0.9246546 5.7929318 </div><div class='input'>
 <span class='co'># "Supremum" quality of "KS" distance</span>
-<span class='no'>d_dis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fl'>2</span>, <span class='st'>"discrete"</span>)
-  <span class='co'># Distance is 1, which is a limit of |F - G| at points which tend to 2 from</span>
-  <span class='co'># left</span>
-<span class='fu'>summ_distance</span>(<span class='no'>d_dis</span>, <span class='no'>d_unif</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"KS"</span>)</div><div class='output co'>#&gt; [1] 1</div><div class='input'>
-</div></code></pre>
+<span class='va'>d_dis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='co'>## Distance is 1, which is a limit of |F - G| at points which tend to 2 from</span>
+<span class='co'>## left</span>
+<span class='fu'>summ_distance</span><span class='op'>(</span><span class='va'>d_dis</span>, <span class='va'>d_unif</span>, method <span class='op'>=</span> <span class='st'>"KS"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 1</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -293,7 +308,7 @@ pair of distributions.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

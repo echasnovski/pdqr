@@ -10,23 +10,27 @@
 
 
 <!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.4.0/united/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous" />
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script>
+
+<!-- bootstrap-toc -->
+<link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script>
 
 <!-- headroom.js -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -43,7 +47,6 @@ distributions they represent. In other words, summ_separation() solves a
 binary classification problem with one-dimensional linear classifier: values
 not more than some threshold are classified as one class, and more than
 threshold - as another. Order of input functions doesn't matter." />
-<meta name="twitter:card" content="summary" />
 
 
 
@@ -61,7 +64,7 @@ threshold - as another. Order of input functions doesn't matter." />
 
   </head>
 
-  <body>
+  <body data-spy="scroll" data-target="#toc">
     <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -75,7 +78,7 @@ threshold - as another. Order of input functions doesn't matter." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">pdqr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -83,7 +86,7 @@ threshold - as another. Order of input functions doesn't matter." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,8 +120,8 @@ threshold - as another. Order of input functions doesn't matter." />
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/echasnovski/pdqr">
-    <span class="fab fa fab fa-github fa-lg"></span>
+  <a href="https://github.com/echasnovski/pdqr/">
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -148,7 +151,7 @@ not more than some threshold are classified as one class, and more than
 threshold - as another. Order of input functions doesn't matter.</p>
     </div>
 
-    <pre class="usage"><code class = "r"><span class='fu'>summ_separation</span>(<span class='no'>f</span>, <span class='no'>g</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"KS"</span>, <span class='kw'>n_grid</span> <span class='kw'>=</span> <span class='fl'>10001</span>)</code></pre>
+    <pre class="usage"><code class = "r"><span class='fu'>summ_separation</span><span class='op'>(</span><span class='va'>f</span>, <span class='va'>g</span>, method <span class='op'>=</span> <span class='st'>"KS"</span>, n_grid <span class='op'>=</span> <span class='fl'>10001</span><span class='op'>)</span></code></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -222,33 +225,32 @@ classification setup.</p>
 <code><a href='summ_spread.html'>summ_spread</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><code class = "r"><div class='input'><span class='no'>d_norm_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dnorm</span>)
-<span class='no'>d_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_d</a></span>(<span class='no'>dunif</span>)
-<span class='fu'>summ_separation</span>(<span class='no'>d_norm_1</span>, <span class='no'>d_unif</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"KS"</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>summ_separation</span>(<span class='no'>d_norm_1</span>, <span class='no'>d_unif</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>"OP"</span>)</div><div class='output co'>#&gt; [1] 0.3593589</div><div class='input'>
+    <pre class="examples"><code class = "r"><div class='input'><span class='va'>d_norm_1</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dnorm</span><span class='op'>)</span>
+<span class='va'>d_unif</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_d</a></span><span class='op'>(</span><span class='va'>dunif</span><span class='op'>)</span>
+<span class='fu'>summ_separation</span><span class='op'>(</span><span class='va'>d_norm_1</span>, <span class='va'>d_unif</span>, method <span class='op'>=</span> <span class='st'>"KS"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'>summ_separation</span><span class='op'>(</span><span class='va'>d_norm_1</span>, <span class='va'>d_unif</span>, method <span class='op'>=</span> <span class='st'>"OP"</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0.3593589</div><div class='input'>
 <span class='co'># Mixed types for "KS" method</span>
-<span class='no'>p_dis</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='new-pdqr.html'>new_p</a></span>(<span class='fl'>1</span>, <span class='st'>"discrete"</span>)
-<span class='no'>p_unif</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='as-pdqr.html'>as_p</a></span>(<span class='no'>punif</span>)
-<span class='no'>thres</span> <span class='kw'>&lt;-</span> <span class='fu'>summ_separation</span>(<span class='no'>p_dis</span>, <span class='no'>p_unif</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='fu'>p_dis</span>(<span class='no'>thres</span>) - <span class='fu'>p_unif</span>(<span class='no'>thres</span>))</div><div class='output co'>#&gt; [1] 0</div><div class='input'>  <span class='co'># Actual difference at `thres` is 0. However, supremum (equal to 1) as</span>
-  <span class='co'># limit value is # reached there.</span>
-<span class='no'>x_grid</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span>(<span class='fl'>0</span>, <span class='fl'>1</span>, <span class='kw'>by</span> <span class='kw'>=</span> <span class='fl'>1e-3</span>)
-<span class='fu'><a href='https://rdrr.io/r/graphics/plot.html'>plot</a></span>(<span class='no'>x_grid</span>, <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span>(<span class='fu'>p_dis</span>(<span class='no'>x_grid</span>) - <span class='fu'>p_unif</span>(<span class='no'>x_grid</span>)), <span class='kw'>type</span> <span class='kw'>=</span> <span class='st'>"b"</span>)</div><div class='img'><img src='summ_separation-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='va'>p_dis</span> <span class='op'>&lt;-</span> <span class='fu'><a href='new_p.html'>new_p</a></span><span class='op'>(</span><span class='fl'>1</span>, <span class='st'>"discrete"</span><span class='op'>)</span>
+<span class='va'>p_unif</span> <span class='op'>&lt;-</span> <span class='fu'><a href='as_p.html'>as_p</a></span><span class='op'>(</span><span class='va'>punif</span><span class='op'>)</span>
+<span class='va'>thres</span> <span class='op'>&lt;-</span> <span class='fu'>summ_separation</span><span class='op'>(</span><span class='va'>p_dis</span>, <span class='va'>p_unif</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='fu'>p_dis</span><span class='op'>(</span><span class='va'>thres</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'>p_unif</span><span class='op'>(</span><span class='va'>thres</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='co'>## Actual difference at `thres` is 0. However, supremum (equal to 1) as</span>
+<span class='co'>## limit value is # reached there.</span>
+<span class='va'>x_grid</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/seq.html'>seq</a></span><span class='op'>(</span><span class='fl'>0</span>, <span class='fl'>1</span>, by <span class='op'>=</span> <span class='fl'>1e-3</span><span class='op'>)</span>
+<span class='fu'><a href='https://rdrr.io/r/graphics/plot.default.html'>plot</a></span><span class='op'>(</span><span class='va'>x_grid</span>, <span class='fu'><a href='https://rdrr.io/r/base/MathFun.html'>abs</a></span><span class='op'>(</span><span class='fu'>p_dis</span><span class='op'>(</span><span class='va'>x_grid</span><span class='op'>)</span> <span class='op'>-</span> <span class='fu'>p_unif</span><span class='op'>(</span><span class='va'>x_grid</span><span class='op'>)</span><span class='op'>)</span>, type <span class='op'>=</span> <span class='st'>"b"</span><span class='op'>)</span>
+</div><div class='img'><img src='summ_separation-1.png' alt='' width='700' height='433' /></div><div class='input'>
 <span class='co'># Handling of non-overlapping supports</span>
-<span class='fu'>summ_separation</span>(<span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fl'>2</span>, <span class='st'>"discrete"</span>), <span class='fu'><a href='new-pdqr.html'>new_d</a></span>(<span class='fl'>3</span>, <span class='st'>"discrete"</span>))</div><div class='output co'>#&gt; [1] 2.5</div><div class='input'>
+<span class='fu'>summ_separation</span><span class='op'>(</span><span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fl'>2</span>, <span class='st'>"discrete"</span><span class='op'>)</span>, <span class='fu'><a href='new_p.html'>new_d</a></span><span class='op'>(</span><span class='fl'>3</span>, <span class='st'>"discrete"</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] 2.5</div><div class='input'>
 <span class='co'># The smallest "x" value is returned in case of several optimal thresholds</span>
-<span class='fu'>summ_separation</span>(<span class='no'>d_norm_1</span>, <span class='no'>d_norm_1</span>) <span class='kw'>==</span> <span class='fu'><a href='meta.html'>meta_support</a></span>(<span class='no'>d_norm_1</span>)[<span class='fl'>1</span>]</div><div class='output co'>#&gt; [1] TRUE</div><div class='input'>
-</div></code></pre>
+<span class='fu'>summ_separation</span><span class='op'>(</span><span class='va'>d_norm_1</span>, <span class='va'>d_norm_1</span><span class='op'>)</span> <span class='op'>==</span> <span class='fu'><a href='meta.html'>meta_support</a></span><span class='op'>(</span><span class='va'>d_norm_1</span><span class='op'>)</span><span class='op'>[</span><span class='fl'>1</span><span class='op'>]</span>
+</div><div class='output co'>#&gt; [1] TRUE</div></code></pre>
   </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
-      <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#details">Details</a></li>
-      <li><a href="#see-also">See also</a></li>
-      <li><a href="#examples">Examples</a></li>
-    </ul>
-
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
+    <nav id="toc" data-toggle="toc" class="sticky-top">
+      <h2 data-toc-skip>Contents</h2>
+    </nav>
   </div>
 </div>
 
@@ -259,7 +261,7 @@ classification setup.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
