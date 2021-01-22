@@ -1,3 +1,5 @@
+# pdqr (development version)
+
 # pdqr 0.3.0
 
 * New function `region_distance()` computes distance between pair of regions.
