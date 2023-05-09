@@ -6,7 +6,8 @@
 \alias{summ_kurtosis}
 \title{Summarize distribution with moment}
 \usage{
-summ_moment(f, order, central = FALSE, standard = FALSE, absolute = FALSE)
+summ_moment(f, order, central = FALSE, standard = FALSE,
+  absolute = FALSE)
 
 summ_skewness(f)
 

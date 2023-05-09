@@ -4,7 +4,8 @@
 \alias{form_estimate}
 \title{Create a pdqr-function for distribution of sample estimate}
 \usage{
-form_estimate(f, stat, sample_size, ..., n_sample = 10000, args_new = list())
+form_estimate(f, stat, sample_size, ..., n_sample = 10000,
+  args_new = list())
 }
 \arguments{
 \item{f}{A pdqr-function.}

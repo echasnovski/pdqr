@@ -6,16 +6,7 @@
 \alias{pdqr-package}
 \title{pdqr: Work with Custom Distribution Functions}
 \description{
-Create, transform, and summarize custom random
-    variables with distribution functions (analogues of 'p*()', 'd*()',
-    'q*()', and 'r*()' functions from base R). Two types of distributions
-    are supported: "discrete" (random variable has finite number of output
-    values) and "continuous" (infinite number of values in the form of
-    continuous random variable). Functions for distribution
-    transformations and summaries are available. Implemented approaches
-    often emphasize approximate and numerical solutions: all distributions
-    assume finite support and finite values of density function; some
-    methods implemented with simulation techniques.
+Create, transform, and summarize custom random variables with distribution functions (analogues of 'p*()', 'd*()', 'q*()', and 'r*()' functions from base R). Two types of distributions are supported: "discrete" (random variable has finite number of output values) and "continuous" (infinite number of values in the form of continuous random variable). Functions for distribution transformations and summaries are available. Implemented approaches often emphasize approximate and numerical solutions: all distributions assume finite support and finite values of density function; some methods implemented with simulation techniques.
 }
 \details{
 Excerpt of important documentation:
