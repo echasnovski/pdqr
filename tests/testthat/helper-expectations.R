@@ -202,9 +202,9 @@ regex_scatter <- function(...) {
 # Custom 'vdiffr' expectation to ensure that it is used conditionally as it is
 # listed in 'Suggested' packages. This is needed because of CRAN policy:
 # https://cran.r-project.org/doc/manuals/r-release/R-exts.html#Suggested-packages
-expect_doppelganger_2 <- function(title, fig, path = NULL, ...) {
+expect_doppelganger_2 <- function(title, fig, ...) {
   testthat::skip_if_not_installed("vdiffr")
-  vdiffr::expect_doppelganger(title, fig, path = path, ...)
+  vdiffr::expect_doppelganger(title, fig, ...)
 }
 
 is_noLD <- function() {
