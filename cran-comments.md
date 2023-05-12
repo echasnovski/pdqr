@@ -1,17 +1,14 @@
-## Resubmission
+## Submission details
 
-This is a resubmission which addresses "skipping" tests on noLD platform.
-
-Original submission goal: maintenance update to address CRAN's and R-devel issues.
+This is a maintenance update:
+- Reaction to an update of `stats::density()` grid computation (R > 4.3.0; SVN revision 84376; PR 18337).
 
 ## Test environments
 
-* Ubuntu 18.04 (local install), R-release (4.0.3) both default and with setting environment variable `_R_CHECK_DEPENDS_ONLY_` to `true`
-* Ubuntu 16.04 (via Github Actions), R-oldrel (3.6.3)
-* macOS 10.13.6 (via R-hub), R-release (4.0.3)
-* Debian (via R-hub), R-devel (2021-01-09 r79815)
-* Debian "noLD" version (via R-hub "debian-gcc-devel-nold"), R-devel (2021-01-09 r79815)
-* win-builder, R-release (4.0.3) and R-devel (2021-01-13 r79826)
+* Local EndeavorOS 6.3.1-arch2-1 install, R 4.3.0
+* GitHub Action on x86_64-apple-darwin20 (64-bit), release and development version (2023-05-10 r84418)
+* GitHub Action on x86_64-w64-mingw32 (64-bit), release and development version (2023-05-11 r84422 ucrt)
+* win-builder, release and development version (2023-05-11 r84422 ucrt)
 
 ## R CMD check results
 
