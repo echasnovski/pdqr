@@ -243,7 +243,15 @@ has_meta_x_tbl <- function(f, type) {
 # Wrapper for `density()` assuming that output points will be the base for
 # piecewise linear density function.
 density_piecelin <- function(x, ...) {
-  dens <- stats::density(x, ...)
+  dens_args <- list(x = x, ...)
+  # Account for update in `density()` to have slightly different evaluation
+  # grids (R > 4.3.0; SVN revision 84376; PR 18337).
+  # This approach is used mostly for test compatibility with previous versions.
+  # Remove this and update tests when testing is done on R > 4.3.0.
+  if (getRversion() > "4.3.0") {
+    dens_args[["old.coords"]] <- TRUE
+  }
+  dens <- do.call(stats::density, dens_args)
   x_dens <- dens[["x"]]
   y_dens <- dens[["y"]]
 
