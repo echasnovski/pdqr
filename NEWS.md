@@ -1,4 +1,6 @@
-# pdqr (development version)
+# pdqr 0.3.1
+
+* Maintenance release in reaction to an update of `stats::density()`.
 
 # pdqr 0.3.0
 
