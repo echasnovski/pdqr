@@ -8,7 +8,7 @@
 [![R build
 status](https://github.com/echasnovski/pdqr/workflows/R-CMD-check/badge.svg)](https://github.com/echasnovski/pdqr/actions)
 [![Coverage
-status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://codecov.io/github/echasnovski/pdqr?branch=master)
+status](https://codecov.io/gh/echasnovski/pdqr/branch/master/graph/badge.svg)](https://app.codecov.io/gh/echasnovski/pdqr?branch=master)
 [![CRAN](https://www.r-pkg.org/badges/version/pdqr?color=blue)](https://cran.r-project.org/package=pdqr)
 [![Dependencies](https://tinyverse.netlify.com/badge/pdqr)](https://CRAN.R-project.org/package=pdqr)
 [![Downloads](http://cranlogs.r-pkg.org/badges/pdqr)](https://cran.r-project.org/package=pdqr)
@@ -31,26 +31,24 @@ Typical usage is to:
 Two types of pdqr-functions, representing different types of
 distributions, are supported:
 
--   **Type “discrete”**: random variable has *finite number of output
-    values*. Pdqr-function is explicitly defined by the collection of
-    its values with their corresponding probability. Usually is used
-    when underlying distribution is discrete (even if in theory there
-    are infinite number of output values).
--   **Type “continuous”**: random variable has *infinite number of
-    output values in the form of continuous random variable*. It is
-    explicitly defined by piecewise-linear density function with finite
-    support and values. Usually is used when underlying distribution is
-    continuous (even if in theory it has infinite support and/or density
-    values).
+- **Type “discrete”**: random variable has *finite number of output
+  values*. Pdqr-function is explicitly defined by the collection of its
+  values with their corresponding probability. Usually is used when
+  underlying distribution is discrete (even if in theory there are
+  infinite number of output values).
+- **Type “continuous”**: random variable has *infinite number of output
+  values in the form of continuous random variable*. It is explicitly
+  defined by piecewise-linear density function with finite support and
+  values. Usually is used when underlying distribution is continuous
+  (even if in theory it has infinite support and/or density values).
 
 Implemented approaches often emphasize approximate and numerical
 solutions:
 
--   All distributions assume **finite support** (output values are
-    bounded from below and above) and **finite values of density
-    function** (density function in case of “continuous” type can’t go
-    to infinity).
--   Some methods implemented with **simulation techniques**.
+- All distributions assume **finite support** (output values are bounded
+  from below and above) and **finite values of density function**
+  (density function in case of “continuous” type can’t go to infinity).
+- Some methods implemented with **simulation techniques**.
 
 **Note** that to fully use this package, one needs to be familiar with
 basics of probability theory (concepts such as probability,
@@ -58,19 +56,19 @@ distribution, density, etc.).
 
 This README covers the following topics:
 
--   How to install in [Installation](#installation).
--   How to quickly start using ‘pdqr’ by looking at [Quick
-    examples](#pdqr-quick).
--   How to create pdqr-function from sample or data frame in [Create
-    with `new_*()`](#pdqr-create).
--   How to convert existing distribution functions to pdqr-functions in
-    [Convert with `as_*()`](#pdqr-convert).
--   How to transform distribution in [Transform with
-    `form_*()`](#pdqr-transform).
--   How to summarize distribution in [Summarize with
-    `summ_*()`](#pdqr-summarize).
--   What are the other packages with similar functionality in [Similar
-    packages](#similar-packages).
+- How to install in [Installation](#installation).
+- How to quickly start using ‘pdqr’ by looking at [Quick
+  examples](#pdqr-quick).
+- How to create pdqr-function from sample or data frame in [Create with
+  `new_*()`](#pdqr-create).
+- How to convert existing distribution functions to pdqr-functions in
+  [Convert with `as_*()`](#pdqr-convert).
+- How to transform distribution in [Transform with
+  `form_*()`](#pdqr-transform).
+- How to summarize distribution in [Summarize with
+  `summ_*()`](#pdqr-summarize).
+- What are the other packages with similar functionality in [Similar
+  packages](#similar-packages).
 
 ## Installation
 
@@ -91,8 +89,8 @@ Generate a sample from a distribution defined by some reference sample:
 r_mpg <- new_r(mtcars$mpg, type = "continuous")
 
 r_mpg(n = 10)
-#>  [1] 17.3792362 10.4822955 22.8221407 21.8118788 15.5166760 16.3005293 20.5809388 16.8043292 21.1901692
-#> [10] 19.9680967
+#>  [1] 17.3792362 10.4822955 22.8221407 21.8118788 15.5166760 16.3005293 20.5809388 16.8043292
+#>  [9] 21.1901692 19.9680967
 ```
 
 Compute winsorized mean:
@@ -173,41 +171,41 @@ All `new_*()` functions create a pdqr-function of certain class (“p”,
 “d”, “q”, or “r”) and type (“discrete” or “continuous”) based on sample
 or data frame (with appropriate structure):
 
--   **Sample input** is converted into data frame of appropriate
-    structure that defines distribution (see next list item). It is done
-    based on type. For “discrete” type it gets tabulated with frequency
-    of unique values serving as their probability. For “continuous” type
-    distribution density is estimated using
-    [`density()`](https://rdrr.io/r/stats/density.html) function if
-    input has at least 2 elements. For 1 element special “dirac-like”
-    pdqr-function is created: an *approximation of single number* as
-    triangular distribution with very narrow support (1e-8 order of
-    magnitude).
--   **Data frame input** should completely define distribution. For
-    “discrete” type it should have “x” and “prob” columns for output
-    values and their probabilities. For “continuous” type - “x” and “y”
-    columns for points, which define piecewise-linear continuous density
-    function. Columns “prob” and “y” will be automatically normalized to
-    represent proper distribution: sum of “prob” will be 1 and total
-    square under graph of piecewise-linear function will be 1.
+- **Sample input** is converted into data frame of appropriate structure
+  that defines distribution (see next list item). It is done based on
+  type. For “discrete” type it gets tabulated with frequency of unique
+  values serving as their probability. For “continuous” type
+  distribution density is estimated using
+  [`density()`](https://rdrr.io/r/stats/density.html) function if input
+  has at least 2 elements. For 1 element special “dirac-like”
+  pdqr-function is created: an *approximation of single number* as
+  triangular distribution with very narrow support (1e-8 order of
+  magnitude).
+- **Data frame input** should completely define distribution. For
+  “discrete” type it should have “x” and “prob” columns for output
+  values and their probabilities. For “continuous” type - “x” and “y”
+  columns for points, which define piecewise-linear continuous density
+  function. Columns “prob” and “y” will be automatically normalized to
+  represent proper distribution: sum of “prob” will be 1 and total
+  square under graph of piecewise-linear function will be 1.
 
 All information about distribution that pdqr-function represents is
-stored in its **“x\_tbl” metadata**: a data frame describing
-distribution with format similar to data frame input of `new_*()`
-functions. One can get it using `meta_x_tbl()` function.
+stored in its **“x_tbl” metadata**: a data frame describing distribution
+with format similar to data frame input of `new_*()` functions. One can
+get it using `meta_x_tbl()` function.
 
 Pdqr class correspond to the following functions describing
 distribution:
 
--   **P-function** is a cumulative distribution function. Created with
-    `new_p()`.
--   **D-function** is a probability mass function for “discrete” type
-    and density function for “continuous”. Created with `new_d()`.
-    Generally speaking, it is a derivative of distribution’s p-function.
--   **Q-function** is a quantile function. Created with `new_q()`.
-    Inverse of distribution’s p-function.
--   **R-function** is a random generation function. Created with
-    `new_r()`. Generates a random sample from distribution.
+- **P-function** is a cumulative distribution function. Created with
+  `new_p()`.
+- **D-function** is a probability mass function for “discrete” type and
+  density function for “continuous”. Created with `new_d()`. Generally
+  speaking, it is a derivative of distribution’s p-function.
+- **Q-function** is a quantile function. Created with `new_q()`. Inverse
+  of distribution’s p-function.
+- **R-function** is a random generation function. Created with
+  `new_r()`. Generates a random sample from distribution.
 
 For more details see [vignette about creating
 pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-01-create.html).
@@ -265,8 +263,8 @@ p_mpg_dis(15:20)
 r_mpg_dis(10)
 #>  [1] 10.4 33.9 26.0 19.2 24.4 18.7 17.8 18.7 15.5 21.4
 r_mpg_con(10)
-#>  [1] 35.7089680 33.3634914 31.1541225 15.6482281 20.8554689 13.7275908 11.3686051 16.7155604 20.6710197
-#> [10] 20.5132727
+#>  [1] 35.7089680 33.3634914 31.1541225 15.6482281 20.8554689 13.7275908 11.3686051 16.7155604
+#>  [9] 20.6710197 20.5132727
 
 # Special case of dirac-like pdqr-function, which numerically approximates
 # single number with distribution with narrow support
@@ -297,8 +295,8 @@ new_d(con_tbl, type = "continuous")
 #> Density function of continuous type
 #> Support: [1, 4] (3 intervals)
 new_r(con_tbl, type = "continuous")(10)
-#>  [1] 2.21323986 1.58190910 2.85635049 2.32440194 2.44538842 2.89743821 3.29852362 2.43084969 2.81580878
-#> [10] 2.79585280
+#>  [1] 2.21323986 1.58190910 2.85635049 2.32440194 2.44538842 2.89743821 3.29852362 2.43084969
+#>  [9] 2.81580878 2.79585280
 ```
 
 ## <a id="pdqr-convert"></a> Convert with `as_*()`
@@ -309,9 +307,9 @@ Roughly, this is a `new_*()` family but with function as an input.
 
 There are two main use cases:
 
--   Convert existing pdqr-functions to different type.
--   Convert (create) pdqr-function based on some other user-supplied
-    distribution function.
+- Convert existing pdqr-functions to different type.
+- Convert (create) pdqr-function based on some other user-supplied
+  distribution function.
 
 For more details see [vignette about converting
 pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-02-convert.html).
@@ -320,7 +318,7 @@ pdqr-functions](https://echasnovski.github.io/pdqr/articles/pdqr-02-convert.html
 
 Converting existing pdqr-function to desired type is done
 straightforwardly by changing function’s class without touching the
-underlying distribution (“x\_tbl” metadata is the same):
+underlying distribution (“x_tbl” metadata is the same):
 
 ``` r
 d_dis <- new_d(1:4, "discrete")
@@ -356,27 +354,27 @@ create arbitrary discrete pdqr-function.
 
 General conversion algorithm is as follows:
 
--   If user didn’t supply support, detect it using algorithms targeted
-    for every pdqr class separately. If *input function belongs to a
-    certain set of “honored” distributions* (currently, it is all common
-    univariate distributions [from ‘stats’
-    package](https://rdrr.io/r/stats/Distributions.html)), support is
-    detected in predefined way.
--   Using detected support, data frame input for corresponding `new_*()`
-    function is created which approximates input function. Approximation
-    precision can be tweaked with `n_grid` (and `n_sample` for `as_r()`)
-    argument.
+- If user didn’t supply support, detect it using algorithms targeted for
+  every pdqr class separately. If *input function belongs to a certain
+  set of “honored” distributions* (currently, it is all common
+  univariate distributions [from ‘stats’
+  package](https://rdrr.io/r/stats/Distributions.html)), support is
+  detected in predefined way.
+- Using detected support, data frame input for corresponding `new_*()`
+  function is created which approximates input function. Approximation
+  precision can be tweaked with `n_grid` (and `n_sample` for `as_r()`)
+  argument.
 
 **Note** that output is usually an approximation of input due to the
 following facts:
 
--   Output density has piecewise-linear nature, which is almost never
-    the case for input function.
--   Possible infinite tails are removed to obtain finite support.
-    Usually output support “loses” only around 1e-6 probability on each
-    infinite tail.
--   Possible infinite values of density are linearly approximated from
-    neighborhood points.
+- Output density has piecewise-linear nature, which is almost never the
+  case for input function.
+- Possible infinite tails are removed to obtain finite support. Usually
+  output support “loses” only around 1e-6 probability on each infinite
+  tail.
+- Possible infinite values of density are linearly approximated from
+  neighborhood points.
 
 ``` r
 # "Honored" distributions
@@ -440,6 +438,7 @@ lines(as_d(dunif), col = "red")
 ![](man/figures/README-pdqr-transform_form-1.png)<!-- -->
 
 ``` r
+
 # Perform general transformation with `form_trans()`. This is usually done by
 # randomly simulating sample from output distribution and then calling one of
 # `new_*()` functions.
@@ -657,19 +656,18 @@ roc_plot(my_roc)
 
 ## <a id="similar-packages"></a> Similar packages
 
--   [“distrXXX”-family](http://distr.r-forge.r-project.org/) of
-    packages: S4 classes for distributions.
--   [distr6](https://alan-turing-institute.github.io/distr6/): Unified
-    and Object Oriented Probability Distribution Interface for R written
-    in R6.
--   [distributions3](https://alexpghayes.github.io/distributions3/):
-    Probability Distributions as S3 Objects.
--   [fitdistrplus](https://CRAN.R-project.org/package=fitdistrplus):
-    Help to Fit of a Parametric Distribution to Non-Censored or Censored
-    Data.
--   [Probability
-    Distributions](https://CRAN.R-project.org/view=Distributions) CRAN
-    Task View has more examples of packages intended to work with
-    probability distributions.
--   [hdrcde](https://CRAN.R-project.org/package=hdrcde): Highest Density
-    Regions and Conditional Density Estimation.
+- [“distrXXX”-family](http://distr.r-forge.r-project.org/) of packages:
+  S4 classes for distributions.
+- [distr6](https://alan-turing-institute.github.io/distr6/): Unified and
+  Object Oriented Probability Distribution Interface for R written in
+  R6.
+- [distributions3](https://alexpghayes.github.io/distributions3/):
+  Probability Distributions as S3 Objects.
+- [fitdistrplus](https://CRAN.R-project.org/package=fitdistrplus): Help
+  to Fit of a Parametric Distribution to Non-Censored or Censored Data.
+- [Probability
+  Distributions](https://CRAN.R-project.org/view=Distributions) CRAN
+  Task View has more examples of packages intended to work with
+  probability distributions.
+- [hdrcde](https://CRAN.R-project.org/package=hdrcde): Highest Density
+  Regions and Conditional Density Estimation.
